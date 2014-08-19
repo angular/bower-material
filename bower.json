@@ -1,6 +1,6 @@
 {
   "name": "angular-material",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": [
     "angular-material.js",
     "angular-material.css"
