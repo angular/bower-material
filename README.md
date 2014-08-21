@@ -1,9 +1,48 @@
 ## bower-material
 
-Bower release of [angular-material](https://github.com/angular/material).
+This repository contains the Bower release of [angular-material](https://github.com/angular/material).
 
-Simply install and include:
+### Installing Angular-Material
 
-* source > `angular-material.js` or `angular-material.min.js`
-* stylesheet > `angular-material.css`
+> Please note that using Angular Material requires **Angular 1.3.x** or higher.
 
+Below is a sample set of commands:
+
+```bash
+cd youProjectDir
+bower install angular-material --save
+```
+
+### Usage
+
+Now that you have installed [locally] the Angular libraries, simply include the scripts and stylesheet in your main HTML file:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
+
+</head>
+	<body ng-app="YourApp">
+
+	<div ng-controller="YourController">
+
+	</div>
+
+	<script src="/bower_components/angular/angular.js"></script>
+	<script src="/bower_components/angular-animate/angular-animate.js"></script>
+	<script src="/bower_components/angular-material/angular-material.js"></script>
+	<script>
+
+		// Include app dependencies on ngAnimate and ngMaterial
+
+		angular.module( 'YourApp', [ 'ngAnimate', 'ngMaterial' ] )
+			.controller("YourController", YourController );
+
+	</script>
+
+</body>
+</html>
+```
