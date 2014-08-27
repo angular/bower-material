@@ -9,7 +9,7 @@ This repository contains the Bower release of [angular-material](https://github.
 Below is a sample set of commands:
 
 ```bash
-cd youProjectDir
+cd yourProjectDir
 bower install angular-material --save
 ```
 
