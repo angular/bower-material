@@ -3,7 +3,7 @@
  * WIP Banner
  */
 (function(){
-angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.position', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.form","material.components.icon","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
+angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.position', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.form","material.components.icon","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
 angular.module('ngAnimateSequence', ['ngAnimate'])
 
   .factory('$$animateAll', function() {
@@ -1079,11 +1079,6 @@ function InkRippleDirective($materialInkRipple) {
 
 function InkRippleService($window, $$rAF, $materialEffects, $timeout) {
 
-  // TODO fix this. doesn't support touch AND click devices (eg chrome pixel)
-  var hasTouch = !!('ontouchend' in document);
-  var POINTERDOWN_EVENT = hasTouch ? 'touchstart' : 'mousedown';
-  var POINTERUP_EVENT = hasTouch ? 'touchend touchcancel' : 'mouseup mouseleave';
-
   return {
     attachButtonBehavior: attachButtonBehavior,
     attachCheckboxBehavior: attachCheckboxBehavior,
@@ -1135,31 +1130,45 @@ function InkRippleService($window, $$rAF, $materialEffects, $timeout) {
       return !element.controller('noink') && !Util.isDisabled(element);
     }
 
+    var hasTouch = !!('ontouchend' in document);
     function enableMousedown() {
+      // TODO fix this. doesn't support touch AND click devices (eg chrome pixel)
+      var POINTERDOWN_EVENT = hasTouch ? 'touchstart' : 'mousedown';
+      var POINTERUP_EVENT = hasTouch ? 'touchend touchcancel' : 'mouseup mouseleave';
+
+      if (!rippleIsAllowed()) return;
+
       element.on(POINTERDOWN_EVENT, onPointerDown);
 
+      var pointerIsDown;
       function onPointerDown(ev) {
-        if (!rippleIsAllowed()) return;
+        if (pointerIsDown) return;
+        pointerIsDown = true;
 
-        // Stop listening to pointer down for now, until the user lifts his finger/mouse
-        element.off(POINTERDOWN_EVENT, onPointerDown);
+        element.one(POINTERUP_EVENT, function() {
+          pointerIsDown = false;
+        });
 
         var rippleEl = createRippleFromEvent(ev);
-        var ripplePauseTimeout = $timeout(pauseRipple, options.mousedownPauseTime, false);
 
-        rippleEl.on('$destroy', cancelRipplePause);
-        element.one(POINTERUP_EVENT, onPointerUp);
+        var pointerCheckTimeout = $timeout(
+          pauseRippleIfPointerDown,
+          options.mousedownPauseTime,
+          false
+        );
 
-        function onPointerUp() {
-          cancelRipplePause();
-          rippleEl.css($materialEffects.ANIMATION_PLAY_STATE, 'running');
-          element.on(POINTERDOWN_EVENT, onPointerDown);
+        rippleEl.on('$destroy', cancelPointerCheck);
+
+        function pauseRippleIfPointerDown() {
+          if (pointerIsDown) {
+            rippleEl.css($materialEffects.ANIMATION_PLAY_STATE, 'paused');
+            element.one(POINTERUP_EVENT, function() {
+              rippleEl.css($materialEffects.ANIMATION_PLAY_STATE, 'running');
+            });
+          }
         }
-        function pauseRipple() {
-          rippleEl.css($materialEffects.ANIMATION_PLAY_STATE, 'paused');
-        }
-        function cancelRipplePause() {
-          $timeout.cancel(ripplePauseTimeout);
+        function cancelPointerCheck() {
+          $timeout.cancel(pointerCheckTimeout);
         }
       }
     }
@@ -4218,6 +4227,66 @@ function materialToolbarDirective($$rAF, $materialEffects) {
 
 angular.module('material.components.whiteframe', []);
 
+/**
+ * @ngdoc module
+ * @name material.components.divider
+ * @description Divider module!
+ */
+angular.module('material.components.divider', [
+  'material.animations',
+  'material.services.aria'
+])
+  .directive('materialDivider', MaterialDividerDirective);
+
+/**
+ * @ngdoc directive
+ * @name materialDivider
+ * @module material.components.divider
+ * @restrict E
+ *
+ * @description
+ * Dividers group and separate content within lists and page layouts using strong visual and spatial distinctions. This divider is a thin rule, lightweight enough to not distract the user from content.
+ *
+ * @param {string=} bleed Set this attribute to 'inset' to activate the inset divider style.
+ * @usage
+ * <hljs lang="html">
+ * <material-divider></material-divider>
+ *
+ * <material-divider bleed='inset'></material-divider>
+ *
+ * <material-divider>Subheader</material-divider>
+ *
+ * </hljs>
+ *
+ */
+function MaterialDividerDirective() {
+  return {
+    restrict: 'E',
+    transclude: true,
+    template: '<div class="material-label"></div>',
+    link: postLink
+  };
+
+  // **********************************************************
+  // Private Methods
+  // **********************************************************
+
+  function postLink(scope, elm, attrs, ctrl, $transclude) {
+    $transclude(function(clone){
+      if(clone.length > 0){
+        var label = elm.find('div.material-label');
+        label.append(clone);
+        elm.addClass('subheader');
+
+        attrs.$observe('bleed', function(value) {
+          if (value != 'inset') {
+            label.addClass('full');
+          }
+        });
+      }
+    });
+  }
+}
 angular.module('material.decorators', [])
 .config(['$provide', function($provide) {
   $provide.decorator('$$rAF', ['$delegate', '$rootScope', rAFDecorator]);

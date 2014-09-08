@@ -1639,7 +1639,7 @@ material-ink-bar {
 material-backdrop {
   z-index: 7;
   background-color: rgba(0, 0, 0, 0);
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
   right: 0;
@@ -1864,7 +1864,7 @@ material-button {
   -webkit-align-items: center;
   -moz-align-items: center;
   align-items: center;
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
@@ -1932,8 +1932,23 @@ material-button {
 
 material-divider {
   display: block;
-  border-bottom: 1px solid #d2d2d2;
-  margin-top: 5px; }
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  margin: 0; }
+  material-divider[bleed=inset] {
+    margin-left: 80px; }
+  material-divider.subheader {
+    margin-top: 16px; }
+  material-divider div.material-label span {
+    color: rgba(0, 0, 0, 0.26);
+    font-size: 16px;
+    margin: 16px 0;
+    display: block;
+    font-weight: bold; }
+  material-divider .material-label.full {
+    margin-left: 16px; }
+  material-divider.subheader.first {
+    margin-top: 0px;
+    border-top: none; }
 
 material-checkbox {
   display: block;
@@ -2644,7 +2659,7 @@ material-tab {
 shadow {
   box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.2); }
 
-material-item {
+material-item-content {
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -2672,7 +2687,8 @@ material-item {
  * The left tile for a list item.
  */
 .material-tile-left {
-  min-width: 56px; }
+  min-width: 56px;
+  margin-right: -16px; }
 
 /**
  * The center content tile for a list item.
@@ -2684,8 +2700,7 @@ material-item {
   -moz-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  padding: 15px 0 15px 0;
-  border-bottom: 1px solid #eee;
+  padding: 16px;
   text-overflow: ellipsis; }
   .material-tile-content h2 {
     margin: 0 0 3px 0;
@@ -2704,6 +2719,26 @@ material-item {
  */
 .material-tile-right {
   padding-right: 0px; }
+
+material-divider {
+  display: block;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  margin: 0; }
+  material-divider[bleed=inset] {
+    margin-left: 80px; }
+  material-divider.subheader {
+    margin-top: 16px; }
+  material-divider div.material-label span {
+    color: rgba(0, 0, 0, 0.26);
+    font-size: 16px;
+    margin: 16px 0;
+    display: block;
+    font-weight: bold; }
+  material-divider .material-label.full {
+    margin-left: 16px; }
+  material-divider.subheader.first {
+    margin-top: 0px;
+    border-top: none; }
 
 .material-whiteframe-z1 {
   z-index: 1;
