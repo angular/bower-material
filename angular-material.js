@@ -3,7 +3,7 @@
  * WIP Banner
  */
 (function(){
-angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.position', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.expectAria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.form","material.components.icon","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.tabs","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
+angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.position', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.form","material.components.icon","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
 angular.module('ngAnimateSequence', ['ngAnimate'])
 
   .factory('$$animateAll', function() {
@@ -429,6 +429,245 @@ angular.module('ngAnimateStylers', ['ngAnimateSequence'])
     }
   }]);
 
+/*
+ * iterator is a list facade to easily support iteration and accessors
+ *
+ * @param items Array list which this iterator will enumerate
+ * @param reloop Boolean enables iterator to consider the list as an endless reloop
+ */
+function iterator(items, reloop) {
+
+    reloop = !!reloop;
+
+    var _items = items || [ ];
+
+    // Published API
+
+    return {
+
+      items: getItems,
+      count: count,
+
+      inRange: inRange,
+      contains: contains,
+      indexOf: indexOf,
+      itemAt: itemAt,
+
+      findBy: findBy,
+
+      add: add,
+      remove: remove,
+
+      first: first,
+      last: last,
+      next: next,
+      previous: previous,
+
+      hasPrevious:hasPrevious,
+      hasNext: hasNext
+
+    };
+
+    /*
+     * Publish copy of the enumerable set
+     * @returns {Array|*}
+     */
+    function getItems() {
+      return [].concat(_items);
+    }
+
+    /*
+     * Determine length of the list
+     * @returns {Array.length|*|number}
+     */
+    function count() {
+      return _items.length;
+    }
+
+    /*
+     * Is the index specified valid
+     * @param index
+     * @returns {Array.length|*|number|boolean}
+     */
+    function inRange(index) {
+      return _items.length && ( index > -1 ) && (index < _items.length );
+    }
+
+    /*
+     * Can the iterator proceed to the next item in the list; relative to
+     * the specified item.
+     *
+     * @param tab
+     * @returns {Array.length|*|number|boolean}
+     */
+    function hasNext(tab) {
+      return tab ? inRange(indexOf(tab) + 1) : false;
+    }
+
+    /*
+     * Can the iterator proceed to the previous item in the list; relative to
+     * the specified item.
+     *
+     * @param tab
+     * @returns {Array.length|*|number|boolean}
+     */
+    function hasPrevious(tab) {
+      return tab ? inRange(indexOf(tab) - 1) : false;
+    }
+
+    /*
+     * Get item at specified index/position
+     * @param index
+     * @returns {*}
+     */
+    function itemAt(index) {
+      return inRange(index) ? _items[index] : null;
+    }
+
+    /*
+     * Find all elements matching the key/value pair
+     * otherwise return null
+     *
+     * @param val
+     * @param key
+     *
+     * @return array
+     */
+    function findBy(key, val) {
+
+      /*
+       * Implement of e6 Array::find()
+       * @param list
+       * @param callback
+       * @returns {*}
+       */
+      function find(list, callback) {
+        var results = [ ];
+
+        angular.forEach(list, function (it, index) {
+          var val = callback.apply(null, [it, index, list]);
+          if (val) {
+            results.push(val);
+          }
+        });
+
+        return results.length ? results : null;
+      }
+
+      // Use iterator callback to matches element key value
+      // NOTE: searches full prototype chain
+
+      return find(_items, function (el) {
+        return ( el[key] == val ) ? el : null;
+      });
+
+    }
+
+    /*
+     * Add item to list
+     * @param it
+     * @param index
+     * @returns {*}
+     */
+    function add(it, index) {
+      if ( !it ) return -1;
+
+      if (!angular.isDefined(index)) {
+        index = _items.length;
+      }
+
+      _items.splice(index, 0, it);
+
+      return indexOf(it);
+    }
+
+    /*
+     * Remove it from list...
+     * @param it
+     */
+    function remove(it) {
+      if ( contains(it) ){
+        _items.splice(indexOf(it), 1);
+      }
+    }
+
+    /*
+     * Get the zero-based index of the target tab
+     * @param it
+     * @returns {*}
+     */
+    function indexOf(it) {
+      return _items.indexOf(it);
+    }
+
+    /*
+     * Boolean existence check
+     * @param it
+     * @returns {boolean}
+     */
+    function contains(it) {
+      return it && (indexOf(it) > -1);
+    }
+
+    /*
+     * Find the next item
+     * @param tab
+     * @returns {*}
+     */
+    function next(it, validate) {
+
+      if (contains(it)) {
+        var index = indexOf(it) + 1,
+            found = inRange(index) ? _items[ index ] : reloop ? first() : null,
+            skip = found && validate && !validate(found);
+
+        return skip ? next(found, validate) : found;
+      }
+
+      return null;
+    }
+
+    /*
+     * Find the previous item
+     * @param tab
+     * @returns {*}
+     */
+    function previous(it, validate) {
+
+      if (contains(it)) {
+        var index = indexOf(it) - 1,
+            found = inRange(index) ? _items[ index ] : reloop ? last() : null,
+            skip = found && validate && !validate(found);
+
+        return skip ? previous(found, validate) : found;
+      }
+
+      return null;
+    }
+
+    /*
+     * Return first item in the list
+     * @returns {*}
+     */
+    function first() {
+      return _items.length ? _items[0] : null;
+    }
+
+    /*
+     * Return last item in the list...
+     * @returns {*}
+     */
+    function last() {
+      return _items.length ? _items[_items.length - 1] : null;
+    }
+
+}
+
+
+
+
+var SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
+
 var Util = {
   /**
    * Checks to see if the element or its parents are disabled.
@@ -463,7 +702,87 @@ var Util = {
   elementIsSibling: function elementIsSibling(element, otherElement) {
     return element.parent().length && 
       (element.parent()[0] === otherElement.parent()[0]);
+  },
+
+  /**
+   * Converts snake_case to camelCase.
+   * @param name Name to normalize
+   */
+  camelCase: function camelCase(name) {
+    return name.
+      replace(SPECIAL_CHARS_REGEXP, function(_, separator, letter, offset) {
+        return offset ? letter.toUpperCase() : letter;
+      });
+  },
+  /**
+   * Selects 'n' words from a string
+   * for use in an HTML attribute
+   */
+  stringFromTextBody: function stringFromTextBody(textBody, numWords) {
+    var string = textBody.trim();
+
+    if(string.split(/\s+/).length > numWords){
+      string = textBody.split(/\s+/).slice(1, (numWords + 1)).join(" ") + '...';
+    }
+    return string;
+  },
+
+  /**
+   * Spread the arguments as individual parameters to the target function.
+   * @param targetFn
+   * @param scope
+   * @returns {Function}
+   */
+  spread : function ( targetFn, scope ) {
+    return function()
+    {
+      var params = Array.prototype.slice.call(arguments, 0);
+      targetFn.apply(scope, params);
+    };
+  },
+
+  /**
+   * Publish the iterator facade to easily support iteration and accessors
+   * @see iterator.js
+   */
+  iterator : iterator,
+
+  css : {
+    /**
+     * For any positional fields, ensure that a `px` suffix
+     * is provided.
+     * @param target
+     * @returns {*}
+     */
+    appendSuffix : function (target) {
+      var styles = 'top left right bottom ' +
+        'x y width height ' +
+        'border-width border-radius borderWidth borderRadius' +
+        'margin margin-top margin-bottom margin-left margin-right ' +
+        'padding padding-left padding-right padding-top padding-bottom'.split(' ');
+
+      angular.forEach(target, function(val, key) {
+        var isPositional = styles.indexOf(key) > -1;
+        var hasPx        = String(val).indexOf('px') > -1;
+
+        if (isPositional && !hasPx) {
+          target[key] = val + 'px';
+        }
+      });
+
+      return target;
+    },
+
+    left : function( element ) {
+      return element ? element.prop('offsetLeft') : undefined;
+    },
+
+    width : function(element ) {
+      return element ? element.prop('offsetWidth') : undefined;
+    }
+
   }
+
 };
 
 
@@ -472,21 +791,31 @@ var Constant = {
     ROLE : {
       BUTTON : 'button',
       CHECKBOX : 'checkbox',
+      DIALOG : 'dialog',
+      LIST : 'list',
+      LIST_ITEM : 'listitem',
       RADIO : 'radio',
-      RADIO_GROUP : 'radiogroup'
+      RADIO_GROUP : 'radiogroup',
+      TAB_LIST : 'tablist',
+      TAB : 'tab',
+      TAB_PANEL : 'tabpanel'
     },
     PROPERTY : {
       CHECKED : 'aria-checked',
       HIDDEN : 'aria-hidden',
       EXPANDED : 'aria-expanded',
-      LABEL: 'aria-label'
+      LABEL: 'aria-label',
+      SELECTED : 'aria-selected',
+      LABEL_BY : 'aria-labelledby'
     },
     STATE: {}
   },
   KEY_CODE : {
-    SPACE: 32,
+    ESCAPE : 27,
+    SPACE : 32,
     LEFT_ARROW : 37,
-    RIGHT_ARROW : 39
+    RIGHT_ARROW : 39,
+    ENTER: 13
   }
 };
 
@@ -505,7 +834,6 @@ angular.module('material.animations', [
 ])
   .service('$materialEffects', [ 
     '$animateSequence', 
-    '$ripple', 
     '$rootElement', 
     '$position', 
     '$$rAF', 
@@ -520,53 +848,60 @@ angular.module('material.animations', [
  *
  * @description
  * The `$materialEffects` service provides a simple API for various
- * Material Design effects:
- *
- * 1) to animate ink bars and ripple effects, and
- * 2) to perform popup open/close effects on any DOM element.
+ * Material Design effects.
  *
  * @returns A `$materialEffects` object with the following properties:
- * - `{function(canvas,options)}` `inkRipple` - Renders ripple ink
- * waves on the specified canvas
  * - `{function(element,styles,duration)}` `inkBar` - starts ink bar
  * animation on specified DOM element
  * - `{function(element,parentElement,clickElement)}` `popIn` - animated show of element overlayed on parent element
  * - `{function(element,parentElement)}` `popOut` - animated close of popup overlay
  *
  */
-function MaterialEffects($animateSequence, $ripple, $rootElement, $position, $$rAF, $sniffer) {
+function MaterialEffects($animateSequence, $rootElement, $position, $$rAF, $sniffer) {
 
   var styler = angular.isDefined( $rootElement[0].animate ) ? 'webAnimations' :
                angular.isDefined( window['TweenMax'] || window['TweenLite'] ) ? 'gsap'   :
                angular.isDefined( window['jQuery'] ) ? 'jQuery' : 'default';
 
- 
-  var isWebkit = /webkit/i.test($sniffer.vendorPrefix);
-  var TRANSFORM_PROPERTY = isWebkit ? 'webkitTransform' : 'transform';
-  var TRANSITIONEND_EVENT = 'transitionend' + 
-    (isWebkit ? ' webkitTransitionEnd' : '');
+  var webkit = /webkit/i.test($sniffer.vendorPrefix);
+  function vendorProperty(name) {
+    return webkit ? 
+      ('webkit' + name.charAt(0).toUpperCase() + name.substring(1)) :
+      name;
+  }
 
+  var self;
   // Publish API for effects...
-  return {
-    inkRipple: animateInkRipple,
+  return self = {
+    makeSequence : makeSequence,
+
     popIn: popIn,
     popOut: popOut,
 
     /* Constants */
-    TRANSFORM_PROPERTY: TRANSFORM_PROPERTY,
-    TRANSITIONEND_EVENT: TRANSITIONEND_EVENT
+    TRANSITIONEND_EVENT: 'transitionend' + (webkit ? ' webkitTransitionEnd' : ''),
+    ANIMATIONEND_EVENT: 'animationend' + (webkit ? ' webkitAnimationEnd' : ''),
+
+    TRANSFORM: vendorProperty('transform'),
+    TRANSITION: vendorProperty('transition'),
+    TRANSITION_DURATION: vendorProperty('transitionDuration'),
+    ANIMATION_PLAY_STATE: vendorProperty('animationPlayState'),
+    ANIMATION_DURATION: vendorProperty('animationDuration'),
+    ANIMATION_NAME: vendorProperty('animationName'),
+    ANIMATION_TIMING: vendorProperty('animationTimingFunction'),
+    ANIMATION_DIRECTION: vendorProperty('animationDirection')
   };
 
   // **********************************************************
   // API Methods
   // **********************************************************
 
-  /**
-   * Use the canvas animator to render the ripple effect(s).
-   */
-  function animateInkRipple( canvas, options )
+  function makeSequence( from, to, duration )
   {
-    return new $ripple(canvas, options);
+    var animate = $animateSequence({ styler: styler }).animate,
+       sequence = animate( from, to , safeDuration(duration) );
+
+    return sequence;
   }
 
   /**
@@ -588,23 +923,23 @@ function MaterialEffects($animateSequence, $ripple, $rootElement, $position, $$r
     }
 
     element
-      .css(TRANSFORM_PROPERTY, startPos)
+      .css(self.TRANSFORM, startPos)
       .css('opacity', 0);
     
     $$rAF(function() {
       $$rAF(function() {
         element
           .addClass('active')
-          .css(TRANSFORM_PROPERTY, '')
+          .css(self.TRANSFORM, '')
           .css('opacity', '')
-          .on(TRANSITIONEND_EVENT, finished);
+          .on(self.TRANSITIONEND_EVENT, finished);
       });
     });
 
     function finished(ev) {
       //Make sure this transitionend didn't bubble up from a child
       if (ev.target === element[0]) {
-        element.off(TRANSITIONEND_EVENT, finished);
+        element.off(self.TRANSITIONEND_EVENT, finished);
         (done || angular.noop)();
       }
     }
@@ -621,12 +956,12 @@ function MaterialEffects($animateSequence, $ripple, $rootElement, $position, $$r
       '-webkit-transform': translateString(endPos.left, endPos.top, 0) + ' scale(0.5)',
       opacity: 0
     });
-    element.on(TRANSITIONEND_EVENT, finished);
+    element.on(self.TRANSITIONEND_EVENT, finished);
 
     function finished(ev) {
       //Make sure this transitionend didn't bubble up from a child
       if (ev.target === element[0]) {
-        element.off(TRANSITIONEND_EVENT, finished);
+        element.off(self.TRANSITIONEND_EVENT, finished);
         (done || angular.noop)();
       }
     }
@@ -664,466 +999,6 @@ function MaterialEffects($animateSequence, $ripple, $rootElement, $position, $$r
 
 }
 
-
-angular.module('material.animations')
-  .service('$ripple', [
-    '$$rAF', 
-    MaterialRippleService
-  ]);
-/**
- * Port of the Polymer Paper-Ripple code
- * This service returns a reference to the Ripple class
- *
- * @group Paper Elements
- * @element paper-ripple
- * @homepage github.io
- */
-
-function MaterialRippleService($$rAF) {
-  var now = Date.now;
-
-  if (window.performance && performance.now) {
-    now = performance.now.bind(performance);
-  }
-
-  /**
-   * Unlike angular.extend() will always overwrites destination,
-   * mixin() only overwrites the destination if it is undefined; so
-   * pre-existing destination values are **not** modified.
-   */
-  var mixin = function (dst) {
-    angular.forEach(arguments, function(obj) {
-      if (obj !== dst) {
-        angular.forEach(obj, function(value, key) {
-          // Only mixin if destination value is undefined
-          if ( angular.isUndefined(dst[key]) )
-            {
-              dst[key] = value;
-            }
-        });
-      }
-    });
-    return dst;
-  };
-
-  // **********************************************************
-  // Ripple Class
-  // **********************************************************
-
-  return (function(){
-
-    /**
-     *  Ripple creates a `paper-ripple` which is a visual effect that other quantum paper elements can
-     *  use to simulate a rippling effect emanating from the point of contact.  The
-     *  effect can be visualized as a concentric circle with motion.
-     */
-    function Ripple(canvas, options) {
-
-      this.canvas = canvas;
-      this.waves = [];
-      this.cAF = undefined;
-
-      return angular.extend(this, mixin(options || { }, {
-        onComplete: angular.noop,   // Completion hander/callback
-        initialOpacity: 0.6,        // The initial default opacity set on the wave.
-        opacityDecayVelocity: 1.7,  // How fast (opacity per second) the wave fades out.
-        backgroundFill: true,
-        pixelDensity: 1
-      }));
-    }
-
-    /**
-     *  Define class methods
-     */
-    Ripple.prototype = {
-
-      /**
-       *
-       */
-      createAt : function (startAt) {
-        var canvas = this.adjustBounds(this.canvas);
-        var width = canvas.width / this.pixelDensity;
-        var height = canvas.height / this.pixelDensity;
-        var recenter = this.canvas.classList.contains("recenteringTouch");
-
-        // Auto center ripple if startAt is not defined...
-        startAt = startAt || { x: Math.round(width / 2), y: Math.round(height / 2) };
-
-        this.waves.push( createWave(canvas, width, height, startAt, recenter ) );
-        this.cancelled = false;
-
-        this.animate();
-      },
-
-      /**
-       *
-       */
-      draw : function (done) {
-        this.onComplete = done;
-
-        for (var i = 0; i < this.waves.length; i++) {
-          // Declare the next wave that has mouse down to be mouse'ed up.
-          var wave = this.waves[i];
-          if (wave.isMouseDown) {
-            wave.isMouseDown = false
-            wave.mouseDownStart = 0;
-            wave.tUp = 0.0;
-            wave.mouseUpStart = now();
-            break;
-          }
-        }
-        this.animate();
-      },
-
-      /**
-       *
-       */
-      cancel : function () {
-        this.cancelled = true;
-        return this;
-      },
-
-      /**
-       *  Stop or start rendering waves for the next animation frame
-       */
-      animate : function (active) {
-        if (angular.isUndefined(active)) active = true;
-
-        if (active === false) {
-          if (angular.isDefined(this.cAF)) {
-            this._loop = null;
-            this.cAF();
-
-            // Notify listeners [via callback] of animation completion
-            this.onComplete();
-          }
-        } else {
-          if (!this._loop) {
-            this._loop = angular.bind(this, function () {
-              var ctx = this.canvas.getContext('2d');
-              ctx.scale(this.pixelDensity, this.pixelDensity);
-
-              this.onAnimateFrame(ctx);
-            });
-          }
-          this.cAF = $$rAF(this._loop);
-        }
-      },
-
-      /**
-       *
-       */
-      onAnimateFrame : function (ctx) {
-        // Clear the canvas
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-        var deleteTheseWaves = [];
-        // wave animation values
-        var anim = {
-          initialOpacity: this.initialOpacity,
-          opacityDecayVelocity: this.opacityDecayVelocity,
-          height: ctx.canvas.height,
-          width: ctx.canvas.width
-        };
-
-        for (var i = 0; i < this.waves.length; i++) {
-          var wave = this.waves[i];
-
-          if ( !this.cancelled ) {
-
-            if (wave.mouseDownStart > 0) {
-              wave.tDown =  now() - wave.mouseDownStart;
-            }
-            if (wave.mouseUpStart > 0) {
-              wave.tUp = now() - wave.mouseUpStart;
-            }
-
-            // Obtain the instantaneous size and alpha of the ripple.
-            // Determine whether there is any more rendering to be done.
-
-            var radius = waveRadiusFn(wave.tDown, wave.tUp, anim);
-            var maximumWave = waveAtMaximum(wave, radius, anim);
-            var waveDissipated = waveDidFinish(wave, radius, anim);
-            var shouldKeepWave = !waveDissipated || !maximumWave;
-
-            if (!shouldKeepWave) {
-
-              deleteTheseWaves.push(wave);
-
-            } else {
-
-
-              drawWave( wave, angular.extend( anim, {
-                radius : radius,
-                backgroundFill : this.backgroundFill,
-                ctx : ctx
-              }));
-
-            }
-          }
-        }
-
-        if ( this.cancelled ) {
-          // Clear all waves...
-          deleteTheseWaves = deleteTheseWaves.concat( this.waves );
-        }
-        for (var i = 0; i < deleteTheseWaves.length; ++i) {
-          removeWave( deleteTheseWaves[i], this.waves );
-        }
-
-        if (!this.waves.length) {
-          // If there is nothing to draw, clear any drawn waves now because
-          // we're not going to get another requestAnimationFrame any more.
-          ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-          // stop animations
-          this.animate(false);
-
-        } else if (!waveDissipated && !maximumWave) {
-          this.animate();
-        }
-
-        return this;
-      },
-
-      /**
-       *
-       */
-      adjustBounds : function (canvas) {
-        // Default to parent container to define bounds
-        var self = this,
-        src = canvas.parentNode.getBoundingClientRect(),  // read-only
-        bounds = { width: src.width, height: src.height };
-
-        angular.forEach("width height".split(" "), function (style) {
-          var value = (self[style] != "auto") ? self[style] : undefined;
-
-          // Allow CSS to explicitly define bounds (instead of parent container
-          if (angular.isDefined(value)) {
-            bounds[style] = sanitizePosition(value);
-            canvas.setAttribute(style, bounds[style] * self.pixelDensity + "px");
-          }
-
-        });
-
-        // NOTE: Modified from polymer implementation
-        canvas.setAttribute('width', bounds.width * this.pixelDensity + "px");
-        canvas.setAttribute('height', bounds.height * this.pixelDensity + "px");
-
-        function sanitizePosition(style) {
-          var val = style.replace('px', '');
-          return val;
-        }
-
-        return canvas;
-      }
-
-    };
-
-    // Return class reference
-
-    return Ripple;
-  })();
-
-
-
-
-  // **********************************************************
-  // Private Wave Methods
-  // **********************************************************
-
-  /**
-   *
-   */
-  function waveRadiusFn(touchDownMs, touchUpMs, anim) {
-    // Convert from ms to s.
-    var waveMaxRadius = 150;
-    var touchDown = touchDownMs / 1000;
-    var touchUp = touchUpMs / 1000;
-    var totalElapsed = touchDown + touchUp;
-    var ww = anim.width, hh = anim.height;
-    // use diagonal size of container to avoid floating point math sadness
-    var waveRadius = Math.min(Math.sqrt(ww * ww + hh * hh), waveMaxRadius) * 1.1 + 5;
-    var duration = 1.1 - .2 * (waveRadius / waveMaxRadius);
-    var tt = (totalElapsed / duration);
-
-    var size = waveRadius * (1 - Math.pow(80, -tt));
-    return Math.abs(size);
-  }
-
-  /**
-   *
-   */
-  function waveOpacityFn(td, tu, anim) {
-    // Convert from ms to s.
-    var touchDown = td / 1000;
-    var touchUp = tu / 1000;
-
-    return (tu <= 0) ? anim.initialOpacity : Math.max(0, anim.initialOpacity - touchUp * anim.opacityDecayVelocity);
-  }
-
-  /**
-   *
-   */
-  function waveOuterOpacityFn(td, tu, anim) {
-    // Convert from ms to s.
-    var touchDown = td / 1000;
-    var touchUp = tu / 1000;
-
-    // Linear increase in background opacity, capped at the opacity
-    // of the wavefront (waveOpacity).
-    var outerOpacity = touchDown * 0.3;
-    var waveOpacity = waveOpacityFn(td, tu, anim);
-    return Math.max(0, Math.min(outerOpacity, waveOpacity));
-  }
-
-
-  /**
-   * Determines whether the wave should be completely removed.
-   */
-  function waveDidFinish(wave, radius, anim) {
-    var waveMaxRadius = 150;
-    var waveOpacity = waveOpacityFn(wave.tDown, wave.tUp, anim);
-    // If the wave opacity is 0 and the radius exceeds the bounds
-    // of the element, then this is finished.
-    if (waveOpacity < 0.01 && radius >= Math.min(wave.maxRadius, waveMaxRadius)) {
-      return true;
-    }
-    return false;
-  };
-
-  /**
-   *
-   */
-  function waveAtMaximum(wave, radius, anim) {
-    var waveMaxRadius = 150;
-    var waveOpacity = waveOpacityFn(wave.tDown, wave.tUp, anim);
-    if (waveOpacity >= anim.initialOpacity && radius >= Math.min(wave.maxRadius, waveMaxRadius)) {
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   *  Wave is created on mouseDown
-   */
-  function createWave(elem, width, height, startAt, recenter ) {
-    var wave = {
-      startPosition : startAt,
-      containerSize : Math.max(width, height),
-      waveColor: window.getComputedStyle(elem).color,
-      maxRadius : distanceFromPointToFurthestCorner(startAt, {w: width, h: height}) * 0.75,
-
-      isMouseDown : true,
-      mouseDownStart : now(),
-      mouseUpStart : 0.0,
-
-      tDown : 0.0,
-      tUp : 0.0
-    };
-
-    if ( recenter ) {
-      wave.endPosition = {x: width / 2, y: height / 2};
-      wave.slideDistance = dist(wave.startPosition, wave.endPosition);
-    }
-
-    return wave;
-  }
-
-  /**
-   *
-   */
-  function removeWave(wave, buffer) {
-    if (buffer && buffer.length) {
-      var pos = buffer.indexOf(wave);
-      buffer.splice(pos, 1);
-    }
-  }
-
-  function drawWave ( wave, anim ) {
-
-    // Calculate waveColor and alphas; if we do a background
-    // fill fade too, work out the correct color.
-
-    anim.waveColor = cssColorWithAlpha(
-      wave.waveColor,
-      waveOpacityFn(wave.tDown, wave.tUp, anim)
-    );
-
-    if ( anim.backgroundFill ) {
-      anim.backgroundFill = cssColorWithAlpha(
-        wave.waveColor,
-        waveOuterOpacityFn(wave.tDown, wave.tUp, anim)
-      );
-    }
-
-    // Position of the ripple.
-    var x = wave.startPosition.x;
-    var y = wave.startPosition.y;
-
-    // Ripple gravitational pull to the center of the canvas.
-    if ( wave.endPosition ) {
-
-      // This translates from the origin to the center of the view  based on the max dimension of
-      var translateFraction = Math.min(1, anim.radius / wave.containerSize * 2 / Math.sqrt(2));
-
-      x += translateFraction * (wave.endPosition.x - wave.startPosition.x);
-      y += translateFraction * (wave.endPosition.y - wave.startPosition.y);
-    }
-
-    // Draw the ripple.
-    renderRipple(anim.ctx, x, y, anim.radius, anim.waveColor, anim.backgroundFill);
-
-    // Render the ripple on the target canvas 2-D context
-    function renderRipple(ctx, x, y, radius, innerColor, outerColor) {
-      if (outerColor) {
-        ctx.fillStyle = outerColor || 'rgba(252, 252, 158, 1.0)';
-        ctx.fillRect(0,0,ctx.canvas.width, ctx.canvas.height);
-      }
-      ctx.beginPath();
-
-      ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
-      ctx.fillStyle = innerColor || 'rgba(252, 252, 158, 1.0)';
-      ctx.fill();
-
-      ctx.closePath();
-    }
-  }
-
-
-  /**
-   *
-   */
-  function cssColorWithAlpha(cssColor, alpha) {
-    var parts = cssColor ? cssColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/) : null;
-    if (typeof alpha == 'undefined') {
-      alpha = 1;
-    }
-    if (!parts) {
-      return 'rgba(255, 255, 255, ' + alpha + ')';
-    }
-    return 'rgba(' + parts[1] + ', ' + parts[2] + ', ' + parts[3] + ', ' + alpha + ')';
-  }
-
-  /**
-   *
-   */
-  function dist(p1, p2) {
-    return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
-  }
-
-  /**
-   *
-   */
-  function distanceFromPointToFurthestCorner(point, size) {
-    var tl_d = dist(point, {x: 0, y: 0});
-    var tr_d = dist(point, {x: size.w, y: 0});
-    var bl_d = dist(point, {x: 0, y: size.h});
-    var br_d = dist(point, {x: size.w, y: size.h});
-    return Math.max(tl_d, tr_d, bl_d, br_d);
-  }
-
-}
 
 (function() {
 
@@ -1176,189 +1051,188 @@ function attrNoDirective() {
 
 })();
 
-(function() {
 
-  angular.module('material.animations')
-    .directive('materialRipple', [
-      '$materialEffects',
-      '$interpolate',
-      '$throttle',
-      MaterialRippleDirective
-    ]);
+angular.module('material.animations')
 
-  /**
-   * @ngdoc directive
-   * @name materialRipple
-   * @module material.components.animate
-   *
-   * @restrict E
-   *
-   * @description
-   * The `<material-ripple/>` directive implements the Material Design ripple ink effects within a specified
-   * parent container.
-   *
-   * @param {string=} start Indicates where the wave ripples should originate in the parent container area.
-   * 'center' will force the ripples to always originate in the horizontal and vertical.
-   * @param {number=} initial-opacity Value indicates the initial opacity of each ripple wave
-   * @param {number=} opacity-decay-velocity Value indicates the speed at which each wave will fade out
-   *
-   * @usage
-   * ```
-   * <hljs lang="html">
-   *   <material-ripple initial-opacity="0.9" opacity-decay-velocity="0.89"></material-ripple>
-   * </hljs>
-   * ```
-   */
-  function MaterialRippleDirective($materialEffects, $interpolate, $throttle) {
-    return {
-      restrict: 'E',
-      require: '^?noink',
-      compile: compileWithCanvas
-    };
+.directive('inkRipple', [
+  '$materialInkRipple',
+  InkRippleDirective
+])
 
-    /**
-     * Use Javascript and Canvas to render ripple effects
-     *
-     * Note: attribute start="" has two (2) options: `center` || `pointer`; which
-     * defines the start of the ripple center.
-     *
-     * @param element
-     * @returns {Function}
-     */
-    function compileWithCanvas( element, attrs ) {
-      var RIGHT_BUTTON = 2;
+.factory('$materialInkRipple', [
+  '$window',
+  '$$rAF',
+  '$materialEffects',
+  '$timeout',
+  InkRippleService
+]);
 
-        var options  = calculateOptions(element, attrs);
-        var tag =
-          '<canvas ' +
-            'class="material-ink-ripple {{classList}}"' +
-            'style="top:{{top}}; left:{{left}}" >' +
-          '</canvas>';
-
-        element.replaceWith(
-          angular.element( $interpolate(tag)(options) )
-        );
-
-      return function postLink( scope, element, attrs, noinkCtrl ) {
-        if ( noinkCtrl ) return;
-
-        var ripple, watchMouse,
-          parent = element.parent(),
-          makeRipple = $throttle({
-            start : function() {
-              ripple = ripple || $materialEffects.inkRipple( element[0], options );
-              watchMouse = watchMouse || buildMouseWatcher(parent, makeRipple);
-
-              // Ripples start with left mouseDowns (or taps)
-              parent.on('mousedown', makeRipple);
-            },
-            throttle : function(e, done) {
-              if ( !Util.isDisabled(element) ) {
-                switch(e.type) {
-                  case 'mousedown' :
-                    // If not right- or ctrl-click...
-                    if (!e.ctrlKey && (e.button !== RIGHT_BUTTON))
-                    {
-                      watchMouse(true);
-                      ripple.createAt( options.forceToCenter ? null : localToCanvas(e) );
-                    }
-                    break;
-
-                  default:
-                    watchMouse(false);
-
-                    // Draw of each wave/ripple in the ink only occurs
-                    // on mouseup/mouseleave
-
-                    ripple.draw( done );
-                    break;
-                }
-              } else {
-                done();
-              }
-            },
-            end : function() {
-              watchMouse(false);
-            }
-          })();
-
-
-        // **********************************************************
-        // Utility Methods
-        // **********************************************************
-
-        /**
-         * Build mouse event listeners for the specified element
-         * @param element Angular element that will listen for bubbling mouseEvents
-         * @param handlerFn Function to be invoked with the mouse event
-         * @returns {Function}
-         */
-        function buildMouseWatcher(element, handlerFn) {
-          // Return function to easily toggle on/off listeners
-          return function watchMouse(active) {
-            angular.forEach("mouseup,mouseleave".split(","), function(eventType) {
-              var fn = active ? element.on : element.off;
-              fn.apply(element, [eventType, handlerFn]);
-            });
-          };
-        }
-
-        /**
-         * Convert the mouse down coordinates from `parent` relative
-         * to `canvas` relative; needed since the event listener is on
-         * the parent [e.g. tab element]
-         */
-        function localToCanvas(e)
-        {
-          var canvas = element[0].getBoundingClientRect();
-
-          return  {
-            x : e.clientX - canvas.left,
-            y : e.clientY - canvas.top
-          };
-        }
-
-      };
-
-      function calculateOptions(element, attrs)
-      {
-        return angular.extend( getBounds(element), {
-          classList : (attrs.class || ""),
-          forceToCenter : (attrs.start == "center"),
-          initialOpacity : getFloatValue( attrs, "initialOpacity" ),
-          opacityDecayVelocity : getFloatValue( attrs, "opacityDecayVelocity" )
-        });
-
-        function getBounds(element) {
-          var node = element[0];
-          var styles  =  node.ownerDocument.defaultView.getComputedStyle( node, null ) || { };
-
-          return  {
-            left : (styles.left == "auto" || !styles.left) ? "0px" : styles.left,
-            top : (styles.top == "auto" || !styles.top) ? "0px" : styles.top,
-            width : getValue( styles, "width" ),
-            height : getValue( styles, "height" )
-          };
-        }
-
-        function getFloatValue( map, key, defaultVal )
-        {
-          return angular.isDefined( map[key] ) ? +map[key] : defaultVal;
-        }
-
-        function getValue( map, key, defaultVal )
-        {
-          var val = map[key];
-          return (angular.isDefined( val ) && (val !== ""))  ? map[key] : defaultVal;
-        }
-      }
-
+function InkRippleDirective($materialInkRipple) {
+  return function(scope, element, attr) {
+    if (attr.inkRipple == 'checkbox') {
+      $materialInkRipple.attachCheckboxBehavior(element);
+    } else {
+      $materialInkRipple.attachButtonBehavior(element);
     }
+  };
+}
 
+function InkRippleService($window, $$rAF, $materialEffects, $timeout) {
+
+  return {
+    attachButtonBehavior: attachButtonBehavior,
+    attachCheckboxBehavior: attachCheckboxBehavior,
+    attach: attach,
+  };
+
+  function attachButtonBehavior(element) {
+    return attach(element, {
+      mousedown: true,
+      center: false,
+      animationDuration: 350,
+      mousedownPauseTime: 175,
+      animationName: 'inkRippleButton',
+      animationTimingFunction: 'linear'
+    });
   }
 
+  function attachCheckboxBehavior(element) {
+    return attach(element, {
+      mousedown: true,
+      center: true,
+      animationDuration: 300,
+      mousedownPauseTime: 180,
+      animationName: 'inkRippleCheckbox',
+      animationTimingFunction: 'linear'
+    });
+  }
 
-})();
+  function attach(element, options) {
+    options = angular.extend({
+      mousedown: true,
+      hover: true,
+      focus: true,
+      center: false,
+      animationDuration: 300,
+      mousedownPauseTime: 150,
+      animationName: '',
+      animationTimingFunction: 'linear'
+    }, options || {});
+
+    var rippleContainer;
+    var node = element[0];
+
+    if (options.mousedown) {
+      enableMousedown();
+    }
+
+    function rippleIsAllowed() {
+      return !element.controller('noink') && !Util.isDisabled(element);
+    }
+
+    var hasTouch = !!('ontouchend' in document);
+    function enableMousedown() {
+      // TODO fix this. doesn't support touch AND click devices (eg chrome pixel)
+      var POINTERDOWN_EVENT = hasTouch ? 'touchstart' : 'mousedown';
+      var POINTERUP_EVENT = hasTouch ? 'touchend touchcancel' : 'mouseup mouseleave';
+
+      if (!rippleIsAllowed()) return;
+
+      element.on(POINTERDOWN_EVENT, onPointerDown);
+
+      var pointerIsDown;
+      function onPointerDown(ev) {
+        if (pointerIsDown) return;
+        pointerIsDown = true;
+
+        element.one(POINTERUP_EVENT, function() {
+          pointerIsDown = false;
+        });
+
+        var rippleEl = createRippleFromEvent(ev);
+
+        var pointerCheckTimeout = $timeout(
+          pauseRippleIfPointerDown,
+          options.mousedownPauseTime,
+          false
+        );
+
+        rippleEl.on('$destroy', cancelPointerCheck);
+
+        function pauseRippleIfPointerDown() {
+          if (pointerIsDown) {
+            rippleEl.css($materialEffects.ANIMATION_PLAY_STATE, 'paused');
+            element.one(POINTERUP_EVENT, function() {
+              rippleEl.css($materialEffects.ANIMATION_PLAY_STATE, 'running');
+            });
+          }
+        }
+        function cancelPointerCheck() {
+          $timeout.cancel(pointerCheckTimeout);
+        }
+      }
+    }
+
+    function createRippleFromEvent(ev) {
+      ev = ev.touches ? ev.touches[0] : ev;
+      return createRipple(ev.pageX, ev.pageY, true);
+    }
+    function createRipple(left, top, positionsAreAbsolute) {
+
+      var rippleEl = angular.element('<div class="material-ripple">')
+        .css(
+          $materialEffects.ANIMATION_DURATION,
+          options.animationDuration + 'ms'
+        )
+        .css(
+          $materialEffects.ANIMATION_NAME,
+          options.animationName
+        )
+        .css(
+          $materialEffects.ANIMATION_TIMING,
+          options.animationTimingFunction
+        )
+        .on($materialEffects.ANIMATIONEND_EVENT, function() {
+          rippleEl.remove();
+        });
+
+      if (!rippleContainer) {
+        rippleContainer = angular.element('<div class="material-ripple-container">');
+        element.append(rippleContainer);
+      }
+      rippleContainer.append(rippleEl);
+
+      if (options.center) {
+        left = rippleContainer.prop('offsetWidth') / 2;
+        top = rippleContainer.prop('offsetHeight') / 2;
+      } else if (positionsAreAbsolute) {
+        var elementRect = node.getBoundingClientRect();
+        left -= elementRect.left;
+        top -= elementRect.top;
+      }
+
+      var finalSize = rippleContainer.prop('offsetWidth');
+
+      // TODO don't use px, make setRippleCss fix that
+      var css = {
+        'background-color': $window.getComputedStyle(rippleEl[0]).color || 
+          $window.getComputedStyle(node).color,
+        'border-radius': (finalSize / 2) + 'px',
+
+        left: (left - finalSize / 2) + 'px',
+        width: finalSize + 'px',
+
+        top: (top - finalSize / 2) + 'px',
+        height: finalSize + 'px',
+      };
+      css[$materialEffects.ANIMATION_DURATION] = options.fadeoutDuration + 'ms';
+      rippleEl.css(css);
+
+      return rippleEl;
+    }
+  }
+
+}
 
 /**
  * @ngdoc module
@@ -1369,11 +1243,12 @@ function attrNoDirective() {
  */
 angular.module('material.components.button', [
   'material.animations',
-  'material.services.expectAria'
+  'material.services.aria'
 ])
   .directive('materialButton', [
     'ngHrefDirective',
-    '$expectAria',
+    '$materialInkRipple',
+    '$aria',
     MaterialButtonDirective
   ]);
 
@@ -1407,45 +1282,57 @@ angular.module('material.components.button', [
  *  </material-button>
  * </hljs>
  */
-function MaterialButtonDirective(ngHrefDirectives, $expectAria) {
+function MaterialButtonDirective(ngHrefDirectives, $materialInkRipple, $aria ) {
   var ngHrefDirective = ngHrefDirectives[0];
+
   return {
     restrict: 'E',
-    transclude: true,
-    template: '<material-ripple start="center" initial-opacity="0.25" opacity-decay-velocity="0.75"></material-ripple>',
     compile: function(element, attr) {
+      var innerElement;
+      var attributesToCopy;
 
       // Add an inner anchor if the element has a `href` or `ngHref` attribute,
       // so this element can be clicked like a normal `<a>`.
-      var href = attr.ngHref || attr.href;
-      var innerElement;
-      if (href) {
+      if (attr.ngHref || attr.href) {
         innerElement = angular.element('<a>');
-        innerElement.attr('ng-href',href);
-        innerElement.attr('rel', attr.rel);
-        innerElement.attr('target', attr.target);
-
+        attributesToCopy = ['ng-href', 'href', 'rel', 'target'];
       // Otherwise, just add an inner button element (for form submission etc)
       } else {
         innerElement = angular.element('<button>');
-        innerElement.attr('type', attr.type);
-        innerElement.attr('disabled', attr.ngDisabled || attr.disabled);
-        innerElement.attr('form', attr.form);
+        attributesToCopy = ['type', 'disabled', 'ng-disabled', 'form'];
       }
+
+      angular.forEach(attributesToCopy, function(name) {
+        var camelCaseName = Util.camelCase(name);
+        if (attr.hasOwnProperty(camelCaseName)) {
+          innerElement.attr(name, attr[camelCaseName]);
+        }
+      });
+
       innerElement
         .addClass('material-button-inner')
-        .append(element.contents());
-
-      element.append(innerElement);
-
-      return function postLink(scope, element, attr, ctrl, transclude) {
-        // Put the content of the <material-button> inside after the ripple
-        // and inner elements
-        transclude(scope, function(clone) {
-          element.append(clone);
+        .append(element.contents())
+        // Since we're always passing focus to the inner element,
+        // add a focus class to the outer element so we can still style
+        // it with focus.
+        .on('focus', function() {
+          element.addClass('focus');
+        })
+        .on('blur', function() {
+          element.removeClass('focus');
         });
 
-        $expectAria(element, 'aria-label', element.text());
+      element.
+        append(innerElement)
+        .attr('tabIndex', -1)
+        //Always pass focus to innerElement
+        .on('focus', function() {
+          innerElement.focus();
+        });
+
+      return function postLink(scope, element, attr) {
+        $aria.expect(element, 'aria-label', element.text());
+        $materialInkRipple.attachButtonBehavior(element);
       };
     }
   };
@@ -1488,7 +1375,7 @@ angular.module('material.components.card', [
  *  <p>
  *    The titles of Washed Out's breakthrough song and the first single from Paracosm share the * two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
  *  </p>
- * /material-card>
+ * </material-card>
  * </hljs>
  *
  */
@@ -1507,12 +1394,13 @@ function materialCardDirective() {
  */
 angular.module('material.components.checkbox', [
   'material.animations',
-  'material.services.expectAria'
+  'material.services.aria'
 ])
   .directive('materialCheckbox', [ 
     'inputDirective',
-    '$expectAria',
-    materialCheckboxDirective 
+    '$materialInkRipple',
+    '$aria',
+    MaterialCheckboxDirective
   ]);
 
 /**
@@ -1522,7 +1410,7 @@ angular.module('material.components.checkbox', [
  * @restrict E
  *
  * @description
- * The checkbox directive is used like the normal [angular checkbox](https://docs.angularjs.org/api/ng/input/input%5Bcheckbox%5D)
+ * The checkbox directive is used like the normal [angular checkbox](https://docs.angularjs.org/api/ng/input/input%5Bcheckbox%5D).
  *
  * @param {string} ngModel Assignable angular expression to data-bind to.
  * @param {string=} name Property name of the form under which the control is published.
@@ -1530,7 +1418,7 @@ angular.module('material.components.checkbox', [
  * @param {expression=} ngFalseValue The value to which the expression should be set when not selected.
  * @param {string=} ngChange Angular expression to be executed when input changes due to user interaction with the input element.
  * @param {boolean=} noink Use of attribute indicates use of ripple ink effects
- * @param {boolean=} disabled Use of attribute indicates the tab is disabled: no ink effects and not selectable
+ * @param {boolean=} disabled Use of attribute indicates the switch is disabled: no ink effects and not selectable
  * @param {string=} ariaLabel Publish the button label used by screen-readers for accessibility. Defaults to the checkbox's text.
  *
  * @usage
@@ -1550,7 +1438,7 @@ angular.module('material.components.checkbox', [
  * </hljs>
  *
  */
-function materialCheckboxDirective(inputDirectives, $expectAria) {
+function MaterialCheckboxDirective(inputDirectives, $materialInkRipple, $aria) {
   var inputDirective = inputDirectives[0];
 
   var CHECKED_CSS = 'material-checked';
@@ -1560,8 +1448,7 @@ function materialCheckboxDirective(inputDirectives, $expectAria) {
     transclude: true,
     require: '?ngModel',
     template: 
-      '<div class="material-container">' +
-        '<material-ripple start="center" class="circle" material-checked="{{ checked }}" ></material-ripple>' +
+      '<div class="material-container" ink-ripple="checkbox">' +
         '<div class="material-icon"></div>' +
       '</div>' +
       '<div ng-transclude class="material-label"></div>',
@@ -1602,7 +1489,7 @@ function materialCheckboxDirective(inputDirectives, $expectAria) {
     element.on('keypress', keypressHandler);
     ngModelCtrl.$render = render;
 
-    $expectAria(element, Constant.ARIA.PROPERTY.LABEL, element.text());
+    $aria.expect(element, Constant.ARIA.PROPERTY.LABEL, element.text());
 
     function keypressHandler(ev) {
       if(ev.which === Constant.KEY_CODE.SPACE) {
@@ -1611,7 +1498,7 @@ function materialCheckboxDirective(inputDirectives, $expectAria) {
       }
     }
     function listener(ev) {
-      if ( Util.isDisabled(element) ) return;
+      if (element[0].hasAttribute('disabled')) return;
 
       scope.$apply(function() {
         checked = !checked;
@@ -1683,7 +1570,8 @@ function materialContentDirective() {
  */
 angular.module('material.components.dialog', [
   'material.animations',
-  'material.services.compiler'
+  'material.services.compiler',
+  'material.services.aria'
 ])
   .directive('materialDialog', [
     '$$rAF',
@@ -1696,6 +1584,7 @@ angular.module('material.components.dialog', [
     '$rootScope',
     '$materialEffects',
     '$animate',
+    '$aria',
     MaterialDialogService
   ]);
 
@@ -1703,11 +1592,10 @@ function MaterialDialogDirective($$rAF) {
   return {
     restrict: 'E',
     link: function(scope, element, attr) {
-      var node = element[0];
       $$rAF(function() {
-        var content = node.querySelector('.dialog-content');
+        var content = element[0].querySelector('.dialog-content');
         if (content && content.scrollHeight > content.clientHeight) {
-          node.classList.add('dialog-content-overflow');
+          element.addClass('dialog-content-overflow');
         }
       });
     }
@@ -1723,19 +1611,25 @@ function MaterialDialogDirective($$rAF) {
  *
  * The $materialDialog service opens a dialog over top of the app. 
  *
- * See the overview page for an example.
- *
  * The `$materialDialog` service can be used as a function, which when called will open a
  * dialog. Note: the dialog is always given an isolate scope.
  *
  * It takes one argument, `options`, which is defined below.
+ *
+ * Note: the dialog's template must have an outer `<material-dialog>` element. 
+ * Inside, use an element with class `dialog-content` for the dialog's content, and use
+ * an element with class `dialog-actions` for the dialog's actions.  
+ *
+ * When opened, the `dialog-actions` area will attempt to focus the first button found with 
+ * class `dialog-close`. If no button with `dialog-close` class is found, it will focus the
+ * last button in the `dialog-actions` area.
  *
  * @usage
  * <hljs lang="html">
  * <div ng-controller="MyController">
  *   <material-button ng-click="openDialog($event)">
  *     Open a Dialog from this button!
- *   </material-dialog>
+ *   </material-button>
  * </div>
  * </hljs>
  * <hljs lang="js">
@@ -1754,9 +1648,7 @@ function MaterialDialogDirective($$rAF) {
  *
  * @paramType Options
  * @param {string=} templateUrl The url of a template that will be used as the content
- * of the dialog. Restrictions: the template must have an outer `material-dialog` element. 
- * Inside, use an element with class `dialog-content` for the dialog's content, and use
- * an element with class `dialog-actions` for the dialog's actions.
+ * of the dialog. 
  * @param {string=} template Same as templateUrl, except this is an actual template string.
  * @param {DOMClickEvent=} targetEvent A click's event object. When passed in as an option, 
  * the location of the click will be used as the starting point for the opening animation
@@ -1778,14 +1670,18 @@ function MaterialDialogDirective($$rAF) {
  * @param {element=} appendTo The element to append the dialog to. Defaults to appending
  *   to the root element of the application.
  */
-function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootScope, $materialEffects, $animate) {
+function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootScope, $materialEffects, $animate, $aria) {
   var recentDialog;
+  var dialogParent = $rootElement.find('body');
+  if ( !dialogParent.length ) {
+    dialogParent = $rootElement;
+  }
 
   return showDialog;
 
   function showDialog(options) {
     options = angular.extend({
-      appendTo: $rootElement,
+      appendTo: dialogParent,
       hasBackdrop: true, // should have an opaque backdrop
       clickOutsideToClose: true, // should have a clickable backdrop to close
       escapeToClose: true,
@@ -1813,7 +1709,10 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
       var element = compileData.link(scope); 
       var popInTarget = options.targetEvent && options.targetEvent.target && 
         angular.element(options.targetEvent.target);
+      var closeButton = findCloseButton();
       var backdrop;
+
+      configureAria(element.find('material-dialog'));
 
       if (options.hasBackdrop) {
         backdrop = angular.element('<material-backdrop class="opaque ng-enter">');
@@ -1823,14 +1722,24 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
         if (options.escapeToClose) {
           $rootElement.on('keyup', onRootElementKeyup);
         }
-
         if (options.clickOutsideToClose) {
           element.on('click', dialogClickOutside);
         }
+        closeButton.focus();
       });
 
       return destroyDialog;
 
+      function findCloseButton() {
+        //If no element with class dialog-close, try to find the last 
+        //button child in dialog-actions and assume it is a close button
+        var closeButton = element[0].querySelector('.dialog-close');
+        if (!closeButton) {
+          var actionButtons = element[0].querySelectorAll('.dialog-actions button');
+          closeButton = actionButtons[ actionButtons.length - 1 ];
+        }
+        return angular.element(closeButton);
+      }
       function destroyDialog() {
         if (destroyDialog.called) return;
         destroyDialog.called = true;
@@ -1844,15 +1753,19 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
         if (options.clickOutsideToClose) {
           element.off('click', dialogClickOutside);
         }
-        $materialEffects.popOut(element, $rootElement, function() {
+        $materialEffects.popOut(element, options.appendTo, function() {
           element.remove();
           scope.$destroy();
           scope = null;
           element = null;
+
+          if(popInTarget !== null) {
+            popInTarget.focus();
+          }
         });
       }
       function onRootElementKeyup(e) {
-        if (e.keyCode == 27) {
+        if (e.keyCode == Constant.KEY_CODE.ESCAPE) {
           $timeout(destroyDialog);
         }
       }
@@ -1863,6 +1776,24 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
         }
       }
     });
+
+    /**
+     * Inject ARIA-specific attributes appropriate for Dialogs
+     */
+    function configureAria(element) {
+      var ROLE = Constant.ARIA.ROLE;
+
+      $aria.update(element, {
+        'role': ROLE.DIALOG
+      });
+
+      var dialogContent = element.find('.dialog-content');
+      if(dialogContent.length === 0){
+        dialogContent = element;
+      }
+      var defaultText = Util.stringFromTextBody(dialogContent.text(), 3);
+      $aria.expect(element, 'aria-label', defaultText);
+    }
 
     return recentDialog;
   }
@@ -1924,8 +1855,8 @@ function materialInputGroupDirective() {
  * @usage
  * <hljs lang="html">
  * <material-input-group>
- *   <material-input type="text" ng-model="user.fullName">
- *   <material-input type="text" ng-model="user.email">
+ *   <material-input type="text" ng-model="user.fullName"></material-input>
+ *   <material-input type="text" ng-model="user.email"></material-input>
  * </material-input-group>
  * </hljs>
  */
@@ -2042,7 +1973,9 @@ angular.module('material.components.list', [])
  * <hljs lang="html">
  * <material-list>
  *  <material-item ng-repeat="item in todos">
- *
+ *    <div class="material-tile-left">
+ *      <img ng-src="{{item.face}}" class="face" alt="{{item.who}}">
+ *    </div>
  *    <div class="material-tile-content">
  *      <h2>{{item.what}}</h2>
  *      <h3>{{item.who}}</h3>
@@ -2060,6 +1993,9 @@ function materialListDirective() {
   return {
     restrict: 'E',
     link: function($scope, $element, $attr) {
+      $element.attr({
+        'role' : Constant.ARIA.ROLE.LIST
+      });
     }
   };
 }
@@ -2088,6 +2024,9 @@ function materialItemDirective() {
   return {
     restrict: 'E',
     link: function($scope, $element, $attr) {
+      $element.attr({
+        'role' : Constant.ARIA.ROLE.LIST_ITEM
+      });
     }
   };
 }
@@ -2100,13 +2039,13 @@ function materialItemDirective() {
  */
 angular.module('material.components.radioButton', [
   'material.animations',
-  'material.services.expectAria'
+  'material.services.aria'
 ])
   .directive('materialRadioGroup', [
     materialRadioGroupDirective
   ])
   .directive('materialRadioButton', [
-    '$expectAria',
+    '$aria',
     materialRadioButtonDirective
   ]);
 
@@ -2226,7 +2165,7 @@ function materialRadioGroupDirective() {
   function selectButton( direction,  parent, loop ) {
     loop = angular.isUndefined(loop) ? true : !!loop;
 
-    var buttons = iterator( findAllButtons(parent), loop );
+    var buttons = Util.iterator( findAllButtons(parent), loop );
 
     if ( buttons.count() ) {
       var selected = findSelectedButton(parent);
@@ -2296,7 +2235,7 @@ function materialRadioGroupDirective() {
  * </hljs>
  *
  */
-function materialRadioButtonDirective($expectAria) {
+function materialRadioButtonDirective($aria) {
 
   var CHECKED_CSS = 'material-checked';
 
@@ -2304,8 +2243,7 @@ function materialRadioButtonDirective($expectAria) {
     restrict: 'E',
     require: '^materialRadioGroup',
     transclude: true,
-    template: '<div class="material-container">' +
-                '<material-ripple start="center" class="circle"></material-ripple>' +
+    template: '<div class="material-container" ink-ripple="checkbox">' +
                 '<div class="material-off"></div>' +
                 '<div class="material-on"></div>' +
               '</div>' +
@@ -2326,10 +2264,10 @@ function materialRadioButtonDirective($expectAria) {
       })
       .attr('role', Constant.ARIA.ROLE.RADIO);
 
-    $expectAria(element, Constant.ARIA.PROPERTY.LABEL, element.text());
+    $aria.expect(element, Constant.ARIA.PROPERTY.LABEL, element.text());
 
     function listener(ev) {
-      if ( Util.isDisabled(element) ) return;
+      if (element[0].hasAttribute('disabled')) return;
 
       scope.$apply(function() {
         rgCtrl.setViewValue(attr.value, ev && ev.type);
@@ -2667,6 +2605,84 @@ function materialSliderDirective($window) {
 }
 
 
+/**
+ * @ngdoc module
+ * @name material.components.switch
+ */
+
+angular.module('material.components.switch', [
+  'material.components.checkbox',
+  'material.components.radioButton',
+])
+
+.directive('materialSwitch', [
+  'materialCheckboxDirective',
+  'materialRadioButtonDirective',
+  MaterialSwitch
+]);
+
+/**
+ * @ngdoc directive
+ * @module material.components.switch
+ * @name materialSwitch
+ * @restrict E
+ *
+ * The switch directive is used very much like the normal [angular checkbox](https://docs.angularjs.org/api/ng/input/input%5Bcheckbox%5D).
+ *
+ * @param {string} ngModel Assignable angular expression to data-bind to.
+ * @param {string=} name Property name of the form under which the control is published.
+ * @param {expression=} ngTrueValue The value to which the expression should be set when selected.
+ * @param {expression=} ngFalseValue The value to which the expression should be set when not selected.
+ * @param {string=} ngChange Angular expression to be executed when input changes due to user interaction with the input element.
+ * @param {boolean=} noink Use of attribute indicates use of ripple ink effects.
+ * @param {boolean=} disabled Use of attribute indicates the switch is disabled: no ink effects and not selectable
+ * @param {string=} ariaLabel Publish the button label used by screen-readers for accessibility. Defaults to the switch's text.
+ *
+ * @usage
+ * <hljs lang="html">
+ * <material-switch ng-model="isActive" aria-label="Finished?">
+ *   Finished ?
+ * </material-switch>
+ *
+ * <material-switch noink ng-model="hasInk" aria-label="No Ink Effects">
+ *   No Ink Effects
+ * </material-switch>
+ *
+ * <material-switch disabled ng-model="isDisabled" aria-label="Disabled">
+ *   Disabled
+ * </material-switch>
+ *
+ * </hljs>
+ */
+function MaterialSwitch(checkboxDirectives, radioButtonDirectives) {
+  var checkboxDirective = checkboxDirectives[0];
+  var radioButtonDirective = radioButtonDirectives[0];
+
+  return {
+    restrict: 'E',
+    transclude: true,
+    template:
+      '<div class="material-switch-bar"></div>' +
+      '<div class="material-switch-thumb">' +
+        radioButtonDirective.template +
+      '</div>',
+    require: '?ngModel', 
+    compile: compile
+  };
+
+  function compile(element, attr) {
+    
+    var thumb = angular.element(element[0].querySelector('.material-switch-thumb'));
+    //Copy down disabled attributes for checkboxDirective to use
+    thumb.attr('disabled', attr.disabled);
+    thumb.attr('ngDisabled', attr.ngDisabled);
+
+    return function postLink(scope, element, attr, ngModelCtrl) {
+      checkboxDirective.link(scope, thumb, attr, ngModelCtrl);
+    };
+  }
+}
+
 /* Disable Tab Pagination */
 /**
  * @ngdoc module
@@ -2684,8 +2700,9 @@ angular.module('material.components.tabs', [
     '$scope', 
     '$attrs', 
     '$materialComponentRegistry', 
-    '$timeout', 
-    TabsController 
+    '$timeout',
+    '$$rAF',
+    TabsController
   ])
   .directive('materialTabs', [
     '$compile', 
@@ -2693,10 +2710,12 @@ angular.module('material.components.tabs', [
     '$materialEffects', 
     '$window',
     '$$rAF',
+    '$aria',
     TabsDirective
   ])
   .directive('materialTab', [ 
-    '$attrBind', 
+    '$attrBind',
+    '$aria',
     TabDirective  
   ]);
 
@@ -2774,7 +2793,7 @@ angular.module('material.components.tabs', [
  * </hljs>
  *
  */
-function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF) {
+function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF, $aria) {
 
   return {
     restrict: 'E',
@@ -2786,7 +2805,7 @@ function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF) {
     },
 
     compile: compileTabsFn,
-    controller: [ '$scope', '$attrs', '$materialComponentRegistry', '$timeout', TabsController ],
+    controller: [ '$scope', '$attrs', '$materialComponentRegistry', '$timeout', '$$rAF', TabsController ],
 
     template:
       '<div class="tabs-header" ng-class="{\'tab-paginating\': pagination.active}">' +
@@ -2844,19 +2863,21 @@ function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF) {
             return !angular.isUndefined(cache[tab.$id]);
           }
         };
-
         var updatePagination = configurePagination() || angular.noop;
-        var updateInk = configureInk() || angular.noop;
+        var updateInk = configureInk( scope.nostretch ) || angular.noop;
         var update = $$rAF.debounce(function() {
           /* See decorators.js for raf.debounce */
           updatePagination();
           updateInk();
         });
+
         angular.element($window).on('resize', update);
         scope.$on('$materialTabsChanged', update);
 
         transcludeHeaderItems();
         transcludeContentItems();
+
+        configureAria();  // Update ARIA values for the Tab group (Tabs)
 
         alignTabButtons();
         selectDefaultTab();
@@ -2866,135 +2887,237 @@ function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF) {
         // **********************************************************
 
         /**
+         * Inject ARIA-specific attributes appropriate for Tab Groups
+         */
+        function configureAria() {
+          var ROLE = Constant.ARIA.ROLE;
+
+          $aria.update( element, {
+            'id': buildAriaID(),
+            'role': ROLE.TAB_LIST
+          });
+
+          /**
+           * Build a unique Tabs ID for WAI-ARIA; preserve the existing ID if already
+           * specified.
+           * @returns {*|string}
+           */
+          function buildAriaID() {
+            return  attrs.id || ("tabs" + "_" + scope.$id);
+          }
+        }
+
+        /**
          * Conditionally configure ink bar animations when the
          * tab selection changes. If `nobar` then do not show the
          * bar nor animate.
          */
-        function configureInk() {
+        function configureInk( nostretch ) {
           if ( scope.nobar ) return;
 
           // Single inkBar is used for all tabs
           var inkBar = findNode("material-ink-bar", element);
-          var headerContainer = findNode('.tabs-header-items-container', element);
+          var tabsHeader = findNode('.tabs-header-items-container', element); // excludes paginators
+          var lastLeft = 0;
 
           // Immediately place the ink bar
-          refreshInkBar(true);
+          updateInkBar(true);
 
-          return $$rAF.debounce(refreshInkBar);
+          // Delay inkBar updates 1-frame until pagination updates...
+          return $$rAF.debounce(updateInkBar);
 
           /**
            * Update the position and size of the ink bar based on the
-           * specified tab DOM element
+           * specified tab DOM element. If all tabs have been removed, then
+           * hide the inkBar.
+           *
            * @param tab
            * @param skipAnimation
            */
-          function refreshInkBar(skipAnimation) {
-            var tabElement = tabsController.selectedElement();
+          function updateInkBar( immediate ) {
+            var getWidth = Util.css.width, getLeft = Util.css.left;
 
-            if ( tabElement && tabElement.length && angular.isDefined(inkBar) ) {
+            var selButton = tabsController.selectedElement();
+            var showInk = selButton && selButton.length && angular.isDefined(inkBar);
+            var isHiding = selButton && selButton.hasClass('pagination-hide');
 
-              var width = tabElement.prop('offsetWidth');
-              var left = headerContainer.prop('offsetLeft') + tabElement.prop('offsetLeft') +
-                (scope.headerPos || 0);
+            var styles = { display : 'none', width : '0px' };
+            var left = 0, width = 0;
 
-              if (tabElement.hasClass('pagination-hide')) {
-                width = 0;
-              }
+            if ( !showInk || isHiding ) {
+              // no animation
 
-              var styles = {
+              inkBar.toggleClass('animate', (immediate !== true))
+                .css({
+                  display : 'none',
+                  width : '0px'
+                });
+            }
+            else {
+              // Just a linear animation...
+
+              width = getWidth(selButton);
+              left = getLeft(tabsHeader) + (scope.pagingOffset || 0) + getLeft(selButton);
+
+              styles = {
                 display : width > 0 ? 'block' : 'none',
                 width: width + 'px'
               };
-              styles[$materialEffects.TRANSFORM_PROPERTY] = 'translate3d(' + left + 'px,0,0)';
+              styles[$materialEffects.TRANSFORM] = 'translate3d(' + left + 'px,0,0)';
 
-              inkBar.toggleClass('animate', skipAnimation !== true).css(styles);
+              // Before we update the CSS to create a linear slide effect,
+              // let's add/remove `animate` class for transition & duration
+
+              inkBar.toggleClass('animate', (immediate !== true) )
+                .css(styles);
+
             }
-
           }
         }
 
+        /**
+         * Configure pagination and add listeners for tab changes
+         * and Tabs width changes...
+         *
+         * @returns {updatePagination}
+         */
         function configurePagination() {
-          // Must match tab min-width rule in _tabs.scss
-          var TAB_MIN_WIDTH = 8 * 12;
-          // Must match (2 * width of paginators) in scss
-          var PAGINATORS_WIDTH = (8 * 4) * 2;
 
+          var TAB_MIN_WIDTH = 8 * 12;           // Must match tab min-width rule in _tabs.scss
+          var PAGINATORS_WIDTH = (8 * 4) * 2;   // Must match (2 * width of paginators) in scss
+
+          var buttonBar = findNode('.tabs-header-items', element);
           var pagination = scope.pagination = {
-            next: function() { setPage(pagination.page + 1); },
-            prev: function() { setPage(pagination.page - 1); }
+            next: function() { selectPageAt(pagination.page + 1); },
+            prev: function() { selectPageAt(pagination.page - 1); }
           };
 
-          var header = findNode('.tabs-header-items', element);
-          var headerContainer = findNode('.tabs-header-items-container', element);
+          scope.$on('$materialTabsChanged', function onSelectedTabChange() {
+            if ( !pagination.active  ) return;
+            if ( scope.$selIndex < 0 ) return;
 
-          scope.$watch('$selIndex', paginationWatchSelectedTab);
+            var selectedIndex = scope.$selIndex;
 
-          return refreshPagination;
+            if ( !isTabInRange(selectedIndex) ) {
+              selectPageAt( getPageAtTabIndex( selectedIndex ) );
+            }
+          });
 
-          function setHeaderPos(x) {
-            header.css($materialEffects.TRANSFORM_PROPERTY, 'translate3d('+x+'px,0,0)');
-            scope.headerPos = x;
+          return updatePagination;
+
+
+          /**
+           * Select the specified page in the page group and
+           * also change the selected the tab if the current
+           * tab selected is **not** within the new page range.
+           *
+           * @param page
+           */
+          function selectPageAt(page) {
+            var lastPage = pagination.pagesCount - 1;
+            var lastTab = buttonBar.children().length - 1;
+
+            if ( page < 0 ) page = 0;
+            if ( page > lastPage ) page = lastPage;
+
+            pagination.startIndex = !pagination.active ? 0       : page * pagination.itemsPerPage;
+            pagination.endIndex   = !pagination.active ? lastTab : pagination.startIndex + pagination.itemsPerPage - 1;
+            pagination.hasPrev    = !pagination.active ? false   : page > 0;
+            pagination.hasNext    = !pagination.active ? false   : (page + 1) < pagination.pagesCount;
+
+            slideTabButtons( -page * pagination.itemsPerPage * pagination.tabWidth );
+
+            if ( !isTabInRange(scope.$selIndex) ) {
+                var index = (page > pagination.page) ?  pagination.startIndex : pagination.endIndex;
+
+                // Only change selected tab IF the current tab is not `in range`
+                tabsController.selectAt( index );
+            }
+
+            pagination.page = page;
+
           }
 
-          function refreshPagination() {
-            var tabsWidth = element.prop('offsetWidth') - PAGINATORS_WIDTH;
-            var tabs = header.children();
-            var shouldPaginate = (TAB_MIN_WIDTH * tabs.length) > tabsWidth;
+          /**
+           * Determine the associated page for the specified tab index
+           * @param tabIndex
+           */
+          function getPageAtTabIndex( tabIndex ) {
 
-            // Whether we're changing from active to inactive or vice-versa
-            var isNewState = shouldPaginate !== pagination.active;
-            pagination.active = shouldPaginate;
-            
-            if (shouldPaginate) {
+            var numPages = pagination.pagesCount;
+            var lastTab = (pagination.itemsPerPage * pagination.pagesCount) - 1;
+            var lastPage = pagination.pagesCount - 1;
+
+            return (numPages < 1)       ? -1       :
+                   (tabIndex < 0)       ?  0       :
+                   (tabIndex > lastTab) ? lastPage : Math.floor(tabIndex / pagination.itemsPerPage);
+          }
+
+          /**
+           * When the window resizes [`resize`] or the tabs are added/removed
+           * [$materialTabsChanged], then calculate pagination-width and
+           * update both the current page (if needed) and the tab headers width...
+           */
+          function updatePagination() {
+
+            var tabs = buttonBar.children();
+            var tabsWidth = element.prop('clientWidth') - PAGINATORS_WIDTH;
+            var needPagination = (tabsWidth > 0) && ((TAB_MIN_WIDTH * tabs.length) > tabsWidth);
+            var paginationToggled = (needPagination !== pagination.active);
+
+            pagination.active = needPagination;
+
+            if (needPagination) {
+
               pagination.pagesCount = Math.ceil((TAB_MIN_WIDTH * tabs.length) / tabsWidth);
               pagination.itemsPerPage = Math.max(1, Math.floor(tabs.length / pagination.pagesCount));
               pagination.tabWidth = tabsWidth / pagination.itemsPerPage;
-              header.css('width', pagination.tabWidth * tabs.length + 'px');
 
-              if (isNewState) {
-                // If we just activated pagination, go to page 0 and watch the 
-                // selected tab index to be sure we're on the same page
-                setPage(0);
-              } else {
-                setPage(Math.min(pagination.page, pagination.pagesCount - 1));
-              }
+              // If we just activated pagination, go to page 0 and watch the
+              // selected tab index to be sure we're on the same page
+              var pageIndex = paginationToggled ? getPageAtTabIndex(scope.$selIndex) :
+                              Math.min( Math.max(pagination.page || 0, 0), pagination.pagesCount - 1);
+
+              // Manually set width of page...
+              buttonBar.css('width', pagination.tabWidth * tabs.length + 'px');
+
+              selectPageAt( pageIndex );
+
             } else {
-              if (isNewState) { 
-                setHeaderPos(0);
-                header.css('width', '');
+
+              if (paginationToggled) {
+                // Release buttonBar to be self-adjust to size of all tab buttons
+                // Slide tab buttons to show all buttons (starting at first)
+
+                buttonBar.css('width', '');
+
+                selectPageAt( 0 );
               }
             }
           }
 
-          function setPage(page) {
-            var tabs = header.children();
+          /**
+           * Perform animated CSS translation of the tab buttons container
+           * @param xOffset
+           */
+          function slideTabButtons( xOffset ) {
+            if ( scope.pagingOffset == xOffset ) return;
+            if ( isNaN(xOffset) ) xOffset = 0;
 
-            pagination.startIndex = page * pagination.itemsPerPage;
-            pagination.endIndex = pagination.startIndex + pagination.itemsPerPage - 1;
-
-            pagination.hasPrev = page > 0;
-            pagination.hasNext = (page + 1) * pagination.itemsPerPage < tabs.length;
-
-            setHeaderPos(-page * pagination.itemsPerPage * pagination.tabWidth);
-
-            if (scope.$selIndex < pagination.startIndex ||
-                scope.$selIndex > pagination.endIndex) {
-              tabsController.selectAt(
-                page > pagination.page ?  pagination.startIndex : pagination.endIndex,
-                true
-              );
-            }
-            pagination.page = page;
-            updateInk();
+            scope.pagingOffset = xOffset;
+            buttonBar.css( $materialEffects.TRANSFORM, 'translate3d(' + xOffset + 'px,0,0)');
           }
 
-          function paginationWatchSelectedTab(selectedIndex) {
-            if (!pagination.active) return;
-
-            if (selectedIndex < pagination.startIndex ||
-                selectedIndex > pagination.endIndex) {
-              setPage(Math.floor(selectedIndex / pagination.itemsPerPage));
-            }
+          /**
+           * Is the specified tabIndex with the tab range allowed
+           * for the current page/pagination?
+           *
+           * @param tabIndex
+           * @returns {boolean}
+           */
+          function isTabInRange( tabIndex ){
+            return (tabIndex >= pagination.startIndex) &&
+                   (tabIndex <= pagination.endIndex);
           }
 
         }
@@ -3031,7 +3154,7 @@ function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF) {
          *
          */
         function transcludeHeaderItems() {
-          $transclude(function (content) {
+          $transclude( function (content) {
             var header = findNode('.tabs-header-items', element);
             var parent = angular.element(element[0]);
 
@@ -3069,8 +3192,10 @@ function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF) {
                 var tab = tabs[j++],
                   materialView = $compile(materialViewTmpl)(tab);
 
-                // Allow dynamic $digest() disconnect/reconnect of tab content's scope
+                // For ARIA, link the tab content container with the tab button...
+                configureAria( materialView, tab );
 
+                // Allow dynamic $digest() disconnect/reconnect of tab content's scope
                 enableDisconnect(tab, content.scope);
 
                 // Do we have content DOM nodes ?
@@ -3106,6 +3231,20 @@ function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF) {
              */
             function showTabContent(visible) {
               cntr.toggleClass('ng-hide', !!visible);
+            }
+
+            /**
+             * Configure ARIA attributes to link tab content back to their respective
+             * 'owning' tab buttons.
+             */
+            function configureAria( cntr, tab ) {
+
+              $aria.update( cntr, {
+                'id' : "content_" + tab.ariaId,
+                'role' : Constant.ARIA.ROLE.TAB_PANEL,
+                'aria-labelledby' : tab.ariaId
+              });
+
             }
 
           });
@@ -3271,7 +3410,7 @@ function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF) {
  * </hljs>
  *
  */
-function TabDirective( $attrBind ) {
+function TabDirective( $attrBind, $aria ) {
   var noop = angular.noop;
 
   return {
@@ -3282,11 +3421,9 @@ function TabDirective( $attrBind ) {
     scope: true,
     link: linkTab,
     template:
-      '<material-ripple initial-opacity="0.9" opacity-decay-velocity="0.89"> </material-ripple> ' +
-      '<material-tab-label ' +
+      '<material-tab-label ink-ripple ' +
         'ng-class="{ disabled : disabled, active : active }"  >' +
       '</material-tab-label>'
-
   };
 
   function linkTab(scope, element, attrs, tabsController, $transclude) {
@@ -3306,14 +3443,27 @@ function TabDirective( $attrBind ) {
     configureWatchers();
     updateTabContent(scope);
 
-    // Click support for entire <material-tab /> element
-    element.on('click', function onRequestSelect() {
-      if (!scope.disabled) {
-        scope.$apply(function () {
-          tabsController.select(scope);
-        });
-      }
-    });
+    // Update ARIA values for each tab element
+    configureAria(element, scope);
+
+    element.on('click', function onRequestSelect()
+      {
+        // Click support for entire <material-tab /> element
+        if ( !scope.disabled ) {
+          scope.$apply(function () {
+            tabsController.select(scope);
+          });
+        }
+      })
+      .on('keydown', function onRequestSelect(event)
+      {
+        if(event.which === Constant.KEY_CODE.LEFT_ARROW) {
+          tabsController.previous(scope);
+        }
+        if(event.which === Constant.KEY_CODE.RIGHT_ARROW) {
+          tabsController.next(scope);
+        }
+      });
 
     tabsController.add(scope, element);
 
@@ -3321,15 +3471,53 @@ function TabDirective( $attrBind ) {
     // Private Methods
     // **********************************************************
 
+
+    /**
+     * Inject ARIA-specific attributes appropriate for each Tab button
+     */
+    function configureAria( element, scope ){
+      var ROLE = Constant.ARIA.ROLE;
+
+      scope.ariaId = buildAriaID();
+      $aria.update( element, {
+        'id' :  scope.ariaId,
+        'role' : ROLE.TAB,
+        'aria-selected' : false,
+        'aria-controls' : "content_" + scope.ariaId
+      });
+
+      /**
+       * Build a unique ID for each Tab that will be used for WAI-ARIA.
+       * Preserve existing ID if already specified.
+       * @returns {*|string}
+       */
+      function buildAriaID() {
+        return attrs.id || ( ROLE.TAB + "_" + tabsController.$scope.$id + "_" + scope.$id );
+      }
+    }
+
     /**
      * Auto select the next tab if the current tab is active and
      * has been disabled.
+     *
+     * Set tab index for the current tab (0), with all other tabs
+     * outside of the tab order (-1)
+     *
      */
     function configureWatchers() {
       var unwatch = scope.$watch('disabled', function (isDisabled) {
         if (scope.active && isDisabled) {
           tabsController.next(scope);
         }
+      });
+
+      scope.$watch('active', function (isActive) {
+
+        $aria.update( element, {
+          'aria-selected' : isActive,
+          'tabIndex' : isActive === true ? 0 : -1
+        });
+
       });
 
       scope.$on("$destroy", function () {
@@ -3412,8 +3600,8 @@ function TabDirective( $attrBind ) {
  *
  * @private
  */
-function TabsController($scope, $attrs, $materialComponentRegistry, $timeout ) {
-  var list = iterator([], true),
+function TabsController($scope, $attrs, $materialComponentRegistry, $timeout, $$rAF ) {
+  var list = Util.iterator([], false),
     componentID = "tabs" + $scope.$id,
     elements = { },
     selected = null,
@@ -3438,6 +3626,7 @@ function TabsController($scope, $attrs, $materialComponentRegistry, $timeout ) {
   // Special internal accessor to access scopes and tab `content`
   // Used by TabsDirective::buildContentItems()
 
+  this.$scope = $scope;
   this.$$tabs = findTabs;
   this.$$hash = "";
 
@@ -3451,6 +3640,12 @@ function TabsController($scope, $attrs, $materialComponentRegistry, $timeout ) {
 
     $scope.$evalAsync(function() {
       $scope.$broadcast('$materialTabsChanged');
+
+      $$rAF( function autoFocus() {
+        var selected = self.selectedElement();
+        if ( selected ) selected[0].focus();
+      });
+
       onTabsChanged.queued = false;
     });
   }
@@ -3502,15 +3697,17 @@ function TabsController($scope, $attrs, $materialComponentRegistry, $timeout ) {
     // Turn off all tabs (if current active)
     angular.forEach(list.items(), deactivate);
 
-    // Activate the specified tab (or next available)
-    selected = activate(tab.disabled ? list.next(tab) : tab);
+    if ( tab != null ) {
+      // Activate the specified tab (or next available)
+      selected = activate(tab.disabled ? list.next(tab, isEnabled) : tab);
 
-    // update external models and trigger databinding watchers
-    $scope.$selIndex = String(selected.$index || list.indexOf(selected));
+      // update external models and trigger databinding watchers
+      $scope.$selIndex = selected ? String(selected.$index || list.indexOf(selected)) : -1;
 
-    // update the tabs ink to indicate the selected tab
-    if (!noUpdate) {
-      onTabsChanged();
+      // update the tabs ink to indicate the selected tab
+      if (!noUpdate) {
+        onTabsChanged();
+      }
     }
 
     return selected;
@@ -3521,12 +3718,19 @@ function TabsController($scope, $attrs, $materialComponentRegistry, $timeout ) {
    * @param index
    */
   function selectTabAt(index, noUpdate) {
+
     if (list.inRange(index)) {
       var matches = list.findBy("$index", index),
-        it = matches ? matches[0] : null;
+          it = matches ? matches[0] : null;
 
       if (it != selected) {
-        selectTab(it, noUpdate);
+
+        // Tab must be selectable...
+        if ( !isEnabled(it) ) {
+          it = selectNext(it);
+        }
+
+        selectTab( it || list.first(), noUpdate );
       }
     }
   }
@@ -3569,7 +3773,7 @@ function TabsController($scope, $attrs, $materialComponentRegistry, $timeout ) {
   function removeTab(tab) {
     if (list.contains(tab)) {
 
-      selectTab( list.next(tab, isEnabled) );
+      selectTab( list.next(tab, isEnabled) || list.previous(tab, isEnabled) );
       list.remove(tab);
 
       onTabsChanged();
@@ -3587,16 +3791,24 @@ function TabsController($scope, $attrs, $materialComponentRegistry, $timeout ) {
    * Select the next tab in the list
    * @returns {*} Tab
    */
-  function selectNext() {
-    return selectTab(list.next(selected, isEnabled));
+  function selectNext(target) {
+    var next = list.next( target, isEnabled );
+
+    return next ? selectTab( next ) :
+           target.disabled ? selectPrevious(target) : target;
   }
 
   /**
    * Select the previous tab
    * @returns {*} Tab
    */
-  function selectPrevious() {
-    return selectTab(list.previous(selected, isEnabled));
+  function selectPrevious(target) {
+    var previous = list.previous(target, isEnabled );
+
+    return previous ? selectTab( previous ) :
+           target.disabled ? selectNext(target) : target;
+
+
   }
 
   /**
@@ -3696,34 +3908,30 @@ var isNodeEmpty = function (node) {
  */
 function addDigestConnector (scope) {
   var disconnect = function () {
-    if (this.$root === this) {
-      return; // we can't disconnect the root node;
-    }
+
+    // we can't destroy the root scope or a scope that has been already destroyed
+    if (this.$root === this) return;
+    if (this.$$destroyed ) return;
+
     var parent = this.$parent;
     this.$$disconnected = true;
+
     // See Scope.$destroy
-    if (parent.$$childHead === this) {
-      parent.$$childHead = this.$$nextSibling;
-    }
-    if (parent.$$childTail === this) {
-      parent.$$childTail = this.$$prevSibling;
-    }
-    if (this.$$prevSibling) {
-      this.$$prevSibling.$$nextSibling = this.$$nextSibling;
-    }
-    if (this.$$nextSibling) {
-      this.$$nextSibling.$$prevSibling = this.$$prevSibling;
-    }
+    if (parent.$$childHead === this) parent.$$childHead = this.$$nextSibling;
+    if (parent.$$childTail === this) parent.$$childTail = this.$$prevSibling;
+    if (this.$$prevSibling) this.$$prevSibling.$$nextSibling = this.$$nextSibling;
+    if (this.$$nextSibling) this.$$nextSibling.$$prevSibling = this.$$prevSibling;
+
     this.$$nextSibling = this.$$prevSibling = null;
   };
   var reconnect = function () {
-    if (this.$root === this) {
-      return; // we can't disconnect the root node;
-    }
+
+    // we can't disconnect the root node or scope already disconnected
+    if (this.$root === this) return;
+    if (!this.$$disconnected) return;
+
     var child = this;
-    if (!child.$$disconnected) {
-      return;
-    }
+
     var parent = child.$parent;
     child.$$disconnected = false;
     // See Scope.$new for this logic...
@@ -3741,227 +3949,6 @@ function addDigestConnector (scope) {
 
   return scope;
 }
-
-/*
- * iterator is a list facade to easily support iteration and accessors
- *
- * @param items Array list which this iterator will enumerate
- * @param reloop Boolean enables iterator to consider the list as an endless reloop
- */
-function iterator(items, reloop) {
-
-    reloop = !!reloop;
-
-    var _items = items || [ ];
-
-    // Published API
-
-    return {
-
-      items: getItems,
-      count: count,
-
-      hasNext: hasNext,
-      inRange: inRange,
-      contains: contains,
-      indexOf: indexOf,
-      itemAt: itemAt,
-      findBy: findBy,
-
-      add: add,
-      remove: remove,
-
-      first: first,
-      last: last,
-      next: next,
-      previous: previous
-
-    };
-
-    /*
-     * Publish copy of the enumerable set
-     * @returns {Array|*}
-     */
-    function getItems() {
-      return [].concat(_items);
-    }
-
-    /*
-     * Determine length of the list
-     * @returns {Array.length|*|number}
-     */
-    function count() {
-      return _items.length;
-    }
-
-    /*
-     * Is the index specified valid
-     * @param index
-     * @returns {Array.length|*|number|boolean}
-     */
-    function inRange(index) {
-      return _items.length && ( index > -1 ) && (index < _items.length );
-    }
-
-    /*
-     * Can the iterator proceed to the next item in the list; relative to
-     * the specified item.
-     *
-     * @param tab
-     * @returns {Array.length|*|number|boolean}
-     */
-    function hasNext(tab) {
-      return tab ? inRange(indexOf(tab) + 1) : false;
-    }
-
-    /*
-     * Get item at specified index/position
-     * @param index
-     * @returns {*}
-     */
-    function itemAt(index) {
-      return inRange(index) ? _items[index] : null;
-    }
-
-    /*
-     * Find all elements matching the key/value pair
-     * otherwise return null
-     *
-     * @param val
-     * @param key
-     *
-     * @return array
-     */
-    function findBy(key, val) {
-
-      /*
-       * Implement of e6 Array::find()
-       * @param list
-       * @param callback
-       * @returns {*}
-       */
-      function find(list, callback) {
-        var results = [ ];
-
-        angular.forEach(list, function (it, index) {
-          var val = callback.apply(null, [it, index, list]);
-          if (val) {
-            results.push(val);
-          }
-        });
-
-        return results.length ? results : undefined;
-      }
-
-      // Use iterator callback to matches element key value
-      // NOTE: searches full prototype chain
-
-      return find(_items, function (el) {
-        return ( el[key] == val ) ? el : null;
-      });
-
-    }
-
-    /*
-     * Add item to list
-     * @param it
-     * @param index
-     * @returns {*}
-     */
-    function add(it, index) {
-      if (!angular.isDefined(index)) {
-        index = _items.length;
-      }
-
-      _items.splice(index, 0, it);
-
-      return indexOf(it);
-    }
-
-    /*
-     * Remove it from list...
-     * @param it
-     */
-    function remove(it) {
-      _items.splice(indexOf(it), 1);
-    }
-
-    /*
-     * Get the zero-based index of the target tab
-     * @param it
-     * @returns {*}
-     */
-    function indexOf(it) {
-      return _items.indexOf(it);
-    }
-
-    /*
-     * Boolean existence check
-     * @param it
-     * @returns {boolean}
-     */
-    function contains(it) {
-      return it && (indexOf(it) > -1);
-    }
-
-    /*
-     * Find the next item
-     * @param tab
-     * @returns {*}
-     */
-    function next(it, validate) {
-
-      if (contains(it)) {
-        var index = indexOf(it) + 1,
-          found = inRange(index) ? _items[ index ] :
-            reloop ? first() : null,
-          skip = found && validate && !validate(found);
-
-        return skip ? next(found) : found;
-      }
-
-      return null;
-    }
-
-    /*
-     * Find the previous item
-     * @param tab
-     * @returns {*}
-     */
-    function previous(it, validate) {
-
-      if (contains(it)) {
-        var index = indexOf(it) - 1,
-          found = inRange(index) ? _items[ index ] :
-            reloop ? last() : null,
-          skip = found && validate && !validate(found);
-
-        return skip ? previous(found) : found;
-      }
-
-      return null;
-    }
-
-    /*
-     * Return first item in the list
-     * @returns {*}
-     */
-    function first() {
-      return _items.length ? _items[0] : null;
-    }
-
-    /*
-     * Return last item in the list...
-     * @returns {*}
-     */
-    function last() {
-      return _items.length ? _items[_items.length - 1] : null;
-    }
-
-}
-
-
-
 
 /**
  * @ngdoc module
@@ -4118,11 +4105,12 @@ function QpToastService($timeout, $rootScope, $materialCompiler, $rootElement, $
  * @name material.components.toolbar
  */
 angular.module('material.components.toolbar', [
-  'material.components.content'
+  'material.components.content',
+  'material.animations'
 ])
   .directive('materialToolbar', [
     '$$rAF',
-    '$sniffer',
+    '$materialEffects',
     materialToolbarDirective
   ]);
 
@@ -4168,9 +4156,7 @@ angular.module('material.components.toolbar', [
  * Note: for scrollShrink to work, the toolbar must be a sibling of a 
  * `material-content` element, placed before it. See the scroll shrink demo.
  */ 
-function materialToolbarDirective($$rAF, $sniffer) {
-  var isWebkit = $sniffer.vendorPrefix.toLowerCase().indexOf('webkit') !==- 1;
-  var TRANSFORM_PROPERTY = isWebkit ? 'webkitTransform' : 'transform';
+function materialToolbarDirective($$rAF, $materialEffects) {
 
   return {
     restrict: 'E',
@@ -4184,25 +4170,27 @@ function materialToolbarDirective($$rAF, $sniffer) {
       function setupScrollShrink() {
         //makes it take X times as long for header to dissapear
         var HEIGHT_FACTOR = 2; 
-        var height = element.prop('offsetHeight') * HEIGHT_FACTOR;
+        var height = element.prop("offsetHeight") * HEIGHT_FACTOR;
         // Current "y" position of scroll
         var y = 0;
         // Store the last scroll top position
         var prevScrollTop = 0;
 
-        // Wait for $materialContentLoaded event from materialContent directive
+        // Wait for $materialContentLoaded event from materialContent directive.
         // If the materialContent element is a sibling of our toolbar, hook it up
         // to scroll events.
         scope.$on('$materialContentLoaded', onMaterialContentLoad);
 
         var contentElement;
         function onMaterialContentLoad($event, contentEl) {
+
           if (Util.elementIsSibling(element, contentEl)) {
             // unhook old content event listener if exists
             contentElement && contentElement.off('scroll', onScroll);
             contentEl.on('scroll', onContentScroll).css('position','relative');
             contentElement = contentEl;
           }
+
         }
 
         function onContentScroll(e) {
@@ -4222,9 +4210,13 @@ function materialToolbarDirective($$rAF, $sniffer) {
         }
 
         function transform() {
-          var translate = 'translate3d(0,' + (-y / HEIGHT_FACTOR) + 'px, 0)';
-          element.css(TRANSFORM_PROPERTY, translate);
-          contentElement.css('margin-top', (-y / HEIGHT_FACTOR) + 'px');
+          var translate = y ?
+            'translate3d(0,' + (-y / HEIGHT_FACTOR) + 'px, 0)' : 
+            '';
+          element.css($materialEffects.TRANSFORM, translate);
+          contentElement.css('margin-top', y ?
+                             (-y / HEIGHT_FACTOR) + 'px' :
+                            '');
         }
       }
 
@@ -4281,18 +4273,44 @@ angular.module('material.decorators', [])
   }
 }]);
 
-angular.module('material.services.expectAria', [])
+angular.module('material.services.aria', [])
 
-.service('$expectAria', [
+.service('$aria', [
   '$log',
-  ExpectAriaService
+  AriaService
 ]);
 
-function ExpectAriaService($log) {
+function AriaService($log) {
   var messageTemplate = 'ARIA: Attribute "%s", required for accessibility, is missing on "%s"!';
   var defaultValueTemplate = 'Default value was set: %s="%s".';
 
-  return function expect(element, attrName, defaultValue) {
+  return {
+
+    expect : expectAttribute,
+    update : assignAttributes
+  };
+
+  /**
+   * Assign 1..n ARIA values to the target element
+   * @param element
+   * @param options
+   */
+  function assignAttributes(element, options )
+  {
+    angular.forEach(options, Util.spread(function( attrValue, attrName ) {
+       element.attr(attrName,  attrValue);
+    }));
+
+    return element;
+  }
+
+  /**
+   * Check if expected ARIA has been specified on the target element
+   * @param element
+   * @param attrName
+   * @param defaultValue
+   */
+  function expectAttribute(element, attrName, defaultValue) {
 
     var node = element[0];
     if (!node.hasAttribute(attrName)) {
@@ -4307,7 +4325,9 @@ function ExpectAriaService($log) {
         // $log.warn(messageTemplate, attrName, getTagString(node));
       }
     }
-  };
+  }
+
+
 
   /**
    * Gets the tag definition from a node's outerHTML

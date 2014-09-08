@@ -315,8 +315,11 @@ table {
   border-radius: inherit;
   pointer-events: none; }
 
-.material-shadow-bottom-z-1, material-button.material-button-raised {
+.material-shadow-bottom-z-1, material-button.material-button-raised, material-button.material-button-fab {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
+
+.material-shadow-bottom-z-2, material-button.material-button-raised.focus, material-button.material-button-raised:hover:not([disabled]), material-button.material-button-fab.focus, material-button.material-button-fab:hover:not([disabled]) {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4); }
 
 .material-shadow-animated.material-shadow {
   transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -458,6 +461,9 @@ th {
 
 [hide] {
   display: none; }
+
+[show] {
+  display: inherit; }
 
 [flex] {
   -webkit-box-flex: 1;
@@ -1009,6 +1015,8 @@ th {
     display: block; }
   [inline-block-sm] {
     display: inline-block; }
+  [show-sm] {
+    display: inherit; }
   [hide-sm] {
     display: none; } }
 
@@ -1272,6 +1280,8 @@ th {
     display: block; }
   [inline-block-md] {
     display: inline-block; }
+  [show-md] {
+    display: inherit; }
   [hide-md] {
     display: none; } }
 
@@ -1535,6 +1545,8 @@ th {
     display: block; }
   [inline-block-lg] {
     display: inline-block; }
+  [show-lg] {
+    display: inherit; }
   [hide-lg] {
     display: none; } }
 
@@ -1544,14 +1556,85 @@ material-ink-bar {
   position: absolute;
   margin-top: -2px; }
 
-canvas.material-ink-ripple {
+@-webkit-keyframes inkRippleButton {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 0.15; }
+
+  50% {
+    -webkit-transform: scale(0.75);
+    transform: scale(0.75);
+    opacity: 0.15; }
+
+  100% {
+    -webkit-transform: scale(2);
+    transform: scale(2);
+    opacity: 0; } }
+
+@keyframes inkRippleButton {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 0.15; }
+
+  50% {
+    -webkit-transform: scale(0.75);
+    transform: scale(0.75);
+    opacity: 0.15; }
+
+  100% {
+    -webkit-transform: scale(2);
+    transform: scale(2);
+    opacity: 0; } }
+
+@-webkit-keyframes inkRippleCheckbox {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 0.4; }
+
+  50% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 0.4; }
+
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 0; } }
+
+@keyframes inkRippleCheckbox {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 0.4; }
+
+  50% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 0.4; }
+
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 0; } }
+
+/*
+ * A container inside of a rippling element (eg a button),
+ * which contains all of the individual ripples
+ */
+.material-ripple-container {
   pointer-events: none;
   position: absolute;
+  overflow: hidden;
+  left: 0;
   top: 0;
-  left: 0; }
+  width: 100%;
+  height: 100%; }
 
-material-tabs .material-ink-ripple {
-  color: #f0f495; }
+.material-ripple {
+  position: absolute; }
 
 material-backdrop {
   z-index: 7;
@@ -1574,7 +1657,6 @@ material-backdrop {
     opacity: 1; }
 
 material-content, .material-content {
-  display: block;
   overflow: auto;
   -webkit-overflow-scrolling: touch; }
   material-content[scroll-y], .material-content[scroll-y] {
@@ -1587,8 +1669,9 @@ material-content, .material-content {
     padding: 20px; }
 
 material-icon {
-  position: relative;
-  vertical-align: middle;
+  margin: auto;
+  padding: 0;
+  display: block;
   background-repeat: no-repeat no-repeat;
   pointer-events: none; }
 
@@ -1604,14 +1687,13 @@ material-button {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  display: inline-block;
   position: relative;
-  padding: 4px;
+  display: inline-block;
   outline: none;
   border: 0;
+  padding: 0;
+  margin: 0;
   border-radius: 3px;
-  background-color: transparent;
-  background-image: none;
   text-align: center;
   text-transform: uppercase;
   font-weight: inherit;
@@ -1622,23 +1704,36 @@ material-button {
   line-height: inherit;
   cursor: pointer;
   overflow: hidden; }
+  material-button .material-button-inner {
+    display: block;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: inherit;
+    outline: none;
+    text-transform: inherit;
+    font-weight: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: inherit;
+    white-space: nowrap;
+    padding: 4px; }
+  material-button[href] {
+    pointer-events: none; }
+    material-button[href] .material-button-inner {
+      pointer-events: auto; }
   material-button.material-button-colored {
     color: #4285f4;
     fill: #4285f4; }
   material-button.material-button-cornered {
     border-radius: 0; }
-  material-button:hover, material-button:focus {
+  material-button:hover:not([disabled]), material-button.focus {
     background-color: #e4e4e4; }
-  material-button .material-button-inner {
-    background: transparent;
-    border: none;
-    position: absolute;
-    left: 0;
-    top: 0;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%; }
   material-button[disabled] {
     background-color: #eaeaea !important;
     color: #a8a8a8 !important;
@@ -1647,27 +1742,33 @@ material-button {
     padding: 0;
     background: none; }
   material-button.material-button-raised {
-    background-color: #dfdfe9; }
-    material-button.material-button-raised:hover, material-button.material-button-raised:focus {
+    background-color: #dfdfe9;
+    -webkit-transition: 0.2s linear;
+    -webkit-transition-property: box-shadow, -webkit-transform, background-color;
+    transition: 0.2s linear transform;
+    transition-property: box-shadow, transform, background-color;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0); }
+    material-button.material-button-raised:hover:not([disabled]), material-button.material-button-raised.focus {
       background-color: #d6d6d6; }
     material-button.material-button-raised.material-button-colored {
       background-color: #4285f4;
       color: #fff; }
-      material-button.material-button-raised.material-button-colored:hover, material-button.material-button-raised.material-button-colored:focus {
+      material-button.material-button-raised.material-button-colored:hover:not([disabled]), material-button.material-button-raised.material-button-colored.focus {
         background-color: #3367d6; }
   material-button.material-button-fab {
     z-index: 2;
-    padding: 16px;
     width: 56px;
     height: 56px;
     border-radius: 28px;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.258824);
     border-radius: 50%;
     overflow: hidden;
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
-    -webkit-transition: -webkit-transform 0.2s linear;
-    transition: transform 0.2s linear; }
+    -webkit-transition: 0.2s linear;
+    -webkit-transition-property: -webkit-transform, box-shadow;
+    transition: transform 0.2s linear;
+    transition-property: transform, box-shadow; }
     material-button.material-button-fab.material-button-fab-bottom-right {
       top: auto;
       right: 28px;
@@ -1692,14 +1793,23 @@ material-button {
       bottom: auto;
       left: 28px;
       position: absolute; }
+  material-button.material-button-raised.focus, material-button.material-button-raised:hover:not([disabled]), material-button.material-button-fab.focus, material-button.material-button-fab:hover:not([disabled]) {
+    -webkit-transform: translate3d(0, -1px, 0);
+    transform: translate3d(0, -1px, 0); }
 
 .material-toast-open-top material-button.material-button-fab-top-left, .material-toast-open-top material-button.material-button-fab-top-right {
   -webkit-transform: translate3d(0, 32px, 0);
   transform: translate3d(0, 32px, 0); }
+  .material-toast-open-top material-button.material-button-fab-top-left.focus, .material-toast-open-top material-button.material-button-fab-top-left:hover:not([disabled]), .material-toast-open-top material-button.material-button-fab-top-right.focus, .material-toast-open-top material-button.material-button-fab-top-right:hover:not([disabled]) {
+    -webkit-transform: translate3d(0, 31px, 0);
+    transform: translate3d(0, 31px, 0); }
 
 .material-toast-open-bottom material-button.material-button-fab-bottom-left, .material-toast-open-bottom material-button.material-button-fab-bottom-right {
   -webkit-transform: translate3d(0, -32px, 0);
   transform: translate3d(0, -32px, 0); }
+  .material-toast-open-bottom material-button.material-button-fab-bottom-left.focus, .material-toast-open-bottom material-button.material-button-fab-bottom-left:hover, .material-toast-open-bottom material-button.material-button-fab-bottom-right.focus, .material-toast-open-bottom material-button.material-button-fab-bottom-right:hover {
+    -webkit-transform: translate3d(0, -33px, 0);
+    transform: translate3d(0, -33px, 0); }
 
 .material-button-group {
   display: -webkit-box;
@@ -1837,16 +1947,16 @@ material-checkbox {
     display: inline-block;
     width: 18px;
     height: 18px; }
-    material-checkbox .material-container material-ripple {
+    material-checkbox .material-container .material-ripple-container {
       position: absolute;
-      top: -20px;
-      left: -20px;
       display: block;
-      width: 56px;
-      height: 56px; }
-    material-checkbox .material-container .material-ink-ripple {
+      width: 54px;
+      height: 54px;
+      left: -18px;
+      top: -18px; }
+    material-checkbox .material-container .material-ripple {
       color: #0f9d58; }
-  material-checkbox.material-checked .material-ink-ripple {
+  material-checkbox.material-checked .material-ripple {
     color: #5a5f5a; }
   material-checkbox .circle {
     border-radius: 50%; }
@@ -1894,42 +2004,42 @@ material-checkbox {
 
 material-card {
   display: block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
-  padding: 10px;
-  margin: 10px;
+  margin: 8px;
+  padding: 8px;
   border-radius: 2px; }
   material-card .material-card-image {
-    min-width: 100%;
-    width: -webkit-calc(100% + 10px*2);
-    width: calc(100% + 10px*2);
-    margin-left: -10px;
-    margin-top: -10px;
+    display: block;
+    width: 100%;
     border-radius: 2px 2px 0 0; }
 
-material-radio-button {
+material-radio-button, .material-switch-thumb {
   display: block;
   margin: 15px;
   white-space: nowrap;
   cursor: pointer; }
-  material-radio-button input {
+  material-radio-button input, .material-switch-thumb input {
     display: none; }
-  material-radio-button .material-container {
+  material-radio-button .material-container, .material-switch-thumb .material-container {
     position: relative;
     top: 4px;
     display: inline-block;
     width: 16px;
     height: 16px;
     cursor: pointer; }
-    material-radio-button .material-container .material-ink-ripple {
-      color: #0f9d58; }
-    material-radio-button .material-container material-ripple {
-      display: block;
+    material-radio-button .material-container .material-ripple-container, .material-switch-thumb .material-container .material-ripple-container {
       position: absolute;
-      width: 56px;
-      height: 56px;
-      top: -20px;
-      left: -20px; }
-  material-radio-button .material-off {
+      display: block;
+      width: 48px;
+      height: 48px;
+      left: -16px;
+      top: -16px; }
+    material-radio-button .material-container .material-ripple, .material-switch-thumb .material-container .material-ripple {
+      color: #0f9d58; }
+  material-radio-button .material-off, .material-switch-thumb .material-off {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -1938,7 +2048,7 @@ material-radio-button {
     border: solid 2px;
     border-color: #5a5a5a;
     border-radius: 50%; }
-  material-radio-button .material-on {
+  material-radio-button .material-on, .material-switch-thumb .material-on {
     position: absolute;
     top: 0;
     left: 0;
@@ -1950,19 +2060,20 @@ material-radio-button {
     transition: transform ease 0.28s;
     -webkit-transform: scale(0);
     transform: scale(0); }
-  material-radio-button.material-checked .material-on {
+  material-radio-button.material-checked .material-on, .material-switch-thumb.material-checked .material-on {
     -webkit-transform: scale(1.1);
     transform: scale(1.1); }
-  material-radio-button.material-checked .material-ink-ripple {
+  material-radio-button.material-checked .material-ink-ripple, .material-switch-thumb.material-checked .material-ink-ripple {
     color: #119957; }
-  material-radio-button .material-label {
+  material-radio-button .material-label, .material-switch-thumb .material-label {
     position: relative;
     display: inline-block;
     margin-left: 10px;
     vertical-align: middle;
     white-space: normal;
-    pointer-events: none; }
-  material-radio-button .circle {
+    pointer-events: none;
+    width: auto; }
+  material-radio-button .circle, .material-switch-thumb .circle {
     border-radius: 50%; }
 
 material-radio-group {
@@ -2170,6 +2281,50 @@ material-slider input::-ms-thumb {
   border: 0;
   background: transparent; }
 
+material-switch {
+  display: block;
+  position: relative;
+  height: 24px;
+  margin: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  align-items: center;
+  /* used also in _radio-button.scss */ }
+  material-switch .material-switch-bar {
+    position: absolute;
+    left: 16px;
+    top: 12px;
+    width: 32px;
+    height: 1px;
+    background-color: #5a5a5a;
+    pointer-events: none; }
+  material-switch .material-switch-thumb {
+    position: absolute;
+    margin: 0;
+    left: 0;
+    top: 0;
+    outline: none; }
+    material-switch .material-switch-thumb .material-container {
+      -webkit-transition: -webkit-transform 0.2s linear;
+      transition: transform 0.2s linear;
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0); }
+    material-switch .material-switch-thumb.material-checked .material-container {
+      -webkit-transform: translate3d(48px, 0, 0);
+      transform: translate3d(48px, 0, 0); }
+    material-switch .material-switch-thumb:focus .material-label {
+      border: 1px dotted black; }
+    material-switch .material-switch-thumb .material-label {
+      margin-left: 56px; }
+
 material-toast {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2373,6 +2528,7 @@ material-tabs {
     background-repeat: no-repeat;
     background-position: center center; }
 
+/* If `center` justified, change to left-justify if paginating */
 material-tabs[center] .tabs-header:not(.tab-paginating) .tabs-header-items {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
@@ -2418,6 +2574,11 @@ material-ink-bar {
   material-ink-bar.animate {
     -webkit-transition: all 0.2s linear;
     transition: all 0.2s linear; }
+  material-ink-bar.easeInOut {
+    -webkit-transition: all 500ms cubic-bezier(0.065, 0.485, 0.625, 0.85);
+    transition: all 500ms cubic-bezier(0.065, 0.485, 0.625, 0.85);
+    -webkit-transition-timing-function: all 500ms cubic-bezier(0.065, 0.485, 0.625, 0.85);
+    transition-timing-function: all 500ms cubic-bezier(0.065, 0.485, 0.625, 0.85); }
 
 material-tab {
   -webkit-box-flex: 1;
@@ -2452,12 +2613,15 @@ material-tab {
   text-align: center;
   cursor: pointer;
   min-width: 96px;
+  border: 1px dotted transparent;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none; }
+  material-tab:focus {
+    border-color: #111111; }
   material-tab material-tab-label {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
