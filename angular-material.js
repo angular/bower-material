@@ -771,14 +771,6 @@ var Util = {
       });
 
       return target;
-    },
-
-    left : function( element ) {
-      return element ? element.prop('offsetLeft') : undefined;
-    },
-
-    width : function(element ) {
-      return element ? element.prop('offsetWidth') : undefined;
     }
 
   }
@@ -2687,6 +2679,7 @@ angular.module('material.components.tabs', [
   'material.services.registry'
 ]);
 
+
 /**
  * Conditionally configure ink bar animations when the
  * tab selection changes. If `nobar` then do not show the
@@ -2716,8 +2709,6 @@ function linkTabInk(scope, element, attrs, tabsCtrl, $materialEffects) {
    * @param skipAnimation
    */
   function updateInkBar( immediate ) {
-    var getWidth = Util.css.width, getLeft = Util.css.left;
-
     var selButton = tabsCtrl.selectedElement();
     var showInk = selButton && selButton.length && angular.isDefined(inkBar);
     var isHiding = selButton && selButton.hasClass('pagination-hide');
@@ -2736,8 +2727,8 @@ function linkTabInk(scope, element, attrs, tabsCtrl, $materialEffects) {
     } else {
       // Just a linear animation...
 
-      width = getWidth(selButton);
-      left = getLeft(tabsHeader) + (scope.pagingOffset || 0) + getLeft(selButton);
+      width = selButton.prop('offsetWidth');
+      left = tabsHeader.prop('offsetLeft') + (scope.pagingOffset || 0) + selButton.prop('offsetLeft');
 
       styles = {
         display : width > 0 ? 'block' : 'none',
