@@ -1934,18 +1934,20 @@ material-divider {
   display: block;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   margin: 0; }
-  material-divider[bleed=inset] {
-    margin-left: 80px; }
-  material-divider.subheader {
-    margin-top: 16px; }
-  material-divider div.material-label span {
+  material-divider .material-label {
+    margin-left: 16px; }
+  material-divider .material-label > span {
     color: rgba(0, 0, 0, 0.26);
     font-size: 16px;
     margin: 16px 0;
     display: block;
     font-weight: bold; }
-  material-divider .material-label.full {
-    margin-left: 16px; }
+  material-divider[bleed=inset] {
+    margin-left: 80px; }
+    material-divider[bleed=inset] .material-label {
+      margin-left: 0; }
+  material-divider.subheader {
+    margin-top: 16px; }
   material-divider.subheader.first {
     margin-top: 0px;
     border-top: none; }
@@ -2724,18 +2726,20 @@ material-divider {
   display: block;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   margin: 0; }
-  material-divider[bleed=inset] {
-    margin-left: 80px; }
-  material-divider.subheader {
-    margin-top: 16px; }
-  material-divider div.material-label span {
+  material-divider .material-label {
+    margin-left: 16px; }
+  material-divider .material-label > span {
     color: rgba(0, 0, 0, 0.26);
     font-size: 16px;
     margin: 16px 0;
     display: block;
     font-weight: bold; }
-  material-divider .material-label.full {
-    margin-left: 16px; }
+  material-divider[bleed=inset] {
+    margin-left: 80px; }
+    material-divider[bleed=inset] .material-label {
+      margin-left: 0; }
+  material-divider.subheader {
+    margin-top: 16px; }
   material-divider.subheader.first {
     margin-top: 0px;
     border-top: none; }

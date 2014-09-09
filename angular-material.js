@@ -4263,7 +4263,7 @@ function MaterialDividerDirective() {
   return {
     restrict: 'E',
     transclude: true,
-    template: '<div class="material-label"></div>',
+    template: '<div ng-transclude class="material-label"></div>',
     link: postLink
   };
 
@@ -4271,20 +4271,10 @@ function MaterialDividerDirective() {
   // Private Methods
   // **********************************************************
 
-  function postLink(scope, elm, attrs, ctrl, $transclude) {
-    $transclude(function(clone){
-      if(clone.length > 0){
-        var label = elm.find('div.material-label');
-        label.append(clone);
-        elm.addClass('subheader');
-
-        attrs.$observe('bleed', function(value) {
-          if (value != 'inset') {
-            label.addClass('full');
-          }
-        });
-      }
-    });
+  function postLink(scope, elm) {
+    if(elm[0].childNodes[0].hasChildNodes()){
+      elm.addClass('subheader');
+    }
   }
 }
 angular.module('material.decorators', [])
