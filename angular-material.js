@@ -812,7 +812,8 @@ var Constant = {
   EVENTS : {
     TABS_CHANGED : '$materialTabsChanged',
     FOCUS_CHANGED : '$materialFocusChanged',
-    WINDOW_RESIZE : 'resize'
+    WINDOW_RESIZE : 'resize',
+    SCOPE_DESTROY : '$destroy'
   }
 };
 
@@ -2466,13 +2467,10 @@ function materialSidenavDirective($timeout) {
       function openWatchAction(isOpen) {
         $element.toggleClass('open', !!isOpen);
         if (isOpen) {
-          $element.parent()
-            .on('keydown', onKeyDown)
-            .append(backdrop);
+          $element.parent().append(backdrop);
           backdrop.on('click', onBackdropClick);
         } else {
           backdrop.remove().off('click', onBackdropClick);
-          $element.parent().off('keydown', onKeyDown);
         }
       }
       function onBackdropClick() {
@@ -2480,15 +2478,7 @@ function materialSidenavDirective($timeout) {
           sidenavCtrl.close();
         });
       }
-      function onKeyDown(evt) {
-        if(evt.which === Constant.KEY_CODE.ESCAPE){
-          evt.preventDefault();
-          evt.stopPropagation();
-          $timeout(function() {
-            sidenavCtrl.close();
-          });
-        }
-      }
+
     }
   };
 }
@@ -3731,8 +3721,14 @@ function TabsDirective($q, $window, $timeout, $compile, $materialEffects, $$rAF,
               $$rAF( updateInk );
             };
 
+        var onWindowResize = $$rAF.debounce( updateAll );
+        var onWindowRelease = function() {
+              angular.element($window).off('resize', onWindowResize);
+            };
+
+        angular.element($window).on( Constant.EVENTS.WINDOW_RESIZE, onWindowResize);
         scope.$on( Constant.EVENTS.TABS_CHANGED, updateAll );
-        angular.element($window).on( Constant.EVENTS.WINDOW_RESIZE, $$rAF.debounce( updateAll ));
+        scope.$on( Constant.EVENTS.SCOPE_DESTROY,onWindowRelease );
 
         transcludeHeaderItems();
         transcludeContentItems();
