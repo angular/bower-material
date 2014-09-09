@@ -2687,6 +2687,212 @@ angular.module('material.components.tabs', [
   'material.services.registry'
 ]);
 
+/**
+ * Conditionally configure ink bar animations when the
+ * tab selection changes. If `nobar` then do not show the
+ * bar nor animate.
+ */
+function linkTabInk(scope, element, attrs, tabsCtrl, $materialEffects) {
+  // TODO scope.nostretch
+  if ( scope.nobar ) return;
+
+  // Single inkBar is used for all tabs
+  var tabsHeader = findNode('.tabs-header-items-container', element); // excludes paginators
+  var inkBar = findNode("material-ink-bar", element);
+  var lastLeft = 0;
+
+  // Immediately place the ink bar
+  updateInkBar(true);
+
+  // Delay inkBar updates 1-frame until pagination updates...
+  return updateInkBar;
+
+  /**
+   * Update the position and size of the ink bar based on the
+   * specified tab DOM element. If all tabs have been removed, then
+   * hide the inkBar.
+   *
+   * @param tab
+   * @param skipAnimation
+   */
+  function updateInkBar( immediate ) {
+    var getWidth = Util.css.width, getLeft = Util.css.left;
+
+    var selButton = tabsCtrl.selectedElement();
+    var showInk = selButton && selButton.length && angular.isDefined(inkBar);
+    var isHiding = selButton && selButton.hasClass('pagination-hide');
+
+    var styles = { display : 'none', width : '0px' };
+    var left = 0, width = 0;
+
+    if ( !showInk || isHiding ) {
+      // no animation
+      inkBar.toggleClass('animate', (immediate !== true))
+      .css({
+        display : 'none',
+        width : '0px'
+      });
+
+    } else {
+      // Just a linear animation...
+
+      width = getWidth(selButton);
+      left = getLeft(tabsHeader) + (scope.pagingOffset || 0) + getLeft(selButton);
+
+      styles = {
+        display : width > 0 ? 'block' : 'none',
+        width: width + 'px'
+      };
+      styles[$materialEffects.TRANSFORM] = 'translate3d(' + left + 'px,0,0)';
+
+      // Before we update the CSS to create a linear slide effect,
+      // let's add/remove `animate` class for transition & duration
+
+      inkBar
+        .toggleClass('animate', (immediate !== true) )
+        .css(styles);
+
+    }
+  }
+}
+
+
+/**
+ * Configure pagination and add listeners for tab changes
+ * and Tabs width changes...
+ *
+ * @returns {updatePagination}
+ */
+function linkTabPagination(scope, element, attrs, tabsCtrl, $materialEffects) {
+
+  // TODO allow configuration of TAB_MIN_WIDTH
+  var TAB_MIN_WIDTH = 8 * 12;           // Must match tab min-width rule in _tabs.scss
+  var PAGINATORS_WIDTH = (8 * 4) * 2;   // Must match (2 * width of paginators) in scss
+
+  var tabsHeader = findNode('.tabs-header-items-container', element); // excludes paginators
+  var buttonBar = findNode('.tabs-header-items', element);
+
+  var pagination = scope.pagination = {
+    next: function() { selectPageAt(pagination.page + 1); },
+    prev: function() { selectPageAt(pagination.page - 1); }
+  };
+
+  return updatePagination;
+
+  /**
+   * When the window resizes [`resize`] or the tabs are added/removed
+   * [$materialTabsChanged], then calculate pagination-width and
+   * update both the current page (if needed) and the tab headers width...
+   */
+  function updatePagination() {
+
+    var tabs = buttonBar.children();
+    var tabsWidth = element.prop('clientWidth') - PAGINATORS_WIDTH;
+    var needPagination = (tabsWidth > 0) && ((TAB_MIN_WIDTH * tabs.length) > tabsWidth);
+    var paginationToggled = (needPagination !== pagination.active);
+
+    pagination.active = needPagination;
+
+    if (needPagination) {
+
+      pagination.pagesCount = Math.ceil((TAB_MIN_WIDTH * tabs.length) / tabsWidth);
+      pagination.itemsPerPage = Math.max(1, Math.floor(tabs.length / pagination.pagesCount));
+      pagination.tabWidth = tabsWidth / pagination.itemsPerPage;
+
+      // If we just activated pagination, go to page 0 and watch the
+      // selected tab index to be sure we're on the same page
+      var pageIndex = getPageAtTabIndex(scope.$selIndex);
+
+      // Manually set width of page...
+      buttonBar.css('width', pagination.tabWidth * tabs.length + 'px');
+
+      selectPageAt( pageIndex );
+
+    } else {
+
+      if (paginationToggled) {
+        // Release buttonBar to be self-adjust to size of all tab buttons
+        // Slide tab buttons to show all buttons (starting at first)
+
+        buttonBar.css('width', '');
+
+        selectPageAt( 0 );
+      }
+    }
+  }
+
+  /**
+   * Select the specified page in the page group and
+   * also change the selected the tab if the current
+   * tab selected is **not** within the new page range.
+   *
+   * @param page
+   */
+  function selectPageAt(page) {
+    var lastPage = pagination.pagesCount - 1;
+    var lastTab = buttonBar.children().length - 1;
+
+    if ( page < 0 ) page = 0;
+    if ( page > lastPage ) page = lastPage;
+
+    pagination.startIndex = !pagination.active ? 0       : page * pagination.itemsPerPage;
+    pagination.endIndex   = !pagination.active ? lastTab : pagination.startIndex + pagination.itemsPerPage - 1;
+    pagination.hasPrev    = !pagination.active ? false   : page > 0;
+    pagination.hasNext    = !pagination.active ? false   : (page + 1) < pagination.pagesCount;
+
+    slideTabButtons( -page * pagination.itemsPerPage * pagination.tabWidth );
+
+    if ( !isTabInRange(scope.$selIndex) ) {
+      var index = (page > pagination.page) ?  pagination.startIndex : pagination.endIndex;
+
+      // Only change selected tab IF the current tab is not `in range`
+      tabsCtrl.selectAt( index );
+    }
+
+    pagination.page = page;
+
+  }
+
+  /**
+   * Determine the associated page for the specified tab index
+   * @param tabIndex
+   */
+  function getPageAtTabIndex( tabIndex ) {
+
+    var numPages = pagination.pagesCount;
+    var lastTab = (pagination.itemsPerPage * pagination.pagesCount) - 1;
+    var lastPage = pagination.pagesCount - 1;
+
+    return (numPages < 1)       ? -1       :
+      (tabIndex < 0)       ?  0       :
+      (tabIndex > lastTab) ? lastPage : Math.floor(tabIndex / pagination.itemsPerPage);
+  }
+
+  /**
+   * Perform animated CSS translation of the tab buttons container
+   * @param xOffset
+   */
+  function slideTabButtons( xOffset ) {
+    if ( scope.pagingOffset == xOffset ) return;
+    if ( isNaN(xOffset) ) xOffset = 0;
+
+    scope.pagingOffset = xOffset;
+    buttonBar.css( $materialEffects.TRANSFORM, 'translate3d(' + xOffset + 'px,0,0)');
+  }
+
+  /**
+   * Is the specified tabIndex with the tab range allowed
+   * for the current page/pagination?
+   *
+   * @param tabIndex
+   * @returns {boolean}
+   */
+  function isTabInRange( tabIndex ){
+    return (tabIndex >= pagination.startIndex) &&
+      (tabIndex <= pagination.endIndex);
+  }
+
+}
 
 angular.module('material.components.tabs')
   .directive('materialTab', [ 
@@ -2761,7 +2967,7 @@ function TabDirective( $attrBind, $aria ) {
       '</material-tab-label>'
   };
 
-  function linkTab(scope, element, attrs, tabsController, $transclude) {
+  function linkTab(scope, element, attrs, tabsCtrl, $transclude) {
     var defaults = { active: false, disabled: false, deselected: noop, selected: noop };
 
     // Since using scope=true for inherited new scope,
@@ -2786,21 +2992,21 @@ function TabDirective( $attrBind, $aria ) {
         // Click support for entire <material-tab /> element
         if ( !scope.disabled ) {
           scope.$apply(function () {
-            tabsController.select(scope);
+            tabsCtrl.select(scope);
           });
         }
       })
       .on('keydown', function onRequestSelect(event)
       {
         if(event.which === Constant.KEY_CODE.LEFT_ARROW) {
-          tabsController.previous(scope);
+          tabsCtrl.previous(scope);
         }
         if(event.which === Constant.KEY_CODE.RIGHT_ARROW) {
-          tabsController.next(scope);
+          tabsCtrl.next(scope);
         }
       });
 
-    tabsController.add(scope, element);
+    tabsCtrl.add(scope, element);
 
     // **********************************************************
     // Private Methods
@@ -2827,7 +3033,7 @@ function TabDirective( $attrBind, $aria ) {
        * @returns {*|string}
        */
       function buildAriaID() {
-        return attrs.id || ( ROLE.TAB + "_" + tabsController.$scope.$id + "_" + scope.$id );
+        return attrs.id || ( ROLE.TAB + "_" + tabsCtrl.$scope.$id + "_" + scope.$id );
       }
     }
 
@@ -2842,7 +3048,7 @@ function TabDirective( $attrBind, $aria ) {
     function configureWatchers() {
       var unwatch = scope.$watch('disabled', function (isDisabled) {
         if (scope.active && isDisabled) {
-          tabsController.next(scope);
+          tabsCtrl.next(scope);
         }
       });
 
@@ -2857,7 +3063,7 @@ function TabDirective( $attrBind, $aria ) {
 
       scope.$on("$destroy", function () {
         unwatch();
-        tabsController.remove(scope);
+        tabsCtrl.remove(scope);
       });
     }
 
@@ -3330,18 +3536,17 @@ function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF, $ar
   function compileTabsFn() {
 
     return {
-      pre: function tabsPreLink(scope, element, attrs, tabsController) {
-
+      pre: function tabsPreLink(scope, element, attrs, tabsCtrl) {
         // These attributes do not have values; but their presence defaults to value == true.
         scope.noink = angular.isDefined(attrs.noink);
         scope.nobar = angular.isDefined(attrs.nobar);
         scope.nostretch = angular.isDefined(attrs.nostretch);
 
         // Publish for access by nested `<material-tab>` elements
-        tabsController.noink = scope.noink;
+        tabsCtrl.noink = scope.noink;
 
         scope.$watch('$selIndex', function (index) {
-          tabsController.selectAt(index);
+          tabsCtrl.selectAt(index);
         });
 
         // Remove the `inkBar` element if `nobar` is defined
@@ -3351,8 +3556,8 @@ function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF, $ar
         }
 
       },
-      post: function tabsPostLink(scope, element, attrs, tabsController, $transclude) {
-        var  cache = {
+      post: function tabsPostLink(scope, element, attrs, tabsCtrl, $transclude) {
+        var cache = {
           length: 0,
           contains: function (tab) {
             return !angular.isUndefined(cache[tab.$id]);
@@ -3360,8 +3565,12 @@ function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF, $ar
         };
         var tabsHeader = findNode('.tabs-header-items-container', element); // excludes paginators
 
-        var updatePagination = configurePagination() || angular.noop;
-        var updateInk = configureInk( scope.nostretch ) || angular.noop;
+        var updatePagination = linkTabPagination(
+          scope, element, attrs, tabsCtrl, $materialEffects
+        );
+        var updateInk = $$rAF.debounce(
+          linkTabInk(scope, element, attrs, tabsCtrl, $materialEffects)
+        );
 
         var previousUpdatePage;
         /* See decorators.js for raf.debounce */
@@ -3394,7 +3603,7 @@ function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF, $ar
         // **********************************************************
         
         function focusSelectedElement() {
-          var selected = tabsController.selectedElement();
+          var selected = tabsCtrl.selectedElement();
           if (selected) selected.focus();
         }
 
@@ -3419,207 +3628,6 @@ function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF, $ar
           }
         }
 
-        /**
-         * Conditionally configure ink bar animations when the
-         * tab selection changes. If `nobar` then do not show the
-         * bar nor animate.
-         */
-        function configureInk( nostretch ) {
-          if ( scope.nobar ) return;
-
-          // Single inkBar is used for all tabs
-          var inkBar = findNode("material-ink-bar", element);
-          var lastLeft = 0;
-
-          // Immediately place the ink bar
-          updateInkBar(true);
-
-          // Delay inkBar updates 1-frame until pagination updates...
-          return $$rAF.debounce(updateInkBar);
-
-          /**
-           * Update the position and size of the ink bar based on the
-           * specified tab DOM element. If all tabs have been removed, then
-           * hide the inkBar.
-           *
-           * @param tab
-           * @param skipAnimation
-           */
-          function updateInkBar( immediate ) {
-            var getWidth = Util.css.width, getLeft = Util.css.left;
-
-            var selButton = tabsController.selectedElement();
-            var showInk = selButton && selButton.length && angular.isDefined(inkBar);
-            var isHiding = selButton && selButton.hasClass('pagination-hide');
-
-            var styles = { display : 'none', width : '0px' };
-            var left = 0, width = 0;
-
-            if ( !showInk || isHiding ) {
-              // no animation
-
-              inkBar.toggleClass('animate', (immediate !== true))
-                .css({
-                  display : 'none',
-                  width : '0px'
-                });
-            }
-            else {
-              // Just a linear animation...
-
-              width = getWidth(selButton);
-              left = getLeft(tabsHeader) + (scope.pagingOffset || 0) + getLeft(selButton);
-
-              styles = {
-                display : width > 0 ? 'block' : 'none',
-                width: width + 'px'
-              };
-              styles[$materialEffects.TRANSFORM] = 'translate3d(' + left + 'px,0,0)';
-
-              // Before we update the CSS to create a linear slide effect,
-              // let's add/remove `animate` class for transition & duration
-
-              inkBar.toggleClass('animate', (immediate !== true) )
-                .css(styles);
-
-            }
-          }
-        }
-
-        /**
-         * Configure pagination and add listeners for tab changes
-         * and Tabs width changes...
-         *
-         * @returns {updatePagination}
-         */
-        function configurePagination() {
-
-          var TAB_MIN_WIDTH = 8 * 12;           // Must match tab min-width rule in _tabs.scss
-          var PAGINATORS_WIDTH = (8 * 4) * 2;   // Must match (2 * width of paginators) in scss
-
-          var buttonBar = findNode('.tabs-header-items', element);
-          var pagination = scope.pagination = {
-            next: function() { selectPageAt(pagination.page + 1); },
-            prev: function() { selectPageAt(pagination.page - 1); }
-          };
-
-          return updatePagination;
-
-
-          /**
-           * Select the specified page in the page group and
-           * also change the selected the tab if the current
-           * tab selected is **not** within the new page range.
-           *
-           * @param page
-           */
-          function selectPageAt(page) {
-            var lastPage = pagination.pagesCount - 1;
-            var lastTab = buttonBar.children().length - 1;
-
-            if ( page < 0 ) page = 0;
-            if ( page > lastPage ) page = lastPage;
-
-            pagination.startIndex = !pagination.active ? 0       : page * pagination.itemsPerPage;
-            pagination.endIndex   = !pagination.active ? lastTab : pagination.startIndex + pagination.itemsPerPage - 1;
-            pagination.hasPrev    = !pagination.active ? false   : page > 0;
-            pagination.hasNext    = !pagination.active ? false   : (page + 1) < pagination.pagesCount;
-
-            slideTabButtons( -page * pagination.itemsPerPage * pagination.tabWidth );
-
-            if ( !isTabInRange(scope.$selIndex) ) {
-                var index = (page > pagination.page) ?  pagination.startIndex : pagination.endIndex;
-
-                // Only change selected tab IF the current tab is not `in range`
-                tabsController.selectAt( index );
-            }
-
-            pagination.page = page;
-
-          }
-
-          /**
-           * Determine the associated page for the specified tab index
-           * @param tabIndex
-           */
-          function getPageAtTabIndex( tabIndex ) {
-
-            var numPages = pagination.pagesCount;
-            var lastTab = (pagination.itemsPerPage * pagination.pagesCount) - 1;
-            var lastPage = pagination.pagesCount - 1;
-
-            return (numPages < 1)       ? -1       :
-                   (tabIndex < 0)       ?  0       :
-                   (tabIndex > lastTab) ? lastPage : Math.floor(tabIndex / pagination.itemsPerPage);
-          }
-
-          /**
-           * When the window resizes [`resize`] or the tabs are added/removed
-           * [$materialTabsChanged], then calculate pagination-width and
-           * update both the current page (if needed) and the tab headers width...
-           */
-          function updatePagination() {
-
-            var tabs = buttonBar.children();
-            var tabsWidth = element.prop('clientWidth') - PAGINATORS_WIDTH;
-            var needPagination = (tabsWidth > 0) && ((TAB_MIN_WIDTH * tabs.length) > tabsWidth);
-            var paginationToggled = (needPagination !== pagination.active);
-
-            pagination.active = needPagination;
-
-            if (needPagination) {
-
-              pagination.pagesCount = Math.ceil((TAB_MIN_WIDTH * tabs.length) / tabsWidth);
-              pagination.itemsPerPage = Math.max(1, Math.floor(tabs.length / pagination.pagesCount));
-              pagination.tabWidth = tabsWidth / pagination.itemsPerPage;
-
-              // If we just activated pagination, go to page 0 and watch the
-              // selected tab index to be sure we're on the same page
-              var pageIndex = getPageAtTabIndex(scope.$selIndex);
-
-              // Manually set width of page...
-              buttonBar.css('width', pagination.tabWidth * tabs.length + 'px');
-
-              selectPageAt( pageIndex );
-
-            } else {
-
-              if (paginationToggled) {
-                // Release buttonBar to be self-adjust to size of all tab buttons
-                // Slide tab buttons to show all buttons (starting at first)
-
-                buttonBar.css('width', '');
-
-                selectPageAt( 0 );
-              }
-            }
-          }
-
-          /**
-           * Perform animated CSS translation of the tab buttons container
-           * @param xOffset
-           */
-          function slideTabButtons( xOffset ) {
-            if ( scope.pagingOffset == xOffset ) return;
-            if ( isNaN(xOffset) ) xOffset = 0;
-
-            scope.pagingOffset = xOffset;
-            buttonBar.css( $materialEffects.TRANSFORM, 'translate3d(' + xOffset + 'px,0,0)');
-          }
-
-          /**
-           * Is the specified tabIndex with the tab range allowed
-           * for the current page/pagination?
-           *
-           * @param tabIndex
-           * @returns {boolean}
-           */
-          function isTabInRange( tabIndex ){
-            return (tabIndex >= pagination.startIndex) &&
-                   (tabIndex <= pagination.endIndex);
-          }
-
-        }
 
         /**
          * Change the positioning of the tab header and buttons.
@@ -3640,10 +3648,10 @@ function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF, $ar
          * select the first tab by default
          */
         function selectDefaultTab() {
-          var tabs = tabsController.$$tabs();
+          var tabs = tabsCtrl.$$tabs();
 
           if ( tabs.length && angular.isUndefined(scope.$selIndex)) {
-            tabsController.select(tabs[0]);
+            tabsCtrl.select(tabs[0]);
           }
         }
 
@@ -3679,7 +3687,7 @@ function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF, $ar
               materialViewTmpl = '<div class="material-view" ng-show="active"></div>';
 
           scope.$watch(getTabsHash, function buildContentItems() {
-            var tabs = tabsController.$$tabs(notInCache),
+            var tabs = tabsCtrl.$$tabs(notInCache),
               views = tabs.map(extractContent);
 
             // At least 1 tab must have valid content to build; otherwise
@@ -3806,7 +3814,7 @@ function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF, $ar
           }
 
           function getTabsHash() {
-            return tabsController.$$hash;
+            return tabsCtrl.$$hash;
           }
 
           /**
@@ -3849,11 +3857,6 @@ function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF, $ar
 
       }
     };
-
-    function findNode(selector, element) {
-      var container = element[0];
-      return angular.element(container.querySelector(selector));
-    }
 
   }
 
@@ -3925,7 +3928,7 @@ function TabDirective( $attrBind, $aria ) {
       '</material-tab-label>'
   };
 
-  function linkTab(scope, element, attrs, tabsController, $transclude) {
+  function linkTab(scope, element, attrs, tabsCtrl, $transclude) {
     var defaults = { active: false, disabled: false, deselected: noop, selected: noop };
 
     // Since using scope=true for inherited new scope,
@@ -3950,21 +3953,21 @@ function TabDirective( $attrBind, $aria ) {
         // Click support for entire <material-tab /> element
         if ( !scope.disabled ) {
           scope.$apply(function () {
-            tabsController.select(scope);
+            tabsCtrl.select(scope);
           });
         }
       })
       .on('keydown', function onRequestSelect(event)
       {
         if(event.which === Constant.KEY_CODE.LEFT_ARROW) {
-          tabsController.previous(scope);
+          tabsCtrl.previous(scope);
         }
         if(event.which === Constant.KEY_CODE.RIGHT_ARROW) {
-          tabsController.next(scope);
+          tabsCtrl.next(scope);
         }
       });
 
-    tabsController.add(scope, element);
+    tabsCtrl.add(scope, element);
 
     // **********************************************************
     // Private Methods
@@ -3991,7 +3994,7 @@ function TabDirective( $attrBind, $aria ) {
        * @returns {*|string}
        */
       function buildAriaID() {
-        return attrs.id || ( ROLE.TAB + "_" + tabsController.$scope.$id + "_" + scope.$id );
+        return attrs.id || ( ROLE.TAB + "_" + tabsCtrl.$scope.$id + "_" + scope.$id );
       }
     }
 
@@ -4006,7 +4009,7 @@ function TabDirective( $attrBind, $aria ) {
     function configureWatchers() {
       var unwatch = scope.$watch('disabled', function (isDisabled) {
         if (scope.active && isDisabled) {
-          tabsController.next(scope);
+          tabsCtrl.next(scope);
         }
       });
 
@@ -4021,7 +4024,7 @@ function TabDirective( $attrBind, $aria ) {
 
       scope.$on("$destroy", function () {
         unwatch();
-        tabsController.remove(scope);
+        tabsCtrl.remove(scope);
       });
     }
 
@@ -4125,6 +4128,11 @@ var isNodeEmpty = function (node) {
   return (node.nodeType == COMMENT_NODE) ||
     (node.nodeType == TEXT_NODE && !(node.nodeValue || '').trim());
 };
+
+function findNode(selector, element) {
+  var parentNode = element[0];
+  return angular.element(parentNode.querySelector(selector));
+}
 
 /*
  *  This function() provides scope-relative features to disconnect and reconnect to the $digest() processes
