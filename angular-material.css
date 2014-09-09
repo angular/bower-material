@@ -2499,7 +2499,6 @@ material-tabs {
 
 .tab-paginator {
   z-index: 1;
-  margin-right: -2px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
