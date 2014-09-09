@@ -4252,10 +4252,11 @@ angular.module('material.components.divider', [
  * <hljs lang="html">
  * <material-divider></material-divider>
  *
- * <material-divider bleed='inset'></material-divider>
+ * <material-divider inset></material-divider>
  *
  * <material-divider>Subheader</material-divider>
  *
+ * <material-divider inset>Subheader</material-divider>
  * </hljs>
  *
  */

@@ -1942,9 +1942,9 @@ material-divider {
     margin: 16px 0;
     display: block;
     font-weight: bold; }
-  material-divider[bleed=inset] {
+  material-divider[inset] {
     margin-left: 80px; }
-    material-divider[bleed=inset] .material-label {
+    material-divider[inset] .material-label {
       margin-left: 0; }
   material-divider.subheader {
     margin-top: 16px; }
@@ -2734,9 +2734,9 @@ material-divider {
     margin: 16px 0;
     display: block;
     font-weight: bold; }
-  material-divider[bleed=inset] {
+  material-divider[inset] {
     margin-left: 80px; }
-    material-divider[bleed=inset] .material-label {
+    material-divider[inset] .material-label {
       margin-left: 0; }
   material-divider.subheader {
     margin-top: 16px; }
