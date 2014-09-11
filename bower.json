@@ -1,6 +1,6 @@
 {
   "name": "angular-material",
-  "version": "0.0.2-master-9d1be02",
+  "version": "0.0.2-master-b1fc40c",
   "dependencies": {
     "angular": "^1.3.0-rc.0",
     "angular-animate": "^1.3.0-rc.0"
