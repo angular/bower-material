@@ -3,7 +3,7 @@
  * WIP Banner
  */
 (function(){
-angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.position', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.form","material.components.icon","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
+angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.position', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.form","material.components.icon","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
 angular.module('ngAnimateSequence', ['ngAnimate'])
 
   .factory('$$animateAll', function() {
@@ -771,6 +771,14 @@ var Util = {
       });
 
       return target;
+    },
+
+    left : function( element ) {
+      return element ? element.prop('offsetLeft') : undefined;
+    },
+
+    width : function(element ) {
+      return element ? element.prop('offsetWidth') : undefined;
     }
 
   }
@@ -808,22 +816,8 @@ var Constant = {
     LEFT_ARROW : 37,
     RIGHT_ARROW : 39,
     ENTER: 13
-  },
-  EVENTS : {
-    SCOPE_DESTROY : '$destroy',
-    TABS_CHANGED : '$materialTabsChanged',
-    FOCUS_CHANGED : '$materialFocusChanged',
-    WINDOW_RESIZE : 'resize',
-    KEY_DOWN     : 'keydown',
-    CLICK        : 'click'
   }
 };
-
-/**
- * Alias shortcuts...
- */
-var EVENT = Constant.EVENTS;
-var KEY  = Constant.KEY_CODE;
 
 /**
  * @ngdoc module
@@ -1085,11 +1079,6 @@ function InkRippleDirective($materialInkRipple) {
 
 function InkRippleService($window, $$rAF, $materialEffects, $timeout) {
 
-  // TODO fix this. doesn't support touch AND click devices (eg chrome pixel)
-  var hasTouch = !!('ontouchend' in document);
-  var POINTERDOWN_EVENT = hasTouch ? 'touchstart' : 'mousedown';
-  var POINTERUP_EVENT = hasTouch ? 'touchend touchcancel' : 'mouseup mouseleave';
-
   return {
     attachButtonBehavior: attachButtonBehavior,
     attachCheckboxBehavior: attachCheckboxBehavior,
@@ -1141,31 +1130,45 @@ function InkRippleService($window, $$rAF, $materialEffects, $timeout) {
       return !element.controller('noink') && !Util.isDisabled(element);
     }
 
+    var hasTouch = !!('ontouchend' in document);
     function enableMousedown() {
+      // TODO fix this. doesn't support touch AND click devices (eg chrome pixel)
+      var POINTERDOWN_EVENT = hasTouch ? 'touchstart' : 'mousedown';
+      var POINTERUP_EVENT = hasTouch ? 'touchend touchcancel' : 'mouseup mouseleave';
+
+      if (!rippleIsAllowed()) return;
+
       element.on(POINTERDOWN_EVENT, onPointerDown);
 
+      var pointerIsDown;
       function onPointerDown(ev) {
-        if (!rippleIsAllowed()) return;
+        if (pointerIsDown) return;
+        pointerIsDown = true;
 
-        // Stop listening to pointer down for now, until the user lifts his finger/mouse
-        element.off(POINTERDOWN_EVENT, onPointerDown);
+        element.one(POINTERUP_EVENT, function() {
+          pointerIsDown = false;
+        });
 
         var rippleEl = createRippleFromEvent(ev);
-        var ripplePauseTimeout = $timeout(pauseRipple, options.mousedownPauseTime, false);
 
-        rippleEl.on('$destroy', cancelRipplePause);
-        element.one(POINTERUP_EVENT, onPointerUp);
+        var pointerCheckTimeout = $timeout(
+          pauseRippleIfPointerDown,
+          options.mousedownPauseTime,
+          false
+        );
 
-        function onPointerUp() {
-          cancelRipplePause();
-          rippleEl.css($materialEffects.ANIMATION_PLAY_STATE, 'running');
-          element.on(POINTERDOWN_EVENT, onPointerDown);
+        rippleEl.on('$destroy', cancelPointerCheck);
+
+        function pauseRippleIfPointerDown() {
+          if (pointerIsDown) {
+            rippleEl.css($materialEffects.ANIMATION_PLAY_STATE, 'paused');
+            element.one(POINTERUP_EVENT, function() {
+              rippleEl.css($materialEffects.ANIMATION_PLAY_STATE, 'running');
+            });
+          }
         }
-        function pauseRipple() {
-          rippleEl.css($materialEffects.ANIMATION_PLAY_STATE, 'paused');
-        }
-        function cancelRipplePause() {
-          $timeout.cancel(ripplePauseTimeout);
+        function cancelPointerCheck() {
+          $timeout.cancel(pointerCheckTimeout);
         }
       }
     }
@@ -2372,13 +2375,11 @@ function materialSidenavController($scope, $element, $attrs, $timeout, $material
  *
  * ```javascript
  * // Toggle the given sidenav
- * $materialSidenav(componentId).toggle();
- *
+ * $materialSidenav.toggle(componentId);
  * // Open the given sidenav
- * $materialSidenav(componentId).open();
- *
+ * $materialSidenav.open(componentId);
  * // Close the given sidenav
- * $materialSidenav(componentId).close();
+ * $materialSidenav.close(componentId);
  * ```
  */
 function materialSidenavService($materialComponentRegistry) {
@@ -2470,59 +2471,19 @@ function materialSidenavDirective($timeout) {
     controller: '$materialSidenavController',
     link: function($scope, $element, $attr, sidenavCtrl) {
       var backdrop = angular.element('<material-backdrop class="material-sidenav-backdrop">');
+      $scope.$watch('isOpen', openWatchAction);
 
-      $scope.$watch('isOpen', onShowHideSide);
-
-      /**
-       * Toggle the SideNav view and attach/detach listeners
-       * @param isOpen
-       */
-      function onShowHideSide(isOpen) {
-        var parent = $element.parent();
-
+      function openWatchAction(isOpen) {
         $element.toggleClass('open', !!isOpen);
-
         if (isOpen) {
-          parent.append(backdrop);
-          backdrop.on( EVENT.CLICK, onBackdropClick );
-          parent.on( EVENT.KEY_DOWN, onKeyDown );
+          $element.parent().append(backdrop);
+          backdrop.on('click', onBackdropClick);
         } else {
-          backdrop.remove();
-          backdrop.off( EVENT.CLICK, onBackdropClick);
-          parent.off( EVENT.KEY_DOWN, onKeyDown );
+          backdrop.remove().off('click', onBackdropClick);
         }
       }
-
-      /**
-       *  Auto-close the sideNav when the backdrop mask is clicked
-       */
       function onBackdropClick() {
-        close();
-      }
-
-      /**
-       * Auto-close sideNav when the `escape` key is pressed.
-       * @param evt
-       */
-      function onKeyDown(evt) {
-        if(evt.which === Constant.KEY_CODE.ESCAPE){
-          close();
-
-          evt.preventDefault();
-          evt.stopPropagation();
-        }
-      }
-
-      /**
-        * With backdrop `clicks` or `escape` key-press, immediately
-       * apply the CSS close transition... Then notify the controller
-       * to close() and perform its own actions.
-       */
-      function close() {
-
-        onShowHideSide( false );
-
-        $timeout(function(){
+        $timeout(function() {
           sidenavCtrl.close();
         });
       }
@@ -2722,6 +2683,7 @@ function MaterialSwitch(checkboxDirectives, radioButtonDirectives) {
   }
 }
 
+/* Disable Tab Pagination */
 /**
  * @ngdoc module
  * @name material.components.tabs
@@ -2733,873 +2695,28 @@ angular.module('material.components.tabs', [
   'material.animations',
   'material.services.attrBind',
   'material.services.registry'
-]);
-
-
-/**
- * Conditionally configure ink bar animations when the
- * tab selection changes. If `nobar` then do not show the
- * bar nor animate.
- */
-function linkTabInk(scope, element, tabsCtrl, $q, $materialEffects) {
-  // TODO scope.nostretch
-  if ( scope.nobar ) return;
-
-  // Single inkBar is used for all tabs
-  var tabsHeader = findNode('.tabs-header-items-container', element); // excludes paginators
-  var inkBar = findNode("material-ink-bar", element);
-  var lastLeft = 0;
-
-  // Immediately place the ink bar
-  updateInkBar(true);
-
-  // Delay inkBar updates 1-frame until pagination updates...
-  return updateInkBar;
-
-  /**
-   * Update the position and size of the ink bar based on the
-   * specified tab DOM element. If all tabs have been removed, then
-   * hide the inkBar.
-   *
-   * @param tab
-   * @param skipAnimation
-   */
-  function updateInkBar( immediate ) {
-    var selButton = tabsCtrl.selectedElement();
-    var showInk = selButton && selButton.length && angular.isDefined(inkBar);
-    var isHiding = selButton && selButton.hasClass('pagination-hide');
-
-    var styles = { display : 'none', width : '0px' };
-    var left = 0, width = 0;
-
-    if ( !showInk || isHiding ) {
-      // no animation
-      inkBar.toggleClass('animate', (immediate !== true))
-      .css({
-        display : 'none',
-        width : '0px'
-      });
-
-    } else {
-      // Just a linear animation...
-
-      width = selButton.prop('offsetWidth');
-      left = tabsHeader.prop('offsetLeft') + (scope.pagingOffset || 0) + selButton.prop('offsetLeft');
-
-      styles = {
-        display : width > 0 ? 'block' : 'none',
-        width: width + 'px'
-      };
-      styles[$materialEffects.TRANSFORM] = 'translate3d(' + left + 'px,0,0)';
-
-      // Before we update the CSS to create a linear slide effect,
-      // let's add/remove `animate` class for transition & duration
-
-      inkBar
-        .toggleClass('animate', (immediate !== true) )
-        .css(styles)
-    }
-
-    // Listen for CSS transition completion and announce
-    var dfd = $q.defer();
-    inkBar.one( $materialEffects.TRANSITIONEND_EVENT, function() {
-      dfd.resolve({ width: width, left:left });
-    });
-
-    return dfd.promise;
-
-  }
-}
-
-
-/**
- * Configure pagination and add listeners for tab changes
- * and Tabs width changes...
- *
- * @returns {updatePagination}
- */
-function linkTabPagination(scope, element, tabsCtrl, $q, $materialEffects ) {
-
-  // TODO allow configuration of TAB_MIN_WIDTH
-  var TAB_MIN_WIDTH = 8 * 12;           // Must match tab min-width rule in _tabs.scss
-  var PAGINATORS_WIDTH = (8 * 4) * 2;   // Must match (2 * width of paginators) in scss
-
-  var tabsHeader = findNode('.tabs-header-items-container', element); // excludes paginators
-  var buttonBar = findNode('.tabs-header-items', element);
-  var pagination = scope.pagination = {
-    page : 0,
-    next: function() {
-      // selectPageAt(pagination.page + 1);
-      tabsCtrl.selectAt( pagination.endIndex + 1  );
-    },
-    prev: function() {
-      // selectPageAt(pagination.page - 1);
-      tabsCtrl.selectAt( pagination.startIndex - 1  );
-    }
-  };
-
-  scope.$on(Constant.EVENTS.FOCUS_CHANGED, function() {
-
-  });
-
-  return updatePagination;
-
-  /**
-   * When the window resizes [`resize`] or the tabs are added/removed
-   * [$materialTabsChanged], then calculate pagination-width and
-   * update both the current page (if needed) and the tab headers width...
-   */
-  function updatePagination() {
-    var dfd = $q.defer();
-
-    var tabs = buttonBar.children();
-    var tabsWidth = element.prop('clientWidth') - PAGINATORS_WIDTH;
-    var needPagination = (tabsWidth > 0) && ((TAB_MIN_WIDTH * tabs.length) > tabsWidth);
-    var paginationToggled = (needPagination !== pagination.active);
-
-    pagination.active = needPagination;
-
-    if (needPagination) {
-
-      pagination.pagesCount = Math.ceil((TAB_MIN_WIDTH * tabs.length) / tabsWidth);
-      pagination.itemsPerPage = Math.max(1, Math.floor(tabs.length / pagination.pagesCount));
-      pagination.tabWidth = tabsWidth / pagination.itemsPerPage;
-
-      // If we just activated pagination, go to page 0 and watch the
-      // selected tab index to be sure we're on the same page
-      var pageIndex = getPageAtTabIndex(scope.$selIndex);
-      var pageChange = (pagination.page != pageIndex);
-
-      // Manually set width of page...
-      buttonBar.css('width', pagination.tabWidth * tabs.length + 'px');
-
-      selectPageAt( pageIndex );
-
-      // If pagination.page changed, we need to wait for the transition to complete
-      // before we announce status [and potentially update focus]
-
-      if ( pageChange ) {
-
-        tabsHeader.one($materialEffects.TRANSITIONEND_EVENT, function() {
-            dfd.resolve(pageIndex);
-        });
-
-      } else {
-
-        dfd.resolve(pageIndex);
-      }
-
-    } else {
-
-      if (paginationToggled) {
-
-        // Release buttonBar to be self-adjust to size of all tab buttons
-        // Slide tab buttons to show all buttons (starting at first)
-
-        buttonBar.css('width', '');
-
-        selectPageAt( 0 );
-      }
-
-      dfd.resolve(0);
-    }
-
-    return dfd.promise;
-  }
-
-  /**
-   * Select the specified page in the page group and
-   * also change the selected the tab if the current
-   * tab selected is **not** within the new page range.
-   *
-   * @param page
-   */
-  function selectPageAt(page, updateTabSelection) {
-    var lastPage = pagination.pagesCount - 1;
-    var lastTab = buttonBar.children().length - 1;
-
-    if ( page < 0 ) page = 0;
-    if ( page > lastPage ) page = lastPage;
-
-    pagination.page = page;
-
-    pagination.startIndex = !pagination.active ? 0       : page * pagination.itemsPerPage;
-    pagination.endIndex   = !pagination.active ? lastTab : pagination.startIndex + pagination.itemsPerPage - 1;
-    pagination.hasPrev    = !pagination.active ? false   : page > 0;
-    pagination.hasNext    = !pagination.active ? false   : (page + 1) < pagination.pagesCount;
-
-    slideTabButtons( -page * pagination.itemsPerPage * pagination.tabWidth );
-  }
-
-  /**
-   * Determine the associated page for the specified tab index
-   * @param tabIndex
-   */
-  function getPageAtTabIndex( tabIndex ) {
-
-    var numPages = pagination.pagesCount;
-    var lastTab = (pagination.itemsPerPage * pagination.pagesCount) - 1;
-    var lastPage = pagination.pagesCount - 1;
-
-    return (numPages < 1)       ? -1       :
-      (tabIndex < 0)       ?  0       :
-      (tabIndex > lastTab) ? lastPage : Math.floor(tabIndex / pagination.itemsPerPage);
-  }
-
-  /**
-   * Perform animated CSS translation of the tab buttons container
-   * @param xOffset
-   */
-  function slideTabButtons( xOffset ) {
-    if ( scope.pagingOffset == xOffset ) return;
-    if ( isNaN(xOffset) ) xOffset = 0;
-
-    scope.pagingOffset = xOffset;
-    buttonBar.css( $materialEffects.TRANSFORM, 'translate3d(' + xOffset + 'px,0,0)');
-  }
-
-  /**
-   * Is the specified tabIndex with the tab range allowed
-   * for the current page/pagination?
-   *
-   * @param tabIndex
-   * @returns {boolean}
-   */
-  function isTabInRange( tabIndex ){
-    return (tabIndex >= pagination.startIndex) &&
-      (tabIndex <= pagination.endIndex);
-  }
-
-}
-
-angular.module('material.components.tabs')
-  .directive('materialTab', [ 
-    '$attrBind',
-    '$aria',
-    TabDirective  
-  ]);
-
-/**
- * @ngdoc directive
- * @name materialTab
- * @module material.components.tabs
- * @order 1
- *
- * @restrict E
- *
- * @description
- * `<material-tab>` is the nested directive used [within `<material-tabs>`] to specify each tab with a **label** and optional *view content*
- *
- * If the `label` attribute is not specified, then an optional `<material-tab-label>` tag can be used to specified more
- * complex tab header markup. If neither the **label** nor the **material-tab-label** are specified, then the nested
- * markup of the `<material-tab>` is used as the tab header markup.
- *
- * If a tab **label** has been identified, then any **non-**`<material-tab-label>` markup
- * will be considered tab content and will be transcluded to the internal `<div class="tabs-content">` container.
- *
- * This container is used by the TabsController to show/hide the active tab's content view. This synchronization is
- * automatically managed by the internal TabsController whenever the tab selection changes. Selection changes can
- * be initiated via data binding changes, programmatic invocation, or user gestures.
- *
- * @param {string=} label Optional attribute to specify a simple string as the tab label
- * @param {boolean=} active Flag indicates if the tab is currently selected; normally the `<material-tabs selected="">`; attribute is used instead.
- * @param {boolean=} ngDisabled Flag indicates if the tab is disabled: not selectable with no ink effects
- * @param {expression=} deselected Expression to be evaluated after the tab has been de-selected.
- * @param {expression=} selected Expression to be evaluated after the tab has been selected.
- *
- *
- * @usage
- *
- * <hljs lang="html">
- * <material-tab label="" disabled="" selected="" deselected="" >
- *   <h3>My Tab content</h3>
- * </material-tab>
- *
- * <material-tab >
- *   <material-tab-label>
- *     <h3>My Tab content</h3>
- *   </material-tab-label>
- *   <p>
- *     Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
- *     totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
- *     dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
- *     sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
- *   </p>
- * </material-tab>
- * </hljs>
- *
- */
-function TabDirective( $attrBind, $aria ) {
-  var noop = angular.noop;
-
-  return {
-    restrict: 'E',
-    replace: false,
-    require: "^materialTabs",
-    transclude: 'true',
-    scope: true,
-    link: linkTab,
-    template:
-      '<material-tab-label ink-ripple ' +
-        'ng-class="{ disabled : disabled, active : active }"  >' +
-      '</material-tab-label>'
-  };
-
-  function linkTab(scope, element, attrs, tabsCtrl, $transclude) {
-    var defaults = { active: false, disabled: false, deselected: noop, selected: noop };
-
-    // Since using scope=true for inherited new scope,
-    // then manually scan element attributes for forced local mappings...
-
-    $attrBind(scope, attrs, {
-      label: '@?',
-      active: '=?',
-      disabled: '=?ngDisabled',
-      deselected: '&onDeselect',
-      selected: '&onSelect'
-    }, defaults);
-
-    configureWatchers();
-    updateTabContent(scope);
-
-    // Update ARIA values for each tab element
-    configureAria(element, scope);
-
-    element.on('click', function onRequestSelect()
-      {
-        // Click support for entire <material-tab /> element
-        if ( !scope.disabled ) tabsCtrl.select(scope);
-
-      })
-      .on('keydown', function onRequestSelect(event)
-      {
-        if (event.which == Constant.KEY_CODE.SPACE )            tabsCtrl.select(scope);
-        else if (event.which === Constant.KEY_CODE.LEFT_ARROW)  tabsCtrl.previous(scope);
-        else if (event.which === Constant.KEY_CODE.RIGHT_ARROW) tabsCtrl.next(scope);
-
-      });
-
-    tabsCtrl.add(scope, element);
-
-    // **********************************************************
-    // Private Methods
-    // **********************************************************
-
-
-    /**
-     * Inject ARIA-specific attributes appropriate for each Tab button
-     */
-    function configureAria( element, scope ){
-      var ROLE = Constant.ARIA.ROLE;
-
-      scope.ariaId = buildAriaID();
-      $aria.update( element, {
-        'id' :  scope.ariaId,
-        'role' : ROLE.TAB,
-        'aria-selected' : false,
-        'aria-controls' : "content_" + scope.ariaId
-      });
-
-      /**
-       * Build a unique ID for each Tab that will be used for WAI-ARIA.
-       * Preserve existing ID if already specified.
-       * @returns {*|string}
-       */
-      function buildAriaID() {
-        return attrs.id || ( ROLE.TAB + "_" + tabsCtrl.$scope.$id + "_" + scope.$id );
-      }
-    }
-
-    /**
-     * Auto select the next tab if the current tab is active and
-     * has been disabled.
-     *
-     * Set tab index for the current tab (0), with all other tabs
-     * outside of the tab order (-1)
-     *
-     */
-    function configureWatchers() {
-      var unwatch = scope.$watch('disabled', function (isDisabled) {
-        if (scope.active && isDisabled) {
-          tabsCtrl.next(scope);
-        }
-      });
-
-      scope.$watch('active', function (isActive) {
-
-        $aria.update( element, {
-          'aria-selected' : isActive,
-          'tabIndex' : isActive === true ? 0 : -1
-        });
-
-      });
-
-      scope.$on("$destroy", function () {
-        unwatch();
-        tabsCtrl.remove(scope);
-      });
-    }
-
-    /**
-     * Transpose the optional `label` attribute value or materialTabHeader or `content` body
-     * into the body of the materialTabButton... all other content is saved in scope.content
-     * and used by TabsController to inject into the `tabs-content` container.
-     */
-    function updateTabContent(scope) {
-      var tab = scope;
-
-      // Check to override label attribute with the content of the <material-tab-header> node,
-      // If a materialTabHeader is not specified, then the node will be considered
-      // a <material-view> content element...
-      $transclude(function ( contents ) {
-
-        // Transient references...
-        tab.content = [ ];
-
-        angular.forEach(contents, function (node) {
-
-          if (!isNodeEmpty(node)) {
-            if (isNodeType(node, 'material-tab-label')) {
-              // Simulate use of `label` attribute
-
-              tab.label = node.childNodes;
-
-            } else {
-              // Transient references...
-              //
-              // Attach to scope for future transclusion into materialView(s)
-              // We need the bound scope for the content elements; which is NOT
-              // the scope of tab or material-view container...
-
-              tab.content.push(node);
-            }
-          }
-        });
-
-      });
-
-      // Prepare to assign the materialTabButton content
-      // Use the label attribute or fallback to TabHeader content
-
-      var cntr = angular.element(element[0].querySelector('material-tab-label'));
-
-      if (angular.isDefined(scope.label)) {
-        // The `label` attribute is the default source
-
-        cntr.append(scope.label);
-
-        delete scope.label;
-
-      } else {
-
-        // NOTE: If not specified, all markup and content is assumed
-        // to be used for the tab label.
-
-        angular.forEach(scope.content, function (node) {
-          cntr.append(node);
-        });
-
-        delete scope.content;
-      }
-    }
-
-  }
-}
-
-angular.module('material.components.tabs')
-  .factory('$materialTabs', [
-    '$materialComponentRegistry',
-    TabsService
-  ])
+])
   .controller('materialTabsController', [
     '$scope', 
     '$attrs', 
     '$materialComponentRegistry', 
     '$timeout',
+    '$$rAF',
     TabsController
-  ]);
-
-
-/**
- * @private
- * @ngdoc service
- * @name $materialTabs
- * @module material.components.tabs
- *
- * @description
- * $materialTabs makes it easy to programmatically interact with a specific Tabs group
- * in an app.
- *
- * @usage
- *
- * ```javascript
- * // Toggle the given sidenav
- * $materialTabs(tabsID).select(0);
- * ```
- */
-function TabsService($materialComponentRegistry) {
-  return function(handle) {
-    var instance = $materialComponentRegistry.get(handle);
-    if(!instance) {
-      $materialComponentRegistry.notFoundError(handle);
-    }
-
-    return {
-      /**
-       * Select the tab at the specified index
-       * @param index
-       * @returns {*}
-       */
-      select: function(index) {
-        return instance && instance.selectAt(index);
-      }
-    };
-  };
-}
-
-
-/**
- * @ngdoc object
- * @name materialTabsController
- * @module material.components.tabs
- * @description Controller used within `<material-tabs>` to manage tab selection and iteration
- *
- * @private
- */
-function TabsController($scope, $attrs, $materialComponentRegistry, $timeout ) {
-  var list = Util.iterator([], false),
-    componentID = "tabs" + $scope.$id,
-    elements = { },
-    selected = null,
-    self = this;
-
-  // Property for child access
-  self.noink = !!$scope.noink;
-  self.nobar = !!$scope.nobar;
-  self.scope = $scope;
-
-  // Special internal accessor to access scopes and tab `content`
-  // Used by TabsDirective::buildContentItems()
-
-  self.$scope = $scope;
-  self.$$tabs = findTabs;
-  self.$$hash = "";
-
-  // Methods used by <material-tab> and children
-
-  self.add = addTab;
-  self.remove = removeTab;
-  self.select = selectTab;
-  self.selectAt = selectTabAt;
-  self.next = selectNext;
-  self.previous = selectPrevious;
-
-  self.focusSelected = focusSelected;
-  self.focusNext     = focusNext;
-  self.focusPrevious = focusPrevious;
-
-  self.selectedElement = selectedElement;
-
-  $materialComponentRegistry.register( self, $attrs.componentId || componentID );
-
-
-  /**
-   * Accessor to look up the associated
-   * @returns {*}
-   */
-  function selectedElement() {
-    return findElementFor( selected );
-  };
-
-
-  /**
-   * When the selected tab changes, broadcast notification
-   */
-  function onSelectedChange() {
-    if (onSelectedChange.queued) return;
-    onSelectedChange.queued = true;
-
-    $scope.$evalAsync(function() {
-      $scope.$broadcast(Constant.EVENTS.TABS_CHANGED, selected);
-      onSelectedChange.queued = false;
-    });
-  }
-
-
-  /**
-   * Make sure the currently selected tab is
-   * focused. Do not! announce focus changes..
-   *
-   * NOTE: this is primarily used within pagination/ink updates after
-   *       tab click handlers. @see tabsDirective.js
-   * @returns {*}
-   */
-  function focusSelected() {
-    return focusOn('current');
-  }
-
-  /**
-   * Focus on the next enabled tab relative to `from`
-   * Announce focus change with new focusIndex if appropriate
-   * @param from
-   */
-  function focusNext(from) {
-    var focusIndex = focusOn('next', from);
-    if ( focusIndex != list.indexOf(selected)) {
-
-      // Announce focus change
-      $scope.$broadcast(Constant.EVENTS.FOCUS_CHANGED, focusIndex);
-    }
-    return focusIndex;
-  }
-
-  /**
-   * Focus on the previous enabled tab relative to `from`
-   * Announce focus change with new focusIndex if appropriate
-   * @param from
-   */
-  function focusPrevious(from) {
-    var focusIndex = focusOn('previous', from );
-
-    if ( focusIndex != list.indexOf(selected)) {
-      // Announce focus change
-      $scope.$broadcast(Constant.EVENTS.FOCUS_CHANGED, focusIndex);
-    }
-
-    return focusIndex;
-  }
-
-
-  /**
-   * Find the DOM element associated with the tab/scope
-   * @param tab
-   * @returns {*}
-   */
-  function findElementFor(tab) {
-    if ( angular.isUndefined(tab) ) {
-      tab = selected;
-    }
-    return tab ? elements[ tab.$id ] : undefined;
-  }
-
-  /**
-   * Publish array of tab scope items
-   * NOTE: Tabs are not required to have `contents` and the
-   *       node may be undefined.
-   * @returns {*} Array
-   */
-  function findTabs(filterBy) {
-    return list.items().filter(filterBy || angular.identity);
-  }
-
-  /**
-   * Create unique hashKey representing all available
-   * tabs.
-   */
-  function updateHash() {
-    self.$$hash = list.items()
-      .map(function (it) {
-        return it.$id;
-      })
-      .join(',');
-  }
-
-  /**
-   * Select specified tab; deselect all others (if any selected)
-   * @param tab
-   */
-  function selectTab(tab, noUpdate) {
-    if ( tab == selected ) return;
-
-    var activate = makeActivator(true),
-      deactivate = makeActivator(false);
-
-    // Turn off all tabs (if current active)
-    angular.forEach(list.items(), deactivate);
-
-    if ( tab != null ) {
-      // Activate the specified tab (or next available)
-      selected = activate(tab.disabled ? list.next(tab, isEnabled) : tab);
-
-      // update external models and trigger databinding watchers
-      $scope.$selIndex = selected ? String(selected.$index || list.indexOf(selected)) : -1;
-
-      // update the tabs ink to indicate the selected tab
-      if (!noUpdate) {
-        onSelectedChange();
-      }
-    }
-
-    return selected;
-  }
-
-  /**
-   * Select tab based on its index position
-   * @param index
-   */
-  function selectTabAt(index, noUpdate) {
-
-    if (list.inRange(index)) {
-      var matches = list.findBy("$index", index),
-          it = matches ? matches[0] : null;
-
-      if (it != selected) {
-
-        // Tab must be selectable...
-        if ( !isEnabled(it) ) {
-          it = selectNext(it);
-        }
-
-        selectTab( it || list.first(), noUpdate );
-      }
-    }
-  }
-
-  /**
-   * Add tab to list and auto-select; default adds item to end of list
-   * @param tab
-   */
-  function addTab(tab, element) {
-
-    if (angular.isUndefined(tab.$index)) {
-      tab.$index = list.count();
-    }
-
-    // cache materialTab DOM element; these are not materialView elements
-    elements[ tab.$id ] = element;
-
-    if (!list.contains(tab)) {
-      var pos = list.add(tab, tab.$index);
-
-      // Should we auto-select it?
-      if ($scope.$selIndex == pos || tab.active) {
-        selectTab(tab);
-      } else {
-        onSelectedChange();
-      }
-    }
-
-
-    updateHash();
-
-    return tab.$index;
-  }
-
-  /**
-   * Remove the specified tab from the list
-   * Auto select the next tab or the previous tab (if last)
-   * @param tab
-   */
-  function removeTab(tab) {
-    if (list.contains(tab)) {
-
-      selectTab( list.next(tab, isEnabled) || list.previous(tab, isEnabled) );
-      list.remove(tab);
-
-      onSelectedChange();
-      // another tab was removed, make sure to update ink bar
-      $timeout(function(){
-        delete elements[tab.$id];
-      },300);
-
-    }
-
-    updateHash();
-  }
-
-  /**
-   * Focus on the specified tab (if available)
-   * @returns {*} Tab
-   */
-  function focusOn(which, from) {
-    var tab = (which === 'current' ) ? selected :
-              (which === 'next')     ? list.next(from || selected, isEnabled) :
-              (which === 'previous') ? list.previous(from || selected, isEnabled) : null;
-
-    var el = findElementFor( tab );
-    if ( el ) el[0].focus();
-
-    return list.indexOf(tab);
-  }
-
-  /**
-   * Select the next tab in the list or the
-   * @returns {*} Tab
-   */
-  function selectNext(target) {
-    return selectTab( list.next(target, isEnabled) || target );
-  }
-
-  /**
-   * Select the previous tab
-   * @returns {*} Tab
-   */
-  function selectPrevious(target) {
-    return selectTab( list.previous(target, isEnabled) || target );
-  }
-
-  /**
-   * Validation criteria for list iterator when List::next() or List::previous() is used..:
-   * In this case, the list iterator should skip items that are disabled.
-   * @param tab
-   * @returns {boolean}
-   */
-  function isEnabled(tab) {
-    return tab && !tab.disabled;
-  }
-
-  /**
-   * Partial application to build function that will
-   * mark the specified tab as active or not. This also
-   * allows the `updateStatus` function to be used as an iterator.
-   *
-   * @param active
-   */
-  function makeActivator(active) {
-
-    return function updateState(tab) {
-      if (tab && (active != tab.active)) {
-        tab.active = active;
-
-        if (active) {
-          selected = tab;
-
-          tab.selected();
-
-        } else {
-          if (selected == tab) {
-            selected = null;
-          }
-
-          tab.deselected();
-
-        }
-        return tab;
-      }
-      return null;
-    };
-  }
-
-}
-
-/* Disable Tab Pagination */
-/**
- * @ngdoc module
- * @name material.components.tabs
- * @description
- *
- * Tabs
- */
-angular.module('material.components.tabs')
+  ])
   .directive('materialTabs', [
-    '$q',
+    '$compile', 
+    '$timeout', 
+    '$materialEffects', 
     '$window',
-    '$timeout',
-    '$compile',
-    '$materialEffects',
     '$$rAF',
     '$aria',
     TabsDirective
+  ])
+  .directive('materialTab', [ 
+    '$attrBind',
+    '$aria',
+    TabDirective  
   ]);
 
 /**
@@ -3676,7 +2793,7 @@ angular.module('material.components.tabs')
  * </hljs>
  *
  */
-function TabsDirective($q, $window, $timeout, $compile, $materialEffects, $$rAF, $aria) {
+function TabsDirective($compile, $timeout, $materialEffects, $window, $$rAF, $aria) {
 
   return {
     restrict: 'E',
@@ -3718,17 +2835,18 @@ function TabsDirective($q, $window, $timeout, $compile, $materialEffects, $$rAF,
   function compileTabsFn() {
 
     return {
-      pre: function tabsPreLink(scope, element, attrs, tabsCtrl) {
+      pre: function tabsPreLink(scope, element, attrs, tabsController) {
+
         // These attributes do not have values; but their presence defaults to value == true.
         scope.noink = angular.isDefined(attrs.noink);
         scope.nobar = angular.isDefined(attrs.nobar);
         scope.nostretch = angular.isDefined(attrs.nostretch);
 
         // Publish for access by nested `<material-tab>` elements
-        tabsCtrl.noink = scope.noink;
+        tabsController.noink = scope.noink;
 
         scope.$watch('$selIndex', function (index) {
-          tabsCtrl.selectAt(index);
+          tabsController.selectAt(index);
         });
 
         // Remove the `inkBar` element if `nobar` is defined
@@ -3738,38 +2856,23 @@ function TabsDirective($q, $window, $timeout, $compile, $materialEffects, $$rAF,
         }
 
       },
-      post: function tabsPostLink(scope, element, attrs, tabsCtrl, $transclude) {
-        var cache = {
+      post: function tabsPostLink(scope, element, attrs, tabsController, $transclude) {
+        var  cache = {
           length: 0,
           contains: function (tab) {
             return !angular.isUndefined(cache[tab.$id]);
           }
         };
+        var updatePagination = configurePagination() || angular.noop;
+        var updateInk = configureInk( scope.nostretch ) || angular.noop;
+        var update = $$rAF.debounce(function() {
+          /* See decorators.js for raf.debounce */
+          updatePagination();
+          updateInk();
+        });
 
-        var updateInk = linkTabInk(scope, element, tabsCtrl, $q, $materialEffects);
-        var updatePagination = linkTabPagination( scope, element, tabsCtrl, $q, $materialEffects );
-
-        var updateAll =  function() {
-
-              updatePagination().then( function(){
-                tabsCtrl.focusSelected();
-
-                // Make sure the ink positioning is correct
-                $timeout( updateInk );
-              });
-
-              // Make sure ink changes start just after pagination transitions have started...
-              $$rAF( updateInk );
-            };
-
-        var onWindowResize = $$rAF.debounce( updateAll );
-        var onWindowRelease = function() {
-              angular.element($window).off('resize', onWindowResize);
-            };
-
-        angular.element($window).on( Constant.EVENTS.WINDOW_RESIZE, onWindowResize);
-        scope.$on( Constant.EVENTS.TABS_CHANGED, updateAll );
-        scope.$on( Constant.EVENTS.SCOPE_DESTROY,onWindowRelease );
+        angular.element($window).on('resize', update);
+        scope.$on('$materialTabsChanged', update);
 
         transcludeHeaderItems();
         transcludeContentItems();
@@ -3804,6 +2907,220 @@ function TabsDirective($q, $window, $timeout, $compile, $materialEffects, $$rAF,
           }
         }
 
+        /**
+         * Conditionally configure ink bar animations when the
+         * tab selection changes. If `nobar` then do not show the
+         * bar nor animate.
+         */
+        function configureInk( nostretch ) {
+          if ( scope.nobar ) return;
+
+          // Single inkBar is used for all tabs
+          var inkBar = findNode("material-ink-bar", element);
+          var tabsHeader = findNode('.tabs-header-items-container', element); // excludes paginators
+          var lastLeft = 0;
+
+          // Immediately place the ink bar
+          updateInkBar(true);
+
+          // Delay inkBar updates 1-frame until pagination updates...
+          return $$rAF.debounce(updateInkBar);
+
+          /**
+           * Update the position and size of the ink bar based on the
+           * specified tab DOM element. If all tabs have been removed, then
+           * hide the inkBar.
+           *
+           * @param tab
+           * @param skipAnimation
+           */
+          function updateInkBar( immediate ) {
+            var getWidth = Util.css.width, getLeft = Util.css.left;
+
+            var selButton = tabsController.selectedElement();
+            var showInk = selButton && selButton.length && angular.isDefined(inkBar);
+            var isHiding = selButton && selButton.hasClass('pagination-hide');
+
+            var styles = { display : 'none', width : '0px' };
+            var left = 0, width = 0;
+
+            if ( !showInk || isHiding ) {
+              // no animation
+
+              inkBar.toggleClass('animate', (immediate !== true))
+                .css({
+                  display : 'none',
+                  width : '0px'
+                });
+            }
+            else {
+              // Just a linear animation...
+
+              width = getWidth(selButton);
+              left = getLeft(tabsHeader) + (scope.pagingOffset || 0) + getLeft(selButton);
+
+              styles = {
+                display : width > 0 ? 'block' : 'none',
+                width: width + 'px'
+              };
+              styles[$materialEffects.TRANSFORM] = 'translate3d(' + left + 'px,0,0)';
+
+              // Before we update the CSS to create a linear slide effect,
+              // let's add/remove `animate` class for transition & duration
+
+              inkBar.toggleClass('animate', (immediate !== true) )
+                .css(styles);
+
+            }
+          }
+        }
+
+        /**
+         * Configure pagination and add listeners for tab changes
+         * and Tabs width changes...
+         *
+         * @returns {updatePagination}
+         */
+        function configurePagination() {
+
+          var TAB_MIN_WIDTH = 8 * 12;           // Must match tab min-width rule in _tabs.scss
+          var PAGINATORS_WIDTH = (8 * 4) * 2;   // Must match (2 * width of paginators) in scss
+
+          var buttonBar = findNode('.tabs-header-items', element);
+          var pagination = scope.pagination = {
+            next: function() { selectPageAt(pagination.page + 1); },
+            prev: function() { selectPageAt(pagination.page - 1); }
+          };
+
+          scope.$on('$materialTabsChanged', function onSelectedTabChange() {
+            if ( !pagination.active  ) return;
+            if ( scope.$selIndex < 0 ) return;
+
+            var selectedIndex = scope.$selIndex;
+
+            if ( !isTabInRange(selectedIndex) ) {
+              selectPageAt( getPageAtTabIndex( selectedIndex ) );
+            }
+          });
+
+          return updatePagination;
+
+
+          /**
+           * Select the specified page in the page group and
+           * also change the selected the tab if the current
+           * tab selected is **not** within the new page range.
+           *
+           * @param page
+           */
+          function selectPageAt(page) {
+            var lastPage = pagination.pagesCount - 1;
+            var lastTab = buttonBar.children().length - 1;
+
+            if ( page < 0 ) page = 0;
+            if ( page > lastPage ) page = lastPage;
+
+            pagination.startIndex = !pagination.active ? 0       : page * pagination.itemsPerPage;
+            pagination.endIndex   = !pagination.active ? lastTab : pagination.startIndex + pagination.itemsPerPage - 1;
+            pagination.hasPrev    = !pagination.active ? false   : page > 0;
+            pagination.hasNext    = !pagination.active ? false   : (page + 1) < pagination.pagesCount;
+
+            slideTabButtons( -page * pagination.itemsPerPage * pagination.tabWidth );
+
+            if ( !isTabInRange(scope.$selIndex) ) {
+                var index = (page > pagination.page) ?  pagination.startIndex : pagination.endIndex;
+
+                // Only change selected tab IF the current tab is not `in range`
+                tabsController.selectAt( index );
+            }
+
+            pagination.page = page;
+
+          }
+
+          /**
+           * Determine the associated page for the specified tab index
+           * @param tabIndex
+           */
+          function getPageAtTabIndex( tabIndex ) {
+
+            var numPages = pagination.pagesCount;
+            var lastTab = (pagination.itemsPerPage * pagination.pagesCount) - 1;
+            var lastPage = pagination.pagesCount - 1;
+
+            return (numPages < 1)       ? -1       :
+                   (tabIndex < 0)       ?  0       :
+                   (tabIndex > lastTab) ? lastPage : Math.floor(tabIndex / pagination.itemsPerPage);
+          }
+
+          /**
+           * When the window resizes [`resize`] or the tabs are added/removed
+           * [$materialTabsChanged], then calculate pagination-width and
+           * update both the current page (if needed) and the tab headers width...
+           */
+          function updatePagination() {
+
+            var tabs = buttonBar.children();
+            var tabsWidth = element.prop('clientWidth') - PAGINATORS_WIDTH;
+            var needPagination = (tabsWidth > 0) && ((TAB_MIN_WIDTH * tabs.length) > tabsWidth);
+            var paginationToggled = (needPagination !== pagination.active);
+
+            pagination.active = needPagination;
+
+            if (needPagination) {
+
+              pagination.pagesCount = Math.ceil((TAB_MIN_WIDTH * tabs.length) / tabsWidth);
+              pagination.itemsPerPage = Math.max(1, Math.floor(tabs.length / pagination.pagesCount));
+              pagination.tabWidth = tabsWidth / pagination.itemsPerPage;
+
+              // If we just activated pagination, go to page 0 and watch the
+              // selected tab index to be sure we're on the same page
+              var pageIndex = paginationToggled ? getPageAtTabIndex(scope.$selIndex) :
+                              Math.min( Math.max(pagination.page || 0, 0), pagination.pagesCount - 1);
+
+              // Manually set width of page...
+              buttonBar.css('width', pagination.tabWidth * tabs.length + 'px');
+
+              selectPageAt( pageIndex );
+
+            } else {
+
+              if (paginationToggled) {
+                // Release buttonBar to be self-adjust to size of all tab buttons
+                // Slide tab buttons to show all buttons (starting at first)
+
+                buttonBar.css('width', '');
+
+                selectPageAt( 0 );
+              }
+            }
+          }
+
+          /**
+           * Perform animated CSS translation of the tab buttons container
+           * @param xOffset
+           */
+          function slideTabButtons( xOffset ) {
+            if ( scope.pagingOffset == xOffset ) return;
+            if ( isNaN(xOffset) ) xOffset = 0;
+
+            scope.pagingOffset = xOffset;
+            buttonBar.css( $materialEffects.TRANSFORM, 'translate3d(' + xOffset + 'px,0,0)');
+          }
+
+          /**
+           * Is the specified tabIndex with the tab range allowed
+           * for the current page/pagination?
+           *
+           * @param tabIndex
+           * @returns {boolean}
+           */
+          function isTabInRange( tabIndex ){
+            return (tabIndex >= pagination.startIndex) &&
+                   (tabIndex <= pagination.endIndex);
+          }
+
+        }
 
         /**
          * Change the positioning of the tab header and buttons.
@@ -3824,10 +3141,10 @@ function TabsDirective($q, $window, $timeout, $compile, $materialEffects, $$rAF,
          * select the first tab by default
          */
         function selectDefaultTab() {
-          var tabs = tabsCtrl.$$tabs();
+          var tabs = tabsController.$$tabs();
 
           if ( tabs.length && angular.isUndefined(scope.$selIndex)) {
-            tabsCtrl.select(tabs[0]);
+            tabsController.select(tabs[0]);
           }
         }
 
@@ -3863,7 +3180,7 @@ function TabsDirective($q, $window, $timeout, $compile, $materialEffects, $$rAF,
               materialViewTmpl = '<div class="material-view" ng-show="active"></div>';
 
           scope.$watch(getTabsHash, function buildContentItems() {
-            var tabs = tabsCtrl.$$tabs(notInCache),
+            var tabs = tabsController.$$tabs(notInCache),
               views = tabs.map(extractContent);
 
             // At least 1 tab must have valid content to build; otherwise
@@ -3990,7 +3307,7 @@ function TabsDirective($q, $window, $timeout, $compile, $materialEffects, $$rAF,
           }
 
           function getTabsHash() {
-            return tabsCtrl.$$hash;
+            return tabsController.$$hash;
           }
 
           /**
@@ -4034,9 +3351,509 @@ function TabsDirective($q, $window, $timeout, $compile, $materialEffects, $$rAF,
       }
     };
 
+    function findNode(selector, element) {
+      var container = element[0];
+      return angular.element(container.querySelector(selector));
+    }
+
+  }
+
+}
+
+/**
+ * @ngdoc directive
+ * @name materialTab
+ * @module material.components.tabs
+ * @order 1
+ *
+ * @restrict E
+ *
+ * @description
+ * `<material-tab>` is the nested directive used [within `<material-tabs>`] to specify each tab with a **label** and optional *view content*
+ *
+ * If the `label` attribute is not specified, then an optional `<material-tab-label>` tag can be used to specified more
+ * complex tab header markup. If neither the **label** nor the **material-tab-label** are specified, then the nested
+ * markup of the `<material-tab>` is used as the tab header markup.
+ *
+ * If a tab **label** has been identified, then any **non-**`<material-tab-label>` markup
+ * will be considered tab content and will be transcluded to the internal `<div class="tabs-content">` container.
+ *
+ * This container is used by the TabsController to show/hide the active tab's content view. This synchronization is
+ * automatically managed by the internal TabsController whenever the tab selection changes. Selection changes can
+ * be initiated via data binding changes, programmatic invocation, or user gestures.
+ *
+ * @param {string=} label Optional attribute to specify a simple string as the tab label
+ * @param {boolean=} active Flag indicates if the tab is currently selected; normally the `<material-tabs selected="">`; attribute is used instead.
+ * @param {boolean=} ngDisabled Flag indicates if the tab is disabled: not selectable with no ink effects
+ * @param {expression=} deselected Expression to be evaluated after the tab has been de-selected.
+ * @param {expression=} selected Expression to be evaluated after the tab has been selected.
+ *
+ *
+ * @usage
+ *
+ * <hljs lang="html">
+ * <material-tab label="" disabled="" selected="" deselected="" >
+ *   <h3>My Tab content</h3>
+ * </material-tab>
+ *
+ * <material-tab >
+ *   <material-tab-label>
+ *     <h3>My Tab content</h3>
+ *   </material-tab-label>
+ *   <p>
+ *     Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+ *     totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
+ *     dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+ *     sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+ *   </p>
+ * </material-tab>
+ * </hljs>
+ *
+ */
+function TabDirective( $attrBind, $aria ) {
+  var noop = angular.noop;
+
+  return {
+    restrict: 'E',
+    replace: false,
+    require: "^materialTabs",
+    transclude: 'true',
+    scope: true,
+    link: linkTab,
+    template:
+      '<material-tab-label ink-ripple ' +
+        'ng-class="{ disabled : disabled, active : active }"  >' +
+      '</material-tab-label>'
+  };
+
+  function linkTab(scope, element, attrs, tabsController, $transclude) {
+    var defaults = { active: false, disabled: false, deselected: noop, selected: noop };
+
+    // Since using scope=true for inherited new scope,
+    // then manually scan element attributes for forced local mappings...
+
+    $attrBind(scope, attrs, {
+      label: '@?',
+      active: '=?',
+      disabled: '=?ngDisabled',
+      deselected: '&onDeselect',
+      selected: '&onSelect'
+    }, defaults);
+
+    configureWatchers();
+    updateTabContent(scope);
+
+    // Update ARIA values for each tab element
+    configureAria(element, scope);
+
+    element.on('click', function onRequestSelect()
+      {
+        // Click support for entire <material-tab /> element
+        if ( !scope.disabled ) {
+          scope.$apply(function () {
+            tabsController.select(scope);
+          });
+        }
+      })
+      .on('keydown', function onRequestSelect(event)
+      {
+        if(event.which === Constant.KEY_CODE.LEFT_ARROW) {
+          tabsController.previous(scope);
+        }
+        if(event.which === Constant.KEY_CODE.RIGHT_ARROW) {
+          tabsController.next(scope);
+        }
+      });
+
+    tabsController.add(scope, element);
+
+    // **********************************************************
+    // Private Methods
+    // **********************************************************
+
+
+    /**
+     * Inject ARIA-specific attributes appropriate for each Tab button
+     */
+    function configureAria( element, scope ){
+      var ROLE = Constant.ARIA.ROLE;
+
+      scope.ariaId = buildAriaID();
+      $aria.update( element, {
+        'id' :  scope.ariaId,
+        'role' : ROLE.TAB,
+        'aria-selected' : false,
+        'aria-controls' : "content_" + scope.ariaId
+      });
+
+      /**
+       * Build a unique ID for each Tab that will be used for WAI-ARIA.
+       * Preserve existing ID if already specified.
+       * @returns {*|string}
+       */
+      function buildAriaID() {
+        return attrs.id || ( ROLE.TAB + "_" + tabsController.$scope.$id + "_" + scope.$id );
+      }
+    }
+
+    /**
+     * Auto select the next tab if the current tab is active and
+     * has been disabled.
+     *
+     * Set tab index for the current tab (0), with all other tabs
+     * outside of the tab order (-1)
+     *
+     */
+    function configureWatchers() {
+      var unwatch = scope.$watch('disabled', function (isDisabled) {
+        if (scope.active && isDisabled) {
+          tabsController.next(scope);
+        }
+      });
+
+      scope.$watch('active', function (isActive) {
+
+        $aria.update( element, {
+          'aria-selected' : isActive,
+          'tabIndex' : isActive === true ? 0 : -1
+        });
+
+      });
+
+      scope.$on("$destroy", function () {
+        unwatch();
+        tabsController.remove(scope);
+      });
+    }
+
+    /**
+     * Transpose the optional `label` attribute value or materialTabHeader or `content` body
+     * into the body of the materialTabButton... all other content is saved in scope.content
+     * and used by TabsController to inject into the `tabs-content` container.
+     */
+    function updateTabContent(scope) {
+      var tab = scope;
+
+      // Check to override label attribute with the content of the <material-tab-header> node,
+      // If a materialTabHeader is not specified, then the node will be considered
+      // a <material-view> content element...
+      $transclude(function ( contents ) {
+
+        // Transient references...
+        tab.content = [ ];
+
+        angular.forEach(contents, function (node) {
+
+          if (!isNodeEmpty(node)) {
+            if (isNodeType(node, 'material-tab-label')) {
+              // Simulate use of `label` attribute
+
+              tab.label = node.childNodes;
+
+            } else {
+              // Transient references...
+              //
+              // Attach to scope for future transclusion into materialView(s)
+              // We need the bound scope for the content elements; which is NOT
+              // the scope of tab or material-view container...
+
+              tab.content.push(node);
+            }
+          }
+        });
+
+      });
+
+      // Prepare to assign the materialTabButton content
+      // Use the label attribute or fallback to TabHeader content
+
+      var cntr = angular.element(element[0].querySelector('material-tab-label'));
+
+      if (angular.isDefined(scope.label)) {
+        // The `label` attribute is the default source
+
+        cntr.append(scope.label);
+
+        delete scope.label;
+
+      } else {
+
+        // NOTE: If not specified, all markup and content is assumed
+        // to be used for the tab label.
+
+        angular.forEach(scope.content, function (node) {
+          cntr.append(node);
+        });
+
+        delete scope.content;
+      }
+    }
+
   }
 }
 
+/**
+ * @ngdoc object
+ * @name materialTabsController
+ * @module material.components.tabs
+ * @description Controller used within `<material-tabs>` to manage tab selection and iteration
+ *
+ * @private
+ */
+function TabsController($scope, $attrs, $materialComponentRegistry, $timeout, $$rAF ) {
+  var list = Util.iterator([], false),
+    componentID = "tabs" + $scope.$id,
+    elements = { },
+    selected = null,
+    self = this;
+
+  $materialComponentRegistry.register( self, $attrs.componentId || componentID );
+
+  // Methods used by <material-tab> and children
+
+  this.add = addTab;
+  this.remove = removeTab;
+  this.select = selectTab;
+  this.selectAt = selectTabAt;
+  this.next = selectNext;
+  this.previous = selectPrevious;
+
+  // Property for child access
+  this.noink = !!$scope.noink;
+  this.nobar = !!$scope.nobar;
+  this.scope = $scope;
+
+  // Special internal accessor to access scopes and tab `content`
+  // Used by TabsDirective::buildContentItems()
+
+  this.$scope = $scope;
+  this.$$tabs = findTabs;
+  this.$$hash = "";
+
+  this.selectedElement = function() {
+    return findElementFor( selected );
+  };
+
+  function onTabsChanged() {
+    if (onTabsChanged.queued) return;
+    onTabsChanged.queued = true;
+
+    $scope.$evalAsync(function() {
+      $scope.$broadcast('$materialTabsChanged');
+
+      $$rAF( function autoFocus() {
+        var selected = self.selectedElement();
+        if ( selected ) selected[0].focus();
+      });
+
+      onTabsChanged.queued = false;
+    });
+  }
+
+  /**
+   * Find the DOM element associated with the tab/scope
+   * @param tab
+   * @returns {*}
+   */
+  function findElementFor(tab) {
+    if ( angular.isUndefined(tab) ) {
+      tab = selected;
+    }
+    return tab ? elements[ tab.$id ] : undefined;
+  }
+
+  /**
+   * Publish array of tab scope items
+   * NOTE: Tabs are not required to have `contents` and the
+   *       node may be undefined.
+   * @returns {*} Array
+   */
+  function findTabs(filterBy) {
+    return list.items().filter(filterBy || angular.identity);
+  }
+
+  /**
+   * Create unique hashKey representing all available
+   * tabs.
+   */
+  function updateHash() {
+    self.$$hash = list.items()
+      .map(function (it) {
+        return it.$id;
+      })
+      .join(',');
+  }
+
+  /**
+   * Select specified tab; deselect all others (if any selected)
+   * @param tab
+   */
+  function selectTab(tab, noUpdate) {
+    if ( tab == selected ) return;
+
+    var activate = makeActivator(true),
+      deactivate = makeActivator(false);
+
+    // Turn off all tabs (if current active)
+    angular.forEach(list.items(), deactivate);
+
+    if ( tab != null ) {
+      // Activate the specified tab (or next available)
+      selected = activate(tab.disabled ? list.next(tab, isEnabled) : tab);
+
+      // update external models and trigger databinding watchers
+      $scope.$selIndex = selected ? String(selected.$index || list.indexOf(selected)) : -1;
+
+      // update the tabs ink to indicate the selected tab
+      if (!noUpdate) {
+        onTabsChanged();
+      }
+    }
+
+    return selected;
+  }
+
+  /**
+   * Select tab based on its index position
+   * @param index
+   */
+  function selectTabAt(index, noUpdate) {
+
+    if (list.inRange(index)) {
+      var matches = list.findBy("$index", index),
+          it = matches ? matches[0] : null;
+
+      if (it != selected) {
+
+        // Tab must be selectable...
+        if ( !isEnabled(it) ) {
+          it = selectNext(it);
+        }
+
+        selectTab( it || list.first(), noUpdate );
+      }
+    }
+  }
+
+  /**
+   * Add tab to list and auto-select; default adds item to end of list
+   * @param tab
+   */
+  function addTab(tab, element) {
+
+    if (angular.isUndefined(tab.$index)) {
+      tab.$index = list.count();
+    }
+
+    // cache materialTab DOM element; these are not materialView elements
+    elements[ tab.$id ] = element;
+
+    if (!list.contains(tab)) {
+      var pos = list.add(tab, tab.$index);
+
+      // Should we auto-select it?
+      if ($scope.$selIndex == pos || tab.active) {
+        selectTab(tab);
+      } else {
+        onTabsChanged();
+      }
+    }
+
+
+    updateHash();
+
+    return tab.$index;
+  }
+
+  /**
+   * Remove the specified tab from the list
+   * Auto select the next tab or the previous tab (if last)
+   * @param tab
+   */
+  function removeTab(tab) {
+    if (list.contains(tab)) {
+
+      selectTab( list.next(tab, isEnabled) || list.previous(tab, isEnabled) );
+      list.remove(tab);
+
+      onTabsChanged();
+      // another tab was removed, make sure to update ink bar
+      $timeout(function(){
+        delete elements[tab.$id];
+      },300);
+
+    }
+
+    updateHash();
+  }
+
+  /**
+   * Select the next tab in the list
+   * @returns {*} Tab
+   */
+  function selectNext(target) {
+    var next = list.next( target, isEnabled );
+
+    return next ? selectTab( next ) :
+           target.disabled ? selectPrevious(target) : target;
+  }
+
+  /**
+   * Select the previous tab
+   * @returns {*} Tab
+   */
+  function selectPrevious(target) {
+    var previous = list.previous(target, isEnabled );
+
+    return previous ? selectTab( previous ) :
+           target.disabled ? selectNext(target) : target;
+
+
+  }
+
+  /**
+   * Validation criteria for list iterator when List::next() or List::previous() is used..:
+   * In this case, the list iterator should skip items that are disabled.
+   * @param tab
+   * @returns {boolean}
+   */
+  function isEnabled(tab) {
+    return tab && !tab.disabled;
+  }
+
+  /**
+   * Partial application to build function that will
+   * mark the specified tab as active or not. This also
+   * allows the `updateStatus` function to be used as an iterator.
+   *
+   * @param active
+   */
+  function makeActivator(active) {
+
+    return function updateState(tab) {
+      if (tab && (active != tab.active)) {
+        tab.active = active;
+
+        if (active) {
+          selected = tab;
+
+          tab.selected();
+
+        } else {
+          if (selected == tab) {
+            selected = null;
+          }
+
+          tab.deselected();
+
+        }
+        return tab;
+      }
+      return null;
+    };
+  }
+
+}
 
 /**
  * Determine if the DOM element is of a certain tag type
@@ -4071,10 +3888,6 @@ var isNodeEmpty = function (node) {
     (node.nodeType == TEXT_NODE && !(node.nodeValue || '').trim());
 };
 
-function findNode(selector, element) {
-  var parentNode = element[0];
-  return angular.element(parentNode.querySelector(selector));
-}
 
 /*
  *  This function() provides scope-relative features to disconnect and reconnect to the $digest() processes
@@ -4373,7 +4186,7 @@ function materialToolbarDirective($$rAF, $materialEffects) {
 
           if (Util.elementIsSibling(element, contentEl)) {
             // unhook old content event listener if exists
-            contentElement && contentElement.off('scroll', onContentScroll);
+            contentElement && contentElement.off('scroll', onScroll);
             contentEl.on('scroll', onContentScroll).css('position','relative');
             contentElement = contentEl;
           }
@@ -4414,6 +4227,40 @@ function materialToolbarDirective($$rAF, $materialEffects) {
 
 angular.module('material.components.whiteframe', []);
 
+/**
+ * @ngdoc module
+ * @name material.components.divider
+ * @description Divider module!
+ */
+angular.module('material.components.divider', [
+  'material.animations',
+  'material.services.aria'
+])
+  .directive('materialDivider', MaterialDividerDirective);
+
+/**
+ * @ngdoc directive
+ * @name materialDivider
+ * @module material.components.divider
+ * @restrict E
+ *
+ * @description
+ * Dividers group and separate content within lists and page layouts using strong visual and spatial distinctions. This divider is a thin rule, lightweight enough to not distract the user from content.
+ *
+ * @param {boolean=} inset Add this attribute to activate the inset divider style.
+ * @usage
+ * <hljs lang="html">
+ * <material-divider></material-divider>
+ *
+ * <material-divider inset></material-divider>
+ * </hljs>
+ *
+ */
+function MaterialDividerDirective() {
+  return {
+    restrict: 'E'
+  };
+}
 angular.module('material.decorators', [])
 .config(['$provide', function($provide) {
   $provide.decorator('$$rAF', ['$delegate', '$rootScope', rAFDecorator]);
