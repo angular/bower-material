@@ -4423,7 +4423,10 @@ angular.module('material.components.divider', [
   'material.animations',
   'material.services.aria'
 ])
+  .controller('materialDividerController', MaterialDividerController)
   .directive('materialDivider', MaterialDividerDirective);
+
+function MaterialDividerController(){}
 
 /**
  * @ngdoc directive
@@ -4445,7 +4448,8 @@ angular.module('material.components.divider', [
  */
 function MaterialDividerDirective() {
   return {
-    restrict: 'E'
+    restrict: 'E',
+    controller:'materialDividerController'
   };
 }
 angular.module('material.decorators', [])
