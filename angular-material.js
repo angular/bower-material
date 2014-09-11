@@ -4423,7 +4423,6 @@ angular.module('material.components.divider', [
   'material.animations',
   'material.services.aria'
 ])
-  .controller('materialDividerController', MaterialDividerController)
   .directive('materialDivider', MaterialDividerDirective);
 
 function MaterialDividerController(){}
@@ -4449,9 +4448,10 @@ function MaterialDividerController(){}
 function MaterialDividerDirective() {
   return {
     restrict: 'E',
-    controller:'materialDividerController'
+    controller: [MaterialDividerController]
   };
 }
+
 angular.module('material.decorators', [])
 .config(['$provide', function($provide) {
   $provide.decorator('$$rAF', ['$delegate', '$rootScope', rAFDecorator]);
