@@ -958,11 +958,11 @@ function MaterialEffects($animateSequence, $rootElement, $position, $$rAF, $snif
   function popOut(element, parentElement, done) {
     var endPos = $position.positionElements(parentElement, element, 'bottom-center');
 
-    element.css({
-      '-webkit-transform': translateString(endPos.left, endPos.top, 0) + ' scale(0.5)',
-      opacity: 0
-    });
-    element.on(self.TRANSITIONEND_EVENT, finished);
+    element
+      .css(self.TRANSFORM, 
+           translateString(endPos.left, endPos.top, 0) + ' scale(0.5)')
+      .css('opacity', 0)
+      .on(self.TRANSITIONEND_EVENT, finished);
 
     function finished(ev) {
       //Make sure this transitionend didn't bubble up from a child
@@ -4233,6 +4233,12 @@ function QpToastService($timeout, $rootScope, $materialCompiler, $rootElement, $
     toastParent = $rootElement;
   }
 
+  // Which swipe events to listen for, depending on the toast's position
+  var positionSwipeEvents = {
+    top: 'swipeleft swiperight swipeup',
+    bottom: 'swipeleft swiperight swipedown'
+  };
+
   return showToast;
 
   /**
@@ -4270,9 +4276,23 @@ function QpToastService($timeout, $rootScope, $materialCompiler, $rootElement, $
         }
       });
 
+      var isTop = options.position.indexOf('top') > -1;
+      var swipeEvents = positionSwipeEvents[isTop ? 'top' : 'bottom'];
+      var mc = new Hammer(element[0]);
+      mc.on(swipeEvents, onSwipe);
+      
+      function onSwipe(ev) {
+        //Add swipeleft/swiperight/swipeup/swipedown class to element
+        element.addClass(ev.type);
+        mc.off(swipeEvents, onSwipe);
+        $timeout(destroy);
+      }
+
       return destroy;
 
       function destroy() {
+        if (destroy.called) return;
+        destroy.called = true;
         toastParent.removeClass(toastParentClass);
         $timeout.cancel(delayTimeout);
         $animate.leave(element, function() {
