@@ -2319,6 +2319,7 @@ material-switch {
     top: 0;
     outline: none; }
     material-switch .material-switch-thumb .material-container {
+      position: absolute;
       -webkit-transition: -webkit-transform 0.2s linear;
       transition: transform 0.2s linear;
       -webkit-transform: translate3d(0, 0, 0);
@@ -2329,7 +2330,7 @@ material-switch {
     material-switch .material-switch-thumb:focus .material-label {
       border: 1px dotted black; }
     material-switch .material-switch-thumb .material-label {
-      margin-left: 56px; }
+      margin-left: 72px; }
 
 material-toast {
   display: -webkit-box;
