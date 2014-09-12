@@ -2622,12 +2622,19 @@ material-tab {
   cursor: pointer;
   min-width: 96px;
   border: 1px dotted transparent;
+  color: #9FC1FB;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none; }
+  material-tab.active {
+    color: white; }
+  material-tab[disabled] {
+    color: #6a6a6a;
+    opacity: 0.5;
+    cursor: default; }
   material-tab:focus {
     border-color: #111111; }
   material-tab material-tab-label {
@@ -2638,16 +2645,7 @@ material-tab {
     -ms-flex: 1;
     flex: 1;
     z-index: 100;
-    color: #9FC1FB;
-    color: rgba(255, 255, 255, 0.6);
     opacity: 1; }
-    material-tab material-tab-label.active {
-      color: white; }
-    material-tab material-tab-label.disabled {
-      color: #6a6a6a;
-      opacity: 0.5; }
-      material-tab material-tab-label.disabled:hover {
-        cursor: default; }
 
 shadow {
   box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.2); }
