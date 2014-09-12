@@ -1,6 +1,8 @@
 /*!
  * Angular Material Design
- * WIP Banner
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.0.2
  */
 (function(){
 angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.position', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.form","material.components.icon","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
