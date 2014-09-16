@@ -643,7 +643,7 @@ angular.module('material.animations')
 .directive({
   noink: attrNoDirective(),
   nobar: attrNoDirective(),
-  nostretch: attrNoDirective(),
+  nostretch: attrNoDirective()
 });
 
 function attrNoDirective() {
@@ -692,7 +692,7 @@ function InkRippleService($window, $$rAF, $materialEffects, $timeout) {
   return {
     attachButtonBehavior: attachButtonBehavior,
     attachCheckboxBehavior: attachCheckboxBehavior,
-    attach: attach,
+    attach: attach
   };
 
   function attachButtonBehavior(element) {
@@ -810,7 +810,7 @@ function InkRippleService($window, $$rAF, $materialEffects, $timeout) {
         width: containerWidth + 'px',
 
         top: (top - containerWidth / 2) + 'px',
-        height: containerWidth + 'px',
+        height: containerWidth + 'px'
       };
       css[$materialEffects.ANIMATION_DURATION] = options.fadeoutDuration + 'ms';
       rippleEl.css(css);
@@ -1276,7 +1276,7 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
       targetEvent: null,
       transformTemplate: function(template) {
         return '<div class="material-dialog-container">' + template + '</div>';
-      },
+      }
       // Also supports all options from $materialCompiler.compile
     }, options || {});
 
@@ -2444,7 +2444,7 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
 
 angular.module('material.components.switch', [
   'material.components.checkbox',
-  'material.components.radioButton',
+  'material.components.radioButton'
 ])
 
 .directive('materialSwitch', [
@@ -2498,7 +2498,7 @@ function MaterialSwitch(checkboxDirectives, radioButtonDirectives) {
       '<div class="material-switch-thumb">' +
         radioButtonDirective.template +
       '</div>',
-    require: '?ngModel', 
+    require: '?ngModel',
     compile: compile
   };
 
@@ -4029,7 +4029,7 @@ function QpToastDirective() {
 function QpToastService($timeout, $rootScope, $materialCompiler, $rootElement, $animate) {
   var recentToast;
   function toastOpenClass(position) {
-    return 'material-toast-open-' + 
+    return 'material-toast-open-' +
       (position.indexOf('top') > -1 ? 'top' : 'bottom');
   }
 
@@ -4052,9 +4052,9 @@ function QpToastService($timeout, $rootScope, $materialCompiler, $rootElement, $
       duration: 3000,
       // [unimplemented] Whether to disable swiping
       swipeDisabled: false,
-      // Supports any combination of these class names: 'bottom top left right fit'. 
+      // Supports any combination of these class names: 'bottom top left right fit'.
       // Default: 'bottom left'
-      position: 'bottom left',
+      position: 'bottom left'
     }, options || {});
 
     recentToast && recentToast.then(function(destroy) { destroy(); });
@@ -4062,7 +4062,7 @@ function QpToastService($timeout, $rootScope, $materialCompiler, $rootElement, $
     recentToast = $materialCompiler.compile(options).then(function(compileData) {
       // Controller will be passed a `$hideToast` function
       compileData.locals.$hideToast = destroy;
-      
+
       var scope = $rootScope.$new();
       var element = compileData.link(scope);
 
@@ -4858,7 +4858,7 @@ function materialComponentRegistry($log) {
           instances.splice(index, 1);
         }
       };
-    },
+    }
   }
 }
 
