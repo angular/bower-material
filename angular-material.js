@@ -2836,7 +2836,6 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
       if (!isSliding) return;
       doSlide(ev.center.x);
       ev.preventDefault();
-      ev.stopPropagation();
     }
 
     /**
