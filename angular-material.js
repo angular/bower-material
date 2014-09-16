@@ -2363,11 +2363,13 @@ function materialSidenavController($scope, $element, $attrs, $timeout, $material
  *
  * ```javascript
  * // Toggle the given sidenav
- * $materialSidenav.toggle(componentId);
+ * $materialSidenav(componentId).toggle();
+ *
  * // Open the given sidenav
- * $materialSidenav.open(componentId);
+ * $materialSidenav(componentId).open();
+ *
  * // Close the given sidenav
- * $materialSidenav.close(componentId);
+ * $materialSidenav(componentId).close();
  * ```
  */
 function materialSidenavService($materialComponentRegistry) {
@@ -3163,6 +3165,10 @@ function TabDirective( $attrBind, $aria ) {
 }
 
 angular.module('material.components.tabs')
+  .factory('$materialTabs', [
+    '$materialComponentRegistry',
+    TabsService
+  ])
   .controller('materialTabsController', [
     '$scope', 
     '$attrs', 
@@ -3170,6 +3176,44 @@ angular.module('material.components.tabs')
     '$timeout',
     TabsController
   ]);
+
+
+/**
+ * @private
+ * @ngdoc service
+ * @name $materialTabs
+ * @module material.components.tabs
+ *
+ * @description
+ * $materialTabs makes it easy to programmatically interact with a specific Tabs group
+ * in an app.
+ *
+ * @usage
+ *
+ * ```javascript
+ * // Toggle the given sidenav
+ * $materialTabs(tabsID).select(0);
+ * ```
+ */
+function TabsService($materialComponentRegistry) {
+  return function(handle) {
+    var instance = $materialComponentRegistry.get(handle);
+    if(!instance) {
+      $materialComponentRegistry.notFoundError(handle);
+    }
+
+    return {
+      /**
+       * Select the tab at the specified index
+       * @param index
+       * @returns {*}
+       */
+      select: function(index) {
+        return instance && instance.selectAt(index);
+      }
+    };
+  };
+}
 
 
 /**
