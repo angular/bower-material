@@ -812,7 +812,8 @@ var Constant = {
   EVENTS : {
     TABS_CHANGED : '$materialTabsChanged',
     FOCUS_CHANGED : '$materialFocusChanged',
-    WINDOW_RESIZE : 'resize'
+    WINDOW_RESIZE : 'resize',
+    SCOPE_DESTROY : '$destroy'
   }
 };
 
@@ -3720,8 +3721,14 @@ function TabsDirective($q, $window, $timeout, $compile, $materialEffects, $$rAF,
               $$rAF( updateInk );
             };
 
+        var onWindowResize = $$rAF.debounce( updateAll );
+        var onWindowRelease = function() {
+              angular.element($window).off('resize', onWindowResize);
+            };
+
+        angular.element($window).on( Constant.EVENTS.WINDOW_RESIZE, onWindowResize);
         scope.$on( Constant.EVENTS.TABS_CHANGED, updateAll );
-        angular.element($window).on( Constant.EVENTS.WINDOW_RESIZE, $$rAF.debounce( updateAll ));
+        scope.$on( Constant.EVENTS.SCOPE_DESTROY,onWindowRelease );
 
         transcludeHeaderItems();
         transcludeContentItems();
