@@ -2356,7 +2356,7 @@ material-slider {
     transform: scale(0.35);
     border: 6px solid white;
     display: none; }
-  material-slider.slider-min .slider-thumb {
+  material-slider.slider-min .slider-thumb:after {
     background-color: white; }
   material-slider.slider-min .slider-sign {
     opacity: 0; }
@@ -2392,9 +2392,10 @@ material-slider {
     display: none; }
   material-slider[disabled] .slider-thumb {
     -webkit-transform: scale(0.35);
-    transform: scale(0.35);
-    border-color: #BEBEBE; }
-  material-slider[disabled]:not(.slider-min) .slider-thumb {
+    transform: scale(0.35); }
+    material-slider[disabled] .slider-thumb:after {
+      border-color: #BEBEBE; }
+  material-slider[disabled]:not(.slider-min) .slider-thumb:after {
     background-color: #BEBEBE; }
   material-slider[disabled] .slider-disabled-thumb {
     display: block; }
