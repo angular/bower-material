@@ -2146,7 +2146,7 @@ angular.module('material.components.slider', [
  * of values, and 'discrete' mode, where the user slides between only a few
  * select values.
  *
- * To enable discrete mode, add the `discrete` attribute to a slider, 
+ * To enable discrete mode, add the `discrete` attribute to a slider,
  * and use the `step` attribute to change the distance between
  * values the user is allowed to pick.
  *
@@ -2166,19 +2166,19 @@ angular.module('material.components.slider', [
  * @param {number=} step The distance between values the user is allowed to pick. Default 1.
  * @param {number=} min The minimum value the user is allowed to pick. Default 0.
  * @param {number=} max The maximum value the user is allowed to pick. Default 100.
- */ 
+ */
 function SliderDirective() {
   return {
     scope: {},
     require: ['?ngModel', 'materialSlider'],
     controller: [
-      '$scope', 
-      '$element', 
-      '$attrs', 
-      '$$rAF', 
-      '$timeout', 
-      '$window', 
-      '$materialEffects', 
+      '$scope',
+      '$element',
+      '$attrs',
+      '$$rAF',
+      '$timeout',
+      '$window',
+      '$materialEffects',
       '$aria',
       SliderController
     ],
@@ -2199,17 +2199,17 @@ function SliderDirective() {
       '</div>',
     link: postLink
   };
-    
+
   function postLink(scope, element, attr, ctrls) {
     var ngModelCtrl = ctrls[0] || {
-      // Mock ngModelController if it doesn't exist to give us 
+      // Mock ngModelController if it doesn't exist to give us
       // the minimum functionality needed
       $setViewValue: function(val) {
         this.$viewValue = val;
         this.$viewChangeListeners.forEach(function(cb) { cb(); });
       },
-      $parsers: [], 
-      $formatters: [], 
+      $parsers: [],
+      $formatters: [],
       $viewChangeListeners: []
     };
 
@@ -2218,7 +2218,7 @@ function SliderDirective() {
   }
 }
 
-/** 
+/**
  * We use a controller for all the logic so that we can expose a few
  * things to unit tests
  */
@@ -2236,7 +2236,7 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
     attr.max ? attr.$observe('max', updateMax) : updateMax(100);
     attr.step ? attr.$observe('step', updateStep) : updateStep(1);
 
-    attr.ngDisabled ? 
+    attr.ngDisabled ?
       scope.$watch(attr.ngDisabled, updateAriaDisabled) :
       updateAriaDisabled(!!attr.disabled);
 
@@ -2279,7 +2279,7 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
     var max;
     var step;
     function updateMin(value) {
-      min = parseFloat(value); 
+      min = parseFloat(value);
       element.attr('aria-valuemin', value);
     }
     function updateMax(value) {
@@ -2287,14 +2287,14 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
       element.attr('aria-valuemax', value);
     }
     function updateStep(value) {
-      step = parseFloat(value); 
+      step = parseFloat(value);
       redrawTicks();
     }
     function updateAriaDisabled(isDisabled) {
       element.attr('aria-disabled', !!isDisabled);
     }
 
-    // Draw the ticks with canvas. 
+    // Draw the ticks with canvas.
     // The alternative to drawing ticks with canvas is to draw one element for each tick,
     // which could quickly become a performance bottleneck.
     var tickCanvas, tickCtx;
@@ -2386,7 +2386,7 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
     function setSliderPercent(percent) {
       activeTrack.css('width', (percent * 100) + '%');
       thumbContainer.css(
-        $materialEffects.TRANSFORM, 
+        $materialEffects.TRANSFORM,
         'translateX(' + getSliderDimensions().width * percent + 'px)'
       );
       element.toggleClass('slider-min', percent === 0);
@@ -2398,7 +2398,7 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
      */
     var isSliding = false;
     function onInput(ev) {
-      if (!isSliding && ev.eventType === Hammer.INPUT_START && 
+      if (!isSliding && ev.eventType === Hammer.INPUT_START &&
           !element[0].hasAttribute('disabled')) {
 
         isSliding = true;
