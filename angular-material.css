@@ -1637,7 +1637,7 @@ material-ink-bar {
 material-backdrop {
   z-index: 7;
   background-color: rgba(0, 0, 0, 0);
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   right: 0;
@@ -1862,7 +1862,7 @@ material-button {
   -webkit-align-items: center;
   -moz-align-items: center;
   align-items: center;
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   bottom: 0;
