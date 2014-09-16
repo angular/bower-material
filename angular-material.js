@@ -2685,7 +2685,7 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
       refreshSliderDimensions();
       ngModelRender();
       redrawTicks();
-    });
+    }, false);
     angular.element($window).on('resize', onWindowResize);
 
     scope.$on('$destroy', function() {

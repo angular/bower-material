@@ -2232,10 +2232,10 @@ material-slider {
     right: 0;
     height: 100%;
     background: #C8C8C8; }
-    material-slider .slider-track.slider-track-fill {
-      background: #03A9F4;
-      -webkit-transition: width 0.05s linear;
-      transition: width 0.05s linear; }
+  material-slider .slider-track-fill {
+    background: #03A9F4;
+    -webkit-transition: width 0.05s linear;
+    transition: width 0.05s linear; }
   material-slider .slider-track-ticks {
     position: absolute;
     left: 0;
