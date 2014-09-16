@@ -5,7 +5,7 @@
  * v0.0.2
  */
 (function(){
-angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.position', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.form","material.components.icon","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
+angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.position', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.form","material.components.icon","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.subheader","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
 angular.module('ngAnimateSequence', ['ngAnimate'])
 
   .factory('$$animateAll', function() {
@@ -699,6 +699,28 @@ var Util = {
   },
 
   /**
+   * Returns a function, that, as long as it continues to be invoked, will not
+   * be triggered. The function will be called after it stops being called for
+   * N milliseconds.
+   * @param fn Function function to call
+   * @param wait Number number of ms to wait before calling function
+   * @param immediate Boolean causes the function to be called on the leading instead of trailing
+   * @returns {Function}
+   */
+  debounce: function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+      var context = this, args = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      }, wait);
+      if (immediate) func.apply(context, args);
+    };
+  },
+
+  /**
    * Checks if two elements have the same parent
    */
   elementIsSibling: function elementIsSibling(element, otherElement) {
@@ -776,40 +798,26 @@ var Util = {
     }
 
   },
-  
-  // Returns a function, that, as long as it continues to be invoked, will not
-  // be triggered. The function will be called after it stops being called for
-  // N milliseconds. If `immediate` is passed, trigger the function on the
-  // leading edge, instead of the trailing.
-  debounce: function debounce(func, wait, immediate) {
-    var timeout;
-    return function() {
-      var context = this, args = arguments;
-      clearTimeout(timeout);
-      timeout = setTimeout(function() {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
-      }, wait);
-      if (immediate && !timeout) func.apply(context, args);
-    };
+
+  /**
+   * Wraps an element with a tag
+   *
+   * @param el element to wrap
+   * @param tag tag to wrap it with
+   * @param [className] optional class to apply to the wrapper
+   * @returns new element
+   *
+   */
+  wrap: function(el, tag, className) {
+    if(el.hasOwnProperty(0)) { el = el[0]; }
+    var wrapper = document.createElement(tag);
+    wrapper.className += className;
+    wrapper.appendChild(el.parentNode.replaceChild(wrapper, el));
+    return angular.element(wrapper);
   }
-    
 
 };
 
-/* 
- * Since removing jQuery from the demos, some code that uses `element.focus()` is broken.
- *
- * We need to add `element.focus()`, because it's testable unlike `element[0].focus`.
- *
- * TODO(ajoslin): This should be added in a better place later.
- */
-angular.element.prototype.focus = angular.element.prototype.focus || function() {
-  if (this.length) {
-    this[0].focus();
-  }
-  return this;
-};
 
 var Constant = {
   ARIA : {
@@ -817,6 +825,7 @@ var Constant = {
       BUTTON : 'button',
       CHECKBOX : 'checkbox',
       DIALOG : 'dialog',
+      HEADING : 'heading',
       LIST : 'list',
       LIST_ITEM : 'listitem',
       RADIO : 'radio',
@@ -1257,6 +1266,260 @@ function InkRippleService($window, $$rAF, $materialEffects, $timeout) {
 
 /**
  * @ngdoc module
+ * @name material.components.sticky
+ * @description
+ *
+ * Sticky effects for material
+ */
+
+angular.module('material.components.sticky', [])
+.factory('$materialSticky', ['$window', '$document', '$$rAF', MaterialSticky])
+.directive('materialSticky', ['$materialSticky', MaterialStickyDirective]);
+
+/**
+ * @ngdoc factory
+ * @name $materialSticky
+ * @module material.components.sticky
+ *
+ * @description
+ * The `$materialSticky`service provides a mixin to make elements sticky.
+ *
+ * @returns A `$materialSticky` function that takes `$el` as an argument.
+ */
+
+function MaterialSticky($window, $document, $$rAF) {
+  var browserStickySupport;
+
+  /**
+   * Registers an element as sticky, used internally by directives to register themselves
+   */
+
+
+  function registerStickyElement(scope, $el) {
+    scope.$on('$destroy', function() { $deregister($el); });
+    $el = Util.wrap($el, 'div', 'sticky-container'),
+    $container = $el.controller('materialContent').$element;
+
+    if(!$container) { throw new Error('$materialSticky used outside of material-contant'); }
+
+    var $sticky = $container.data('$sticky') || {};
+    var elements = $sticky.elements || [];
+    elements.push($el);
+    $sticky.elements = elements;
+
+    // check sticky support on first register
+    if(browserStickySupport === undefined) {
+      browserStickySupport = checkStickySupport($el);
+    } else if(browserStickySupport) {
+      $el.css({position: browserStickySupport, top: '0px'});
+    }
+
+    var debouncedCheck = $sticky.check || $$rAF.debounce(angular.bind(undefined, checkElements, $container));
+    $sticky.check = debouncedCheck;
+
+
+    if(!browserStickySupport) {
+      if(elements.length == 1) {
+        $container.data('$sticky', $sticky);
+        $container.on('scroll',  debouncedCheck);
+      }
+      scanElements($container);
+    }
+
+    return $deregister;
+
+    // Deregister a sticky element, useful for $destroy event.
+    function $deregister($el) {
+      var innerElements = elements.map(function(el) { return el.children(0); });
+      var index = innerElements.indexOf($el);
+      if(index !== -1) {
+        elements[index].replaceWith($el);
+        elements.splice(index, 1);
+        if(elements.length === 0) {
+          $container.off('scroll', $sticky.check);
+        }
+      }
+    }
+  }
+  return registerStickyElement;
+
+  function checkStickySupport($el) {
+    var stickyProps = ['sticky', '-webkit-sticky'];
+    for(var i = 0; i < stickyProps.length; ++i) {
+      $el.css({position: stickyProps[i], top: '0px'});
+      if($window.getComputedStyle($el[0]).position == stickyProps[i]) {
+        return stickyProps[i];
+      }
+    }
+    $el.css({position: undefined, top: undefined});
+    return false;
+  }
+
+
+  /* *
+   * Function to prepare our lookups so we can go quick!
+   * */
+
+  function scanElements($container) {
+    var $sticky = $container.data('$sticky');
+    var elements = $sticky.elements;
+    if(browserStickySupport) return; // don't need to do anything if we have native sticky
+    targetElementIndex = 0;
+    // Sort based on position in the window, and assign an active index
+    orderedElements = elements.sort(function(a, b) {
+      return rect(a).top - rect(b).top;
+    });
+
+    $sticky.orderedElements = orderedElements;
+
+
+    // Iterate over our sorted elements and find the one that is active
+    (function findTargetElement() {
+      var scroll = $container.prop('scrollTop');
+      for(var i = 0; i < orderedElements.length ; ++i) {
+        if(rect(orderedElements[i]).bottom > 0) {
+          targetElementIndex = i > 0 ? i - 1 : i;
+        } else {
+          targetElementIndex = i;
+        }
+      }
+      $sticky.targetIndex = targetElementIndex;
+    })();
+  }
+
+  function checkElements($container) {
+    var next; // pointer to next target
+
+    var $sticky = $container.data('$sticky');
+
+    var targetElementIndex = $sticky.targetIndex;
+    var orderedElements = $sticky.orderedElements;
+
+    var content = targetElement().children(0);
+    var contentRect = rect(content);
+    var targetRect = rect(targetElement());
+
+    var scrollingDown = false;
+    var currentScroll = $container.prop('scrollTop');
+    var lastScroll = $sticky.lastScroll;
+
+    if(currentScroll > (lastScroll || 0)) {
+      scrollingDown = true;
+    }
+    $sticky.lastScroll = currentScroll;
+
+    var stickyActive = content.attr('material-sticky-active');
+
+
+    // If we are scrollingDown, sticky, and are being pushed off screen by a different element, increment
+    if(scrollingDown && stickyActive && contentRect.bottom <= 0 && targetElementIndex < orderedElements.length - 1) {
+      targetElement().children(0).removeAttr('material-sticky-active');
+      targetElement().css({height: null});
+      incrementElement();
+      return;
+
+    //If we are going up, and our normal position would be rendered not sticky, un-sticky ourselves
+    } else if(!scrollingDown && stickyActive && targetRect.top > 0) {
+      targetElement().children(0).removeAttr('material-sticky-active');
+      targetElement().css({height: null});
+      incrementElement(-1);
+      content.attr('material-sticky-active', true);
+      content.css({transform: 'translate3d(0, ' + -1*contentRect.height + 'px, 0'});
+      content.data('translatedHeight', -1*contentRect.height);
+      targetElement().css({height: contentRect.height});
+      return;
+
+    // If we are going off screen and haven't been made sticky yet, go sticky
+    } else if(scrollingDown && contentRect.top <= 0 && !stickyActive) {
+      content.attr('material-sticky-active', true);
+      targetElement().css({height: contentRect.height});
+      contentRect = rect(content);
+      next = targetElement(+1);
+      var offset = 0;
+      if(next) {
+        nextRect = rect(next.children(0));
+        if(rectsAreTouching(contentRect, nextRect)) {
+          offset = nextRect.top - contentRect.bottom;
+        }
+      }
+      offset = Math.min(offset, 0);
+      content.css({transform: 'translate3d(0, ' + offset + 'px, 0'});
+      content.data('translatedHeight', offset);
+      return;
+    } 
+
+    var nextRect, offsetAmount, currentTop, translateAmt;
+
+    // check if we need to push
+    if(scrollingDown) {
+      next = targetElement(+1);
+      if(next) {
+        nextRect = rect(next.children(0));
+        if(rectsAreTouching(contentRect, nextRect)) {
+          offsetAmount = contentRect.bottom - nextRect.top;
+          currentTop = content.data('translatedHeight') || 0;
+          translateAmt = currentTop - offsetAmount;
+          content.css({transform: 'translate3d(0, ' + translateAmt + 'px, 0'});
+          content.data('translatedHeight', translateAmt);
+        }
+      }
+    // Check if we need to pull
+    } else if(targetElementIndex < orderedElements.length - 1 && contentRect.top < 0) {
+      nextRect = rect(targetElement(+1).children(0));
+      offsetAmount = contentRect.bottom - nextRect.top;
+      currentTop = content.data('translatedHeight') || 0;
+      translateAmt = Math.min(currentTop - offsetAmount, 0);
+      content.css({transform: 'translate3d(0, ' + translateAmt + 'px, 0'});
+      content.data('translatedHeight', translateAmt);
+    }
+
+    function incrementElement(inc) {
+      inc = inc || 1;
+      targetElementIndex += inc;
+      content = targetElement().children(0);
+      contentRect = rect(content);
+      $sticky.targetIndex = targetElementIndex;
+    }
+
+    function targetElement(indexModifier) {
+      indexModifier = indexModifier || 0;
+      if(targetElementIndex === undefined) return undefined;
+      return orderedElements[targetElementIndex + indexModifier];
+    }
+  }
+
+  function rectsAreTouching(first, second) {
+    return first.bottom >= second.top;
+  }
+
+  // Helper functions to get position of element
+
+  function rect($el) {
+    return $el.hasOwnProperty(0) ? $el[0].getBoundingClientRect() : $el.getBoundingClientRect();
+  }
+
+
+}
+
+/**
+ * @ngdoc directive
+ * @name materialSticky
+ * @module material.components.sticky
+ *
+ * @description
+ * Directive to consume the $materialSticky service
+ *
+ * @returns A material-sticky directive
+ */
+function MaterialStickyDirective($materialSticky) {
+  return {
+    restrict: 'A',
+    link: $materialSticky
+  };
+}
+
+/**
+ * @ngdoc module
  * @name material.components.buttons
  * @description
  *
@@ -1578,7 +1841,9 @@ angular.module('material.components.content', [
 function materialContentDirective() {
   return {
     restrict: 'E',
-    controller: angular.noop,
+    controller: function($scope, $element) {
+      this.$element = $element;
+    },
     link: function($scope, $element, $attr) {
       $scope.$broadcast('$materialContentLoaded', $element);
     }
@@ -1998,8 +2263,8 @@ angular.module('material.components.list', [])
  *      <img ng-src="{{item.face}}" class="face" alt="{{item.who}}">
  *    </div>
  *    <div class="material-tile-content">
- *      <h2>{{item.what}}</h2>
- *      <h3>{{item.who}}</h3>
+ *      <h3>{{item.what}}</h3>
+ *      <h4>{{item.who}}</h4>
  *      <p>
  *        {{item.notes}}
  *      </p>
@@ -2558,312 +2823,115 @@ function materialSidenavDirective($timeout) {
 /**
  * @ngdoc module
  * @name material.components.slider
+ * @description Slider module!
  */
-angular.module('material.components.slider', [
-  'material.animations'
-])
-.directive('materialSlider', [
-  SliderDirective
-]);
+angular.module('material.components.slider', [])
+  .directive('materialSlider', [
+    '$window', 
+    materialSliderDirective 
+  ]);
 
 /**
  * @ngdoc directive
  * @name materialSlider
  * @module material.components.slider
  * @restrict E
+ *
  * @description
- * The `<material-slider>` component allows the user to choose from a range of
- * values.
+ * The `material-slider` directive creates a slider bar that you can use.
  *
- * It has two modes: 'normal' mode, where the user slides between a wide range
- * of values, and 'discrete' mode, where the user slides between only a few
- * select values.
+ * Simply put a native `<input type="range">` element inside of a
+ * `<material-slider>` container.
  *
- * To enable discrete mode, add the `discrete` attribute to a slider, 
- * and use the `step` attribute to change the distance between
- * values the user is allowed to pick.
+ * On the range input, all HTML5 range attributes are supported.
  *
  * @usage
- * <h4>Normal Mode</h4>
  * <hljs lang="html">
- * <material-slider ng-model="myValue" min="5" max="500">
+ * <material-slider>
+ *   <input type="range" ng-model="slideValue" min="0" max="100">
  * </material-slider>
  * </hljs>
- * <h4>Discrete Mode</h4>
- * <hljs lang="html">
- * <material-slider discrete ng-model="myDiscreteValue" step="10" min="10" max="130">
- * </material-slider>
- * </hljs>
- *
- * @param {boolean=} discrete Whether to enable discrete mode.
- * @param {number=} step The distance between values the user is allowed to pick. Default 1.
- * @param {number=} min The minimum value the user is allowed to pick. Default 0.
- * @param {number=} max The maximum value the user is allowed to pick. Default 100.
- */ 
-function SliderDirective() {
-  var hasTouch = !!('ontouchend' in document);
-  var POINTERDOWN_EVENT = hasTouch ? 'touchstart' : 'mousedown';
-  var POINTERUP_EVENT = hasTouch ? 'touchend touchcancel' : 'mouseup mouseleave';
-  var POINTERMOVE_EVENT = hasTouch ? 'touchmove' : 'mousemove';
+ */
+function materialSliderDirective($window) {
+
+  var MIN_VALUE_CSS = 'material-slider-min';
+  var ACTIVE_CSS = 'material-active';
+
+  function rangeSettings(rangeEle) {
+    return {
+      min: parseInt( rangeEle.min !== "" ? rangeEle.min : 0, 10 ),
+      max: parseInt( rangeEle.max !== "" ? rangeEle.max : 100, 10 ),
+      step: parseInt( rangeEle.step !== "" ? rangeEle.step : 1, 10 )
+    };
+  }
 
   return {
-    scope: {},
-    require: ['?ngModel', 'materialSlider'],
-    controller: [
-      '$scope', 
-      '$element', 
-      '$attrs', 
-      '$$rAF', 
-      '$timeout', 
-      '$window', 
-      '$materialEffects', 
-      SliderController
-    ],
-    template:
-      '<div class="slider-track-container">' +
-        '<div class="slider-track">' +
-        '</div>' +
-        '<div class="slider-track slider-track-fill">' +
-        '</div>' +
-        '<div class="slider-track-ticks">' +
-        '</div>' +
-      '</div>' +
-      '<div class="slider-thumb-container">' +
-        '<div class="slider-focus-thumb">' +
-        '</div>' +
-        '<div class="slider-focus-ring">' +
-        '</div>' +
-        '<div class="slider-sign">' +
-          '<span class="slider-thumb-text" ng-bind="modelValue">' +
-          '</span>' +
-        '</div>' +
-        '<div class="slider-disabled-thumb">' +
-        '</div>' +
-        '<div class="slider-thumb">' +
-        '</div>' +
-      '</div>',
-    link: postLink
+    restrict: 'E',
+    scope: true,
+    transclude: true,
+    template: '<div class="material-track" ng-transclude></div>',
+    link: link
   };
-    
-  function postLink(scope, element, attr, ctrls) {
-    var ngModelCtrl = ctrls[0] || {
-      // Mock ngModelController if it doesn't exist to give us 
-      // the minimum functionality needed
-      $setViewValue: function(val) {
-        this.$viewValue = val;
-        this.$viewChangeListeners.forEach(function(cb) { cb(); });
-      },
-      $parsers: [], 
-      $formatters: [], 
-      $viewChangeListeners: []
-    };
 
-    var sliderCtrl = ctrls[1];
-    sliderCtrl.init(ngModelCtrl);
+  // **********************************************************
+  // Private Methods
+  // **********************************************************
+
+  function link(scope, element, attr) {
+    var input = element.find('input');
+    var ngModelCtrl = angular.element(input).controller('ngModel');
+
+    if(!input || !ngModelCtrl || input[0].type !== 'range') return;
+
+    var rangeEle = input[0];
+    var trackEle = angular.element( element[0].querySelector('.material-track') );
+
+    trackEle.append('<div class="material-fill"><div class="material-thumb"></div></div>');
+    var fillEle = trackEle[0].querySelector('.material-fill');
+
+    if(input.attr('step')) {
+      var settings = rangeSettings(rangeEle);
+      var tickCount = (settings.max - settings.min) / settings.step;
+      var tickMarkersEle = angular.element('<div class="material-tick-markers"></div>');
+      for(var i=0; i<tickCount; i++) {
+        tickMarkersEle.append('<div class="material-tick"></div>');
+      }
+      if (tickCount > 0) {
+        tickMarkersEle.addClass('visible');
+      }
+      trackEle.append(tickMarkersEle);
+    }
+
+    input.on('mousedown touchstart', function(e){
+      trackEle.addClass(ACTIVE_CSS);
+    });
+
+    input.on('mouseup touchend', function(e){
+      trackEle.removeClass(ACTIVE_CSS);
+    });
+
+
+    function render() {
+      var settings = rangeSettings(rangeEle);
+      var adjustedValue = parseInt(ngModelCtrl.$viewValue, 10) - settings.min;
+      var fillRatio = (adjustedValue / (settings.max - settings.min));
+
+      fillEle.style.width = (fillRatio * 100) + '%';
+
+      if(fillRatio <= 0) {
+        element.addClass(MIN_VALUE_CSS);
+      } else {
+        element.removeClass(MIN_VALUE_CSS);
+      }
+
+    }
+
+    scope.$watch( function () { return ngModelCtrl.$viewValue; }, render );
+
   }
+
 }
 
-/** 
- * We use a controller for all the logic so that we can expose a few
- * things to unit tests
- */
-function SliderController(scope, element, attr, $$rAF, $timeout, $window, $materialEffects) {
-
-  this.init = function init(ngModelCtrl) {
-    var thumb = angular.element(element[0].querySelector('.slider-thumb'));
-    var thumbContainer = thumb.parent();
-    var trackContainer = angular.element(element[0].querySelector('.slider-track-container'));
-    var activeTrack = angular.element(element[0].querySelector('.slider-track-fill'));
-    var tickContainer = angular.element(element[0].querySelector('.slider-track-ticks'));
-
-    // Default values, overridable by attrs
-    attr.min ? attr.$observe('min', updateMin) : updateMin(0);
-    attr.max ? attr.$observe('max', updateMax) : updateMax(100);
-    attr.step ? attr.$observe('step', updateStep) : updateStep(1);
-
-    element.attr('tabIndex', 0);
-    element.on('keydown', keydownListener);
-
-    var hammertime = new Hammer(element[0], {
-      recognizers: [
-        [Hammer.Pan, { direction: Hammer.DIRECTION_HORIZONTAL }]
-      ]
-    });
-    hammertime.on('hammer.input', onInput);
-    hammertime.on('panstart', onPanStart);
-    hammertime.on('pan', onPan);
-
-    // On resize, recalculate the slider's dimensions and re-render
-    var onWindowResize = $$rAF.debounce(function() {
-      refreshSliderDimensions();
-      ngModelRender();
-      drawTicks();
-    });
-    angular.element($window).on('resize', onWindowResize);
-
-    scope.$on('$destroy', function() {
-      angular.element($window).off('resize', onWindowResize);
-      hammertime.destroy();
-    });
-
-    ngModelCtrl.$render = ngModelRender;
-    ngModelCtrl.$viewChangeListeners.push(ngModelRender);
-    ngModelCtrl.$formatters.push(minMaxValidator);
-    ngModelCtrl.$formatters.push(stepValidator);
-
-    /**
-     * Attributes
-     */
-    var min;
-    var max;
-    var step;
-    function updateMin(value) { min = parseFloat(value); }
-    function updateMax(value) { max = parseFloat(value); }
-    function updateStep(value) {
-      step = parseFloat(value); 
-      drawTicks();
-    }
-
-    // Draw the ticks with canvas. 
-    // Canvas is the alternative is drawing ticks with one element per tick,
-    // which could be a performance bottleneck with 20+ ticks.
-    var tickCanvas, tickCtx;
-    function drawTicks() {
-      if (!angular.isDefined(attr.discrete)) return;
-
-      var numSteps = Math.floor( (max - min) / step );
-      if (!tickCanvas) {
-        tickCanvas = angular.element('<canvas style="position:absolute;">');
-        tickContainer.append(tickCanvas);
-        tickCtx = tickCanvas[0].getContext('2d');
-        tickCtx.fillStyle = 'black';
-      }
-      var dimensions = getSliderDimensions();
-      tickCanvas[0].width = dimensions.width;
-      tickCanvas[0].height = dimensions.height;
-
-      var distance;
-      for (var i = 0; i <= numSteps; i++) {
-        distance = Math.floor(dimensions.width * (i / numSteps));
-        tickCtx.fillRect(distance - 1, 0, 2, dimensions.height);
-      }
-    }
-
-
-    /**
-     * Refreshing Dimensions
-     */
-    var sliderDimensions = {};
-    var debouncedRefreshDimensions = Util.debounce(refreshSliderDimensions, 5000);
-    refreshSliderDimensions();
-    function refreshSliderDimensions() {
-      sliderDimensions = trackContainer[0].getBoundingClientRect();
-    }
-    function getSliderDimensions() {
-      debouncedRefreshDimensions();
-      return sliderDimensions;
-    }
-
-    /**
-     * left/right arrow listener
-     */
-    function keydownListener(ev) {
-      var changeAmount;
-      if (ev.which === Constant.KEY_CODE.LEFT_ARROW) {
-        changeAmount = -step;
-      } else if (ev.which === Constant.KEY_CODE.RIGHT_ARROW) {
-        changeAmount = step;
-      }
-      if (changeAmount) {
-        if (ev.metaKey || ev.ctrlKey || ev.altKey) {
-          changeAmount *= 4;
-        }
-        ev.preventDefault();
-        scope.$evalAsync(function() {
-          setModelValue(ngModelCtrl.$viewValue + changeAmount);
-        });
-      }
-    }
-
-    /**
-     * ngModel setters and validators
-     */
-    function setModelValue(value) {
-      ngModelCtrl.$setViewValue( minMaxValidator(stepValidator(value)) );
-    }
-    function ngModelRender() {
-      var percent = (ngModelCtrl.$viewValue - min) / (max - min);
-      scope.modelValue = ngModelCtrl.$viewValue;
-      setSliderPercent(percent);
-    }
-
-    function minMaxValidator(value) {
-      if (angular.isNumber(value)) {
-        return Math.max(min, Math.min(max, value));
-      }
-    }
-    function stepValidator(value) {
-      if (angular.isNumber(value)) {
-        return Math.round(value / step) * step;
-      }
-    }
-
-    /**
-     * @param percent 0-1
-     */
-    function setSliderPercent(percent) {
-      activeTrack.css('width', (percent * 100) + '%');
-      thumbContainer.css(
-        $materialEffects.TRANSFORM, 
-        'translateX(' + getSliderDimensions().width * percent + 'px)'
-      );
-      element.toggleClass('slider-min', percent === 0);
-    }
-
-
-    /**
-     * Slide listeners
-     */
-    var isSliding = false;
-    function onInput(ev) {
-      if (!isSliding && ev.eventType === Hammer.INPUT_START && 
-          !element[0].hasAttribute('disabled')) {
-
-        isSliding = true;
-        element.addClass('active');
-        element[0].focus();
-        refreshSliderDimensions();
-        doSlide(ev.center.x);
-
-      } else if (isSliding && ev.eventType === Hammer.INPUT_END) {
-        isSliding = false;
-        element.removeClass('panning active');
-      }
-    }
-    function onPanStart() {
-      if (!isSliding) return;
-      element.addClass('panning');
-    }
-    function onPan(ev) {
-      if (!isSliding) return;
-      doSlide(ev.center.x);
-      ev.preventDefault();
-    }
-
-    /**
-     * Expose for testing
-     */
-    this._onInput = onInput;
-    this._onPanStart = onPanStart;
-    this._onPan = onPan;
-
-    function doSlide(x) {
-      var percent = (x - sliderDimensions.left) / (sliderDimensions.width);
-      scope.$evalAsync(function() { setModelValue(min + percent * (max - min)); });
-    }
-
-  };
-}
 
 /**
  * @ngdoc module
@@ -2941,6 +3009,54 @@ function MaterialSwitch(checkboxDirectives, radioButtonDirectives) {
       checkboxDirective.link(scope, thumb, attr, ngModelCtrl);
     };
   }
+}
+
+/**
+ * @ngdoc module
+ * @name material.components.subheader
+ * @description
+ * SubHeader module
+ */
+angular.module('material.components.subheader', ['material.components.sticky'])
+
+.directive('materialSubheader', [
+  materialSubheaderDirective
+]);
+
+/**
+ * @ngdoc directive
+ * @name materialSubheader
+ * @module material.components.subheader
+ *
+ * @restrict E
+ *
+ * @description
+ * The `<material-subheader>` directive is a subheader for a section
+ *
+ * @usage
+ * <hljs lang="html">
+ * <material-subheader>Online Friends</material-subheader>
+ * </hljs>
+ */
+
+function materialSubheaderDirective() {
+  return {
+    restrict: 'E',
+    compile: function($el, $attr) {
+      var template = [
+        '<h2 material-sticky class="material-subheader">',
+          $el.html(),
+        '</h2>'
+      ].join('');
+
+      $el.html(template);
+
+
+      $el.attr({
+        'role' : $attr.role || Constant.ARIA.ROLE.HEADING
+      });
+    }
+  };
 }
 
 /**
