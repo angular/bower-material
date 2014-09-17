@@ -2838,7 +2838,7 @@ function linkTabPagination(scope, element, tabsCtrl, $q, $materialEffects ) {
     }
   };
 
-  scope.$on(Constant.EVENTS.FOCUS_CHANGED, function() {
+  scope.$on( EVENT.FOCUS_CHANGED, function() {
 
   });
 
@@ -2848,6 +2848,8 @@ function linkTabPagination(scope, element, tabsCtrl, $q, $materialEffects ) {
    * When the window resizes [`resize`] or the tabs are added/removed
    * [$materialTabsChanged], then calculate pagination-width and
    * update both the current page (if needed) and the tab headers width...
+   *
+   * @returns Promise that is resolved when the pagination transition finishes
    */
   function updatePagination() {
     var dfd = $q.defer();
@@ -3323,7 +3325,7 @@ function TabsController($scope, $attrs, $materialComponentRegistry, $timeout ) {
     onSelectedChange.queued = true;
 
     $scope.$evalAsync(function() {
-      $scope.$broadcast(Constant.EVENTS.TABS_CHANGED, selected);
+      $scope.$broadcast(EVENT.TABS_CHANGED, selected);
       onSelectedChange.queued = false;
     });
   }
@@ -3351,7 +3353,7 @@ function TabsController($scope, $attrs, $materialComponentRegistry, $timeout ) {
     if ( focusIndex != list.indexOf(selected)) {
 
       // Announce focus change
-      $scope.$broadcast(Constant.EVENTS.FOCUS_CHANGED, focusIndex);
+      $scope.$broadcast(EVENT.FOCUS_CHANGED, focusIndex);
     }
     return focusIndex;
   }
@@ -3366,7 +3368,7 @@ function TabsController($scope, $attrs, $materialComponentRegistry, $timeout ) {
 
     if ( focusIndex != list.indexOf(selected)) {
       // Announce focus change
-      $scope.$broadcast(Constant.EVENTS.FOCUS_CHANGED, focusIndex);
+      $scope.$broadcast(EVENT.FOCUS_CHANGED, focusIndex);
     }
 
     return focusIndex;
@@ -3770,9 +3772,9 @@ function TabsDirective($q, $window, $timeout, $compile, $materialEffects, $$rAF,
               angular.element($window).off('resize', onWindowResize);
             };
 
-        angular.element($window).on( Constant.EVENTS.WINDOW_RESIZE, onWindowResize);
-        scope.$on( Constant.EVENTS.TABS_CHANGED, updateAll );
-        scope.$on( Constant.EVENTS.SCOPE_DESTROY,onWindowRelease );
+        angular.element($window).on( EVENT.WINDOW_RESIZE, onWindowResize);
+        scope.$on( EVENT.TABS_CHANGED, updateAll );
+        scope.$on( EVENT.SCOPE_DESTROY,onWindowRelease );
 
         transcludeHeaderItems();
         transcludeContentItems();
