@@ -1657,6 +1657,7 @@ material-backdrop {
     opacity: 1; }
 
 material-content {
+  display: block;
   overflow: auto;
   -webkit-overflow-scrolling: touch; }
   material-content[scroll-y] {

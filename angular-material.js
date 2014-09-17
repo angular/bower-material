@@ -471,6 +471,10 @@ angular.module('material.animations', [
  */
 function MaterialEffects($rootElement, $position, $$rAF, $sniffer) {
 
+  var styler = angular.isDefined( $rootElement[0].animate ) ? 'webAnimations' :
+               angular.isDefined( window['TweenMax'] || window['TweenLite'] ) ? 'gsap'   :
+               angular.isDefined( window['jQuery'] ) ? 'jQuery' : 'default';
+
   var webkit = /webkit/i.test($sniffer.vendorPrefix);
   function vendorProperty(name) {
     return webkit ? 
@@ -501,7 +505,6 @@ function MaterialEffects($rootElement, $position, $$rAF, $sniffer) {
   // **********************************************************
   // API Methods
   // **********************************************************
-
   /**
    *
    */
@@ -510,10 +513,10 @@ function MaterialEffects($rootElement, $position, $$rAF, $sniffer) {
 
     var startPos;
     if (clickElement) {
-      var clickPos = $position.offset(clickElement);
+      var clickRect = clickElement[0].getBoundingClientRect();
       startPos = translateString(
-        clickPos.left - element[0].offsetWidth / 2,
-        clickPos.top - element[0].offsetHeight / 2, 
+        clickRect.left - element[0].offsetWidth / 2,
+        clickRect.top - element[0].offsetHeight / 2, 
         0
       ) + ' scale(0.2)';
     } else {
@@ -573,26 +576,6 @@ function MaterialEffects($rootElement, $position, $$rAF, $sniffer) {
 
   function translateString(x, y, z) {
     return 'translate3d(' + Math.floor(x) + 'px,' + Math.floor(y) + 'px,' + Math.floor(z) + 'px)';
-  }
-
-
-  /**
-   * Support values such as 0.65 secs or 650 msecs
-   */
-  function safeDuration(value) {
-    var duration = isNaN(value) ? 0 : Number(value);
-    return (duration < 1.0) ? (duration * 1000) : duration;
-  }
-
-  /**
-   * Convert all values to decimal;
-   * eg 150 msecs -> 0.15sec
-   */
-  function safeVelocity(value) {
-    var duration = isNaN(value) ? 0 : Number(value);
-    return (duration > 100) ? (duration / 1000) :
-      (duration > 10 ) ? (duration / 100) :
-        (duration > 1  ) ? (duration / 10) : duration;
   }
 
 }
@@ -2254,15 +2237,16 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
     hammertime.on('pan', onPan);
 
     // On resize, recalculate the slider's dimensions and re-render
-    var onWindowResize = $$rAF.debounce(function() {
+    var updateAll = $$rAF.debounce(function() {
       refreshSliderDimensions();
       ngModelRender();
       redrawTicks();
-    }, false);
-    angular.element($window).on('resize', onWindowResize);
+    });
+    updateAll();
+    angular.element($window).on('resize', updateAll);
 
     scope.$on('$destroy', function() {
-      angular.element($window).off('resize', onWindowResize);
+      angular.element($window).off('resize', updateAll);
       hammertime.destroy();
       stopDisabledWatch();
     });
@@ -3555,27 +3539,30 @@ function TabsDirective($q, $window, $timeout, $compile, $materialEffects, $$rAF,
         var updateInk = linkTabInk(scope, element, tabsCtrl, $q, $materialEffects);
         var updatePagination = linkTabPagination( scope, element, tabsCtrl, $q, $materialEffects );
 
-        var updateAll =  function() {
+        var updateAll = function() {
+          scope.$evalAsync(function() {
+            updatePagination().then( function(){
+              tabsCtrl.focusSelected();
 
-              updatePagination().then( function(){
-                tabsCtrl.focusSelected();
+              // Make sure the ink positioning is correct
+              $timeout( updateInk );
+            });
 
-                // Make sure the ink positioning is correct
-                $timeout( updateInk );
-              });
-
-              // Make sure ink changes start just after pagination transitions have started...
-              $$rAF( updateInk );
-            };
+            // Make sure ink changes start just after pagination transitions have started...
+            $$rAF( updateInk );
+          });
+        };
 
         var onWindowResize = $$rAF.debounce( updateAll );
         var onWindowRelease = function() {
-              angular.element($window).off('resize', onWindowResize);
-            };
+          angular.element($window).off('resize', onWindowResize);
+        };
+
+        $$rAF(updateAll);
 
         angular.element($window).on( EVENT.WINDOW_RESIZE, onWindowResize);
         scope.$on( EVENT.TABS_CHANGED, updateAll );
-        scope.$on( EVENT.SCOPE_DESTROY,onWindowRelease );
+        scope.$on( EVENT.SCOPE_DESTROY, onWindowRelease );
 
         transcludeHeaderItems();
         transcludeContentItems();
@@ -4294,10 +4281,7 @@ angular.module('material.decorators', [])
      * @param {function} callback function to debounce
      * @param {boolean=} invokeApply If set to false skips dirty checking, otherwise will invoke fn within the $apply block.
      */
-    $$rAF.debounce = function(cb, invokeApply) {
-      if (arguments.length === 1) {
-        invokeApply = true;
-      }
+    $$rAF.debounce = function(cb) {
       var queueArgs, alreadyQueued, queueCb, context;
       return function debounced() {
         queueArgs = arguments;
@@ -4306,11 +4290,7 @@ angular.module('material.decorators', [])
         if (!alreadyQueued) {
           alreadyQueued = true;
           $$rAF(function() {
-            invokeApply ? 
-              $rootScope.$apply(function() {
-                queueCb.apply(context, queueArgs);
-              }) :
-                queueCb.apply(context, queueArgs);
+            queueCb.apply(context, queueArgs);
             alreadyQueued = false;
           });
         }
@@ -4586,6 +4566,7 @@ function materialCompilerService($q, $http, $injector, $compile, $controller, $t
     angular.extend(resolve, locals);
 
     if (templateUrl) {
+      console.log(templateUrl, !!$templateCache.get(templateUrl));
       resolve.$template = $http.get(templateUrl, {cache: $templateCache})
         .then(function(response) {
           return response.data;
