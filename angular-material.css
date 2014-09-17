@@ -1881,6 +1881,10 @@ material-button {
     -webkit-transform: translate3d(0, 0, 0) scale(1);
     transform: translate3d(0, 0, 0) scale(1);
     opacity: 1; }
+  .material-dialog-container.ng-leave.ng-leave-active {
+    -webkit-transform: translate3d(0, 100%, 0) scale(0.5);
+    transform: translate3d(0, 100%, 0) scale(0.5);
+    opacity: 0; }
 
 material-dialog {
   min-width: 240px;

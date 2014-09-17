@@ -486,7 +486,6 @@ function MaterialEffects($rootElement, $position, $$rAF, $sniffer) {
   // Publish API for effects...
   return self = {
     popIn: popIn,
-    popOut: popOut,
 
     /* Constants */
     TRANSITIONEND_EVENT: 'transitionend' + (webkit ? ' webkitTransitionEnd' : ''),
@@ -515,8 +514,8 @@ function MaterialEffects($rootElement, $position, $$rAF, $sniffer) {
     if (clickElement) {
       var clickRect = clickElement[0].getBoundingClientRect();
       startPos = translateString(
-        clickRect.left - element[0].offsetWidth / 2,
-        clickRect.top - element[0].offsetHeight / 2, 
+        clickRect.left - element[0].offsetWidth,
+        clickRect.top - element[0].offsetHeight, 
         0
       ) + ' scale(0.2)';
     } else {
@@ -545,29 +544,6 @@ function MaterialEffects($rootElement, $position, $$rAF, $sniffer) {
       }
     }
   }
-
-  /**
-   *
-   *
-   */
-  function popOut(element, parentElement, done) {
-    var endPos = $position.positionElements(parentElement, element, 'bottom-center');
-
-    element
-      .css(self.TRANSFORM, 
-           translateString(endPos.left, endPos.top, 0) + ' scale(0.5)')
-      .css('opacity', 0)
-      .on(self.TRANSITIONEND_EVENT, finished);
-
-    function finished(ev) {
-      //Make sure this transitionend didn't bubble up from a child
-      if (ev.target === element[0]) {
-        element.off(self.TRANSITIONEND_EVENT, finished);
-        (done || angular.noop)();
-      }
-    }
-  }
-
 
   // **********************************************************
   // Utility Methods
@@ -1316,7 +1292,7 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
         if (options.clickOutsideToClose) {
           element.off('click', dialogClickOutside);
         }
-        $materialEffects.popOut(element, options.appendTo, function() {
+        $animate.leave(element, function() {
           element.remove();
           scope.$destroy();
           scope = null;
@@ -2275,7 +2251,6 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
       redrawTicks();
     }
     function updateAriaDisabled(isDisabled) {
-      console.log('updateAriaDislabed', isDisabled);
       element.attr('aria-disabled', !!isDisabled);
     }
 
@@ -4566,7 +4541,6 @@ function materialCompilerService($q, $http, $injector, $compile, $controller, $t
     angular.extend(resolve, locals);
 
     if (templateUrl) {
-      console.log(templateUrl, !!$templateCache.get(templateUrl));
       resolve.$template = $http.get(templateUrl, {cache: $templateCache})
         .then(function(response) {
           return response.data;
