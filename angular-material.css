@@ -1930,7 +1930,7 @@ material-button {
 
 material-divider {
   display: block;
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  border-top: 1px solid rgba(0, 0, 0, 0.12) !important;
   margin: 0; }
   material-divider[inset] {
     margin-left: 80px; }
@@ -2708,7 +2708,7 @@ material-item-content {
 
 material-divider {
   display: block;
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  border-top: 1px solid rgba(0, 0, 0, 0.12) !important;
   margin: 0; }
   material-divider[inset] {
     margin-left: 80px; }
