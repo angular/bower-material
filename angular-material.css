@@ -2024,7 +2024,6 @@ material-card {
 
 material-radio-button, .material-switch-thumb {
   display: block;
-  margin: 15px;
   white-space: nowrap;
   cursor: pointer; }
   material-radio-button input, .material-switch-thumb input {
