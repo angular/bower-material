@@ -502,6 +502,14 @@ function MaterialEffects($rootElement, $position, $$rAF, $sniffer) {
   // API Methods
   // **********************************************************
 
+  function makeSequence( from, to, duration )
+  {
+    var animate = $animateSequence({ styler: styler }).animate,
+       sequence = animate( from, to , safeDuration(duration) );
+
+    return sequence;
+  }
+
   /**
    *
    */
