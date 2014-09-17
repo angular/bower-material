@@ -2361,14 +2361,18 @@ material-toast {
   max-height: 40px;
   z-index: 9;
   opacity: 1;
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0) rotateZ(0deg);
+  transform: translate3d(0, 0, 0) rotateZ(0deg);
   -webkit-transition: all 0.2s linear;
-  transition: all 0.2s linear; }
+  transition: all 0.2s linear;
+  /* Transition faster when swiping */ }
   material-toast material-button {
     color: white; }
   material-toast.capsule {
     border-radius: 24px; }
+  material-toast.swipeleft, material-toast.swiperight, material-toast.swipeup, material-toast.swipedown {
+    -webkit-transition: all 0.15s ease-out;
+    transition: all 0.15s ease-out; }
   material-toast.ng-enter {
     -webkit-transform: translate3d(0, 100%, 0);
     transform: translate3d(0, 100%, 0);
@@ -2387,6 +2391,12 @@ material-toast {
     material-toast.ng-leave.ng-leave-active.top {
       -webkit-transform: translate3d(0, -100%, 0);
       transform: translate3d(0, -100%, 0); }
+    material-toast.ng-leave.ng-leave-active.swipeleft {
+      -webkit-transform: translate3d(-100%, 0, 0);
+      transform: translate3d(-100%, 0, 0); }
+    material-toast.ng-leave.ng-leave-active.swiperight {
+      -webkit-transform: translate3d(100%, 0, 0);
+      transform: translate3d(100%, 0, 0); }
 
 .toast-action {
   line-height: 19px;
@@ -2413,13 +2423,29 @@ material-toast {
   material-toast {
     min-width: 288px;
     bottom: 8px;
-    left: 8px; }
+    left: 8px;
+    /* 
+     * When the toast doesn't take up the whole screen,
+     * make it rotate when the user swipes it away
+     */ }
     material-toast.right {
       left: auto;
       right: 8px; }
     material-toast.top {
       bottom: auto;
-      top: 8px; } }
+      top: 8px; }
+    material-toast.ng-leave.ng-leave-active.swipeleft {
+      -webkit-transform: translate3d(-100%, 25%, 0) rotateZ(-15deg);
+      transform: translate3d(-100%, 25%, 0) rotateZ(-15deg); }
+    material-toast.ng-leave.ng-leave-active.swiperight {
+      -webkit-transform: translate3d(100%, 25%, 0) rotateZ(15deg);
+      transform: translate3d(100%, 25%, 0) rotateZ(15deg); }
+    material-toast.ng-leave.ng-leave-active.top.swipeleft {
+      -webkit-transform: translate3d(-100%, 0, 0) rotateZ(-15deg);
+      transform: translate3d(-100%, 0, 0) rotateZ(-15deg); }
+    material-toast.ng-leave.ng-leave-active.top.swiperight {
+      -webkit-transform: translate3d(100%, 0, 0) rotateZ(15deg);
+      transform: translate3d(100%, 0, 0) rotateZ(15deg); } }
 
 material-toolbar {
   display: -webkit-box;

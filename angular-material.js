@@ -4233,6 +4233,12 @@ function QpToastService($timeout, $rootScope, $materialCompiler, $rootElement, $
     toastParent = $rootElement;
   }
 
+  // Which swipe events to listen for, depending on the toast's position
+  var positionSwipeEvents = {
+    top: 'swipeleft swiperight swipeup',
+    bottom: 'swipeleft swiperight swipedown'
+  };
+
   return showToast;
 
   /**
@@ -4270,9 +4276,23 @@ function QpToastService($timeout, $rootScope, $materialCompiler, $rootElement, $
         }
       });
 
+      var isTop = options.position.indexOf('top') > -1;
+      var swipeEvents = positionSwipeEvents[isTop ? 'top' : 'bottom'];
+      var mc = new Hammer(element[0]);
+      mc.on(swipeEvents, onSwipe);
+      
+      function onSwipe(ev) {
+        //Add swipeleft/swiperight/swipeup/swipedown class to element
+        element.addClass(ev.type);
+        mc.off(swipeEvents, onSwipe);
+        $timeout(destroy);
+      }
+
       return destroy;
 
       function destroy() {
+        if (destroy.called) return;
+        destroy.called = true;
         toastParent.removeClass(toastParentClass);
         $timeout.cancel(delayTimeout);
         $animate.leave(element, function() {
