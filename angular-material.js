@@ -4272,12 +4272,12 @@ function QpToastService($timeout, $rootScope, $materialCompiler, $rootElement, $
         }
       });
 
-      var hammer = new Hammer(element[0], {
+      var hammertime = new Hammer(element[0], {
         recognizers: [
           [Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL }]
         ]
       });
-      hammer.on('swipeleft swiperight', onSwipe);
+      hammertime.on('swipeleft swiperight', onSwipe);
       
       function onSwipe(ev) {
         //Add swipeleft/swiperight class to element so it can animate correctly
@@ -4291,7 +4291,7 @@ function QpToastService($timeout, $rootScope, $materialCompiler, $rootElement, $
         if (destroy.called) return;
         destroy.called = true;
 
-        hammer.destroy();
+        hammertime.destroy();
         toastParent.removeClass(toastParentClass);
         $timeout.cancel(delayTimeout);
         $animate.leave(element, function() {
