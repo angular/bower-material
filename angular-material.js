@@ -396,6 +396,7 @@ var Constant = {
       LIST_ITEM : 'listitem',
       RADIO : 'radio',
       RADIO_GROUP : 'radiogroup',
+      SLIDER : 'slider',
       TAB_LIST : 'tablist',
       TAB : 'tab',
       TAB_PANEL : 'tabpanel'
@@ -500,14 +501,6 @@ function MaterialEffects($rootElement, $position, $$rAF, $sniffer) {
   // **********************************************************
   // API Methods
   // **********************************************************
-
-  function makeSequence( from, to, duration )
-  {
-    var animate = $animateSequence({ styler: styler }).animate,
-       sequence = animate( from, to , safeDuration(duration) );
-
-    return sequence;
-  }
 
   /**
    *
