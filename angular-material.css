@@ -1654,17 +1654,21 @@ material-backdrop {
   material-backdrop.ng-leave, material-backdrop.ng-enter.ng-enter-active {
     opacity: 1; }
 
-material-content, .material-content {
+material-content {
   overflow: auto;
   -webkit-overflow-scrolling: touch; }
-  material-content[scroll-y], .material-content[scroll-y] {
+  material-content[scroll-y] {
     overflow-y: auto;
     overflow-x: hidden; }
-  material-content[scroll-x], .material-content[scroll-x] {
+  material-content[scroll-x] {
     overflow-x: auto;
     overflow-y: hidden; }
-  material-content.material-content-padding, .material-content.material-content-padding {
-    padding: 20px; }
+  material-content.material-content-padding {
+    padding: 8px; }
+
+@media (min-width: 600px) {
+  material-content.material-content-padding {
+    padding: 16px; } }
 
 material-icon {
   margin: auto;
