@@ -2778,19 +2778,19 @@ material-divider {
 material-linear-progress {
   display: block;
   width: 100%;
-  height: 6px;
+  height: 5px;
   background-color: #d0d9ff;
   overflow: hidden;
   position: relative; }
   material-linear-progress .bar {
-    height: 6px;
+    height: 5px;
     background-color: #5677fc;
     position: absolute; }
-  material-linear-progress[mode=determinate] .bar1 {
-    display: none; }
-  material-linear-progress[mode=determinate] .bar2 {
+  material-linear-progress .bar1, material-linear-progress .bar2 {
     -webkit-transition: width 0.2s linear;
     transition: width 0.2s linear; }
+  material-linear-progress[mode=determinate] .bar1 {
+    display: none; }
   material-linear-progress[mode=indeterminate] .bar1 {
     left: 50%;
     width: 10%;
@@ -2810,14 +2810,14 @@ material-linear-progress {
     material-linear-progress[mode=buffer] .dashed:before {
       content: "";
       display: block;
-      height: 6px;
+      height: 5px;
       width: 100%;
       margin-top: 0px;
       position: absolute;
-      background-color: none;
-      background-image: radial-gradient(circle, #d0d9ff 10%, transparent 0%);
-      background-size: 40px 50px;
-      background-position: 0px -22px; }
+      background: radial-gradient(#d0d9ff 0%, #d0d9ff 20%, transparent 50%);
+      background-color: transparent;
+      background-size: 10px 10px;
+      background-position: 0px -23px; }
     material-linear-progress[mode=buffer] .bar1 {
       background-color: #d0d9ff; }
   material-linear-progress[mode=query] .bar2 {
