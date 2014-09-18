@@ -4478,7 +4478,7 @@ angular.module('material.components.linearProgress', [
   'material.animations',
   'material.services.aria'
 ])
-  .directive('materialLinearProgress', MaterialLinearProgressDirective);
+  .directive('materialLinearProgress', ['$timeout', MaterialLinearProgressDirective]);
 
 /**
  * @ngdoc directive
@@ -4508,34 +4508,36 @@ angular.module('material.components.linearProgress', [
  * <material-linear-progress mode="query"></material-linear-progress>
  * </hljs>
  */
-function MaterialLinearProgressDirective() {
+function MaterialLinearProgressDirective($timeout) {
   return {
     restrict: 'E',
-    template: '<div class="dashed"></div>' +
-      '<div class="bar bar1"></div>' +
-      '<div class="bar bar2"></div>',
-    link: postLink
+    template: 
+      '<div class="container">' + 
+        '<div class="dashed"></div>' +
+        '<div class="bar bar1"></div>' +
+        '<div class="bar bar2"></div>' + 
+      '</div>',
+    link: function(scope, element, attr) {
+      var bar1 = element.find('.bar1'),
+          bar2 = element.find('.bar2'),
+          container = element.find('.container');
+
+      attr.$observe('value', function(value) {
+        bar2.css('width', clamp(value).toString() + '%');
+      });
+
+      attr.$observe('secondaryvalue', function(value) {
+        bar1.css('width', clamp(value).toString() + '%');
+      });
+
+      $timeout(function(){container.addClass('ready');});
+    }
   };
 }
 
 // **********************************************************
 // Private Methods
 // **********************************************************
-
-function postLink(scope, element, attr) {
-  var bar1 = element.find('.bar1'),
-    bar2 = element.find('.bar2');
-
-  attr.$observe('value', function(value) {
-    bar2.css('width', clamp(value).toString() + '%');
-  });
-
-  attr.$observe('secondaryvalue', function(value) {
-    bar1.css('width', clamp(value).toString() + '%');
-  });
-
-  element.addClass('ready');
-}
 
 function clamp(value) {
   if (value > 100) {
