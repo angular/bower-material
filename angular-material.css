@@ -2817,16 +2817,20 @@ material-linear-progress {
       background: radial-gradient(#d0d9ff 0%, #d0d9ff 20%, transparent 50%);
       background-color: transparent;
       background-size: 10px 10px;
-      background-position: 0px -23px; }
+      background-position: 0px -23px;
+      -webkit-animation: buffer 3s infinite linear;
+      -moz-animation: buffer 3s infinite linear;
+      -ms-animation: buffer 3s infinite linear;
+      animation: buffer 3s infinite linear; }
     material-linear-progress[mode=buffer] .bar1 {
       background-color: #d0d9ff; }
   material-linear-progress[mode=query] .bar2 {
     left: 50%;
     width: 10%;
-    -webkit-animation: query 500ms infinite linear;
-    -moz-animation: query 500ms infinite linear;
-    -ms-animation: query 500ms infinite linear;
-    animation: query 500ms infinite linear; }
+    -webkit-animation: query 0.8s infinite cubic-bezier(0.39, 0.575, 0.565, 1);
+    -moz-animation: query 0.8s infinite cubic-bezier(0.39, 0.575, 0.565, 1);
+    -ms-animation: query 0.8s infinite cubic-bezier(0.39, 0.575, 0.565, 1);
+    animation: query 0.8s infinite cubic-bezier(0.39, 0.575, 0.565, 1); }
 
 @-webkit-keyframes indeterminate1 {
   0% {
@@ -3083,87 +3087,41 @@ material-linear-progress {
     width: 30%;
     left: 70%; }
 
-  10% {
-    width: 27%;
-    left: 63%; }
-
-  20% {
-    width: 24%;
-    left: 56%; }
-
-  30% {
-    width: 21%;
-    left: 49%; }
-
-  40% {
-    width: 18%;
-    left: 42%; }
-
-  50% {
-    width: 15%;
-    left: 35%; }
-
-  60% {
-    width: 12%;
-    left: 28%; }
-
-  70% {
-    width: 9%;
-    left: 21%; }
-
-  80% {
-    width: 6%;
-    left: 14%; }
-
-  90% {
-    width: 3%;
-    left: 7%; }
-
   100% {
     width: 0%;
-    left: 0%; } }
+    left: 0%;
+    opacity: 0; } }
 
 @keyframes query {
   0% {
     width: 30%;
     left: 70%; }
 
-  10% {
-    width: 27%;
-    left: 63%; }
-
-  20% {
-    width: 24%;
-    left: 56%; }
-
-  30% {
-    width: 21%;
-    left: 49%; }
-
-  40% {
-    width: 18%;
-    left: 42%; }
-
-  50% {
-    width: 15%;
-    left: 35%; }
-
-  60% {
-    width: 12%;
-    left: 28%; }
-
-  70% {
-    width: 9%;
-    left: 21%; }
-
-  80% {
-    width: 6%;
-    left: 14%; }
-
-  90% {
-    width: 3%;
-    left: 7%; }
-
   100% {
     width: 0%;
-    left: 0%; } }
+    left: 0%;
+    opacity: 0; } }
+
+@-webkit-keyframes buffer {
+  0% {
+    opacity: 1;
+    background-position: 0px -23px; }
+
+  50% {
+    opacity: 0; }
+
+  100% {
+    opacity: 1;
+    background-position: -200px -23px; } }
+
+@keyframes buffer {
+  0% {
+    opacity: 1;
+    background-position: 0px -23px; }
+
+  50% {
+    opacity: 0; }
+
+  100% {
+    opacity: 1;
+    background-position: -200px -23px; } }
