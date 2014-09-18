@@ -2778,10 +2778,16 @@ material-divider {
 material-linear-progress {
   display: block;
   width: 100%;
-  height: 5px;
+  height: 0;
+  top: 5px;
   background-color: #d0d9ff;
   overflow: hidden;
-  position: relative; }
+  position: relative;
+  -webkit-transition: height 0.5s linear;
+  transition: height 0.5s linear; }
+  material-linear-progress.ready {
+    height: 5px;
+    top: 0px; }
   material-linear-progress .bar {
     height: 5px;
     background-color: #5677fc;

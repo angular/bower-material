@@ -4533,6 +4533,8 @@ function postLink(scope, element, attr) {
   attr.$observe('secondaryvalue', function(value) {
     bar1.css('width', clamp(value).toString() + '%');
   });
+
+  element.addClass('ready');
 }
 
 function clamp(value) {
