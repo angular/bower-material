@@ -1568,6 +1568,8 @@ material-content {
     overflow-y: hidden; }
   material-content.material-content-padding {
     padding: 8px; }
+  material-content[scroll-shrink] {
+    position: relative; }
 
 @media (min-width: 600px) {
   material-content.material-content-padding {
