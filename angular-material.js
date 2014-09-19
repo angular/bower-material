@@ -5,7 +5,7 @@
  * v0.0.2
  */
 (function(){
-angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.position', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.form","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
+angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.form","material.components.icon","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
 /*
  * iterator is a list facade to easily support iteration and accessors
  *
@@ -442,14 +442,13 @@ var KEY  = Constant.KEY_CODE;
  * Ink and Popup Effects
  */
 angular.module('material.animations', [
-  'material.services.position',
   'material.services.throttle'
 ])
   .service('$materialEffects', [ 
     '$rootElement', 
-    '$position', 
     '$$rAF', 
     '$sniffer',
+    '$q',
     MaterialEffects
   ]);
 
@@ -469,7 +468,7 @@ angular.module('material.animations', [
  * - `{function(element,parentElement)}` `popOut` - animated close of popup overlay
  *
  */
-function MaterialEffects($rootElement, $position, $$rAF, $sniffer) {
+function MaterialEffects($rootElement, $$rAF, $sniffer, $q) {
 
   var webkit = /webkit/i.test($sniffer.vendorPrefix);
   function vendorProperty(name) {
@@ -482,7 +481,6 @@ function MaterialEffects($rootElement, $position, $$rAF, $sniffer) {
   // Publish API for effects...
   return self = {
     popIn: popIn,
-    popOut: popOut,
 
     /* Constants */
     TRANSITIONEND_EVENT: 'transitionend' + (webkit ? ' webkitTransitionEnd' : ''),
@@ -501,19 +499,16 @@ function MaterialEffects($rootElement, $position, $$rAF, $sniffer) {
   // **********************************************************
   // API Methods
   // **********************************************************
-
-  /**
-   *
-   */
-  function popIn(element, parentElement, clickElement, done) {
+  function popIn(element, parentElement, clickElement) {
+    var deferred = $q.defer();
     parentElement.append(element);
 
     var startPos;
     if (clickElement) {
-      var clickPos = $position.offset(clickElement);
+      var clickRect = clickElement[0].getBoundingClientRect();
       startPos = translateString(
-        clickPos.left - element[0].offsetWidth / 2,
-        clickPos.top - element[0].offsetHeight / 2, 
+        clickRect.left - element[0].offsetWidth,
+        clickRect.top - element[0].offsetHeight, 
         0
       ) + ' scale(0.2)';
     } else {
@@ -538,33 +533,12 @@ function MaterialEffects($rootElement, $position, $$rAF, $sniffer) {
       //Make sure this transitionend didn't bubble up from a child
       if (ev.target === element[0]) {
         element.off(self.TRANSITIONEND_EVENT, finished);
-        (done || angular.noop)();
+        deferred.resolve();
       }
     }
+
+    return deferred.promise;
   }
-
-  /**
-   *
-   *
-   */
-  function popOut(element, parentElement, done) {
-    var endPos = $position.positionElements(parentElement, element, 'bottom-center');
-
-    element
-      .css(self.TRANSFORM, 
-           translateString(endPos.left, endPos.top, 0) + ' scale(0.5)')
-      .css('opacity', 0)
-      .on(self.TRANSITIONEND_EVENT, finished);
-
-    function finished(ev) {
-      //Make sure this transitionend didn't bubble up from a child
-      if (ev.target === element[0]) {
-        element.off(self.TRANSITIONEND_EVENT, finished);
-        (done || angular.noop)();
-      }
-    }
-  }
-
 
   // **********************************************************
   // Utility Methods
@@ -573,26 +547,6 @@ function MaterialEffects($rootElement, $position, $$rAF, $sniffer) {
 
   function translateString(x, y, z) {
     return 'translate3d(' + Math.floor(x) + 'px,' + Math.floor(y) + 'px,' + Math.floor(z) + 'px)';
-  }
-
-
-  /**
-   * Support values such as 0.65 secs or 650 msecs
-   */
-  function safeDuration(value) {
-    var duration = isNaN(value) ? 0 : Number(value);
-    return (duration < 1.0) ? (duration * 1000) : duration;
-  }
-
-  /**
-   * Convert all values to decimal;
-   * eg 150 msecs -> 0.15sec
-   */
-  function safeVelocity(value) {
-    var duration = isNaN(value) ? 0 : Number(value);
-    return (duration > 100) ? (duration / 1000) :
-      (duration > 10 ) ? (duration / 100) :
-        (duration > 1  ) ? (duration / 10) : duration;
   }
 
 }
@@ -1298,15 +1252,19 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
         backdrop = angular.element('<material-backdrop class="opaque ng-enter">');
         $animate.enter(backdrop, options.appendTo, null);
       }
-      $materialEffects.popIn(element, options.appendTo, popInTarget, function() {
-        if (options.escapeToClose) {
-          $rootElement.on('keyup', onRootElementKeyup);
-        }
-        if (options.clickOutsideToClose) {
-          element.on('click', dialogClickOutside);
-        }
-        closeButton.focus();
-      });
+
+      $materialEffects.popIn(element, options.appendTo, popInTarget)
+        .then(function() {
+
+          if (options.escapeToClose) {
+            $rootElement.on('keyup', onRootElementKeyup);
+          }
+          if (options.clickOutsideToClose) {
+            element.on('click', dialogClickOutside);
+          }
+          closeButton.focus();
+
+        });
 
       return destroyDialog;
 
@@ -1333,7 +1291,7 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
         if (options.clickOutsideToClose) {
           element.off('click', dialogClickOutside);
         }
-        $materialEffects.popOut(element, options.appendTo, function() {
+        $animate.leave(element).then(function() {
           element.remove();
           scope.$destroy();
           scope = null;
@@ -1345,12 +1303,12 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
         });
       }
       function onRootElementKeyup(e) {
-        if (e.keyCode == Constant.KEY_CODE.ESCAPE) {
+        if (e.keyCode === Constant.KEY_CODE.ESCAPE) {
           $timeout(destroyDialog);
         }
       }
       function dialogClickOutside(e) {
-        // If we click the flex container outside the backdrop
+        // Only close if we click the flex container outside the backdrop
         if (e.target === element[0]) {
           $timeout(destroyDialog);
         }
@@ -2254,15 +2212,16 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
     hammertime.on('pan', onPan);
 
     // On resize, recalculate the slider's dimensions and re-render
-    var onWindowResize = $$rAF.debounce(function() {
+    var updateAll = $$rAF.debounce(function() {
       refreshSliderDimensions();
       ngModelRender();
       redrawTicks();
-    }, false);
-    angular.element($window).on('resize', onWindowResize);
+    });
+    updateAll();
+    angular.element($window).on('resize', updateAll);
 
     scope.$on('$destroy', function() {
-      angular.element($window).off('resize', onWindowResize);
+      angular.element($window).off('resize', updateAll);
       hammertime.destroy();
       stopDisabledWatch();
     });
@@ -2291,7 +2250,6 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
       redrawTicks();
     }
     function updateAriaDisabled(isDisabled) {
-      console.log('updateAriaDislabed', isDisabled);
       element.attr('aria-disabled', !!isDisabled);
     }
 
@@ -2774,7 +2732,7 @@ function linkTabPagination(scope, element, tabsCtrl, $q, $materialEffects ) {
 }
 
 angular.module('material.components.tabs')
-  .directive('materialTab', [ 
+  .directive('materialTab', [
     '$attrBind',
     '$aria',
     '$materialInkRipple',
@@ -3555,27 +3513,28 @@ function TabsDirective($q, $window, $timeout, $compile, $materialEffects, $$rAF,
         var updateInk = linkTabInk(scope, element, tabsCtrl, $q, $materialEffects);
         var updatePagination = linkTabPagination( scope, element, tabsCtrl, $q, $materialEffects );
 
-        var updateAll =  function() {
+        var updateAll = function() {
+          scope.$evalAsync(function() {
+            updatePagination().then( function(){
+              // Make sure the ink positioning is correct
+              $timeout( updateInk );
+            });
 
-              updatePagination().then( function(){
-                tabsCtrl.focusSelected();
-
-                // Make sure the ink positioning is correct
-                $timeout( updateInk );
-              });
-
-              // Make sure ink changes start just after pagination transitions have started...
-              $$rAF( updateInk );
-            };
+            // Make sure ink changes start just after pagination transitions have started...
+            $$rAF( updateInk );
+          });
+        };
 
         var onWindowResize = $$rAF.debounce( updateAll );
         var onWindowRelease = function() {
-              angular.element($window).off('resize', onWindowResize);
-            };
+          angular.element($window).off('resize', onWindowResize);
+        };
+
+        $$rAF(updateAll);
 
         angular.element($window).on( EVENT.WINDOW_RESIZE, onWindowResize);
         scope.$on( EVENT.TABS_CHANGED, updateAll );
-        scope.$on( EVENT.SCOPE_DESTROY,onWindowRelease );
+        scope.$on( EVENT.SCOPE_DESTROY, onWindowRelease );
 
         transcludeHeaderItems();
         transcludeContentItems();
@@ -4072,7 +4031,7 @@ function QpToastService($timeout, $rootScope, $materialCompiler, $rootElement, $
       toastParent.addClass(toastParentClass);
 
       var delayTimeout;
-      $animate.enter(element, toastParent, null, function() {
+      $animate.enter(element, toastParent).then(function() {
         if (options.duration) {
           delayTimeout = $timeout(destroy, options.duration);
         }
@@ -4100,7 +4059,7 @@ function QpToastService($timeout, $rootScope, $materialCompiler, $rootElement, $
         hammertime.destroy();
         toastParent.removeClass(toastParentClass);
         $timeout.cancel(delayTimeout);
-        $animate.leave(element, function() {
+        $animate.leave(element).then(function() {
           scope.$destroy();
         });
       }
@@ -4275,88 +4234,6 @@ function MaterialDividerDirective() {
   };
 }
 
-/**
- * @ngdoc module
- * @name material.components.linearProgress
- * @description Linear Progress module!
- */
-angular.module('material.components.linearProgress', [
-  'material.animations',
-  'material.services.aria'
-])
-  .directive('materialLinearProgress', ['$timeout', MaterialLinearProgressDirective]);
-
-/**
- * @ngdoc directive
- * @name materialLinearProgress
- * @module material.components.linearProgress
- * @restrict E
- *
- * @description
- * The linear progress directive is used to make loading content in your app as delightful and painless as possible by minimizing the amount of visual change a user sees before they can view and interact with content. Each operation should only be represented by one activity indicator—for example, one refresh operation should not display both a refresh bar and an activity circle.
- *
- * For operations where the percentage of the operation completed can be determined, use a determinate indicator. They give users a quick sense of how long an operation will take.
- *
- * For operations where the user is asked to wait a moment while something finishes up, and it’s not necessary to expose what's happening behind the scenes and how long it will take, use an indeterminate indicator.
- *
- * @param {string} mode Select from one of four modes: determinate, indeterminate, buffer or query.
- * @param {number=} value In determinate and buffer modes, this number represents the percentage of the primary progress bar.
- * @param {number=} secondaryValue In the buffer mode, this number represents the precentage of the secondary progress bar.
- *
- * @usage
- * <hljs lang="html">
- * <material-linear-progress mode="determinate" value="..."></material-linear-progress>
- *
- * <material-linear-progress mode="indeterminate"></material-linear-progress>
- *
- * <material-linear-progress mode="buffer" value="..." secondaryValue="..."></material-linear-progress>
- *
- * <material-linear-progress mode="query"></material-linear-progress>
- * </hljs>
- */
-function MaterialLinearProgressDirective($timeout) {
-  return {
-    restrict: 'E',
-    template: '<div class="container">' +
-      '<div class="dashed"></div>' +
-      '<div class="bar bar1"></div>' +
-      '<div class="bar bar2"></div>' +
-      '</div>',
-    link: function(scope, element, attr) {
-      var bar1 = angular.element(element[0].querySelector('.bar1')),
-          bar2 = angular.element(element[0].querySelector('.bar2')),
-          container = angular.element(element[0].querySelector('.container'));
-
-      attr.$observe('value', function(value) {
-        bar2.css('width', clamp(value).toString() + '%');
-      });
-
-      attr.$observe('secondaryvalue', function(value) {
-        bar1.css('width', clamp(value).toString() + '%');
-      });
-
-      $timeout(function() {
-        container.addClass('ready');
-      });
-    }
-  };
-}
-
-// **********************************************************
-// Private Methods
-// **********************************************************
-
-function clamp(value) {
-  if (value > 100) {
-    return 100;
-  }
-
-  if (value < 0) {
-    return 0;
-  }
-
-  return value || 0;
-}
 angular.module('material.decorators', [])
 .config(['$provide', function($provide) {
   $provide.decorator('$$rAF', ['$delegate', '$rootScope', rAFDecorator]);
@@ -4374,12 +4251,8 @@ angular.module('material.decorators', [])
      * event that happened before that frame.
      *
      * @param {function} callback function to debounce
-     * @param {boolean=} invokeApply If set to false skips dirty checking, otherwise will invoke fn within the $apply block.
      */
-    $$rAF.debounce = function(cb, invokeApply) {
-      if (arguments.length === 1) {
-        invokeApply = true;
-      }
+    $$rAF.debounce = function(cb) {
       var queueArgs, alreadyQueued, queueCb, context;
       return function debounced() {
         queueArgs = arguments;
@@ -4388,11 +4261,7 @@ angular.module('material.decorators', [])
         if (!alreadyQueued) {
           alreadyQueued = true;
           $$rAF(function() {
-            invokeApply ? 
-              $rootScope.$apply(function() {
-                queueCb.apply(context, queueArgs);
-              }) :
-                queueCb.apply(context, queueArgs);
+            queueCb.apply(context, queueArgs);
             alreadyQueued = false;
           });
         }
@@ -4706,169 +4575,6 @@ function materialCompilerService($q, $http, $injector, $compile, $controller, $t
         }
       };
     });
-  };
-}
-
-/**
- * Adapted from ui.bootstrap.position
- * https://github.com/angular-ui/bootstrap/blob/master/src/position/position.js
- * https://github.com/angular-ui/bootstrap/blob/master/LICENSE
- */
-
-angular.module('material.services.position', [])
-  .factory('$position', [
-    '$document', 
-    '$window', 
-    MaterialPositionService
-  ]);
-
-/**
- * A set of utility methods that can be use to retrieve position of DOM elements.
- * It is meant to be used where we need to absolute-position DOM elements in
- * relation to other, existing elements (this is the case for tooltips, popovers,
- * typeahead suggestions etc.).
- */
-function MaterialPositionService($document, $window) {
-  function getStyle(el, cssprop) {
-    if (el.currentStyle) { //IE
-      return el.currentStyle[cssprop];
-    } else if ($window.getComputedStyle) {
-      return $window.getComputedStyle(el)[cssprop];
-    }
-    // finally try and get inline style
-    return el.style[cssprop];
-  }
-
-  /**
-   * Checks if a given element is statically positioned
-   * @param element - raw DOM element
-   */
-  function isStaticPositioned(element) {
-    return (getStyle(element, 'position') || 'static' ) === 'static';
-  }
-
-  /**
-   * returns the closest, non-statically positioned parentOffset of a given element
-   * @param element
-   */
-  var parentOffsetEl = function (element) {
-    var docDomEl = $document[0];
-    var offsetParent = element.offsetParent || docDomEl;
-    while (offsetParent && offsetParent !== docDomEl && isStaticPositioned(offsetParent) ) {
-      offsetParent = offsetParent.offsetParent;
-    }
-    return offsetParent || docDomEl;
-  };
-
-  return {
-    /**
-     * Provides read-only equivalent of jQuery's position function:
-     * http://api.jquery.com/position/
-     */
-    position: function (element) {
-      var elBCR = this.offset(element);
-      var offsetParentBCR = { top: 0, left: 0 };
-      var offsetParentEl = parentOffsetEl(element[0]);
-      if (offsetParentEl != $document[0]) {
-        offsetParentBCR = this.offset(angular.element(offsetParentEl));
-        offsetParentBCR.top += offsetParentEl.clientTop - offsetParentEl.scrollTop;
-        offsetParentBCR.left += offsetParentEl.clientLeft - offsetParentEl.scrollLeft;
-      }
-
-      var boundingClientRect = element[0].getBoundingClientRect();
-      return {
-        width: boundingClientRect.width || element.prop('offsetWidth'),
-        height: boundingClientRect.height || element.prop('offsetHeight'),
-        top: elBCR.top - offsetParentBCR.top,
-        left: elBCR.left - offsetParentBCR.left
-      };
-    },
-
-    /**
-     * Provides read-only equivalent of jQuery's offset function:
-     * http://api.jquery.com/offset/
-     */
-    offset: function (element) {
-      var boundingClientRect = element[0].getBoundingClientRect();
-      return {
-        width: boundingClientRect.width || element.prop('offsetWidth'),
-        height: boundingClientRect.height || element.prop('offsetHeight'),
-        top: boundingClientRect.top + ($window.pageYOffset || $document[0].documentElement.scrollTop),
-        left: boundingClientRect.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft)
-      };
-    },
-
-    /**
-     * Provides coordinates for the targetEl in relation to hostEl
-     */
-    positionElements: function (hostEl, targetEl, positionStr, appendToBody) {
-
-      var positionStrParts = positionStr.split('-');
-      var pos0 = positionStrParts[0], pos1 = positionStrParts[1] || 'center';
-
-      var hostElPos,
-      targetElWidth,
-      targetElHeight,
-      targetElPos;
-
-      hostElPos = appendToBody ? this.offset(hostEl) : this.position(hostEl);
-
-      targetElWidth = targetEl.prop('offsetWidth');
-      targetElHeight = targetEl.prop('offsetHeight');
-
-      var shiftWidth = {
-        center: function () {
-          return hostElPos.left + hostElPos.width / 2 - targetElWidth / 2;
-        },
-        left: function () {
-          return hostElPos.left;
-        },
-        right: function () {
-          return hostElPos.left + hostElPos.width;
-        }
-      };
-
-      var shiftHeight = {
-        center: function () {
-          return hostElPos.top + hostElPos.height / 2 - targetElHeight / 2;
-        },
-        top: function () {
-          return hostElPos.top;
-        },
-        bottom: function () {
-          return hostElPos.top + hostElPos.height;
-        }
-      };
-
-      switch (pos0) {
-        case 'right':
-          targetElPos = {
-          top: shiftHeight[pos1](),
-          left: shiftWidth[pos0]()
-        };
-        break;
-        case 'left':
-          targetElPos = {
-          top: shiftHeight[pos1](),
-          left: hostElPos.left - targetElWidth
-        };
-        break;
-        case 'bottom':
-          targetElPos = {
-          top: shiftHeight[pos0](),
-          left: shiftWidth[pos1]()
-        };
-        break;
-        default:
-          targetElPos = {
-          top: shiftHeight[pos0](),
-          left: shiftWidth[pos1]()
-        };
-        break;
-      }
-
-      return targetElPos;
-    }
   };
 }
 
