@@ -2284,7 +2284,6 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
       redrawTicks();
     }
     function updateAriaDisabled(isDisabled) {
-      console.log('updateAriaDislabed', isDisabled);
       element.attr('aria-disabled', !!isDisabled);
     }
 
