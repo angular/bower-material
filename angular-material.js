@@ -5,7 +5,7 @@
  * v0.0.2
  */
 (function(){
-angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
+angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.form","material.components.icon","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
 /*
  * iterator is a list facade to easily support iteration and accessors
  *
@@ -1339,11 +1339,11 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
 
 /**
  * @ngdoc module
- * @name material.components.textField
+ * @name material.components.form
  * @description
  * Form
  */
-angular.module('material.components.textField', [])
+angular.module('material.components.form', [])
   .directive('materialInputGroup', [
     materialInputGroupDirective
   ])
@@ -1354,15 +1354,15 @@ angular.module('material.components.textField', [])
 /**
  * @ngdoc directive
  * @name materialInputGroup
- * @module material.components.textField
+ * @module material.components.form
  * @restrict E
  * @description
- * Use the `<material-input-group>` directive as the grouping parent of a `<material-input>` element.
+ * Use the `<material-input-group>` directive as the grouping parent of an `<material-input>` elements
  *
  * @usage 
  * <hljs lang="html">
  * <material-input-group>
- *   <material-input type="text" ng-model="myText"></material-input>
+ *   <material-input type="text" ng-model="myText">
  * </material-input-group>
  * </hljs>
  */
@@ -1383,7 +1383,7 @@ function materialInputGroupDirective() {
 /**
  * @ngdoc directive
  * @name materialInput
- * @module material.components.textField
+ * @module material.components.form
  *
  * @restrict E
  *
@@ -2346,7 +2346,7 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
       activeTrack.css('width', (percent * 100) + '%');
       thumbContainer.css(
         $materialEffects.TRANSFORM,
-        'translate3d(' + getSliderDimensions().width * percent + 'px,0,0)'
+        'translateX(' + getSliderDimensions().width * percent + 'px)'
       );
       element.toggleClass('slider-min', percent === 0);
     }
@@ -4121,13 +4121,9 @@ angular.module('material.components.toolbar', [
  *
  * @param {boolean=} scrollShrink Whether the header should shrink away as 
  * the user scrolls down, and reveal itself as the user scrolls up. 
+ *
  * Note: for scrollShrink to work, the toolbar must be a sibling of a 
  * `material-content` element, placed before it. See the scroll shrink demo.
- *
- *
- * @param {number=} shrinkSpeedFactor How much to change the speed of the toolbar's
- * shrinking by. For example, if 0.25 is given then the toolbar will shrink
- * at one fourth the rate at which the user scrolls down. Default 0.5.
  */ 
 function materialToolbarDirective($$rAF, $materialEffects) {
 
@@ -4141,76 +4137,56 @@ function materialToolbarDirective($$rAF, $materialEffects) {
       }
 
       function setupScrollShrink() {
+        //makes it take X times as long for header to dissapear
+        var HEIGHT_FACTOR = 2; 
+        var height = element.prop("offsetHeight") * HEIGHT_FACTOR;
         // Current "y" position of scroll
         var y = 0;
         // Store the last scroll top position
         var prevScrollTop = 0;
-
-        var shrinkSpeedFactor = attr.shrinkSpeedFactor || 0.5;
-
-        var toolbarHeight;
-        var contentElement;
-
-        var debouncedContentScroll = $$rAF.debounce(onContentScroll);
-        var debouncedUpdateHeight = Util.debounce(updateToolbarHeight, 5 * 1000);
 
         // Wait for $materialContentLoaded event from materialContent directive.
         // If the materialContent element is a sibling of our toolbar, hook it up
         // to scroll events.
         scope.$on('$materialContentLoaded', onMaterialContentLoad);
 
-        function onMaterialContentLoad($event, newContentEl) {
-          if (Util.elementIsSibling(element, newContentEl)) {
+        var contentElement;
+        function onMaterialContentLoad($event, contentEl) {
+
+          if (Util.elementIsSibling(element, contentEl)) {
             // unhook old content event listener if exists
-            if (contentElement) {
-              contentElement.off('scroll', debouncedContentScroll);
-            }
-
-            newContentEl.on('scroll', debouncedContentScroll);
-            newContentEl.attr('scroll-shrink', 'true');
-
-            contentElement = newContentEl;
-            $$rAF(updateToolbarHeight);
+            contentElement && contentElement.off('scroll', onContentScroll);
+            contentEl.on('scroll', onContentScroll).css('position','relative');
+            contentElement = contentEl;
           }
-        }
 
-        function updateToolbarHeight() {
-          toolbarHeight = element.prop('offsetHeight');
-          // Add a negative margin-top the size of the toolbar to the content el.
-          // The content will start transformed down the toolbarHeight amount,
-          // so everything looks normal.
-          //
-          // As the user scrolls down, the content will be transformed up slowly
-          // to put the content underneath where the toolbar was.
-          contentElement.css(
-            'margin-top', 
-            (-toolbarHeight * shrinkSpeedFactor) + 'px'
-          );
-          onContentScroll();
         }
 
         function onContentScroll(e) {
-          var scrollTop = e ? e.target.scrollTop : prevScrollTop;
-
-          debouncedUpdateHeight();
-
-          y = Math.min(
-            toolbarHeight / shrinkSpeedFactor, 
-            Math.max(0, y + scrollTop - prevScrollTop)
-          );
-
-          element.css(
-            $materialEffects.TRANSFORM, 
-            'translate3d(0,' + (-y * shrinkSpeedFactor) + 'px,0)'
-          );
-          contentElement.css(
-            $materialEffects.TRANSFORM, 
-            'translate3d(0,' + ((toolbarHeight - y) * shrinkSpeedFactor) + 'px,0)'
-          );
-
-          prevScrollTop = scrollTop;
+          shrink(e.target.scrollTop);
+          prevScrollTop = e.target.scrollTop;
         }
 
+        // Shrink the given target element based on the scrolling
+        // of the scroller element.
+        function shrink(scrollTop) {
+          y = Math.min(height, Math.max(0, y + scrollTop - prevScrollTop));
+          // If we are scrolling back "up", show the header condensed again
+          // if (prevScrollTop > scrollTop && scrollTop > margin) {
+          //   y = Math.max(y, margin);
+          // }
+          $$rAF(transform);
+        }
+
+        function transform() {
+          var translate = y ?
+            'translate3d(0,' + (-y / HEIGHT_FACTOR) + 'px, 0)' : 
+            '';
+          element.css($materialEffects.TRANSFORM, translate);
+          contentElement.css('margin-top', y ?
+                             (-y / HEIGHT_FACTOR) + 'px' :
+                            '');
+        }
       }
 
     }
@@ -4258,90 +4234,6 @@ function MaterialDividerDirective() {
   };
 }
 
-/**
- * @ngdoc module
- * @name material.components.linearProgress
- * @description Linear Progress module!
- */
-angular.module('material.components.linearProgress', [
-  'material.animations',
-  'material.services.aria'
-])
-  .directive('materialLinearProgress', ['$timeout', MaterialLinearProgressDirective]);
-
-/**
- * @ngdoc directive
- * @name materialLinearProgress
- * @module material.components.linearProgress
- * @restrict E
- *
- * @description
- * The linear progress directive is used to make loading content in your app as delightful and painless as possible by minimizing the amount of visual change a user sees before they can view and interact with content. Each operation should only be represented by one activity indicator—for example, one refresh operation should not display both a refresh bar and an activity circle.
- *
- * For operations where the percentage of the operation completed can be determined, use a determinate indicator. They give users a quick sense of how long an operation will take.
- *
- * For operations where the user is asked to wait a moment while something finishes up, and it’s not necessary to expose what's happening behind the scenes and how long it will take, use an indeterminate indicator.
- *
- * @param {string} mode Select from one of four modes: determinate, indeterminate, buffer or query.
- * @param {number=} value In determinate and buffer modes, this number represents the percentage of the primary progress bar. Default: 0
- * @param {number=} secondaryValue In the buffer mode, this number represents the precentage of the secondary progress bar. Default: 0
- *
- * @usage
- * <hljs lang="html">
- * <material-linear-progress mode="determinate" value="..."></material-linear-progress>
- *
- * <material-linear-progress mode="determinate" ng-value="..."></material-linear-progress>
- *
- * <material-linear-progress mode="indeterminate"></material-linear-progress>
- *
- * <material-linear-progress mode="buffer" value="..." secondaryValue="..."></material-linear-progress>
- *
- * <material-linear-progress mode="query"></material-linear-progress>
- * </hljs>
- */
-function MaterialLinearProgressDirective($timeout) {
-  return {
-    restrict: 'E',
-    template: '<div class="container">' +
-      '<div class="dashed"></div>' +
-      '<div class="bar bar1"></div>' +
-      '<div class="bar bar2"></div>' +
-      '</div>',
-    link: function(scope, element, attr) {
-      var bar1 = angular.element(element[0].querySelector('.bar1')),
-          bar2 = angular.element(element[0].querySelector('.bar2')),
-          container = angular.element(element[0].querySelector('.container'));
-
-      attr.$observe('value', function(value) {
-        bar2.css('width', clamp(value).toString() + '%');
-      });
-
-      attr.$observe('secondaryvalue', function(value) {
-        bar1.css('width', clamp(value).toString() + '%');
-      });
-
-      $timeout(function() {
-        container.addClass('ready');
-      });
-    }
-  };
-}
-
-// **********************************************************
-// Private Methods
-// **********************************************************
-
-function clamp(value) {
-  if (value > 100) {
-    return 100;
-  }
-
-  if (value < 0) {
-    return 0;
-  }
-
-  return value || 0;
-}
 angular.module('material.decorators', [])
 .config(['$provide', function($provide) {
   $provide.decorator('$$rAF', ['$delegate', '$rootScope', rAFDecorator]);
