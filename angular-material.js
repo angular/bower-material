@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.0.3
+ * v0.0.2
  */
 (function(){
 angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
@@ -2346,7 +2346,7 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
       activeTrack.css('width', (percent * 100) + '%');
       thumbContainer.css(
         $materialEffects.TRANSFORM,
-        'translate3d(' + getSliderDimensions().width * percent + 'px,0,0)'
+        'translateX(' + getSliderDimensions().width * percent + 'px)'
       );
       element.toggleClass('slider-min', percent === 0);
     }
