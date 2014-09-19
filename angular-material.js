@@ -5,7 +5,7 @@
  * v0.0.2
  */
 (function(){
-angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.form","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
+angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
 /*
  * iterator is a list facade to easily support iteration and accessors
  *
@@ -1339,11 +1339,11 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
 
 /**
  * @ngdoc module
- * @name material.components.form
+ * @name material.components.textField
  * @description
  * Form
  */
-angular.module('material.components.form', [])
+angular.module('material.components.textField', [])
   .directive('materialInputGroup', [
     materialInputGroupDirective
   ])
@@ -1354,15 +1354,15 @@ angular.module('material.components.form', [])
 /**
  * @ngdoc directive
  * @name materialInputGroup
- * @module material.components.form
+ * @module material.components.textField
  * @restrict E
  * @description
- * Use the `<material-input-group>` directive as the grouping parent of an `<material-input>` elements
+ * Use the `<material-input-group>` directive as the grouping parent of a `<material-input>` element.
  *
  * @usage 
  * <hljs lang="html">
  * <material-input-group>
- *   <material-input type="text" ng-model="myText">
+ *   <material-input type="text" ng-model="myText"></material-input>
  * </material-input-group>
  * </hljs>
  */
@@ -1383,7 +1383,7 @@ function materialInputGroupDirective() {
 /**
  * @ngdoc directive
  * @name materialInput
- * @module material.components.form
+ * @module material.components.textField
  *
  * @restrict E
  *
