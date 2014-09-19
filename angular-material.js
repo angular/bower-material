@@ -5,7 +5,7 @@
  * v0.0.2
  */
 (function(){
-angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.form","material.components.icon","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
+angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.form","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
 /*
  * iterator is a list facade to easily support iteration and accessors
  *
@@ -4258,6 +4258,88 @@ function MaterialDividerDirective() {
   };
 }
 
+/**
+ * @ngdoc module
+ * @name material.components.linearProgress
+ * @description Linear Progress module!
+ */
+angular.module('material.components.linearProgress', [
+  'material.animations',
+  'material.services.aria'
+])
+  .directive('materialLinearProgress', ['$timeout', MaterialLinearProgressDirective]);
+
+/**
+ * @ngdoc directive
+ * @name materialLinearProgress
+ * @module material.components.linearProgress
+ * @restrict E
+ *
+ * @description
+ * The linear progress directive is used to make loading content in your app as delightful and painless as possible by minimizing the amount of visual change a user sees before they can view and interact with content. Each operation should only be represented by one activity indicator—for example, one refresh operation should not display both a refresh bar and an activity circle.
+ *
+ * For operations where the percentage of the operation completed can be determined, use a determinate indicator. They give users a quick sense of how long an operation will take.
+ *
+ * For operations where the user is asked to wait a moment while something finishes up, and it’s not necessary to expose what's happening behind the scenes and how long it will take, use an indeterminate indicator.
+ *
+ * @param {string} mode Select from one of four modes: determinate, indeterminate, buffer or query.
+ * @param {number=} value In determinate and buffer modes, this number represents the percentage of the primary progress bar.
+ * @param {number=} secondaryValue In the buffer mode, this number represents the precentage of the secondary progress bar.
+ *
+ * @usage
+ * <hljs lang="html">
+ * <material-linear-progress mode="determinate" value="..."></material-linear-progress>
+ *
+ * <material-linear-progress mode="indeterminate"></material-linear-progress>
+ *
+ * <material-linear-progress mode="buffer" value="..." secondaryValue="..."></material-linear-progress>
+ *
+ * <material-linear-progress mode="query"></material-linear-progress>
+ * </hljs>
+ */
+function MaterialLinearProgressDirective($timeout) {
+  return {
+    restrict: 'E',
+    template: '<div class="container">' +
+      '<div class="dashed"></div>' +
+      '<div class="bar bar1"></div>' +
+      '<div class="bar bar2"></div>' +
+      '</div>',
+    link: function(scope, element, attr) {
+      var bar1 = angular.element(element[0].querySelector('.bar1')),
+          bar2 = angular.element(element[0].querySelector('.bar2')),
+          container = angular.element(element[0].querySelector('.container'));
+
+      attr.$observe('value', function(value) {
+        bar2.css('width', clamp(value).toString() + '%');
+      });
+
+      attr.$observe('secondaryvalue', function(value) {
+        bar1.css('width', clamp(value).toString() + '%');
+      });
+
+      $timeout(function() {
+        container.addClass('ready');
+      });
+    }
+  };
+}
+
+// **********************************************************
+// Private Methods
+// **********************************************************
+
+function clamp(value) {
+  if (value > 100) {
+    return 100;
+  }
+
+  if (value < 0) {
+    return 0;
+  }
+
+  return value || 0;
+}
 angular.module('material.decorators', [])
 .config(['$provide', function($provide) {
   $provide.decorator('$$rAF', ['$delegate', '$rootScope', rAFDecorator]);
