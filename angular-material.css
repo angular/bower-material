@@ -2003,8 +2003,8 @@ material-sidenav {
   width: 304px;
   bottom: 0;
   background-color: white;
-  -webkit-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out; }
+  -webkit-transition: -webkit-transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out; }
 
 .material-sidenav-left, material-sidenav {
   left: 0;
