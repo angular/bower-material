@@ -5,7 +5,7 @@
  * v0.0.2
  */
 (function(){
-angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
+angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.position', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.form","material.components.icon","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
 /*
  * iterator is a list facade to easily support iteration and accessors
  *
@@ -442,13 +442,14 @@ var KEY  = Constant.KEY_CODE;
  * Ink and Popup Effects
  */
 angular.module('material.animations', [
+  'material.services.position',
   'material.services.throttle'
 ])
   .service('$materialEffects', [ 
     '$rootElement', 
+    '$position', 
     '$$rAF', 
     '$sniffer',
-    '$q',
     MaterialEffects
   ]);
 
@@ -468,7 +469,7 @@ angular.module('material.animations', [
  * - `{function(element,parentElement)}` `popOut` - animated close of popup overlay
  *
  */
-function MaterialEffects($rootElement, $$rAF, $sniffer, $q) {
+function MaterialEffects($rootElement, $position, $$rAF, $sniffer) {
 
   var webkit = /webkit/i.test($sniffer.vendorPrefix);
   function vendorProperty(name) {
@@ -481,6 +482,7 @@ function MaterialEffects($rootElement, $$rAF, $sniffer, $q) {
   // Publish API for effects...
   return self = {
     popIn: popIn,
+    popOut: popOut,
 
     /* Constants */
     TRANSITIONEND_EVENT: 'transitionend' + (webkit ? ' webkitTransitionEnd' : ''),
@@ -499,16 +501,19 @@ function MaterialEffects($rootElement, $$rAF, $sniffer, $q) {
   // **********************************************************
   // API Methods
   // **********************************************************
-  function popIn(element, parentElement, clickElement) {
-    var deferred = $q.defer();
+
+  /**
+   *
+   */
+  function popIn(element, parentElement, clickElement, done) {
     parentElement.append(element);
 
     var startPos;
     if (clickElement) {
-      var clickRect = clickElement[0].getBoundingClientRect();
+      var clickPos = $position.offset(clickElement);
       startPos = translateString(
-        clickRect.left - element[0].offsetWidth,
-        clickRect.top - element[0].offsetHeight, 
+        clickPos.left - element[0].offsetWidth / 2,
+        clickPos.top - element[0].offsetHeight / 2, 
         0
       ) + ' scale(0.2)';
     } else {
@@ -533,12 +538,33 @@ function MaterialEffects($rootElement, $$rAF, $sniffer, $q) {
       //Make sure this transitionend didn't bubble up from a child
       if (ev.target === element[0]) {
         element.off(self.TRANSITIONEND_EVENT, finished);
-        deferred.resolve();
+        (done || angular.noop)();
       }
     }
-
-    return deferred.promise;
   }
+
+  /**
+   *
+   *
+   */
+  function popOut(element, parentElement, done) {
+    var endPos = $position.positionElements(parentElement, element, 'bottom-center');
+
+    element
+      .css(self.TRANSFORM, 
+           translateString(endPos.left, endPos.top, 0) + ' scale(0.5)')
+      .css('opacity', 0)
+      .on(self.TRANSITIONEND_EVENT, finished);
+
+    function finished(ev) {
+      //Make sure this transitionend didn't bubble up from a child
+      if (ev.target === element[0]) {
+        element.off(self.TRANSITIONEND_EVENT, finished);
+        (done || angular.noop)();
+      }
+    }
+  }
+
 
   // **********************************************************
   // Utility Methods
@@ -547,6 +573,26 @@ function MaterialEffects($rootElement, $$rAF, $sniffer, $q) {
 
   function translateString(x, y, z) {
     return 'translate3d(' + Math.floor(x) + 'px,' + Math.floor(y) + 'px,' + Math.floor(z) + 'px)';
+  }
+
+
+  /**
+   * Support values such as 0.65 secs or 650 msecs
+   */
+  function safeDuration(value) {
+    var duration = isNaN(value) ? 0 : Number(value);
+    return (duration < 1.0) ? (duration * 1000) : duration;
+  }
+
+  /**
+   * Convert all values to decimal;
+   * eg 150 msecs -> 0.15sec
+   */
+  function safeVelocity(value) {
+    var duration = isNaN(value) ? 0 : Number(value);
+    return (duration > 100) ? (duration / 1000) :
+      (duration > 10 ) ? (duration / 100) :
+        (duration > 1  ) ? (duration / 10) : duration;
   }
 
 }
@@ -1252,19 +1298,15 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
         backdrop = angular.element('<material-backdrop class="opaque ng-enter">');
         $animate.enter(backdrop, options.appendTo, null);
       }
-
-      $materialEffects.popIn(element, options.appendTo, popInTarget)
-        .then(function() {
-
-          if (options.escapeToClose) {
-            $rootElement.on('keyup', onRootElementKeyup);
-          }
-          if (options.clickOutsideToClose) {
-            element.on('click', dialogClickOutside);
-          }
-          closeButton.focus();
-
-        });
+      $materialEffects.popIn(element, options.appendTo, popInTarget, function() {
+        if (options.escapeToClose) {
+          $rootElement.on('keyup', onRootElementKeyup);
+        }
+        if (options.clickOutsideToClose) {
+          element.on('click', dialogClickOutside);
+        }
+        closeButton.focus();
+      });
 
       return destroyDialog;
 
@@ -1291,7 +1333,7 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
         if (options.clickOutsideToClose) {
           element.off('click', dialogClickOutside);
         }
-        $animate.leave(element).then(function() {
+        $materialEffects.popOut(element, options.appendTo, function() {
           element.remove();
           scope.$destroy();
           scope = null;
@@ -1303,12 +1345,12 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
         });
       }
       function onRootElementKeyup(e) {
-        if (e.keyCode === Constant.KEY_CODE.ESCAPE) {
+        if (e.keyCode == Constant.KEY_CODE.ESCAPE) {
           $timeout(destroyDialog);
         }
       }
       function dialogClickOutside(e) {
-        // Only close if we click the flex container outside the backdrop
+        // If we click the flex container outside the backdrop
         if (e.target === element[0]) {
           $timeout(destroyDialog);
         }
@@ -1339,11 +1381,11 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
 
 /**
  * @ngdoc module
- * @name material.components.textField
+ * @name material.components.form
  * @description
  * Form
  */
-angular.module('material.components.textField', [])
+angular.module('material.components.form', [])
   .directive('materialInputGroup', [
     materialInputGroupDirective
   ])
@@ -1354,15 +1396,15 @@ angular.module('material.components.textField', [])
 /**
  * @ngdoc directive
  * @name materialInputGroup
- * @module material.components.textField
+ * @module material.components.form
  * @restrict E
  * @description
- * Use the `<material-input-group>` directive as the grouping parent of a `<material-input>` element.
+ * Use the `<material-input-group>` directive as the grouping parent of an `<material-input>` elements
  *
  * @usage 
  * <hljs lang="html">
  * <material-input-group>
- *   <material-input type="text" ng-model="myText"></material-input>
+ *   <material-input type="text" ng-model="myText">
  * </material-input-group>
  * </hljs>
  */
@@ -1383,7 +1425,7 @@ function materialInputGroupDirective() {
 /**
  * @ngdoc directive
  * @name materialInput
- * @module material.components.textField
+ * @module material.components.form
  *
  * @restrict E
  *
@@ -2187,15 +2229,9 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
     attr.max ? attr.$observe('max', updateMax) : updateMax(100);
     attr.step ? attr.$observe('step', updateStep) : updateStep(1);
 
-    // We have to manually stop the $watch on ngDisabled because it exists
-    // on the parent scope, and won't be automatically destroyed when
-    // the component is destroyed.
-    var stopDisabledWatch = angular.noop;
-    if (attr.ngDisabled) {
-      stopDisabledWatch = scope.$parent.$watch(attr.ngDisabled, updateAriaDisabled);
-    } else {
+    attr.ngDisabled ?
+      scope.$watch(attr.ngDisabled, updateAriaDisabled) :
       updateAriaDisabled(!!attr.disabled);
-    }
 
     $aria.expect(element, 'aria-label');
     element.attr('tabIndex', 0);
@@ -2212,18 +2248,16 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
     hammertime.on('pan', onPan);
 
     // On resize, recalculate the slider's dimensions and re-render
-    var updateAll = $$rAF.debounce(function() {
+    var onWindowResize = $$rAF.debounce(function() {
       refreshSliderDimensions();
       ngModelRender();
       redrawTicks();
-    });
-    updateAll();
-    angular.element($window).on('resize', updateAll);
+    }, false);
+    angular.element($window).on('resize', onWindowResize);
 
     scope.$on('$destroy', function() {
-      angular.element($window).off('resize', updateAll);
+      angular.element($window).off('resize', onWindowResize);
       hammertime.destroy();
-      stopDisabledWatch();
     });
 
     ngModelCtrl.$render = ngModelRender;
@@ -2346,7 +2380,7 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
       activeTrack.css('width', (percent * 100) + '%');
       thumbContainer.css(
         $materialEffects.TRANSFORM,
-        'translate3d(' + getSliderDimensions().width * percent + 'px,0,0)'
+        'translateX(' + getSliderDimensions().width * percent + 'px)'
       );
       element.toggleClass('slider-min', percent === 0);
     }
@@ -2732,7 +2766,7 @@ function linkTabPagination(scope, element, tabsCtrl, $q, $materialEffects ) {
 }
 
 angular.module('material.components.tabs')
-  .directive('materialTab', [
+  .directive('materialTab', [ 
     '$attrBind',
     '$aria',
     '$materialInkRipple',
@@ -3513,28 +3547,27 @@ function TabsDirective($q, $window, $timeout, $compile, $materialEffects, $$rAF,
         var updateInk = linkTabInk(scope, element, tabsCtrl, $q, $materialEffects);
         var updatePagination = linkTabPagination( scope, element, tabsCtrl, $q, $materialEffects );
 
-        var updateAll = function() {
-          scope.$evalAsync(function() {
-            updatePagination().then( function(){
-              // Make sure the ink positioning is correct
-              $timeout( updateInk );
-            });
+        var updateAll =  function() {
 
-            // Make sure ink changes start just after pagination transitions have started...
-            $$rAF( updateInk );
-          });
-        };
+              updatePagination().then( function(){
+                tabsCtrl.focusSelected();
+
+                // Make sure the ink positioning is correct
+                $timeout( updateInk );
+              });
+
+              // Make sure ink changes start just after pagination transitions have started...
+              $$rAF( updateInk );
+            };
 
         var onWindowResize = $$rAF.debounce( updateAll );
         var onWindowRelease = function() {
-          angular.element($window).off('resize', onWindowResize);
-        };
-
-        $$rAF(updateAll);
+              angular.element($window).off('resize', onWindowResize);
+            };
 
         angular.element($window).on( EVENT.WINDOW_RESIZE, onWindowResize);
         scope.$on( EVENT.TABS_CHANGED, updateAll );
-        scope.$on( EVENT.SCOPE_DESTROY, onWindowRelease );
+        scope.$on( EVENT.SCOPE_DESTROY,onWindowRelease );
 
         transcludeHeaderItems();
         transcludeContentItems();
@@ -4031,7 +4064,7 @@ function QpToastService($timeout, $rootScope, $materialCompiler, $rootElement, $
       toastParent.addClass(toastParentClass);
 
       var delayTimeout;
-      $animate.enter(element, toastParent).then(function() {
+      $animate.enter(element, toastParent, null, function() {
         if (options.duration) {
           delayTimeout = $timeout(destroy, options.duration);
         }
@@ -4059,7 +4092,7 @@ function QpToastService($timeout, $rootScope, $materialCompiler, $rootElement, $
         hammertime.destroy();
         toastParent.removeClass(toastParentClass);
         $timeout.cancel(delayTimeout);
-        $animate.leave(element).then(function() {
+        $animate.leave(element, function() {
           scope.$destroy();
         });
       }
@@ -4121,13 +4154,9 @@ angular.module('material.components.toolbar', [
  *
  * @param {boolean=} scrollShrink Whether the header should shrink away as 
  * the user scrolls down, and reveal itself as the user scrolls up. 
+ *
  * Note: for scrollShrink to work, the toolbar must be a sibling of a 
  * `material-content` element, placed before it. See the scroll shrink demo.
- *
- *
- * @param {number=} shrinkSpeedFactor How much to change the speed of the toolbar's
- * shrinking by. For example, if 0.25 is given then the toolbar will shrink
- * at one fourth the rate at which the user scrolls down. Default 0.5.
  */ 
 function materialToolbarDirective($$rAF, $materialEffects) {
 
@@ -4141,76 +4170,56 @@ function materialToolbarDirective($$rAF, $materialEffects) {
       }
 
       function setupScrollShrink() {
+        //makes it take X times as long for header to dissapear
+        var HEIGHT_FACTOR = 2; 
+        var height = element.prop("offsetHeight") * HEIGHT_FACTOR;
         // Current "y" position of scroll
         var y = 0;
         // Store the last scroll top position
         var prevScrollTop = 0;
-
-        var shrinkSpeedFactor = attr.shrinkSpeedFactor || 0.5;
-
-        var toolbarHeight;
-        var contentElement;
-
-        var debouncedContentScroll = $$rAF.debounce(onContentScroll);
-        var debouncedUpdateHeight = Util.debounce(updateToolbarHeight, 5 * 1000);
 
         // Wait for $materialContentLoaded event from materialContent directive.
         // If the materialContent element is a sibling of our toolbar, hook it up
         // to scroll events.
         scope.$on('$materialContentLoaded', onMaterialContentLoad);
 
-        function onMaterialContentLoad($event, newContentEl) {
-          if (Util.elementIsSibling(element, newContentEl)) {
+        var contentElement;
+        function onMaterialContentLoad($event, contentEl) {
+
+          if (Util.elementIsSibling(element, contentEl)) {
             // unhook old content event listener if exists
-            if (contentElement) {
-              contentElement.off('scroll', debouncedContentScroll);
-            }
-
-            newContentEl.on('scroll', debouncedContentScroll);
-            newContentEl.attr('scroll-shrink', 'true');
-
-            contentElement = newContentEl;
-            $$rAF(updateToolbarHeight);
+            contentElement && contentElement.off('scroll', onContentScroll);
+            contentEl.on('scroll', onContentScroll).css('position','relative');
+            contentElement = contentEl;
           }
-        }
 
-        function updateToolbarHeight() {
-          toolbarHeight = element.prop('offsetHeight');
-          // Add a negative margin-top the size of the toolbar to the content el.
-          // The content will start transformed down the toolbarHeight amount,
-          // so everything looks normal.
-          //
-          // As the user scrolls down, the content will be transformed up slowly
-          // to put the content underneath where the toolbar was.
-          contentElement.css(
-            'margin-top', 
-            (-toolbarHeight * shrinkSpeedFactor) + 'px'
-          );
-          onContentScroll();
         }
 
         function onContentScroll(e) {
-          var scrollTop = e ? e.target.scrollTop : prevScrollTop;
-
-          debouncedUpdateHeight();
-
-          y = Math.min(
-            toolbarHeight / shrinkSpeedFactor, 
-            Math.max(0, y + scrollTop - prevScrollTop)
-          );
-
-          element.css(
-            $materialEffects.TRANSFORM, 
-            'translate3d(0,' + (-y * shrinkSpeedFactor) + 'px,0)'
-          );
-          contentElement.css(
-            $materialEffects.TRANSFORM, 
-            'translate3d(0,' + ((toolbarHeight - y) * shrinkSpeedFactor) + 'px,0)'
-          );
-
-          prevScrollTop = scrollTop;
+          shrink(e.target.scrollTop);
+          prevScrollTop = e.target.scrollTop;
         }
 
+        // Shrink the given target element based on the scrolling
+        // of the scroller element.
+        function shrink(scrollTop) {
+          y = Math.min(height, Math.max(0, y + scrollTop - prevScrollTop));
+          // If we are scrolling back "up", show the header condensed again
+          // if (prevScrollTop > scrollTop && scrollTop > margin) {
+          //   y = Math.max(y, margin);
+          // }
+          $$rAF(transform);
+        }
+
+        function transform() {
+          var translate = y ?
+            'translate3d(0,' + (-y / HEIGHT_FACTOR) + 'px, 0)' : 
+            '';
+          element.css($materialEffects.TRANSFORM, translate);
+          contentElement.css('margin-top', y ?
+                             (-y / HEIGHT_FACTOR) + 'px' :
+                            '');
+        }
       }
 
     }
@@ -4258,90 +4267,6 @@ function MaterialDividerDirective() {
   };
 }
 
-/**
- * @ngdoc module
- * @name material.components.linearProgress
- * @description Linear Progress module!
- */
-angular.module('material.components.linearProgress', [
-  'material.animations',
-  'material.services.aria'
-])
-  .directive('materialLinearProgress', ['$timeout', MaterialLinearProgressDirective]);
-
-/**
- * @ngdoc directive
- * @name materialLinearProgress
- * @module material.components.linearProgress
- * @restrict E
- *
- * @description
- * The linear progress directive is used to make loading content in your app as delightful and painless as possible by minimizing the amount of visual change a user sees before they can view and interact with content. Each operation should only be represented by one activity indicator—for example, one refresh operation should not display both a refresh bar and an activity circle.
- *
- * For operations where the percentage of the operation completed can be determined, use a determinate indicator. They give users a quick sense of how long an operation will take.
- *
- * For operations where the user is asked to wait a moment while something finishes up, and it’s not necessary to expose what's happening behind the scenes and how long it will take, use an indeterminate indicator.
- *
- * @param {string} mode Select from one of four modes: determinate, indeterminate, buffer or query.
- * @param {number=} value In determinate and buffer modes, this number represents the percentage of the primary progress bar. Default: 0
- * @param {number=} secondaryValue In the buffer mode, this number represents the precentage of the secondary progress bar. Default: 0
- *
- * @usage
- * <hljs lang="html">
- * <material-linear-progress mode="determinate" value="..."></material-linear-progress>
- *
- * <material-linear-progress mode="determinate" ng-value="..."></material-linear-progress>
- *
- * <material-linear-progress mode="indeterminate"></material-linear-progress>
- *
- * <material-linear-progress mode="buffer" value="..." secondaryValue="..."></material-linear-progress>
- *
- * <material-linear-progress mode="query"></material-linear-progress>
- * </hljs>
- */
-function MaterialLinearProgressDirective($timeout) {
-  return {
-    restrict: 'E',
-    template: '<div class="container">' +
-      '<div class="dashed"></div>' +
-      '<div class="bar bar1"></div>' +
-      '<div class="bar bar2"></div>' +
-      '</div>',
-    link: function(scope, element, attr) {
-      var bar1 = angular.element(element[0].querySelector('.bar1')),
-          bar2 = angular.element(element[0].querySelector('.bar2')),
-          container = angular.element(element[0].querySelector('.container'));
-
-      attr.$observe('value', function(value) {
-        bar2.css('width', clamp(value).toString() + '%');
-      });
-
-      attr.$observe('secondaryvalue', function(value) {
-        bar1.css('width', clamp(value).toString() + '%');
-      });
-
-      $timeout(function() {
-        container.addClass('ready');
-      });
-    }
-  };
-}
-
-// **********************************************************
-// Private Methods
-// **********************************************************
-
-function clamp(value) {
-  if (value > 100) {
-    return 100;
-  }
-
-  if (value < 0) {
-    return 0;
-  }
-
-  return value || 0;
-}
 angular.module('material.decorators', [])
 .config(['$provide', function($provide) {
   $provide.decorator('$$rAF', ['$delegate', '$rootScope', rAFDecorator]);
@@ -4359,8 +4284,12 @@ angular.module('material.decorators', [])
      * event that happened before that frame.
      *
      * @param {function} callback function to debounce
+     * @param {boolean=} invokeApply If set to false skips dirty checking, otherwise will invoke fn within the $apply block.
      */
-    $$rAF.debounce = function(cb) {
+    $$rAF.debounce = function(cb, invokeApply) {
+      if (arguments.length === 1) {
+        invokeApply = true;
+      }
       var queueArgs, alreadyQueued, queueCb, context;
       return function debounced() {
         queueArgs = arguments;
@@ -4369,7 +4298,11 @@ angular.module('material.decorators', [])
         if (!alreadyQueued) {
           alreadyQueued = true;
           $$rAF(function() {
-            queueCb.apply(context, queueArgs);
+            invokeApply ? 
+              $rootScope.$apply(function() {
+                queueCb.apply(context, queueArgs);
+              }) :
+                queueCb.apply(context, queueArgs);
             alreadyQueued = false;
           });
         }
@@ -4683,6 +4616,169 @@ function materialCompilerService($q, $http, $injector, $compile, $controller, $t
         }
       };
     });
+  };
+}
+
+/**
+ * Adapted from ui.bootstrap.position
+ * https://github.com/angular-ui/bootstrap/blob/master/src/position/position.js
+ * https://github.com/angular-ui/bootstrap/blob/master/LICENSE
+ */
+
+angular.module('material.services.position', [])
+  .factory('$position', [
+    '$document', 
+    '$window', 
+    MaterialPositionService
+  ]);
+
+/**
+ * A set of utility methods that can be use to retrieve position of DOM elements.
+ * It is meant to be used where we need to absolute-position DOM elements in
+ * relation to other, existing elements (this is the case for tooltips, popovers,
+ * typeahead suggestions etc.).
+ */
+function MaterialPositionService($document, $window) {
+  function getStyle(el, cssprop) {
+    if (el.currentStyle) { //IE
+      return el.currentStyle[cssprop];
+    } else if ($window.getComputedStyle) {
+      return $window.getComputedStyle(el)[cssprop];
+    }
+    // finally try and get inline style
+    return el.style[cssprop];
+  }
+
+  /**
+   * Checks if a given element is statically positioned
+   * @param element - raw DOM element
+   */
+  function isStaticPositioned(element) {
+    return (getStyle(element, 'position') || 'static' ) === 'static';
+  }
+
+  /**
+   * returns the closest, non-statically positioned parentOffset of a given element
+   * @param element
+   */
+  var parentOffsetEl = function (element) {
+    var docDomEl = $document[0];
+    var offsetParent = element.offsetParent || docDomEl;
+    while (offsetParent && offsetParent !== docDomEl && isStaticPositioned(offsetParent) ) {
+      offsetParent = offsetParent.offsetParent;
+    }
+    return offsetParent || docDomEl;
+  };
+
+  return {
+    /**
+     * Provides read-only equivalent of jQuery's position function:
+     * http://api.jquery.com/position/
+     */
+    position: function (element) {
+      var elBCR = this.offset(element);
+      var offsetParentBCR = { top: 0, left: 0 };
+      var offsetParentEl = parentOffsetEl(element[0]);
+      if (offsetParentEl != $document[0]) {
+        offsetParentBCR = this.offset(angular.element(offsetParentEl));
+        offsetParentBCR.top += offsetParentEl.clientTop - offsetParentEl.scrollTop;
+        offsetParentBCR.left += offsetParentEl.clientLeft - offsetParentEl.scrollLeft;
+      }
+
+      var boundingClientRect = element[0].getBoundingClientRect();
+      return {
+        width: boundingClientRect.width || element.prop('offsetWidth'),
+        height: boundingClientRect.height || element.prop('offsetHeight'),
+        top: elBCR.top - offsetParentBCR.top,
+        left: elBCR.left - offsetParentBCR.left
+      };
+    },
+
+    /**
+     * Provides read-only equivalent of jQuery's offset function:
+     * http://api.jquery.com/offset/
+     */
+    offset: function (element) {
+      var boundingClientRect = element[0].getBoundingClientRect();
+      return {
+        width: boundingClientRect.width || element.prop('offsetWidth'),
+        height: boundingClientRect.height || element.prop('offsetHeight'),
+        top: boundingClientRect.top + ($window.pageYOffset || $document[0].documentElement.scrollTop),
+        left: boundingClientRect.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft)
+      };
+    },
+
+    /**
+     * Provides coordinates for the targetEl in relation to hostEl
+     */
+    positionElements: function (hostEl, targetEl, positionStr, appendToBody) {
+
+      var positionStrParts = positionStr.split('-');
+      var pos0 = positionStrParts[0], pos1 = positionStrParts[1] || 'center';
+
+      var hostElPos,
+      targetElWidth,
+      targetElHeight,
+      targetElPos;
+
+      hostElPos = appendToBody ? this.offset(hostEl) : this.position(hostEl);
+
+      targetElWidth = targetEl.prop('offsetWidth');
+      targetElHeight = targetEl.prop('offsetHeight');
+
+      var shiftWidth = {
+        center: function () {
+          return hostElPos.left + hostElPos.width / 2 - targetElWidth / 2;
+        },
+        left: function () {
+          return hostElPos.left;
+        },
+        right: function () {
+          return hostElPos.left + hostElPos.width;
+        }
+      };
+
+      var shiftHeight = {
+        center: function () {
+          return hostElPos.top + hostElPos.height / 2 - targetElHeight / 2;
+        },
+        top: function () {
+          return hostElPos.top;
+        },
+        bottom: function () {
+          return hostElPos.top + hostElPos.height;
+        }
+      };
+
+      switch (pos0) {
+        case 'right':
+          targetElPos = {
+          top: shiftHeight[pos1](),
+          left: shiftWidth[pos0]()
+        };
+        break;
+        case 'left':
+          targetElPos = {
+          top: shiftHeight[pos1](),
+          left: hostElPos.left - targetElWidth
+        };
+        break;
+        case 'bottom':
+          targetElPos = {
+          top: shiftHeight[pos0](),
+          left: shiftWidth[pos1]()
+        };
+        break;
+        default:
+          targetElPos = {
+          top: shiftHeight[pos0](),
+          left: shiftWidth[pos1]()
+        };
+        break;
+      }
+
+      return targetElPos;
+    }
   };
 }
 
