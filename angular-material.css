@@ -2038,7 +2038,7 @@ material-sidenav {
  * When sidenav is closed on small screen, show no box shadow
  */
 @media (max-width: 960px) {
-  material-sidenav:not(.open).material-sidenav-left, material-sidenav:not(.open), material-sidenav:not(.open).material-sidenav-right {
+  :not(.open).material-sidenav-left, material-sidenav:not(.open), :not(.open).material-sidenav-right {
     box-shadow: none; } }
 
 @-webkit-keyframes sliderFocusThumb {
