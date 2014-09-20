@@ -1342,6 +1342,7 @@ function MaterialSticky($window, $document, $$rAF) {
         elements.splice(index, 1);
         if(elements.length === 0) {
           $container.off('scroll', $sticky.check);
+          $container.removeData('$sticky');
         }
       }
     }

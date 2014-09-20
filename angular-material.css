@@ -2289,7 +2289,7 @@ material-slider input::-ms-thumb {
   border: 0;
   background: transparent; }
 
-material-subheader h2.material-subheader {
+material-subheader h2 {
   color: #999;
   display: block;
   width: 100%;
@@ -2299,7 +2299,7 @@ material-subheader h2.material-subheader {
   padding: 16px 0px 16px 16px;
   margin: 0 0 0 0;
   background-color: white; }
-material-subheader.material-subheader-colored h2.material-subheader {
+material-subheader.material-subheader-colored h2 {
   color: #03a9f4; }
 
 [material-sticky-active] {
