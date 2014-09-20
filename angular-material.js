@@ -2700,9 +2700,9 @@ function linkTabPagination(scope, element, tabsCtrl, $q, $materialEffects ) {
     var lastTab = (pagination.itemsPerPage * pagination.pagesCount) - 1;
     var lastPage = pagination.pagesCount - 1;
 
-    return (numPages < 1)       ? -1       :
-      (tabIndex < 0)       ?  0       :
-      (tabIndex > lastTab) ? lastPage : Math.floor(tabIndex / pagination.itemsPerPage);
+    return  (numPages < 1)       ? -1       :
+            (tabIndex < 0)       ?  0       :
+            (tabIndex > lastTab) ? lastPage : Math.floor(tabIndex / pagination.itemsPerPage);
   }
 
   /**
@@ -2726,7 +2726,7 @@ function linkTabPagination(scope, element, tabsCtrl, $q, $materialEffects ) {
    */
   function isTabInRange( tabIndex ){
     return (tabIndex >= pagination.startIndex) &&
-      (tabIndex <= pagination.endIndex);
+           (tabIndex <= pagination.endIndex);
   }
 
 }
@@ -2833,6 +2833,7 @@ function TabDirective( $attrBind, $aria, $materialInkRipple) {
       {
         // Click support for entire <material-tab /> element
         if ( !scope.disabled ) tabsCtrl.select(scope);
+        else                   tabsCtrl.focusSelected();
 
       })
       .on('keydown', function onRequestSelect(event)
@@ -3510,14 +3511,25 @@ function TabsDirective($q, $window, $timeout, $compile, $materialEffects, $$rAF,
           }
         };
 
-        var updateInk = linkTabInk(scope, element, tabsCtrl, $q, $materialEffects);
+        var allowFocus = 0;   // do not auto-focus on default tab selection
+        var updateInk = linkTabInk(scope, element, tabsCtrl, $q, $materialEffects) || angular.noop;
         var updatePagination = linkTabPagination( scope, element, tabsCtrl, $q, $materialEffects );
 
-        var updateAll = function() {
+        var updateAll = function(event) {
+
           scope.$evalAsync(function() {
             updatePagination().then( function(){
+
               // Make sure the ink positioning is correct
-              $timeout( updateInk );
+              $timeout( function() {
+                updateInk();
+
+                // Key focus synced with tab selection...
+                if (  (event.name == EVENT.TABS_CHANGED) && allowFocus++) {
+                  tabsCtrl.focusSelected();
+                }
+
+              },60);
             });
 
             // Make sure ink changes start just after pagination transitions have started...
