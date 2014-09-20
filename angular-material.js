@@ -1432,7 +1432,8 @@ function MaterialSticky($window, $document, $$rAF) {
       if(targetElementIndex > 0) {
         incrementElement(-1);
         content.attr('material-sticky-active', true);
-        content.css({transform: 'translate3d(0, ' + -1*contentRect.height + 'px, 0'});
+        var transformStr = 'translate3d(0, ' + -1*contentRect.height + 'px, 0';
+        content.css({transform: transformStr, '-webkit-transform': transformStr});
         content.data('translatedHeight', -1*contentRect.height);
         targetElement().css({height: contentRect.height});
       }
@@ -1452,7 +1453,8 @@ function MaterialSticky($window, $document, $$rAF) {
         }
       }
       offset = Math.min(offset, 0);
-      content.css({transform: 'translate3d(0, ' + offset + 'px, 0'});
+      var transformStr = 'translate3d(0, ' + offset + 'px, 0';
+      content.css({transform: transformStr, '-webkit-transform': transformStr});
       content.data('translatedHeight', offset);
       return;
     } 
@@ -1468,7 +1470,8 @@ function MaterialSticky($window, $document, $$rAF) {
           offsetAmount = contentRect.bottom - nextRect.top;
           currentTop = content.data('translatedHeight') || 0;
           translateAmt = currentTop - offsetAmount;
-          content.css({transform: 'translate3d(0, ' + translateAmt + 'px, 0'});
+          var transformStr = 'translate3d(0, ' + translateAmt + 'px, 0';
+          content.css({transform: transformStr, '-webkit-transform': transformStr});
           content.data('translatedHeight', translateAmt);
         }
       }
@@ -1478,7 +1481,8 @@ function MaterialSticky($window, $document, $$rAF) {
       offsetAmount = contentRect.bottom - nextRect.top;
       currentTop = content.data('translatedHeight') || 0;
       translateAmt = Math.min(currentTop - offsetAmount, 0);
-      content.css({transform: 'translate3d(0, ' + translateAmt + 'px, 0'});
+      var transformStr = 'translate3d(0, ' + translateAmt + 'px, 0';
+      content.css({transform: transformStr, '-webkit-transform': transformStr});
       content.data('translatedHeight', translateAmt);
     }
 
