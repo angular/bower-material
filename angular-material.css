@@ -2680,6 +2680,7 @@ material-tab {
   material-tab.active {
     color: white; }
   material-tab[disabled] {
+    pointer-events: none;
     color: #6a6a6a;
     opacity: 0.5;
     cursor: default; }
