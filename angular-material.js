@@ -2777,8 +2777,6 @@ function TabItemController(scope, element, $compile, $animate) {
   self.onSelect = onSelect;
   self.onDeselect = onDeselect;
 
-  self.addContent = addContent;
-
   function isDisabled() {
     return element[0].hasAttribute('disabled');
   }
@@ -2831,10 +2829,6 @@ function TabItemController(scope, element, $compile, $animate) {
     scope.onDeselect();
   }
 
-  function addContent(contentArea) {
-    // If there isn't any content for this tab, don't setup anything.
-
-  }
 }
 
 
@@ -3092,14 +3086,13 @@ function MaterialTabsController(scope, element) {
   // Add a new tab.
   // Returns a method to remove the tab from the list.
   function add(tab, index) {
-    var newIndex = tabsList.add(tab, index);
 
-    tab.addContent(self.contentElement);
+    tabsList.add(tab, index);
     tab.onAdd(self.contentArea);
 
     // Select the new tab if we don't have a selectedIndex, or if the 
     // selectedIndex we've been waiting for is this tab
-    if (scope.selectedIndex === -1 || scope.selectedIndex === newIndex) {
+    if (scope.selectedIndex === -1 || scope.selectedIndex === self.indexOf(tab)) {
       self.select(tab);
     }
     scope.$broadcast('$materialTabsChanged');
