@@ -5,7 +5,7 @@
  * v0.0.3
  */
 (function(){
-angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
+angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.services.throttle', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.subheader","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
 /*
  * iterator is a list facade to easily support iteration and accessors
  *
@@ -274,6 +274,28 @@ var Util = {
   },
 
   /**
+   * Returns a function, that, as long as it continues to be invoked, will not
+   * be triggered. The function will be called after it stops being called for
+   * N milliseconds.
+   * @param fn Function function to call
+   * @param wait Number number of ms to wait before calling function
+   * @param immediate Boolean causes the function to be called on the leading instead of trailing
+   * @returns {Function}
+   */
+  debounce: function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+      var context = this, args = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      }, wait);
+      if (immediate) func.apply(context, args);
+    };
+  },
+
+  /**
    * Checks if two elements have the same parent
    */
   elementIsSibling: function elementIsSibling(element, otherElement) {
@@ -351,24 +373,23 @@ var Util = {
     }
 
   },
-  
-  // Returns a function, that, as long as it continues to be invoked, will not
-  // be triggered. The function will be called after it stops being called for
-  // N milliseconds. If `immediate` is passed, trigger the function on the
-  // leading edge, instead of the trailing.
-  debounce: function debounce(func, wait, immediate) {
-    var timeout;
-    return function() {
-      var context = this, args = arguments;
-      clearTimeout(timeout);
-      timeout = setTimeout(function() {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
-      }, wait);
-      if (immediate && !timeout) func.apply(context, args);
-    };
+
+  /**
+   * Wraps an element with a tag
+   *
+   * @param el element to wrap
+   * @param tag tag to wrap it with
+   * @param [className] optional class to apply to the wrapper
+   * @returns new element
+   *
+   */
+  wrap: function(el, tag, className) {
+    if(el.hasOwnProperty(0)) { el = el[0]; }
+    var wrapper = document.createElement(tag);
+    wrapper.className += className;
+    wrapper.appendChild(el.parentNode.replaceChild(wrapper, el));
+    return angular.element(wrapper);
   }
-    
 
 };
 
@@ -392,6 +413,7 @@ var Constant = {
       BUTTON : 'button',
       CHECKBOX : 'checkbox',
       DIALOG : 'dialog',
+      HEADING : 'heading',
       LIST : 'list',
       LIST_ITEM : 'listitem',
       RADIO : 'radio',
@@ -414,10 +436,8 @@ var Constant = {
   KEY_CODE : {
     ESCAPE : 27,
     SPACE : 32,
-    DOWN_ARROW : 40,
     LEFT_ARROW : 37,
     RIGHT_ARROW : 39,
-    UP_ARROW : 38,
     ENTER: 13
   },
   EVENTS : {
@@ -772,6 +792,318 @@ function InkRippleService($window, $$rAF, $materialEffects, $timeout) {
 
 /**
  * @ngdoc module
+ * @name material.components.sticky
+ * @description
+ *
+ * Sticky effects for material
+ */
+
+angular.module('material.components.sticky', [
+  'material.components.content',
+  'material.decorators',
+  'material.animations'
+])
+.factory('$materialSticky', [
+  '$window',
+  '$document',
+  '$$rAF',
+  '$materialEffects',
+  MaterialSticky
+])
+.directive('materialSticky', [
+  '$materialSticky', 
+  MaterialStickyDirective
+]);
+
+/**
+ * @ngdoc factory
+ * @name $materialSticky
+ * @module material.components.sticky
+ *
+ * @description
+ * The `$materialSticky`service provides a mixin to make elements sticky.
+ *
+ * @returns A `$materialSticky` function that takes `$el` as an argument.
+ */
+
+function MaterialSticky($window, $document, $$rAF, $materialEffects) {
+  var browserStickySupport;
+
+  /**
+   * Registers an element as sticky, used internally by directives to register themselves
+   */
+
+
+  function registerStickyElement(scope, $el) {
+    scope.$on('$destroy', function() { $deregister($el); });
+    $el = Util.wrap($el, 'div', 'sticky-container');
+
+    var ctrl = $el.controller('materialContent');
+
+    if (!ctrl) { throw new Error('$materialSticky used outside of material-content'); }
+
+    var $container = ctrl.$element;
+
+    /*
+     * The sticky object on the container stores everything we need.
+     * `elements`: all known sticky elements within the container
+     * `orderedElements`: elements, ordered by vertical position within the layout
+     * `check`: debounced function to check elements for adjustment on scroll
+     * `targetIndex`: the index in orderedElements of the currently active sticky el
+    */
+
+    var $sticky = $container.data('$sticky') || {
+      elements: [], // all known sticky elements within $container
+      orderedElements: [], // elements, ordered by vertical position in layout
+      check: $$rAF.debounce(angular.bind(undefined, checkElements, $container)),
+      targetIndex: 0
+    };
+
+    $sticky.elements.push($el);
+
+    // check sticky support on first register
+    if (browserStickySupport === undefined) {
+      browserStickySupport = checkStickySupport($el);
+    } else if (browserStickySupport) {
+      $el.css({position: browserStickySupport, top: '0px'});
+    }
+
+    if (!browserStickySupport) {
+      if ($sticky.elements.length == 1) {
+        $container.data('$sticky', $sticky);
+        $container.on('scroll',  $sticky.check);
+      }
+      queueScan();
+    }
+
+    return $deregister;
+
+
+    // Deregister a sticky element, useful for $destroy event.
+    function $deregister($el) {
+      if ($deregister.called) return;
+      $deregister.called = true;
+      var innerElements = elements.map(function(el) { return el.children(0); });
+      var index = innerElements.indexOf($el);
+      if (index !== -1) {
+        elements[index].replaceWith($el);
+        elements.splice(index, 1);
+        if (elements.length === 0) {
+          $container.off('scroll', $sticky.check);
+          $container.removeData('$sticky');
+        }
+      }
+    }
+
+    // Method that will scan the elements after the current digest cycle
+    function queueScan() {
+      if (!queueScan.queued) {
+        scope.$$postDigest(function() {
+          scanElements($container);
+          queueScan.queued = false;
+        });
+      }
+    }
+  }
+  return registerStickyElement;
+
+  // Function to check for browser sticky support
+
+  function checkStickySupport($el) {
+    var stickyProps = ['sticky', '-webkit-sticky'];
+    for(var i = 0; i < stickyProps.length; ++i) {
+      $el.css({position: stickyProps[i], top: '0px'});
+      if ($window.getComputedStyle($el[0]).position == stickyProps[i]) {
+        return stickyProps[i];
+      }
+    }
+    $el.css({position: undefined, top: undefined});
+    return false;
+  }
+
+
+  /**
+   * Function to prepare our lookups so we can go quick!
+   */
+  function scanElements($container) {
+    if (scanElements.called || browserStickySupport) return;
+    scanElements.called;
+
+    var $sticky = $container.data('$sticky');
+
+    // Sort based on position in the window, and assign an active index
+    $sticky.orderedElements = $sticky.elements.sort(function(a, b) {
+      return rect(a).top - rect(b).top;
+    });
+
+    $sticky.targetIndex = findTargetElementIndex();
+
+
+    // Iterate over our sorted elements and find the one that is active
+    function findTargetElementIndex() {
+      var scroll = $container.prop('scrollTop');
+      for(var i = 0; i < $sticky.orderedElements.length ; ++i) {
+        if (rect($sticky.orderedElements[i]).bottom > 0) {
+          return i > 0 ? i - 1 : i;
+        } else {
+          return i;
+        }
+      }
+    }
+  }
+
+  // Function that executes on scroll to see if we need to do adjustments
+  function checkElements($container) {
+    var next; // pointer to next target
+
+    var $sticky = $container.data('$sticky');
+
+    var targetElementIndex = $sticky.targetIndex;
+    var orderedElements = $sticky.orderedElements;
+
+    /* 
+     * Since we wrap in an element (to keep track of where in the layout the 
+     * element would normally be, we use children to get the actual sticky 
+     * element.
+     */
+
+    var content = targetElement().children(0);
+    var contentRect = rect(content);
+    var targetRect = rect(targetElement());
+
+    var scrollingDown = false;
+    var currentScroll = $container.prop('scrollTop');
+    var lastScroll = $sticky.lastScroll;
+    if (currentScroll > (lastScroll || 0)) {
+      scrollingDown = true;
+    }
+    $sticky.lastScroll = currentScroll;
+
+    var stickyActive = content.addClass('material-sticky-active');
+
+
+    // If we are scrollingDown, sticky, and are being pushed off screen by a different element, increment
+    if (scrollingDown && stickyActive && contentRect.bottom <= 0 && targetElementIndex < orderedElements.length - 1) {
+      targetElement().children(0).removeClass('material-sticky-active');
+      targetElement().css('height', null);
+      incrementElement();
+      return;
+
+    //If we are going up, and our normal position would be rendered not sticky, un-sticky ourselves
+    } else if (!scrollingDown && stickyActive && targetRect.top > 0) {
+      targetElement().children(0).removeClass('material-sticky-active');
+      targetElement().css('height', null);
+      if (targetElementIndex > 0) {
+        incrementElement(-1);
+        content.addClass('material-sticky-active');
+        transformY(content, -contentRect.height);
+        targetElement().css('height', contentRect.height);
+        return;
+      }
+      return; // explicit return for the blind
+
+    /* 
+     * If we are going off screen and haven't been made sticky yet, go sticky
+     * Check at 0 so that if we get lucky on the scroll position, we activate
+     * sticky and avoid floating off the top for a second
+     */
+
+    } else if (scrollingDown && contentRect.top <= 0 && !stickyActive) {
+      content.addClass('material-sticky-active');
+      targetElement().css({height: contentRect.height});
+      contentRect = rect(content);
+      next = targetElement(+1);
+      var offset = 0;
+      if (next) {
+        nextRect = rect(next.children(0));
+        if (rectsAreTouching(contentRect, nextRect)) {
+          offset = nextRect.top - contentRect.bottom;
+        }
+      }
+      transformY(content, Math.min(offset, 0));
+      return;
+    } 
+
+    var nextRect, offsetAmount, currentTop, translateAmt;
+
+    // check if we need to push
+    if (scrollingDown) {
+      next = targetElement(+1);
+      if (next) {
+        nextRect = rect(next.children(0));
+        if (rectsAreTouching(contentRect, nextRect)) {
+          offsetAmount = contentRect.bottom - nextRect.top;
+          currentTop = transformY(content);
+          translateAmt = currentTop - offsetAmount;
+          transformY(content, translateAmt);
+        }
+      }
+    // Check if we need to pull
+    } else if (targetElementIndex < orderedElements.length - 1 && contentRect.top < 0) {
+      nextRect = rect(targetElement(+1).children(0));
+      offsetAmount = contentRect.bottom - nextRect.top;
+      currentTop = transformY(content);
+      translateAmt = Math.min(currentTop - offsetAmount, 0);
+      transformY(content, translateAmt);
+    }
+
+    function incrementElement(inc) {
+      inc = inc || 1;
+      targetElementIndex += inc;
+      content = targetElement().children(0);
+      contentRect = rect(content);
+      $sticky.targetIndex = targetElementIndex;
+    }
+
+    function targetElement(indexModifier) {
+      indexModifier = indexModifier || 0;
+      if (targetElementIndex === undefined) return undefined;
+      return orderedElements[targetElementIndex + indexModifier];
+    }
+  }
+
+  function rectsAreTouching(first, second) {
+    return first.bottom >= second.top;
+  }
+
+  // Helper functions to get position of element
+
+  function rect($el) {
+    return $el.hasOwnProperty(0) ? $el[0].getBoundingClientRect() : $el.getBoundingClientRect();
+  }
+
+  // Getter / setter for transform
+  function transformY($el, amnt) {
+    if (amnt === undefined) {
+      return $el.data('translatedHeight') || 0;
+    } else {
+      $el.css($materialEffects.TRANSFORM, 'translate3d(0, ' + amnt + 'px, 0);');
+      $el.data('translatedHeight', amnt);
+    }
+  }
+
+
+}
+
+/**
+ * @ngdoc directive
+ * @name materialSticky
+ * @module material.components.sticky
+ *
+ * @description
+ * Directive to consume the $materialSticky service
+ *
+ * @returns A material-sticky directive
+ */
+function MaterialStickyDirective($materialSticky) {
+  return {
+    restrict: 'A',
+    link: $materialSticky
+  };
+}
+
+/**
+ * @ngdoc module
  * @name material.components.buttons
  * @description
  *
@@ -1093,7 +1425,9 @@ angular.module('material.components.content', [
 function materialContentDirective() {
   return {
     restrict: 'E',
-    controller: angular.noop,
+    controller: function($scope, $element) {
+      this.$element = $element;
+    },
     link: function($scope, $element, $attr) {
       $scope.$broadcast('$materialContentLoaded', $element);
     }
@@ -1517,8 +1851,8 @@ angular.module('material.components.list', [])
  *      <img ng-src="{{item.face}}" class="face" alt="{{item.who}}">
  *    </div>
  *    <div class="material-tile-content">
- *      <h2>{{item.what}}</h2>
- *      <h3>{{item.who}}</h3>
+ *      <h3>{{item.what}}</h3>
+ *      <h4>{{item.who}}</h4>
  *      <p>
  *        {{item.notes}}
  *      </p>
@@ -1626,7 +1960,7 @@ function materialRadioGroupDirective() {
 
   return {
     restrict: 'E',
-    controller: ['$element', RadioGroupController],
+    controller: RadioGroupController,
     require: ['materialRadioGroup', '?ngModel'],
     link: link
   };
@@ -1638,11 +1972,12 @@ function materialRadioGroupDirective() {
       };
 
     function keydownListener(ev) {
-      if (ev.which === Constant.KEY_CODE.LEFT_ARROW || ev.which === Constant.KEY_CODE.UP_ARROW) {
+
+      if (ev.which === Constant.KEY_CODE.LEFT_ARROW) {
         ev.preventDefault();
         rgCtrl.selectPrevious(element);
       }
-      else if (ev.which === Constant.KEY_CODE.RIGHT_ARROW || ev.which === Constant.KEY_CODE.DOWN_ARROW) {
+      else if (ev.which === Constant.KEY_CODE.RIGHT_ARROW) {
         ev.preventDefault();
         rgCtrl.selectNext(element);
       }
@@ -1651,15 +1986,14 @@ function materialRadioGroupDirective() {
     rgCtrl.init(ngModelCtrl);
 
     element.attr({
-      'role': 'radiogroup',
+      'role': Constant.ARIA.ROLE.RADIO_GROUP,
       'tabIndex': '0'
     })
     .on('keydown', keydownListener);
   }
 
-  function RadioGroupController($element) {
+  function RadioGroupController() {
     this._radioButtonRenderFns = [];
-    this.$element = $element;
   }
 
   function createRadioGroupControllerProto() {
@@ -1695,9 +2029,6 @@ function materialRadioGroupDirective() {
       },
       selectPrevious : function(element) {
         return selectButton('previous', element);
-      },
-      setActiveDescendant: function (radioId) {
-        this.$element.attr('aria-activedescendant', radioId);
       }
     };
   }
@@ -1781,7 +2112,6 @@ function materialRadioGroupDirective() {
 function materialRadioButtonDirective($aria) {
 
   var CHECKED_CSS = 'material-checked';
-  var uniqueId = 0;
 
   return {
     restrict: 'E',
@@ -1798,8 +2128,6 @@ function materialRadioButtonDirective($aria) {
   function link(scope, element, attr, rgCtrl) {
     var lastChecked;
 
-    configureAria(element, scope);
-
     rgCtrl.add(render);
     attr.$observe('value', render);
 
@@ -1807,7 +2135,10 @@ function materialRadioButtonDirective($aria) {
       .on('click', listener)
       .on('$destroy', function() {
         rgCtrl.remove(render);
-      });
+      })
+      .attr('role', Constant.ARIA.ROLE.RADIO);
+
+    $aria.expect(element, Constant.ARIA.PROPERTY.LABEL, element.text());
 
     function listener(ev) {
       if (element[0].hasAttribute('disabled')) return;
@@ -1823,35 +2154,11 @@ function materialRadioButtonDirective($aria) {
         return;
       }
       lastChecked = checked;
-      element.attr('aria-checked', checked);
+      element.attr(Constant.ARIA.PROPERTY.CHECKED, checked);
       if (checked) {
         element.addClass(CHECKED_CSS);
-        rgCtrl.setActiveDescendant(element.attr('id'));
       } else {
         element.removeClass(CHECKED_CSS);
-      }
-    }
-    /**
-     * Inject ARIA-specific attributes appropriate for each Tab button
-     */
-    function configureAria( element, scope ){
-      scope.ariaId = buildAriaID();
-
-      $aria.update( element, {
-        'id' :  scope.ariaId,
-        'role' : 'radio',
-        'aria-checked' : 'false'
-      });
-
-      $aria.expect(element, 'aria-label', element.text());
-
-      /**
-       * Build a unique ID for each radio button that will be used with aria-activedescendant.
-       * Preserve existing ID if already specified.
-       * @returns {*|string}
-       */
-      function buildAriaID() {
-        return attr.id || ( 'radio' + "_" + scope.$id + "_" + uniqueId++ );
       }
     }
   }
@@ -2501,6 +2808,47 @@ function MaterialSwitch(checkboxDirectives, radioButtonDirectives) {
       checkboxDirective.link(scope, thumb, attr, ngModelCtrl);
     };
   }
+}
+
+/**
+ * @ngdoc module
+ * @name material.components.subheader
+ * @description
+ * SubHeader module
+ */
+angular.module('material.components.subheader', [
+  'material.components.sticky'
+])
+.directive('materialSubheader', [
+  materialSubheaderDirective
+]);
+
+/**
+ * @ngdoc directive
+ * @name materialSubheader
+ * @module material.components.subheader
+ *
+ * @restrict E
+ *
+ * @description
+ * The `<material-subheader>` directive is a subheader for a section
+ *
+ * @usage
+ * <hljs lang="html">
+ * <material-subheader>Online Friends</material-subheader>
+ * </hljs>
+ */
+
+function materialSubheaderDirective() {
+  return {
+    restrict: 'E',
+    compile: function($el, $attr) {
+      var element = angular.element('<h2 material-sticky class="material-subheader">')
+          .append($el.contents());
+
+      $el.append(element);
+    }
+  };
 }
 
 /**
