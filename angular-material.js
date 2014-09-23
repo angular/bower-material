@@ -414,8 +414,10 @@ var Constant = {
   KEY_CODE : {
     ESCAPE : 27,
     SPACE : 32,
+    DOWN_ARROW : 40,
     LEFT_ARROW : 37,
     RIGHT_ARROW : 39,
+    UP_ARROW : 38,
     ENTER: 13
   },
   EVENTS : {
@@ -1636,12 +1638,11 @@ function materialRadioGroupDirective() {
       };
 
     function keydownListener(ev) {
-
-      if (ev.which === Constant.KEY_CODE.LEFT_ARROW) {
+      if (ev.which === Constant.KEY_CODE.LEFT_ARROW || ev.which === Constant.KEY_CODE.UP_ARROW) {
         ev.preventDefault();
         rgCtrl.selectPrevious(element);
       }
-      else if (ev.which === Constant.KEY_CODE.RIGHT_ARROW) {
+      else if (ev.which === Constant.KEY_CODE.RIGHT_ARROW || ev.which === Constant.KEY_CODE.DOWN_ARROW) {
         ev.preventDefault();
         rgCtrl.selectNext(element);
       }
