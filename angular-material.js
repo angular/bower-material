@@ -2761,7 +2761,7 @@ function TabItemController(scope, element, $compile, $animate) {
   self.onSelect = onSelect;
   self.onDeselect = onDeselect;
 
-  self.setupContent = transposeContent;
+  self.addContent = addContent;
   self.removeContent = angular.noop;
 
   function isDisabled() {
@@ -2793,12 +2793,15 @@ function TabItemController(scope, element, $compile, $animate) {
     scope.onDeselect();
   }
 
-  // Add the tab's content to the proper area in the tabs,
-  // and do initial setup.
-  // NOTE: Called from TabsController::add() when the tab is added
-  function transposeContent(contentArea) {
-    if (transposeContent.called) return; // Only do this once.
-    transposeContent.called = true;
+  /**
+   * Add the tab's content to the DOM container area in the tabs,
+   * NOTE: Called from TabsController::add() when the tab is added
+   *
+   * @param contentArea Parent element into which the tab content should be transposed
+   */
+  function addContent(contentArea) {
+    if (addContent.called) return; // Only do this once.
+    addContent.called = true;
 
     // If there isn't any content for this tab, don't setup anything.
     if (self.content.length) {
@@ -2810,13 +2813,12 @@ function TabItemController(scope, element, $compile, $animate) {
       $compile(self.contentParent)(self.contentScope);
       Util.disconnectScope(self.contentScope);
 
+      // Configure called from TabsController::remove()
+      self.removeContent = function() {
+        Util.disconnectScope(self.contentScope);
+        self.contentParent.remove(contentArea);
+      };
     }
-
-    // Called from TabsController::remove()
-    self.removeContent = function() {
-      Util.disconnectScope(self.contentScope);
-      self.contentParent.remove(contentArea);
-    };
 
   }
 }
@@ -3071,9 +3073,9 @@ function MaterialTabsController(scope, element) {
   // Add a new tab.
   // Returns a method to remove the tab from the list.
   function add(tab, index) {
-    var newIndex = tabs.add(tab, index);
 
-    tab.setupContent(self.contentElement);
+    var newIndex = tabs.add(tab, index);
+    tab.addContent(self.contentElement);
 
     // Select the new tab if we don't have a selectedIndex, or if the 
     // selectedIndex we've been waiting for is this tab
