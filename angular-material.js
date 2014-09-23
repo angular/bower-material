@@ -2570,10 +2570,11 @@ angular.module('material.components.tabs')
   '$window',
   '$$rAF',
   '$$q',
+  '$timeout',
   TabPaginationDirective
 ]);
 
-function TabPaginationDirective($materialEffects, $window, $$rAF, $$q) {
+function TabPaginationDirective($materialEffects, $window, $$rAF, $$q, $timeout) {
 
   // TODO allow configuration of TAB_MIN_WIDTH
   // Must match tab min-width rule in _tabs.scss
@@ -2687,10 +2688,12 @@ function TabPaginationDirective($materialEffects, $window, $$rAF, $$q) {
       } else {
 
         if (paginationToggled) {
-          tabsParent.css('width', '');
-          tabs.css('width', '');
-          slideTabButtons(0);
-          state.page = -1;
+          $timeout(function() {
+            tabsParent.css('width', '');
+            tabs.css('width', '');
+            slideTabButtons(0);
+            state.page = -1;
+          });
         }
 
       }
@@ -2739,8 +2742,7 @@ function TabPaginationDirective($materialEffects, $window, $$rAF, $$q) {
 
       state.page = page;
 
-      scope.$evalAsync(function() {
-        // This is disconnected form the animation, it triggers a digest.
+      $timeout(function() {
         scope.$broadcast('$materialTabsPaginationChanged');
       });
 
@@ -2765,19 +2767,43 @@ function TabItemController(scope, element, $compile, $animate) {
   var self = this;
 
   // Properties
-  self.contentParent = angular.element('<div class="tab-content ng-hide">');
+  self.contentContainer = angular.element('<div class="tab-content ng-hide">');
   self.element = element;
 
   // Methods
   self.isDisabled = isDisabled;
+  self.onAdd = onAdd;
+  self.onRemove = onRemove;
   self.onSelect = onSelect;
   self.onDeselect = onDeselect;
 
   self.addContent = addContent;
-  self.removeContent = angular.noop;
 
   function isDisabled() {
     return element[0].hasAttribute('disabled');
+  }
+  
+  /**
+   * Add the tab's content to the DOM container area in the tabs,
+   * @param contentArea the contentArea to add the content of the tab to
+   */
+  function onAdd(contentArea) {
+    if (self.content.length) {
+
+      self.contentContainer.append(self.content);
+      self.contentScope = scope.$parent.$new();
+      contentArea.append(self.contentContainer);
+
+      $compile(self.contentContainer)(self.contentScope);
+      Util.disconnectScope(self.contentScope);
+    }
+  }
+
+  function onRemove() {
+    $animate.leave(self.contentContainer).then(function() {
+      self.contentScope && self.contentScope.$destroy();
+      self.contentScope = null;
+    });
   }
 
   function onSelect() {
@@ -2787,7 +2813,7 @@ function TabItemController(scope, element, $compile, $animate) {
     element.addClass('active');
     element.attr('aria-selected', true);
     element.attr('tabIndex', 0);
-    $animate.removeClass(self.contentParent, 'ng-hide');
+    $animate.removeClass(self.contentContainer, 'ng-hide');
 
     scope.onSelect();
   }
@@ -2800,37 +2826,13 @@ function TabItemController(scope, element, $compile, $animate) {
     element.attr('aria-selected', false);
     // Only allow tabbing to the active tab
     element.attr('tabIndex', -1);
-    $animate.addClass(self.contentParent, 'ng-hide');
+    $animate.addClass(self.contentContainer, 'ng-hide');
 
     scope.onDeselect();
   }
 
-  /**
-   * Add the tab's content to the DOM container area in the tabs,
-   * NOTE: Called from TabsController::add() when the tab is added
-   *
-   * @param contentArea Parent element into which the tab content should be transposed
-   */
   function addContent(contentArea) {
-    if (addContent.called) return; // Only do this once.
-    addContent.called = true;
-
     // If there isn't any content for this tab, don't setup anything.
-    if (self.content.length) {
-
-      self.contentParent.append(self.content);
-      self.contentScope = scope.$parent.$new();
-      contentArea.append(self.contentParent);
-
-      $compile(self.contentParent)(self.contentScope);
-      Util.disconnectScope(self.contentScope);
-
-      // Configure called from TabsController::remove()
-      self.removeContent = function() {
-        Util.disconnectScope(self.contentScope);
-        self.contentParent.remove(contentArea);
-      };
-    }
 
   }
 }
@@ -2854,44 +2856,44 @@ angular.module('material.components.tabs')
  * @restrict E
  *
  * @description
- * `<material-tabItemCtrl>` is the nested directive used [within `<material-tabs>`] to specify each tabItemCtrl with a **label** and optional *view content*.
+ * `<material-tab>` is the nested directive used [within `<material-tabs>`] to specify each tab with a **label** and optional *view content*.
  *
- * If the `label` attribute is not specified, then an optional `<material-tabItemCtrl-label>` tag can be used to specified more
- * complex tabItemCtrl header markup. If neither the **label** nor the **material-tabItemCtrl-label** are specified, then the nested
- * markup of the `<material-tabItemCtrl>` is used as the tabItemCtrl header markup.
+ * If the `label` attribute is not specified, then an optional `<material-tab-label>` tag can be used to specified more
+ * complex tab header markup. If neither the **label** nor the **material-tab-label** are specified, then the nested
+ * markup of the `<material-tab>` is used as the tab header markup.
  *
- * If a tabItemCtrl **label** has been identified, then any **non-**`<material-tabItemCtrl-label>` markup
- * will be considered tabItemCtrl content and will be transcluded to the internal `<div class="tabs-content">` container.
+ * If a tab **label** has been identified, then any **non-**`<material-tab-label>` markup
+ * will be considered tab content and will be transcluded to the internal `<div class="tabs-content">` container.
  *
- * This container is used by the TabsController to show/hide the active tabItemCtrl's content view. This synchronization is
- * automatically managed by the internal TabsController whenever the tabItemCtrl selection changes. Selection changes can
+ * This container is used by the TabsController to show/hide the active tab's content view. This synchronization is
+ * automatically managed by the internal TabsController whenever the tab selection changes. Selection changes can
  * be initiated via data binding changes, programmatic invocation, or user gestures.
  *
- * @param {string=} label Optional attribute to specify a simple string as the tabItemCtrl label
- * @param {boolean=} active Flag indicates if the tabItemCtrl is currently selected; normally the `<material-tabs selected="">`; attribute is used instead.
- * @param {boolean=} ngDisabled Flag indicates if the tabItemCtrl is disabled: not selectable with no ink effects
- * @param {expression=} deselected Expression to be evaluated after the tabItemCtrl has been de-selected.
- * @param {expression=} selected Expression to be evaluated after the tabItemCtrl has been selected.
+ * @param {string=} label Optional attribute to specify a simple string as the tab label
+ * @param {boolean=} active Flag indicates if the tab is currently selected; normally the `<material-tabs selected="">`; attribute is used instead.
+ * @param {boolean=} ngDisabled Flag indicates if the tab is disabled: not selectable with no ink effects
+ * @param {expression=} deselected Expression to be evaluated after the tab has been de-selected.
+ * @param {expression=} selected Expression to be evaluated after the tab has been selected.
  *
  *
  * @usage
  *
  * <hljs lang="html">
- * <material-tabItemCtrl label="" disabled="" selected="" deselected="" >
+ * <material-tab label="" disabled="" selected="" deselected="" >
  *   <h3>My Tab content</h3>
- * </material-tabItemCtrl>
+ * </material-tab>
  *
- * <material-tabItemCtrl >
- *   <material-tabItemCtrl-label>
+ * <material-tab >
+ *   <material-tab-label>
  *     <h3>My Tab content</h3>
- *   </material-tabItemCtrl-label>
+ *   </material-tab-label>
  *   <p>
  *     Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
  *     totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
  *     dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
  *     sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
  *   </p>
- * </material-tabItemCtrl>
+ * </material-tab>
  * </hljs>
  *
  */
@@ -2923,7 +2925,7 @@ function MaterialTabDirective($materialInkRipple, $compile, $aria) {
         .append(element.contents().remove());
     }
 
-    // Everything that's left is the tab's content area.
+    // Everything that's left as a child is the tab's content.
     var tabContent = element.contents().remove();
 
     return function postLink(scope, element, attr, ctrls) {
@@ -2934,17 +2936,17 @@ function MaterialTabDirective($materialInkRipple, $compile, $aria) {
       transcludeTabContent();
 
       var detachRippleFn = $materialInkRipple.attachButtonBehavior(element);
-      var removeTabFn = tabsCtrl.add(tabItemCtrl);
+      tabsCtrl.add(tabItemCtrl);
       scope.$on('$destroy', function() {
         detachRippleFn();
-        removeTabFn();
+        tabsCtrl.remove(tabItemCtrl);
       });
 
       if (!angular.isDefined(attr.ngClick)) element.on('click', defaultClickListener);
       element.on('keydown', keydownListener);
 
       if (angular.isNumber(scope.$parent.$index)) watchNgRepeatIndex();
-      if (angular.isDefined(attr.active))         watchActiveAttribute();
+      if (angular.isDefined(attr.active)) watchActiveAttribute();
       watchDisabled();
 
       configureAria();
@@ -2993,30 +2995,33 @@ function MaterialTabDirective($materialInkRipple, $compile, $aria) {
       }
 
       function watchActiveAttribute() {
-        scope.$parent.$watch('!!(' + attr.active + ')', function activeWatchAction(isActive)
-        {
-          var isSelected = (tabsCtrl.selected() === tabItemCtrl);
+        var unwatch = scope.$parent.$watch('!!(' + attr.active + ')', activeWatchAction);
+        scope.$on('$destroy', unwatch);
+        
+        function activeWatchAction(isActive) {
+          var isSelected = tabsCtrl.selected() === tabItemCtrl;
 
           if (isActive && !isSelected) {
             tabsCtrl.select(tabItemCtrl);
-
           } else if (!isActive && isSelected) {
             tabsCtrl.deselect(tabItemCtrl);
           }
-        });
+        }
       }
 
       function watchDisabled() {
-        scope.$watch(tabItemCtrl.isDisabled, function disabledWatchAction(isDisabled) {
+        scope.$watch(tabItemCtrl.isDisabled, disabledWatchAction);
+        
+        function disabledWatchAction(isDisabled) {
           element.attr('aria-disabled', isDisabled);
 
           // Auto select `next` tab when disabled
           var isSelected = (tabsCtrl.selected() === tabItemCtrl);
-          if( isSelected && isDisabled ) {
-            tabsCtrl.select( tabsCtrl.next(tabItemCtrl) || tabsCtrl.previous(tabItemCtrl) );
+          if (isSelected && isDisabled) {
+            tabsCtrl.select(tabsCtrl.next() || tabsCtrl.previous());
           }
 
-        });
+        }
       }
 
       function configureAria() {
@@ -3029,7 +3034,7 @@ function MaterialTabDirective($materialInkRipple, $compile, $aria) {
           tabIndex: '-1', //this is also set on select/deselect in tabItemCtrl
           'aria-controls': tabContentId
         });
-        tabItemCtrl.contentParent.attr({
+        tabItemCtrl.contentContainer.attr({
           id: tabContentId,
           role: 'tabpanel',
           'aria-labelledby': tabId
@@ -3055,19 +3060,19 @@ angular.module('material.components.tabs')
 
 function MaterialTabsController(scope, element) {
 
-  var tabs = Util.iterator([], false);
+  var tabsList = Util.iterator([], false);
   var self = this;
 
   // Properties
   self.element = element;
   // The section containing the tab content elements
-  self.contentElement = angular.element(element[0].querySelector('.tabs-content'));
+  self.contentArea = angular.element(element[0].querySelector('.tabs-content'));
 
   // Methods from iterator
-  self.inRange = tabs.inRange;
-  self.indexOf = tabs.indexOf;
-  self.itemAt = tabs.itemAt;
-  self.count = tabs.count;
+  self.inRange = tabsList.inRange;
+  self.indexOf = tabsList.indexOf;
+  self.itemAt = tabsList.itemAt;
+  self.count = tabsList.count;
   
   self.selected = selected;
   self.add = add;
@@ -3087,9 +3092,10 @@ function MaterialTabsController(scope, element) {
   // Add a new tab.
   // Returns a method to remove the tab from the list.
   function add(tab, index) {
+    var newIndex = tabsList.add(tab, index);
 
-    var newIndex = tabs.add(tab, index);
     tab.addContent(self.contentElement);
+    tab.onAdd(self.contentArea);
 
     // Select the new tab if we don't have a selectedIndex, or if the 
     // selectedIndex we've been waiting for is this tab
@@ -3097,27 +3103,21 @@ function MaterialTabsController(scope, element) {
       self.select(tab);
     }
     scope.$broadcast('$materialTabsChanged');
-
-    // Dynamic remove function locked to tab just added...
-    return function() {
-      remove(tab);
-    };
   }
 
   function remove(tab) {
-    if (!tabs.contains(tab)) return;
+    if (!tabsList.contains(tab)) return;
 
     if (self.selected() === tab) {
-      if (tabs.count() > 1) {
-        var next = self.previous() || self.next();
-          self.select(next);
+      if (tabsList.count() > 1) {
+        self.select(self.previous() || self.next());
       } else {
         self.deselect(tab);
       }
     }
 
-    tabs.remove(tab);
-    tab.removeContent(self.contentElement);
+    tabsList.remove(tab);
+    tab.onRemove();
 
     scope.$broadcast('$materialTabsChanged');
   }
@@ -3126,8 +3126,8 @@ function MaterialTabsController(scope, element) {
   function move(tab, toIndex) {
     var isSelected = self.selected() === tab;
 
-    tabs.remove(tab);
-    tabs.add(tab, toIndex);
+    tabsList.remove(tab);
+    tabsList.add(tab, toIndex);
     if (isSelected) self.select(tab);
 
     scope.$broadcast('$materialTabsChanged');
@@ -3135,7 +3135,7 @@ function MaterialTabsController(scope, element) {
 
   function select(tab) {
     if (!tab || tab.isSelected || tab.isDisabled()) return;
-    if (self.indexOf(tab) < 0) return;
+    if (!tabsList.contains(tab)) return;
 
     self.deselect(self.selected());
 
@@ -3145,7 +3145,7 @@ function MaterialTabsController(scope, element) {
   }
   function deselect(tab) {
     if (!tab || !tab.isSelected) return;
-    if (self.indexOf(tab) < 0) return;
+    if (!tabsList.contains(tab)) return;
 
     scope.selectedIndex = -1;
     tab.isSelected = false;
@@ -3153,10 +3153,10 @@ function MaterialTabsController(scope, element) {
   }
 
   function next(tab, filterFn) {
-    return tabs.next(tab || self.selected(), filterFn || isTabEnabled);
+    return tabsList.next(tab || self.selected(), filterFn || isTabEnabled);
   }
   function previous(tab, filterFn) {
-    return tabs.previous(tab || self.selected(), filterFn || isTabEnabled);
+    return tabsList.previous(tab || self.selected(), filterFn || isTabEnabled);
   }
 
   function isTabEnabled(tab) {
