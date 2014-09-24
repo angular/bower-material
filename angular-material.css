@@ -2569,6 +2569,8 @@ material-tabs {
   width: 32px;
   min-height: 100%;
   cursor: pointer;
+  border: none;
+  background-color: transparent;
   background-repeat: no-repeat;
   background-position: center center;
   position: absolute;

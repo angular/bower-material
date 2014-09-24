@@ -3027,7 +3027,7 @@ function MaterialTabDirective($materialInkRipple, $compile, $aria) {
         var tabContentId = 'content_' + tabId;
         element.attr({
           id: tabId,
-          role: 'tabItemCtrl',
+          role: 'tab',
           tabIndex: '-1', //this is also set on select/deselect in tabItemCtrl
           'aria-controls': tabContentId
         });
@@ -3254,10 +3254,10 @@ function TabsDirective($parse) {
       '<section class="tabs-header" ' +
         'ng-class="{\'tab-paginating\': pagination.active}">' +
 
-        '<div class="tab-paginator prev" ' +
+        '<button class="tab-paginator prev" ' +
           'ng-if="pagination.active && pagination.hasPrev" ' +
-          'ng-click="pagination.clickPrevious()">' +
-        '</div>' +
+          'ng-click="pagination.clickPrevious()" aria-label="Previous tab">' +
+        '</button>' +
 
         // overflow: hidden container when paginating
         '<div class="tabs-header-items-container" material-tabs-pagination>' +
@@ -3266,10 +3266,10 @@ function TabsDirective($parse) {
           '<material-tabs-ink-bar></material-tabs-ink-bar>' +
         '</div>' +
 
-        '<div class="tab-paginator next" ' +
+        '<button class="tab-paginator next" ' +
           'ng-if="pagination.active && pagination.hasNext" ' +
-          'ng-click="pagination.clickNext()">' +
-        '</div>' +
+          'ng-click="pagination.clickNext()" aria-label="Next tab">' +
+        '</button>' +
 
       '</section>' +
       '<section class="tabs-content"></section>',
