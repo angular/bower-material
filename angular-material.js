@@ -8,11 +8,13 @@
 angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
 var Constant = {
   KEY_CODE: {
+    ENTER: 13,
     ESCAPE: 27,
     SPACE: 32,
-    LEFT_ARROW: 37,
-    RIGHT_ARROW: 39,
-    ENTER: 13
+    LEFT_ARROW : 37,
+    UP_ARROW : 38,
+    RIGHT_ARROW : 39,
+    DOWN_ARROW : 40
   }
 };
 
@@ -1641,7 +1643,7 @@ function materialRadioGroupDirective() {
 
   return {
     restrict: 'E',
-    controller: RadioGroupController,
+    controller: ['$element', RadioGroupController],
     require: ['materialRadioGroup', '?ngModel'],
     link: link
   };
@@ -1653,12 +1655,11 @@ function materialRadioGroupDirective() {
       };
 
     function keydownListener(ev) {
-
-      if (ev.which === Constant.KEY_CODE.LEFT_ARROW) {
+      if (ev.which === Constant.KEY_CODE.LEFT_ARROW || ev.which === Constant.KEY_CODE.UP_ARROW) {
         ev.preventDefault();
         rgCtrl.selectPrevious(element);
       }
-      else if (ev.which === Constant.KEY_CODE.RIGHT_ARROW) {
+      else if (ev.which === Constant.KEY_CODE.RIGHT_ARROW || ev.which === Constant.KEY_CODE.DOWN_ARROW) {
         ev.preventDefault();
         rgCtrl.selectNext(element);
       }
@@ -1673,8 +1674,9 @@ function materialRadioGroupDirective() {
     .on('keydown', keydownListener);
   }
 
-  function RadioGroupController() {
+  function RadioGroupController($element) {
     this._radioButtonRenderFns = [];
+    this.$element = $element;
   }
 
   function createRadioGroupControllerProto() {
@@ -1710,6 +1712,9 @@ function materialRadioGroupDirective() {
       },
       selectPrevious : function(element) {
         return selectButton('previous', element);
+      },
+      setActiveDescendant: function (radioId) {
+        this.$element.attr('aria-activedescendant', radioId);
       }
     };
   }
@@ -1809,6 +1814,8 @@ function materialRadioButtonDirective($aria) {
   function link(scope, element, attr, rgCtrl) {
     var lastChecked;
 
+    configureAria(element, scope);
+
     rgCtrl.add(render);
     attr.$observe('value', render);
 
@@ -1816,10 +1823,7 @@ function materialRadioButtonDirective($aria) {
       .on('click', listener)
       .on('$destroy', function() {
         rgCtrl.remove(render);
-      })
-      .attr('role', 'radio');
-
-    $aria.expect(element, 'aria-label', element.text());
+      });
 
     function listener(ev) {
       if (element[0].hasAttribute('disabled')) return;
@@ -1838,8 +1842,32 @@ function materialRadioButtonDirective($aria) {
       element.attr('aria-checked', checked);
       if (checked) {
         element.addClass(CHECKED_CSS);
+        rgCtrl.setActiveDescendant(element.attr('id'));
       } else {
         element.removeClass(CHECKED_CSS);
+      }
+    }
+    /**
+     * Inject ARIA-specific attributes appropriate for each radio button
+     */
+    function configureAria( element, scope ){
+      scope.ariaId = buildAriaID();
+
+      element.attr({
+        'id' :  scope.ariaId,
+        'role' : 'radio',
+        'aria-checked' : 'false'
+      });
+
+      $aria.expect(element, 'aria-label', element.text());
+
+      /**
+       * Build a unique ID for each radio button that will be used with aria-activedescendant.
+       * Preserve existing ID if already specified.
+       * @returns {*|string}
+       */
+      function buildAriaID() {
+        return attr.id || ( 'radio' + "_" + Util.nextUid() );
       }
     }
   }
@@ -3027,7 +3055,7 @@ function MaterialTabDirective($materialInkRipple, $compile, $aria) {
         var tabContentId = 'content_' + tabId;
         element.attr({
           id: tabId,
-          role: 'tab',
+          role: 'tabItemCtrl',
           tabIndex: '-1', //this is also set on select/deselect in tabItemCtrl
           'aria-controls': tabContentId
         });
@@ -3254,10 +3282,10 @@ function TabsDirective($parse) {
       '<section class="tabs-header" ' +
         'ng-class="{\'tab-paginating\': pagination.active}">' +
 
-        '<button class="tab-paginator prev" ' +
+        '<div class="tab-paginator prev" ' +
           'ng-if="pagination.active && pagination.hasPrev" ' +
-          'ng-click="pagination.clickPrevious()" aria-label="Previous tab">' +
-        '</button>' +
+          'ng-click="pagination.clickPrevious()">' +
+        '</div>' +
 
         // overflow: hidden container when paginating
         '<div class="tabs-header-items-container" material-tabs-pagination>' +
@@ -3266,10 +3294,10 @@ function TabsDirective($parse) {
           '<material-tabs-ink-bar></material-tabs-ink-bar>' +
         '</div>' +
 
-        '<button class="tab-paginator next" ' +
+        '<div class="tab-paginator next" ' +
           'ng-if="pagination.active && pagination.hasNext" ' +
-          'ng-click="pagination.clickNext()" aria-label="Next tab">' +
-        '</button>' +
+          'ng-click="pagination.clickNext()">' +
+        '</div>' +
 
       '</section>' +
       '<section class="tabs-content"></section>',
