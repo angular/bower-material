@@ -5,7 +5,7 @@
  * v0.0.3
  */
 (function(){
-angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.core', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
+angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.subheader","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
 var Constant = {
   KEY_CODE: {
     ENTER: 13,
@@ -17,25 +17,6 @@ var Constant = {
     DOWN_ARROW : 40
   }
 };
-
-  /**
-   * Angular Materials initialization function that validates environment
-   * requirements.
-   */
-  angular.module('material.core',['ng'])
-    .run(function validateEnvironment() {
-
-      if (angular.isUndefined( window.Hammer )) {
-        throw new Error(
-          '$materialSwipe requires HammerJS to be preloaded.'
-        );
-      }
-
-    });
-
-
-
-
 
 /*
  * iterator is a list facade to easily support iteration and accessors
@@ -359,6 +340,23 @@ var Util = {
         recent = now;
       }
     };
+  },
+
+  /**
+   * Wraps an element with a tag
+   *
+   * @param el element to wrap
+   * @param tag tag to wrap it with
+   * @param [className] optional class to apply to the wrapper
+   * @returns new element
+   *
+   */
+  wrap: function(el, tag, className) {
+    if(el.hasOwnProperty(0)) { el = el[0]; }
+    var wrapper = document.createElement(tag);
+    wrapper.className += className;
+    wrapper.appendChild(el.parentNode.replaceChild(wrapper, el));
+    return angular.element(wrapper);
   },
 
   /**
@@ -809,6 +807,319 @@ function InkRippleService($window, $$rAF, $materialEffects, $timeout) {
 
 /**
  * @ngdoc module
+ * @name material.components.sticky
+ * @description
+ *
+ * Sticky effects for material
+ */
+
+angular.module('material.components.sticky', [
+  'material.components.content',
+  'material.decorators',
+  'material.animations'
+])
+.factory('$materialSticky', [
+  '$window',
+  '$document',
+  '$$rAF',
+  '$materialEffects',
+  MaterialSticky
+])
+.directive('materialSticky', [
+  '$materialSticky', 
+  MaterialStickyDirective
+]);
+
+/**
+ * @ngdoc factory
+ * @name $materialSticky
+ * @module material.components.sticky
+ *
+ * @description
+ * The `$materialSticky`service provides a mixin to make elements sticky.
+ *
+ * @returns A `$materialSticky` function that takes `$el` as an argument.
+ */
+
+function MaterialSticky($window, $document, $$rAF, $materialEffects) {
+  var browserStickySupport;
+
+  /**
+   * Registers an element as sticky, used internally by directives to register themselves
+   */
+
+
+  function registerStickyElement(scope, $el) {
+    scope.$on('$destroy', function() { $deregister($el); });
+    $el = Util.wrap($el, 'div', 'sticky-container');
+
+    var ctrl = $el.controller('materialContent');
+
+    if (!ctrl) { throw new Error('$materialSticky used outside of material-content'); }
+
+    var $container = ctrl.$element;
+
+    /*
+     * The sticky object on the container stores everything we need.
+     * `elements`: all known sticky elements within the container
+     * `orderedElements`: elements, ordered by vertical position within the layout
+     * `check`: debounced function to check elements for adjustment on scroll
+     * `targetIndex`: the index in orderedElements of the currently active sticky el
+    */
+
+    var $sticky = $container.data('$sticky') || {
+      elements: [], // all known sticky elements within $container
+      orderedElements: [], // elements, ordered by vertical position in layout
+      check: $$rAF.debounce(angular.bind(undefined, checkElements, $container)),
+      targetIndex: 0
+    };
+
+    $sticky.elements.push($el);
+
+    // check sticky support on first register
+    if (browserStickySupport === undefined) {
+      browserStickySupport = checkStickySupport($el);
+    } else if (browserStickySupport) {
+      $el.css({position: browserStickySupport, top: '0px', 'z-index': 2});
+    }
+
+    if (!browserStickySupport) {
+      if ($sticky.elements.length == 1) {
+        $container.data('$sticky', $sticky);
+        $container.on('scroll',  $sticky.check);
+      }
+      queueScan();
+    }
+
+    return $deregister;
+
+
+    // Deregister a sticky element, useful for $destroy event.
+    function $deregister($el) {
+      if ($deregister.called) return;
+      $deregister.called = true;
+      var innerElements = elements.map(function(el) { return el.children(0); });
+      var index = innerElements.indexOf($el);
+      if (index !== -1) {
+        elements[index].replaceWith($el);
+        elements.splice(index, 1);
+        if (elements.length === 0) {
+          $container.off('scroll', $sticky.check);
+          $container.removeData('$sticky');
+        }
+      }
+    }
+
+    // Method that will scan the elements after the current digest cycle
+    function queueScan() {
+      if (!queueScan.queued) {
+        queueScan.queued = true;
+        scope.$$postDigest(function() {
+          scanElements($container);
+          queueScan.queued = false;
+        });
+      }
+    }
+  }
+  return registerStickyElement;
+
+  // Function to check for browser sticky support
+
+  function checkStickySupport($el) {
+    var stickyProps = ['sticky', '-webkit-sticky'];
+    for (var i = 0; i < stickyProps.length; ++i) {
+      $el.css({position: stickyProps[i], top: 0, 'z-index': 2});
+      if ($el.css('position') == stickyProps[i]) {
+        return stickyProps[i];
+      }
+    }
+    $el.css({position: undefined, top: undefined});
+    return false;
+  }
+
+
+  /**
+   * Function to prepare our lookups so we can go quick!
+   */
+  function scanElements($container) {
+    if (browserStickySupport) return;
+
+    var $sticky = $container.data('$sticky');
+
+    // Sort based on position in the window, and assign an active index
+    $sticky.orderedElements = $sticky.elements.sort(function(a, b) {
+      return rect(a).top - rect(b).top;
+    });
+
+    $sticky.targetIndex = findTargetElementIndex();
+
+
+    // Iterate over our sorted elements and find the one that is active
+    function findTargetElementIndex() {
+      var scroll = $container.prop('scrollTop');
+      for(var i = 0; i < $sticky.orderedElements.length ; ++i) {
+        if (rect($sticky.orderedElements[i]).bottom > 0) {
+          return i > 0 ? i - 1 : i;
+        } else {
+          return i;
+        }
+      }
+    }
+  }
+
+  // Function that executes on scroll to see if we need to do adjustments
+  function checkElements($container) {
+    var next; // pointer to next target
+
+    var $sticky = $container.data('$sticky');
+
+    var targetElementIndex = $sticky.targetIndex;
+    var orderedElements = $sticky.orderedElements;
+
+    /* 
+     * Since we wrap in an element (to keep track of where in the layout the 
+     * element would normally be, we use children to get the actual sticky 
+     * element.
+     */
+
+    var content = targetElement().children(0);
+    var contentRect = rect(content);
+    var containerRect = rect($container);
+    var targetRect = rect(targetElement());
+
+    var scrollingDown = false;
+    var currentScroll = $container.prop('scrollTop');
+    var lastScroll = $sticky.lastScroll;
+    if (currentScroll > (lastScroll || 0)) {
+      scrollingDown = true;
+    }
+    $sticky.lastScroll = currentScroll;
+
+    var stickyActive = content.hasClass('material-sticky-active');
+
+
+    // If we are scrollingDown, sticky, and are being pushed off screen by a different element, increment
+    if (scrollingDown && stickyActive && contentRect.bottom <= containerRect.top && targetElementIndex < orderedElements.length - 1) {
+      targetElement().children(0).removeClass('material-sticky-active');
+      targetElement().css('height', null);
+      incrementElement();
+      return;
+
+    //If we are going up, and our normal position would be rendered not sticky, un-sticky ourselves
+    } else if (!scrollingDown && stickyActive && targetRect.top > containerRect.top) {
+      targetElement().children(0).removeClass('material-sticky-active');
+      targetElement().css('height', null);
+      if (targetElementIndex > 0) {
+        incrementElement(-1);
+        content.addClass('material-sticky-active');
+        transformY(content, -contentRect.height);
+        targetElement().css('height', contentRect.height + 'px');
+        return;
+      }
+      return; // explicit return for the blind
+
+    /* 
+     * If we are going off screen and haven't been made sticky yet, go sticky
+     * Check at 0 so that if we get lucky on the scroll position, we activate
+     * sticky and avoid floating off the top for a second
+     */
+
+    } else if (scrollingDown && contentRect.top <= containerRect.top && !stickyActive) {
+      content.addClass('material-sticky-active');
+      targetElement().css('height', contentRect.height + 'px');
+      contentRect = rect(content);
+      next = targetElement(+1);
+      var offset = 0;
+      if (next) {
+        nextRect = rect(next.children(0));
+        if (rectsAreTouching(contentRect, nextRect)) {
+          offset = nextRect.top - contentRect.bottom;
+        }
+        transformY(content, Math.min(offset, 0));
+      }
+      return;
+    } 
+
+    var nextRect, offsetAmount, currentTop, translateAmt;
+
+    // check if we need to push
+    if (scrollingDown) {
+      next = targetElement(+1);
+      if (next) {
+        nextRect = rect(next.children(0));
+        if (rectsAreTouching(contentRect, nextRect)) {
+          offsetAmount = contentRect.bottom - nextRect.top;
+          currentTop = transformY(content);
+          translateAmt = currentTop - offsetAmount;
+          transformY(content, translateAmt);
+        }
+      }
+    // Check if we need to pull
+    } else if (targetElementIndex < orderedElements.length - 1 && contentRect.top < containerRect.top) {
+      nextRect = rect(targetElement(+1).children(0));
+      offsetAmount = contentRect.bottom - nextRect.top;
+      currentTop = transformY(content);
+      translateAmt = Math.min(currentTop - offsetAmount, 0);
+      transformY(content, translateAmt);
+    }
+
+    function incrementElement(inc) {
+      inc = inc || 1;
+      targetElementIndex += inc;
+      content = targetElement().children(0);
+      contentRect = rect(content);
+      $sticky.targetIndex = targetElementIndex;
+    }
+
+    function targetElement(indexModifier) {
+      indexModifier = indexModifier || 0;
+      if (targetElementIndex === undefined) return undefined;
+      return orderedElements[targetElementIndex + indexModifier];
+    }
+  }
+
+  function rectsAreTouching(first, second) {
+    return first.bottom >= second.top;
+  }
+
+  // Helper functions to get position of element
+
+  function rect($el) {
+    return $el.hasOwnProperty(0) ? $el[0].getBoundingClientRect() : $el.getBoundingClientRect();
+  }
+
+  // Getter / setter for transform
+  function transformY($el, amnt) {
+    if (amnt === undefined) {
+      return $el.data('translatedHeight') || 0;
+    } else {
+      $el.css($materialEffects.TRANSFORM, 'translate3d(0, ' + amnt + 'px, 0)');
+      $el.data('translatedHeight', amnt);
+    }
+  }
+
+
+}
+
+/**
+ * @ngdoc directive
+ * @name materialSticky
+ * @module material.components.sticky
+ *
+ * @description
+ * Directive to consume the $materialSticky service
+ *
+ * @returns A material-sticky directive
+ */
+function MaterialStickyDirective($materialSticky) {
+  return {
+    restrict: 'A',
+    link: $materialSticky
+  };
+}
+
+/**
+ * @ngdoc module
  * @name material.components.buttons
  * @description
  *
@@ -1130,7 +1441,9 @@ angular.module('material.components.content', [
 function materialContentDirective() {
   return {
     restrict: 'E',
-    controller: angular.noop,
+    controller: function($scope, $element) {
+      this.$element = $element;
+    },
     link: function($scope, $element, $attr) {
       $scope.$broadcast('$materialContentLoaded', $element);
     }
@@ -1553,8 +1866,8 @@ angular.module('material.components.list', [])
  *      <img ng-src="{{item.face}}" class="face" alt="{{item.who}}">
  *    </div>
  *    <div class="material-tile-content">
- *      <h2>{{item.what}}</h2>
- *      <h3>{{item.who}}</h3>
+ *      <h3>{{item.what}}</h3>
+ *      <h4>{{item.who}}</h4>
  *      <p>
  *        {{item.notes}}
  *      </p>
@@ -2423,8 +2736,6 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
         refreshSliderDimensions();
         doSlide(ev.center.x);
 
-        ev.srcEvent.stopPropagation();
-
       } else if (isSliding && ev.eventType === Hammer.INPUT_END) {
         isSliding = false;
         element.removeClass('panning active');
@@ -2437,9 +2748,7 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
     function onPan(ev) {
       if (!isSliding) return;
       doSlide(ev.center.x);
-
       ev.preventDefault();
-      ev.srcEvent.stopPropagation();
     }
 
     /**
@@ -2537,14 +2846,52 @@ function MaterialSwitch(checkboxDirectives, radioButtonDirectives) {
 
 /**
  * @ngdoc module
+ * @name material.components.subheader
+ * @description
+ * SubHeader module
+ */
+angular.module('material.components.subheader', [
+  'material.components.sticky'
+])
+.directive('materialSubheader', [
+  '$compile',
+  materialSubheaderDirective
+]);
+
+/**
+ * @ngdoc directive
+ * @name materialSubheader
+ * @module material.components.subheader
+ *
+ * @restrict E
+ *
+ * @description
+ * The `<material-subheader>` directive is a subheader for a section
+ *
+ * @usage
+ * <hljs lang="html">
+ * <material-subheader>Online Friends</material-subheader>
+ * </hljs>
+ */
+
+function materialSubheaderDirective($compile) {
+  return {
+    restrict: 'E',
+    replace: true,
+    transclude: true,
+    template: '<h2 material-sticky class="material-subheader"><ng-transclude></h2>'
+  };
+}
+
+/**
+ * @ngdoc module
  * @name material.components.tabs
  * @description
  *
  * Tabs
  */
 angular.module('material.components.tabs', [
-  'material.animations',
-  'material.components.swipe'
+  'material.animations'
 ]);
 
 
@@ -2815,20 +3162,11 @@ angular.module('material.components.tabs')
   '$element',
   '$compile',
   '$animate',
-  '$materialSwipe',
   TabItemController
 ]);
 
-function TabItemController(scope, element, $compile, $animate, $materialSwipe) {
+function TabItemController(scope, element, $compile, $animate) {
   var self = this;
-
-  var detachSwipe = angular.noop;
-  var attachSwipe = function() { return detachSwipe };
-  var eventTypes = "swipeleft swiperight" ;
-  var configureSwipe = $materialSwipe( scope, eventTypes );
-
-  // special callback assigned by TabsController
-  self.$$onSwipe = angular.noop;
 
   // Properties
   self.contentContainer = angular.element('<div class="tab-content ng-hide">');
@@ -2840,7 +3178,6 @@ function TabItemController(scope, element, $compile, $animate, $materialSwipe) {
   self.onRemove = onRemove;
   self.onSelect = onSelect;
   self.onDeselect = onDeselect;
-
 
   function isDisabled() {
     return element[0].hasAttribute('disabled');
@@ -2858,26 +3195,12 @@ function TabItemController(scope, element, $compile, $animate, $materialSwipe) {
       contentArea.append(self.contentContainer);
 
       $compile(self.contentContainer)(self.contentScope);
-
       Util.disconnectScope(self.contentScope);
-
-      // For internal tab views we only use the `$materialSwipe`
-      // so we can easily attach()/detach() when the tab view is active/inactive
-
-      attachSwipe = configureSwipe( self.contentContainer, function(ev) {
-        self.$$onSwipe(ev.type);
-      }, true );
     }
   }
 
-
-  /**
-   * Usually called when a Tab is programmatically removed; such
-   * as in an ng-repeat
-   */
   function onRemove() {
-    $animate.leave(self.contentContainer).then(function()
-    {
+    $animate.leave(self.contentContainer).then(function() {
       self.contentScope && self.contentScope.$destroy();
       self.contentScope = null;
     });
@@ -2886,7 +3209,6 @@ function TabItemController(scope, element, $compile, $animate, $materialSwipe) {
   function onSelect() {
     // Resume watchers and events firing when tab is selected
     Util.reconnectScope(self.contentScope);
-    detachSwipe = attachSwipe();
 
     element.addClass('active');
     element.attr('aria-selected', true);
@@ -2899,7 +3221,6 @@ function TabItemController(scope, element, $compile, $animate, $materialSwipe) {
   function onDeselect() {
     // Stop watchers & events from firing while tab is deselected
     Util.disconnectScope(self.contentScope);
-    detachSwipe();
 
     element.removeClass('active');
     element.attr('aria-selected', false);
@@ -3159,8 +3480,6 @@ function MaterialTabsController(scope, element) {
   self.next = next;
   self.previous = previous;
 
-  self.swipe = swipe;
-
   // Get the selected tab
   function selected() {
     return self.itemAt(scope.selectedIndex);
@@ -3173,10 +3492,7 @@ function MaterialTabsController(scope, element) {
     tabsList.add(tab, index);
     tab.onAdd(self.contentArea);
 
-    // Register swipe feature
-    tab.$$onSwipe = swipe;
-
-    // Select the new tab if we don't have a selectedIndex, or if the
+    // Select the new tab if we don't have a selectedIndex, or if the 
     // selectedIndex we've been waiting for is this tab
     if (scope.selectedIndex === -1 || scope.selectedIndex === self.indexOf(tab)) {
       self.select(tab);
@@ -3240,35 +3556,6 @@ function MaterialTabsController(scope, element) {
 
   function isTabEnabled(tab) {
     return tab && !tab.isDisabled();
-  }
-
-  /*
-   * attach a swipe listen
-   * if it's not selected, abort
-   * check the direction
-   *   if it is right
-   *   it pan right
-   *     Now select
-   */
-
-  function swipe(direction) {
-    if ( !self.selected() ) return;
-
-    // check the direction
-    switch(direction) {
-
-      case "swiperight":  // if it is right
-      case "panright"  :  // it pan right
-        // Now do this...
-        self.select( self.previous() );
-        break;
-
-      case "swipeleft":
-      case "panleft"  :
-        self.select( self.next() );
-        break;
-    }
-
   }
 
 }
@@ -3429,7 +3716,7 @@ function TabsDirective($parse) {
  * @description
  * Toast
  */
-angular.module('material.components.toast', ['material.services.compiler', 'material.components.swipe'])
+angular.module('material.components.toast', ['material.services.compiler'])
   .directive('materialToast', [
     QpToastDirective
   ])
@@ -3437,7 +3724,6 @@ angular.module('material.components.toast', ['material.services.compiler', 'mate
     '$timeout',
     '$rootScope',
     '$materialCompiler',
-    '$materialSwipe',
     '$rootElement',
     '$animate',
     QpToastService
@@ -3455,7 +3741,7 @@ function QpToastDirective() {
  * @module material.components.toast
  *
  * @description
- * Open a toast notification on any position on the screen, with an optional
+ * Open a toast notification on any position on the screen, with an optional 
  * duration.
  *
  * Only one toast notification may ever be active at any time. If a new toast is
@@ -3493,7 +3779,7 @@ function QpToastDirective() {
  * @param {string=} template Same as templateUrl, except this is an actual
  * template string.
  * @param {number=} duration How many milliseconds the toast should stay
- * active before automatically closing.  Set to 0 to disable duration.
+ * active before automatically closing.  Set to 0 to disable duration. 
  * Default: 3000.
  * @param {string=} position Where to place the toast. Available: any combination
  * of 'bottom', 'left', 'top', 'right', 'fit'. Default: 'bottom left'.
@@ -3501,14 +3787,14 @@ function QpToastDirective() {
  * The controller will be injected the local `$hideToast`, which is a function
  * used to hide the toast.
  * @param {string=} locals An object containing key/value pairs. The keys will
- * be used as names of values to inject into the controller. For example,
+ * be used as names of values to inject into the controller. For example, 
  * `locals: {three: 3}` would inject `three` into the controller with the value
  * of 3.
  * @param {object=} resolve Similar to locals, except it takes promises as values
  * and the toast will not open until the promises resolve.
  * @param {string=} controllerAs An alias to assign the controller to on the scope.
  */
-function QpToastService($timeout, $rootScope, $materialCompiler, $materialSwipe, $rootElement, $animate) {
+function QpToastService($timeout, $rootScope, $materialCompiler, $rootElement, $animate) {
   var recentToast;
   function toastOpenClass(position) {
     return 'material-toast-open-' +
@@ -3545,39 +3831,40 @@ function QpToastService($timeout, $rootScope, $materialCompiler, $materialSwipe,
       // Controller will be passed a `$hideToast` function
       compileData.locals.$hideToast = destroy;
 
-      var delayTimeout;
       var scope = $rootScope.$new();
       var element = compileData.link(scope);
-      var toastParentClass = toastOpenClass(options.position);
-      var configureSwipe = $materialSwipe(scope, "swiperight swipeleft");
 
+      var toastParentClass = toastOpenClass(options.position);
       element.addClass(options.position);
       toastParent.addClass(toastParentClass);
 
-      $animate
-        .enter(element, toastParent).then(function() {
-          if (options.duration) {
-            delayTimeout = $timeout(destroy, options.duration);
-          }
-        });
-
-      //Add swipeleft/swiperight class to element so it can animate correctly
-
-      configureSwipe(element, function onSwipe(ev) {
-        element.addClass(ev.type);
-        $timeout(destroy);
+      var delayTimeout;
+      $animate.enter(element, toastParent).then(function() {
+        if (options.duration) {
+          delayTimeout = $timeout(destroy, options.duration);
+        }
       });
 
-      return destroy;
+      var hammertime = new Hammer(element[0], {
+        recognizers: [
+          [Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL }]
+        ]
+      });
+      hammertime.on('swipeleft swiperight', onSwipe);
+      
+      function onSwipe(ev) {
+        //Add swipeleft/swiperight class to element so it can animate correctly
+        element.addClass(ev.type);
+        $timeout(destroy);
+      }
 
-      // ******************************
-      // Internal methods
-      // ******************************
+      return destroy;
 
       function destroy() {
         if (destroy.called) return;
         destroy.called = true;
 
+        hammertime.destroy();
         toastParent.removeClass(toastParentClass);
         $timeout.cancel(delayTimeout);
         $animate.leave(element).then(function() {
@@ -3863,223 +4150,6 @@ function clamp(value) {
 
   return value || 0;
 }
-(function() {
-
-  /**
-   * @ngdoc module
-   * @name material.components.swipe
-   * @description Swipe module!
-   */
-  angular.module('material.components.swipe',['ng'])
-
-    /**
-     * @ngdoc directive
-     * @module material.components.swipe
-     * @name $materialSwipe
-     *
-     *  This service allows directives to easily attach swipe and pan listeners to
-     *  the specified element.
-     *
-     * @private
-     */
-    .factory("$materialSwipe", function() {
-
-      // match expected API functionality
-      var attachNoop = function(){ return angular.noop; };
-
-      /**
-       * SwipeService constructor pre-captures scope and customized event types
-       *
-       * @param scope
-       * @param eventTypes
-       * @returns {*}
-       * @constructor
-       */
-      return function SwipeService(scope, eventTypes)
-      {
-        if ( !eventTypes ) eventTypes = "swipeleft swiperight";
-
-        // publish configureFor() method for specific element instance
-        return function configureFor(element, onSwipeCallback, attachLater )
-        {
-          var hammertime = new Hammer(element[0], {
-            recognizers : addRecognizers([], eventTypes )
-          });
-
-          // Attach swipe listeners now
-          if ( !attachLater ) attachSwipe();
-
-          // auto-disconnect during destroy
-          scope.$on('$destroy', function() {
-            hammertime.destroy();
-          });
-
-          return attachSwipe;
-
-          // **********************
-          // Internal methods
-          // **********************
-
-          /**
-           * Delegate swipe event to callback function
-           * and ensure $digest is triggered.
-           *
-           * @param ev HammerEvent
-           */
-          function swipeHandler(ev) {
-
-            // Prevent triggering parent hammer listeners
-            ev.srcEvent.stopPropagation();
-
-            if ( angular.isFunction(onSwipeCallback) )
-            {
-              scope.$apply(function() {
-                onSwipeCallback(ev);
-              });
-            }
-          }
-
-          /**
-           * Enable listeners and return detach() fn
-           */
-          function attachSwipe() {
-            hammertime.on(eventTypes, swipeHandler );
-
-            return function detachSwipe() {
-              hammertime.off( eventTypes );
-            }
-          }
-
-          /**
-           * Add optional recognizers such as panleft, panright
-           */
-          function addRecognizers(list, events) {
-            var hasPanning = (events.indexOf("pan") > -1);
-            var hasSwipe   = (events.indexOf("swipe") > -1);
-
-            if ( hasPanning ) list.push([ Hammer.Pan, { direction: Hammer.DIRECTION_HORIZONTAL } ]);
-            if ( hasSwipe )   list.push([ Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL } ]);
-
-            return list;
-          }
-
-        };
-      };
-    })
-
-    /**
-     * @ngdoc directive
-     * @module material.components.swipe
-     * @name materialSwipeLeft
-     *
-     * @order 0
-     * @restrict A
-     *
-     * @description
-     * The `<div  material-swipe-left="<expression" >` directive identifies an element on which
-     * HammerJS horizontal swipe left and pan left support will be active. The swipe/pan action
-     * can result in custom activity trigger by evaluating `<expression>`.
-     *
-     * @param {boolean=} noPan Use of attribute indicates flag to disable detection of `panleft` activity
-     * @param {boolean=} disabled Use of attribute indicates flag to disable swipe/pan actions
-     *
-     * @usage
-     * <hljs lang="html">
-     *
-     * <div class="animate-switch-container"
-     *      ng-switch on="data.selectedIndex"
-     *      material-swipe-left="data.selectedIndex+=1;"
-     *      material-swipe-right="data.selectedIndex-=1;" >
-     *
-     * </div>
-     * </hljs>
-     *
-     */
-    .directive("materialSwipeLeft", ['$parse', '$materialSwipe',
-      function MaterialSwipeLeft($parse, $materialSwipe) {
-        return {
-          restrict: 'A',
-          link :  swipePostLink( $parse, $materialSwipe, "SwipeLeft" )
-        };
-      }])
-
-    /**
-     * @ngdoc directive
-     * @module material.components.swipe
-     * @name materialSwipeRight
-     *
-     * @order 1
-     * @restrict A
-     *
-     * @description
-     * The `<div  material-swipe-right="<expression" >` directive identifies functionality
-     * that attaches HammerJS horizontal swipe right and pan right support to an element. The swipe/pan action
-     * can result in activity trigger by evaluating `<expression>`
-     *
-     * @param {boolean=} noPan Use of attribute indicates flag to disable detection of `panright` activity
-     *
-     * @usage
-     * <hljs lang="html">
-     *
-     * <div class="animate-switch-container"
-     *      ng-switch on="data.selectedIndex"
-     *      material-swipe-left="data.selectedIndex+=1;"
-     *      material-swipe-right="data.selectedIndex-=1;" >
-     *
-     * </div>
-     * </hljs>
-     *
-     */
-    .directive( "materialSwipeRight", ['$parse', '$materialSwipe',
-      function MaterialSwipeRight($parse, $materialSwipe) {
-        return {
-          restrict: 'A',
-          link: swipePostLink( $parse, $materialSwipe, "SwipeRight" )
-        };
-      }
-    ]);
-
-    /**
-     * Factory to build PostLink function specific to Swipe or Pan direction
-     *
-     * @param $parse
-     * @param $materialSwipe
-     * @param name
-     * @returns {Function}
-     */
-    function swipePostLink($parse, $materialSwipe, name ) {
-
-      return function(scope, element, attrs)
-      {
-        var direction = name.toLowerCase();
-        var directiveName= "material" + name;
-
-        var parentGetter = $parse(attrs[directiveName]) || angular.noop;
-        var configureSwipe = $materialSwipe(scope, direction);
-        var requestSwipe = function(locals) {
-          // build function to request scope-specific swipe response
-          parentGetter(scope, locals)
-        };
-
-        configureSwipe( element, function onHandleSwipe(ev)
-        {
-          if (( ev.type == direction ) && !isDisabled()) {
-            requestSwipe();
-          }
-        });
-
-        // Is element currently disabled ?
-        function isDisabled() {
-          return element[0].hasAttribute('disabled');
-        }
-      }
-    }
-
-})();
-
-
-
-
 angular.module('material.decorators', [])
 .config(['$provide', function($provide) {
   $provide.decorator('$$rAF', ['$delegate', '$rootScope', rAFDecorator]);
