@@ -5,7 +5,7 @@
  * v0.0.3
  */
 (function(){
-angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
+angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.core', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
 var Constant = {
   KEY_CODE: {
     ENTER: 13,
@@ -17,6 +17,25 @@ var Constant = {
     DOWN_ARROW : 40
   }
 };
+
+  /**
+   * Angular Materials initialization function that validates environment
+   * requirements.
+   */
+  angular.module('material.core',['ng'])
+    .run(function validateEnvironment() {
+
+      if (angular.isUndefined( window.Hammer )) {
+        throw new Error(
+          '$materialSwipe requires HammerJS to be preloaded.'
+        );
+      }
+
+    });
+
+
+
+
 
 /*
  * iterator is a list facade to easily support iteration and accessors
@@ -2165,6 +2184,7 @@ function SliderDirective() {
       '$element',
       '$attrs',
       '$$rAF',
+      '$timeout',
       '$window',
       '$materialEffects',
       '$aria',
@@ -2210,7 +2230,7 @@ function SliderDirective() {
  * We use a controller for all the logic so that we can expose a few
  * things to unit tests
  */
-function SliderController(scope, element, attr, $$rAF, $window, $materialEffects, $aria) {
+function SliderController(scope, element, attr, $$rAF, $timeout, $window, $materialEffects, $aria) {
 
   this.init = function init(ngModelCtrl) {
     var thumb = angular.element(element[0].querySelector('.slider-thumb'));
@@ -2247,7 +2267,6 @@ function SliderController(scope, element, attr, $$rAF, $window, $materialEffects
     hammertime.on('hammer.input', onInput);
     hammertime.on('panstart', onPanStart);
     hammertime.on('pan', onPan);
-    hammertime.on('panend', onPanEnd);
 
     // On resize, recalculate the slider's dimensions and re-render
     var updateAll = $$rAF.debounce(function() {
@@ -2394,28 +2413,20 @@ function SliderController(scope, element, attr, $$rAF, $window, $materialEffects
      * Slide listeners
      */
     var isSliding = false;
-    var isDiscrete = false;
-
     function onInput(ev) {
       if (!isSliding && ev.eventType === Hammer.INPUT_START &&
           !element[0].hasAttribute('disabled')) {
 
         isSliding = true;
-        isDiscrete = angular.isDefined(attr.discrete);
-
         element.addClass('active');
         element[0].focus();
         refreshSliderDimensions();
+        doSlide(ev.center.x);
 
-        onPan(ev);
+        ev.srcEvent.stopPropagation();
 
       } else if (isSliding && ev.eventType === Hammer.INPUT_END) {
-
-        if ( isDiscrete ) onPanEnd(ev);
-
         isSliding = false;
-        isDiscrete = false;
-
         element.removeClass('panning active');
       }
     }
@@ -2425,26 +2436,10 @@ function SliderController(scope, element, attr, $$rAF, $window, $materialEffects
     }
     function onPan(ev) {
       if (!isSliding) return;
-
-      // While panning discrete, update only the
-      // visual positioning but not the model value.
-
-      if ( isDiscrete ) doPan( ev.center.x );
-      else              doSlide( ev.center.x );
+      doSlide(ev.center.x);
 
       ev.preventDefault();
       ev.srcEvent.stopPropagation();
-    }
-
-    function onPanEnd(ev) {
-      if ( isDiscrete ) {
-        // Updating the model and slide position
-        // and perform an animated snap-to operation
-        doSlide( ev.center.x );
-        ngModelRender();
-
-        ev.srcEvent.stopPropagation();
-      }
     }
 
     /**
@@ -2454,25 +2449,9 @@ function SliderController(scope, element, attr, $$rAF, $window, $materialEffects
     this._onPanStart = onPanStart;
     this._onPan = onPan;
 
-    /**
-     * Slide the UI by changing the model value
-     * @param x
-     */
-    function doSlide( x ) {
+    function doSlide(x) {
       var percent = (x - sliderDimensions.left) / (sliderDimensions.width);
-
-      scope.$evalAsync( function() {
-        setModelValue(min + percent * (max - min));
-      });
-    }
-
-    /**
-     * Slide the UI without changing the model (while dragging/panning)
-     * @param x
-     */
-    function doPan( x ) {
-      var percent = (x - sliderDimensions.left) / (sliderDimensions.width);
-      setSliderPercent( percent );
+      scope.$evalAsync(function() { setModelValue(min + percent * (max - min)); });
     }
 
   };
@@ -2564,7 +2543,8 @@ function MaterialSwitch(checkboxDirectives, radioButtonDirectives) {
  * Tabs
  */
 angular.module('material.components.tabs', [
-  'material.animations'
+  'material.animations',
+  'material.components.swipe'
 ]);
 
 
@@ -2835,11 +2815,20 @@ angular.module('material.components.tabs')
   '$element',
   '$compile',
   '$animate',
+  '$materialSwipe',
   TabItemController
 ]);
 
-function TabItemController(scope, element, $compile, $animate) {
+function TabItemController(scope, element, $compile, $animate, $materialSwipe) {
   var self = this;
+
+  var detachSwipe = angular.noop;
+  var attachSwipe = function() { return detachSwipe };
+  var eventTypes = "swipeleft swiperight" ;
+  var configureSwipe = $materialSwipe( scope, eventTypes );
+
+  // special callback assigned by TabsController
+  self.$$onSwipe = angular.noop;
 
   // Properties
   self.contentContainer = angular.element('<div class="tab-content ng-hide">');
@@ -2851,6 +2840,7 @@ function TabItemController(scope, element, $compile, $animate) {
   self.onRemove = onRemove;
   self.onSelect = onSelect;
   self.onDeselect = onDeselect;
+
 
   function isDisabled() {
     return element[0].hasAttribute('disabled');
@@ -2868,12 +2858,26 @@ function TabItemController(scope, element, $compile, $animate) {
       contentArea.append(self.contentContainer);
 
       $compile(self.contentContainer)(self.contentScope);
+
       Util.disconnectScope(self.contentScope);
+
+      // For internal tab views we only use the `$materialSwipe`
+      // so we can easily attach()/detach() when the tab view is active/inactive
+
+      attachSwipe = configureSwipe( self.contentContainer, function(ev) {
+        self.$$onSwipe(ev.type);
+      }, true );
     }
   }
 
+
+  /**
+   * Usually called when a Tab is programmatically removed; such
+   * as in an ng-repeat
+   */
   function onRemove() {
-    $animate.leave(self.contentContainer).then(function() {
+    $animate.leave(self.contentContainer).then(function()
+    {
       self.contentScope && self.contentScope.$destroy();
       self.contentScope = null;
     });
@@ -2882,6 +2886,7 @@ function TabItemController(scope, element, $compile, $animate) {
   function onSelect() {
     // Resume watchers and events firing when tab is selected
     Util.reconnectScope(self.contentScope);
+    detachSwipe = attachSwipe();
 
     element.addClass('active');
     element.attr('aria-selected', true);
@@ -2894,6 +2899,7 @@ function TabItemController(scope, element, $compile, $animate) {
   function onDeselect() {
     // Stop watchers & events from firing while tab is deselected
     Util.disconnectScope(self.contentScope);
+    detachSwipe();
 
     element.removeClass('active');
     element.attr('aria-selected', false);
@@ -3153,6 +3159,8 @@ function MaterialTabsController(scope, element) {
   self.next = next;
   self.previous = previous;
 
+  self.swipe = swipe;
+
   // Get the selected tab
   function selected() {
     return self.itemAt(scope.selectedIndex);
@@ -3165,7 +3173,10 @@ function MaterialTabsController(scope, element) {
     tabsList.add(tab, index);
     tab.onAdd(self.contentArea);
 
-    // Select the new tab if we don't have a selectedIndex, or if the 
+    // Register swipe feature
+    tab.$$onSwipe = swipe;
+
+    // Select the new tab if we don't have a selectedIndex, or if the
     // selectedIndex we've been waiting for is this tab
     if (scope.selectedIndex === -1 || scope.selectedIndex === self.indexOf(tab)) {
       self.select(tab);
@@ -3229,6 +3240,35 @@ function MaterialTabsController(scope, element) {
 
   function isTabEnabled(tab) {
     return tab && !tab.isDisabled();
+  }
+
+  /*
+   * attach a swipe listen
+   * if it's not selected, abort
+   * check the direction
+   *   if it is right
+   *   it pan right
+   *     Now select
+   */
+
+  function swipe(direction) {
+    if ( !self.selected() ) return;
+
+    // check the direction
+    switch(direction) {
+
+      case "swiperight":  // if it is right
+      case "panright"  :  // it pan right
+        // Now do this...
+        self.select( self.previous() );
+        break;
+
+      case "swipeleft":
+      case "panleft"  :
+        self.select( self.next() );
+        break;
+    }
+
   }
 
 }
@@ -3389,7 +3429,7 @@ function TabsDirective($parse) {
  * @description
  * Toast
  */
-angular.module('material.components.toast', ['material.services.compiler'])
+angular.module('material.components.toast', ['material.services.compiler', 'material.components.swipe'])
   .directive('materialToast', [
     QpToastDirective
   ])
@@ -3397,6 +3437,7 @@ angular.module('material.components.toast', ['material.services.compiler'])
     '$timeout',
     '$rootScope',
     '$materialCompiler',
+    '$materialSwipe',
     '$rootElement',
     '$animate',
     QpToastService
@@ -3414,7 +3455,7 @@ function QpToastDirective() {
  * @module material.components.toast
  *
  * @description
- * Open a toast notification on any position on the screen, with an optional 
+ * Open a toast notification on any position on the screen, with an optional
  * duration.
  *
  * Only one toast notification may ever be active at any time. If a new toast is
@@ -3452,7 +3493,7 @@ function QpToastDirective() {
  * @param {string=} template Same as templateUrl, except this is an actual
  * template string.
  * @param {number=} duration How many milliseconds the toast should stay
- * active before automatically closing.  Set to 0 to disable duration. 
+ * active before automatically closing.  Set to 0 to disable duration.
  * Default: 3000.
  * @param {string=} position Where to place the toast. Available: any combination
  * of 'bottom', 'left', 'top', 'right', 'fit'. Default: 'bottom left'.
@@ -3460,14 +3501,14 @@ function QpToastDirective() {
  * The controller will be injected the local `$hideToast`, which is a function
  * used to hide the toast.
  * @param {string=} locals An object containing key/value pairs. The keys will
- * be used as names of values to inject into the controller. For example, 
+ * be used as names of values to inject into the controller. For example,
  * `locals: {three: 3}` would inject `three` into the controller with the value
  * of 3.
  * @param {object=} resolve Similar to locals, except it takes promises as values
  * and the toast will not open until the promises resolve.
  * @param {string=} controllerAs An alias to assign the controller to on the scope.
  */
-function QpToastService($timeout, $rootScope, $materialCompiler, $rootElement, $animate) {
+function QpToastService($timeout, $rootScope, $materialCompiler, $materialSwipe, $rootElement, $animate) {
   var recentToast;
   function toastOpenClass(position) {
     return 'material-toast-open-' +
@@ -3504,40 +3545,39 @@ function QpToastService($timeout, $rootScope, $materialCompiler, $rootElement, $
       // Controller will be passed a `$hideToast` function
       compileData.locals.$hideToast = destroy;
 
+      var delayTimeout;
       var scope = $rootScope.$new();
       var element = compileData.link(scope);
-
       var toastParentClass = toastOpenClass(options.position);
+      var configureSwipe = $materialSwipe(scope, "swiperight swipeleft");
+
       element.addClass(options.position);
       toastParent.addClass(toastParentClass);
 
-      var delayTimeout;
-      $animate.enter(element, toastParent).then(function() {
-        if (options.duration) {
-          delayTimeout = $timeout(destroy, options.duration);
-        }
-      });
+      $animate
+        .enter(element, toastParent).then(function() {
+          if (options.duration) {
+            delayTimeout = $timeout(destroy, options.duration);
+          }
+        });
 
-      var hammertime = new Hammer(element[0], {
-        recognizers: [
-          [Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL }]
-        ]
-      });
-      hammertime.on('swipeleft swiperight', onSwipe);
-      
-      function onSwipe(ev) {
-        //Add swipeleft/swiperight class to element so it can animate correctly
+      //Add swipeleft/swiperight class to element so it can animate correctly
+
+      configureSwipe(element, function onSwipe(ev) {
         element.addClass(ev.type);
         $timeout(destroy);
-      }
+      });
 
       return destroy;
+
+      // ******************************
+      // Internal methods
+      // ******************************
 
       function destroy() {
         if (destroy.called) return;
         destroy.called = true;
 
-        hammertime.destroy();
         toastParent.removeClass(toastParentClass);
         $timeout.cancel(delayTimeout);
         $animate.leave(element).then(function() {
@@ -3823,6 +3863,223 @@ function clamp(value) {
 
   return value || 0;
 }
+(function() {
+
+  /**
+   * @ngdoc module
+   * @name material.components.swipe
+   * @description Swipe module!
+   */
+  angular.module('material.components.swipe',['ng'])
+
+    /**
+     * @ngdoc directive
+     * @module material.components.swipe
+     * @name $materialSwipe
+     *
+     *  This service allows directives to easily attach swipe and pan listeners to
+     *  the specified element.
+     *
+     * @private
+     */
+    .factory("$materialSwipe", function() {
+
+      // match expected API functionality
+      var attachNoop = function(){ return angular.noop; };
+
+      /**
+       * SwipeService constructor pre-captures scope and customized event types
+       *
+       * @param scope
+       * @param eventTypes
+       * @returns {*}
+       * @constructor
+       */
+      return function SwipeService(scope, eventTypes)
+      {
+        if ( !eventTypes ) eventTypes = "swipeleft swiperight";
+
+        // publish configureFor() method for specific element instance
+        return function configureFor(element, onSwipeCallback, attachLater )
+        {
+          var hammertime = new Hammer(element[0], {
+            recognizers : addRecognizers([], eventTypes )
+          });
+
+          // Attach swipe listeners now
+          if ( !attachLater ) attachSwipe();
+
+          // auto-disconnect during destroy
+          scope.$on('$destroy', function() {
+            hammertime.destroy();
+          });
+
+          return attachSwipe;
+
+          // **********************
+          // Internal methods
+          // **********************
+
+          /**
+           * Delegate swipe event to callback function
+           * and ensure $digest is triggered.
+           *
+           * @param ev HammerEvent
+           */
+          function swipeHandler(ev) {
+
+            // Prevent triggering parent hammer listeners
+            ev.srcEvent.stopPropagation();
+
+            if ( angular.isFunction(onSwipeCallback) )
+            {
+              scope.$apply(function() {
+                onSwipeCallback(ev);
+              });
+            }
+          }
+
+          /**
+           * Enable listeners and return detach() fn
+           */
+          function attachSwipe() {
+            hammertime.on(eventTypes, swipeHandler );
+
+            return function detachSwipe() {
+              hammertime.off( eventTypes );
+            }
+          }
+
+          /**
+           * Add optional recognizers such as panleft, panright
+           */
+          function addRecognizers(list, events) {
+            var hasPanning = (events.indexOf("pan") > -1);
+            var hasSwipe   = (events.indexOf("swipe") > -1);
+
+            if ( hasPanning ) list.push([ Hammer.Pan, { direction: Hammer.DIRECTION_HORIZONTAL } ]);
+            if ( hasSwipe )   list.push([ Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL } ]);
+
+            return list;
+          }
+
+        };
+      };
+    })
+
+    /**
+     * @ngdoc directive
+     * @module material.components.swipe
+     * @name materialSwipeLeft
+     *
+     * @order 0
+     * @restrict A
+     *
+     * @description
+     * The `<div  material-swipe-left="<expression" >` directive identifies an element on which
+     * HammerJS horizontal swipe left and pan left support will be active. The swipe/pan action
+     * can result in custom activity trigger by evaluating `<expression>`.
+     *
+     * @param {boolean=} noPan Use of attribute indicates flag to disable detection of `panleft` activity
+     * @param {boolean=} disabled Use of attribute indicates flag to disable swipe/pan actions
+     *
+     * @usage
+     * <hljs lang="html">
+     *
+     * <div class="animate-switch-container"
+     *      ng-switch on="data.selectedIndex"
+     *      material-swipe-left="data.selectedIndex+=1;"
+     *      material-swipe-right="data.selectedIndex-=1;" >
+     *
+     * </div>
+     * </hljs>
+     *
+     */
+    .directive("materialSwipeLeft", ['$parse', '$materialSwipe',
+      function MaterialSwipeLeft($parse, $materialSwipe) {
+        return {
+          restrict: 'A',
+          link :  swipePostLink( $parse, $materialSwipe, "SwipeLeft" )
+        };
+      }])
+
+    /**
+     * @ngdoc directive
+     * @module material.components.swipe
+     * @name materialSwipeRight
+     *
+     * @order 1
+     * @restrict A
+     *
+     * @description
+     * The `<div  material-swipe-right="<expression" >` directive identifies functionality
+     * that attaches HammerJS horizontal swipe right and pan right support to an element. The swipe/pan action
+     * can result in activity trigger by evaluating `<expression>`
+     *
+     * @param {boolean=} noPan Use of attribute indicates flag to disable detection of `panright` activity
+     *
+     * @usage
+     * <hljs lang="html">
+     *
+     * <div class="animate-switch-container"
+     *      ng-switch on="data.selectedIndex"
+     *      material-swipe-left="data.selectedIndex+=1;"
+     *      material-swipe-right="data.selectedIndex-=1;" >
+     *
+     * </div>
+     * </hljs>
+     *
+     */
+    .directive( "materialSwipeRight", ['$parse', '$materialSwipe',
+      function MaterialSwipeRight($parse, $materialSwipe) {
+        return {
+          restrict: 'A',
+          link: swipePostLink( $parse, $materialSwipe, "SwipeRight" )
+        };
+      }
+    ]);
+
+    /**
+     * Factory to build PostLink function specific to Swipe or Pan direction
+     *
+     * @param $parse
+     * @param $materialSwipe
+     * @param name
+     * @returns {Function}
+     */
+    function swipePostLink($parse, $materialSwipe, name ) {
+
+      return function(scope, element, attrs)
+      {
+        var direction = name.toLowerCase();
+        var directiveName= "material" + name;
+
+        var parentGetter = $parse(attrs[directiveName]) || angular.noop;
+        var configureSwipe = $materialSwipe(scope, direction);
+        var requestSwipe = function(locals) {
+          // build function to request scope-specific swipe response
+          parentGetter(scope, locals)
+        };
+
+        configureSwipe( element, function onHandleSwipe(ev)
+        {
+          if (( ev.type == direction ) && !isDisabled()) {
+            requestSwipe();
+          }
+        });
+
+        // Is element currently disabled ?
+        function isDisabled() {
+          return element[0].hasAttribute('disabled');
+        }
+      }
+    }
+
+})();
+
+
+
+
 angular.module('material.decorators', [])
 .config(['$provide', function($provide) {
   $provide.decorator('$$rAF', ['$delegate', '$rootScope', rAFDecorator]);
