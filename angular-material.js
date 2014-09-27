@@ -2066,30 +2066,19 @@ function materialSidenavDirective($timeout) {
       function onShowHideSide(isOpen) {
         var parent = $element.parent();
 
-        var interactiveEls = $element[0].querySelectorAll('a, button');
-
         $element.toggleClass('open', !!isOpen);
 
         if (isOpen) {
           parent.append(backdrop);
           backdrop.on('click', close);
           parent.on('keydown', onKeyDown);
-
-          changeTabIndex(interactiveEls, 0);
         } else {
           backdrop.remove();
           backdrop.off('click', close);
           parent.off('keydown', onKeyDown);
-
-          changeTabIndex(interactiveEls, -1);
         }
       }
 
-      function changeTabIndex(nodeList, tabIndex){
-        for(var i=0; i<nodeList.length; i++){
-          nodeList[i].setAttribute('tabIndex', tabIndex);
-        }
-      }
       /**
        * Auto-close sideNav when the `escape` key is pressed.
        * @param evt
@@ -2176,7 +2165,6 @@ function SliderDirective() {
       '$element',
       '$attrs',
       '$$rAF',
-      '$timeout',
       '$window',
       '$materialEffects',
       '$aria',
@@ -2222,7 +2210,7 @@ function SliderDirective() {
  * We use a controller for all the logic so that we can expose a few
  * things to unit tests
  */
-function SliderController(scope, element, attr, $$rAF, $timeout, $window, $materialEffects, $aria) {
+function SliderController(scope, element, attr, $$rAF, $window, $materialEffects, $aria) {
 
   this.init = function init(ngModelCtrl) {
     var thumb = angular.element(element[0].querySelector('.slider-thumb'));
@@ -2259,6 +2247,7 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
     hammertime.on('hammer.input', onInput);
     hammertime.on('panstart', onPanStart);
     hammertime.on('pan', onPan);
+    hammertime.on('panend', onPanEnd);
 
     // On resize, recalculate the slider's dimensions and re-render
     var updateAll = $$rAF.debounce(function() {
@@ -2405,18 +2394,28 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
      * Slide listeners
      */
     var isSliding = false;
+    var isDiscrete = false;
+
     function onInput(ev) {
       if (!isSliding && ev.eventType === Hammer.INPUT_START &&
           !element[0].hasAttribute('disabled')) {
 
         isSliding = true;
+        isDiscrete = angular.isDefined(attr.discrete);
+
         element.addClass('active');
         element[0].focus();
         refreshSliderDimensions();
-        doSlide(ev.center.x);
+
+        onPan(ev);
 
       } else if (isSliding && ev.eventType === Hammer.INPUT_END) {
+
+        if ( isDiscrete ) onPanEnd(ev);
+
         isSliding = false;
+        isDiscrete = false;
+
         element.removeClass('panning active');
       }
     }
@@ -2426,8 +2425,26 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
     }
     function onPan(ev) {
       if (!isSliding) return;
-      doSlide(ev.center.x);
+
+      // While panning discrete, update only the
+      // visual positioning but not the model value.
+
+      if ( isDiscrete ) doPan( ev.center.x );
+      else              doSlide( ev.center.x );
+
       ev.preventDefault();
+      ev.srcEvent.stopPropagation();
+    }
+
+    function onPanEnd(ev) {
+      if ( isDiscrete ) {
+        // Updating the model and slide position
+        // and perform an animated snap-to operation
+        doSlide( ev.center.x );
+        ngModelRender();
+
+        ev.srcEvent.stopPropagation();
+      }
     }
 
     /**
@@ -2437,9 +2454,25 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
     this._onPanStart = onPanStart;
     this._onPan = onPan;
 
-    function doSlide(x) {
+    /**
+     * Slide the UI by changing the model value
+     * @param x
+     */
+    function doSlide( x ) {
       var percent = (x - sliderDimensions.left) / (sliderDimensions.width);
-      scope.$evalAsync(function() { setModelValue(min + percent * (max - min)); });
+
+      scope.$evalAsync( function() {
+        setModelValue(min + percent * (max - min));
+      });
+    }
+
+    /**
+     * Slide the UI without changing the model (while dragging/panning)
+     * @param x
+     */
+    function doPan( x ) {
+      var percent = (x - sliderDimensions.left) / (sliderDimensions.width);
+      setSliderPercent( percent );
     }
 
   };
