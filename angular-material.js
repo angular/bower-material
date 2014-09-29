@@ -8,13 +8,11 @@
 angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
 var Constant = {
   KEY_CODE: {
-    ENTER: 13,
     ESCAPE: 27,
     SPACE: 32,
-    LEFT_ARROW : 37,
-    UP_ARROW : 38,
-    RIGHT_ARROW : 39,
-    DOWN_ARROW : 40
+    LEFT_ARROW: 37,
+    RIGHT_ARROW: 39,
+    ENTER: 13
   }
 };
 
@@ -686,24 +684,21 @@ function InkRippleService($window, $$rAF, $materialEffects, $timeout) {
     var node = element[0];
 
     if (options.mousedown) {
-      listenPointerDown(true);
+      enableMousedown();
     }
 
     // Publish self-detach method if desired...
     return function detach() {
-      listenPointerDown(false);
+      enableMousedown(false);
 
-      if ( rippleContainer ) {
-        // Self-removal of injected container...
-        rippleContainer
-         .parent()
+      rippleContainer
+         .parent
          .remove( rippleContainer );
-      }
-    };
+    }
 
-    function listenPointerDown(active) {
-      if ( !active) element.off(POINTERDOWN_EVENT, onPointerDown);
-      else          element.on(POINTERDOWN_EVENT, onPointerDown);
+    function enableMousedown(active) {
+      if ( !!active) element.on(POINTERDOWN_EVENT, onPointerDown);
+      else           element.off(POINTERDOWN_EVENT, onPointerDown);
     }
 
 
@@ -1643,7 +1638,7 @@ function materialRadioGroupDirective() {
 
   return {
     restrict: 'E',
-    controller: ['$element', RadioGroupController],
+    controller: RadioGroupController,
     require: ['materialRadioGroup', '?ngModel'],
     link: link
   };
@@ -1655,11 +1650,12 @@ function materialRadioGroupDirective() {
       };
 
     function keydownListener(ev) {
-      if (ev.which === Constant.KEY_CODE.LEFT_ARROW || ev.which === Constant.KEY_CODE.UP_ARROW) {
+
+      if (ev.which === Constant.KEY_CODE.LEFT_ARROW) {
         ev.preventDefault();
         rgCtrl.selectPrevious(element);
       }
-      else if (ev.which === Constant.KEY_CODE.RIGHT_ARROW || ev.which === Constant.KEY_CODE.DOWN_ARROW) {
+      else if (ev.which === Constant.KEY_CODE.RIGHT_ARROW) {
         ev.preventDefault();
         rgCtrl.selectNext(element);
       }
@@ -1674,9 +1670,8 @@ function materialRadioGroupDirective() {
     .on('keydown', keydownListener);
   }
 
-  function RadioGroupController($element) {
+  function RadioGroupController() {
     this._radioButtonRenderFns = [];
-    this.$element = $element;
   }
 
   function createRadioGroupControllerProto() {
@@ -1712,9 +1707,6 @@ function materialRadioGroupDirective() {
       },
       selectPrevious : function(element) {
         return selectButton('previous', element);
-      },
-      setActiveDescendant: function (radioId) {
-        this.$element.attr('aria-activedescendant', radioId);
       }
     };
   }
@@ -1814,8 +1806,6 @@ function materialRadioButtonDirective($aria) {
   function link(scope, element, attr, rgCtrl) {
     var lastChecked;
 
-    configureAria(element, scope);
-
     rgCtrl.add(render);
     attr.$observe('value', render);
 
@@ -1823,7 +1813,10 @@ function materialRadioButtonDirective($aria) {
       .on('click', listener)
       .on('$destroy', function() {
         rgCtrl.remove(render);
-      });
+      })
+      .attr('role', 'radio');
+
+    $aria.expect(element, 'aria-label', element.text());
 
     function listener(ev) {
       if (element[0].hasAttribute('disabled')) return;
@@ -1842,32 +1835,8 @@ function materialRadioButtonDirective($aria) {
       element.attr('aria-checked', checked);
       if (checked) {
         element.addClass(CHECKED_CSS);
-        rgCtrl.setActiveDescendant(element.attr('id'));
       } else {
         element.removeClass(CHECKED_CSS);
-      }
-    }
-    /**
-     * Inject ARIA-specific attributes appropriate for each radio button
-     */
-    function configureAria( element, scope ){
-      scope.ariaId = buildAriaID();
-
-      element.attr({
-        'id' :  scope.ariaId,
-        'role' : 'radio',
-        'aria-checked' : 'false'
-      });
-
-      $aria.expect(element, 'aria-label', element.text());
-
-      /**
-       * Build a unique ID for each radio button that will be used with aria-activedescendant.
-       * Preserve existing ID if already specified.
-       * @returns {*|string}
-       */
-      function buildAriaID() {
-        return attr.id || ( 'radio' + "_" + Util.nextUid() );
       }
     }
   }
@@ -2165,6 +2134,7 @@ function SliderDirective() {
       '$element',
       '$attrs',
       '$$rAF',
+      '$timeout',
       '$window',
       '$materialEffects',
       '$aria',
@@ -2210,7 +2180,7 @@ function SliderDirective() {
  * We use a controller for all the logic so that we can expose a few
  * things to unit tests
  */
-function SliderController(scope, element, attr, $$rAF, $window, $materialEffects, $aria) {
+function SliderController(scope, element, attr, $$rAF, $timeout, $window, $materialEffects, $aria) {
 
   this.init = function init(ngModelCtrl) {
     var thumb = angular.element(element[0].querySelector('.slider-thumb'));
@@ -2247,7 +2217,6 @@ function SliderController(scope, element, attr, $$rAF, $window, $materialEffects
     hammertime.on('hammer.input', onInput);
     hammertime.on('panstart', onPanStart);
     hammertime.on('pan', onPan);
-    hammertime.on('panend', onPanEnd);
 
     // On resize, recalculate the slider's dimensions and re-render
     var updateAll = $$rAF.debounce(function() {
@@ -2394,25 +2363,18 @@ function SliderController(scope, element, attr, $$rAF, $window, $materialEffects
      * Slide listeners
      */
     var isSliding = false;
-    var isDiscrete = angular.isDefined(attr.discrete);
-
     function onInput(ev) {
       if (!isSliding && ev.eventType === Hammer.INPUT_START &&
           !element[0].hasAttribute('disabled')) {
 
         isSliding = true;
-
         element.addClass('active');
         element[0].focus();
         refreshSliderDimensions();
-
-        onPan(ev);
+        doSlide(ev.center.x);
 
       } else if (isSliding && ev.eventType === Hammer.INPUT_END) {
-
-        if ( isDiscrete ) onPanEnd(ev);
         isSliding = false;
-
         element.removeClass('panning active');
       }
     }
@@ -2422,33 +2384,8 @@ function SliderController(scope, element, attr, $$rAF, $window, $materialEffects
     }
     function onPan(ev) {
       if (!isSliding) return;
-
-      // While panning discrete, update only the
-      // visual positioning but not the model value.
-
-      if ( isDiscrete ) doPan( ev.center.x );
-      else              doSlide( ev.center.x );
-
+      doSlide(ev.center.x);
       ev.preventDefault();
-      ev.srcEvent.stopPropagation();
-    }
-
-    function onPanEnd(ev) {
-      if ( isDiscrete ) {
-        // Convert exact to closest discrete value.
-        // Slide animate the thumb... and then update the model value.
-
-        var exactVal = percentToValue( positionToPercent( ev.center.x ));
-        var closestVal = minMaxValidator( stepValidator(exactVal) );
-
-        setSliderPercent( valueToPercent(closestVal));
-        $$rAF(function(){
-          setModelValue( closestVal );
-        });
-
-        ev.preventDefault();
-        ev.srcEvent.stopPropagation();
-      }
     }
 
     /**
@@ -2458,44 +2395,9 @@ function SliderController(scope, element, attr, $$rAF, $window, $materialEffects
     this._onPanStart = onPanStart;
     this._onPan = onPan;
 
-    /**
-     * Slide the UI by changing the model value
-     * @param x
-     */
-    function doSlide( x ) {
-      scope.$evalAsync( function() {
-        setModelValue( percentToValue( positionToPercent(x) ));
-      });
-    }
-
-    /**
-     * Slide the UI without changing the model (while dragging/panning)
-     * @param x
-     */
-    function doPan( x ) {
-      setSliderPercent( positionToPercent(x) );
-    }
-
-    /**
-     * Convert horizontal position on slider to percentage value of offset from beginning...
-     * @param x
-     * @returns {number}
-     */
-    function positionToPercent( x ) {
-      return (x - sliderDimensions.left) / (sliderDimensions.width);
-    }
-
-    /**
-     * Convert percentage offset on slide to equivalent model value
-     * @param percent
-     * @returns {*}
-     */
-    function percentToValue( percent ) {
-      return (min + percent * (max - min));
-    }
-
-    function valueToPercent( val ) {
-      return (val - min)/(max - min);
+    function doSlide(x) {
+      var percent = (x - sliderDimensions.left) / (sliderDimensions.width);
+      scope.$evalAsync(function() { setModelValue(min + percent * (max - min)); });
     }
 
   };
