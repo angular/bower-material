@@ -1264,8 +1264,8 @@ function MaterialDialogService($timeout, $rootElement, $materialEffects, $animat
   var factoryDef = {
     hasBackdrop: true,
     isolateScope: true,
-    onShow: onShow,
-    onHide: onHide,
+    enter: enter,
+    leave: leave,
     clickOutsideToClose: true,
     escapeToClose: true,
     targetEvent: null,
@@ -1278,7 +1278,7 @@ function MaterialDialogService($timeout, $rootElement, $materialEffects, $animat
   return $dialogService;
 
 
-  function onShow(scope, el, options) {
+  function enter(scope, el, options) {
     // Incase the user provides a raw dom element, always wrap it in jqLite
     options.parent = angular.element(options.parent);
 
@@ -1334,7 +1334,7 @@ function MaterialDialogService($timeout, $rootElement, $materialEffects, $animat
 
   }
 
-  function onHide(scope, el, options) {
+  function leave(scope, el, options) {
     var backdrop = el.data('backdrop');
     var onRootElementKeyup = el.data('onRootElementKeyup');
     var dialogClickOutside = el.data('dialogClickOutside');
@@ -3418,7 +3418,7 @@ function MaterialToastDirective() {
  *   $scope.openToast = function($event) {
  *     $materialToast.show({
  *       template: '<material-toast>Hello!</material-toast>',
- *       hideTimeout: 3000
+ *       hideDelay: 3000
  *     });
  *   };
  * });
@@ -3438,7 +3438,7 @@ function MaterialToastDirective() {
  * have an outer `material-toast` element.
  * @param {string=} template Same as templateUrl, except this is an actual
  * template string.
- * @param {number=} hideTimeout How many milliseconds the toast should stay
+ * @param {number=} hideDelay How many milliseconds the toast should stay
  * active before automatically closing.  Set to 0 to disable duration. 
  * Default: 3000.
  * @param {string=} position Where to place the toast. Available: any combination
@@ -3483,16 +3483,16 @@ function MaterialToastDirective() {
 function MaterialToastService($timeout, $$interimElementFactory, $animate) {
 
   var factoryDef = {
-    onShow: onShow,
-    onHide: onHide,
+    enter: enter,
+    leave: leave,
     position: 'bottom left',
-    hideTimeout: 3000,
+    hideDelay: 3000,
   };
 
   var $materialToast = $$interimElementFactory(factoryDef);
   return $materialToast;
 
-  function onShow(scope, el, options) {
+  function enter(scope, el, options) {
     el.addClass(options.position);
     options.parent.addClass(toastOpenClass(options.position));
 
@@ -3501,10 +3501,9 @@ function MaterialToastService($timeout, $$interimElementFactory, $animate) {
         [Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL }]
       ]
     });
-
-    el.data('hammertime', hammertime);
-
     hammertime.on('swipeleft swiperight', onSwipe);
+    options.hammertime = hammertime;
+
 
     function onSwipe(ev) {
       //Add swipeleft/swiperight class to element so it can animate correctly
@@ -3515,10 +3514,8 @@ function MaterialToastService($timeout, $$interimElementFactory, $animate) {
     return $animate.enter(el, options.parent);
   }
 
-  function onHide(scope, el, options) {
-    var hammertime = el.data('hammertime');
-    hammertime.destroy();
-    el.data('hammertime', undefined);
+  function leave(scope, el, options) {
+    options.hammertime.destroy();
     options.parent.removeClass(toastOpenClass(options.position));
     return $animate.leave(el);
   }
@@ -4247,9 +4244,7 @@ angular.module('material.services.interimElement', [
 
 function InterimElementFactory($q, $rootScope, $timeout, $rootElement, $animate, $materialCompiler) {
 
-  return createInterimElement;
-
-  function createInterimElement(defaults) {
+  return function createInterimElement(defaults) {
 
     /**
      * @ngdoc type
@@ -4262,20 +4257,17 @@ function InterimElementFactory($q, $rootScope, $timeout, $rootElement, $animate,
 
     var InterimElement = {};
 
-    var deferred = [];
-    var hideTimeouts = [];
-    var elementStack = [];
-    var optionsStack = [];
+    var itemStack = [];
 
     var parent = $rootElement.find('body');
     if (!parent.length) parent = $rootElement;
 
     InterimElement.defaults = angular.extend({
       parent: parent,
-      onShow: function(scope, $el, options) {
+      enter: function(scope, $el, options) {
         return $animate.enter($el, options.parent);
       },
-      onHide: function(scope, $el, options) {
+      leave: function(scope, $el, options) {
         return $animate.leave($el);
       },
     }, defaults || {});
@@ -4296,33 +4288,15 @@ function InterimElementFactory($q, $rootScope, $timeout, $rootElement, $animate,
      */
 
     InterimElement.show = function(options) {
-      if (deferred.length) {
+      if (itemStack.length) {
         InterimElement.hide();
       }
 
-      var defer = $q.defer();
-      deferred.push(defer);
+      var item = new InterimItem(options);
+      itemStack.push(item);
+      item.show();
 
-      options = options || {};
-
-      options = angular.extend({
-        scope: options.scope || $rootScope.$new(options.isolateScope)
-      }, InterimElement.defaults, options);
-
-      optionsStack.push(options);
-
-      $materialCompiler.compile(options).then(function(compiledData) {
-        var currentEl = compiledData.link(options.scope);
-        elementStack.push(currentEl);
-
-        var ret = options.onShow(options.scope, currentEl, options);
-        $q.when(ret).then(function() {
-          if (options.hideTimeout) {
-            hideTimeout = $timeout(InterimElement.hide, options.hideTimeout);
-          }
-        });
-      });
-      return defer.promise;
+      return item.dfd.promise;
     };
 
     /**
@@ -4340,13 +4314,11 @@ function InterimElementFactory($q, $rootScope, $timeout, $rootElement, $animate,
      */
 
     InterimElement.hide = function() {
+      var item = itemStack.shift();
       var args = [].slice.call(arguments);
-      var def = deferred.shift();
-      if(def) {
-        destroy().then(function() {
-          def.resolve.apply(def, args);
-        });
-      }
+      item.destroy().then(function() {
+        item.dfd.resolve.apply(item.dfd, args);
+      });
     };
 
     /**
@@ -4364,31 +4336,68 @@ function InterimElementFactory($q, $rootScope, $timeout, $rootElement, $animate,
      */
 
     InterimElement.cancel = function() {
+      var item = itemStack.shift();
       var args = [].slice.call(arguments);
-      var def = deferred.shift();
-      if(def) {
-        destroy().then(function() {
-          def.reject.apply(def, args);
-        });
-      }
+      item.destroy().then(function() {
+        item.dfd.reject.apply(item.dfd, args);
+      });
     };
 
-    function destroy() {
-      var finish = $q.defer();
-      if (hideTimeouts.length) {
-        $timeout.cancel(hideTimeouts.shift());
-      }
-
-      var options = optionsStack.shift();
-      var ret = options.onHide(options.scope, elementStack.shift(), options);
-      return $q.when(ret).then(function() {
-        options.scope.$destroy();
-        finish.resolve();
-      });
-    }
 
     return InterimElement;
+
+    function InterimItem(options) {
+      var self;
+      var dfd = $q.defer();
+      var hideTimeout;
+
+      options = options || {};
+
+      options = angular.extend({
+        scope: options.scope || $rootScope.$new(options.isolateScope)
+      }, InterimElement.defaults, options);
+
+      self = {
+        options: options,
+        dfd: dfd,
+        compile: function() {
+          if (self.element) { return true; }
+          return $materialCompiler.compile(options).then(function(compiledData) {
+            self.element = compiledData.link(options.scope);
+          });
+        },
+        show: function() {
+          $q.when(self.compile()).then(function() {
+            var ret = options.enter(options.scope, self.element, options);
+            $q.when(ret)
+              .then(function() {
+                if (options.hideDelay) {
+                  // Only start hide timer after show animation...
+                  hideTimeout = $timeout(InterimElement.hide, options.hideDelay) ;
+                }
+            });
+          });
+        },
+        cancelTimeout: function() {
+          if (hideTimeout) {
+            $timeout.cancel(hideTimeout);
+            hideTimeout = undefined;
+          }
+        },
+        destroy: function() {
+          var finish = $q.defer();
+          self.cancelTimeout();
+          var ret = options.leave(options.scope, self.element, options);
+          return $q.when(ret).then(function() {
+            options.scope.$destroy();
+            finish.resolve();
+          });
+        }
+      };
+      return self;
+    }
   }
+
 }
 
 
