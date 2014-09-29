@@ -802,7 +802,7 @@ angular.module('material.components.button', [
   .directive('materialButton', [
     'ngHrefDirective',
     '$materialInkRipple',
-    '$aria',
+    '$materialAria',
     MaterialButtonDirective
   ]);
 
@@ -836,7 +836,7 @@ angular.module('material.components.button', [
  *  </material-button>
  * </hljs>
  */
-function MaterialButtonDirective(ngHrefDirectives, $materialInkRipple, $aria ) {
+function MaterialButtonDirective(ngHrefDirectives, $materialInkRipple, $materialAria ) {
   var ngHrefDirective = ngHrefDirectives[0];
 
   return {
@@ -885,7 +885,7 @@ function MaterialButtonDirective(ngHrefDirectives, $materialInkRipple, $aria ) {
         });
 
       return function postLink(scope, element, attr) {
-        $aria.expect(element, 'aria-label', element.text());
+        $materialAria.expect(element, 'aria-label', element.text());
         $materialInkRipple.attachButtonBehavior(element);
       };
     }
@@ -950,10 +950,10 @@ angular.module('material.components.checkbox', [
   'material.animations',
   'material.services.aria'
 ])
-  .directive('materialCheckbox', [ 
+  .directive('materialCheckbox', [
     'inputDirective',
     '$materialInkRipple',
-    '$aria',
+    '$materialAria',
     MaterialCheckboxDirective
   ]);
 
@@ -992,7 +992,7 @@ angular.module('material.components.checkbox', [
  * </hljs>
  *
  */
-function MaterialCheckboxDirective(inputDirectives, $materialInkRipple, $aria) {
+function MaterialCheckboxDirective(inputDirectives, $materialInkRipple, $materialAria) {
   var inputDirective = inputDirectives[0];
 
   var CHECKED_CSS = 'material-checked';
@@ -1001,77 +1001,77 @@ function MaterialCheckboxDirective(inputDirectives, $materialInkRipple, $aria) {
     restrict: 'E',
     transclude: true,
     require: '?ngModel',
-    template: 
+    template:
       '<div class="material-container" ink-ripple="checkbox">' +
         '<div class="material-icon"></div>' +
       '</div>' +
       '<div ng-transclude class="material-label"></div>',
-    link: postLink
+    compile: compile
   };
 
   // **********************************************************
   // Private Methods
   // **********************************************************
 
-  function postLink(scope, element, attr, ngModelCtrl) {
-    var checked = false;
+  function compile (tElement, tAttrs) {
 
-    // Create a mock ngModel if the user doesn't provide one
-    ngModelCtrl = ngModelCtrl || {
-      $setViewValue: function(value) {
-        this.$viewValue = value;
-      },
-      $parsers: [],
-      $formatters: []
-    };
+    tAttrs.type = 'checkbox';
+    tAttrs.tabIndex = 0;
+    tElement.attr('role', tAttrs.type);
 
-    // Reuse the original input[type=checkbox] directive from Angular core.
-    // This is a bit hacky as we need our own event listener and own render 
-    // function.
-    attr.type = 'checkbox';
-    attr.tabIndex = 0;
-    inputDirective.link(scope, {
-      on: angular.noop,
-      0: {}
-    }, attr, [ngModelCtrl]);
+    $materialAria.expect(tElement, 'aria-label', tElement.text());
 
-    // We can't chain element.attr here because of a bug with jqLite
-    element.attr('aria-checked', checked);
-    element.attr('role', attr.type);
-    element.attr('tabIndex', attr.tabIndex);
-    element.on('click', listener);
-    element.on('keypress', keypressHandler);
-    ngModelCtrl.$render = render;
+    return function postLink(scope, element, attr, ngModelCtrl) {
+      var checked = false;
 
-    $aria.expect(element, 'aria-label', element.text());
+      // Create a mock ngModel if the user doesn't provide one
+      ngModelCtrl = ngModelCtrl || {
+        $setViewValue: function(value) {
+          this.$viewValue = value;
+        },
+        $parsers: [],
+        $formatters: []
+      };
 
-    function keypressHandler(ev) {
-      if(ev.which === Constant.KEY_CODE.SPACE) {
-        ev.preventDefault();
-        listener(ev);
+      // Reuse the original input[type=checkbox] directive from Angular core.
+      // This is a bit hacky as we need our own event listener and own render
+      // function.
+      inputDirective.link(scope, {
+        on: angular.noop,
+        0: {}
+      }, attr, [ngModelCtrl]);
+
+      element.on('click', listener);
+      element.on('keypress', keypressHandler);
+      ngModelCtrl.$render = render;
+
+      function keypressHandler(ev) {
+        if(ev.which === Constant.KEY_CODE.SPACE) {
+          ev.preventDefault();
+          listener(ev);
+        }
       }
-    }
-    function listener(ev) {
-      if (element[0].hasAttribute('disabled')) return;
+      function listener(ev) {
+        if (element[0].hasAttribute('disabled')) return;
 
-      scope.$apply(function() {
-        checked = !checked;
-        ngModelCtrl.$setViewValue(checked, ev && ev.type);
-        ngModelCtrl.$render();
-      });
-    }
+        scope.$apply(function() {
+          checked = !checked;
+          ngModelCtrl.$setViewValue(checked, ev && ev.type);
+          ngModelCtrl.$render();
+        });
+      }
 
-    function render() {
-      checked = ngModelCtrl.$viewValue;
-      element.attr('aria-checked', checked);
-      if(checked) {
-        element.addClass(CHECKED_CSS);
-      } else {
-        element.removeClass(CHECKED_CSS);
+      function render() {
+        checked = ngModelCtrl.$viewValue;
+        // element.attr('aria-checked', checked);
+        if(checked) {
+          element.addClass(CHECKED_CSS);
+        } else {
+          element.removeClass(CHECKED_CSS);
+        }
       }
     }
   }
-
 }
 
 
@@ -1138,7 +1138,7 @@ angular.module('material.components.dialog', [
     '$rootScope',
     '$materialEffects',
     '$animate',
-    '$aria',
+    '$materialAria',
     MaterialDialogService
   ]);
 
@@ -1163,18 +1163,18 @@ function MaterialDialogDirective($$rAF) {
  *
  * @description
  *
- * The $materialDialog service opens a dialog over top of the app. 
+ * The $materialDialog service opens a dialog over top of the app.
  *
  * The `$materialDialog` service can be used as a function, which when called will open a
  * dialog. Note: the dialog is always given an isolate scope.
  *
  * It takes one argument, `options`, which is defined below.
  *
- * Note: the dialog's template must have an outer `<material-dialog>` element. 
+ * Note: the dialog's template must have an outer `<material-dialog>` element.
  * Inside, use an element with class `dialog-content` for the dialog's content, and use
- * an element with class `dialog-actions` for the dialog's actions.  
+ * an element with class `dialog-actions` for the dialog's actions.
  *
- * When opened, the `dialog-actions` area will attempt to focus the first button found with 
+ * When opened, the `dialog-actions` area will attempt to focus the first button found with
  * class `dialog-close`. If no button with `dialog-close` class is found, it will focus the
  * last button in the `dialog-actions` area.
  *
@@ -1202,9 +1202,9 @@ function MaterialDialogDirective($$rAF) {
  *
  * @paramType Options
  * @param {string=} templateUrl The url of a template that will be used as the content
- * of the dialog. 
+ * of the dialog.
  * @param {string=} template Same as templateUrl, except this is an actual template string.
- * @param {DOMClickEvent=} targetEvent A click's event object. When passed in as an option, 
+ * @param {DOMClickEvent=} targetEvent A click's event object. When passed in as an option,
  * the location of the click will be used as the starting point for the opening animation
  * of the the dialog.
  * @param {boolean=} hasBackdrop Whether there should be an opaque backdrop behind the dialog.
@@ -1224,7 +1224,7 @@ function MaterialDialogDirective($$rAF) {
  * @param {element=} appendTo The element to append the dialog to. Defaults to appending
  *   to the root element of the application.
  */
-function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootScope, $materialEffects, $animate, $aria) {
+function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootScope, $materialEffects, $animate, $materialAria) {
   var recentDialog;
   var dialogParent = $rootElement.find('body');
   if ( !dialogParent.length ) {
@@ -1248,7 +1248,7 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
     }, options || {});
 
     // Incase the user provides a raw dom element, always wrap it in jqLite
-    options.appendTo = angular.element(options.appendTo); 
+    options.appendTo = angular.element(options.appendTo);
 
     // Close the old dialog
     recentDialog && recentDialog.then(function(destroyDialog) {
@@ -1260,8 +1260,8 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
       compileData.locals.$hideDialog = destroyDialog;
 
       var scope = $rootScope.$new(true);
-      var element = compileData.link(scope); 
-      var popInTarget = options.targetEvent && options.targetEvent.target && 
+      var element = compileData.link(scope);
+      var popInTarget = options.targetEvent && options.targetEvent.target &&
         angular.element(options.targetEvent.target);
       var closeButton = findCloseButton();
       var backdrop;
@@ -1289,7 +1289,7 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
       return destroyDialog;
 
       function findCloseButton() {
-        //If no element with class dialog-close, try to find the last 
+        //If no element with class dialog-close, try to find the last
         //button child in dialog-actions and assume it is a close button
         var closeButton = element[0].querySelector('.dialog-close');
         if (!closeButton) {
@@ -1348,7 +1348,7 @@ function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootS
         dialogContent = element;
       }
       var defaultText = Util.stringFromTextBody(dialogContent.text(), 3);
-      $aria.expect(element, 'aria-label', defaultText);
+      $materialAria.expect(element, 'aria-label', defaultText);
     }
 
     return recentDialog;
@@ -1602,7 +1602,7 @@ angular.module('material.components.radioButton', [
     materialRadioGroupDirective
   ])
   .directive('materialRadioButton', [
-    '$aria',
+    '$materialAria',
     materialRadioButtonDirective
   ]);
 
@@ -1795,7 +1795,7 @@ function materialRadioGroupDirective() {
  * </hljs>
  *
  */
-function materialRadioButtonDirective($aria) {
+function materialRadioButtonDirective($materialAria) {
 
   var CHECKED_CSS = 'material-checked';
 
@@ -1859,7 +1859,7 @@ function materialRadioButtonDirective($aria) {
         'aria-checked' : 'false'
       });
 
-      $aria.expect(element, 'aria-label', element.text());
+      $materialAria.expect(element, 'aria-label', element.text());
 
       /**
        * Build a unique ID for each radio button that will be used with aria-activedescendant.
@@ -2168,7 +2168,7 @@ function SliderDirective() {
       '$timeout',
       '$window',
       '$materialEffects',
-      '$aria',
+      '$materialAria',
       SliderController
     ],
     template:
@@ -2211,7 +2211,7 @@ function SliderDirective() {
  * We use a controller for all the logic so that we can expose a few
  * things to unit tests
  */
-function SliderController(scope, element, attr, $$rAF, $timeout, $window, $materialEffects, $aria) {
+function SliderController(scope, element, attr, $$rAF, $timeout, $window, $materialEffects, $materialAria) {
 
   this.init = function init(ngModelCtrl) {
     var thumb = angular.element(element[0].querySelector('.slider-thumb'));
@@ -2235,7 +2235,7 @@ function SliderController(scope, element, attr, $$rAF, $timeout, $window, $mater
       updateAriaDisabled(!!attr.disabled);
     }
 
-    $aria.expect(element, 'aria-label');
+    $materialAria.expect(element, 'aria-label');
     element.attr('tabIndex', 0);
     element.attr('role', 'slider');
     element.on('keydown', keydownListener);
@@ -2500,14 +2500,17 @@ function MaterialSwitch(checkboxDirectives, radioButtonDirectives) {
   };
 
   function compile(element, attr) {
-    
+
     var thumb = angular.element(element[0].querySelector('.material-switch-thumb'));
     //Copy down disabled attributes for checkboxDirective to use
     thumb.attr('disabled', attr.disabled);
     thumb.attr('ngDisabled', attr.ngDisabled);
 
-    return function postLink(scope, element, attr, ngModelCtrl) {
-      checkboxDirective.link(scope, thumb, attr, ngModelCtrl);
+    var link = checkboxDirective.compile(thumb, attr);
+
+    return function (scope, element, attr, ngModelCtrl) {
+      var thumb = angular.element(element[0].querySelector('.material-switch-thumb'));
+      return link(scope, thumb, attr, ngModelCtrl)
     };
   }
 }
@@ -2866,9 +2869,9 @@ function TabItemController(scope, element, $compile, $animate) {
 angular.module('material.components.tabs')
 
 .directive('materialTab', [
-  '$materialInkRipple', 
+  '$materialInkRipple',
   '$compile',
-  '$aria',
+  '$materialAria',
   MaterialTabDirective
 ]);
 
@@ -2922,7 +2925,7 @@ angular.module('material.components.tabs')
  * </hljs>
  *
  */
-function MaterialTabDirective($materialInkRipple, $compile, $aria) {
+function MaterialTabDirective($materialInkRipple, $compile, $materialAria) {
   return {
     restrict: 'E',
     require: ['materialTab', '^materialTabs'],
@@ -3022,7 +3025,7 @@ function MaterialTabDirective($materialInkRipple, $compile, $aria) {
       function watchActiveAttribute() {
         var unwatch = scope.$parent.$watch('!!(' + attr.active + ')', activeWatchAction);
         scope.$on('$destroy', unwatch);
-        
+
         function activeWatchAction(isActive) {
           var isSelected = tabsCtrl.selected() === tabItemCtrl;
 
@@ -3036,7 +3039,7 @@ function MaterialTabDirective($materialInkRipple, $compile, $aria) {
 
       function watchDisabled() {
         scope.$watch(tabItemCtrl.isDisabled, disabledWatchAction);
-        
+
         function disabledWatchAction(isDisabled) {
           element.attr('aria-disabled', isDisabled);
 
@@ -3065,7 +3068,7 @@ function MaterialTabDirective($materialInkRipple, $compile, $aria) {
           'aria-labelledby': tabId
         });
 
-        $aria.expect(element, 'aria-label', element.text());
+        $materialAria.expect(element, 'aria-label', element.text());
       }
 
     };
@@ -3278,7 +3281,7 @@ function TabsDirective($parse) {
     scope: {
       selectedIndex: '=?selected'
     },
-    template: 
+    template:
       '<section class="tabs-header" ' +
         'ng-class="{\'tab-paginating\': pagination.active}">' +
 
@@ -3744,38 +3747,22 @@ function MaterialLinearProgressDirective($timeout) {
       '<div class="bar bar1"></div>' +
       '<div class="bar bar2"></div>' +
       '</div>',
-    compile: function compile(tElement, tAttrs, transclude) {
-      tElement.attr('aria-valuemin', 0);
-      tElement.attr('aria-valuemax', 100);
+    link: function(scope, element, attr) {
+      var bar1 = angular.element(element[0].querySelector('.bar1')),
+          bar2 = angular.element(element[0].querySelector('.bar2')),
+          container = angular.element(element[0].querySelector('.container'));
 
-      return function(scope, element, attr) {
-        var bar1Style = element[0].querySelector('.bar1').style,
-            bar2Style = element[0].querySelector('.bar2').style,
-            container = angular.element(element[0].querySelector('.container'));
+      attr.$observe('value', function(value) {
+        bar2.css('width', clamp(value).toString() + '%');
+      });
 
-        attr.$observe('value', function(value) {
-          if(attr.mode == 'query'){
-            return;
-          }
+      attr.$observe('secondaryvalue', function(value) {
+        bar1.css('width', clamp(value).toString() + '%');
+      });
 
-          var clamped = clamp(value);
-          element.attr('aria-valuenow', clamped);
-
-          var transform =  transformTable[clamped];
-          bar2Style.transform = transform;
-          bar2Style.webkitTransform = transform;
-        });
-
-        attr.$observe('secondaryvalue', function(value) {
-          var transform =  transformTable[clamp(value)];
-          bar1Style.transform = transform;
-          bar1Style.webkitTransform = transform;
-        });
-
-        $timeout(function() {
-          container.addClass('ready');
-        });
-      }
+      $timeout(function() {
+        container.addClass('ready');
+      });
     }
   };
 }
@@ -3783,18 +3770,6 @@ function MaterialLinearProgressDirective($timeout) {
 // **********************************************************
 // Private Methods
 // **********************************************************
-
-var transformTable = new Array(101);
-
-for(var i = 0; i < 101; i++){
-  transformTable[i] = makeTransform(i);
-}
-
-function makeTransform(value){
-  var scale = value/100;
-  var translateX = (value-100)/2;
-  return 'translateX(' + translateX.toString() + '%) scale(' + scale.toString() + ', 1)';
-}
 
 function clamp(value) {
   if (value > 100) {
@@ -3805,7 +3780,7 @@ function clamp(value) {
     return 0;
   }
 
-  return Math.ceil(value || 0);
+  return value || 0;
 }
 angular.module('material.decorators', [])
 .config(['$provide', function($provide) {
@@ -3847,7 +3822,7 @@ angular.module('material.decorators', [])
 
 angular.module('material.services.aria', [])
 
-.service('$aria', [
+.service('$materialAria', [
   '$log',
   AriaService
 ]);
