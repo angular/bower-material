@@ -1676,11 +1676,11 @@ function materialRadioGroupDirective() {
     function keydownListener(ev) {
       if (ev.which === Constant.KEY_CODE.LEFT_ARROW || ev.which === Constant.KEY_CODE.UP_ARROW) {
         ev.preventDefault();
-        rgCtrl.selectPrevious(element);
+        rgCtrl.selectPrevious();
       }
       else if (ev.which === Constant.KEY_CODE.RIGHT_ARROW || ev.which === Constant.KEY_CODE.DOWN_ARROW) {
         ev.preventDefault();
-        rgCtrl.selectNext(element);
+        rgCtrl.selectNext();
       }
     }
 
@@ -1726,11 +1726,11 @@ function materialRadioGroupDirective() {
       getViewValue: function() {
         return this._ngModelCtrl.$viewValue;
       },
-      selectNext: function(element) {
-        return selectButton('next', element);
+      selectNext: function() {
+        return changeSelectedButton(this.$element, 1);
       },
-      selectPrevious : function(element) {
-        return selectButton('previous', element);
+      selectPrevious : function() {
+        return changeSelectedButton(this.$element, -1);
       },
       setActiveDescendant: function (radioId) {
         this.$element.attr('aria-activedescendant', radioId);
@@ -1738,42 +1738,23 @@ function materialRadioGroupDirective() {
     };
   }
   /**
-   * Select the grouping parent's next or previous radio/checkbox button.
-   * NOTE: this uses the iterator.js utility function...
+   * Change the radio group's selected button by a given increment.
+   * If no button is selected, select the first button.
    */
-  function selectButton( direction,  parent, loop ) {
-    loop = angular.isUndefined(loop) ? true : !!loop;
+  function changeSelectedButton(parent, selectionIncrement) {
+    // Coerce all child radio buttons into an array
+    var buttons = Array.prototype.slice.call(
+      parent[0].querySelectorAll('material-radio-button')
+    );
 
-    var buttons = Util.iterator( findAllButtons(parent), loop );
-
-    if ( buttons.count() ) {
-      var selected = findSelectedButton(parent);
-      var target = !selected                ? buttons.first()    :
-                   (direction =='previous') ? buttons.previous( selected ) : buttons.next( selected );
-
-      if ( target ) {
-        // Activate radioButton's click listener (triggerHandler won't send an actual click event)
-        angular.element(target).triggerHandler('click');
-      }
+    if (buttons.length) {
+      var selected = parent[0].querySelector('material-radio-button.material-checked');
+      var target = buttons[buttons.indexOf(selected) + selectionIncrement] || buttons[0];
+      // Activate radioButton's click listener (triggerHandler won't create a real click event)
+      angular.element(target).triggerHandler('click');
     }
   }
-  /**
-   *  Find all button children for specified element
-   *   NOTE: This guarantees giving us every radio, even grandchildren, and
-   *               us getting them in the proper order.
-   */
-  function findAllButtons(element) {
-    return Array.prototype.slice.call(
-      element[0].querySelectorAll('material-radio-button')
-    );
-  }
 
-  /**
-   * Find the currently selected button element (if any)
-   */
-  function findSelectedButton(element) {
-    return element[0].querySelector('material-radio-button.material-checked');
-  }
 }
 
 /**
@@ -3853,7 +3834,11 @@ angular.module('material.components.linearProgress', [
   'material.animations',
   'material.services.aria'
 ])
-  .directive('materialLinearProgress', ['$timeout', MaterialLinearProgressDirective]);
+.directive('materialLinearProgress', [
+  '$$rAF', 
+  '$materialEffects',
+  MaterialLinearProgressDirective
+]);
 
 /**
  * @ngdoc directive
@@ -3885,7 +3870,8 @@ angular.module('material.components.linearProgress', [
  * <material-linear-progress mode="query"></material-linear-progress>
  * </hljs>
  */
-function MaterialLinearProgressDirective($timeout) {
+function MaterialLinearProgressDirective($$rAF, $materialEffects) {
+
   return {
     restrict: 'E',
     template: '<div class="container">' +
@@ -3893,41 +3879,72 @@ function MaterialLinearProgressDirective($timeout) {
       '<div class="bar bar1"></div>' +
       '<div class="bar bar2"></div>' +
       '</div>',
-    link: function(scope, element, attr) {
-      var bar1 = angular.element(element[0].querySelector('.bar1')),
-          bar2 = angular.element(element[0].querySelector('.bar2')),
-          container = angular.element(element[0].querySelector('.container'));
-
-      attr.$observe('value', function(value) {
-        bar2.css('width', clamp(value).toString() + '%');
-      });
-
-      attr.$observe('secondaryvalue', function(value) {
-        bar1.css('width', clamp(value).toString() + '%');
-      });
-
-      $timeout(function() {
-        container.addClass('ready');
-      });
-    }
+    compile: compile
   };
+  
+  function compile(tElement, tAttrs, transclude) {
+    tElement.attr('aria-valuemin', 0);
+    tElement.attr('aria-valuemax', 100);
+    tElement.attr('role', 'progressbar');
+
+    return postLink;
+  }
+  function postLink(scope, element, attr) {
+    var bar1Style = element[0].querySelector('.bar1').style,
+      bar2Style = element[0].querySelector('.bar2').style,
+      container = angular.element(element[0].querySelector('.container'));
+
+    attr.$observe('value', function(value) {
+      if (attr.mode == 'query') {
+        return;
+      }
+
+      var clamped = clamp(value);
+      element.attr('aria-valuenow', clamped);
+      bar2Style[$materialEffects.TRANSFORM] = linearProgressTransforms[clamped];
+    });
+
+    attr.$observe('secondaryvalue', function(value) {
+      bar1Style[$materialEffects.TRANSFORM] = linearProgressTransforms[clamp(value)];
+    });
+
+    $$rAF(function() {
+      container.addClass('ready');
+    });
+  }
+
+  function clamp(value) {
+    if (value > 100) {
+      return 100;
+    }
+
+    if (value < 0) {
+      return 0;
+    }
+
+    return Math.ceil(value || 0);
+  }
 }
+
 
 // **********************************************************
 // Private Methods
 // **********************************************************
-
-function clamp(value) {
-  if (value > 100) {
-    return 100;
+var linearProgressTransforms = (function() {
+  var values = new Array(101);
+  for(var i = 0; i < 101; i++){
+    values[i] = makeTransform(i);
   }
 
-  if (value < 0) {
-    return 0;
-  }
+  return values;
 
-  return value || 0;
-}
+  function makeTransform(value){
+    var scale = value/100;
+    var translateX = (value-100)/2;
+    return 'translateX(' + translateX.toString() + '%) scale(' + scale.toString() + ', 1)';
+  }
+})();
+
 (function() {
 
   /**
