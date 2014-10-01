@@ -5,7 +5,7 @@
  * v0.0.3
  */
 (function(){
-angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.core', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.whiteframe"]);
+angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.core', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 var Constant = {
   KEY_CODE: {
     ENTER: 13,
@@ -709,12 +709,17 @@ function InkRippleService($window, $$rAF, $materialEffects, $timeout) {
     }
 
     // Publish self-detach method if desired...
-    return function detach() {
+    return {
+      run: createRipple,
+      detach: detach
+    };
+        
+    function detach() {
       listenPointerDown(false);
       if (rippleContainer) {
         rippleContainer.remove();
       }
-    };
+    }
 
     function listenPointerDown(shouldListen) {
       element[shouldListen ? 'on' : 'off'](POINTERDOWN_EVENT, onPointerDown);
@@ -3065,10 +3070,10 @@ function MaterialTabDirective($materialInkRipple, $compile, $aria) {
 
       transcludeTabContent();
 
-      var detachRippleFn = $materialInkRipple.attachButtonBehavior(element);
+      var ripple = $materialInkRipple.attachButtonBehavior(element);
       tabsCtrl.add(tabItemCtrl);
       scope.$on('$destroy', function() {
-        detachRippleFn();
+        ripple.detach();
         tabsCtrl.remove(tabItemCtrl);
       });
 
@@ -3786,6 +3791,150 @@ function materialToolbarDirective($$rAF, $materialEffects) {
 
 }
 
+/**
+ * @ngdoc module
+ * @name material.components.tooltip
+ */
+angular.module('material.components.tooltip', [])
+
+.directive('materialTooltip', [
+  '$timeout',
+  '$animate',
+  '$window',
+  '$$rAF',
+  '$materialInkRipple',
+  MaterialTooltipDirective
+]);
+
+function MaterialTooltipDirective($timeout, $animate, $window, $$rAF, $materialInkRipple) {
+
+  var TOOLTIP_SHOW_DELAY = 300;
+
+  // We have to append tooltips to the body, because we use
+  // getBoundingClientRect().
+  // to find where to append the tooltip.
+  var tooltipParent = angular.element(document.body);
+
+  return {
+    restrict: 'E',
+    transclude: true,
+    template: 
+      '<div class="tooltip-background"></div>' +
+      '<div class="tooltip-content" ng-transclude></div>',
+    scope: {
+      visible: '=?'
+    },
+    link: postLink
+  };
+
+  function postLink(scope, element, attr) {
+    var target = element.parent();
+
+    // Re-attach tooltip when visible
+    element.detach();
+
+    target.on('focus mouseenter touchstart', function() {
+      setVisible(true);
+    });
+    target.on('blur mouseleave touchend touchcancel', function() {
+      // Don't leave if we're still focused.
+      if (document.activeElement !== target[0]) {
+        setVisible(false);
+      }
+    });
+
+    scope.$watch('visible', visibleWatchAction);
+    
+    var debouncedOnResize = $$rAF.debounce(onWindowResize);
+    angular.element($window).on('resize', debouncedOnResize);
+    function onWindowResize() {
+      if (scope.visible) positionTooltip();
+    }
+
+    // Be sure to completely cleanup the element on destroy
+    scope.$on('$destroy', function() {
+      element.remove();
+      angular.element($window).off('resize', debouncedOnResize);
+    });
+
+    // If setting visible to true, will debounce to TOOLTIP_SHOW_DELAY ms
+    // If setting visible to false and not waiting, will instantly set.
+    function setVisible(value) {
+      setVisible.value = !!value;
+      if (value && !setVisible.queued) {
+        $timeout(function() {
+          scope.visible = setVisible.value;
+          setVisible.queued = false;
+        }, TOOLTIP_SHOW_DELAY);
+      } else if (!value) {
+        $timeout(function() { scope.visible = false; });
+      }
+    }
+
+    function visibleWatchAction(isVisible) {
+      if (isVisible) showTooltip();
+      else hideTooltip();
+    }
+
+    function hideTooltip() {
+      element.addClass('tooltip-leave').removeClass('tooltip-visible');
+      $timeout(function() {
+        if (scope.visible) return;
+        element.detach();
+      }, 200, false);
+    }
+
+    function showTooltip() {
+      // Insert the element before positioning it, so we can get position
+      tooltipParent.append(element);
+      element.removeClass('tooltip-leave');
+
+      // Wait until the element has been in the dom for one frame before 
+      // positioning it.
+      $$rAF(function() {
+        positionTooltip();
+        $$rAF(function() {
+          if (!scope.visible) return;
+          positionTooltip();
+          element.addClass('tooltip-visible');
+        });
+      });
+    }
+
+    function positionTooltip() {
+      var tipRect = element[0].getBoundingClientRect();
+      var targetRect = target[0].getBoundingClientRect();
+      var windowWidth = $window.innerWidth;
+      var windowHeight = $window.innerHeight;
+
+      // Default to bottom position if possible
+      var tipDirection = 'bottom';
+      var newPosition = {
+        left: targetRect.left + targetRect.width / 2 - tipRect.width / 2,
+        top: targetRect.top + targetRect.height
+      };
+
+      // If element bleeds over left/right of the window, place it on the edge of the window.
+      newPosition.left = Math.min(newPosition.left, windowWidth - tipRect.width);
+      newPosition.left = Math.max(newPosition.left, 0);
+
+      // If element bleeds over the bottom of the window, place it above the target.
+      if (newPosition.top + tipRect.height > windowWidth) {
+        newPosition.top = targetRect.top - tipRect.height;
+        tipDirection = 'top';
+      }
+
+      element.css({
+        left: newPosition.left + 'px',
+        top: newPosition.top + 'px'
+      });
+      element.attr('tooltip-direction', tipDirection);
+    }
+
+  }
+
+}
+
 angular.module('material.components.whiteframe', []);
 
 /**
@@ -4198,16 +4347,19 @@ angular.module('material.decorators', [])
 angular.module('material.services.aria', [])
 
 .service('$aria', [
+  '$$rAF',
   '$log',
   AriaService
 ]);
 
-function AriaService($log) {
+function AriaService($$rAF, $log) {
   var messageTemplate = 'ARIA: Attribute "%s", required for accessibility, is missing on "%s"!';
   var defaultValueTemplate = 'Default value was set: %s="%s".';
 
   return {
-    expect : expectAttribute,
+    // Debounce expect to the next frame so that we can be sure the
+    // expected attribute has time to populate itself.
+    expect : $$rAF.debounce(expectAttribute),
   };
 
   /**

@@ -2533,6 +2533,105 @@ material-toolbar {
   .material-toolbar-tools material-button {
     font-size: 16px; }
 
+@-webkit-keyframes tooltipBackgroundIn {
+  0% {
+    -webkit-transform: scale(0.25);
+    transform: scale(0.25);
+    opacity: 0.3; }
+
+  50% {
+    opacity: 1; }
+
+  100% {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+    opacity: 1; } }
+
+@keyframes tooltipBackgroundIn {
+  0% {
+    -webkit-transform: scale(0.25);
+    transform: scale(0.25);
+    opacity: 0.3; }
+
+  50% {
+    opacity: 1; }
+
+  100% {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+    opacity: 1; } }
+
+@-webkit-keyframes tooltipBackgroundOut {
+  0% {
+    opacity: 1; }
+
+  100% {
+    opacity: 0; } }
+
+@keyframes tooltipBackgroundOut {
+  0% {
+    opacity: 1; }
+
+  100% {
+    opacity: 0; } }
+
+material-tooltip {
+  position: absolute;
+  font-size: 14px;
+  z-index: 6;
+  overflow: hidden;
+  pointer-events: none;
+  color: white;
+  border-radius: 4px;
+  -webkit-transition: 0.125s ease-out;
+  transition: 0.125s ease-out;
+  transition-property: transform, opacity;
+  -webkit-transition-property: -webkit-transform, opacity; }
+  material-tooltip[tooltip-direction="bottom"] {
+    -webkit-transform: translate3d(0, -20%, 0);
+    transform: translate3d(0, -20%, 0); }
+  material-tooltip[tooltip-direction="top"] {
+    -webkit-transform: translate3d(0, 20%, 0);
+    transform: translate3d(0, 20%, 0); }
+  material-tooltip .tooltip-background {
+    background: #737373;
+    z-index: 0;
+    position: absolute;
+    left: 50%;
+    width: 256px;
+    height: 256px;
+    margin-left: -128px;
+    margin-top: -128px;
+    border-radius: 256px;
+    opacity: 0.3;
+    -webkit-transform: scale(0.25);
+    transform: scale(0.25); }
+  material-tooltip .tooltip-content {
+    z-index: 1;
+    background: transparent;
+    padding: 8px;
+    opacity: 0.3;
+    -webkit-transition: inherit;
+    transition: inherit; }
+  material-tooltip.tooltip-visible {
+    pointer-events: auto;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0); }
+    material-tooltip.tooltip-visible .tooltip-background {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+      opacity: 1;
+      -webkit-animation: tooltipBackgroundIn 0.7s linear;
+      animation: tooltipBackgroundIn 0.7s linear; }
+    material-tooltip.tooltip-visible .tooltip-content {
+      opacity: 0.99; }
+  material-tooltip.tooltip-leave .tooltip-background {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 0;
+    -webkit-animation: tooltipBackgroundOut 0.2s linear;
+    animation: tooltipBackgroundOut 0.2s linear; }
+
 material-tabs {
   display: block;
   width: 100%;
