@@ -709,17 +709,12 @@ function InkRippleService($window, $$rAF, $materialEffects, $timeout) {
     }
 
     // Publish self-detach method if desired...
-    return {
-      run: createRipple,
-      detach: detach
-    };
-        
-    function detach() {
+    return function detach() {
       listenPointerDown(false);
       if (rippleContainer) {
         rippleContainer.remove();
       }
-    }
+    };
 
     function listenPointerDown(shouldListen) {
       element[shouldListen ? 'on' : 'off'](POINTERDOWN_EVENT, onPointerDown);
@@ -3070,10 +3065,10 @@ function MaterialTabDirective($materialInkRipple, $compile, $aria) {
 
       transcludeTabContent();
 
-      var ripple = $materialInkRipple.attachButtonBehavior(element);
+      var detachRippleFn = $materialInkRipple.attachButtonBehavior(element);
       tabsCtrl.add(tabItemCtrl);
       scope.$on('$destroy', function() {
-        ripple.detach();
+        detachRippleFn();
         tabsCtrl.remove(tabItemCtrl);
       });
 
@@ -3799,14 +3794,12 @@ angular.module('material.components.tooltip', [])
 
 .directive('materialTooltip', [
   '$timeout',
-  '$animate',
   '$window',
   '$$rAF',
-  '$materialInkRipple',
   MaterialTooltipDirective
 ]);
 
-function MaterialTooltipDirective($timeout, $animate, $window, $$rAF, $materialInkRipple) {
+function MaterialTooltipDirective($timeout, $window, $$rAF) {
 
   var TOOLTIP_SHOW_DELAY = 300;
 
