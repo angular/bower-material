@@ -898,7 +898,7 @@ function MaterialButtonDirective(ngHrefDirectives, $materialInkRipple, $aria ) {
         });
 
       return function postLink(scope, element, attr) {
-        $aria.expect(element, 'aria-label', element.text().trim());
+        $aria.expect(element, 'aria-label', element.text());
         $materialInkRipple.attachButtonBehavior(element);
       };
     }
@@ -1138,7 +1138,8 @@ function materialContentDirective() {
 angular.module('material.components.dialog', [
   'material.animations',
   'material.services.compiler',
-  'material.services.aria'
+  'material.services.aria',
+  'material.services.interimElement',
 ])
   .directive('materialDialog', [
     '$$rAF',
@@ -1146,12 +1147,11 @@ angular.module('material.components.dialog', [
   ])
   .factory('$materialDialog', [
     '$timeout',
-    '$materialCompiler',
     '$rootElement',
-    '$rootScope',
     '$materialEffects',
     '$animate',
     '$aria',
+    '$$interimElement',
     MaterialDialogService
   ]);
 
@@ -1178,10 +1178,12 @@ function MaterialDialogDirective($$rAF) {
  *
  * The $materialDialog service opens a dialog over top of the app. 
  *
- * The `$materialDialog` service can be used as a function, which when called will open a
- * dialog. Note: the dialog is always given an isolate scope.
+ * Note: The dialog is always given an isolate scope.
  *
- * It takes one argument, `options`, which is defined below.
+ * `$materialDialog` is an `$interimElement` service and adheres to the same behaviors.
+ *  - `$materialDialog.show()`
+ *  - `$materialDialog.hide()`
+ *  - `$materialDialog.cancel()`
  *
  * Note: the dialog's template must have an outer `<material-dialog>` element. 
  * Inside, use an element with class `dialog-content` for the dialog's content, and use
@@ -1203,7 +1205,7 @@ function MaterialDialogDirective($$rAF) {
  * var app = angular.module('app', ['ngMaterial']);
  * app.controller('MyController', function($scope, $materialDialog) {
  *   $scope.openDialog = function($event) {
- *     var hideDialog = $materialDialog({
+ *     $materialDialog.show({
  *       template: '<material-dialog>Hello!</material-dialog>',
  *       targetEvent: $event
  *     });
@@ -1211,7 +1213,15 @@ function MaterialDialogDirective($$rAF) {
  * });
  * </hljs>
  *
- * @returns {function} `hideDialog` - A function that hides the dialog.
+ */
+
+/**
+ *
+ * @ngdoc method
+ * @name $materialDialog#show
+ *
+ * @description
+ * Show a dialog with the specified options
  *
  * @paramType Options
  * @param {string=} templateUrl The url of a template that will be used as the content
@@ -1234,137 +1244,142 @@ function MaterialDialogDirective($$rAF) {
  * @param {object=} resolve Similar to locals, except it takes promises as values, and the
  * toast will not open until all of the promises resolve.
  * @param {string=} controllerAs An alias to assign the controller to on the scope.
- * @param {element=} appendTo The element to append the dialog to. Defaults to appending
+ * @param {element=} parent The element to append the dialog to. Defaults to appending
  *   to the root element of the application.
+ *
+ * @returns {Promise} Returns a promise that will be resolved or rejected when
+ *  `$materialDialog.hide()` or `$materialDialog.cancel()` is called respectively.
  */
-function MaterialDialogService($timeout, $materialCompiler, $rootElement, $rootScope, $materialEffects, $animate, $aria) {
-  var recentDialog;
-  var dialogParent = $rootElement.find('body');
-  if ( !dialogParent.length ) {
-    dialogParent = $rootElement;
-  }
 
-  return showDialog;
+/**
+ * @ngdoc method
+ * @name $materialDialog#hide
+ *
+ * @description
+ * Hide an existing dialog and `resolve` the promise returned from `$materialDialog.show()`.
+ *
+ * @param {*} arg An argument to resolve the promise with.
+ *
+ */
 
-  function showDialog(options) {
-    options = angular.extend({
-      appendTo: dialogParent,
-      hasBackdrop: true, // should have an opaque backdrop
-      clickOutsideToClose: true, // should have a clickable backdrop to close
-      escapeToClose: true,
-      // targetEvent: used to find the location to start the dialog from
-      targetEvent: null,
-      transformTemplate: function(template) {
-        return '<div class="material-dialog-container">' + template + '</div>';
-      }
-      // Also supports all options from $materialCompiler.compile
-    }, options || {});
+/**
+ * @ngdoc method
+ * @name $materialDialog#cancel
+ *
+ * @description
+ * Hide an existing dialog and `reject` the promise returned from `$materialDialog.show()`.
+ *
+ * @param {*} arg An argument to reject the promise with.
+ *
+ */
 
+function MaterialDialogService($timeout, $rootElement, $materialEffects, $animate, $aria, $$interimElement) {
+
+  var $dialogService;
+  return $dialogService = $$interimElement({
+    hasBackdrop: true,
+    isolateScope: true,
+    onShow: onShow,
+    onRemove: onRemove,
+    clickOutsideToClose: true,
+    escapeToClose: true,
+    targetEvent: null,
+    transformTemplate: function(template) {
+      return '<div class="material-dialog-container">' + template + '</div>';
+    }
+  });
+
+  function onShow(scope, element, options) {
     // Incase the user provides a raw dom element, always wrap it in jqLite
-    options.appendTo = angular.element(options.appendTo); 
+    options.parent = angular.element(options.parent);
 
-    // Close the old dialog
-    recentDialog && recentDialog.then(function(destroyDialog) {
-      destroyDialog();
-    });
+    options.popInTarget = angular.element((options.targetEvent || {}).target); 
+    var closeButton = findCloseButton();
 
-    recentDialog = $materialCompiler.compile(options).then(function(compileData) {
-      // Controller will be passed a `$hideDialog` function
-      compileData.locals.$hideDialog = destroyDialog;
+    configureAria(element.find('material-dialog'));
 
-      var scope = $rootScope.$new(true);
-      var element = compileData.link(scope); 
-      var popInTarget = options.targetEvent && options.targetEvent.target && 
-        angular.element(options.targetEvent.target);
-      var closeButton = findCloseButton();
-      var backdrop;
-
-      configureAria(element.find('material-dialog'));
-
-      if (options.hasBackdrop) {
-        backdrop = angular.element('<material-backdrop class="opaque ng-enter">');
-        $animate.enter(backdrop, options.appendTo, null);
-      }
-
-      $materialEffects.popIn(element, options.appendTo, popInTarget)
-        .then(function() {
-
-          if (options.escapeToClose) {
-            $rootElement.on('keyup', onRootElementKeyup);
-          }
-          if (options.clickOutsideToClose) {
-            element.on('click', dialogClickOutside);
-          }
-          closeButton.focus();
-
-        });
-
-      return destroyDialog;
-
-      function findCloseButton() {
-        //If no element with class dialog-close, try to find the last 
-        //button child in dialog-actions and assume it is a close button
-        var closeButton = element[0].querySelector('.dialog-close');
-        if (!closeButton) {
-          var actionButtons = element[0].querySelectorAll('.dialog-actions button');
-          closeButton = actionButtons[ actionButtons.length - 1 ];
-        }
-        return angular.element(closeButton);
-      }
-      function destroyDialog() {
-        if (destroyDialog.called) return;
-        destroyDialog.called = true;
-
-        if (backdrop) {
-          $animate.leave(backdrop);
-        }
-        if (options.escapeToClose) {
-          $rootElement.off('keyup', onRootElementKeyup);
-        }
-        if (options.clickOutsideToClose) {
-          element.off('click', dialogClickOutside);
-        }
-        $animate.leave(element).then(function() {
-          element.remove();
-          scope.$destroy();
-          scope = null;
-          element = null;
-
-          if(popInTarget !== null) {
-            popInTarget.focus();
-          }
-        });
-      }
-      function onRootElementKeyup(e) {
-        if (e.keyCode === Constant.KEY_CODE.ESCAPE) {
-          $timeout(destroyDialog);
-        }
-      }
-      function dialogClickOutside(e) {
-        // Only close if we click the flex container outside the backdrop
-        if (e.target === element[0]) {
-          $timeout(destroyDialog);
-        }
-      }
-    });
-
-    /**
-     * Inject ARIA-specific attributes appropriate for Dialogs
-     */
-    function configureAria(element) {
-      element.attr({
-        'role': 'dialog'
-      });
-
-      var dialogContent = element.find('.dialog-content');
-      if(dialogContent.length === 0){
-        dialogContent = element;
-      }
-      var defaultText = Util.stringFromTextBody(dialogContent.text(), 3);
-      $aria.expect(element, 'aria-label', defaultText);
+    if (options.hasBackdrop) {
+      var backdrop = angular.element('<material-backdrop class="opaque ng-enter">');
+      $animate.enter(backdrop, options.parent, null);
+      options.backdrop = backdrop;
     }
 
-    return recentDialog;
+    return $materialEffects.popIn(
+      element, 
+      options.parent, 
+      options.popInTarget.length && options.popInTarget
+    )
+    .then(function() {
+      if (options.escapeToClose) {
+        options.rootElementKeyupCallback = function(e) {
+          if (e.keyCode === Constant.KEY_CODE.ESCAPE) {
+            $timeout($dialogService.hide);
+          }
+        };
+
+        $rootElement.on('keyup', options.rootElementKeyupCallback);
+      }
+
+      if (options.clickOutsideToClose) {
+        options.dialogClickOutsideCallback = function(e) {
+          // Only close if we click the flex container outside the backdrop
+          if (e.target === element[0]) {
+            $timeout($dialogService.hide);
+          }
+        };
+
+        element.on('click', options.dialogClickOutsideCallback);
+      }
+      closeButton.focus();
+    });
+
+
+    function findCloseButton() {
+      //If no element with class dialog-close, try to find the last
+      //button child in dialog-actions and assume it is a close button
+      var closeButton = element[0].querySelector('.dialog-close');
+      if (!closeButton) {
+        var actionButtons = element[0].querySelectorAll('.dialog-actions button');
+        closeButton = actionButtons[ actionButtons.length - 1 ];
+      }
+      return angular.element(closeButton);
+    }
+
+  }
+
+  function onRemove(scope, element, options) {
+
+    if (options.backdrop) {
+      $animate.leave(options.backdrop);
+      element.data('backdrop', undefined);
+    }
+    if (options.escapeToClose) {
+      $rootElement.off('keyup', options.rootElementKeyupCallback);
+    }
+    if (options.clickOutsideToClose) {
+      element.off('click', options.dialogClickOutsideCallback);
+    }
+    return $animate.leave(element).then(function() {
+      element.remove();
+      options.popInTarget && options.popInTarget.focus();
+    });
+
+  }
+
+  /**
+   * Inject ARIA-specific attributes appropriate for Dialogs
+   */
+  function configureAria(element) {
+    element.attr({
+      'role': 'dialog'
+    });
+
+    var dialogContent = element.find('.dialog-content');
+    if (dialogContent.length === 0){
+      dialogContent = element;
+    }
+    var defaultText = Util.stringFromTextBody(dialogContent.text(), 3);
+    $aria.expect(element, 'aria-label', defaultText);
   }
 }
 
@@ -3469,21 +3484,22 @@ function TabsDirective($parse) {
  * @description
  * Toast
  */
-angular.module('material.components.toast', ['material.services.compiler', 'material.components.swipe'])
+angular.module('material.components.toast', [
+  'material.services.interimElement',
+  'material.components.swipe'
+])
   .directive('materialToast', [
-    QpToastDirective
+    MaterialToastDirective
   ])
   .factory('$materialToast', [
     '$timeout',
-    '$rootScope',
-    '$materialCompiler',
-    '$materialSwipe',
-    '$rootElement',
+    '$$interimElement',
     '$animate',
-    QpToastService
+    '$materialSwipe',
+    MaterialToastService
   ]);
 
-function QpToastDirective() {
+function MaterialToastDirective() {
   return {
     restrict: 'E'
   };
@@ -3495,14 +3511,17 @@ function QpToastDirective() {
  * @module material.components.toast
  *
  * @description
- * Open a toast notification on any position on the screen, with an optional
+ * Open a toast notification on any position on the screen, with an optional 
  * duration.
  *
  * Only one toast notification may ever be active at any time. If a new toast is
  * shown while a different toast is active, the old toast will be automatically
  * hidden.
  *
- * `$materialToast` takes one argument, options, which is defined below.
+ * `$materialToast` is an `$interimElement` service and adheres to the same behaviors.
+ *  - `$materialToast.show()`
+ *  - `$materialToast.hide()`
+ *  - `$materialToast.cancel()`
  *
  * @usage
  * <hljs lang="html">
@@ -3516,15 +3535,21 @@ function QpToastDirective() {
  * var app = angular.module('app', ['ngMaterial']);
  * app.controller('MyController', function($scope, $materialToast) {
  *   $scope.openToast = function($event) {
- *     var hideToast = $materialToast({
+ *     $materialToast.show({
  *       template: '<material-toast>Hello!</material-toast>',
- *       duration: 3000
+ *       hideDelay: 3000
  *     });
  *   };
  * });
  * </hljs>
+ */
+
+ /**
+ * @ngdoc method
+ * @name $materialToast#show
  *
- * @returns {function} `hideToast` - A function that hides the toast.
+ * @description
+ * Show a toast dialog with the specified options.
  *
  * @paramType Options
  * @param {string=} templateUrl The url of an html template file that will
@@ -3532,8 +3557,8 @@ function QpToastDirective() {
  * have an outer `material-toast` element.
  * @param {string=} template Same as templateUrl, except this is an actual
  * template string.
- * @param {number=} duration How many milliseconds the toast should stay
- * active before automatically closing.  Set to 0 to disable duration.
+ * @param {number=} hideDelay How many milliseconds the toast should stay
+ * active before automatically closing.  Set to 0 to disable duration. 
  * Default: 3000.
  * @param {string=} position Where to place the toast. Available: any combination
  * of 'bottom', 'left', 'top', 'right', 'fit'. Default: 'bottom left'.
@@ -3541,92 +3566,74 @@ function QpToastDirective() {
  * The controller will be injected the local `$hideToast`, which is a function
  * used to hide the toast.
  * @param {string=} locals An object containing key/value pairs. The keys will
- * be used as names of values to inject into the controller. For example,
+ * be used as names of values to inject into the controller. For example, 
  * `locals: {three: 3}` would inject `three` into the controller with the value
  * of 3.
  * @param {object=} resolve Similar to locals, except it takes promises as values
  * and the toast will not open until the promises resolve.
  * @param {string=} controllerAs An alias to assign the controller to on the scope.
+ *
+ * @returns {Promise} Returns a promise that will be resolved or rejected when
+ *  `$materialToast.hide()` or `$materialToast.cancel()` is called respectively.
  */
-function QpToastService($timeout, $rootScope, $materialCompiler, $materialSwipe, $rootElement, $animate) {
-  var recentToast;
+
+/**
+ * @ngdoc method
+ * @name $materialToast#hide
+ *
+ * @description
+ * Hide an existing toast and `resolve` the promise returned from `$materialToast.show()`.
+ *
+ * @param {*} arg An argument to resolve the promise with.
+ *
+ */
+
+/**
+ * @ngdoc method
+ * @name $materialToast#cancel
+ *
+ * @description
+ * Hide an existing toast and `reject` the promise returned from `$materialToast.show()`.
+ *
+ * @param {*} arg An argument to reject the promise with.
+ *
+ */
+
+function MaterialToastService($timeout, $$interimElement, $animate, $materialSwipe) {
+
+  var factoryDef = {
+    onShow: onShow,
+    onRemove: onRemove,
+    position: 'bottom left',
+    hideDelay: 3000,
+  };
+
+  var $materialToast = $$interimElement(factoryDef);
+  return $materialToast;
+
+  function onShow(scope, element, options) {
+    element.addClass(options.position);
+    options.parent.addClass(toastOpenClass(options.position));
+
+    var configureSwipe = $materialSwipe(scope, 'swipeleft swiperight');
+    options.detachSwipe = configureSwipe(element, function(ev) {
+      //Add swipeleft/swiperight class to element so it can animate correctly
+      element.addClass(ev.type);
+      $timeout($materialToast.hide);
+    });
+
+    return $animate.enter(element, options.parent);
+  }
+
+  function onRemove(scope, element, options) {
+    options.detachSwipe();
+    options.parent.removeClass(toastOpenClass(options.position));
+    return $animate.leave(element);
+  }
+
   function toastOpenClass(position) {
     return 'material-toast-open-' +
       (position.indexOf('top') > -1 ? 'top' : 'bottom');
-  }
-
-  // If the $rootElement is the document (<html> element), be sure to append it to the
-  // body instead.
-  var toastParent = $rootElement.find('body');
-  if ( !toastParent.length ) {
-    toastParent = $rootElement;
-  }
-
-  return showToast;
-
-  /**
-   * TODO fully document this
-   * Supports all options from $materialPopup, in addition to `duration` and `position`
-   */
-  function showToast(options) {
-    options = angular.extend({
-      // How long to keep the toast up, milliseconds
-      duration: 3000,
-      // [unimplemented] Whether to disable swiping
-      swipeDisabled: false,
-      // Supports any combination of these class names: 'bottom top left right fit'.
-      // Default: 'bottom left'
-      position: 'bottom left'
-    }, options || {});
-
-    recentToast && recentToast.then(function(destroy) { destroy(); });
-
-    recentToast = $materialCompiler.compile(options).then(function(compileData) {
-      // Controller will be passed a `$hideToast` function
-      compileData.locals.$hideToast = destroy;
-
-      var delayTimeout;
-      var scope = $rootScope.$new();
-      var element = compileData.link(scope);
-      var toastParentClass = toastOpenClass(options.position);
-      var configureSwipe = $materialSwipe(scope, "swiperight swipeleft");
-
-      element.addClass(options.position);
-      toastParent.addClass(toastParentClass);
-
-      $animate
-        .enter(element, toastParent).then(function() {
-          if (options.duration) {
-            delayTimeout = $timeout(destroy, options.duration);
-          }
-        });
-
-      //Add swipeleft/swiperight class to element so it can animate correctly
-
-      configureSwipe(element, function onSwipe(ev) {
-        element.addClass(ev.type);
-        $timeout(destroy);
-      });
-
-      return destroy;
-
-      // ******************************
-      // Internal methods
-      // ******************************
-
-      function destroy() {
-        if (destroy.called) return;
-        destroy.called = true;
-
-        toastParent.removeClass(toastParentClass);
-        $timeout.cancel(delayTimeout);
-        $animate.leave(element).then(function() {
-          scope.$destroy();
-        });
-      }
-    });
-
-    return recentToast;
   }
 }
 
@@ -4133,7 +4140,7 @@ var linearProgressTransforms = (function() {
         var configureSwipe = $materialSwipe(scope, direction);
         var requestSwipe = function(locals) {
           // build function to request scope-specific swipe response
-          parentGetter(scope, locals)
+          parentGetter(scope, locals);
         };
 
         configureSwipe( element, function onHandleSwipe(ev) {
@@ -4196,7 +4203,7 @@ angular.module('material.services.aria', [])
 ]);
 
 function AriaService($log) {
-  var messageTemplate = 'ARIA: Attribute "%s", required for accessibility, is missing on "%s"';
+  var messageTemplate = 'ARIA: Attribute "%s", required for accessibility, is missing on "%s"!';
   var defaultValueTemplate = 'Default value was set: %s="%s".';
 
   return {
@@ -4213,7 +4220,7 @@ function AriaService($log) {
 
     var node = element[0];
     if (!node.hasAttribute(attrName)) {
-      var hasDefault = angular.isDefined(defaultValue) && defaultValue.length;
+      var hasDefault = angular.isDefined(defaultValue);
 
       if (hasDefault) {
         defaultValue = String(defaultValue).trim();
@@ -4221,8 +4228,7 @@ function AriaService($log) {
         //           attrName, getTagString(node), attrName, defaultValue);
         element.attr(attrName, defaultValue);
       } else {
-        $log.warn(messageTemplate, attrName, getTagString(node));
-        $log.warn(node);
+        // $log.warn(messageTemplate, attrName, getTagString(node));
       }
     }
   }
@@ -4477,6 +4483,202 @@ function materialCompilerService($q, $http, $injector, $compile, $controller, $t
     });
   };
 }
+
+/**
+ * @ngdoc module
+ * @name material.services.interimElement
+ * @description InterimElement
+ */
+
+angular.module('material.services.interimElement', [
+  'material.services.compiler'
+])
+.factory('$$interimElement', [
+  '$q',
+  '$rootScope',
+  '$timeout',
+  '$rootElement',
+  '$animate',
+  '$materialCompiler',
+  InterimElementFactory
+]);
+
+/**
+ * @ngdoc service
+ * @name $$interimElement
+ *
+ * @description
+ *
+ * Factory that contructs `$$interimElement.$service` services. 
+ * Used internally in material for elements that appear on screen temporarily.
+ * The service provides a promise-like API for interacting with the temporary
+ * elements.
+ *
+ * ```js
+ * app.service('$materialToast', function($$interimElement) {
+ *   var $materialToast = $$interimElement(toastDefaultOptions);
+ *   return $materialToast;
+ * });
+ * ```
+ * @param {object=} defaultOptions Options used by default for the `show` method on the service.
+ *
+ * @returns {$$interimElement.$service}
+ *
+ */
+
+function InterimElementFactory($q, $rootScope, $timeout, $rootElement, $animate, $materialCompiler) {
+
+  return function createInterimElementService(defaults) {
+
+    /**
+     * @ngdoc service
+     * @name $$interimElement.$service
+     *
+     * @description
+     * A service used to control inserting and removing an element into the DOM.
+     *
+     */
+
+
+    var stack = [];
+
+    var parent = $rootElement.find('body');
+    if (!parent.length) parent = $rootElement;
+
+    defaults = angular.extend({
+      parent: parent,
+      onShow: function(scope, $el, options) {
+        return $animate.enter($el, options.parent);
+      },
+      onRemove: function(scope, $el, options) {
+        return $animate.leave($el);
+      },
+    }, defaults || {});
+
+    var service;
+    return service = {
+      show: show,
+      hide: hide,
+      cancel: cancel
+    };
+
+    /**
+     * @ngdoc method
+     * @name $$interimElement.$service#show
+     * @kind function
+     *
+     * @description
+     * Compiles and inserts an element into the DOM.
+     *
+     * @param {Object} options Options object to compile with.
+     *
+     * @returns {Promise} Promise that will resolve when the service
+     * has `#close()` or `#cancel()` called.
+     *
+     */
+    function show(options) {
+      if (stack.length) {
+        service.hide();
+      }
+
+      var interimElement = new InterimElement(options);
+      stack.push(interimElement);
+      return interimElement.show().then(function() {
+        return interimElement.deferred.promise;
+      });
+    }
+
+    /**
+     * @ngdoc method
+     * @name $$interimElement.$service#hide
+     * @kind function
+     *
+     * @description
+     * Removes the `$interimElement` from the DOM and resolves the promise returned from `show`
+     *
+     * @param {*} resolveParam Data to resolve the promise with
+     *
+     * @returns undefined data that resolves after the element has been removed.
+     *
+     */
+    function hide(success) {
+      var interimElement = stack.shift();
+      interimElement.remove().then(function() {
+        interimElement.deferred.resolve(success);
+      });
+    }
+
+    /**
+     * @ngdoc method
+     * @name $$interimElement.$service#cancel
+     * @kind function
+     *
+     * @description
+     * Removes the `$interimElement` from the DOM and rejects the promise returned from `show`
+     *
+     * @param {*} reason Data to reject the promise with
+     *
+     * @returns undefined
+     *
+     */
+    function cancel(reason) {
+      var interimElement = stack.shift();
+      interimElement.remove().then(function() {
+        interimElement.deferred.reject(reason);
+      });
+    }
+
+
+    /*
+     * Internal Interim Element Object
+     * Used internally to manage the DOM element and related data
+     */
+    function InterimElement(options) {
+      var self;
+      var hideTimeout, element;
+
+      options = options || {};
+
+      options = angular.extend({
+        scope: options.scope || $rootScope.$new(options.isolateScope)
+      }, defaults, options);
+
+      self = {
+        options: options,
+        deferred: $q.defer(),
+        show: function() {
+          return $materialCompiler.compile(options).then(function(compiledData) {
+            element = compiledData.link(options.scope);
+            var ret = options.onShow(options.scope, element, options);
+            return $q.when(ret)
+              .then(startHideTimeout);
+
+            function startHideTimeout() {
+              if (options.hideDelay) {
+                hideTimeout = $timeout(service.hide, options.hideDelay) ;
+              }
+            }
+          });
+        },
+        cancelTimeout: function() {
+          if (hideTimeout) {
+            $timeout.cancel(hideTimeout);
+            hideTimeout = undefined;
+          }
+        },
+        remove: function() {
+          self.cancelTimeout();
+          var ret = options.onRemove(options.scope, element, options);
+          return $q.when(ret).then(function() {
+            options.scope.$destroy();
+          });
+        }
+      };
+      return self;
+    }
+  };
+}
+
 
 /**
  * @ngdoc overview
