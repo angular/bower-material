@@ -2004,6 +2004,8 @@ material-sidenav {
   background-color: white;
   -webkit-transition: -webkit-transform 0.3s ease-in-out;
   transition: transform 0.3s ease-in-out; }
+  material-sidenav.closed {
+    display: none; }
 
 .material-sidenav-left, material-sidenav {
   left: 0;
@@ -2032,13 +2034,6 @@ material-sidenav {
     transform: translate3d(0, 0, 0) !important; }
   .material-sidenav-backdrop {
     display: none !important; } }
-
-/* 
- * When sidenav is closed on small screen, show no box shadow
- */
-@media (max-width: 960px) {
-  material-sidenav:not(.open).material-sidenav-left, material-sidenav:not(.open), material-sidenav:not(.open).material-sidenav-right {
-    box-shadow: none; } }
 
 @media (max-width: 416px) {
   material-sidenav {
