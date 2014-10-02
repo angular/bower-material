@@ -2004,8 +2004,6 @@ material-sidenav {
   background-color: white;
   -webkit-transition: -webkit-transform 0.3s ease-in-out;
   transition: transform 0.3s ease-in-out; }
-  material-sidenav.closed {
-    display: none; }
 
 .material-sidenav-left, material-sidenav {
   left: 0;
