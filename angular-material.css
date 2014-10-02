@@ -2040,6 +2040,10 @@ material-sidenav {
   material-sidenav:not(.open).material-sidenav-left, material-sidenav:not(.open), material-sidenav:not(.open).material-sidenav-right {
     box-shadow: none; } }
 
+@media (max-width: 416px) {
+  material-sidenav {
+    max-width: 75%; } }
+
 @-webkit-keyframes sliderFocusThumb {
   0% {
     opacity: 0;
