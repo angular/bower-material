@@ -1124,11 +1124,15 @@ angular.module('material.components.content', [
 function materialContentDirective() {
   return {
     restrict: 'E',
-    controller: angular.noop,
+    controller: ['$element', ContentController],
     link: function($scope, $element, $attr) {
       $scope.$broadcast('$materialContentLoaded', $element);
     }
   };
+
+  function ContentController(element) {
+    this.element = element;
+  }
 }
 
 /**
@@ -3796,13 +3800,36 @@ angular.module('material.components.tooltip', [])
   '$timeout',
   '$window',
   '$$rAF',
+  '$document',
   MaterialTooltipDirective
 ]);
 
-function MaterialTooltipDirective($timeout, $window, $$rAF) {
+/**
+ * @ngdoc directive
+ * @name materialTooltip
+ * @module material.components.tooltip
+ * @description
+ * Tooltips are used to describe elements that are interactive and primarily grpahical (not textual).
+ *
+ * Place a `<material-tooltip>` as a child of the element it describes.
+ *
+ * A tooltip will activate when the user focuses, hovers over, or touches the target.
+ *
+ * @usage
+ * <hljs lang="html">
+ * <material-icon icon="/img/icons/ic_play_arrow_24px.svg">
+ *   <material-tooltip>
+ *     Play Music
+ *   </material-tooltip>
+ * </material-icon>
+ * </hljs>
+ *
+ * @param {expression=} visible Boolean model to bind to whether the tooltip is 
+ * currently visible.
+ */
+function MaterialTooltipDirective($timeout, $window, $$rAF, $document) {
 
   var TOOLTIP_SHOW_DELAY = 300;
-
   // We have to append tooltips to the body, because we use
   // getBoundingClientRect().
   // to find where to append the tooltip.
@@ -3811,6 +3838,7 @@ function MaterialTooltipDirective($timeout, $window, $$rAF) {
   return {
     restrict: 'E',
     transclude: true,
+    require: '^?materialContent',
     template: 
       '<div class="tooltip-background"></div>' +
       '<div class="tooltip-content" ng-transclude></div>',
@@ -3820,11 +3848,13 @@ function MaterialTooltipDirective($timeout, $window, $$rAF) {
     link: postLink
   };
 
-  function postLink(scope, element, attr) {
+  function postLink(scope, element, attr, contentCtrl) {
     var target = element.parent();
 
     // Re-attach tooltip when visible
     element.detach();
+    element.attr('role', 'tooltip');
+    element.attr('id', attr.id || Util.nextUid());
 
     target.on('focus mouseenter touchstart', function() {
       setVisible(true);
@@ -3836,7 +3866,10 @@ function MaterialTooltipDirective($timeout, $window, $$rAF) {
       }
     });
 
-    scope.$watch('visible', visibleWatchAction);
+    scope.$watch('visible', function(isVisible) {
+      if (isVisible) showTooltip();
+      else hideTooltip();
+    });
     
     var debouncedOnResize = $$rAF.debounce(onWindowResize);
     angular.element($window).on('resize', debouncedOnResize);
@@ -3846,12 +3879,17 @@ function MaterialTooltipDirective($timeout, $window, $$rAF) {
 
     // Be sure to completely cleanup the element on destroy
     scope.$on('$destroy', function() {
+      scope.visible = false;
       element.remove();
       angular.element($window).off('resize', debouncedOnResize);
     });
 
+    // *******
+    // Methods
+    // *******
+
     // If setting visible to true, will debounce to TOOLTIP_SHOW_DELAY ms
-    // If setting visible to false and not waiting, will instantly set.
+    // If setting visible to false and no timeout is active, it will instantly hide the tooltip.
     function setVisible(value) {
       setVisible.value = !!value;
       if (value && !setVisible.queued) {
@@ -3864,34 +3902,34 @@ function MaterialTooltipDirective($timeout, $window, $$rAF) {
       }
     }
 
-    function visibleWatchAction(isVisible) {
-      if (isVisible) showTooltip();
-      else hideTooltip();
+    function showTooltip() {
+      // Insert the element before positioning it, so we can get position
+      tooltipParent.append(element);
+      element.removeClass('tooltip-hide');
+
+      // Wait until the element has been in the dom for two frames before 
+      // fading it in.
+      // Additionally, we position the tooltip twice to avoid positioning bugs
+      positionTooltip();
+      $$rAF(function() {
+        positionTooltip();
+
+        $$rAF(function() {
+          if (!scope.visible) return;
+          element.addClass('tooltip-show');
+          target.attr('aria-describedby', element.attr('id'));
+        });
+
+      });
     }
 
     function hideTooltip() {
-      element.addClass('tooltip-leave').removeClass('tooltip-visible');
+      element.addClass('tooltip-hide').removeClass('tooltip-show');
+      target.removeAttr('aria-describedby');
       $timeout(function() {
         if (scope.visible) return;
         element.detach();
       }, 200, false);
-    }
-
-    function showTooltip() {
-      // Insert the element before positioning it, so we can get position
-      tooltipParent.append(element);
-      element.removeClass('tooltip-leave');
-
-      // Wait until the element has been in the dom for one frame before 
-      // positioning it.
-      $$rAF(function() {
-        positionTooltip();
-        $$rAF(function() {
-          if (!scope.visible) return;
-          positionTooltip();
-          element.addClass('tooltip-visible');
-        });
-      });
     }
 
     function positionTooltip() {
@@ -3899,6 +3937,11 @@ function MaterialTooltipDirective($timeout, $window, $$rAF) {
       var targetRect = target[0].getBoundingClientRect();
       var windowWidth = $window.innerWidth;
       var windowHeight = $window.innerHeight;
+
+      if (contentCtrl) {
+        targetRect.top += contentCtrl.element.prop('scrollTop');
+        targetRect.left += contentCtrl.element.prop('scrollLeft');
+      }
 
       // Default to bottom position if possible
       var tipDirection = 'bottom';
@@ -3912,7 +3955,7 @@ function MaterialTooltipDirective($timeout, $window, $$rAF) {
       newPosition.left = Math.max(newPosition.left, 0);
 
       // If element bleeds over the bottom of the window, place it above the target.
-      if (newPosition.top + tipRect.height > windowWidth) {
+      if (newPosition.top + tipRect.height > windowHeight) {
         newPosition.top = targetRect.top - tipRect.height;
         tipDirection = 'top';
       }
@@ -3921,6 +3964,8 @@ function MaterialTooltipDirective($timeout, $window, $$rAF) {
         left: newPosition.left + 'px',
         top: newPosition.top + 'px'
       });
+      // Set the tooltip's size as a mutliple of 32, and let the CSS change animations.
+      element.attr('width-32', Math.ceil(tipRect.width / 32));
       element.attr('tooltip-direction', tipDirection);
     }
 
@@ -4340,19 +4385,16 @@ angular.module('material.decorators', [])
 angular.module('material.services.aria', [])
 
 .service('$aria', [
-  '$$rAF',
   '$log',
   AriaService
 ]);
 
-function AriaService($$rAF, $log) {
+function AriaService($log) {
   var messageTemplate = 'ARIA: Attribute "%s", required for accessibility, is missing on "%s"!';
   var defaultValueTemplate = 'Default value was set: %s="%s".';
 
   return {
-    // Debounce expect to the next frame so that we can be sure the
-    // expected attribute has time to populate itself.
-    expect : $$rAF.debounce(expectAttribute),
+    expect : expectAttribute,
   };
 
   /**

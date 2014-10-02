@@ -2535,30 +2535,30 @@ material-toolbar {
 
 @-webkit-keyframes tooltipBackgroundIn {
   0% {
-    -webkit-transform: scale(0.25);
-    transform: scale(0.25);
-    opacity: 0.3; }
+    -webkit-transform: scale(0.2);
+    transform: scale(0.2);
+    opacity: 0.25; }
 
   50% {
     opacity: 1; }
 
   100% {
-    -webkit-transform: scale(0.9);
-    transform: scale(0.9);
+    -webkit-transform: scale(1);
+    transform: scale(1);
     opacity: 1; } }
 
 @keyframes tooltipBackgroundIn {
   0% {
-    -webkit-transform: scale(0.25);
-    transform: scale(0.25);
-    opacity: 0.3; }
+    -webkit-transform: scale(0.2);
+    transform: scale(0.2);
+    opacity: 0.25; }
 
   50% {
     opacity: 1; }
 
   100% {
-    -webkit-transform: scale(0.9);
-    transform: scale(0.9);
+    -webkit-transform: scale(1);
+    transform: scale(1);
     opacity: 1; } }
 
 @-webkit-keyframes tooltipBackgroundOut {
@@ -2583,19 +2583,21 @@ material-tooltip {
   pointer-events: none;
   color: white;
   border-radius: 4px;
-  -webkit-transition: 0.125s ease-out;
-  transition: 0.125s ease-out;
-  transition-property: transform, opacity;
-  -webkit-transition-property: -webkit-transform, opacity; }
+  /**
+   * Depending on the tooltip's size as a multiple of 32 (set by JS),
+   * change the background's animation duration.
+   * The larger the tooltip, the less time the background should take to ripple outwards.
+   */ }
   material-tooltip[tooltip-direction="bottom"] {
-    -webkit-transform: translate3d(0, -20%, 0);
-    transform: translate3d(0, -20%, 0); }
+    -webkit-transform: translate3d(0, -30%, 0);
+    transform: translate3d(0, -30%, 0);
+    margin-top: 8px; }
   material-tooltip[tooltip-direction="top"] {
-    -webkit-transform: translate3d(0, 20%, 0);
-    transform: translate3d(0, 20%, 0); }
+    -webkit-transform: translate3d(0, 30%, 0);
+    transform: translate3d(0, 30%, 0);
+    margin-bottom: 8px; }
   material-tooltip .tooltip-background {
     background: #737373;
-    z-index: 0;
     position: absolute;
     left: 50%;
     width: 256px;
@@ -2603,34 +2605,66 @@ material-tooltip {
     margin-left: -128px;
     margin-top: -128px;
     border-radius: 256px;
-    opacity: 0.3;
-    -webkit-transform: scale(0.25);
-    transform: scale(0.25); }
+    opacity: 0.25;
+    -webkit-transform: scale(0.2);
+    transform: scale(0.2); }
   material-tooltip .tooltip-content {
-    z-index: 1;
-    background: transparent;
+    max-width: 240px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding: 8px;
+    background: transparent;
     opacity: 0.3;
     -webkit-transition: inherit;
     transition: inherit; }
-  material-tooltip.tooltip-visible {
+  material-tooltip.tooltip-show, material-tooltip.tooltip-hide {
+    -webkit-transition: 0.2s ease-out;
+    transition: 0.2s ease-out;
+    transition-property: transform, opacity;
+    -webkit-transition-property: -webkit-transform, opacity; }
+  material-tooltip.tooltip-show {
     pointer-events: auto;
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0); }
-    material-tooltip.tooltip-visible .tooltip-background {
+    material-tooltip.tooltip-show .tooltip-background {
       -webkit-transform: scale(1);
       transform: scale(1);
       opacity: 1;
-      -webkit-animation: tooltipBackgroundIn 0.7s linear;
-      animation: tooltipBackgroundIn 0.7s linear; }
-    material-tooltip.tooltip-visible .tooltip-content {
+      -webkit-animation: tooltipBackgroundIn linear;
+      animation: tooltipBackgroundIn linear; }
+    material-tooltip.tooltip-show .tooltip-content {
       opacity: 0.99; }
-  material-tooltip.tooltip-leave .tooltip-background {
+  material-tooltip.tooltip-hide .tooltip-background {
     -webkit-transform: scale(1);
     transform: scale(1);
     opacity: 0;
     -webkit-animation: tooltipBackgroundOut 0.2s linear;
     animation: tooltipBackgroundOut 0.2s linear; }
+  material-tooltip[width-32="1"].tooltip-show .tooltip-background {
+    animation-duration: 900ms;
+    -webkit-animation-duration: 900ms; }
+  material-tooltip[width-32="2"].tooltip-show .tooltip-background {
+    animation-duration: 800ms;
+    -webkit-animation-duration: 800ms; }
+  material-tooltip[width-32="3"].tooltip-show .tooltip-background {
+    animation-duration: 700ms;
+    -webkit-animation-duration: 700ms; }
+  material-tooltip[width-32="4"].tooltip-show .tooltip-background {
+    animation-duration: 600ms;
+    -webkit-animation-duration: 600ms; }
+  material-tooltip[width-32="5"].tooltip-show .tooltip-background {
+    animation-duration: 500ms;
+    -webkit-animation-duration: 500ms; }
+  material-tooltip[width-32="6"].tooltip-show .tooltip-background {
+    animation-duration: 400ms;
+    -webkit-animation-duration: 400ms; }
+  material-tooltip[width-32="7"].tooltip-show .tooltip-background {
+    animation-duration: 300ms;
+    -webkit-animation-duration: 300ms; }
+  material-tooltip[width-32="8"].tooltip-show .tooltip-background {
+    animation-duration: 200ms;
+    -webkit-animation-duration: 200ms; }
 
 material-tabs {
   display: block;
