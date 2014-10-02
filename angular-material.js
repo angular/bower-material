@@ -3824,7 +3824,7 @@ angular.module('material.components.tooltip', [])
  * </material-icon>
  * </hljs>
  *
- * @param {expression=} visible Boolean bind to whether the tooltip is 
+ * @param {expression=} visible Boolean bound to whether the tooltip is 
  * currently visible.
  */
 function MaterialTooltipDirective($timeout, $window, $$rAF, $document) {
