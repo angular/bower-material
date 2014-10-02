@@ -1277,7 +1277,7 @@ function MaterialDialogDirective($$rAF) {
  *
  */
 
-function MaterialDialogService($timeout, $rootElement, $materialEffects, $animate, $aria, $$interimElement) {
+function MaterialDialogService($timeout, $rootElement, $materialEffects, $animate, $materialAria, $$interimElement) {
 
   var $dialogService;
   return $dialogService = $$interimElement({
