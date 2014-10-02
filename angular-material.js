@@ -3829,7 +3829,7 @@ angular.module('material.components.tooltip', [])
  */
 function MaterialTooltipDirective($timeout, $window, $$rAF, $document) {
 
-  var TOOLTIP_SHOW_DELAY = 300;
+  var TOOLTIP_SHOW_DELAY = 400;
   // We have to append tooltips to the body, because we use
   // getBoundingClientRect().
   // to find where to append the tooltip.
