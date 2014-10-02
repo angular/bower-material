@@ -5,7 +5,7 @@
  * v0.0.3
  */
 (function(){
-angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'material.core', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
+angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'ngAria', 'material.core', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 var Constant = {
   KEY_CODE: {
     ENTER: 13,
@@ -898,7 +898,7 @@ function MaterialButtonDirective(ngHrefDirectives, $materialInkRipple, $material
         });
 
       return function postLink(scope, element, attr) {
-        $materialAria.expect(element, 'aria-label');
+        $materialAria.expect(element, 'aria-label', element.text());
         $materialInkRipple.attachButtonBehavior(element);
       };
     }
@@ -963,7 +963,7 @@ angular.module('material.components.checkbox', [
   'material.animations',
   'material.services.aria'
 ])
-  .directive('materialCheckbox', [
+  .directive('materialCheckbox', [ 
     'inputDirective',
     '$materialInkRipple',
     '$materialAria',
@@ -1014,7 +1014,7 @@ function MaterialCheckboxDirective(inputDirectives, $materialInkRipple, $materia
     restrict: 'E',
     transclude: true,
     require: '?ngModel',
-    template:
+    template: 
       '<div class="material-container" ink-ripple="checkbox">' +
         '<div class="material-icon"></div>' +
       '</div>' +
@@ -1032,7 +1032,7 @@ function MaterialCheckboxDirective(inputDirectives, $materialInkRipple, $materia
     tAttrs.tabIndex = 0;
     tElement.attr('role', tAttrs.type);
 
-    $materialAria.expect(tElement, 'aria-label');
+    $materialAria.expect(tElement, 'aria-label', tElement.text());
 
     return function postLink(scope, element, attr, ngModelCtrl) {
       var checked = false;
@@ -1872,7 +1872,7 @@ function materialRadioButtonDirective($materialAria) {
         'aria-checked' : 'false'
       });
 
-      $materialAria.expect(element, 'aria-label');
+      $materialAria.expect(element, 'aria-label', element.text());
 
       /**
        * Build a unique ID for each radio button that will be used with aria-activedescendant.
@@ -2607,7 +2607,7 @@ function MaterialSwitch(checkboxDirectives, radioButtonDirectives) {
   };
 
   function compile(element, attr) {
-
+    
     var thumb = angular.element(element[0].querySelector('.material-switch-thumb'));
     //Copy down disabled attributes for checkboxDirective to use
     thumb.attr('disabled', attr.disabled);
@@ -3003,7 +3003,7 @@ function TabItemController(scope, element, $compile, $animate, $materialSwipe) {
 angular.module('material.components.tabs')
 
 .directive('materialTab', [
-  '$materialInkRipple',
+  '$materialInkRipple', 
   '$compile',
   '$materialAria',
   MaterialTabDirective
@@ -3159,7 +3159,7 @@ function MaterialTabDirective($materialInkRipple, $compile, $materialAria) {
       function watchActiveAttribute() {
         var unwatch = scope.$parent.$watch('!!(' + attr.active + ')', activeWatchAction);
         scope.$on('$destroy', unwatch);
-
+        
         function activeWatchAction(isActive) {
           var isSelected = tabsCtrl.selected() === tabItemCtrl;
 
@@ -3173,7 +3173,7 @@ function MaterialTabDirective($materialInkRipple, $compile, $materialAria) {
 
       function watchDisabled() {
         scope.$watch(tabItemCtrl.isDisabled, disabledWatchAction);
-
+        
         function disabledWatchAction(isDisabled) {
           element.attr('aria-disabled', isDisabled);
 
@@ -3202,7 +3202,7 @@ function MaterialTabDirective($materialInkRipple, $compile, $materialAria) {
           'aria-labelledby': tabId
         });
 
-        $materialAria.expect(element, 'aria-label');
+        $materialAria.expect(element, 'aria-label', element.text());
       }
 
     };
@@ -3449,7 +3449,7 @@ function TabsDirective($parse) {
     scope: {
       selectedIndex: '=?selected'
     },
-    template:
+    template: 
       '<section class="tabs-header" ' +
         'ng-class="{\'tab-paginating\': pagination.active}">' +
 
@@ -4418,17 +4418,16 @@ angular.module('material.decorators', [])
 angular.module('material.services.aria', [])
 
 .service('$materialAria', [
-  '$$rAF',
   '$log',
   AriaService
 ]);
 
-function AriaService($$rAF, $log) {
-  var messageTemplate = 'ARIA: Attribute "%s", required for accessibility, is missing on "%s"';
+function AriaService($log) {
+  var messageTemplate = 'ARIA: Attribute "%s", required for accessibility, is missing on "%s"!';
   var defaultValueTemplate = 'Default value was set: %s="%s".';
 
   return {
-    expect : $$rAF.debounce(expectAttribute),
+    expect : expectAttribute,
   };
 
   /**
@@ -4441,11 +4440,7 @@ function AriaService($$rAF, $log) {
 
     var node = element[0];
     if (!node.hasAttribute(attrName)) {
-
-      if(!defaultValue){
-        defaultValue = element.text().trim();
-      }
-      var hasDefault = angular.isDefined(defaultValue) && defaultValue.length;
+      var hasDefault = angular.isDefined(defaultValue);
 
       if (hasDefault) {
         defaultValue = String(defaultValue).trim();
@@ -4453,8 +4448,7 @@ function AriaService($$rAF, $log) {
         //           attrName, getTagString(node), attrName, defaultValue);
         element.attr(attrName, defaultValue);
       } else {
-        $log.warn(messageTemplate, attrName, getTagString(node));
-        $log.warn(node);
+        // $log.warn(messageTemplate, attrName, getTagString(node));
       }
     }
   }
