@@ -2387,16 +2387,18 @@ material-toast {
   opacity: 1;
   -webkit-transform: translate3d(0, 0, 0) rotateZ(0deg);
   transform: translate3d(0, 0, 0) rotateZ(0deg);
-  -webkit-transition: all 0.2s linear;
-  transition: all 0.2s linear;
-  /* Transition faster when swiping */ }
+  -webkit-transition: 0.2s linear;
+  transition: 0.2s linear;
+  transition-property: transform, opacity;
+  -webkit-transition-property: -webkit-transform, opacity;
+  /* Transition differently when swiping */ }
   material-toast material-button {
     color: white; }
   material-toast.capsule {
     border-radius: 24px; }
   material-toast.swipeleft, material-toast.swiperight, material-toast.swipeup, material-toast.swipedown {
-    -webkit-transition: all 0.15s ease-out;
-    transition: all 0.15s ease-out; }
+    -webkit-transition: 0.15s ease-out;
+    transition: 0.15s ease-out; }
   material-toast.ng-enter {
     -webkit-transform: translate3d(0, 100%, 0);
     transform: translate3d(0, 100%, 0);
@@ -2446,17 +2448,17 @@ material-toast {
 @media (min-width: 600px) {
   material-toast {
     min-width: 288px;
-    bottom: 8px;
-    left: 8px;
     /* 
      * When the toast doesn't take up the whole screen,
      * make it rotate when the user swipes it away
      */ }
+    material-toast.bottom {
+      bottom: 8px; }
+    material-toast.left {
+      left: 8px; }
     material-toast.right {
-      left: auto;
       right: 8px; }
     material-toast.top {
-      bottom: auto;
       top: 8px; }
     material-toast.ng-leave.ng-leave-active.swipeleft {
       -webkit-transform: translate3d(-100%, 25%, 0) rotateZ(-15deg);
