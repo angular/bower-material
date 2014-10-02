@@ -3851,7 +3851,7 @@ function MaterialTooltipDirective($timeout, $window, $$rAF, $document) {
   function postLink(scope, element, attr, contentCtrl) {
     var target = element.parent();
 
-    // Re-attach tooltip when visible
+    // We will re-attach tooltip when visible
     element.detach();
     element.attr('role', 'tooltip');
     element.attr('id', attr.id || Util.nextUid());
@@ -3860,10 +3860,9 @@ function MaterialTooltipDirective($timeout, $window, $$rAF, $document) {
       setVisible(true);
     });
     target.on('blur mouseleave touchend touchcancel', function() {
-      // Don't leave if we're still focused.
-      if (document.activeElement !== target[0]) {
-        setVisible(false);
-      }
+      // Don't hide the tooltip if the target is still focused.
+      if (document.activeElement === target[0]) return;
+      setVisible(false);
     });
 
     scope.$watch('visible', function(isVisible) {
@@ -3874,6 +3873,7 @@ function MaterialTooltipDirective($timeout, $window, $$rAF, $document) {
     var debouncedOnResize = $$rAF.debounce(onWindowResize);
     angular.element($window).on('resize', debouncedOnResize);
     function onWindowResize() {
+      // Reposition on resize
       if (scope.visible) positionTooltip();
     }
 
@@ -3888,24 +3888,31 @@ function MaterialTooltipDirective($timeout, $window, $$rAF, $document) {
     // Methods
     // *******
 
-    // If setting visible to true, will debounce to TOOLTIP_SHOW_DELAY ms
-    // If setting visible to false and no timeout is active, it will instantly hide the tooltip.
+    // If setting visible to true, debounce to TOOLTIP_SHOW_DELAY ms
+    // If setting visible to false and no timeout is active, instantly hide the tooltip.
     function setVisible(value) {
       setVisible.value = !!value;
-      if (value && !setVisible.queued) {
-        $timeout(function() {
-          scope.visible = setVisible.value;
-          setVisible.queued = false;
-        }, TOOLTIP_SHOW_DELAY);
-      } else if (!value) {
-        $timeout(function() { scope.visible = false; });
+
+      if (!setVisible.queued) {
+        if (value) {
+          setVisible.queued = true;
+          $timeout(function() {
+            scope.visible = setVisible.value;
+            setVisible.queued = false;
+          }, TOOLTIP_SHOW_DELAY);
+
+        } else {
+          $timeout(function() { scope.visible = false; });
+        }
       }
     }
 
     function showTooltip() {
       // Insert the element before positioning it, so we can get position
+      // (tooltip is hidden by default)
       tooltipParent.append(element);
       element.removeClass('tooltip-hide');
+      target.attr('aria-describedby', element.attr('id'));
 
       // Wait until the element has been in the dom for two frames before 
       // fading it in.
@@ -3917,14 +3924,13 @@ function MaterialTooltipDirective($timeout, $window, $$rAF, $document) {
         $$rAF(function() {
           if (!scope.visible) return;
           element.addClass('tooltip-show');
-          target.attr('aria-describedby', element.attr('id'));
         });
 
       });
     }
 
     function hideTooltip() {
-      element.addClass('tooltip-hide').removeClass('tooltip-show');
+      element.removeClass('tooltip-show').addClass('tooltip-hide');
       target.removeAttr('aria-describedby');
       $timeout(function() {
         if (scope.visible) return;
@@ -3964,7 +3970,7 @@ function MaterialTooltipDirective($timeout, $window, $$rAF, $document) {
         left: newPosition.left + 'px',
         top: newPosition.top + 'px'
       });
-      // Set the tooltip's size as a mutliple of 32, and let the CSS change animations.
+      // Tell the CSS the size of this tooltip, as a multiple of 32.
       element.attr('width-32', Math.ceil(tipRect.width / 32));
       element.attr('tooltip-direction', tipDirection);
     }

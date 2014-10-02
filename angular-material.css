@@ -2533,7 +2533,7 @@ material-toolbar {
   .material-toolbar-tools material-button {
     font-size: 16px; }
 
-@-webkit-keyframes tooltipBackgroundIn {
+@-webkit-keyframes tooltipBackgroundShow {
   0% {
     -webkit-transform: scale(0.2);
     transform: scale(0.2);
@@ -2547,7 +2547,7 @@ material-toolbar {
     transform: scale(1);
     opacity: 1; } }
 
-@keyframes tooltipBackgroundIn {
+@keyframes tooltipBackgroundShow {
   0% {
     -webkit-transform: scale(0.2);
     transform: scale(0.2);
@@ -2561,14 +2561,14 @@ material-toolbar {
     transform: scale(1);
     opacity: 1; } }
 
-@-webkit-keyframes tooltipBackgroundOut {
+@-webkit-keyframes tooltipBackgroundHide {
   0% {
     opacity: 1; }
 
   100% {
     opacity: 0; } }
 
-@keyframes tooltipBackgroundOut {
+@keyframes tooltipBackgroundHide {
   0% {
     opacity: 1; }
 
@@ -2631,16 +2631,16 @@ material-tooltip {
       -webkit-transform: scale(1);
       transform: scale(1);
       opacity: 1;
-      -webkit-animation: tooltipBackgroundIn linear;
-      animation: tooltipBackgroundIn linear; }
+      -webkit-animation: tooltipBackgroundShow linear;
+      animation: tooltipBackgroundShow linear; }
     material-tooltip.tooltip-show .tooltip-content {
       opacity: 0.99; }
   material-tooltip.tooltip-hide .tooltip-background {
     -webkit-transform: scale(1);
     transform: scale(1);
     opacity: 0;
-    -webkit-animation: tooltipBackgroundOut 0.2s linear;
-    animation: tooltipBackgroundOut 0.2s linear; }
+    -webkit-animation: tooltipBackgroundHide 0.2s linear;
+    animation: tooltipBackgroundHide 0.2s linear; }
   material-tooltip[width-32="1"].tooltip-show .tooltip-background {
     animation-duration: 900ms;
     -webkit-animation-duration: 900ms; }
