@@ -154,10 +154,10 @@
   border-radius: inherit;
   pointer-events: none; }
 
-.material-shadow-bottom-z-1, material-button.material-button-raised, material-button.material-button-fab {
+.material-shadow-bottom-z-1, material-button.material-button-raised:not([disabled]), material-button.material-button-fab {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
 
-.material-shadow-bottom-z-2, material-button.material-button-raised.focus, material-button.material-button-raised:hover:not([disabled]), material-button.material-button-fab.focus, material-button.material-button-fab:hover:not([disabled]) {
+.material-shadow-bottom-z-2, material-button:not([disabled]).material-button-raised.focus, material-button:not([disabled]).material-button-raised:hover, material-button:not([disabled]).material-button-fab.focus, material-button:not([disabled]).material-button-fab:hover {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4); }
 
 .material-shadow-animated.material-shadow {
@@ -1699,7 +1699,7 @@ material-button {
       bottom: auto;
       left: 28px;
       position: absolute; }
-  material-button.material-button-raised.focus, material-button.material-button-raised:hover:not([disabled]), material-button.material-button-fab.focus, material-button.material-button-fab:hover:not([disabled]) {
+  material-button:not([disabled]).material-button-raised.focus, material-button:not([disabled]).material-button-raised:hover, material-button:not([disabled]).material-button-fab.focus, material-button:not([disabled]).material-button-fab:hover {
     -webkit-transform: translate3d(0, -1px, 0);
     transform: translate3d(0, -1px, 0); }
 
