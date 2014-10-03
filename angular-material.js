@@ -898,7 +898,7 @@ function MaterialButtonDirective(ngHrefDirectives, $materialInkRipple, $material
         });
 
       return function postLink(scope, element, attr) {
-        $materialAria.expect(element, 'aria-label');
+        $materialAria.expect(element, 'aria-label', element.text());
         $materialInkRipple.attachButtonBehavior(element);
       };
     }
@@ -1032,7 +1032,7 @@ function MaterialCheckboxDirective(inputDirectives, $materialInkRipple, $materia
     tAttrs.tabIndex = 0;
     tElement.attr('role', tAttrs.type);
 
-    $materialAria.expect(tElement, 'aria-label');
+    $materialAria.expect(tElement, 'aria-label', tElement.text());
 
     return function postLink(scope, element, attr, ngModelCtrl) {
       var checked = false;
@@ -1049,7 +1049,7 @@ function MaterialCheckboxDirective(inputDirectives, $materialInkRipple, $materia
       // Reuse the original input[type=checkbox] directive from Angular core.
       // This is a bit hacky as we need our own event listener and own render
       // function.
-      inputDirective.link(scope, {
+      inputDirective.link.pre(scope, {
         on: angular.noop,
         0: {}
       }, attr, [ngModelCtrl]);
@@ -1076,6 +1076,7 @@ function MaterialCheckboxDirective(inputDirectives, $materialInkRipple, $materia
 
       function render() {
         checked = ngModelCtrl.$viewValue;
+        // element.attr('aria-checked', checked);
         if(checked) {
           element.addClass(CHECKED_CSS);
         } else {
@@ -1463,13 +1464,13 @@ function materialInputDirective() {
       // When the input value changes, check if it "has" a value, and 
       // set the appropriate class on the input group
       if (ngModelCtrl) {
-        ngModelCtrl.$viewChangeListeners.push(function() {
-          inputGroupCtrl.setHasValue(!!ngModelCtrl.$viewValue);
+        //Add a $formatter so we don't use up the render function
+        ngModelCtrl.$formatters.push(function(value) {
+          inputGroupCtrl.setHasValue(!!value);
+          return value;
         });
-        ngModelCtrl.$render = function() {
-          inputGroupCtrl.setHasValue(!!ngModelCtrl.$viewValue);
-        };
       }
+
       element.on('input', function() {
         inputGroupCtrl.setHasValue(!!element.val());
       });
@@ -1871,7 +1872,7 @@ function materialRadioButtonDirective($materialAria) {
         'aria-checked' : 'false'
       });
 
-      $materialAria.expect(element, 'aria-label');
+      $materialAria.expect(element, 'aria-label', element.text());
 
       /**
        * Build a unique ID for each radio button that will be used with aria-activedescendant.
@@ -2606,7 +2607,7 @@ function MaterialSwitch(checkboxDirectives, radioButtonDirectives) {
   };
 
   function compile(element, attr) {
-
+    
     var thumb = angular.element(element[0].querySelector('.material-switch-thumb'));
     //Copy down disabled attributes for checkboxDirective to use
     thumb.attr('disabled', attr.disabled);
@@ -3201,7 +3202,7 @@ function MaterialTabDirective($materialInkRipple, $compile, $materialAria) {
           'aria-labelledby': tabId
         });
 
-        $materialAria.expect(element, 'aria-label');
+        $materialAria.expect(element, 'aria-label', element.text());
       }
 
     };
@@ -4417,17 +4418,16 @@ angular.module('material.decorators', [])
 angular.module('material.services.aria', [])
 
 .service('$materialAria', [
-  '$$rAF',
   '$log',
   AriaService
 ]);
 
-function AriaService($$rAF, $log) {
-  var messageTemplate = 'ARIA: Attribute "%s", required for accessibility, is missing on "%s"';
+function AriaService($log) {
+  var messageTemplate = 'ARIA: Attribute "%s", required for accessibility, is missing on "%s"!';
   var defaultValueTemplate = 'Default value was set: %s="%s".';
 
   return {
-    expect : $$rAF.debounce(expectAttribute),
+    expect : expectAttribute,
   };
 
   /**
@@ -4440,18 +4440,15 @@ function AriaService($$rAF, $log) {
 
     var node = element[0];
     if (!node.hasAttribute(attrName)) {
-
-      if(!defaultValue){
-        defaultValue = element.text().trim();
-      }
-      var hasDefault = angular.isDefined(defaultValue) && defaultValue.length;
+      var hasDefault = angular.isDefined(defaultValue);
 
       if (hasDefault) {
         defaultValue = String(defaultValue).trim();
+        // $log.warn(messageTemplate + ' ' + defaultValueTemplate,
+        //           attrName, getTagString(node), attrName, defaultValue);
         element.attr(attrName, defaultValue);
       } else {
-        $log.warn(messageTemplate, attrName, getTagString(node));
-        $log.warn(node);
+        // $log.warn(messageTemplate, attrName, getTagString(node));
       }
     }
   }
