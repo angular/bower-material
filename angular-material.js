@@ -856,13 +856,12 @@ angular.module('material.components.sticky', [
  */
 
 function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
+
+  var browserStickySupport = checkStickySupport();
+
   /**
    * Registers an element as sticky, used internally by directives to register themselves
    */
-
-  // Scroll keeping variables to ensure that we continually re-render while we are scrolling
-  var browserStickySupport = checkStickySupport();
-
   return function registerStickyElement(scope, element, stickyClone) {
     var contentCtrl = element.controller('materialContent');
     if (!contentCtrl) return;
@@ -874,17 +873,19 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
         'z-index': 2
       });
     } else {
-      contentCtrl.$$sticky = contentCtrl.$$sticky || setupSticky(contentCtrl);
+      var $$sticky = contentCtrl.$element.data('$$sticky');
+      if (!$$sticky) {
+        $$sticky = setupSticky(contentCtrl);
+        contentCtrl.$element.data('$$sticky', $$sticky);
+      }
 
-      var deregister = contentCtrl.$$sticky.add(element, stickyClone || element.clone());
+      var deregister = $$sticky.add(element, stickyClone || element.clone());
       scope.$on('$destroy', deregister);
     }
   };
 
   function setupSticky(contentCtrl) {
-    var self;
     var contentEl = contentCtrl.$element;
-    var prevScrollTop = 0;
 
     // stickyContainer holds all of the clones of the sticky elements.
     // The proper clone will be stickied to the top of the screen depending 
@@ -902,8 +903,11 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
     contentEl.on('$scrollstart', debouncedRefreshElements);
     contentEl.on('$scroll', onScroll);
 
-    contentCtrl.$scope.$on('$destroy', cleanup);
+    contentCtrl.$scope.$on('$destroy', function cleanup() {
+      stickyContainer.remove();
+    });
 
+    var self;
     return self = {
       prev: null,
       current: null, //the currently stickied item
@@ -924,9 +928,10 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
         element: element,
         clone: stickyClone
       };
+      self.items.push(item);
+
       stickyContainer.append(item.clone);
 
-      self.items.push(item);
       debouncedRefreshElements();
 
       return function remove() {
@@ -947,8 +952,8 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
       // We need to do this because our elements' order of being added may not
       // be the same as their order of display.
       self.items = self.items.sort(function(a, b) {
-        getPosition(a);
-        getPosition(b);
+        refreshPosition(a);
+        refreshPosition(b);
         return a.top > b.top;
       });
 
@@ -961,20 +966,6 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
         height: contentRect.height + 'px'
       });
 
-      // Find the `top` of an item relative to the content element,
-      // and also the height.
-      function getPosition(item) {
-        var current = item.element[0];
-        item.top = 0;
-        // Find the top of an item by adding to the offsetHeight until we reach the 
-        // content element.
-        while (current && current !== contentEl[0]) {
-          item.top += current.offsetTop;
-          current = current.offsetParent;
-        }
-        item.height = item.element.prop('offsetHeight');
-      }
-
       // Finally, try to sticky the item nearest to the user's scroll position.
       findCurrentItem();
     }
@@ -983,11 +974,23 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
     /***************
      * Private
      ***************/
+
+    // Find the `top` of an item relative to the content element,
+    // and also the height.
+    function refreshPosition(item) {
+      // Find the top of an item by adding to the offsetHeight until we reach the 
+      // content element.
+      var current = item.element[0];
+      item.top = 0;
+      while (current && current !== contentEl[0]) {
+        item.top += current.offsetTop;
+        current = current.offsetParent;
+      }
+      item.height = item.element.prop('offsetHeight');
+    }
+
     function cleanup() {
       stickyContainer.remove();
-      angular.forEach(self.items, function(item) {
-        item.clone.remove();
-      });
     }
 
     // Find which item in the list should be active, based upon the content's scroll position
@@ -1006,8 +1009,8 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
     // As we scroll, push in and select the correct sticky element.
     function onScroll() {
       var scrollTop = contentEl.prop('scrollTop');
-      var isScrollingDown = scrollTop > prevScrollTop;
-      prevScrollTop = scrollTop;
+      var isScrollingDown = scrollTop > (onScroll.prevScrollTop || 0);
+      onScroll.prevScrollTop = scrollTop;
 
       // Going to next item?
       if (isScrollingDown && self.next) {
@@ -1015,7 +1018,7 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
           // Sticky the next item if we've scrolled past its position.
           setCurrentItem(self.next);
         } else if (self.current) {
-          // Push the current item up when we're almost there.
+          // Push the current item up when we're almost at the next item.
           if (self.next.top - scrollTop <= self.next.height) {
             translate(self.current, self.next.top - self.next.height - scrollTop);
           } else {
@@ -1029,7 +1032,7 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
           // the original position of the currently stickied item.
           setCurrentItem(self.prev);
         }
-        // Scrolling up, and just bumping into the item above?
+        // Scrolling up, and just bumping into the item above (just set to current)?
         // If we have a next item bumping into the current item, translate
         // the current item up from the top as it scrolls into view.
         if (self.current && self.next) {
@@ -1043,8 +1046,8 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
     }
      
    function setCurrentItem(item) {
-     self.current && detach(self.current);
-     item && attach(item);
+     self.current && setInactive(self.current);
+     item && setActive(item);
 
      self.current = item;
      var index = self.items.indexOf(item);
@@ -1053,11 +1056,11 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
      self.prev = self.items[index - 1];
    }
 
-   function attach(item) {
+   function setActive(item) {
      item.clone.addClass('material-sticky-active');
      item.element.addClass('material-sticky-invisible');
    }
-   function detach(item) {
+   function setInactive(item) {
      translate(item, null);
      item.clone.removeClass('material-sticky-active');
      item.element.removeClass('material-sticky-invisible');
@@ -1080,14 +1083,14 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
   // Function to check for browser sticky support
   function checkStickySupport($el) {
     var stickyProp;
-    var testEl = angular.element('<h1>');
+    var testEl = angular.element('<div>');
     $document[0].body.appendChild(testEl[0]);
 
     var stickyProps = ['sticky', '-webkit-sticky'];
     for (var i = 0; i < stickyProps.length; ++i) {
       testEl.css({position: stickyProps[i], top: 0, 'z-index': 2});
       if (testEl.css('position') == stickyProps[i]) {
-        stickyProp = i;
+        stickyProp = stickyProps[i];
         break;
       }
     }
@@ -1106,8 +1109,8 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
     var lastScrollTime;
     element.on('scroll touchmove', function() {
       if (!isScrolling) {
-        element.triggerHandler('$scrollstart');
         isScrolling = true;
+        element.triggerHandler('$scrollstart');
         scrollEvent();
       }
       lastScrollTime = +Util.now();
@@ -2988,11 +2991,15 @@ function MaterialSubheaderDirective($materialSticky, $compile) {
     compile: function(element, attr, transclude) {
       var outerHTML = element[0].outerHTML;
       return function postLink(scope, element, attr) {
-        // Get this clone
+
+        // Transclude the user-given contents of the subheader
+        // the conventional way.
         transclude(scope, function(clone) {
           element.append(clone);
         });
-        // Get the clone for sticky
+
+        // Create another clone, that uses the outer and inner contents
+        // of the element, that will be 'stickied' as the user scrolls.
         transclude(scope, function(clone) {
           var stickyClone = $compile(angular.element(outerHTML))(scope);
           stickyClone.append(clone);
