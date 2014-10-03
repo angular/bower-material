@@ -5,7 +5,7 @@
  * v0.0.3
  */
 (function(){
-angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'ngAria', 'material.core', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.circularProgress","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
+angular.module('ngMaterial', [ 'ng', 'ngAnimate', 'ngAria', 'material.core', 'material.services.attrBind', 'material.services.compiler', 'material.services.registry', 'material.decorators', 'material.services.aria', "material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.linearProgress","material.components.list","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 var Constant = {
   KEY_CODE: {
     ENTER: 13,
@@ -898,7 +898,7 @@ function MaterialButtonDirective(ngHrefDirectives, $materialInkRipple, $material
         });
 
       return function postLink(scope, element, attr) {
-        $materialAria.expect(element, 'aria-label', element.text());
+        $materialAria.expect(element, 'aria-label');
         $materialInkRipple.attachButtonBehavior(element);
       };
     }
@@ -1032,8 +1032,6 @@ function MaterialCheckboxDirective(inputDirectives, $materialInkRipple, $materia
     tAttrs.tabIndex = 0;
     tElement.attr('role', tAttrs.type);
 
-    $materialAria.expect(tElement, 'aria-label', tElement.text());
-
     return function postLink(scope, element, attr, ngModelCtrl) {
       var checked = false;
 
@@ -1045,6 +1043,8 @@ function MaterialCheckboxDirective(inputDirectives, $materialInkRipple, $materia
         $parsers: [],
         $formatters: []
       };
+
+      $materialAria.expect(element, 'aria-label');
 
       // Reuse the original input[type=checkbox] directive from Angular core.
       // This is a bit hacky as we need our own event listener and own render
@@ -1076,7 +1076,6 @@ function MaterialCheckboxDirective(inputDirectives, $materialInkRipple, $materia
 
       function render() {
         checked = ngModelCtrl.$viewValue;
-        // element.attr('aria-checked', checked);
         if(checked) {
           element.addClass(CHECKED_CSS);
         } else {
@@ -1872,7 +1871,7 @@ function materialRadioButtonDirective($materialAria) {
         'aria-checked' : 'false'
       });
 
-      $materialAria.expect(element, 'aria-label', element.text());
+      $materialAria.expect(element, 'aria-label');
 
       /**
        * Build a unique ID for each radio button that will be used with aria-activedescendant.
@@ -2607,7 +2606,7 @@ function MaterialSwitch(checkboxDirectives, radioButtonDirectives) {
   };
 
   function compile(element, attr) {
-    
+
     var thumb = angular.element(element[0].querySelector('.material-switch-thumb'));
     //Copy down disabled attributes for checkboxDirective to use
     thumb.attr('disabled', attr.disabled);
@@ -3202,7 +3201,7 @@ function MaterialTabDirective($materialInkRipple, $compile, $materialAria) {
           'aria-labelledby': tabId
         });
 
-        $materialAria.expect(element, 'aria-label', element.text());
+        $materialAria.expect(element, 'aria-label');
       }
 
     };
@@ -4166,126 +4165,6 @@ var linearProgressTransforms = (function() {
   }
 })();
 
-/**
- * @ngdoc module
- * @name material.components.circularProgress
- * @description Circular Progress module!
- */
-angular.module('material.components.circularProgress', [
-  'material.animations',
-  'material.services.aria'
-])
-  .directive('materialCircularProgress', [
-    '$$rAF',
-    '$materialEffects',
-    MaterialCircularProgressDirective
-  ]);
-
-/**
- * @ngdoc directive
- * @name materialCircularProgress
- * @module material.components.circularProgress
- * @restrict E
- *
-* @description
- * The circular progress directive is used to make loading content in your app as delightful and painless as possible by minimizing the amount of visual change a user sees before they can view and interact with content.
- *
- * For operations where the percentage of the operation completed can be determined, use a determinate indicator. They give users a quick sense of how long an operation will take.
- *
- * For operations where the user is asked to wait a moment while something finishes up, and it’s not necessary to expose what's happening behind the scenes and how long it will take, use an indeterminate indicator.
- *
- * @param {string} mode Select from one of two modes: determinate and indeterminate.
- * @param {number=} value In determinate mode, this number represents the percentage of the circular progress. Default: 0
- * @param {number=} diameter This specifies the diamter of the circular progress. Default: 48
- *
- * @usage
- * <hljs lang="html">
- * <material-circular-progress mode="determinate" value="..."></material-circular-progress>
- *
- * <material-circular-progress mode="determinate" ng-value="..."></material-circular-progress>
- *
- * <material-circular-progress mode="determinate" value="..." diameter="100"></material-circular-progress>
- *
- * <material-circular-progress mode="indeterminate"></material-circular-progress>
- * </hljs>
- */
-function MaterialCircularProgressDirective($$rAF, $materialEffects) {
-  var fillRotations = new Array(101),
-    fixRotations = new Array(101);
-
-  for (var i = 0; i < 101; i++) {
-    var percent = i / 100;
-    var rotation = Math.floor(percent * 180);
-
-    fillRotations[i] = 'rotate(' + rotation.toString() + 'deg)';
-    fixRotations[i] = 'rotate(' + (rotation * 2).toString() + 'deg)';
-  }
-
-  return {
-    restrict: 'E',
-    template: 
-      '<div class="wrapper1"><div class="wrapper2"><div class="circle">' +
-        '<div class="mask full">' +
-          '<div class="fill"></div>' +
-        '</div>' +
-        '<div class="mask half">' +
-          '<div class="fill"></div>' +
-          '<div class="fill fix"></div>' +
-        '</div>' +
-        '<div class="shadow"></div>' +
-      '</div>' +
-      '<div class="inset"></div></div></div>',
-    compile: compile
-  };
-
-  function compile(tElement, tAttrs, transclude) {
-    tElement.attr('aria-valuemin', 0);
-    tElement.attr('aria-valuemax', 100);
-    tElement.attr('role', 'progressbar');
-
-    return postLink;
-  }
-
-  function postLink(scope, element, attr) {
-    var circle = element[0],
-      fill = circle.querySelectorAll('.fill, .mask.full'),
-      fix = circle.querySelectorAll('.fill.fix'),
-      i, clamped, fillRotation, fixRotation;
-
-    var diameter = attr.diameter || 48;
-    var scale = diameter/48;
-
-    circle.style[$materialEffects.TRANSFORM] = 'scale(' + scale.toString() + ')';
-
-    attr.$observe('value', function(value) {
-      clamped = clamp(value);
-      fillRotation = fillRotations[clamped];
-      fixRotation = fixRotations[clamped];
-
-      element.attr('aria-valuenow', clamped);
-
-      for (i = 0; i < fill.length; i++) {
-        fill[i].style[$materialEffects.TRANSFORM] = fillRotation;
-      }
-
-      for (i = 0; i < fix.length; i++) {
-        fix[i].style[$materialEffects.TRANSFORM] = fixRotation;
-      }
-    });
-  }
-
-  function clamp(value) {
-    if (value > 100) {
-      return 100;
-    }
-
-    if (value < 0) {
-      return 0;
-    }
-
-    return Math.ceil(value || 0);
-  }
-}
 (function() {
 
   /**
@@ -4538,16 +4417,17 @@ angular.module('material.decorators', [])
 angular.module('material.services.aria', [])
 
 .service('$materialAria', [
+  '$$rAF',
   '$log',
   AriaService
 ]);
 
-function AriaService($log) {
-  var messageTemplate = 'ARIA: Attribute "%s", required for accessibility, is missing on "%s"!';
+function AriaService($$rAF, $log) {
+  var messageTemplate = 'ARIA: Attribute "%s", required for accessibility, is missing on "%s"';
   var defaultValueTemplate = 'Default value was set: %s="%s".';
 
   return {
-    expect : expectAttribute,
+    expect : $$rAF.debounce(expectAttribute),
   };
 
   /**
@@ -4560,15 +4440,18 @@ function AriaService($log) {
 
     var node = element[0];
     if (!node.hasAttribute(attrName)) {
-      var hasDefault = angular.isDefined(defaultValue);
+
+      if(!defaultValue){
+        defaultValue = element.text().trim();
+      }
+      var hasDefault = angular.isDefined(defaultValue) && defaultValue.length;
 
       if (hasDefault) {
         defaultValue = String(defaultValue).trim();
-        // $log.warn(messageTemplate + ' ' + defaultValueTemplate,
-        //           attrName, getTagString(node), attrName, defaultValue);
         element.attr(attrName, defaultValue);
       } else {
-        // $log.warn(messageTemplate, attrName, getTagString(node));
+        $log.warn(messageTemplate, attrName, getTagString(node));
+        $log.warn(node);
       }
     }
   }
