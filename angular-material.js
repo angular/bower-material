@@ -2255,6 +2255,7 @@ function SliderController(scope, element, attr, $$rAF, $window, $materialEffects
     var trackContainer = angular.element(element[0].querySelector('.slider-track-container'));
     var activeTrack = angular.element(element[0].querySelector('.slider-track-fill'));
     var tickContainer = angular.element(element[0].querySelector('.slider-track-ticks'));
+    var throttledRefreshDimensions = Util.throttle(refreshSliderDimensions, 5000);
 
     // Default values, overridable by attrs
     attr.min ? attr.$observe('min', updateMin) : updateMin(0);
@@ -2358,7 +2359,6 @@ function SliderController(scope, element, attr, $$rAF, $window, $materialEffects
      * Refreshing Dimensions
      */
     var sliderDimensions = {};
-    var throttledRefreshDimensions = Util.throttle(refreshSliderDimensions, 5000);
     refreshSliderDimensions();
     function refreshSliderDimensions() {
       sliderDimensions = trackContainer[0].getBoundingClientRect();
