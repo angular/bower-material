@@ -2272,12 +2272,6 @@ h2.material-subheader {
   h2.material-subheader.material-subheader-colored {
     color: #03a9f4; }
 
-.material-subheader {
-  position: relative; }
-
-.material-sticky-invisible {
-  opacity: 0; }
-
 .material-sticky-container {
   position: absolute;
   z-index: 2;
