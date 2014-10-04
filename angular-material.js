@@ -1803,8 +1803,8 @@ function materialInputDirective() {
         });
       }
 
-      if ( angular.isDefined(attr.disabled) ) {
-        element.attr('tabIndex', -1);
+      if ( Util.isParentDisabled(element.parent()) ) {
+        element.attr('tabindex', -1);
       }
 
       element.on('input', function() {
