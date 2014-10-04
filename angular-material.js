@@ -1775,7 +1775,6 @@ function materialInputGroupDirective() {
  * <hljs lang="html">
  * <material-input-group>
  *   <material-input type="text" ng-model="user.fullName"></material-input>
- *   <material-input type="text" ng-model="user.email"></material-input>
  * </material-input-group>
  * </hljs>
  */
@@ -1800,6 +1799,10 @@ function materialInputDirective() {
           inputGroupCtrl.setHasValue(!!value);
           return value;
         });
+      }
+
+      if ( angular.isDefined(attr.disabled) ) {
+        element.attr('tabIndex', -1);
       }
 
       element.on('input', function() {
