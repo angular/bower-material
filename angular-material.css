@@ -2283,11 +2283,12 @@ h2.material-subheader {
     right: 24px;
     position: absolute;
     display: none; }
-    .material-sticky-container .material-sticky-clone.sticky-next, .material-sticky-container .material-sticky-clone.sticky-prev, .material-sticky-container .material-sticky-clone.sticky-active {
+    .material-sticky-container .material-sticky-clone.sticky-next, .material-sticky-container .material-sticky-clone.sticky-prev {
       display: block;
       -webkit-transform: translate3d(-9999px, -9999px, 0);
       transform: translate3d(-9999px, -9999px, 0); }
     .material-sticky-container .material-sticky-clone.sticky-active {
+      display: block;
       -webkit-transform: translate3d(0, 0, 0);
       transform: translate3d(0, 0, 0); }
 
