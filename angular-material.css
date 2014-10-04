@@ -2282,11 +2282,14 @@ h2.material-subheader {
     left: 0;
     right: 24px;
     position: absolute;
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0); }
-    .material-sticky-container .material-sticky-clone:not(.material-sticky-active) {
+    display: none; }
+    .material-sticky-container .material-sticky-clone.sticky-next, .material-sticky-container .material-sticky-clone.sticky-prev, .material-sticky-container .material-sticky-clone.sticky-active {
+      display: block;
       -webkit-transform: translate3d(-9999px, -9999px, 0);
       transform: translate3d(-9999px, -9999px, 0); }
+    .material-sticky-container .material-sticky-clone.sticky-active {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0); }
 
 material-switch {
   display: block;
