@@ -2344,6 +2344,7 @@ label {
 textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
   display: block;
   border-width: 0 0 1px 0;
+  padding-top: 2px;
   line-height: 26px;
   font-size: 0.75em; }
   textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus {
@@ -2368,8 +2369,8 @@ material-input-group, .material-input-group {
       cursor: text; }
   material-input-group label, .material-input-group label {
     color: #999;
-    -webkit-transform: translate3d(0, 26px, 0);
-    transform: translate3d(0, 26px, 0);
+    -webkit-transform: translate3d(0, 22px, 0);
+    transform: translate3d(0, 22px, 0);
     -webkit-transform-origin: left center;
     transform-origin: left center;
     -webkit-transition: all ease-out 300ms;
@@ -2415,8 +2416,8 @@ material-input-group, .material-input-group {
     transform: translate3d(0, 4px, 0) scale(0.75); }
   material-input-group[disabled] *:not(.material-input-has-value) label, .material-input-group[disabled] *:not(.material-input-has-value) label {
     color: #b0b0b0;
-    -webkit-transform: translate3d(0, 26px, 0);
-    transform: translate3d(0, 26px, 0);
+    -webkit-transform: translate3d(0, 22px, 0);
+    transform: translate3d(0, 22px, 0);
     -webkit-transform-origin: left center;
     transform-origin: left center;
     -webkit-transition: all ease-out 300ms;
@@ -2424,8 +2425,8 @@ material-input-group, .material-input-group {
 
 .dark material-input-group label, .dark .material-input-group label {
   color: #5d5d5d;
-  -webkit-transform: translate3d(0, 26px, 0);
-  transform: translate3d(0, 26px, 0);
+  -webkit-transform: translate3d(0, 22px, 0);
+  transform: translate3d(0, 22px, 0);
   -webkit-transform-origin: left center;
   transform-origin: left center;
   -webkit-transition: all ease-out 300ms;
@@ -2471,8 +2472,8 @@ material-input-group, .material-input-group {
   transform: translate3d(0, 4px, 0) scale(0.75); }
 .dark material-input-group[disabled] *:not(.material-input-has-value) label, .dark .material-input-group[disabled] *:not(.material-input-has-value) label {
   color: #858585;
-  -webkit-transform: translate3d(0, 26px, 0);
-  transform: translate3d(0, 26px, 0);
+  -webkit-transform: translate3d(0, 22px, 0);
+  transform: translate3d(0, 22px, 0);
   -webkit-transform-origin: left center;
   transform-origin: left center;
   -webkit-transition: all ease-out 300ms;
@@ -3428,185 +3429,3 @@ material-linear-progress {
   100% {
     opacity: 1;
     background-position: -200px -23px; } }
-
-material-circular-progress {
-  display: block;
-  width: 54px;
-  height: 54px;
-  background-color: transparent;
-  border-radius: 50%;
-  padding: 3px; }
-  material-circular-progress .wrapper1, material-circular-progress .wrapper2 {
-    width: 48px;
-    height: 48px;
-    position: absolute;
-    border-radius: 50%; }
-  material-circular-progress .circle .mask, material-circular-progress .circle .fill, material-circular-progress .circle .shadow {
-    width: 48px;
-    height: 48px;
-    position: absolute;
-    border-radius: 50%; }
-  material-circular-progress .circle .mask, material-circular-progress .circle .fill {
-    -webkit-backface-visibility: hidden;
-    transition: -webkit-transform 0.3s;
-    transition: -ms-transform 0.3s;
-    transition: transform 0.3s; }
-  material-circular-progress .circle .mask {
-    clip: rect(0px, 48px, 48px, 24px); }
-    material-circular-progress .circle .mask .fill {
-      clip: rect(0px, 24px, 48px, 0px);
-      background-color: #5677fc; }
-  material-circular-progress .inset {
-    width: 36px;
-    height: 36px;
-    position: absolute;
-    margin-left: 6px;
-    margin-top: 6px;
-    background-color: white;
-    border-radius: 50%; }
-  material-circular-progress[mode=indeterminate] .wrapper1, material-circular-progress[mode=indeterminate] .wrapper2 {
-    -ms-transform-origin: 50% 50%;
-    /* IE 9 */
-    webkit-transform-origin: 50% 50%;
-    /* Chrome, Safari, Opera */
-    transform-origin: 50% 50%; }
-  material-circular-progress[mode=indeterminate] .wrapper1 {
-    -webkit-animation: indeterminate_rotate1 3s infinite linear;
-    animation: indeterminate_rotate1 3s infinite linear; }
-  material-circular-progress[mode=indeterminate] .wrapper2 {
-    -webkit-animation: indeterminate_rotate2 1.5s infinite linear;
-    animation: indeterminate_rotate2 1.5s infinite linear; }
-  material-circular-progress[mode=indeterminate] .fill, material-circular-progress[mode=indeterminate] .mask.full {
-    -webkit-animation: indeterminate_size_fill 1.5s infinite linear;
-    animation: indeterminate_size_fill 1.5s infinite linear; }
-  material-circular-progress[mode=indeterminate] .fill.fix {
-    -webkit-animation: indeterminate_size_fix 1.5s infinite linear;
-    animation: indeterminate_size_fix 1.5s infinite linear; }
-
-@-webkit-keyframes indeterminate_rotate1 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg); }
-
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg); } }
-
-@keyframes indeterminate_rotate1 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg); }
-
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg); } }
-
-@-webkit-keyframes indeterminate_rotate2 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg); }
-
-  70% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg); }
-
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg); } }
-
-@keyframes indeterminate_rotate2 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg); }
-
-  70% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg); }
-
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg); } }
-
-@-webkit-keyframes indeterminate_size_fill {
-  0% {
-    -webkit-transform: rotate(5deg);
-    transform: rotate(5deg); }
-
-  10% {
-    -webkit-transform: rotate(5deg);
-    transform: rotate(5deg); }
-
-  50% {
-    -webkit-transform: rotate(135deg);
-    transform: rotate(135deg); }
-
-  70% {
-    -webkit-transform: rotate(135deg);
-    transform: rotate(135deg); }
-
-  100% {
-    -webkit-transform: rotate(5deg);
-    transform: rotate(5deg); } }
-
-@keyframes indeterminate_size_fill {
-  0% {
-    -webkit-transform: rotate(5deg);
-    transform: rotate(5deg); }
-
-  10% {
-    -webkit-transform: rotate(5deg);
-    transform: rotate(5deg); }
-
-  50% {
-    -webkit-transform: rotate(135deg);
-    transform: rotate(135deg); }
-
-  70% {
-    -webkit-transform: rotate(135deg);
-    transform: rotate(135deg); }
-
-  100% {
-    -webkit-transform: rotate(5deg);
-    transform: rotate(5deg); } }
-
-@-webkit-keyframes indeterminate_size_fix {
-  0% {
-    -webkit-transform: rotate(10deg);
-    transform: rotate(10deg); }
-
-  10% {
-    -webkit-transform: rotate(10deg);
-    transform: rotate(10deg); }
-
-  50% {
-    -webkit-transform: rotate(270deg);
-    transform: rotate(270deg); }
-
-  70% {
-    -webkit-transform: rotate(270deg);
-    transform: rotate(270deg); }
-
-  100% {
-    -webkit-transform: rotate(10deg);
-    transform: rotate(10deg); } }
-
-@keyframes indeterminate_size_fix {
-  0% {
-    -webkit-transform: rotate(10deg);
-    transform: rotate(10deg); }
-
-  10% {
-    -webkit-transform: rotate(10deg);
-    transform: rotate(10deg); }
-
-  50% {
-    -webkit-transform: rotate(270deg);
-    transform: rotate(270deg); }
-
-  70% {
-    -webkit-transform: rotate(270deg);
-    transform: rotate(270deg); }
-
-  100% {
-    -webkit-transform: rotate(10deg);
-    transform: rotate(10deg); } }
