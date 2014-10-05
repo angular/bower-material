@@ -20,29 +20,29 @@ Now that you have installed [locally] the Angular libraries, simply include the 
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
-</head>
+	<head>
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
+	</head>
 	<body ng-app="YourApp">
 
-	<div ng-controller="YourController">
+		<div ng-controller="YourController">
 
-	</div>
+		</div>
 
-	<script src="/bower_components/angular/angular.js"></script>
-	<script src="/bower_components/angular-animate/angular-animate.js"></script>
-	<script src="/bower_components/hammerjs/hammer.js"></script>
-	<script src="/bower_components/angular-material/angular-material.js"></script>
-	<script>
+		<script src="/bower_components/angular/angular.js"></script>
+		<script src="/bower_components/angular-animate/angular-animate.js"></script>
+		<script src="/bower_components/hammerjs/hammer.js"></script>
+		<script src="/bower_components/angular-material/angular-material.js"></script>
+		<script>
 
-		// Include app dependencies on ngAnimate and ngMaterial
+			// Include app dependencies on ngAnimate and ngMaterial
 
-		angular.module( 'YourApp', [ 'ngAnimate', 'ngMaterial' ] )
-			.controller("YourController", YourController );
+			angular.module( 'YourApp', [ 'ngAnimate', 'ngMaterial' ] )
+				.controller("YourController", YourController );
 
-	</script>
+		</script>
 
-</body>
+	</body>
 </html>
 ```
