@@ -2365,16 +2365,16 @@ material-input-group, .material-input-group {
     transform: translate3d(0, 22px, 0);
     -webkit-transform-origin: left center;
     transform-origin: left center;
-    -webkit-transition: all ease-out 300ms;
-    transition: all ease-out 300ms;
-    -webkit-transition: all ease-out 300ms;
-    transition: all ease-out 300ms; }
+    -webkit-transition: all ease-out 150ms;
+    transition: all ease-out 150ms;
+    -webkit-transition: all ease-out 150ms;
+    transition: all ease-out 150ms; }
   material-input-group input, material-input-group textarea, .material-input-group input, .material-input-group textarea {
     color: #2f2f2f;
     border-color: #c7c7c7;
     border-bottom-width: 1px;
-    -webkit-transition: all ease-out 300ms;
-    transition: all ease-out 300ms; }
+    -webkit-transition: all ease-out 150ms;
+    transition: all ease-out 150ms; }
   material-input-group.material-input-focused label, .material-input-group.material-input-focused label {
     color: #EE008B;
     -webkit-transform: translate3d(0, 4px, 0) scale(0.75);
@@ -2400,6 +2400,7 @@ material-input-group, .material-input-group {
     background-position: 0 bottom;
     background-size: 2px 1px;
     background-repeat: repeat-x;
+    background-size: 3px 1px;
     pointer-events: none;
     tabindex: -1; }
   material-input-group[disabled] label, .material-input-group[disabled] label {
@@ -2412,8 +2413,8 @@ material-input-group, .material-input-group {
     transform: translate3d(0, 22px, 0);
     -webkit-transform-origin: left center;
     transform-origin: left center;
-    -webkit-transition: all ease-out 300ms;
-    transition: all ease-out 300ms; }
+    -webkit-transition: all ease-out 150ms;
+    transition: all ease-out 150ms; }
 
 .dark material-input-group label, .dark .material-input-group label {
   color: #5d5d5d;
@@ -2421,16 +2422,16 @@ material-input-group, .material-input-group {
   transform: translate3d(0, 22px, 0);
   -webkit-transform-origin: left center;
   transform-origin: left center;
-  -webkit-transition: all ease-out 300ms;
-  transition: all ease-out 300ms;
-  -webkit-transition: all ease-out 300ms;
-  transition: all ease-out 300ms; }
+  -webkit-transition: all ease-out 150ms;
+  transition: all ease-out 150ms;
+  -webkit-transition: all ease-out 150ms;
+  transition: all ease-out 150ms; }
 .dark material-input-group input, .dark material-input-group textarea, .dark .material-input-group input, .dark .material-input-group textarea {
   color: #d6d6d6;
   border-color: #4c4c4c;
   border-bottom-width: 1px;
-  -webkit-transition: all ease-out 300ms;
-  transition: all ease-out 300ms; }
+  -webkit-transition: all ease-out 150ms;
+  transition: all ease-out 150ms; }
 .dark material-input-group.material-input-focused label, .dark .material-input-group.material-input-focused label {
   color: #1194f6;
   -webkit-transform: translate3d(0, 4px, 0) scale(0.75);
@@ -2456,6 +2457,7 @@ material-input-group, .material-input-group {
   background-position: 0 bottom;
   background-size: 2px 1px;
   background-repeat: repeat-x;
+  background-size: 3px 1px;
   pointer-events: none;
   tabindex: -1; }
 .dark material-input-group[disabled] label, .dark .material-input-group[disabled] label {
@@ -2468,8 +2470,8 @@ material-input-group, .material-input-group {
   transform: translate3d(0, 22px, 0);
   -webkit-transform-origin: left center;
   transform-origin: left center;
-  -webkit-transition: all ease-out 300ms;
-  transition: all ease-out 300ms; }
+  -webkit-transition: all ease-out 150ms;
+  transition: all ease-out 150ms; }
 
 .theme-dark-tff {
   background-color: #333 !important;
