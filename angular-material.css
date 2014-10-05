@@ -2404,9 +2404,9 @@ material-input-group, .material-input-group {
     border-color: #bcbcbc;
     border-bottom-width: 0px; }
   material-input-group[disabled] input, material-input-group[disabled] textarea, .material-input-group[disabled] input, .material-input-group[disabled] textarea {
-    background-image: linear-gradient(to right, #b8b8b8 0%, #b8b8b8 50%, rgba(0, 0, 0, 0) 0%);
+    background-image: linear-gradient(to right, #cfcfcf 0%, #cfcfcf 50%, rgba(0, 0, 0, 0) 0%);
     background-position: 0 bottom;
-    background-size: 4px 2px;
+    background-size: 2px 1px;
     background-repeat: repeat-x;
     pointer-events: none;
     tabindex: -1; }
@@ -2460,9 +2460,9 @@ material-input-group, .material-input-group {
   border-color: #333333;
   border-bottom-width: 0px; }
 .dark material-input-group[disabled] input, .dark material-input-group[disabled] textarea, .dark .material-input-group[disabled] input, .dark .material-input-group[disabled] textarea {
-  background-image: linear-gradient(to right, #686868 0%, #686868 50%, rgba(0, 0, 0, 0) 0%);
+  background-image: linear-gradient(to right, #525252 0%, #525252 50%, rgba(0, 0, 0, 0) 0%);
   background-position: 0 bottom;
-  background-size: 4px 2px;
+  background-size: 2px 1px;
   background-repeat: repeat-x;
   pointer-events: none;
   tabindex: -1; }
