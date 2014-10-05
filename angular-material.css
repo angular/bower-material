@@ -2260,7 +2260,7 @@ material-slider {
   material-slider[disabled] .slider-disabled-thumb {
     display: block; }
 
-h2.material-subheader {
+.material-subheader {
   color: #999;
   display: block;
   font-size: 0.9em;
@@ -2269,28 +2269,20 @@ h2.material-subheader {
   padding: 16px 0px 16px 16px;
   margin: 0 0 0 0;
   background-color: white; }
-  h2.material-subheader.material-subheader-colored {
+  .material-subheader.material-subheader-colored {
     color: #03a9f4; }
 
-.material-sticky-container {
+.material-sticky-clone {
+  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 24px;
   position: absolute;
-  z-index: 2;
-  overflow: hidden;
-  pointer-events: none; }
-  .material-sticky-container .material-sticky-clone {
-    top: 0;
-    left: 0;
-    right: 24px;
-    position: absolute;
-    display: none; }
-    .material-sticky-container .material-sticky-clone.sticky-next, .material-sticky-container .material-sticky-clone.sticky-prev {
-      display: block;
-      -webkit-transform: translate3d(-9999px, -9999px, 0);
-      transform: translate3d(-9999px, -9999px, 0); }
-    .material-sticky-container .material-sticky-clone.sticky-active {
-      display: block;
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0); }
+  -webkit-transform: translate3d(-9999px, -9999px, 0);
+  transform: translate3d(-9999px, -9999px, 0); }
+  .material-sticky-clone.sticky-active {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0); }
 
 material-switch {
   display: block;
