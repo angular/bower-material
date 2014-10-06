@@ -2489,23 +2489,24 @@ material-slider {
   margin: 0 0 0 0;
   margin-right: 16px;
   background-color: white;
-  position: relative;
-  -webkit-transition: 0.2s ease-out margin;
-  transition: 0.2s ease-out margin; }
+  position: relative; }
   .material-subheader.material-subheader-colored {
     color: #03a9f4; }
-  .material-subheader:after {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    top: 0;
-    right: -16px;
-    content: ''; }
-  .material-subheader[sticky-state="active"] {
-    margin-top: -2px; }
-  .material-subheader:not(.material-sticky-clone)[sticky-prev-state="active"]:after {
-    -webkit-animation: subheaderStickyHoverOut 0.3s ease-out both;
-    animation: subheaderStickyHoverOut 0.3s ease-out both; }
+  .material-subheader:not(.sticky-no-effect) {
+    -webkit-transition: 0.2s ease-out margin;
+    transition: 0.2s ease-out margin; }
+    .material-subheader:not(.sticky-no-effect):after {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      top: 0;
+      right: -16px;
+      content: ''; }
+    .material-subheader:not(.sticky-no-effect)[sticky-state="active"] {
+      margin-top: -2px; }
+    .material-subheader:not(.sticky-no-effect):not(.material-sticky-clone)[sticky-prev-state="active"]:after {
+      -webkit-animation: subheaderStickyHoverOut 0.3s ease-out both;
+      animation: subheaderStickyHoverOut 0.3s ease-out both; }
 
 .material-sticky-clone {
   z-index: 1;
@@ -2518,7 +2519,7 @@ material-slider {
   .material-sticky-clone[sticky-state="active"] {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0); }
-    .material-sticky-clone[sticky-state="active"]:after {
+    .material-sticky-clone[sticky-state="active"]:not(.sticky-no-effect):after {
       -webkit-animation: subheaderStickyHoverIn 0.3s ease-out both;
       animation: subheaderStickyHoverIn 0.3s ease-out both; }
 
