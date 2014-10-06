@@ -1142,18 +1142,21 @@ function MaterialBottomSheetDirective() {
  * @module material.components.bottomSheet
  *
  * @description
- * Open a bottom sheet on the screen.
+
+ * Used to open a bottom sheet on the screen, `$materialBottomSheet` is a service
+ * created by `$$interimElement` and provides a simple promise-based, behavior API:
  *
- * Only one bottom sheet may ever be active at any time. If a new sheet is
- * shown while a different one is active, the previous sheet will be automatically
- * hidden.
- *
- * `$materialBottomSheet` is an `$$interimElement.$service` and adheres to the same behaviors.
  *  - `$materialBottomSheet.show()`
  *  - `$materialBottomSheet.hide()`
  *  - `$materialBottomSheet.cancel()`
  *
- * Note: the bottom sheet's template must have an outer `<material-bottom-sheet>` element. 
+ * #### Notes:
+ *
+ * Only one bottom sheet may ever be active at any time. If a new sheet is
+ * shown while a different one is active, the previous sheet will be automatically
+ * hidden.
+
+ * The bottom sheet's template must have an outer `<material-bottom-sheet>` element.
  *
  * @usage
  * <hljs lang="html">
@@ -1750,16 +1753,18 @@ function MaterialDialogDirective($$rAF) {
  *
  * @description
  *
- * The $materialDialog service opens a dialog over top of the app. 
+ * Used to open a dialog over top of the app, `$materialDialog` is a service created
+ * by `$$interimElement` and provides a simple promise-based, behavior API:
  *
- * Note: The dialog is always given an isolate scope.
- *
- * `$materialDialog` is an `$$interimElement.$service` and adheres to the same behaviors.
  *  - `$materialDialog.show()`
  *  - `$materialDialog.hide()`
  *  - `$materialDialog.cancel()`
  *
- * Note: the dialog's template must have an outer `<material-dialog>` element. 
+ * #### Notes:
+ *
+ * The dialog is always given an isolate scope.
+ *
+ * The dialog's template must have an outer `<material-dialog>` element.
  * Inside, use an element with class `dialog-content` for the dialog's content, and use
  * an element with class `dialog-actions` for the dialog's actions.  
  *
@@ -4181,36 +4186,40 @@ function MaterialToastDirective() {
  * @module material.components.toast
  *
  * @description
- * Open a toast notification on any position on the screen, with an optional 
- * duration.
+ *
+ * Used to open a toast notification on any position on the screen [with an optional
+ * duration], `$materialToast` is a service created by `$$interimElement` and provides a
+ * simple promise-based, behavior API:
+ *
+ *  - `$materialToast.show()`
+ *  - `$materialToast.hide()`
+ *  - `$materialToast.cancel()`
+ *
+ * #### Notes:
  *
  * Only one toast notification may ever be active at any time. If a new toast is
  * shown while a different toast is active, the old toast will be automatically
  * hidden.
  *
- * `$materialToast` is an `$$interimElement.$service` and adheres to the same behaviors.
- *  - `$materialToast.show()`
- *  - `$materialToast.hide()`
- *  - `$materialToast.cancel()`
- *
  * @usage
  * <hljs lang="html">
- * <div ng-controller="MyController">
- *   <material-button ng-click="openToast()">
- *     Open a Toast!
- *   </material-button>
- * </div>
- * </hljs>
- * <hljs lang="js">
- * var app = angular.module('app', ['ngMaterial']);
- * app.controller('MyController', function($scope, $materialToast) {
- *   $scope.openToast = function($event) {
- *     $materialToast.show({
- *       template: '<material-toast>Hello!</material-toast>',
- *       hideDelay: 3000
- *     });
- *   };
- * });
+ *  <script type="text/javascript">
+ *  var app = angular.module('app', ['ngMaterial']);
+ *    app.controller('MyController', function($scope, $materialToast) {
+ *      $scope.openToast = function($event) {
+ *        $materialToast.show({
+ *          template: '<material-toast>Hello!</material-toast>',
+ *          hideDelay: 3000
+ *        });
+ *      };
+ *    });
+ *  </script>
+ *
+ *  <div ng-controller="MyController">
+ *    <material-button ng-click="openToast()">
+ *      Open a Toast!
+ *    </material-button>
+ *  </div>
  * </hljs>
  */
 
@@ -4228,7 +4237,7 @@ function MaterialToastDirective() {
  * @param {string=} template Same as templateUrl, except this is an actual
  * template string.
  * @param {number=} hideDelay How many milliseconds the toast should stay
- * active before automatically closing.  Set to 0 to disable duration. 
+ * active before automatically closing.  Set to 0 to disable duration.
  * Default: 3000.
  * @param {string=} position Where to place the toast. Available: any combination
  * of 'bottom', 'left', 'top', 'right', 'fit'. Default: 'bottom left'.
@@ -4236,7 +4245,7 @@ function MaterialToastDirective() {
  * The controller will be injected the local `$hideToast`, which is a function
  * used to hide the toast.
  * @param {string=} locals An object containing key/value pairs. The keys will
- * be used as names of values to inject into the controller. For example, 
+ * be used as names of values to inject into the controller. For example,
  * `locals: {three: 3}` would inject `three` into the controller with the value
  * of 3.
  * @param {object=} resolve Similar to locals, except it takes promises as values
