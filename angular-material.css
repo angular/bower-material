@@ -1781,6 +1781,8 @@ material-button {
     line-height: inherit;
     white-space: nowrap;
     padding: 6px; }
+  material-button a {
+    text-decoration: none; }
   material-button[href] {
     pointer-events: none; }
     material-button[href] .material-button-inner {
@@ -1944,6 +1946,7 @@ material-dialog {
   max-width: 80%;
   max-height: 80%;
   margin: auto;
+  position: relative;
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0px 27px 24px 0 rgba(0, 0, 0, 0.2);
@@ -1991,6 +1994,8 @@ material-dialog {
     justify-content: flex-end;
     padding: 8px 16px;
     min-height: 40px; }
+    material-dialog .dialog-actions > * {
+      margin-left: 8px; }
   material-dialog.dialog-content-overflow .dialog-actions {
     border-top: 1px solid #eee; }
 
