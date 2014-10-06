@@ -952,7 +952,7 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
       var item;
       var currentScrollTop = contentEl.prop('scrollTop');
       for (var i = self.items.length - 1; i >= 0; i--) {
-        if (currentScrollTop >= self.items[i].top) {
+        if (currentScrollTop > self.items[i].top) {
           item = self.items[i];
           break;
         }
@@ -990,8 +990,12 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
       var isScrollingDown = scrollTop > (onScroll.prevScrollTop || 0);
       onScroll.prevScrollTop = scrollTop;
 
+      // At the top?
+      if (scrollTop === 0) {
+        setCurrentItem(null);
+
       // Going to next item?
-      if (isScrollingDown && self.next) {
+      } else if (isScrollingDown && self.next) {
         if (self.next.top - scrollTop <= 0) {
           // Sticky the next item if we've scrolled past its position.
           setCurrentItem(self.next);
@@ -1003,6 +1007,7 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
             translate(self.current, null);
           }
         }
+        
       // Scrolling up with a current sticky item?
       } else if (!isScrollingDown && self.current) {
         if (scrollTop < self.current.top) {
@@ -1024,15 +1029,16 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
     }
      
    function setCurrentItem(item) {
+     if (self.current === item) return;
      // Deactivate currently active item
      if (self.current) {
        translate(self.current, null);
-       self.current.clone.removeClass('sticky-active');
+       setStickyState(self.current, null);
      }
 
      // Activate new item if given
      if (item) {
-       item.clone.addClass('sticky-active');
+       setStickyState(item, 'active');
      }
 
      self.current = item;
@@ -1040,6 +1046,19 @@ function MaterialSticky($document, $materialEffects, $compile, $$rAF) {
      // If index === -1, index + 1 = 0. It works out.
      self.next = self.items[index + 1];
      self.prev = self.items[index - 1];
+     setStickyState(self.next, 'next');
+     setStickyState(self.prev, 'prev');
+   }
+
+   function setStickyState(item, state) {
+     if (!item || item.state === state) return;
+     if (item.state) {
+       item.clone.attr('sticky-prev-state', item.state);
+       item.element.attr('sticky-prev-state', item.state);
+     }
+     item.clone.attr('sticky-state', state);
+     item.element.attr('sticky-state', state);
+     item.state = state;
    }
 
    function translate(item, amount) {
@@ -3242,22 +3261,28 @@ function MaterialSubheaderDirective($materialSticky, $compile) {
     restrict: 'E',
     replace: true,
     transclude: true,
-    template: '<h2 class="material-subheader"></h2>',
+    template: 
+      '<h2 class="material-subheader">' +
+        '<span class="material-subheader-content"></span>' +
+      '</h2>',
     compile: function(element, attr, transclude) {
       var outerHTML = element[0].outerHTML;
       return function postLink(scope, element, attr) {
+        function getContent(el) {
+          return angular.element(el[0].querySelector('.material-subheader-content'));
+        }
 
         // Transclude the user-given contents of the subheader
         // the conventional way.
         transclude(scope, function(clone) {
-          element.append(clone);
+          getContent(element).append(clone);
         });
 
         // Create another clone, that uses the outer and inner contents
         // of the element, that will be 'stickied' as the user scrolls.
         transclude(scope, function(clone) {
           var stickyClone = $compile(angular.element(outerHTML))(scope);
-          stickyClone.append(clone);
+          getContent(stickyClone).append(clone);
           $materialSticky(scope, element, stickyClone);
         });
       };

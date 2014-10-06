@@ -2451,6 +2451,34 @@ material-slider {
   material-slider[disabled] .slider-disabled-thumb {
     display: block; }
 
+@-webkit-keyframes subheaderStickyHoverIn {
+  0% {
+    box-shadow: 0 0 0 0 transparent; }
+
+  100% {
+    box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); } }
+
+@keyframes subheaderStickyHoverIn {
+  0% {
+    box-shadow: 0 0 0 0 transparent; }
+
+  100% {
+    box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); } }
+
+@-webkit-keyframes subheaderStickyHoverOut {
+  0% {
+    box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); }
+
+  100% {
+    box-shadow: 0 0 0 0 transparent; } }
+
+@keyframes subheaderStickyHoverOut {
+  0% {
+    box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); }
+
+  100% {
+    box-shadow: 0 0 0 0 transparent; } }
+
 .material-subheader {
   color: #999;
   display: block;
@@ -2459,21 +2487,40 @@ material-slider {
   line-height: 1em;
   padding: 16px 0px 16px 16px;
   margin: 0 0 0 0;
-  background-color: white; }
+  margin-right: 16px;
+  background-color: white;
+  position: relative;
+  -webkit-transition: 0.2s ease-out margin;
+  transition: 0.2s ease-out margin; }
   .material-subheader.material-subheader-colored {
     color: #03a9f4; }
+  .material-subheader:after {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    right: -16px;
+    content: ''; }
+  .material-subheader[sticky-state="active"] {
+    margin-top: -2px; }
+  .material-subheader:not(.material-sticky-clone)[sticky-prev-state="active"]:after {
+    -webkit-animation: subheaderStickyHoverOut 0.3s ease-out both;
+    animation: subheaderStickyHoverOut 0.3s ease-out both; }
 
 .material-sticky-clone {
   z-index: 1;
   top: 0;
   left: 0;
-  right: 24px;
+  right: 0;
   position: absolute;
   -webkit-transform: translate3d(-9999px, -9999px, 0);
   transform: translate3d(-9999px, -9999px, 0); }
-  .material-sticky-clone.sticky-active {
+  .material-sticky-clone[sticky-state="active"] {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0); }
+    .material-sticky-clone[sticky-state="active"]:after {
+      -webkit-animation: subheaderStickyHoverIn 0.3s ease-out both;
+      animation: subheaderStickyHoverIn 0.3s ease-out both; }
 
 material-switch {
   display: block;
