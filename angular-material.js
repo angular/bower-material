@@ -1420,8 +1420,8 @@ angular.module('material.components.button', [
  * @description
  * `<material-button>` is a button directive with optional ink ripples (default enabled).
  *
- * @param {boolean=} noink Flag indicates use of ripple ink effects
- * @param {boolean=} disabled Flag indicates if the tab is disabled: not selectable with no ink effects
+ * @param {boolean=} noink If present, disable ripple ink effects.
+ * @param {boolean=} disabled If present, disable tab selection.
  * @param {string=} type Optional attribute to specific button types (useful for forms); such as 'submit', etc.
  * @param {string=} ng-href Optional attribute to support both ARIA and link navigation
  * @param {string=} href Optional attribute to support both ARIA and link navigation
@@ -3702,8 +3702,8 @@ angular.module('material.components.tabs')
  * be initiated via data binding changes, programmatic invocation, or user gestures.
  *
  * @param {string=} label Optional attribute to specify a simple string as the tab label
- * @param {boolean=} active Flag indicates if the tab is currently selected; normally the `<material-tabs selected="">`; attribute is used instead.
- * @param {boolean=} ngDisabled Flag indicates if the tab is disabled: not selectable with no ink effects
+ * @param {boolean=} active When evaluteing to true, selects the tab.
+ * @param {boolean=} disabled If present, disabled tab selection.
  * @param {expression=} deselected Expression to be evaluated after the tab has been de-selected.
  * @param {expression=} selected Expression to be evaluated after the tab has been selected.
  *
@@ -4075,8 +4075,8 @@ angular.module('material.components.tabs')
  * *  Any markup (other than **`<material-tab>`** tags) will be transcluded into the tab header area BEFORE the tab buttons.
  *
  * @param {integer=} selected Index of the active/selected tab
- * @param {boolean=} noink Flag indicates use of ripple ink effects
- * @param {boolean=} nobar Flag indicates use of ink bar effects
+ * @param {boolean=} noink If present, disables ink ripple effects.
+ * @param {boolean=} nobar If present, disables the selection ink bar.
  * @param {string=}  align-tabs Attribute to indicate position of tab buttons: bottom or top; default is `top`
  *
  * @usage
