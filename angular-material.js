@@ -1975,7 +1975,7 @@ function MaterialDialogService($timeout, $rootElement, $materialEffects, $animat
       dialogContent = element;
     }
     var defaultText = Util.stringFromTextBody(dialogContent.text(), 3);
-    $materialAria.expect(element, 'aria-label', defaultText);
+    $materialAria.expect(element, 'aria-label', true, defaultText);
   }
 }
 
@@ -5226,9 +5226,10 @@ function AriaService($$rAF, $log) {
    * Check if expected ARIA has been specified on the target element
    * @param element
    * @param attrName
-   * @param defaultValue
+   * @param copyElementText
+   * @param defaultValue (optional)
    */
-  function expectAttribute(element, attrName, defaultValue) {
+  function expectAttribute(element, attrName, copyElementText, defaultValue) {
 
     $$rAF(function(){
 
@@ -5236,8 +5237,8 @@ function AriaService($$rAF, $log) {
       if (!node.hasAttribute(attrName)) {
 
         var hasDefault;
-        if(defaultValue !== false){
-          defaultValue = element.text().trim();
+        if(copyElementText === true){
+          if(!defaultValue) defaultValue = element.text().trim();
           hasDefault = angular.isDefined(defaultValue) && defaultValue.length;
         }
 
