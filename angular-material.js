@@ -5227,7 +5227,7 @@ function AriaService($$rAF, $log) {
    * @param element
    * @param attrName
    * @param copyElementText
-   * @param defaultValue (optional)
+   * @param {optional} defaultValue
    */
   function expectAttribute(element, attrName, copyElementText, defaultValue) {
 
