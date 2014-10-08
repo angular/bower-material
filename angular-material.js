@@ -1834,8 +1834,7 @@ function MaterialDialogDirective($$rAF) {
  *   close it. Default true.
  * @param {boolean=} escapeToClose Whether the user can press escape to close the dialog.
  *   Default true.
- * @param {string=} controller The controller to associate with the dialog. The controller
- * will be injected with the local `$hideDialog`, which is a function used to hide the dialog.
+ * @param {string=} controller The controller to associate with the dialog.
  * @param {object=} locals An object containing key/value pairs. The keys will be used as names
  * of values to inject into the controller. For example, `locals: {three: 3}` would inject
  * `three` into the controller, with the value 3.
@@ -4269,8 +4268,6 @@ function MaterialToastDirective() {
  * @param {string=} position Where to place the toast. Available: any combination
  * of 'bottom', 'left', 'top', 'right', 'fit'. Default: 'bottom left'.
  * @param {string=} controller The controller to associate with this toast.
- * The controller will be injected the local `$hideToast`, which is a function
- * used to hide the toast.
  * @param {string=} locals An object containing key/value pairs. The keys will
  * be used as names of values to inject into the controller. For example,
  * `locals: {three: 3}` would inject `three` into the controller with the value
