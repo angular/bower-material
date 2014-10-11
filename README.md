@@ -38,7 +38,7 @@ Now that you have installed [locally] the Angular libraries, simply include the 
 
 		// Include app dependencies on ngAnimate and ngMaterial
 
-		angular.module( 'YourApp', [ 'ngAnimate', 'ngMaterial' ] )
+		angular.module( 'YourApp', [ 'ngAnimate', 'ngAria', 'ngMaterial' ] )
 			.controller("YourController", YourController );
 
 	</script>
