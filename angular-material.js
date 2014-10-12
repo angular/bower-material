@@ -5557,11 +5557,7 @@ function InterimElementFactory($q, $rootScope, $timeout, $rootElement, $animate,
 
     var stack = [];
 
-    var parent = $rootElement.find('body');
-    if (!parent.length) parent = $rootElement;
-
     defaults = angular.extend({
-      parent: parent,
       onShow: function(scope, $el, options) {
         return $animate.enter($el, options.parent);
       },
@@ -5663,6 +5659,12 @@ function InterimElementFactory($q, $rootScope, $timeout, $rootElement, $animate,
         deferred: $q.defer(),
         show: function() {
           return $materialCompiler.compile(options).then(function(compiledData) {
+            // Search for parent at insertion time, if not specified
+            if (!options.parent) {
+              options.parent = $rootElement.find('body');
+              if (!options.parent.length) options.parent = $rootElement;
+            }
+
             element = compiledData.link(options.scope);
             var ret = options.onShow(options.scope, element, options);
             return $q.when(ret)
