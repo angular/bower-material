@@ -3859,20 +3859,24 @@ function MaterialTabDirective($materialInkRipple, $compile, $materialAria) {
 
       function configureAria() {
         // Link together the content area and tabItemCtrl with an id
-        var tabId = attr.id || Util.nextUid();
+        var tabId = attr.id || ('tab_' + Util.nextUid());
         var tabContentId = 'content_' + tabId;
+
         element.attr({
           id: tabId,
-          role: 'tabItemCtrl',
-          tabIndex: '-1', //this is also set on select/deselect in tabItemCtrl
-          'aria-controls': tabContentId
+          role: 'tab',
+          tabIndex: '-1' //this is also set on select/deselect in tabItemCtrl
         });
+        if(!element.attr('aria-controls')) {
+          element.attr('aria-controls', tabContentId);
+        }
         tabItemCtrl.contentContainer.attr({
           id: tabContentId,
-          role: 'tabpanel',
-          'aria-labelledby': tabId
+          role: 'tabpanel'
         });
-
+        if(!tabItemCtrl.contentContainer.attr('aria-labelledby')) {
+          tabItemCtrl.contentContainer.attr('aria-labelledby', tabId);
+        }
         $materialAria.expect(element, 'aria-label', true);
       }
 
@@ -4124,10 +4128,10 @@ function TabsDirective($parse) {
       '<section class="tabs-header" ' +
         'ng-class="{\'tab-paginating\': pagination.active}">' +
 
-        '<div class="tab-paginator prev" ' +
+        '<button class="tab-paginator prev" ' +
           'ng-if="pagination.active && pagination.hasPrev" ' +
-          'ng-click="pagination.clickPrevious()">' +
-        '</div>' +
+          'ng-click="pagination.clickPrevious()" aria-label="Previous tab">' +
+        '</button>' +
 
         // overflow: hidden container when paginating
         '<div class="tabs-header-items-container" material-tabs-pagination>' +
@@ -4136,10 +4140,10 @@ function TabsDirective($parse) {
           '<material-tabs-ink-bar></material-tabs-ink-bar>' +
         '</div>' +
 
-        '<div class="tab-paginator next" ' +
+        '<button class="tab-paginator next" ' +
           'ng-if="pagination.active && pagination.hasNext" ' +
-          'ng-click="pagination.clickNext()">' +
-        '</div>' +
+          'ng-click="pagination.clickNext()" aria-label="Next tab">' +
+        '</button>' +
 
       '</section>' +
       '<section class="tabs-content"></section>',
