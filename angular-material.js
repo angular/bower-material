@@ -1491,7 +1491,7 @@ function MaterialButtonDirective(ngHrefDirectives, $materialInkRipple, $material
         });
 
       return function postLink(scope, element, attr) {
-        $materialAria.expect(element, 'aria-label', true);
+        $materialAria.expect(element, 'aria-label', element.text());
         $materialInkRipple.attachButtonBehavior(element);
       };
     }
@@ -1625,6 +1625,8 @@ function MaterialCheckboxDirective(inputDirectives, $materialInkRipple, $materia
     tAttrs.tabIndex = 0;
     tElement.attr('role', tAttrs.type);
 
+    $materialAria.expect(tElement, 'aria-label', tElement.text());
+
     return function postLink(scope, element, attr, ngModelCtrl) {
       var checked = false;
 
@@ -1636,8 +1638,6 @@ function MaterialCheckboxDirective(inputDirectives, $materialInkRipple, $materia
         $parsers: [],
         $formatters: []
       };
-
-      $materialAria.expect(element, 'aria-label', true);
 
       // Reuse the original input[type=checkbox] directive from Angular core.
       // This is a bit hacky as we need our own event listener and own render
@@ -1669,6 +1669,7 @@ function MaterialCheckboxDirective(inputDirectives, $materialInkRipple, $materia
 
       function render() {
         checked = ngModelCtrl.$viewValue;
+        // element.attr('aria-checked', checked);
         if(checked) {
           element.addClass(CHECKED_CSS);
         } else {
@@ -1977,7 +1978,7 @@ function MaterialDialogService($timeout, $rootElement, $materialEffects, $animat
       dialogContent = element;
     }
     var defaultText = Util.stringFromTextBody(dialogContent.text(), 3);
-    $materialAria.expect(element, 'aria-label', true, defaultText);
+    $materialAria.expect(element, 'aria-label', defaultText);
   }
 }
 
@@ -2475,7 +2476,7 @@ function materialRadioButtonDirective($materialAria) {
         'aria-checked' : 'false'
       });
 
-      $materialAria.expect(element, 'aria-label', true);
+      $materialAria.expect(element, 'aria-label', element.text());
 
       /**
        * Build a unique ID for each radio button that will be used with aria-activedescendant.
@@ -2859,7 +2860,6 @@ function SliderController(scope, element, attr, $$rAF, $window, $materialEffects
     var trackContainer = angular.element(element[0].querySelector('.slider-track-container'));
     var activeTrack = angular.element(element[0].querySelector('.slider-track-fill'));
     var tickContainer = angular.element(element[0].querySelector('.slider-track-ticks'));
-    var throttledRefreshDimensions = Util.throttle(refreshSliderDimensions, 5000);
 
     // Default values, overridable by attrs
     attr.min ? attr.$observe('min', updateMin) : updateMin(0);
@@ -2876,8 +2876,7 @@ function SliderController(scope, element, attr, $$rAF, $window, $materialEffects
       updateAriaDisabled(!!attr.disabled);
     }
 
-    $materialAria.expect(element, 'aria-label', false);
-
+    $materialAria.expect(element, 'aria-label');
     element.attr('tabIndex', 0);
     element.attr('role', 'slider');
     element.on('keydown', keydownListener);
@@ -2964,6 +2963,7 @@ function SliderController(scope, element, attr, $$rAF, $window, $materialEffects
      * Refreshing Dimensions
      */
     var sliderDimensions = {};
+    var throttledRefreshDimensions = Util.throttle(refreshSliderDimensions, 5000);
     refreshSliderDimensions();
     function refreshSliderDimensions() {
       sliderDimensions = trackContainer[0].getBoundingClientRect();
@@ -3213,7 +3213,7 @@ function MaterialSwitch(checkboxDirectives, radioButtonDirectives) {
   };
 
   function compile(element, attr) {
-
+    
     var thumb = angular.element(element[0].querySelector('.material-switch-thumb'));
     //Copy down disabled attributes for checkboxDirective to use
     thumb.attr('disabled', attr.disabled);
@@ -3877,7 +3877,7 @@ function MaterialTabDirective($materialInkRipple, $compile, $materialAria) {
         if(!tabItemCtrl.contentContainer.attr('aria-labelledby')) {
           tabItemCtrl.contentContainer.attr('aria-labelledby', tabId);
         }
-        $materialAria.expect(element, 'aria-label', true);
+        $materialAria.expect(element, 'aria-label', element.text());
       }
 
     };
@@ -5217,13 +5217,12 @@ angular.module('material.decorators', [])
 angular.module('material.services.aria', [])
 
 .service('$materialAria', [
-  '$$rAF',
   '$log',
   AriaService
 ]);
 
-function AriaService($$rAF, $log) {
-  var messageTemplate = 'ARIA: Attribute "%s", required for accessibility, is missing on "%s"';
+function AriaService($log) {
+  var messageTemplate = 'ARIA: Attribute "%s", required for accessibility, is missing on "%s"!';
   var defaultValueTemplate = 'Default value was set: %s="%s".';
 
   return {
@@ -5234,31 +5233,23 @@ function AriaService($$rAF, $log) {
    * Check if expected ARIA has been specified on the target element
    * @param element
    * @param attrName
-   * @param copyElementText
-   * @param {optional} defaultValue
+   * @param defaultValue
    */
-  function expectAttribute(element, attrName, copyElementText, defaultValue) {
+  function expectAttribute(element, attrName, defaultValue) {
 
-    $$rAF(function(){
+    var node = element[0];
+    if (!node.hasAttribute(attrName)) {
+      var hasDefault = angular.isDefined(defaultValue);
 
-      var node = element[0];
-      if (!node.hasAttribute(attrName)) {
-
-        var hasDefault;
-        if(copyElementText === true){
-          if(!defaultValue) defaultValue = element.text().trim();
-          hasDefault = angular.isDefined(defaultValue) && defaultValue.length;
-        }
-
-        if (hasDefault) {
-          defaultValue = String(defaultValue).trim();
-          element.attr(attrName, defaultValue);
-        } else {
-          $log.warn(messageTemplate, attrName, node);
-          $log.warn(node);
-        }
+      if (hasDefault) {
+        defaultValue = String(defaultValue).trim();
+        // $log.warn(messageTemplate + ' ' + defaultValueTemplate,
+        //           attrName, getTagString(node), attrName, defaultValue);
+        element.attr(attrName, defaultValue);
+      } else {
+        // $log.warn(messageTemplate, attrName, getTagString(node));
       }
-    });
+    }
   }
 
 
