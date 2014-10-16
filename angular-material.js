@@ -2922,6 +2922,10 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
      * left/right arrow listener
      */
     function keydownListener(ev) {
+      if(element[0].hasAttribute('disabled')) {
+        return;
+      }
+
       var changeAmount;
       if (ev.which === $mdConstant.KEY_CODE.LEFT_ARROW) {
         changeAmount = -step;
@@ -3023,7 +3027,7 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
     }
 
     function onPanEnd(ev) {
-      if ( isDiscrete ) {
+      if ( isDiscrete && !element[0].hasAttribute('disabled') ) {
         // Convert exact to closest discrete value.
         // Slide animate the thumb... and then update the model value.
 
