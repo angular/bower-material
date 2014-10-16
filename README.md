@@ -31,14 +31,15 @@ Now that you have installed [locally] the Angular libraries, simply include the 
 	</div>
 
 	<script src="/bower_components/angular/angular.js"></script>
+	<script src="/bower_components/angular-aria/angular-aria.js"></script>
 	<script src="/bower_components/angular-animate/angular-animate.js"></script>
 	<script src="/bower_components/hammerjs/hammer.js"></script>
 	<script src="/bower_components/angular-material/angular-material.js"></script>
 	<script>
 
-		// Include app dependencies on ngAnimate and ngMaterial
+		// Include app dependency on ngMaterial
 
-		angular.module( 'YourApp', [ 'ngAnimate', 'ngMaterial' ] )
+		angular.module( 'YourApp', [ 'ngMaterial' ] )
 			.controller("YourController", YourController );
 
 	</script>
