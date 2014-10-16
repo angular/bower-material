@@ -15,9 +15,9 @@ angular.module('ngMaterial', ["ng","ngAnimate","material.core","material.decorat
   angular.module('material.core', ['ngAria'] )
     .run(function validateEnvironment() {
 
-      if (angular.isUndefined( window.Hammer )) {
+      if (typeof Hammer === 'undefined') {
         throw new Error(
-          '$mdSwipe requires HammerJS to be preloaded.'
+          'ngMaterial requires HammerJS to be preloaded.'
         );
       }
 
