@@ -709,6 +709,7 @@ function InkRippleService($window, $$rAF, $mdEffects, $timeout, $mdUtil) {
   function attach(element, options) {
     // Parent element with noink attr? Abort.
     if (element.controller('noink')) return angular.noop;
+    var contentParent = element.controller('materialContent');
 
     options = angular.extend({
       mousedown: true,
@@ -769,6 +770,10 @@ function InkRippleService($window, $$rAF, $mdEffects, $timeout, $mdUtil) {
         var elementRect = node.getBoundingClientRect();
         left -= elementRect.left;
         top -= elementRect.top;
+      }
+
+      if (contentParent) {
+        top += contentParent.prop('scrollTop');
       }
 
       var css = {
