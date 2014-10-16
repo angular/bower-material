@@ -2,11 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.4.1
+ * v0.4.2
  */
 *, *:before, *:after {
-  -moz-box-sizing: border-box;
-       box-sizing: border-box; }
+  box-sizing: border-box; }
 
 :focus {
   outline: none; }
@@ -89,12 +88,10 @@ textarea {
 
 input[type="radio"], input[type="checkbox"] {
   padding: 0;
-  -moz-box-sizing: border-box;
-       box-sizing: border-box; }
+  box-sizing: border-box; }
 input[type="search"] {
   -webkit-appearance: textfield;
-  -moz-box-sizing: content-box;
-       box-sizing: content-box;
+  box-sizing: content-box;
   -webkit-box-sizing: content-box; }
   input[type="search"]::-webkit-search-decoration, input[type="search"]::-webkit-search-cancel-button {
     -webkit-appearance: none; }
@@ -260,8 +257,7 @@ input[type="search"] {
           transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1); }
 
 [layout] {
-  -moz-box-sizing: border-box;
-       box-sizing: border-box;
+  box-sizing: border-box;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1467,8 +1463,7 @@ md-bottom-sheet {
         width: 48px; }
       md-bottom-sheet.grid md-item .md-icon-container {
         display: inline-block;
-        -moz-box-sizing: border-box;
-             box-sizing: border-box;
+        box-sizing: border-box;
         height: 48px;
         width: 48px;
         margin: 8px 0; }
@@ -1647,8 +1642,7 @@ md-button {
 
 md-card {
   display: block;
-  -moz-box-sizing: border-box;
-       box-sizing: border-box;
+  box-sizing: border-box;
   box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
   margin: 8px;
   padding: 8px;
@@ -1803,8 +1797,7 @@ md-dialog {
     display: -ms-flexbox;
     display: flex;
     flex-order: 2;
-    -moz-box-sizing: border-box;
-         box-sizing: border-box;
+    box-sizing: border-box;
     -webkit-box-align: center;
     -webkit-align-items: center;
         -ms-flex-align: center;
@@ -1858,8 +1851,7 @@ md-item-content {
   -webkit-flex-direction: row;
       -ms-flex-direction: row;
           flex-direction: row;
-  -moz-box-sizing: border-box;
-       box-sizing: border-box;
+  box-sizing: border-box;
   position: relative;
   padding: 0px 0px 0px 0px; }
 
@@ -2907,8 +2899,7 @@ md-tabs {
 .tabs-header {
   width: 100%;
   height: 48px;
-  -moz-box-sizing: border-box;
-       box-sizing: border-box;
+  box-sizing: border-box;
   position: relative;
   background-color: #4285F4; }
 
@@ -2971,8 +2962,7 @@ md-tabs[center] .tabs-header:not(.tab-paginating) .tabs-header-items {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -moz-box-sizing: border-box;
-         box-sizing: border-box;
+    box-sizing: border-box;
     -webkit-transition: -webkit-transform 0.2s linear;
             transition: transform 0.2s linear;
     -webkit-transform: translate3d(0, 0, 0);
@@ -2989,8 +2979,7 @@ md-tabs[center] .tabs-header:not(.tab-paginating) .tabs-header-items {
 md-tabs-ink-bar {
   left: 0;
   bottom: 0;
-  -moz-box-sizing: border-box;
-       box-sizing: border-box;
+  box-sizing: border-box;
   -webkit-transition: all 0.2s linear;
           transition: all 0.2s linear; }
 
@@ -3011,8 +3000,7 @@ md-tab {
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
-  -moz-box-sizing: border-box;
-       box-sizing: border-box;
+  box-sizing: border-box;
   position: relative;
   z-index: 0;
   overflow: hidden;
@@ -3209,8 +3197,7 @@ md-toast {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -moz-box-sizing: border-box;
-       box-sizing: border-box;
+  box-sizing: border-box;
   -webkit-box-align: center;
   -webkit-align-items: center;
       -ms-flex-align: center;
