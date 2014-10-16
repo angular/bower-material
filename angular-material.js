@@ -5,14 +5,14 @@
  * v0.4.1
  */
 (function() {
-angular.module('ngMaterial', ["ng","ngAnimate","material.core","material.decorators","material.animations","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe","material.services.aria","material.services.attrBind","material.services.compiler","material.services.interimElement","material.services.registry"]);})();
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.decorators","material.animations","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe","material.services.aria","material.services.attrBind","material.services.compiler","material.services.interimElement","material.services.registry"]);})();
 
 (function() {
   /**
    * Angular Mds initialization function that validates environment
    * requirements.
    */
-  angular.module('material.core', ['ngAria'] )
+  angular.module('material.core', [] )
     .run(function validateEnvironment() {
 
       if (typeof Hammer === 'undefined') {
