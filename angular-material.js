@@ -467,6 +467,10 @@ angular.module('material.core')
     }
   }
 
+  /*
+   * Angular's $cacheFactory doesn't have a keys() method,
+   * so we add one ourself.
+   */
   function cacheFactory(id, options) {
     var cache = $cacheFactory(id, options);
 
