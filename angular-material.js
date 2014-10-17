@@ -1246,7 +1246,7 @@ function MdButtonDirective(ngHrefDirectives, $mdInkRipple, $mdAria, $mdUtil ) {
         });
 
       return function postLink(scope, element, attr) {
-        $mdAria.expect(element, 'aria-label', true);
+        $mdAria.expect(element, 'aria-label', element.text());
         $mdInkRipple.attachButtonBehavior(element);
       };
     }
@@ -1386,6 +1386,8 @@ function MdCheckboxDirective(inputDirectives, $mdInkRipple, $mdAria, $mdConstant
     tAttrs.tabIndex = 0;
     tElement.attr('role', tAttrs.type);
 
+    $mdAria.expect(tElement, 'aria-label', tElement.text());
+
     return function postLink(scope, element, attr, ngModelCtrl) {
       var checked = false;
 
@@ -1397,8 +1399,6 @@ function MdCheckboxDirective(inputDirectives, $mdInkRipple, $mdAria, $mdConstant
         $parsers: [],
         $formatters: []
       };
-
-      $mdAria.expect(tElement, 'aria-label', true);
 
       // Reuse the original input[type=checkbox] directive from Angular core.
       // This is a bit hacky as we need our own event listener and own render
@@ -1430,6 +1430,7 @@ function MdCheckboxDirective(inputDirectives, $mdInkRipple, $mdAria, $mdConstant
 
       function render() {
         checked = ngModelCtrl.$viewValue;
+        // element.attr('aria-checked', checked);
         if(checked) {
           element.addClass(CHECKED_CSS);
         } else {
@@ -1750,7 +1751,7 @@ function MdDialogService($timeout, $rootElement, $mdEffects, $animate, $mdAria, 
       dialogContent = element;
     }
     var defaultText = $mdUtil.stringFromTextBody(dialogContent.text(), 3);
-    $mdAria.expect(element, 'aria-label', true, defaultText);
+    $mdAria.expect(element, 'aria-label', defaultText);
   }
 }
 })();
@@ -2428,7 +2429,7 @@ function mdRadioButtonDirective($mdAria, $mdUtil) {
         'aria-checked' : 'false'
       });
 
-      $mdAria.expect(element, 'aria-label', true);
+      $mdAria.expect(element, 'aria-label', element.text());
 
       /**
        * Build a unique ID for each radio button that will be used with aria-activedescendant.
@@ -2567,8 +2568,7 @@ function mdSidenavService($mdComponentRegistry) {
  *
  * A Sidenav component that can be opened and closed programatically.
  *
- * When opened, it will appear above the app's main content area,
- * unless a `lock-open` attribute is provided (see below).
+ * By default, upon opening it will slide out on top of the main content area.
  *
  * @usage
  * <hljs lang="html">
@@ -2793,7 +2793,6 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
     var trackContainer = angular.element(element[0].querySelector('.slider-track-container'));
     var activeTrack = angular.element(element[0].querySelector('.slider-track-fill'));
     var tickContainer = angular.element(element[0].querySelector('.slider-track-ticks'));
-    var throttledRefreshDimensions = $mdUtil.throttle(refreshSliderDimensions, 5000);
 
     // Default values, overridable by attrs
     attr.min ? attr.$observe('min', updateMin) : updateMin(0);
@@ -2810,8 +2809,7 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
       updateAriaDisabled(!!attr.disabled);
     }
 
-    $mdAria.expect(element, 'aria-label', false);
-
+    $mdAria.expect(element, 'aria-label');
     element.attr('tabIndex', 0);
     element.attr('role', 'slider');
     element.on('keydown', keydownListener);
@@ -2900,6 +2898,7 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
      * Refreshing Dimensions
      */
     var sliderDimensions = {};
+    var throttledRefreshDimensions = $mdUtil.throttle(refreshSliderDimensions, 5000);
     refreshSliderDimensions();
     function refreshSliderDimensions() {
       sliderDimensions = trackContainer[0].getBoundingClientRect();
@@ -4474,13 +4473,12 @@ angular.module('material.components.whiteframe', []);
 angular.module('material.services.aria', [])
 
 .service('$mdAria', [
-  '$$rAF',
   '$log',
   AriaService
 ]);
 
-function AriaService($$rAF, $log) {
-  var messageTemplate = 'ARIA: Attribute "%s", required for accessibility, is missing on "%s"';
+function AriaService($log) {
+  var messageTemplate = 'ARIA: Attribute "%s", required for accessibility, is missing on "%s"!';
   var defaultValueTemplate = 'Default value was set: %s="%s".';
 
   return {
@@ -4491,31 +4489,23 @@ function AriaService($$rAF, $log) {
    * Check if expected ARIA has been specified on the target element
    * @param element
    * @param attrName
-   * @param copyElementText
-   * @param {optional} defaultValue
+   * @param defaultValue
    */
-  function expectAttribute(element, attrName, copyElementText, defaultValue) {
+  function expectAttribute(element, attrName, defaultValue) {
 
-    $$rAF(function(){
+    var node = element[0];
+    if (!node.hasAttribute(attrName)) {
+      var hasDefault = angular.isDefined(defaultValue);
 
-      var node = element[0];
-      if (!node.hasAttribute(attrName)) {
-
-        var hasDefault;
-        if(copyElementText === true){
-          if(!defaultValue) defaultValue = element.text().trim();
-          hasDefault = angular.isDefined(defaultValue) && defaultValue.length;
-        }
-
-        if (hasDefault) {
-          defaultValue = String(defaultValue).trim();
-          element.attr(attrName, defaultValue);
-        } else {
-          $log.warn(messageTemplate, attrName, node);
-          $log.warn(node);
-        }
+      if (hasDefault) {
+        defaultValue = String(defaultValue).trim();
+        // $log.warn(messageTemplate + ' ' + defaultValueTemplate,
+        //           attrName, getTagString(node), attrName, defaultValue);
+        element.attr(attrName, defaultValue);
+      } else {
+        // $log.warn(messageTemplate, attrName, getTagString(node));
       }
-    });
+    }
   }
 
 
@@ -5685,7 +5675,7 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
           'aria-labelledby': tabId
         });
 
-        $mdAria.expect(element, 'aria-label', true);
+        $mdAria.expect(element, 'aria-label', element.text());
       }
 
     };
