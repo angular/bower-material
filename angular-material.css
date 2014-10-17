@@ -1304,7 +1304,7 @@ md-backdrop {
   -webkit-transition: all 0.2s ease-out;
           transition: all 0.2s ease-out; }
   md-backdrop.opaque {
-    background-color: rgba(0, 0, 0, 0.4); }
+    background-color: rgba(0, 0, 0, 0.3); }
   md-backdrop.ng-enter {
     -webkit-transition-delay: 0.1s;
             transition-delay: 0.1s; }
@@ -2528,13 +2528,13 @@ md-sidenav {
   md-sidenav.open-add.open-add-active, md-sidenav.open-remove.open-remove-active {
     -webkit-transition: -webkit-transform 0.3s ease-in-out;
             transition: transform 0.3s ease-in-out; }
-  md-sidenav.lock-open, md-sidenav.lock-open.material-sidenav-left, md-sidenav.lock-open, md-sidenav.lock-open.material-sidenav-right {
+  md-sidenav.locked-open, md-sidenav.locked-open.material-sidenav-left, md-sidenav.locked-open, md-sidenav.locked-open.material-sidenav-right {
     position: static;
     display: block;
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }
 
-.md-sidenav-backdrop.lock-open {
+.md-sidenav-backdrop.locked-open {
   display: none; }
 
 .md-sidenav-left {
