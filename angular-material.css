@@ -2514,41 +2514,46 @@ md-sidenav {
   position: absolute;
   width: 304px;
   bottom: 0;
+  z-index: 8;
   background-color: white;
-  -webkit-transition: -webkit-transform 0.3s ease-in-out;
-          transition: transform 0.3s ease-in-out; }
+  overflow: auto;
+  display: none; }
+  md-sidenav.open, md-sidenav.open-add, md-sidenav.open-remove {
+    display: block; }
+  md-sidenav.open-add, md-sidenav.open-remove {
+    /* this is required as of 1.3x to properly
+       apply all styling in a show/hide animation */
+    -webkit-transition: 0s all;
+            transition: 0s all; }
+  md-sidenav.open-add.open-add-active, md-sidenav.open-remove.open-remove-active {
+    -webkit-transition: -webkit-transform 0.3s ease-in-out;
+            transition: transform 0.3s ease-in-out; }
+  md-sidenav.lock-open, md-sidenav.lock-open.material-sidenav-left, md-sidenav.lock-open, md-sidenav.lock-open.material-sidenav-right {
+    position: static;
+    display: block;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0); }
 
-.md-sidenav-left, md-sidenav {
+.md-sidenav-backdrop.lock-open {
+  display: none; }
+
+.md-sidenav-left {
   left: 0;
   top: 0;
   -webkit-transform: translate3d(-100%, 0, 0);
           transform: translate3d(-100%, 0, 0); }
-  .md-sidenav-left.open, md-sidenav.open {
+  .md-sidenav-left.open {
     -webkit-transform: translate3d(0%, 0, 0);
-            transform: translate3d(0%, 0, 0);
-    z-index: 8; }
+            transform: translate3d(0%, 0, 0); }
 
 .md-sidenav-right {
   left: 100%;
   top: 0;
-  -webkit-transform: translate3d(100%, 0, 0);
-          transform: translate3d(100%, 0, 0); }
+  -webkit-transform: translate3d(0%, 0, 0);
+          transform: translate3d(0%, 0, 0); }
   .md-sidenav-right.open {
     -webkit-transform: translate3d(-100%, 0, 0);
-            transform: translate3d(-100%, 0, 0);
-    z-index: 8; }
-
-@media (min-width: 960px) {
-  md-sidenav {
-    position: static;
-    -webkit-transform: translate3d(0, 0, 0) !important;
-            transform: translate3d(0, 0, 0) !important; }
-  .md-sidenav-backdrop {
-    display: none !important; } }
-
-@media (max-width: 416px) {
-  md-sidenav {
-    max-width: 75%; } }
+            transform: translate3d(-100%, 0, 0); }
 
 @-webkit-keyframes sliderFocusThumb {
   0% {
@@ -3496,21 +3501,16 @@ md-tooltip {
             animation-duration: 200ms; }
 
 .md-whiteframe-z1 {
-  z-index: 1;
   box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26); }
 
 .md-whiteframe-z2 {
-  z-index: 2;
   box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2); }
 
 .md-whiteframe-z3 {
-  z-index: 3;
   box-shadow: 0px 17px 50px rgba(0, 0, 0, 0.19); }
 
 .md-whiteframe-z4 {
-  z-index: 4;
   box-shadow: 0px 16px 28px 0 rgba(0, 0, 0, 0.22); }
 
 .md-whiteframe-z5 {
-  z-index: 5;
   box-shadow: 0px 27px 24px 0 rgba(0, 0, 0, 0.2); }
