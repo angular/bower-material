@@ -2797,63 +2797,6 @@ md-slider {
       -webkit-animation: subheaderStickyHoverIn 0.3s ease-out both;
               animation: subheaderStickyHoverIn 0.3s ease-out both; }
 
-@-webkit-keyframes subheaderStickyHoverIn {
-  0% {
-    box-shadow: 0 0 0 0 transparent; }
-
-  100% {
-    box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); } }
-
-@keyframes subheaderStickyHoverIn {
-  0% {
-    box-shadow: 0 0 0 0 transparent; }
-
-  100% {
-    box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); } }
-
-@-webkit-keyframes subheaderStickyHoverOut {
-  0% {
-    box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); }
-
-  100% {
-    box-shadow: 0 0 0 0 transparent; } }
-
-@keyframes subheaderStickyHoverOut {
-  0% {
-    box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); }
-
-  100% {
-    box-shadow: 0 0 0 0 transparent; } }
-
-.md-subheader {
-  color: #999;
-  display: block;
-  font-size: 0.9em;
-  font-weight: 400;
-  line-height: 1em;
-  padding: 16px 0px 16px 16px;
-  margin: 0 0 0 0;
-  margin-right: 16px;
-  background-color: white;
-  position: relative; }
-  .md-subheader.md-subheader-colored {
-    color: #03a9f4; }
-  .md-subheader:not(.sticky-no-effect) {
-    -webkit-transition: 0.2s ease-out margin;
-            transition: 0.2s ease-out margin; }
-    .md-subheader:not(.sticky-no-effect):after {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      top: 0;
-      right: -16px;
-      content: ''; }
-    .md-subheader:not(.sticky-no-effect)[sticky-state="active"] {
-      margin-top: -2px; }
-    .md-subheader:not(.sticky-no-effect):not(.md-sticky-clone)[sticky-prev-state="active"]:after {
-      -webkit-animation: subheaderStickyHoverOut 0.3s ease-out both;
-              animation: subheaderStickyHoverOut 0.3s ease-out both; }
-
 md-switch {
   display: block;
   position: relative;
@@ -3043,6 +2986,63 @@ md-tab {
 
 shadow {
   box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.2); }
+
+@-webkit-keyframes subheaderStickyHoverIn {
+  0% {
+    box-shadow: 0 0 0 0 transparent; }
+
+  100% {
+    box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); } }
+
+@keyframes subheaderStickyHoverIn {
+  0% {
+    box-shadow: 0 0 0 0 transparent; }
+
+  100% {
+    box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); } }
+
+@-webkit-keyframes subheaderStickyHoverOut {
+  0% {
+    box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); }
+
+  100% {
+    box-shadow: 0 0 0 0 transparent; } }
+
+@keyframes subheaderStickyHoverOut {
+  0% {
+    box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); }
+
+  100% {
+    box-shadow: 0 0 0 0 transparent; } }
+
+.md-subheader {
+  color: #999;
+  display: block;
+  font-size: 0.9em;
+  font-weight: 400;
+  line-height: 1em;
+  padding: 16px 0px 16px 16px;
+  margin: 0 0 0 0;
+  margin-right: 16px;
+  background-color: white;
+  position: relative; }
+  .md-subheader.md-subheader-colored {
+    color: #03a9f4; }
+  .md-subheader:not(.sticky-no-effect) {
+    -webkit-transition: 0.2s ease-out margin;
+            transition: 0.2s ease-out margin; }
+    .md-subheader:not(.sticky-no-effect):after {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      top: 0;
+      right: -16px;
+      content: ''; }
+    .md-subheader:not(.sticky-no-effect)[sticky-state="active"] {
+      margin-top: -2px; }
+    .md-subheader:not(.sticky-no-effect):not(.md-sticky-clone)[sticky-prev-state="active"]:after {
+      -webkit-animation: subheaderStickyHoverOut 0.3s ease-out both;
+              animation: subheaderStickyHoverOut 0.3s ease-out both; }
 
 label {
   display: block;
