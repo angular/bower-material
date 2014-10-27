@@ -5,7 +5,7 @@
  * v0.4.2
  */
 (function() {
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.decorators","material.animations","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe","material.services.aria","material.services.attrBind","material.services.compiler","material.services.interimElement","material.services.media","material.services.registry","material.services.theming"]);})();
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.decorators","material.animations","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.icon","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe","material.services.aria","material.services.attrBind","material.services.compiler","material.services.interimElement","material.services.media","material.services.registry","material.services.theming"]);})();
 
 (function() {
   /**
@@ -1849,49 +1849,6 @@ function MdDividerDirective($mdTheming) {
 })();
 
 (function() {
-/*
- * @ngdoc module
- * @name material.components.icon
- * @description
- * Icon
- */
-angular.module('material.components.icon', [])
-  .directive('mdIcon', [
-    mdIconDirective
-  ]);
-
-/*
- * @ngdoc directive
- * @name mdIcon
- * @module material.components.icon
- *
- * @restrict E
- *
- * @description
- * The `<md-icon>` directive is an element useful for SVG icons
- *
- * @usage
- * <hljs lang="html">
- *  <md-icon icon="/img/icons/ic_access_time_24px.svg">
- *  </md-icon>
- * </hljs>
- *
- */
-function mdIconDirective() {
-  return {
-    restrict: 'E',
-    template: '<object class="md-icon"></object>',
-    compile: function(element, attr) {
-      var object = angular.element(element[0].children[0]);
-      if(angular.isDefined(attr.icon)) {
-        object.attr('data', attr.icon);
-      }
-    }
-  };
-}
-})();
-
-(function() {
 /**
  * @ngdoc module
  * @name material.components.list
@@ -2229,6 +2186,49 @@ var progressLinearTransforms = (function() {
     return 'translateX(' + translateX.toString() + '%) scale(' + scale.toString() + ', 1)';
   }
 })();
+})();
+
+(function() {
+/*
+ * @ngdoc module
+ * @name material.components.icon
+ * @description
+ * Icon
+ */
+angular.module('material.components.icon', [])
+  .directive('mdIcon', [
+    mdIconDirective
+  ]);
+
+/*
+ * @ngdoc directive
+ * @name mdIcon
+ * @module material.components.icon
+ *
+ * @restrict E
+ *
+ * @description
+ * The `<md-icon>` directive is an element useful for SVG icons
+ *
+ * @usage
+ * <hljs lang="html">
+ *  <md-icon icon="/img/icons/ic_access_time_24px.svg">
+ *  </md-icon>
+ * </hljs>
+ *
+ */
+function mdIconDirective() {
+  return {
+    restrict: 'E',
+    template: '<object class="md-icon"></object>',
+    compile: function(element, attr) {
+      var object = angular.element(element[0].children[0]);
+      if(angular.isDefined(attr.icon)) {
+        object.attr('data', attr.icon);
+      }
+    }
+  };
+}
 })();
 
 (function() {
@@ -3928,8 +3928,8 @@ function mdTextFloatDirective($mdTheming) {
       };
     },
     template:
-    '<md-input-group ng-disabled="isDisabled">' +
-    ' <label for="{{fid}}">{{label}}</label>' +
+    '<md-input-group ng-disabled="isDisabled" tabindex="-1">' +
+    ' <label for="{{fid}}" tabindex="-1">{{label}}</label>' +
     ' <md-input id="{{fid}}" ng-model="value"></md-input>' +
     '</md-input-group>'
   };
