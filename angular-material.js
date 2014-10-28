@@ -3870,7 +3870,7 @@ angular.module('material.components.tabs', [
 angular.module('material.components.textField', ['material.core', 'material.services.theming'])
        .directive('mdInputGroup', [ mdInputGroupDirective ])
        .directive('mdInput', ['$mdUtil', mdInputDirective ])
-       .directive('mdTextFloat', [ '$mdTheming', mdTextFloatDirective ]);
+       .directive('mdTextFloat', [ '$mdTheming', '$mdUtil', mdTextFloatDirective ]);
 
 
 
@@ -3884,9 +3884,10 @@ angular.module('material.components.textField', ['material.core', 'material.serv
  * @description
  * Use the `<md-text-float>` directive to quickly construct `Floating Label` text fields
  *
+ * @param {string} fid Attribute used for accessibility link pairing between the Label and Input elements
+ * @param {string=} type Optional value to define the type of input field. Defaults to string.
  * @param {string} label Attribute to specify the input text field hint.
  * @param {string=} ng-model Optional value to assign as existing input text string
- * @param {string=} type Optional value to define the type of input field. Defaults to string.
  *
  * @usage
  * <hljs lang="html">
@@ -3899,7 +3900,7 @@ angular.module('material.components.textField', ['material.core', 'material.serv
  * <md-text-float label="eMail"    ng-model="user.email" type="email" ></md-text-float>
  * </hljs>
  */
-function mdTextFloatDirective($mdTheming) {
+function mdTextFloatDirective($mdTheming, $mdUtil) {
   return {
     restrict: 'E',
     replace: true,
@@ -3908,7 +3909,12 @@ function mdTextFloatDirective($mdTheming) {
       label : '@?',
       value : '=ngModel'
     },
-    compile : function() {
+    compile : function(element, attr) {
+
+      if ( angular.isUndefined(attr.fid) ) {
+        attr.fid = $mdUtil.nextUid();
+      }
+
       return {
         pre : function(scope, element, attrs) {
           // transpose `disabled` flag
@@ -3917,13 +3923,10 @@ function mdTextFloatDirective($mdTheming) {
             scope.isDisabled = true;
           }
 
-          // transpose the `label`, type, and fid properties
-          scope.fid = scope.fid || scope.label;
-
           scope.inputType = attrs.type || "text";
           element.removeAttr('type');
 
-          // transpose optional `type` and `class` settings
+          // transpose optional `class` settings
           element.attr('class', attrs.class );
 
         },
