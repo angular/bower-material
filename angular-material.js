@@ -5,7 +5,7 @@
  * v0.4.2
  */
 (function() {
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.decorators","material.animations","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe","material.services.aria","material.services.attrBind","material.services.compiler","material.services.interimElement","material.services.media","material.services.registry","material.services.theming"]);})();
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.decorators","material.animations","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.tabs","material.components.textField","material.components.switch","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe","material.services.aria","material.services.attrBind","material.services.compiler","material.services.interimElement","material.services.media","material.services.registry","material.services.theming"]);})();
 
 (function() {
   /**
@@ -930,7 +930,9 @@ function BackdropDirective($mdTheming) {
  * BottomSheet
  */
 angular.module('material.components.bottomSheet', [
-  'material.services.interimElement'
+  'material.components.backdrop',
+  'material.services.interimElement',
+  'material.services.theming'
 ])
 .directive('mdBottomSheet', [
   MdBottomSheetDirective
@@ -942,6 +944,7 @@ angular.module('material.components.bottomSheet', [
   '$timeout',
   '$$rAF',
   '$compile',
+  '$mdTheming',
   MdBottomSheet
 ]);
 
@@ -1039,7 +1042,7 @@ function MdBottomSheetDirective() {
  *
  */
 
-function MdBottomSheet($$interimElement, $animate, $mdEffects, $timeout, $$rAF, $compile) {
+function MdBottomSheet($$interimElement, $animate, $mdEffects, $timeout, $$rAF, $compile, $mdTheming) {
   var backdrop;
 
   var $mdBottomSheet;
@@ -1056,6 +1059,7 @@ function MdBottomSheet($$interimElement, $animate, $mdEffects, $timeout, $$rAF, 
     backdrop.on('click touchstart', function() {
       $timeout($mdBottomSheet.cancel);
     });
+    $mdTheming.inherit(backdrop, options.parent);
 
     $animate.enter(backdrop, options.parent, null);
 
@@ -1064,6 +1068,7 @@ function MdBottomSheet($$interimElement, $animate, $mdEffects, $timeout, $$rAF, 
 
     // Give up focus on calling item
     options.targetEvent && angular.element(options.targetEvent.target).blur();
+    $mdTheming.inherit(bottomSheet.element, options.parent);
 
     return $animate.enter(bottomSheet.element, options.parent);
 
@@ -1550,6 +1555,7 @@ function mdContentDirective($mdTheming) {
 angular.module('material.components.dialog', [
   'material.core',
   'material.animations',
+  'material.components.backdrop',
   'material.services.compiler',
   'material.services.aria',
   'material.services.interimElement',
@@ -1570,6 +1576,7 @@ angular.module('material.components.dialog', [
     '$$interimElement',
     '$mdUtil',
     '$mdConstant',
+    '$mdTheming',
     MdDialogService
   ]);
 
@@ -1698,7 +1705,7 @@ function MdDialogDirective($$rAF, $mdTheming) {
  *
  */
 
-function MdDialogService($timeout, $rootElement, $compile, $mdEffects, $animate, $mdAria, $$interimElement, $mdUtil, $mdConstant) {
+function MdDialogService($timeout, $rootElement, $compile, $mdEffects, $animate, $mdAria, $$interimElement, $mdUtil, $mdConstant, $mdTheming) {
 
   var $dialogService;
   return $dialogService = $$interimElement({
@@ -1724,9 +1731,9 @@ function MdDialogService($timeout, $rootElement, $compile, $mdEffects, $animate,
     configureAria(element.find('md-dialog'));
 
     if (options.hasBackdrop) {
-      var backdrop = $compile('<md-backdrop class="md-opaque ng-enter">')(scope);
-      $animate.enter(backdrop, options.parent, null);
-      options.backdrop = backdrop;
+      options.backdrop = $compile('<md-backdrop class="md-opaque ng-enter">')(scope);
+      $mdTheming.inherit(options.backdrop, options.parent);
+      $animate.enter(options.backdrop, options.parent, null);
     }
 
     return $mdEffects.popIn(
@@ -2527,6 +2534,8 @@ angular.module('material.components.sidenav', [
   'material.core',
   'material.services.registry',
   'material.services.media',
+  'material.components.backdrop',
+  'material.services.theming',
   'material.animations'
 ])
   .factory('$mdSidenav', [
@@ -2540,6 +2549,7 @@ angular.module('material.components.sidenav', [
     '$mdMedia',
     '$mdConstant',
     '$compile',
+    '$mdTheming',
     mdSidenavDirective 
   ])
   .controller('$mdSidenavController', [
@@ -2685,7 +2695,7 @@ function mdSidenavService($mdComponentRegistry) {
  *   - `<md-sidenav is-locked-open="$media('min-width: 1000px')"></md-sidenav>`
  *   - `<md-sidenav is-locked-open="$media('sm')"></md-sidenav>` <!-- locks open on small screens !-->
  */
-function mdSidenavDirective($timeout, $animate, $parse, $mdMedia, $mdConstant, $compile) {
+function mdSidenavDirective($timeout, $animate, $parse, $mdMedia, $mdConstant, $compile, $mdTheming) {
   return {
     restrict: 'E',
     scope: {
@@ -2704,6 +2714,8 @@ function mdSidenavDirective($timeout, $animate, $parse, $mdMedia, $mdConstant, $
     var backdrop = $compile(
       '<md-backdrop class="md-sidenav-backdrop md-opaque">'
     )(scope);
+
+    $mdTheming.inherit(backdrop, element);
 
     scope.$watch('isOpen', setOpen);
     scope.$watch(function() {
@@ -3765,94 +3777,6 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming) {
 
 (function() {
 /**
- * @private
- * @ngdoc module
- * @name material.components.switch
- */
-
-angular.module('material.components.switch', [
-  'material.components.checkbox',
-  'material.components.radioButton',
-  'material.services.theming'
-])
-
-.directive('mdSwitch', [
-  'mdCheckboxDirective',
-  'mdRadioButtonDirective',
-  '$mdTheming',
-  MdSwitch
-]);
-
-/**
- * @private
- * @ngdoc directive
- * @module material.components.switch
- * @name mdSwitch
- * @restrict E
- *
- * The switch directive is used very much like the normal [angular checkbox](https://docs.angularjs.org/api/ng/input/input%5Bcheckbox%5D).
- *
- * @param {string} ngModel Assignable angular expression to data-bind to.
- * @param {string=} name Property name of the form under which the control is published.
- * @param {expression=} ngTrueValue The value to which the expression should be set when selected.
- * @param {expression=} ngFalseValue The value to which the expression should be set when not selected.
- * @param {string=} ngChange Angular expression to be executed when input changes due to user interaction with the input element.
- * @param {boolean=} noink Use of attribute indicates use of ripple ink effects.
- * @param {boolean=} disabled Use of attribute indicates the switch is disabled: no ink effects and not selectable
- * @param {string=} ariaLabel Publish the button label used by screen-readers for accessibility. Defaults to the switch's text.
- *
- * @usage
- * <hljs lang="html">
- * <md-switch ng-model="isActive" aria-label="Finished?">
- *   Finished ?
- * </md-switch>
- *
- * <md-switch noink ng-model="hasInk" aria-label="No Ink Effects">
- *   No Ink Effects
- * </md-switch>
- *
- * <md-switch disabled ng-model="isDisabled" aria-label="Disabled">
- *   Disabled
- * </md-switch>
- *
- * </hljs>
- */
-function MdSwitch(checkboxDirectives, radioButtonDirectives, $mdTheming) {
-  var checkboxDirective = checkboxDirectives[0];
-  var radioButtonDirective = radioButtonDirectives[0];
-
-  return {
-    restrict: 'E',
-    transclude: true,
-    template:
-      '<div class="md-switch-bar"></div>' +
-      '<div class="md-switch-thumb">' +
-        radioButtonDirective.template +
-      '</div>',
-    require: '?ngModel',
-    compile: compile
-  };
-
-  function compile(element, attr) {
-    
-    var thumb = angular.element(element[0].querySelector('.md-switch-thumb'));
-    //Copy down disabled attributes for checkboxDirective to use
-    thumb.attr('disabled', attr.disabled);
-    thumb.attr('ngDisabled', attr.ngDisabled);
-
-    var link = checkboxDirective.compile(thumb, attr);
-
-    return function (scope, element, attr, ngModelCtrl) {
-      $mdTheming(element);
-      var thumb = angular.element(element[0].querySelector('.md-switch-thumb'));
-      return link(scope, thumb, attr, ngModelCtrl);
-    };
-  }
-}
-})();
-
-(function() {
-/**
  * @ngdoc module
  * @name material.components.tabs
  * @description
@@ -4063,6 +3987,94 @@ function mdInputDirective($mdUtil) {
 
 
 
+})();
+
+(function() {
+/**
+ * @private
+ * @ngdoc module
+ * @name material.components.switch
+ */
+
+angular.module('material.components.switch', [
+  'material.components.checkbox',
+  'material.components.radioButton',
+  'material.services.theming'
+])
+
+.directive('mdSwitch', [
+  'mdCheckboxDirective',
+  'mdRadioButtonDirective',
+  '$mdTheming',
+  MdSwitch
+]);
+
+/**
+ * @private
+ * @ngdoc directive
+ * @module material.components.switch
+ * @name mdSwitch
+ * @restrict E
+ *
+ * The switch directive is used very much like the normal [angular checkbox](https://docs.angularjs.org/api/ng/input/input%5Bcheckbox%5D).
+ *
+ * @param {string} ngModel Assignable angular expression to data-bind to.
+ * @param {string=} name Property name of the form under which the control is published.
+ * @param {expression=} ngTrueValue The value to which the expression should be set when selected.
+ * @param {expression=} ngFalseValue The value to which the expression should be set when not selected.
+ * @param {string=} ngChange Angular expression to be executed when input changes due to user interaction with the input element.
+ * @param {boolean=} noink Use of attribute indicates use of ripple ink effects.
+ * @param {boolean=} disabled Use of attribute indicates the switch is disabled: no ink effects and not selectable
+ * @param {string=} ariaLabel Publish the button label used by screen-readers for accessibility. Defaults to the switch's text.
+ *
+ * @usage
+ * <hljs lang="html">
+ * <md-switch ng-model="isActive" aria-label="Finished?">
+ *   Finished ?
+ * </md-switch>
+ *
+ * <md-switch noink ng-model="hasInk" aria-label="No Ink Effects">
+ *   No Ink Effects
+ * </md-switch>
+ *
+ * <md-switch disabled ng-model="isDisabled" aria-label="Disabled">
+ *   Disabled
+ * </md-switch>
+ *
+ * </hljs>
+ */
+function MdSwitch(checkboxDirectives, radioButtonDirectives, $mdTheming) {
+  var checkboxDirective = checkboxDirectives[0];
+  var radioButtonDirective = radioButtonDirectives[0];
+
+  return {
+    restrict: 'E',
+    transclude: true,
+    template:
+      '<div class="md-switch-bar"></div>' +
+      '<div class="md-switch-thumb">' +
+        radioButtonDirective.template +
+      '</div>',
+    require: '?ngModel',
+    compile: compile
+  };
+
+  function compile(element, attr) {
+    
+    var thumb = angular.element(element[0].querySelector('.md-switch-thumb'));
+    //Copy down disabled attributes for checkboxDirective to use
+    thumb.attr('disabled', attr.disabled);
+    thumb.attr('ngDisabled', attr.ngDisabled);
+
+    var link = checkboxDirective.compile(thumb, attr);
+
+    return function (scope, element, attr, ngModelCtrl) {
+      $mdTheming(element);
+      var thumb = angular.element(element[0].querySelector('.md-switch-thumb'));
+      return link(scope, thumb, attr, ngModelCtrl);
+    };
+  }
+}
 })();
 
 (function() {
@@ -5244,18 +5256,17 @@ angular.module('material.services.theming', [
   '$mdTheming',
   ThemableDirective
 ])
-.factory('$mdTheming', [
-  '$rootScope',
+.provider('$mdTheming', [
   Theming
 ]);
 
 /*
- * @ngdoc service
+ * @ngdoc provider
  * @name $mdTheming
  *
  * @description
  *
- * Service that makes an element apply theming related classes to itself.
+ * Provider that makes an element apply theming related classes to itself.
  *
  * ```js
  * app.directive('myFancyDirective', function($mdTheming) {
@@ -5273,36 +5284,51 @@ angular.module('material.services.theming', [
  *
  */
 
-function Theming($rootScope) {
-  return function applyTheme(scope, el) {
-    // Allow us to be invoked via a linking function signature.
-    if (el === undefined) { 
-      el = scope;
-      scope = undefined;
-    }
-    if (scope === undefined) {
-      scope = $rootScope;
-    }
-
-    var ctrl = el.controller('mdTheme');
-
-    if (angular.isDefined(el.attr('md-theme-watch'))) { 
-      var deregisterWatch = scope.$watch(function() { 
-        return ctrl && ctrl.$mdTheme || 'default'; 
-      }, changeTheme);
-      // If scope is $rootScope, we need to be sure to deregister when the
-      // element is destroyed
-      el.on('$destroy', deregisterWatch);
-    } else {
-      var theme = ctrl && ctrl.$mdTheme || 'default';
-      changeTheme(theme);
-    }
-
-    function changeTheme(theme, oldTheme) {
-      if (oldTheme) el.removeClass('md-' + oldTheme +'-theme');
-      el.addClass('md-' + theme + '-theme');
-    }
+function Theming($injector) {
+  var defaultTheme = 'default';
+  return {
+    setDefaultTheme: function(theme) {
+      defaultTheme = theme;
+    },
+    $get: ['$rootElement', '$rootScope', ThemingService]
   };
+
+  function ThemingService($rootElement, $rootScope) {
+    applyTheme.inherit = function(el, parent) {
+      var ctrl = parent.controller('mdTheme');
+
+      if (angular.isDefined(el.attr('md-theme-watch'))) { 
+        var deregisterWatch = $rootScope.$watch(function() { 
+          return ctrl && ctrl.$mdTheme || defaultTheme; 
+        }, changeTheme);
+        el.on('$destroy', deregisterWatch);
+      } else {
+        var theme = ctrl && ctrl.$mdTheme || defaultTheme;
+        changeTheme(theme);
+      }
+
+      function changeTheme(theme) {
+        var oldTheme = el.data('$mdThemeName');
+        if (oldTheme) el.removeClass('md-' + oldTheme +'-theme');
+        el.addClass('md-' + theme + '-theme');
+        el.data('$mdThemeName', theme);
+      }
+    };
+
+    return applyTheme;
+
+    function applyTheme(scope, el) {
+      // Allow us to be invoked via a linking function signature.
+      if (el === undefined) { 
+        el = scope;
+        scope = undefined;
+      }
+      if (scope === undefined) {
+        scope = $rootScope;
+      }
+      applyTheme.inherit(el, el);
+    }
+  }
 }
 
 function ThemingDirective($interpolate) {
