@@ -23,6 +23,7 @@ Now that you have installed [locally] the Angular libraries, simply include the 
 <head>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
+    <link rel="stylesheet" href="/bower_components/angular-material/themes/default-theme.css">
 </head>
 	<body ng-app="YourApp">
 
