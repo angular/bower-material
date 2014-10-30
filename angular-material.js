@@ -643,7 +643,7 @@ function MdEffects($rootElement, $$rAF, $sniffer, $q) {
     $$rAF(function() {
       $$rAF(function() {
         element
-          .addClass('active')
+          .addClass('md-active')
           .css(self.TRANSFORM, '')
           .css('opacity', '')
           .on(self.TRANSITIONEND_EVENT, finished);
@@ -962,6 +962,8 @@ function MdBottomSheetDirective() {
  * ### Restrictions
  * 
  * - The bottom sheet's template must have an outer `<md-bottom-sheet>` element.
+ * - Add the `md-grid` class to the bottom sheet for a grid layout.
+ * - Add the `md-list` class to the bottom sheet for a list layout.
  *
  * @usage
  * <hljs lang="html">
@@ -1050,7 +1052,7 @@ function MdBottomSheet($$interimElement, $animate, $mdEffects, $timeout, $$rAF, 
 
   function onShow(scope, element, options) {
     // Add a backdrop that will close on click
-    backdrop = $compile('<md-backdrop class="opaque ng-enter">')(scope);
+    backdrop = $compile('<md-backdrop class="md-opaque ng-enter">')(scope);
     backdrop.on('click touchstart', function() {
       $timeout($mdBottomSheet.cancel);
     });
@@ -1511,9 +1513,13 @@ angular.module('material.components.content', [
  * @description
  * The `<md-content>` directive is a container element useful for scrollable content
  *
+ * ### Restrictions
+ *
+ * - Add the `md-padding` class to make the content padded.
+ *
  * @usage
  * <hljs lang="html">
- *  <md-content class="md-content-padding">
+ *  <md-content class="md-padding">
  *      Lorem ipsum dolor sit amet, ne quod novum mei.
  *  </md-content>
  * </hljs>
@@ -1573,9 +1579,9 @@ function MdDialogDirective($$rAF, $mdTheming) {
     link: function(scope, element, attr) {
       $mdTheming(element);
       $$rAF(function() {
-        var content = element[0].querySelector('.dialog-content');
+        var content = element[0].querySelector('md-content');
         if (content && content.scrollHeight > content.clientHeight) {
-          element.addClass('dialog-content-overflow');
+          element.addClass('md-content-overflow');
         }
       });
     }
@@ -1594,8 +1600,8 @@ function MdDialogDirective($$rAF, $mdTheming) {
  *
  * - The dialog is always given an isolate scope.
  * - The dialog's template must have an outer `<md-dialog>` element.
- *   Inside, use an element with class `dialog-content` for the dialog's content, and use
- *   an element with class `dialog-actions` for the dialog's actions.  
+ *   Inside, use an `<md-content>` element for the dialog's content, and use
+ *   an element with class `md-actions` for the dialog's actions.  
  *
  * @usage
  * <hljs lang="html">
@@ -1615,8 +1621,8 @@ function MdDialogDirective($$rAF, $mdTheming) {
  *       controller: 'DialogController',
  *       template: 
  *         '<md-dialog>
- *         '  <div class="dialog-content">Hello!</div>' +
- *         '  <div class="dialog-actions">
+ *         '  <md-content>Hello!</md-content>' +
+ *         '  <div class="md-actions">
  *         '    <md-button ng-click="closeDialog()">' +
  *         '      Close' +
  *         '    </md-button>' +
@@ -1718,7 +1724,7 @@ function MdDialogService($timeout, $rootElement, $compile, $mdEffects, $animate,
     configureAria(element.find('md-dialog'));
 
     if (options.hasBackdrop) {
-      var backdrop = $compile('<md-backdrop class="opaque ng-enter">')(scope);
+      var backdrop = $compile('<md-backdrop class="md-opaque ng-enter">')(scope);
       $animate.enter(backdrop, options.parent, null);
       options.backdrop = backdrop;
     }
@@ -1755,10 +1761,10 @@ function MdDialogService($timeout, $rootElement, $compile, $mdEffects, $animate,
 
     function findCloseButton() {
       //If no element with class dialog-close, try to find the last
-      //button child in dialog-actions and assume it is a close button
+      //button child in md-actions and assume it is a close button
       var closeButton = element[0].querySelector('.dialog-close');
       if (!closeButton) {
-        var actionButtons = element[0].querySelectorAll('.dialog-actions button');
+        var actionButtons = element[0].querySelectorAll('.md-actions button');
         closeButton = actionButtons[ actionButtons.length - 1 ];
       }
       return angular.element(closeButton);
@@ -1793,7 +1799,7 @@ function MdDialogService($timeout, $rootElement, $compile, $mdEffects, $animate,
       'role': 'dialog'
     });
 
-    var dialogContent = element.find('.dialog-content');
+    var dialogContent = element.find('md-content');
     if (dialogContent.length === 0){
       dialogContent = element;
     }
@@ -2041,17 +2047,17 @@ function MdProgressCircularDirective($$rAF, $mdEffects, $mdTheming) {
   return {
     restrict: 'E',
     template: 
-      '<div class="wrapper1"><div class="wrapper2"><div class="circle">' +
-        '<div class="mask full">' +
-          '<div class="fill"></div>' +
+      '<div class="md-wrapper1"><div class="md-wrapper2"><div class="md-circle">' +
+        '<div class="md-mask md-full">' +
+          '<div class="md-fill"></div>' +
         '</div>' +
-        '<div class="mask half">' +
-          '<div class="fill"></div>' +
-          '<div class="fill fix"></div>' +
+        '<div class="md-mask md-half">' +
+          '<div class="md-fill"></div>' +
+          '<div class="md-fill md-fix"></div>' +
         '</div>' +
-        '<div class="shadow"></div>' +
+        '<div class="md-shadow"></div>' +
       '</div>' +
-      '<div class="inset"></div></div></div>',
+      '<div class="md-inset"></div></div></div>',
     compile: compile
   };
 
@@ -2066,8 +2072,8 @@ function MdProgressCircularDirective($$rAF, $mdEffects, $mdTheming) {
   function postLink(scope, element, attr) {
     $mdTheming(element);
     var circle = element[0],
-      fill = circle.querySelectorAll('.fill, .mask.full'),
-      fix = circle.querySelectorAll('.fill.fix'),
+      fill = circle.querySelectorAll('.md-fill, .md-mask.md-full'),
+      fix = circle.querySelectorAll('.md-fill.md-fix'),
       i, clamped, fillRotation, fixRotation;
 
     var diameter = attr.diameter || 48;
@@ -2158,10 +2164,10 @@ function MdProgressLinearDirective($$rAF, $mdEffects, $mdTheming) {
 
   return {
     restrict: 'E',
-    template: '<div class="container">' +
-      '<div class="dashed"></div>' +
-      '<div class="bar bar1"></div>' +
-      '<div class="bar bar2"></div>' +
+    template: '<div class="md-container">' +
+      '<div class="md-dashed"></div>' +
+      '<div class="md-bar md-bar1"></div>' +
+      '<div class="md-bar md-bar2"></div>' +
       '</div>',
     compile: compile
   };
@@ -2175,9 +2181,9 @@ function MdProgressLinearDirective($$rAF, $mdEffects, $mdTheming) {
   }
   function postLink(scope, element, attr) {
     $mdTheming(element);
-    var bar1Style = element[0].querySelector('.bar1').style,
-      bar2Style = element[0].querySelector('.bar2').style,
-      container = angular.element(element[0].querySelector('.container'));
+    var bar1Style = element[0].querySelector('.md-bar1').style,
+      bar2Style = element[0].querySelector('.md-bar2').style,
+      container = angular.element(element[0].querySelector('.md-container'));
 
     attr.$observe('value', function(value) {
       if (attr.mode == 'query') {
@@ -2194,7 +2200,7 @@ function MdProgressLinearDirective($$rAF, $mdEffects, $mdTheming) {
     });
 
     $$rAF(function() {
-      container.addClass('ready');
+      container.addClass('md-ready');
     });
   }
 
@@ -2533,6 +2539,7 @@ angular.module('material.components.sidenav', [
     '$parse',
     '$mdMedia',
     '$mdConstant',
+    '$compile',
     mdSidenavDirective 
   ])
   .controller('$mdSidenavController', [
@@ -2678,7 +2685,7 @@ function mdSidenavService($mdComponentRegistry) {
  *   - `<md-sidenav is-locked-open="$media('min-width: 1000px')"></md-sidenav>`
  *   - `<md-sidenav is-locked-open="$media('sm')"></md-sidenav>` <!-- locks open on small screens !-->
  */
-function mdSidenavDirective($timeout, $animate, $parse, $mdMedia, $mdConstant) {
+function mdSidenavDirective($timeout, $animate, $parse, $mdMedia, $mdConstant, $compile) {
   return {
     restrict: 'E',
     scope: {
@@ -2686,7 +2693,7 @@ function mdSidenavDirective($timeout, $animate, $parse, $mdMedia, $mdConstant) {
     },
     controller: '$mdSidenavController',
     compile: function(element) {
-      element.addClass('closed');
+      element.addClass('md-closed');
       element.attr('tabIndex', '-1');
       return postLink;
     }
@@ -2694,9 +2701,9 @@ function mdSidenavDirective($timeout, $animate, $parse, $mdMedia, $mdConstant) {
 
   function postLink(scope, element, attr, sidenavCtrl) {
     var isLockedOpenParsed = $parse(attr.isLockedOpen);
-    var backdrop = angular.element(
-      '<md-backdrop class="md-sidenav-backdrop opaque">'
-    );
+    var backdrop = $compile(
+      '<md-backdrop class="md-sidenav-backdrop md-opaque">'
+    )(scope);
 
     scope.$watch('isOpen', setOpen);
     scope.$watch(function() {
@@ -2704,8 +2711,8 @@ function mdSidenavDirective($timeout, $animate, $parse, $mdMedia, $mdConstant) {
         $media: $mdMedia
       });
     }, function(isLocked) {
-      element.toggleClass('locked-open', !!isLocked);
-      backdrop.toggleClass('locked-open', !!isLocked);
+      element.toggleClass('md-locked-open', !!isLocked);
+      backdrop.toggleClass('md-locked-open', !!isLocked);
     });
 
     /**
@@ -2719,7 +2726,7 @@ function mdSidenavDirective($timeout, $animate, $parse, $mdMedia, $mdConstant) {
       $animate[isOpen ? 'enter' : 'leave'](backdrop, parent);
       backdrop[isOpen ? 'on' : 'off']('click', close);
 
-      $animate[isOpen ? 'removeClass' : 'addClass'](element, 'closed').then(function() {
+      $animate[isOpen ? 'removeClass' : 'addClass'](element, 'md-closed').then(function() {
         // If we opened, and haven't closed again before the animation finished
         if (scope.isOpen) {
           element.focus();
@@ -2822,19 +2829,19 @@ function SliderDirective($mdTheming) {
       SliderController
     ],
     template:
-      '<div class="slider-track-container">' +
-        '<div class="slider-track"></div>' +
-        '<div class="slider-track slider-track-fill"></div>' +
-        '<div class="slider-track-ticks"></div>' +
+      '<div class="md-track-container">' +
+        '<div class="md-track"></div>' +
+        '<div class="md-track md-track-fill"></div>' +
+        '<div class="md-track-ticks"></div>' +
       '</div>' +
-      '<div class="slider-thumb-container">' +
-        '<div class="slider-thumb"></div>' +
-        '<div class="slider-focus-thumb"></div>' +
-        '<div class="slider-focus-ring"></div>' +
-        '<div class="slider-sign">' +
-          '<span class="slider-thumb-text" ng-bind="modelValue"></span>' +
+      '<div class="md-thumb-container">' +
+        '<div class="md-thumb"></div>' +
+        '<div class="md-focus-thumb"></div>' +
+        '<div class="md-focus-ring"></div>' +
+        '<div class="md-sign">' +
+          '<span class="md-thumb-text" ng-bind="modelValue"></span>' +
         '</div>' +
-        '<div class="slider-disabled-thumb"></div>' +
+        '<div class="md-disabled-thumb"></div>' +
       '</div>',
     link: postLink
   };
@@ -2865,11 +2872,11 @@ function SliderDirective($mdTheming) {
 function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdAria, $mdUtil, $mdConstant) {
 
   this.init = function init(ngModelCtrl) {
-    var thumb = angular.element(element[0].querySelector('.slider-thumb'));
+    var thumb = angular.element(element[0].querySelector('.md-thumb'));
     var thumbContainer = thumb.parent();
-    var trackContainer = angular.element(element[0].querySelector('.slider-track-container'));
-    var activeTrack = angular.element(element[0].querySelector('.slider-track-fill'));
-    var tickContainer = angular.element(element[0].querySelector('.slider-track-ticks'));
+    var trackContainer = angular.element(element[0].querySelector('.md-track-container'));
+    var activeTrack = angular.element(element[0].querySelector('.md-track-fill'));
+    var tickContainer = angular.element(element[0].querySelector('.md-track-ticks'));
     var throttledRefreshDimensions = $mdUtil.throttle(refreshSliderDimensions, 5000);
 
     // Default values, overridable by attrs
@@ -3045,7 +3052,7 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
         $mdEffects.TRANSFORM,
         'translate3d(' + getSliderDimensions().width * percent + 'px,0,0)'
       );
-      element.toggleClass('slider-min', percent === 0);
+      element.toggleClass('md-min', percent === 0);
     }
 
 
@@ -4011,6 +4018,7 @@ function mdInputDirective($mdUtil) {
       var isDisabled = $mdUtil.isParentDisabled(element);
 
       element.attr('tabindex', isDisabled ? -1 : 0 );
+      element.attr('aria-disabled', isDisabled ? 'true' : 'false');
       element.attr('type', attr.type || element.parent().attr('type') || "text" );
 
       // When the input value changes, check if it "has" a value, and
@@ -4094,8 +4102,11 @@ function MdToastDirective() {
  * `$mdToast` opens a toast nofication on any position on the screen with an optional
  * duration, and provides a simple promise API.
  *
+ *
  * ### Restrictions
  * - The toast's template must have an outer `<md-toast>` element.
+ * - For a toast action, use element with class `md-action`.
+ * - Add the class `md-capsule` for curved corners.
  *
  * @usage
  * <hljs lang="html">
@@ -4190,13 +4201,16 @@ function MdToastService($timeout, $$interimElement, $animate, $mdSwipe, $mdThemi
   return $mdToast;
 
   function onShow(scope, element, options) {
-    element.addClass(options.position);
+    // 'top left' -> 'md-top md-left'
+    element.addClass(options.position.split(' ').map(function(pos) {
+      return 'md-' + pos;
+    }).join(' '));
     options.parent.addClass(toastOpenClass(options.position));
 
     var configureSwipe = $mdSwipe(scope, 'swipeleft swiperight');
     options.detachSwipe = configureSwipe(element, function(ev) {
       //Add swipeleft/swiperight class to element so it can animate correctly
-      element.addClass(ev.type);
+      element.addClass('md-' + ev.type);
       $timeout($mdToast.hide);
     });
 
@@ -4421,8 +4435,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
   var TOOLTIP_SHOW_DELAY = 400;
   var TOOLTIP_WINDOW_EDGE_SPACE = 8;
   // We have to append tooltips to the body, because we use
-  // getBoundingClientRect().
-  // to find where to append the tooltip.
+  // getBoundingClientRect() to find where to append the tooltip.
   var tooltipParent = angular.element(document.body);
 
   return {
@@ -4430,8 +4443,8 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     transclude: true,
     require: '^?mdContent',
     template: 
-      '<div class="tooltip-background"></div>' +
-      '<div class="tooltip-content" ng-transclude></div>',
+      '<div class="md-background"></div>' +
+      '<div class="md-content" ng-transclude></div>',
     scope: {
       visible: '=?'
     },
@@ -4452,7 +4465,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     });
     parent.on('blur mouseleave touchend touchcancel', function() {
       // Don't hide the tooltip if the parent is still focused.
-      if (document.activeElement === parent[0]) return;
+      if ($document.activeElement === parent[0]) return;
       setVisible(false);
     });
 
@@ -4501,7 +4514,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     function showTooltip() {
       // Insert the element before positioning it, so we can get position
       // (tooltip is hidden by default)
-      element.removeClass('tooltip-hide');
+      element.removeClass('md-hide');
       parent.attr('aria-describedby', element.attr('id'));
       tooltipParent.append(element);
 
@@ -4514,14 +4527,14 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
         $$rAF(function() {
           positionTooltip();
           if (!scope.visible) return;
-          element.addClass('tooltip-show');
+          element.addClass('md-show');
         });
 
       });
     }
 
     function hideTooltip() {
-      element.removeClass('tooltip-show').addClass('tooltip-hide');
+      element.removeClass('md-show').addClass('md-hide');
       parent.removeAttr('aria-describedby');
       $timeout(function() {
         if (scope.visible) return;
@@ -4561,7 +4574,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       element.css({top: newPosition.top + 'px', left: newPosition.left + 'px'});
       // Tell the CSS the size of this tooltip, as a multiple of 32.
       element.attr('width-32', Math.ceil(tipRect.width / 32));
-      element.attr('tooltip-direction', tipDirection);
+      element.attr('md-direction', tipDirection);
     }
 
   }
@@ -5274,9 +5287,12 @@ function Theming($rootScope) {
     var ctrl = el.controller('mdTheme');
 
     if (angular.isDefined(el.attr('md-theme-watch'))) { 
-      scope.$watch(function() { 
+      var deregisterWatch = scope.$watch(function() { 
         return ctrl && ctrl.$mdTheme || 'default'; 
       }, changeTheme);
+      // If scope is $rootScope, we need to be sure to deregister when the
+      // element is destroyed
+      el.on('$destroy', deregisterWatch);
     } else {
       var theme = ctrl && ctrl.$mdTheme || 'default';
       changeTheme(theme);
@@ -5602,7 +5618,7 @@ function TabItemController(scope, element, $compile, $animate, $mdSwipe, $mdUtil
   self.$$onSwipe = angular.noop;
 
   // Properties
-  self.contentContainer = angular.element('<div class="tab-content ng-hide">');
+  self.contentContainer = angular.element('<div class="md-tab-content ng-hide">');
   self.element = element;
 
   // Methods
@@ -5711,7 +5727,7 @@ angular.module('material.components.tabs')
  * markup of the `<md-tab>` is used as the tab header markup.
  *
  * If a tab **label** has been identified, then any **non-**`<md-tab-label>` markup
- * will be considered tab content and will be transcluded to the internal `<div class="tabs-content">` container.
+ * will be considered tab content and will be transcluded to the internal `<div class="md-tabs-content">` container.
  *
  * This container is used by the TabsController to show/hide the active tab's content view. This synchronization is
  * automatically managed by the internal TabsController whenever the tab selection changes. Selection changes can
@@ -5922,7 +5938,7 @@ function MdTabsController(scope, element, $mdUtil) {
   // Properties
   self.element = element;
   // The section containing the tab content elements
-  self.contentArea = angular.element(element[0].querySelector('.tabs-content'));
+  self.contentArea = angular.element(element[0].querySelector('.md-tabs-content'));
 
   // Methods from iterator
   self.inRange = tabsList.inRange;
@@ -6155,28 +6171,28 @@ function TabsDirective($parse, $mdTheming) {
       selectedIndex: '=?selected'
     },
     template:
-      '<section class="tabs-header" ' +
-        'ng-class="{\'tab-paginating\': pagination.active}">' +
+      '<section class="md-header" ' +
+        'ng-class="{\'md-paginating\': pagination.active}">' +
 
-        '<div class="tab-paginator prev" ' +
+        '<div class="md-paginator md-prev" ' +
           'ng-if="pagination.active && pagination.hasPrev" ' +
           'ng-click="pagination.clickPrevious()">' +
         '</div>' +
 
         // overflow: hidden container when paginating
-        '<div class="tabs-header-items-container" md-tabs-pagination>' +
+        '<div class="md-header-items-container" md-tabs-pagination>' +
           // flex container for <md-tab> elements
-          '<div class="tabs-header-items" ng-transclude></div>' +
+          '<div class="md-header-items" ng-transclude></div>' +
           '<md-tabs-ink-bar></md-tabs-ink-bar>' +
         '</div>' +
 
-        '<div class="tab-paginator next" ' +
+        '<div class="md-paginator md-next" ' +
           'ng-if="pagination.active && pagination.hasNext" ' +
           'ng-click="pagination.clickNext()">' +
         '</div>' +
 
       '</section>' +
-      '<section class="tabs-content"></section>',
+      '<section class="md-tabs-content"></section>',
     link: postLink
   };
 
