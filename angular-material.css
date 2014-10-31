@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.4.2
+ * v0.5.0
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -3260,6 +3260,9 @@ md-tooltip {
 .md-whiteframe-z5 {
   box-shadow: 0px 27px 24px 0 rgba(0, 0, 0, 0.2); }
 
+md-backdrop.md-opaque.md-default-theme {
+  background-color: rgba(0, 0, 0, 0.3); }
+
 md-bottom-sheet.md-default-theme {
   background-color: #fafafa;
   border-top-color: #bdbdbd; }
@@ -3269,9 +3272,6 @@ md-bottom-sheet.md-default-theme {
     background-color: #fafafa; }
   md-bottom-sheet.md-default-theme .md-subheader {
     color: rgba(0, 0, 0, 0.54); }
-
-md-backdrop.md-opaque.md-default-theme {
-  background-color: rgba(0, 0, 0, 0.3); }
 
 md-button.md-default-theme {
   border-radius: 3px; }
