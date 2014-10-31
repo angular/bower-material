@@ -184,7 +184,7 @@ input[type="search"] {
 
 [layout-fill] {
   margin: 0;
-  height: 100%;
+  min-height: 100%;
   width: 100%; }
 
 [layout-align="center"], [layout-align="center center"], [layout-align="center start"], [layout-align="center end"] {
