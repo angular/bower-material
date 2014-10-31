@@ -5,7 +5,7 @@
  * v0.4.2
  */
 (function() {
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.decorators","material.animations","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.tabs","material.components.textField","material.components.switch","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe","material.services.aria","material.services.attrBind","material.services.compiler","material.services.interimElement","material.services.media","material.services.registry","material.services.theming"]);})();
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.decorators","material.animations","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe","material.services.aria","material.services.attrBind","material.services.compiler","material.services.interimElement","material.services.media","material.services.registry","material.services.theming"]);})();
 
 (function() {
   /**
@@ -3777,6 +3777,94 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming) {
 
 (function() {
 /**
+ * @private
+ * @ngdoc module
+ * @name material.components.switch
+ */
+
+angular.module('material.components.switch', [
+  'material.components.checkbox',
+  'material.components.radioButton',
+  'material.services.theming'
+])
+
+.directive('mdSwitch', [
+  'mdCheckboxDirective',
+  'mdRadioButtonDirective',
+  '$mdTheming',
+  MdSwitch
+]);
+
+/**
+ * @private
+ * @ngdoc directive
+ * @module material.components.switch
+ * @name mdSwitch
+ * @restrict E
+ *
+ * The switch directive is used very much like the normal [angular checkbox](https://docs.angularjs.org/api/ng/input/input%5Bcheckbox%5D).
+ *
+ * @param {string} ngModel Assignable angular expression to data-bind to.
+ * @param {string=} name Property name of the form under which the control is published.
+ * @param {expression=} ngTrueValue The value to which the expression should be set when selected.
+ * @param {expression=} ngFalseValue The value to which the expression should be set when not selected.
+ * @param {string=} ngChange Angular expression to be executed when input changes due to user interaction with the input element.
+ * @param {boolean=} noink Use of attribute indicates use of ripple ink effects.
+ * @param {boolean=} disabled Use of attribute indicates the switch is disabled: no ink effects and not selectable
+ * @param {string=} ariaLabel Publish the button label used by screen-readers for accessibility. Defaults to the switch's text.
+ *
+ * @usage
+ * <hljs lang="html">
+ * <md-switch ng-model="isActive" aria-label="Finished?">
+ *   Finished ?
+ * </md-switch>
+ *
+ * <md-switch noink ng-model="hasInk" aria-label="No Ink Effects">
+ *   No Ink Effects
+ * </md-switch>
+ *
+ * <md-switch disabled ng-model="isDisabled" aria-label="Disabled">
+ *   Disabled
+ * </md-switch>
+ *
+ * </hljs>
+ */
+function MdSwitch(checkboxDirectives, radioButtonDirectives, $mdTheming) {
+  var checkboxDirective = checkboxDirectives[0];
+  var radioButtonDirective = radioButtonDirectives[0];
+
+  return {
+    restrict: 'E',
+    transclude: true,
+    template:
+      '<div class="md-switch-bar"></div>' +
+      '<div class="md-switch-thumb">' +
+        radioButtonDirective.template +
+      '</div>',
+    require: '?ngModel',
+    compile: compile
+  };
+
+  function compile(element, attr) {
+    
+    var thumb = angular.element(element[0].querySelector('.md-switch-thumb'));
+    //Copy down disabled attributes for checkboxDirective to use
+    thumb.attr('disabled', attr.disabled);
+    thumb.attr('ngDisabled', attr.ngDisabled);
+
+    var link = checkboxDirective.compile(thumb, attr);
+
+    return function (scope, element, attr, ngModelCtrl) {
+      $mdTheming(element);
+      var thumb = angular.element(element[0].querySelector('.md-switch-thumb'));
+      return link(scope, thumb, attr, ngModelCtrl);
+    };
+  }
+}
+})();
+
+(function() {
+/**
  * @ngdoc module
  * @name material.components.tabs
  * @description
@@ -3987,94 +4075,6 @@ function mdInputDirective($mdUtil) {
 
 
 
-})();
-
-(function() {
-/**
- * @private
- * @ngdoc module
- * @name material.components.switch
- */
-
-angular.module('material.components.switch', [
-  'material.components.checkbox',
-  'material.components.radioButton',
-  'material.services.theming'
-])
-
-.directive('mdSwitch', [
-  'mdCheckboxDirective',
-  'mdRadioButtonDirective',
-  '$mdTheming',
-  MdSwitch
-]);
-
-/**
- * @private
- * @ngdoc directive
- * @module material.components.switch
- * @name mdSwitch
- * @restrict E
- *
- * The switch directive is used very much like the normal [angular checkbox](https://docs.angularjs.org/api/ng/input/input%5Bcheckbox%5D).
- *
- * @param {string} ngModel Assignable angular expression to data-bind to.
- * @param {string=} name Property name of the form under which the control is published.
- * @param {expression=} ngTrueValue The value to which the expression should be set when selected.
- * @param {expression=} ngFalseValue The value to which the expression should be set when not selected.
- * @param {string=} ngChange Angular expression to be executed when input changes due to user interaction with the input element.
- * @param {boolean=} noink Use of attribute indicates use of ripple ink effects.
- * @param {boolean=} disabled Use of attribute indicates the switch is disabled: no ink effects and not selectable
- * @param {string=} ariaLabel Publish the button label used by screen-readers for accessibility. Defaults to the switch's text.
- *
- * @usage
- * <hljs lang="html">
- * <md-switch ng-model="isActive" aria-label="Finished?">
- *   Finished ?
- * </md-switch>
- *
- * <md-switch noink ng-model="hasInk" aria-label="No Ink Effects">
- *   No Ink Effects
- * </md-switch>
- *
- * <md-switch disabled ng-model="isDisabled" aria-label="Disabled">
- *   Disabled
- * </md-switch>
- *
- * </hljs>
- */
-function MdSwitch(checkboxDirectives, radioButtonDirectives, $mdTheming) {
-  var checkboxDirective = checkboxDirectives[0];
-  var radioButtonDirective = radioButtonDirectives[0];
-
-  return {
-    restrict: 'E',
-    transclude: true,
-    template:
-      '<div class="md-switch-bar"></div>' +
-      '<div class="md-switch-thumb">' +
-        radioButtonDirective.template +
-      '</div>',
-    require: '?ngModel',
-    compile: compile
-  };
-
-  function compile(element, attr) {
-    
-    var thumb = angular.element(element[0].querySelector('.md-switch-thumb'));
-    //Copy down disabled attributes for checkboxDirective to use
-    thumb.attr('disabled', attr.disabled);
-    thumb.attr('ngDisabled', attr.ngDisabled);
-
-    var link = checkboxDirective.compile(thumb, attr);
-
-    return function (scope, element, attr, ngModelCtrl) {
-      $mdTheming(element);
-      var thumb = angular.element(element[0].querySelector('.md-switch-thumb'));
-      return link(scope, thumb, attr, ngModelCtrl);
-    };
-  }
-}
 })();
 
 (function() {
