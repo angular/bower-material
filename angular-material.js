@@ -1678,6 +1678,8 @@ function MdDialogDirective($$rAF, $mdTheming) {
  *   - `controllerAs` - `{string=}`: An alias to assign the controller to on the scope.
  *   - `parent` - `{element=}`: The element to append the dialog to. Defaults to appending
  *     to the root element of the application.
+ *   - `onComplete` `{function=}`: Callback function used to announce when the show() action is
+ *     finished.
  *
  * @returns {promise} A promise that can be resolved with `$mdDialog.hide()` or
  * rejected with `mdDialog.cancel()`.
@@ -5081,6 +5083,11 @@ function InterimElementFactory($q, $rootScope, $timeout, $rootElement, $animate,
             if (options.themable) $mdTheming(element);
             var ret = options.onShow(options.scope, element, options);
             return $q.when(ret)
+              .then(function(){
+                  // Issue onComplete callback when the `show()` finishes
+                  var notify = options.onComplete || angular.noop;
+                  notify.apply(null, [options.scope, element, options]);
+              })
               .then(startHideTimeout);
 
             function startHideTimeout() {
