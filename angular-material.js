@@ -1625,8 +1625,7 @@ function MdDialogDirective($$rAF, $mdTheming) {
  *   $scope.openDialog = function($event) {
  *     $mdDialog.show({
  *       targetEvent: $event,
- *       controller: 'DialogController',
- *       template: 
+ *       template:
  *         '<md-dialog>' +
  *         '  <md-content>Hello!</md-content>' +
  *         '  <div class="md-actions">' +
@@ -1634,9 +1633,16 @@ function MdDialogDirective($$rAF, $mdTheming) {
  *         '      Close' +
  *         '    </md-button>' +
  *         '  </div>' +
- *         '</md-dialog>'
+ *         '</md-dialog>',
+ *       controller: 'DialogController',
+ *       onComplete: afterShowAnimation
  *     });
- *   };
+ *
+ *     // When the 'enter' animation finishes...
+ *     function afterShowAnimation(scope, element, options)
+ *     {
+ *        // post-show code here: DOM element focus, etc.
+ *     };
  * });
  * app.controller('DialogController', function($scope, $mdDialog) {
  *   $scope.closeDialog = function() {
