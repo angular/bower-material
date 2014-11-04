@@ -1254,11 +1254,11 @@ function MdButtonDirective(ngHrefDirectives, $mdInkRipple, $mdAria, $mdUtil, $md
       // so this element can be clicked like a normal `<a>`.
       if (attr.ngHref || attr.href) {
         innerElement = angular.element('<a>');
-        attributesToCopy = ['ng-href', 'href', 'rel', 'target', 'title', 'aria-label'];
+        attributesToCopy = ['ng-href', 'href', 'rel', 'target'];
       // Otherwise, just add an inner button element (for form submission etc)
       } else {
         innerElement = angular.element('<button>');
-        attributesToCopy = ['type', 'disabled', 'ng-disabled', 'form', 'aria-label'];
+        attributesToCopy = ['type', 'disabled', 'ng-disabled', 'form'];
       }
 
       angular.forEach(attributesToCopy, function(name) {
@@ -1291,7 +1291,7 @@ function MdButtonDirective(ngHrefDirectives, $mdInkRipple, $mdAria, $mdUtil, $md
 
       return function postLink(scope, element, attr) {
         $mdTheming(element);
-        $mdAria.expect(element, 'aria-label', true);
+        $mdAria.expect(element, 'aria-label', element.text());
         $mdInkRipple.attachButtonBehavior(element);
       };
     }
@@ -1627,7 +1627,7 @@ function MdDialogDirective($$rAF, $mdTheming) {
  *       targetEvent: $event,
  *       template:
  *         '<md-dialog>' +
- *         '  <md-content>Hello!</md-content>' +
+ *         '  <md-content>Hello {{ userName }}!</md-content>' +
  *         '  <div class="md-actions">' +
  *         '    <md-button ng-click="closeDialog()">' +
  *         '      Close' +
@@ -1635,7 +1635,8 @@ function MdDialogDirective($$rAF, $mdTheming) {
  *         '  </div>' +
  *         '</md-dialog>',
  *       controller: 'DialogController',
- *       onComplete: afterShowAnimation
+ *       onComplete: afterShowAnimation,
+ *       locals: { name: 'Bobby' }
  *     });
  *
  *     // When the 'enter' animation finishes...
@@ -1644,7 +1645,8 @@ function MdDialogDirective($$rAF, $mdTheming) {
  *        // post-show code here: DOM element focus, etc.
  *     };
  * });
- * app.controller('DialogController', function($scope, $mdDialog) {
+ * app.controller('DialogController', function($scope, $mdDialog, name) {
+ *   $scope.userName = name;
  *   $scope.closeDialog = function() {
  *     $mdDialog.hide();
  *   };
