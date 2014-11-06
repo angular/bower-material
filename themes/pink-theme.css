@@ -1,16 +1,6 @@
 md-backdrop.md-opaque.md-pink-theme {
   background-color: rgba(0, 0, 0, 0.3); }
 
-md-bottom-sheet.md-pink-theme {
-  background-color: #fafafa;
-  border-top-color: #bdbdbd; }
-  md-bottom-sheet.md-pink-theme.md-list md-item {
-    color: rgba(0, 0, 0, 0.54); }
-  md-bottom-sheet.md-pink-theme .md-subheader {
-    background-color: #fafafa; }
-  md-bottom-sheet.md-pink-theme .md-subheader {
-    color: rgba(0, 0, 0, 0.54); }
-
 md-button.md-pink-theme {
   border-radius: 3px; }
   md-button.md-pink-theme[disabled] {
@@ -65,6 +55,16 @@ md-checkbox.md-pink-theme[disabled].md-checked .md-icon {
 
 md-content.md-pink-theme {
   background-color: #ffffff; }
+
+md-bottom-sheet.md-pink-theme {
+  background-color: #fafafa;
+  border-top-color: #bdbdbd; }
+  md-bottom-sheet.md-pink-theme.md-list md-item {
+    color: rgba(0, 0, 0, 0.54); }
+  md-bottom-sheet.md-pink-theme .md-subheader {
+    background-color: #fafafa; }
+  md-bottom-sheet.md-pink-theme .md-subheader {
+    color: rgba(0, 0, 0, 0.54); }
 
 md-dialog.md-pink-theme {
   border-radius: 4px;

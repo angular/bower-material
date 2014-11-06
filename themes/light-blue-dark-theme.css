@@ -1,16 +1,6 @@
 md-backdrop.md-opaque.md-light-blue-dark-theme {
   background-color: rgba(0, 0, 0, 0.3); }
 
-md-bottom-sheet.md-light-blue-dark-theme {
-  background-color: #fafafa;
-  border-top-color: #bdbdbd; }
-  md-bottom-sheet.md-light-blue-dark-theme.md-list md-item {
-    color: #fefefe; }
-  md-bottom-sheet.md-light-blue-dark-theme .md-subheader {
-    background-color: #fafafa; }
-  md-bottom-sheet.md-light-blue-dark-theme .md-subheader {
-    color: #fefefe; }
-
 md-button.md-light-blue-dark-theme {
   border-radius: 3px; }
   md-button.md-light-blue-dark-theme[disabled] {
@@ -65,6 +55,16 @@ md-checkbox.md-light-blue-dark-theme[disabled].md-checked .md-icon {
 
 md-content.md-light-blue-dark-theme {
   background-color: #333; }
+
+md-bottom-sheet.md-light-blue-dark-theme {
+  background-color: #fafafa;
+  border-top-color: #bdbdbd; }
+  md-bottom-sheet.md-light-blue-dark-theme.md-list md-item {
+    color: #fefefe; }
+  md-bottom-sheet.md-light-blue-dark-theme .md-subheader {
+    background-color: #fafafa; }
+  md-bottom-sheet.md-light-blue-dark-theme .md-subheader {
+    color: #fefefe; }
 
 md-dialog.md-light-blue-dark-theme {
   border-radius: 4px;

@@ -1,16 +1,6 @@
 md-backdrop.md-opaque.md-yellow-theme {
   background-color: rgba(0, 0, 0, 0.3); }
 
-md-bottom-sheet.md-yellow-theme {
-  background-color: #fafafa;
-  border-top-color: #bdbdbd; }
-  md-bottom-sheet.md-yellow-theme.md-list md-item {
-    color: rgba(0, 0, 0, 0.54); }
-  md-bottom-sheet.md-yellow-theme .md-subheader {
-    background-color: #fafafa; }
-  md-bottom-sheet.md-yellow-theme .md-subheader {
-    color: rgba(0, 0, 0, 0.54); }
-
 md-button.md-yellow-theme {
   border-radius: 3px; }
   md-button.md-yellow-theme[disabled] {
@@ -65,6 +55,16 @@ md-checkbox.md-yellow-theme[disabled].md-checked .md-icon {
 
 md-content.md-yellow-theme {
   background-color: #ffffff; }
+
+md-bottom-sheet.md-yellow-theme {
+  background-color: #fafafa;
+  border-top-color: #bdbdbd; }
+  md-bottom-sheet.md-yellow-theme.md-list md-item {
+    color: rgba(0, 0, 0, 0.54); }
+  md-bottom-sheet.md-yellow-theme .md-subheader {
+    background-color: #fafafa; }
+  md-bottom-sheet.md-yellow-theme .md-subheader {
+    color: rgba(0, 0, 0, 0.54); }
 
 md-dialog.md-yellow-theme {
   border-radius: 4px;

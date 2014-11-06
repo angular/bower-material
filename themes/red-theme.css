@@ -1,16 +1,6 @@
 md-backdrop.md-opaque.md-red-theme {
   background-color: rgba(0, 0, 0, 0.3); }
 
-md-bottom-sheet.md-red-theme {
-  background-color: #fafafa;
-  border-top-color: #bdbdbd; }
-  md-bottom-sheet.md-red-theme.md-list md-item {
-    color: rgba(0, 0, 0, 0.54); }
-  md-bottom-sheet.md-red-theme .md-subheader {
-    background-color: #fafafa; }
-  md-bottom-sheet.md-red-theme .md-subheader {
-    color: rgba(0, 0, 0, 0.54); }
-
 md-button.md-red-theme {
   border-radius: 3px; }
   md-button.md-red-theme[disabled] {
@@ -65,6 +55,16 @@ md-checkbox.md-red-theme[disabled].md-checked .md-icon {
 
 md-content.md-red-theme {
   background-color: #ffffff; }
+
+md-bottom-sheet.md-red-theme {
+  background-color: #fafafa;
+  border-top-color: #bdbdbd; }
+  md-bottom-sheet.md-red-theme.md-list md-item {
+    color: rgba(0, 0, 0, 0.54); }
+  md-bottom-sheet.md-red-theme .md-subheader {
+    background-color: #fafafa; }
+  md-bottom-sheet.md-red-theme .md-subheader {
+    color: rgba(0, 0, 0, 0.54); }
 
 md-dialog.md-red-theme {
   border-radius: 4px;
