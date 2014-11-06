@@ -1,37 +1,47 @@
 md-backdrop.md-opaque.md-deep-orange-theme {
   background-color: rgba(0, 0, 0, 0.3); }
 
-md-button.md-deep-orange-theme {
+md-bottom-sheet.md-deep-orange-theme {
+  background-color: #fafafa;
+  border-top-color: #bdbdbd; }
+  md-bottom-sheet.md-deep-orange-theme.md-list md-item {
+    color: rgba(0, 0, 0, 0.54); }
+  md-bottom-sheet.md-deep-orange-theme .md-subheader {
+    background-color: #fafafa; }
+  md-bottom-sheet.md-deep-orange-theme .md-subheader {
+    color: rgba(0, 0, 0, 0.54); }
+
+.md-button.md-deep-orange-theme {
   border-radius: 3px; }
-  md-button.md-deep-orange-theme[disabled] {
-    background-color: rgba(158, 158, 158, 0.145) !important;
-    color: #9e9e9e !important;
-    fill: #9e9e9e !important;
-    cursor: auto; }
-  md-button.md-deep-orange-theme:not([disabled]):hover, md-button.md-deep-orange-theme:not([disabled]).focus {
+  .md-button.md-deep-orange-theme:not([disabled]):hover, .md-button.md-deep-orange-theme:not([disabled]):focus {
     background-color: rgba(158, 158, 158, 0.2); }
-  md-button.md-deep-orange-theme.md-fab {
+  .md-button.md-deep-orange-theme.md-fab {
     border-radius: 50%; }
-  md-button.md-deep-orange-theme.md-primary {
+  .md-button.md-deep-orange-theme.md-primary {
     color: #ff7043;
     fill: #ff7043; }
-  md-button.md-deep-orange-theme.md-warn {
+  .md-button.md-deep-orange-theme.md-warn {
     color: #e84e40;
     fill: #e84e40; }
-  md-button.md-deep-orange-theme.md-raised, md-button.md-deep-orange-theme.md-fab {
+  .md-button.md-deep-orange-theme.md-raised, .md-button.md-deep-orange-theme.md-fab {
     background-color: rgba(158, 158, 158, 0.185); }
-    md-button.md-deep-orange-theme.md-raised:not([disabled]):hover, md-button.md-deep-orange-theme.md-raised:not([disabled]).focus, md-button.md-deep-orange-theme.md-fab:not([disabled]):hover, md-button.md-deep-orange-theme.md-fab:not([disabled]).focus {
+    .md-button.md-deep-orange-theme.md-raised:not([disabled]):hover, .md-button.md-deep-orange-theme.md-raised:not([disabled]):focus, .md-button.md-deep-orange-theme.md-fab:not([disabled]):hover, .md-button.md-deep-orange-theme.md-fab:not([disabled]):focus {
       background-color: rgba(158, 158, 158, 0.3); }
-    md-button.md-deep-orange-theme.md-raised.md-primary, md-button.md-deep-orange-theme.md-fab.md-primary {
+    .md-button.md-deep-orange-theme.md-raised.md-primary, .md-button.md-deep-orange-theme.md-fab.md-primary {
       color: white;
       background-color: #ff5722; }
-      md-button.md-deep-orange-theme.md-raised.md-primary:not([disabled]):hover, md-button.md-deep-orange-theme.md-raised.md-primary:not([disabled]).focus, md-button.md-deep-orange-theme.md-fab.md-primary:not([disabled]):hover, md-button.md-deep-orange-theme.md-fab.md-primary:not([disabled]).focus {
+      .md-button.md-deep-orange-theme.md-raised.md-primary:not([disabled]):hover, .md-button.md-deep-orange-theme.md-raised.md-primary:not([disabled]):focus, .md-button.md-deep-orange-theme.md-fab.md-primary:not([disabled]):hover, .md-button.md-deep-orange-theme.md-fab.md-primary:not([disabled]):focus {
         background-color: #f4511e; }
-    md-button.md-deep-orange-theme.md-raised.md-warn, md-button.md-deep-orange-theme.md-fab.md-warn {
+    .md-button.md-deep-orange-theme.md-raised.md-warn, .md-button.md-deep-orange-theme.md-fab.md-warn {
       color: white;
       background-color: #e51c23; }
-      md-button.md-deep-orange-theme.md-raised.md-warn:not([disabled]):hover, md-button.md-deep-orange-theme.md-raised.md-warn:not([disabled]).focus, md-button.md-deep-orange-theme.md-fab.md-warn:not([disabled]):hover, md-button.md-deep-orange-theme.md-fab.md-warn:not([disabled]).focus {
+      .md-button.md-deep-orange-theme.md-raised.md-warn:not([disabled]):hover, .md-button.md-deep-orange-theme.md-raised.md-warn:not([disabled]):focus, .md-button.md-deep-orange-theme.md-fab.md-warn:not([disabled]):hover, .md-button.md-deep-orange-theme.md-fab.md-warn:not([disabled]):focus {
         background-color: #d01716; }
+  .md-button.md-deep-orange-theme[disabled], .md-button.md-deep-orange-theme.md-raised[disabled], .md-button.md-deep-orange-theme.md-fab[disabled] {
+    color: rgba(0, 0, 0, 0.26);
+    fill: rgba(0, 0, 0, 0.26);
+    background-color: transparent;
+    cursor: not-allowed; }
 
 md-card.md-deep-orange-theme {
   border-radius: 2px; }
@@ -55,16 +65,6 @@ md-checkbox.md-deep-orange-theme[disabled].md-checked .md-icon {
 
 md-content.md-deep-orange-theme {
   background-color: #ffffff; }
-
-md-bottom-sheet.md-deep-orange-theme {
-  background-color: #fafafa;
-  border-top-color: #bdbdbd; }
-  md-bottom-sheet.md-deep-orange-theme.md-list md-item {
-    color: rgba(0, 0, 0, 0.54); }
-  md-bottom-sheet.md-deep-orange-theme .md-subheader {
-    background-color: #fafafa; }
-  md-bottom-sheet.md-deep-orange-theme .md-subheader {
-    color: rgba(0, 0, 0, 0.54); }
 
 md-dialog.md-deep-orange-theme {
   border-radius: 4px;
@@ -183,7 +183,7 @@ md-input-group.md-deep-orange-theme[disabled] input, md-input-group.md-deep-oran
 md-toast.md-deep-orange-theme {
   background-color: #323232;
   color: white; }
-  md-toast.md-deep-orange-theme md-button {
+  md-toast.md-deep-orange-theme .md-button {
     color: white; }
   md-toast.md-deep-orange-theme .md-action {
     color: #ff6e40; }

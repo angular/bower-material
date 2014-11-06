@@ -155,10 +155,10 @@ input[type="search"] {
   border-radius: inherit;
   pointer-events: none; }
 
-.md-shadow-bottom-z-1, md-button.md-raised:not([disabled]), md-button.md-fab {
+.md-shadow-bottom-z-1, .md-button.md-raised:not([disabled]), .md-button.md-fab {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
 
-.md-shadow-bottom-z-2, md-button.md-raised.focus:not([disabled]), md-button.md-raised:not([disabled]):hover, md-button.md-fab.focus:not([disabled]), md-button.md-fab:not([disabled]):hover {
+.md-shadow-bottom-z-2, .md-button.md-raised:not([disabled]):focus, .md-button.md-raised:not([disabled]):hover, .md-button.md-fab:not([disabled]):focus, .md-button.md-fab:not([disabled]):hover {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4); }
 
 .md-shadow-animated.md-shadow {
@@ -1440,7 +1440,7 @@ md-bottom-sheet {
 /**
  * Position a FAB button.
  */
-md-button {
+.md-button {
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -1449,8 +1449,10 @@ md-button {
   display: inline-block;
   outline: none;
   border: 0;
-  padding: 0;
+  padding: 6px;
   margin: 0;
+  background: transparent;
+  white-space: nowrap;
   text-align: center;
   text-transform: uppercase;
   font-weight: inherit;
@@ -1459,45 +1461,21 @@ md-button {
   font-size: inherit;
   font-family: inherit;
   line-height: inherit;
+  text-decoration: none;
   cursor: pointer;
   overflow: hidden; }
-  md-button .md-button-inner {
-    display: block;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    border: none;
-    color: inherit;
-    outline: none;
-    text-transform: inherit;
-    font-weight: inherit;
-    font-style: inherit;
-    font-variant: inherit;
-    font-size: inherit;
-    font-family: inherit;
-    line-height: inherit;
-    white-space: nowrap;
-    padding: 6px; }
-  md-button a {
-    text-decoration: none; }
-  md-button[href] {
-    pointer-events: none; }
-    md-button[href] .md-button-inner {
-      pointer-events: auto; }
-  md-button.md-cornered {
+  .md-button.md-cornered {
     border-radius: 0; }
-  md-button.md-icon {
+  .md-button.md-icon {
     padding: 0;
     background: none; }
-  md-button.md-raised {
+  .md-button.md-raised {
     transition: 0.2s linear;
     transition-property: box-shadow, -webkit-transform, background-color;
     transition-property: box-shadow, transform, background-color;
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }
-  md-button.md-fab {
+  .md-button.md-fab {
     z-index: 2;
     width: 56px;
     height: 56px;
@@ -1509,45 +1487,45 @@ md-button {
     transition: 0.2s linear;
     transition-property: -webkit-transform, box-shadow;
     transition-property: transform, box-shadow; }
-    md-button.md-fab.md-fab-bottom-right {
+    .md-button.md-fab.md-fab-bottom-right {
       top: auto;
       right: 28px;
       bottom: 28px;
       left: auto;
       position: absolute; }
-    md-button.md-fab.md-fab-bottom-left {
+    .md-button.md-fab.md-fab-bottom-left {
       top: auto;
       right: auto;
       bottom: 28px;
       left: 28px;
       position: absolute; }
-    md-button.md-fab.md-fab-top-right {
+    .md-button.md-fab.md-fab-top-right {
       top: 28px;
       right: 28px;
       bottom: auto;
       left: auto;
       position: absolute; }
-    md-button.md-fab.md-fab-top-left {
+    .md-button.md-fab.md-fab-top-left {
       top: 28px;
       right: auto;
       bottom: auto;
       left: 28px;
       position: absolute; }
-  md-button:not([disabled]).md-raised.focus, md-button:not([disabled]).md-raised:hover, md-button:not([disabled]).md-fab.focus, md-button:not([disabled]).md-fab:hover {
+  .md-button:not([disabled]).md-raised:focus, .md-button:not([disabled]).md-raised:hover, .md-button:not([disabled]).md-fab:focus, .md-button:not([disabled]).md-fab:hover {
     -webkit-transform: translate3d(0, -1px, 0);
             transform: translate3d(0, -1px, 0); }
 
-.md-toast-open-top md-button.md-fab-top-left, .md-toast-open-top md-button.md-fab-top-right {
+.md-toast-open-top .md-button.md-fab-top-left, .md-toast-open-top .md-button.md-fab-top-right {
   -webkit-transform: translate3d(0, 32px, 0);
           transform: translate3d(0, 32px, 0); }
-  .md-toast-open-top md-button.md-fab-top-left.focus, .md-toast-open-top md-button.md-fab-top-left:hover:not([disabled]), .md-toast-open-top md-button.md-fab-top-right.focus, .md-toast-open-top md-button.md-fab-top-right:hover:not([disabled]) {
+  .md-toast-open-top .md-button.md-fab-top-left:not([disabled]):focus, .md-toast-open-top .md-button.md-fab-top-left:not([disabled]):hover, .md-toast-open-top .md-button.md-fab-top-right:not([disabled]):focus, .md-toast-open-top .md-button.md-fab-top-right:not([disabled]):hover {
     -webkit-transform: translate3d(0, 31px, 0);
             transform: translate3d(0, 31px, 0); }
 
-.md-toast-open-bottom md-button.md-fab-bottom-left, .md-toast-open-bottom md-button.md-fab-bottom-right {
+.md-toast-open-bottom .md-button.md-fab-bottom-left, .md-toast-open-bottom .md-button.md-fab-bottom-right {
   -webkit-transform: translate3d(0, -32px, 0);
           transform: translate3d(0, -32px, 0); }
-  .md-toast-open-bottom md-button.md-fab-bottom-left.focus, .md-toast-open-bottom md-button.md-fab-bottom-left:hover, .md-toast-open-bottom md-button.md-fab-bottom-right.focus, .md-toast-open-bottom md-button.md-fab-bottom-right:hover {
+  .md-toast-open-bottom .md-button.md-fab-bottom-left:not([disabled]):focus, .md-toast-open-bottom .md-button.md-fab-bottom-left:not([disabled]):hover, .md-toast-open-bottom .md-button.md-fab-bottom-right:not([disabled]):focus, .md-toast-open-bottom .md-button.md-fab-bottom-right:not([disabled]):hover {
     -webkit-transform: translate3d(0, -33px, 0);
             transform: translate3d(0, -33px, 0); }
 
@@ -3096,7 +3074,7 @@ md-toolbar {
   .md-toolbar-tools a {
     color: inherit;
     text-decoration: none; }
-  .md-toolbar-tools md-button {
+  .md-toolbar-tools .md-button {
     font-size: 16px; }
 
 @-webkit-keyframes tooltipBackgroundShow {
@@ -3246,37 +3224,47 @@ md-tooltip {
 md-backdrop.md-opaque.md-default-theme {
   background-color: rgba(0, 0, 0, 0.3); }
 
-md-button.md-default-theme {
+md-bottom-sheet.md-default-theme {
+  background-color: #fafafa;
+  border-top-color: #bdbdbd; }
+  md-bottom-sheet.md-default-theme.md-list md-item {
+    color: rgba(0, 0, 0, 0.54); }
+  md-bottom-sheet.md-default-theme .md-subheader {
+    background-color: #fafafa; }
+  md-bottom-sheet.md-default-theme .md-subheader {
+    color: rgba(0, 0, 0, 0.54); }
+
+.md-button.md-default-theme {
   border-radius: 3px; }
-  md-button.md-default-theme[disabled] {
-    background-color: rgba(158, 158, 158, 0.145) !important;
-    color: #9e9e9e !important;
-    fill: #9e9e9e !important;
-    cursor: auto; }
-  md-button.md-default-theme:not([disabled]):hover, md-button.md-default-theme:not([disabled]).focus {
+  .md-button.md-default-theme:not([disabled]):hover, .md-button.md-default-theme:not([disabled]):focus {
     background-color: rgba(158, 158, 158, 0.2); }
-  md-button.md-default-theme.md-fab {
+  .md-button.md-default-theme.md-fab {
     border-radius: 50%; }
-  md-button.md-default-theme.md-primary {
+  .md-button.md-default-theme.md-primary {
     color: #29b6f6;
     fill: #29b6f6; }
-  md-button.md-default-theme.md-warn {
+  .md-button.md-default-theme.md-warn {
     color: #e84e40;
     fill: #e84e40; }
-  md-button.md-default-theme.md-raised, md-button.md-default-theme.md-fab {
+  .md-button.md-default-theme.md-raised, .md-button.md-default-theme.md-fab {
     background-color: rgba(158, 158, 158, 0.185); }
-    md-button.md-default-theme.md-raised:not([disabled]):hover, md-button.md-default-theme.md-raised:not([disabled]).focus, md-button.md-default-theme.md-fab:not([disabled]):hover, md-button.md-default-theme.md-fab:not([disabled]).focus {
+    .md-button.md-default-theme.md-raised:not([disabled]):hover, .md-button.md-default-theme.md-raised:not([disabled]):focus, .md-button.md-default-theme.md-fab:not([disabled]):hover, .md-button.md-default-theme.md-fab:not([disabled]):focus {
       background-color: rgba(158, 158, 158, 0.3); }
-    md-button.md-default-theme.md-raised.md-primary, md-button.md-default-theme.md-fab.md-primary {
+    .md-button.md-default-theme.md-raised.md-primary, .md-button.md-default-theme.md-fab.md-primary {
       color: white;
       background-color: #03a9f4; }
-      md-button.md-default-theme.md-raised.md-primary:not([disabled]):hover, md-button.md-default-theme.md-raised.md-primary:not([disabled]).focus, md-button.md-default-theme.md-fab.md-primary:not([disabled]):hover, md-button.md-default-theme.md-fab.md-primary:not([disabled]).focus {
+      .md-button.md-default-theme.md-raised.md-primary:not([disabled]):hover, .md-button.md-default-theme.md-raised.md-primary:not([disabled]):focus, .md-button.md-default-theme.md-fab.md-primary:not([disabled]):hover, .md-button.md-default-theme.md-fab.md-primary:not([disabled]):focus {
         background-color: #039be5; }
-    md-button.md-default-theme.md-raised.md-warn, md-button.md-default-theme.md-fab.md-warn {
+    .md-button.md-default-theme.md-raised.md-warn, .md-button.md-default-theme.md-fab.md-warn {
       color: white;
       background-color: #e51c23; }
-      md-button.md-default-theme.md-raised.md-warn:not([disabled]):hover, md-button.md-default-theme.md-raised.md-warn:not([disabled]).focus, md-button.md-default-theme.md-fab.md-warn:not([disabled]):hover, md-button.md-default-theme.md-fab.md-warn:not([disabled]).focus {
+      .md-button.md-default-theme.md-raised.md-warn:not([disabled]):hover, .md-button.md-default-theme.md-raised.md-warn:not([disabled]):focus, .md-button.md-default-theme.md-fab.md-warn:not([disabled]):hover, .md-button.md-default-theme.md-fab.md-warn:not([disabled]):focus {
         background-color: #d01716; }
+  .md-button.md-default-theme[disabled], .md-button.md-default-theme.md-raised[disabled], .md-button.md-default-theme.md-fab[disabled] {
+    color: rgba(0, 0, 0, 0.26);
+    fill: rgba(0, 0, 0, 0.26);
+    background-color: transparent;
+    cursor: not-allowed; }
 
 md-card.md-default-theme {
   border-radius: 2px; }
@@ -3300,16 +3288,6 @@ md-checkbox.md-default-theme[disabled].md-checked .md-icon {
 
 md-content.md-default-theme {
   background-color: #ffffff; }
-
-md-bottom-sheet.md-default-theme {
-  background-color: #fafafa;
-  border-top-color: #bdbdbd; }
-  md-bottom-sheet.md-default-theme.md-list md-item {
-    color: rgba(0, 0, 0, 0.54); }
-  md-bottom-sheet.md-default-theme .md-subheader {
-    background-color: #fafafa; }
-  md-bottom-sheet.md-default-theme .md-subheader {
-    color: rgba(0, 0, 0, 0.54); }
 
 md-dialog.md-default-theme {
   border-radius: 4px;
@@ -3428,7 +3406,7 @@ md-input-group.md-default-theme[disabled] input, md-input-group.md-default-theme
 md-toast.md-default-theme {
   background-color: #323232;
   color: white; }
-  md-toast.md-default-theme md-button {
+  md-toast.md-default-theme .md-button {
     color: white; }
   md-toast.md-default-theme .md-action {
     color: #40c4ff; }
