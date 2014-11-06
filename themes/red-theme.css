@@ -1,6 +1,3 @@
-md-backdrop.md-opaque.md-red-theme {
-  background-color: rgba(0, 0, 0, 0.3); }
-
 md-bottom-sheet.md-red-theme {
   background-color: #fafafa;
   border-top-color: #bdbdbd; }
@@ -10,6 +7,9 @@ md-bottom-sheet.md-red-theme {
     background-color: #fafafa; }
   md-bottom-sheet.md-red-theme .md-subheader {
     color: rgba(0, 0, 0, 0.54); }
+
+md-backdrop.md-opaque.md-red-theme {
+  background-color: rgba(0, 0, 0, 0.3); }
 
 md-button.md-red-theme {
   border-radius: 3px; }
