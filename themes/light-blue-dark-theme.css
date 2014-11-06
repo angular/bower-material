@@ -11,37 +11,37 @@ md-bottom-sheet.md-light-blue-dark-theme {
   md-bottom-sheet.md-light-blue-dark-theme .md-subheader {
     color: #fefefe; }
 
-.md-button.md-light-blue-dark-theme {
+md-button.md-light-blue-dark-theme {
   border-radius: 3px; }
-  .md-button.md-light-blue-dark-theme:not([disabled]):hover, .md-button.md-light-blue-dark-theme:not([disabled]):focus {
+  md-button.md-light-blue-dark-theme[disabled] {
+    background-color: rgba(158, 158, 158, 0.145) !important;
+    color: #9e9e9e !important;
+    fill: #9e9e9e !important;
+    cursor: auto; }
+  md-button.md-light-blue-dark-theme:not([disabled]):hover, md-button.md-light-blue-dark-theme:not([disabled]).focus {
     background-color: rgba(158, 158, 158, 0.2); }
-  .md-button.md-light-blue-dark-theme.md-fab {
+  md-button.md-light-blue-dark-theme.md-fab {
     border-radius: 50%; }
-  .md-button.md-light-blue-dark-theme.md-primary {
+  md-button.md-light-blue-dark-theme.md-primary {
     color: #29b6f6;
     fill: #29b6f6; }
-  .md-button.md-light-blue-dark-theme.md-warn {
+  md-button.md-light-blue-dark-theme.md-warn {
     color: #e84e40;
     fill: #e84e40; }
-  .md-button.md-light-blue-dark-theme.md-raised, .md-button.md-light-blue-dark-theme.md-fab {
+  md-button.md-light-blue-dark-theme.md-raised, md-button.md-light-blue-dark-theme.md-fab {
     background-color: rgba(158, 158, 158, 0.185); }
-    .md-button.md-light-blue-dark-theme.md-raised:not([disabled]):hover, .md-button.md-light-blue-dark-theme.md-raised:not([disabled]):focus, .md-button.md-light-blue-dark-theme.md-fab:not([disabled]):hover, .md-button.md-light-blue-dark-theme.md-fab:not([disabled]):focus {
+    md-button.md-light-blue-dark-theme.md-raised:not([disabled]):hover, md-button.md-light-blue-dark-theme.md-raised:not([disabled]).focus, md-button.md-light-blue-dark-theme.md-fab:not([disabled]):hover, md-button.md-light-blue-dark-theme.md-fab:not([disabled]).focus {
       background-color: rgba(158, 158, 158, 0.3); }
-    .md-button.md-light-blue-dark-theme.md-raised.md-primary, .md-button.md-light-blue-dark-theme.md-fab.md-primary {
+    md-button.md-light-blue-dark-theme.md-raised.md-primary, md-button.md-light-blue-dark-theme.md-fab.md-primary {
       color: white;
       background-color: #03a9f4; }
-      .md-button.md-light-blue-dark-theme.md-raised.md-primary:not([disabled]):hover, .md-button.md-light-blue-dark-theme.md-raised.md-primary:not([disabled]):focus, .md-button.md-light-blue-dark-theme.md-fab.md-primary:not([disabled]):hover, .md-button.md-light-blue-dark-theme.md-fab.md-primary:not([disabled]):focus {
+      md-button.md-light-blue-dark-theme.md-raised.md-primary:not([disabled]):hover, md-button.md-light-blue-dark-theme.md-raised.md-primary:not([disabled]).focus, md-button.md-light-blue-dark-theme.md-fab.md-primary:not([disabled]):hover, md-button.md-light-blue-dark-theme.md-fab.md-primary:not([disabled]).focus {
         background-color: #039be5; }
-    .md-button.md-light-blue-dark-theme.md-raised.md-warn, .md-button.md-light-blue-dark-theme.md-fab.md-warn {
+    md-button.md-light-blue-dark-theme.md-raised.md-warn, md-button.md-light-blue-dark-theme.md-fab.md-warn {
       color: white;
       background-color: #e51c23; }
-      .md-button.md-light-blue-dark-theme.md-raised.md-warn:not([disabled]):hover, .md-button.md-light-blue-dark-theme.md-raised.md-warn:not([disabled]):focus, .md-button.md-light-blue-dark-theme.md-fab.md-warn:not([disabled]):hover, .md-button.md-light-blue-dark-theme.md-fab.md-warn:not([disabled]):focus {
+      md-button.md-light-blue-dark-theme.md-raised.md-warn:not([disabled]):hover, md-button.md-light-blue-dark-theme.md-raised.md-warn:not([disabled]).focus, md-button.md-light-blue-dark-theme.md-fab.md-warn:not([disabled]):hover, md-button.md-light-blue-dark-theme.md-fab.md-warn:not([disabled]).focus {
         background-color: #d01716; }
-  .md-button.md-light-blue-dark-theme[disabled], .md-button.md-light-blue-dark-theme.md-raised[disabled], .md-button.md-light-blue-dark-theme.md-fab[disabled] {
-    color: #696969;
-    fill: #696969;
-    background-color: transparent;
-    cursor: not-allowed; }
 
 md-card.md-light-blue-dark-theme {
   border-radius: 2px; }
@@ -185,7 +185,7 @@ md-input-group.md-light-blue-dark-theme[disabled] input, md-input-group.md-light
 md-toast.md-light-blue-dark-theme {
   background-color: #323232;
   color: white; }
-  md-toast.md-light-blue-dark-theme .md-button {
+  md-toast.md-light-blue-dark-theme md-button {
     color: white; }
   md-toast.md-light-blue-dark-theme .md-action {
     color: #40c4ff; }

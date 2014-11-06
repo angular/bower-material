@@ -11,37 +11,37 @@ md-bottom-sheet.md-pink-theme {
   md-bottom-sheet.md-pink-theme .md-subheader {
     color: rgba(0, 0, 0, 0.54); }
 
-.md-button.md-pink-theme {
+md-button.md-pink-theme {
   border-radius: 3px; }
-  .md-button.md-pink-theme:not([disabled]):hover, .md-button.md-pink-theme:not([disabled]):focus {
+  md-button.md-pink-theme[disabled] {
+    background-color: rgba(158, 158, 158, 0.145) !important;
+    color: #9e9e9e !important;
+    fill: #9e9e9e !important;
+    cursor: auto; }
+  md-button.md-pink-theme:not([disabled]):hover, md-button.md-pink-theme:not([disabled]).focus {
     background-color: rgba(158, 158, 158, 0.2); }
-  .md-button.md-pink-theme.md-fab {
+  md-button.md-pink-theme.md-fab {
     border-radius: 50%; }
-  .md-button.md-pink-theme.md-primary {
+  md-button.md-pink-theme.md-primary {
     color: #ec407a;
     fill: #ec407a; }
-  .md-button.md-pink-theme.md-warn {
+  md-button.md-pink-theme.md-warn {
     color: #e84e40;
     fill: #e84e40; }
-  .md-button.md-pink-theme.md-raised, .md-button.md-pink-theme.md-fab {
+  md-button.md-pink-theme.md-raised, md-button.md-pink-theme.md-fab {
     background-color: rgba(158, 158, 158, 0.185); }
-    .md-button.md-pink-theme.md-raised:not([disabled]):hover, .md-button.md-pink-theme.md-raised:not([disabled]):focus, .md-button.md-pink-theme.md-fab:not([disabled]):hover, .md-button.md-pink-theme.md-fab:not([disabled]):focus {
+    md-button.md-pink-theme.md-raised:not([disabled]):hover, md-button.md-pink-theme.md-raised:not([disabled]).focus, md-button.md-pink-theme.md-fab:not([disabled]):hover, md-button.md-pink-theme.md-fab:not([disabled]).focus {
       background-color: rgba(158, 158, 158, 0.3); }
-    .md-button.md-pink-theme.md-raised.md-primary, .md-button.md-pink-theme.md-fab.md-primary {
+    md-button.md-pink-theme.md-raised.md-primary, md-button.md-pink-theme.md-fab.md-primary {
       color: white;
       background-color: #e91e63; }
-      .md-button.md-pink-theme.md-raised.md-primary:not([disabled]):hover, .md-button.md-pink-theme.md-raised.md-primary:not([disabled]):focus, .md-button.md-pink-theme.md-fab.md-primary:not([disabled]):hover, .md-button.md-pink-theme.md-fab.md-primary:not([disabled]):focus {
+      md-button.md-pink-theme.md-raised.md-primary:not([disabled]):hover, md-button.md-pink-theme.md-raised.md-primary:not([disabled]).focus, md-button.md-pink-theme.md-fab.md-primary:not([disabled]):hover, md-button.md-pink-theme.md-fab.md-primary:not([disabled]).focus {
         background-color: #d81b60; }
-    .md-button.md-pink-theme.md-raised.md-warn, .md-button.md-pink-theme.md-fab.md-warn {
+    md-button.md-pink-theme.md-raised.md-warn, md-button.md-pink-theme.md-fab.md-warn {
       color: white;
       background-color: #e51c23; }
-      .md-button.md-pink-theme.md-raised.md-warn:not([disabled]):hover, .md-button.md-pink-theme.md-raised.md-warn:not([disabled]):focus, .md-button.md-pink-theme.md-fab.md-warn:not([disabled]):hover, .md-button.md-pink-theme.md-fab.md-warn:not([disabled]):focus {
+      md-button.md-pink-theme.md-raised.md-warn:not([disabled]):hover, md-button.md-pink-theme.md-raised.md-warn:not([disabled]).focus, md-button.md-pink-theme.md-fab.md-warn:not([disabled]):hover, md-button.md-pink-theme.md-fab.md-warn:not([disabled]).focus {
         background-color: #d01716; }
-  .md-button.md-pink-theme[disabled], .md-button.md-pink-theme.md-raised[disabled], .md-button.md-pink-theme.md-fab[disabled] {
-    color: rgba(0, 0, 0, 0.26);
-    fill: rgba(0, 0, 0, 0.26);
-    background-color: transparent;
-    cursor: not-allowed; }
 
 md-card.md-pink-theme {
   border-radius: 2px; }
@@ -183,7 +183,7 @@ md-input-group.md-pink-theme[disabled] input, md-input-group.md-pink-theme[disab
 md-toast.md-pink-theme {
   background-color: #323232;
   color: white; }
-  md-toast.md-pink-theme .md-button {
+  md-toast.md-pink-theme md-button {
     color: white; }
   md-toast.md-pink-theme .md-action {
     color: #ff4081; }

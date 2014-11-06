@@ -1202,8 +1202,10 @@ angular.module('material.components.button', [
   'material.services.theming'
 ])
   .directive('mdButton', [
+    'ngHrefDirective',
     '$mdInkRipple',
     '$mdAria',
+    '$mdUtil',
     '$mdTheming',
     MdButtonDirective
   ]);
@@ -1218,65 +1220,82 @@ angular.module('material.components.button', [
  * @description
  * `<md-button>` is a button directive with optional ink ripples (default enabled).
  *
- * If you supply a `href` or `ng-href` attribute, it will become an `<a>` element. Otherwise, it will
- * become a `<button>` element.
- *
  * @param {boolean=} noink If present, disable ripple ink effects.
- * @param {boolean=} disabled If present, disable selection.
- * @param {string=} aria-label Publish the button label used by screen-readers for accessibility. Defaults to the button's text.
+ * @param {boolean=} disabled If present, disable tab selection.
+ * @param {string=} type Optional attribute to specific button types (useful for forms); such as 'submit', etc.
+ * @param {string=} ng-href Optional attribute to support both ARIA and link navigation
+ * @param {string=} href Optional attribute to support both ARIA and link navigation
+ * @param {string=} ariaLabel Publish the button label used by screen-readers for accessibility. Defaults to the button's text.
  *
  * @usage
  * <hljs lang="html">
- *  <md-button>
- *    Button
+ *  <md-button>Button</md-button>
+ *  <br/>
+ *  <md-button noink class="md-button-colored">
+ *    Button (noInk)
  *  </md-button>
- *  <md-button href="http://google.com" class="md-button-colored">
- *    I'm a link
- *  </md-button>
- *  <md-button disabled class="md-colored">
- *    I'm a disabled button
+ *  <br/>
+ *  <md-button disabled class="md-button-colored">
+ *    Colored (disabled)
  *  </md-button>
  * </hljs>
  */
-function MdButtonDirective($mdInkRipple, $mdAria, $mdTheming) {
+function MdButtonDirective(ngHrefDirectives, $mdInkRipple, $mdAria, $mdUtil, $mdTheming ) {
+  var ngHrefDirective = ngHrefDirectives[0];
 
   return {
     restrict: 'E',
-    replace: true,
-    transclude: true,
-    template: getTemplate,
-    link: postLink
-  };
+    compile: function(element, attr) {
+      var innerElement;
+      var attributesToCopy;
 
-  function isAnchor(attr) {
-    return angular.isDefined(attr.href) || angular.isDefined(attr.ngHref);
-  }
-  
-  function getTemplate(element, attr) {
-    var tag = isAnchor(attr) ? 'a' : 'button';
-    //We need to manually pass disabled to the replaced element because
-    //of a bug where it isn't always passed.
-    var disabled = element[0].hasAttribute('disabled') ? ' disabled ' : ' ';
 
-    return '<' + tag + disabled + 'class="md-button" ng-transclude></' + tag + '>';
-  }
+      // Add an inner anchor if the element has a `href` or `ngHref` attribute,
+      // so this element can be clicked like a normal `<a>`.
+      if (attr.ngHref || attr.href) {
+        innerElement = angular.element('<a>');
+        attributesToCopy = ['ng-href', 'href', 'rel', 'target', 'title', 'aria-label'];
+      // Otherwise, just add an inner button element (for form submission etc)
+      } else {
+        innerElement = angular.element('<button>');
+        attributesToCopy = ['type', 'disabled', 'ng-disabled', 'form', 'aria-label'];
+      }
 
-  function postLink(scope, element, attr) {
-    $mdTheming(element);
-    $mdAria.expectWithText(element, 'aria-label');
-    $mdInkRipple.attachButtonBehavior(element);
-
-    // For anchor elements, we have to set tabindex manually when the 
-    // element is disabled
-    if (isAnchor(attr)) {
-      var node = element[0];
-      scope.$watch(function() {
-        return node.hasAttribute('disabled');
-      }, function(isDisabled) {
-        element.attr('tabindex', isDisabled ? -1 : 0);
+      angular.forEach(attributesToCopy, function(name) {
+        var camelCaseName = $mdUtil.camelCase(name);
+        if (attr.hasOwnProperty(camelCaseName)) {
+          innerElement.attr(name, attr[camelCaseName]);
+        }
       });
+
+      innerElement
+        .addClass('md-button-inner')
+        .append(element.contents())
+        // Since we're always passing focus to the inner element,
+        // add a focus class to the outer element so we can still style
+        // it with focus.
+        .on('focus', function() {
+          element.addClass('focus');
+        })
+        .on('blur', function() {
+          element.removeClass('focus');
+        });
+
+      element.
+        append(innerElement)
+        .attr('tabIndex', -1)
+        //Always pass focus to innerElement
+        .on('focus', function() {
+          innerElement.focus();
+        });
+
+      return function postLink(scope, element, attr) {
+        $mdTheming(element);
+        $mdAria.expect(element, 'aria-label', true);
+        $mdInkRipple.attachButtonBehavior(element);
+      };
     }
-  }
+  };
 
 }
 })();
@@ -1427,7 +1446,7 @@ function MdCheckboxDirective(inputDirectives, $mdInkRipple, $mdAria, $mdConstant
         $formatters: []
       };
 
-      $mdAria.expectWithText(tElement, 'aria-label');
+      $mdAria.expect(tElement, 'aria-label', true);
 
       // Reuse the original input[type=checkbox] directive from Angular core.
       // This is a bit hacky as we need our own event listener and own render
@@ -1621,9 +1640,10 @@ function MdDialogDirective($$rAF, $mdTheming) {
  *     });
  *
  *     // When the 'enter' animation finishes...
- *     function afterShowAnimation(scope, element, options) {
+ *     function afterShowAnimation(scope, element, options)
+ *     {
  *        // post-show code here: DOM element focus, etc.
- *     }
+ *     };
  * });
  * app.controller('DialogController', function($scope, $mdDialog, name) {
  *   $scope.userName = name;
@@ -1738,6 +1758,7 @@ function MdDialogService($timeout, $rootElement, $compile, $mdEffects, $animate,
             $timeout($dialogService.cancel);
           }
         };
+
         $rootElement.on('keyup', options.rootElementKeyupCallback);
       }
 
@@ -1748,6 +1769,7 @@ function MdDialogService($timeout, $rootElement, $compile, $mdEffects, $animate,
             $timeout($dialogService.cancel);
           }
         };
+
         element.on('click', options.dialogClickOutsideCallback);
       }
       closeButton.focus();
@@ -1798,9 +1820,8 @@ function MdDialogService($timeout, $rootElement, $compile, $mdEffects, $animate,
     if (dialogContent.length === 0){
       dialogContent = element;
     }
-    $mdAria.expectAsync(element, 'aria-label', function() {
-      return $mdUtil.stringFromTextBody(dialogContent.text(), 3);
-    });
+    var defaultText = $mdUtil.stringFromTextBody(dialogContent.text(), 3);
+    $mdAria.expect(element, 'aria-label', true, defaultText);
   }
 }
 })();
@@ -2494,7 +2515,7 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
         'aria-checked' : 'false'
       });
 
-      $mdAria.expectWithText(element, 'aria-label');
+      $mdAria.expect(element, 'aria-label', true);
 
       /**
        * Build a unique ID for each radio button that will be used with aria-activedescendant.
@@ -2897,7 +2918,7 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
       updateAriaDisabled(!!attr.disabled);
     }
 
-    $mdAria.expect(element, 'aria-label');
+    $mdAria.expect(element, 'aria-label', false);
 
     element.attr('tabIndex', 0);
     element.attr('role', 'slider');
@@ -4608,48 +4629,56 @@ angular.module('material.services.aria', [])
 ]);
 
 function AriaService($$rAF, $log) {
+  var messageTemplate = 'ARIA: Attribute "%s", required for accessibility, is missing on "%s"';
+  var defaultValueTemplate = 'Default value was set: %s="%s".';
 
   return {
-    expect: expectAttribute,
-    expectAsync: expectAsync,
-    expectWithText: expectWithText
+    expect : expectAttribute,
   };
 
   /**
-   * Check if expected attribute has been specified on the target element
+   * Check if expected ARIA has been specified on the target element
    * @param element
    * @param attrName
-   * @param {optional} defaultValue What to set the attr to if no value is found
+   * @param copyElementText
+   * @param {optional} defaultValue
    */
-  function expectAttribute(element, attrName, defaultValue) {
-    var node = element[0];
-    if (!node.hasAttribute(attrName)) {
+  function expectAttribute(element, attrName, copyElementText, defaultValue) {
 
-      if (angular.isDefined(defaultValue) && defaultValue.length) {
-        defaultValue = String(defaultValue).trim();
-        element.attr(attrName, defaultValue);
-      } else {
-        $log.warn('ARIA: Attribute "', attrName, '", required for accessibility, is missing on node:', node);
+    $$rAF(function(){
+
+      var node = element[0];
+      if (!node.hasAttribute(attrName)) {
+
+        var hasDefault;
+        if(copyElementText === true){
+          if(!defaultValue) defaultValue = element.text().trim();
+          hasDefault = angular.isDefined(defaultValue) && defaultValue.length;
+        }
+
+        if (hasDefault) {
+          defaultValue = String(defaultValue).trim();
+          element.attr(attrName, defaultValue);
+        } else {
+          $log.warn(messageTemplate, attrName, node);
+          $log.warn(node);
+        }
       }
-
-    }
-  }
-
-  function expectAsync(element, attrName, defaultValueGetter) {
-    // Problem: when retrieving the element's contents synchronously to find the label,
-    // the text may not be defined yet in the case of a binding.
-    // There is a higher chance that a binding will be defined if we wait one frame.
-    $$rAF(function() {
-      expectAttribute(element, attrName, defaultValueGetter());
     });
   }
 
-  function expectWithText(element, attrName) {
-    expectAsync(element, attrName, function() {
-      return element.text().trim();
-    });
-  }
 
+  /**
+   * Gets the tag definition from a node's outerHTML
+   * @example getTagString(
+   *   '<md-button foo="bar">Hello</md-button>'
+   * ) // => '<md-button foo="bar">'
+   */
+  function getTagString(node) {
+    var html = node.outerHTML;
+    var closingIndex = html.indexOf('>');
+    return html.substring(0, closingIndex + 1);
+  }
 }
 })();
 
@@ -5147,7 +5176,7 @@ function mdMediaFactory($window, $mdUtil, $timeout) {
       for (var i = 0, ii = keys.length; i < ii; i++) {
         cache.put(keys[i], !!$window.matchMedia(keys[i]).matches);
       }
-      // trigger a $digest()
+      // trigger an $digest()
       $timeout(angular.noop);
     }
   }
@@ -5552,10 +5581,7 @@ function TabPaginationDirective($mdEffects, $window, $$rAF, $$q, $timeout) {
       var paginationToggled = needPagination !== state.active;
 
       // If the md-tabs element is not displayed, then do nothing.
-      if ( tabsWidth <= 0 ) {
-        needPagination = false;
-        paginationToggled = true;
-      }
+      if ( tabsWidth <= 0 ) return;
 
       state.active = needPagination;
 
@@ -5956,7 +5982,7 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
           'aria-labelledby': tabId
         });
 
-        $mdAria.expectWithText(element, 'aria-label');
+        $mdAria.expect(element, 'aria-label', true);
       }
 
     };
