@@ -5,23 +5,60 @@
  * v0.5.1
  */
 (function() {
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.decorators","material.animations","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe","material.services.aria","material.services.attrBind","material.services.compiler","material.services.interimElement","material.services.media","material.services.registry","material.services.theming"]);})();
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.animations","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe","material.services.aria","material.services.attrBind","material.services.compiler","material.services.interimElement","material.services.media","material.services.registry","material.services.theming"]);})();
 
 (function() {
   /**
-   * Angular Mds initialization function that validates environment
-   * requirements.
-   */
-  angular.module('material.core', [] )
-    .run(function validateEnvironment() {
+ * Initialization function that validates environment
+ * requirements.
+ */
+angular.module('material.core', [] )
 
-      if (typeof Hammer === 'undefined') {
-        throw new Error(
-          'ngMaterial requires HammerJS to be preloaded.'
-        );
-      }
+.run(function validateEnvironment() {
 
-    });
+  if (typeof Hammer === 'undefined') {
+    throw new Error(
+      'ngMaterial requires HammerJS to be preloaded.'
+    );
+  }
+
+})
+.config(['$provide', function($provide) {
+  $provide.decorator('$$rAF', ['$delegate', '$rootScope', rAFDecorator]);
+
+  function rAFDecorator($$rAF, $rootScope) {
+    /**
+     * Use this to debounce events that come in often.
+     * The debounced function will always use the *last* invocation before the
+     * coming frame.
+     *
+     * For example, window resize events that fire many times a second:
+     * If we set to use an raf-debounced callback on window resize, then
+     * our callback will only be fired once per frame, with the last resize
+     * event that happened before that frame.
+     *
+     * @param {function} callback function to debounce
+     */
+    $$rAF.debounce = function(cb) {
+      var queueArgs, alreadyQueued, queueCb, context;
+      return function debounced() {
+        queueArgs = arguments;
+        context = this;
+        queueCb = cb;
+        if (!alreadyQueued) {
+          alreadyQueued = true;
+          $$rAF(function() {
+            queueCb.apply(context, queueArgs);
+            alreadyQueued = false;
+          });
+        }
+      };
+    };
+
+    return $$rAF;
+  }
+
+}]);
 
 
 
@@ -44,11 +81,17 @@ angular.module('material.core')
 })();
 
 (function() {
+/* 
+ * This var has to be outside the angular factory, otherwise when
+ * there are multiple material apps on the same page, each app
+ * will create its own instance of this array and the app's IDs 
+ * will not be unique.
+ */
+var nextUniqueId = ['0','0','0'];
+
 angular.module('material.core')
 .factory('$mdUtil', ['$cacheFactory', function($cacheFactory) {
   var SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
-  /* for nextUid() function below */
-  var uid = ['0','0','0'];
 
   var Util;
   return Util = {
@@ -186,25 +229,25 @@ angular.module('material.core')
      * @returns an unique alpha-numeric string
      */
     nextUid: function() {
-      var index = uid.length;
+      var index = nextUniqueId.length;
       var digit;
 
       while(index) {
         index--;
-        digit = uid[index].charCodeAt(0);
+        digit = nextUniqueId[index].charCodeAt(0);
         if (digit == 57 /*'9'*/) {
-          uid[index] = 'A';
-          return uid.join('');
+          nextUniqueId[index] = 'A';
+          return nextUniqueId.join('');
         }
         if (digit == 90  /*'Z'*/) {
-          uid[index] = '0';
+          nextUniqueId[index] = '0';
         } else {
-          uid[index] = String.fromCharCode(digit + 1);
-          return uid.join('');
+          nextUniqueId[index] = String.fromCharCode(digit + 1);
+          return nextUniqueId.join('');
         }
       }
-      uid.unshift('0');
-      return uid.join('');
+      nextUniqueId.unshift('0');
+      return nextUniqueId.join('');
     },
 
     // Stop watchers and events from firing on a scope without destroying it,
@@ -514,46 +557,6 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
   }
   return this;
 };
-})();
-
-(function() {
-angular.module('material.decorators', [])
-.config(['$provide', function($provide) {
-  $provide.decorator('$$rAF', ['$delegate', '$rootScope', rAFDecorator]);
-
-  function rAFDecorator($$rAF, $rootScope) {
-
-    /**
-     * Use this to debounce events that come in often.
-     * The debounced function will always use the *last* invocation before the
-     * coming frame.
-     *
-     * For example, window resize events that fire many times a second:
-     * If we set to use an raf-debounced callback on window resize, then
-     * our callback will only be fired once per frame, with the last resize
-     * event that happened before that frame.
-     *
-     * @param {function} callback function to debounce
-     */
-    $$rAF.debounce = function(cb) {
-      var queueArgs, alreadyQueued, queueCb, context;
-      return function debounced() {
-        queueArgs = arguments;
-        context = this;
-        queueCb = cb;
-        if (!alreadyQueued) {
-          alreadyQueued = true;
-          $$rAF(function() {
-            queueCb.apply(context, queueArgs);
-            alreadyQueued = false;
-          });
-        }
-      };
-    };
-
-    return $$rAF;
-  }
-}]);
 })();
 
 (function() {
@@ -3194,7 +3197,6 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
 angular.module('material.components.sticky', [
   'material.core',
   'material.components.content',
-  'material.decorators',
   'material.animations'
 ])
 .factory('$mdSticky', [
@@ -3874,8 +3876,8 @@ function MdSwitch(checkboxDirectives, radioButtonDirectives, $mdTheming) {
 angular.module('material.components.tabs', [
   'material.core',
   'material.animations',
-  'material.components.swipe',
-  'material.services.theming'
+  'material.services.theming',
+  'material.services.aria'
 ]);
 })();
 
@@ -5652,24 +5654,16 @@ angular.module('material.components.tabs')
   '$element',
   '$compile',
   '$animate',
-  '$mdSwipe',
   '$mdUtil',
   TabItemController
 ]);
 
-function TabItemController(scope, element, $compile, $animate, $mdSwipe, $mdUtil) {
+function TabItemController(scope, element, $compile, $animate, $mdUtil) {
   var self = this;
-
-  var detachSwipe = angular.noop;
-  var attachSwipe = function() { return detachSwipe; };
-  var eventTypes = "swipeleft swiperight" ;
-  var configureSwipe = $mdSwipe( scope, eventTypes );
-
-  // special callback assigned by TabsController
-  self.$$onSwipe = angular.noop;
 
   // Properties
   self.contentContainer = angular.element('<div class="md-tab-content ng-hide">');
+  self.hammertime = Hammer(self.contentContainer[0]);
   self.element = element;
 
   // Methods
@@ -5678,7 +5672,6 @@ function TabItemController(scope, element, $compile, $animate, $mdSwipe, $mdUtil
   self.onRemove = onRemove;
   self.onSelect = onSelect;
   self.onDeselect = onDeselect;
-
 
   function isDisabled() {
     return element[0].hasAttribute('disabled');
@@ -5690,30 +5683,17 @@ function TabItemController(scope, element, $compile, $animate, $mdSwipe, $mdUtil
    */
   function onAdd(contentArea) {
     if (self.content.length) {
-
       self.contentContainer.append(self.content);
       self.contentScope = scope.$parent.$new();
       contentArea.append(self.contentContainer);
 
       $compile(self.contentContainer)(self.contentScope);
-
       $mdUtil.disconnectScope(self.contentScope);
-
-      // For internal tab views we only use the `$mdSwipe`
-      // so we can easily attach()/detach() when the tab view is active/inactive
-
-      attachSwipe = configureSwipe( self.contentContainer, function(ev) {
-        self.$$onSwipe(ev.type);
-      }, true );
     }
   }
 
-
-  /**
-   * Usually called when a Tab is programmatically removed; such
-   * as in an ng-repeat
-   */
   function onRemove() {
+    self.hammertime.destroy();
     $animate.leave(self.contentContainer).then(function() {
       self.contentScope && self.contentScope.$destroy();
       self.contentScope = null;
@@ -5723,7 +5703,7 @@ function TabItemController(scope, element, $compile, $animate, $mdSwipe, $mdUtil
   function onSelect() {
     // Resume watchers and events firing when tab is selected
     $mdUtil.reconnectScope(self.contentScope);
-    detachSwipe = attachSwipe();
+    self.hammertime.on('swipeleft swiperight', scope.onSwipe);
 
     element.addClass('active');
     element.attr('aria-selected', true);
@@ -5736,7 +5716,7 @@ function TabItemController(scope, element, $compile, $animate, $mdSwipe, $mdUtil
   function onDeselect() {
     // Stop watchers & events from firing while tab is deselected
     $mdUtil.disconnectScope(self.contentScope);
-    detachSwipe();
+    self.hammertime.off('swipeleft swiperight', scope.onSwipe);
 
     element.removeClass('active');
     element.attr('aria-selected', false);
@@ -5829,17 +5809,14 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
     var tabLabel = element.find('md-tab-label');
 
     if (tabLabel.length) {
-
       // If a tab label element is found, remove it for later re-use.
       tabLabel.remove();
 
     } else if (angular.isDefined(attr.label)) {
-
       // Otherwise, try to use attr.label as the label
       tabLabel = angular.element('<md-tab-label>').html(attr.label);
 
     } else {
-
       // If nothing is found, use the tab's content as the label
       tabLabel = angular.element('<md-tab-label>')
                         .append(element.contents().remove());
@@ -5854,6 +5831,7 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
       var tabsCtrl = ctrls[1]; // Controller for ALL tabs
 
       transcludeTabContent();
+      configureAria();
 
       var detachRippleFn = $mdInkRipple.attachButtonBehavior(element);
       tabsCtrl.add(tabItemCtrl);
@@ -5862,14 +5840,19 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
         tabsCtrl.remove(tabItemCtrl);
       });
 
-      if (!angular.isDefined(attr.ngClick)) element.on('click', defaultClickListener);
+      if (!angular.isDefined(attr.ngClick)) {
+        element.on('click', defaultClickListener);
+      }
       element.on('keydown', keydownListener);
+      scope.onSwipe = onSwipe;
 
-      if (angular.isNumber(scope.$parent.$index)) watchNgRepeatIndex();
-      if (angular.isDefined(attr.active)) watchActiveAttribute();
+      if (angular.isNumber(scope.$parent.$index)) {
+        watchNgRepeatIndex();
+      }
+      if (angular.isDefined(attr.active)) {
+        watchActiveAttribute();
+      }
       watchDisabled();
-
-      configureAria();
 
       function transcludeTabContent() {
         // Clone the label we found earlier, and $compile and append it
@@ -5890,19 +5873,29 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
         });
       }
       function keydownListener(ev) {
-        if (ev.which == $mdConstant.KEY_CODE.SPACE ) {
+        if (ev.keyCode == $mdConstant.KEY_CODE.SPACE || ev.keyCode == $mdConstant.KEY_CODE.ENTER ) {
           // Fire the click handler to do normal selection if space is pressed
           element.triggerHandler('click');
           ev.preventDefault();
 
-        } else if (ev.which === $mdConstant.KEY_CODE.LEFT_ARROW) {
+        } else if (ev.keyCode === $mdConstant.KEY_CODE.LEFT_ARROW) {
           var previous = tabsCtrl.previous(tabItemCtrl);
           previous && previous.element.focus();
 
-        } else if (ev.which === $mdConstant.KEY_CODE.RIGHT_ARROW) {
+        } else if (ev.keyCode === $mdConstant.KEY_CODE.RIGHT_ARROW) {
           var next = tabsCtrl.next(tabItemCtrl);
           next && next.element.focus();
         }
+      }
+
+      function onSwipe(ev) {
+        scope.$apply(function() {
+          if (ev.type === 'swipeleft') {
+            tabsCtrl.select(tabsCtrl.next());
+          } else {
+            tabsCtrl.select(tabsCtrl.previous());
+          }
+        });
       }
 
       // If tabItemCtrl is part of an ngRepeat, move the tabItemCtrl in our internal array
@@ -5946,21 +5939,26 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
 
       function configureAria() {
         // Link together the content area and tabItemCtrl with an id
-        var tabId = attr.id || $mdUtil.nextUid();
-        var tabContentId = 'content_' + tabId;
+        var tabId = attr.id || ('tab_' + $mdUtil.nextUid());
+
         element.attr({
           id: tabId,
-          role: 'tabItemCtrl',
-          tabIndex: '-1', //this is also set on select/deselect in tabItemCtrl
-          'aria-controls': tabContentId
-        });
-        tabItemCtrl.contentContainer.attr({
-          id: tabContentId,
-          role: 'tabpanel',
-          'aria-labelledby': tabId
+          role: 'tab',
+          tabIndex: -1 //this is also set on select/deselect in tabItemCtrl
         });
 
-        $mdAria.expectWithText(element, 'aria-label');
+        // Only setup the contentContainer's aria attributes if tab content is provided
+        if (tabContent.length) {
+          var tabContentId = 'content_' + tabId;
+          if (!element.attr('aria-controls')) {
+            element.attr('aria-controls', tabContentId);
+          }
+          tabItemCtrl.contentContainer.attr({
+            id: tabContentId,
+            role: 'tabpanel',
+            'aria-labelledby': tabId
+          });
+        }
       }
 
     };
@@ -6007,8 +6005,6 @@ function MdTabsController(scope, element, $mdUtil) {
   self.next = next;
   self.previous = previous;
 
-  self.swipe = swipe;
-
   scope.$on('$destroy', function() {
     self.deselect(self.selected());
     for (var i = tabsList.count() - 1; i >= 0; i--) {
@@ -6028,12 +6024,10 @@ function MdTabsController(scope, element, $mdUtil) {
     tabsList.add(tab, index);
     tab.onAdd(self.contentArea);
 
-    // Register swipe feature
-    tab.$$onSwipe = swipe;
-
     // Select the new tab if we don't have a selectedIndex, or if the
     // selectedIndex we've been waiting for is this tab
-    if (scope.selectedIndex === -1 || scope.selectedIndex === self.indexOf(tab)) {
+    if (scope.selectedIndex === -1 || !angular.isNumber(scope.selectedIndex) || 
+        scope.selectedIndex === self.indexOf(tab)) {
       self.select(tab);
     }
     scope.$broadcast('$mdTabsChanged');
@@ -6043,7 +6037,7 @@ function MdTabsController(scope, element, $mdUtil) {
     if (!tabsList.contains(tab)) return;
 
     if (noReselect) {
-
+      // do nothing
     } else if (self.selected() === tab) {
       if (tabsList.count() > 1) {
         self.select(self.previous() || self.next());
@@ -6079,6 +6073,7 @@ function MdTabsController(scope, element, $mdUtil) {
     tab.isSelected = true;
     tab.onSelect();
   }
+
   function deselect(tab) {
     if (!tab || !tab.isSelected) return;
     if (!tabsList.contains(tab)) return;
@@ -6097,35 +6092,6 @@ function MdTabsController(scope, element, $mdUtil) {
 
   function isTabEnabled(tab) {
     return tab && !tab.isDisabled();
-  }
-
-  /*
-   * attach a swipe listen
-   * if it's not selected, abort
-   * check the direction
-   *   if it is right
-   *   it pan right
-   *     Now select
-   */
-
-  function swipe(direction) {
-    if ( !self.selected() ) return;
-
-    // check the direction
-    switch(direction) {
-
-      case "swiperight":  // if it is right
-      case "panright"  :  // it pan right
-        // Now do this...
-        self.select( self.previous() );
-        break;
-
-      case "swipeleft":
-      case "panleft"  :
-        self.select( self.next() );
-        break;
-    }
-
   }
 
 }
@@ -6225,10 +6191,11 @@ function TabsDirective($parse, $mdTheming) {
       '<section class="md-header" ' +
         'ng-class="{\'md-paginating\': pagination.active}">' +
 
-        '<div class="md-paginator md-prev" ' +
+        '<button class="md-paginator md-prev" ' +
           'ng-if="pagination.active && pagination.hasPrev" ' +
-          'ng-click="pagination.clickPrevious()">' +
-        '</div>' +
+          'ng-click="pagination.clickPrevious()" ' +
+          'aria-hidden="true">' +
+        '</button>' +
 
         // overflow: hidden container when paginating
         '<div class="md-header-items-container" md-tabs-pagination>' +
@@ -6237,10 +6204,11 @@ function TabsDirective($parse, $mdTheming) {
           '<md-tabs-ink-bar></md-tabs-ink-bar>' +
         '</div>' +
 
-        '<div class="md-paginator md-next" ' +
+        '<button class="md-paginator md-next" ' +
           'ng-if="pagination.active && pagination.hasNext" ' +
-          'ng-click="pagination.clickNext()">' +
-        '</div>' +
+          'ng-click="pagination.clickNext()" ' +
+          'aria-hidden="true">' +
+        '</button>' +
 
       '</section>' +
       '<section class="md-tabs-content"></section>',
