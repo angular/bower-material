@@ -1299,7 +1299,7 @@ md-backdrop {
     opacity: 1; }
 
 md-bottom-sheet {
-  position: fixed;
+  position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
@@ -1651,7 +1651,7 @@ md-content {
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
   right: 0;
@@ -2927,9 +2927,8 @@ md-input-group, .md-input-group {
     transition: all ease-out 150ms; }
 
 md-toast {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+  display: block;
+  position: absolute;
   box-sizing: border-box;
   -webkit-align-items: center;
       -ms-flex-align: center;
@@ -2941,7 +2940,6 @@ md-toast {
   border-radius: 2px;
   font-size: 14px;
   cursor: default;
-  position: fixed;
   max-width: 879px;
   max-height: 40px;
   height: 24px;
@@ -3224,7 +3222,8 @@ md-tooltip {
   box-shadow: 0px 27px 24px 0 rgba(0, 0, 0, 0.2); }
 
 md-backdrop.md-opaque.md-default-theme {
-  background-color: rgba(0, 0, 0, 0.3); }
+  background-color: rgba(0, 0, 0, 0.3);
+  position: absolute; }
 
 md-bottom-sheet.md-default-theme {
   background-color: #fafafa;

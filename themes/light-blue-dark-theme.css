@@ -1,5 +1,6 @@
 md-backdrop.md-opaque.md-light-blue-dark-theme {
-  background-color: rgba(0, 0, 0, 0.3); }
+  background-color: rgba(0, 0, 0, 0.3);
+  position: absolute; }
 
 md-bottom-sheet.md-light-blue-dark-theme {
   background-color: #fafafa;
