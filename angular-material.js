@@ -5,25 +5,29 @@
  * v0.5.1
  */
 (function() {
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.animations","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe","material.services.aria","material.services.attrBind","material.services.compiler","material.services.interimElement","material.services.media","material.services.registry","material.services.theming"]);})();
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);})();
 
 (function() {
-  /**
+(function() {
+'use strict';
+
+/**
  * Initialization function that validates environment
  * requirements.
  */
-angular.module('material.core', [] )
+angular.module('material.core', [])
+  .run(MdCoreInitialize)
+  .config(MdCoreConfigure);
 
-.run(function validateEnvironment() {
-
+function MdCoreInitialize() {
   if (typeof Hammer === 'undefined') {
     throw new Error(
       'ngMaterial requires HammerJS to be preloaded.'
     );
   }
+}
 
-})
-.config(['$provide', function($provide) {
+function MdCoreConfigure($provide) {
   $provide.decorator('$$rAF', ['$delegate', '$rootScope', rAFDecorator]);
 
   function rAFDecorator($$rAF, $rootScope) {
@@ -54,33 +58,65 @@ angular.module('material.core', [] )
         }
       };
     };
-
     return $$rAF;
+
   }
 
-}]);
+}
+MdCoreConfigure.$inject = ["$provide"];
 
-
-
-
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 angular.module('material.core')
-.constant('$mdConstant', {
-  KEY_CODE: {
-    ENTER: 13,
-    ESCAPE: 27,
-    SPACE: 32,
-    LEFT_ARROW : 37,
-    UP_ARROW : 38,
-    RIGHT_ARROW : 39,
-    DOWN_ARROW : 40
+.factory('$mdConstant', MdConstantFactory);
+
+function MdConstantFactory($$rAF, $sniffer) {
+
+  var webkit = /webkit/i.test($sniffer.vendorPrefix);
+  function vendorProperty(name) {
+    return webkit ?  ('webkit' + name.charAt(0).toUpperCase() + name.substring(1)) : name;
   }
-});
+
+  return {
+    KEY_CODE: {
+      ENTER: 13,
+      ESCAPE: 27,
+      SPACE: 32,
+      LEFT_ARROW : 37,
+      UP_ARROW : 38,
+      RIGHT_ARROW : 39,
+      DOWN_ARROW : 40
+    },
+    CSS: {
+      /* Constants */
+      TRANSITIONEND: 'transitionend' + (webkit ? ' webkitTransitionEnd' : ''),
+      ANIMATIONEND: 'animationend' + (webkit ? ' webkitAnimationEnd' : ''),
+
+      TRANSFORM: vendorProperty('transform'),
+      TRANSITION: vendorProperty('transition'),
+      TRANSITION_DURATION: vendorProperty('transitionDuration'),
+      ANIMATION_PLAY_STATE: vendorProperty('animationPlayState'),
+      ANIMATION_DURATION: vendorProperty('animationDuration'),
+      ANIMATION_NAME: vendorProperty('animationName'),
+      ANIMATION_TIMING: vendorProperty('animationTimingFunction'),
+      ANIMATION_DIRECTION: vendorProperty('animationDirection')
+    }
+  };
+}
+MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
+
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /* 
  * This var has to be outside the angular factory, otherwise when
  * there are multiple material apps on the same page, each app
@@ -91,71 +127,9 @@ var nextUniqueId = ['0','0','0'];
 
 angular.module('material.core')
 .factory('$mdUtil', ['$cacheFactory', function($cacheFactory) {
-  var SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
-
   var Util;
   return Util = {
     now: window.performance ? angular.bind(window.performance, window.performance.now) : Date.now,
-
-    /**
-     * Checks if the specified element has an ancestor (ancestor being parent, grandparent, etc)
-     * with the given attribute defined. 
-     *
-     * Also pass in an optional `limit` (levels of ancestry to scan), default 4.
-     */
-    ancestorHasAttribute: function ancestorHasAttribute(element, attrName, limit) {
-      limit = limit || 4;
-      var current = element;
-      while (limit-- && current.length) {
-        if (current[0].hasAttribute && current[0].hasAttribute(attrName)) {
-          return true;
-        }
-        current = current.parent();
-      }
-      return false;
-    },
-
-    /**
-     * Checks to see if the element or its parents are disabled.
-     * @param element DOM element to start scanning for `disabled` attribute
-     * @param limit Number of parent levels that should be scanned; defaults to 4
-     * @returns {*} Boolean
-     */
-    isParentDisabled: function isParentDisabled(element, limit) {
-      return Util.ancestorHasAttribute(element, 'disabled', limit);
-    },
-
-    /**
-     * Checks if two elements have the same parent
-     */
-    elementIsSibling: function elementIsSibling(element, otherElement) {
-      return element.parent().length && 
-        (element.parent()[0] === otherElement.parent()[0]);
-    },
-
-    /**
-     * Converts snake_case to camelCase.
-     * @param name Name to normalize
-     */
-    camelCase: function camelCase(name) {
-      return name
-        .replace(SPECIAL_CHARS_REGEXP, function(_, separator, letter, offset) {
-          return offset ? letter.toUpperCase() : letter;
-        });
-    },
-
-    /**
-     * Selects 'n' words from a string
-     * for use in an HTML attribute
-     */
-    stringFromTextBody: function stringFromTextBody(textBody, numWords) {
-      var string = textBody.trim();
-
-      if(string.split(/\s+/).length > numWords){
-        string = textBody.split(/\s+/).slice(1, (numWords + 1)).join(" ") + '...';
-      }
-      return string;
-    },
 
     /**
      * Publish the iterator facade to easily support iteration and accessors
@@ -200,23 +174,6 @@ angular.module('material.core')
           recent = now;
         }
       };
-    },
-
-    /**
-     * Wraps an element with a tag
-     *
-     * @param el element to wrap
-     * @param tag tag to wrap it with
-     * @param [className] optional class to apply to the wrapper
-     * @returns new element
-     *
-     */
-    wrap: function(el, tag, className) {
-      if(el.hasOwnProperty(0)) { el = el[0]; }
-      var wrapper = document.createElement(tag);
-      wrapper.className += className;
-      wrapper.appendChild(el.parentNode.replaceChild(wrapper, el));
-      return angular.element(wrapper);
     },
 
     /**
@@ -557,143 +514,547 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
   }
   return this;
 };
+
+})();
 })();
 
 (function() {
-/*
- * @ngdoc module
- * @name material.components.animate
- * @description
- *
- * Ink and Popup Effects
- */
-angular.module('material.animations', ['material.core'])
-  .service('$mdEffects', [ 
-    '$rootElement', 
-    '$$rAF', 
-    '$sniffer',
-    '$q',
-    MdEffects
-  ]);
+(function() {
+'use strict';
+
+angular.module('material.core')
+  .service('$mdAria', AriaService);
+
+function AriaService($$rAF, $log) {
+
+  return {
+    expect: expect,
+    expectAsync: expectAsync,
+    expectWithText: expectWithText
+  };
+
+  /**
+   * Check if expected attribute has been specified on the target element
+   * @param element
+   * @param attrName
+   * @param {optional} defaultValue What to set the attr to if no value is found
+   */
+  function expect(element, attrName, defaultValue) {
+    var node = element[0];
+    if (!node.hasAttribute(attrName)) {
+
+      defaultValue = angular.isString(defaultValue) && defaultValue.trim() || '';
+      if (defaultValue.length) {
+        element.attr(attrName, defaultValue);
+      } else {
+        $log.warn('ARIA: Attribute "', attrName, '", required for accessibility, is missing on node:', node);
+      }
+
+    }
+  }
+
+  function expectAsync(element, attrName, defaultValueGetter) {
+    // Problem: when retrieving the element's contents synchronously to find the label,
+    // the text may not be defined yet in the case of a binding.
+    // There is a higher chance that a binding will be defined if we wait one frame.
+    $$rAF(function() {
+      expect(element, attrName, defaultValueGetter());
+    });
+  }
+
+  function expectWithText(element, attrName) {
+    expectAsync(element, attrName, function() {
+      return element.text().trim();
+    });
+  }
+
+}
+AriaService.$inject = ["$$rAF", "$log"];
+})();
+})();
+
+(function() {
+(function() {
+'use strict';
+
+angular.module('material.core')
+  .service('$mdCompiler', mdCompilerService);
+
+function mdCompilerService($q, $http, $injector, $compile, $controller, $templateCache) {
+
+  /*
+   * @ngdoc service
+   * @name $mdCompiler
+   * @module material.core
+   * @description
+   * The $mdCompiler service is an abstraction of angular's compiler, that allows the developer
+   * to easily compile an element with a templateUrl, controller, and locals.
+   *
+   * @usage
+   * <hljs lang="js">
+   * $mdCompiler.compile({
+   *   templateUrl: 'modal.html',
+   *   controller: 'ModalCtrl',
+   *   locals: {
+   *     modal: myModalInstance;
+   *   }
+   * }).then(function(compileData) {
+   *   compileData.element; // modal.html's template in an element
+   *   compileData.link(myScope); //attach controller & scope to element
+   * });
+   * </hljs>
+   */
+
+   /*
+    * @ngdoc method
+    * @name $mdCompiler#compile
+    * @description A helper to compile an HTML template/templateUrl with a given controller,
+    * locals, and scope.
+    * @param {object} options An options object, with the following properties:
+    *
+    *    - `controller` - `{(string=|function()=}` Controller fn that should be associated with
+    *      newly created scope or the name of a registered controller if passed as a string.
+    *    - `controllerAs` - `{string=}` A controller alias name. If present the controller will be
+    *      published to scope under the `controllerAs` name.
+    *    - `template` - `{string=}` An html template as a string.
+    *    - `templateUrl` - `{string=}` A path to an html template.
+    *    - `transformTemplate` - `{function(template)=}` A function which transforms the template after
+    *      it is loaded. It will be given the template string as a parameter, and should
+    *      return a a new string representing the transformed template.
+    *    - `resolve` - `{Object.<string, function>=}` - An optional map of dependencies which should
+    *      be injected into the controller. If any of these dependencies are promises, the compiler
+    *      will wait for them all to be resolved, or if one is rejected before the controller is
+    *      instantiated `compile()` will fail..
+    *      * `key` - `{string}`: a name of a dependency to be injected into the controller.
+    *      * `factory` - `{string|function}`: If `string` then it is an alias for a service.
+    *        Otherwise if function, then it is injected and the return value is treated as the
+    *        dependency. If the result is a promise, it is resolved before its value is 
+    *        injected into the controller.
+    *
+    * @returns {object=} promise A promise, which will be resolved with a `compileData` object.
+    * `compileData` has the following properties: 
+    *
+    *   - `element` - `{element}`: an uncompiled element matching the provided template.
+    *   - `link` - `{function(scope)}`: A link function, which, when called, will compile
+    *     the element and instantiate the provided controller (if given).
+    *   - `locals` - `{object}`: The locals which will be passed into the controller once `link` is
+    *     called. If `bindToController` is true, they will be coppied to the ctrl instead
+    *   - `bindToController` - `bool`: bind the locals to the controller, instead of passing them in
+    */
+  this.compile = function(options) {
+    var templateUrl = options.templateUrl;
+    var template = options.template || '';
+    var controller = options.controller;
+    var controllerAs = options.controllerAs;
+    var resolve = options.resolve || {};
+    var locals = options.locals || {};
+    var transformTemplate = options.transformTemplate || angular.identity;
+    var bindToController = options.bindToController;
+
+    // Take resolve values and invoke them.  
+    // Resolves can either be a string (value: 'MyRegisteredAngularConst'),
+    // or an invokable 'factory' of sorts: (value: function ValueGetter($dependency) {})
+    angular.forEach(resolve, function(value, key) {
+      if (angular.isString(value)) {
+        resolve[key] = $injector.get(value);
+      } else {
+        resolve[key] = $injector.invoke(value);
+      }
+    });
+    //Add the locals, which are just straight values to inject
+    //eg locals: { three: 3 }, will inject three into the controller
+    angular.extend(resolve, locals);
+
+    if (templateUrl) {
+      resolve.$template = $http.get(templateUrl, {cache: $templateCache})
+        .then(function(response) {
+          return response.data;
+        });
+    } else {
+      resolve.$template = $q.when(template);
+    }
+
+    // Wait for all the resolves to finish if they are promises
+    return $q.all(resolve).then(function(locals) {
+
+      var template = transformTemplate(locals.$template);
+      var element = angular.element('<div>').html(template).contents();
+      var linkFn = $compile(element);
+
+      //Return a linking function that can be used later when the element is ready
+      return {
+        locals: locals,
+        element: element,
+        link: function link(scope) {
+          locals.$scope = scope;
+
+          //Instantiate controller if it exists, because we have scope
+          if (controller) {
+            var ctrl = $controller(controller, locals);
+            if (bindToController) {
+              angular.extend(ctrl, locals);
+            }
+            //See angular-route source for this logic
+            element.data('$ngControllerController', ctrl);
+            element.children().data('$ngControllerController', ctrl);
+
+            if (controllerAs) {
+              scope[controllerAs] = ctrl;
+            }
+          }
+
+          return linkFn(scope);
+        }
+      };
+    });
+
+  };
+}
+mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controller", "$templateCache"];
+})();
+})();
+
+(function() {
+(function() {
+'use strict';
+
+angular.module('material.core')
+  .provider('$$interimElement', InterimElementProvider);
 
 /*
  * @ngdoc service
- * @name $mdEffects
- * @module material.components.animate
+ * @name $$interimElement
+ * @module material.core
  *
  * @description
- * The `$mdEffects` service provides a simple API for various
- * Material Design effects.
  *
- * @returns A `$mdEffects` object with the following properties:
- * - `{function(element,styles,duration)}` `inkBar` - starts ink bar
- * animation on specified DOM element
- * - `{function(element,parentElement,clickElement)}` `popIn` - animated show of element overlayed on parent element
- * - `{function(element,parentElement)}` `popOut` - animated close of popup overlay
+ * Factory that contructs `$$interimElement.$service` services.
+ * Used internally in material design for elements that appear on screen temporarily.
+ * The service provides a promise-like API for interacting with the temporary
+ * elements.
+ *
+ * ```js
+ * app.service('$mdToast', function($$interimElement) {
+ *   var $mdToast = $$interimElement(toastDefaultOptions);
+ *   return $mdToast;
+ * });
+ * ```
+ * @param {object=} defaultOptions Options used by default for the `show` method on the service.
+ *
+ * @returns {$$interimElement.$service}
  *
  */
-function MdEffects($rootElement, $$rAF, $sniffer, $q) {
 
-  var webkit = /webkit/i.test($sniffer.vendorPrefix);
-  function vendorProperty(name) {
-    return webkit ? 
-      ('webkit' + name.charAt(0).toUpperCase() + name.substring(1)) :
-      name;
-  }
+function InterimElementProvider() {
+  createInterimElementProvider.$get = InterimElementFactory;
+  InterimElementFactory.$inject = ["$q", "$rootScope", "$timeout", "$rootElement", "$animate", "$mdCompiler", "$mdTheming"];
+  return createInterimElementProvider;
 
-  var self;
-  // Publish API for effects...
-  return self = {
-    popIn: popIn,
+  /**
+   * Returns a new provider which allows configuration of a new interimElement
+   * service. Allows configuration of default options & methods for options,
+   * as well as configuration of 'preset' methods (eg dialog.basic(): basic is a preset method)
+   */
+  function createInterimElementProvider(interimFactoryName) {
+    var providerConfig = {
+      presets: {}
+    };
+    var provider = {
+      setDefaults: setDefaults,
+      addPreset: addPreset,
+      $get: factory
+    };
 
-    /* Constants */
-    TRANSITIONEND_EVENT: 'transitionend' + (webkit ? ' webkitTransitionEnd' : ''),
-    ANIMATIONEND_EVENT: 'animationend' + (webkit ? ' webkitAnimationEnd' : ''),
-
-    TRANSFORM: vendorProperty('transform'),
-    TRANSITION: vendorProperty('transition'),
-    TRANSITION_DURATION: vendorProperty('transitionDuration'),
-    ANIMATION_PLAY_STATE: vendorProperty('animationPlayState'),
-    ANIMATION_DURATION: vendorProperty('animationDuration'),
-    ANIMATION_NAME: vendorProperty('animationName'),
-    ANIMATION_TIMING: vendorProperty('animationTimingFunction'),
-    ANIMATION_DIRECTION: vendorProperty('animationDirection')
-  };
-
-  // **********************************************************
-  // API Methods
-  // **********************************************************
-  function popIn(element, parentElement, clickElement) {
-    var deferred = $q.defer();
-    parentElement.append(element);
-
-    var startPos;
-    if (clickElement) {
-      var clickRect = clickElement[0].getBoundingClientRect();
-      startPos = translateString(
-        clickRect.left - element[0].offsetWidth,
-        clickRect.top - element[0].offsetHeight, 
-        0
-      ) + ' scale(0.2)';
-    } else {
-      startPos = 'translate3d(0,100%,0) scale(0.5)';
-    }
-
-    element
-      .css(self.TRANSFORM, startPos)
-      .css('opacity', 0);
-    
-    $$rAF(function() {
-      $$rAF(function() {
-        element
-          .addClass('md-active')
-          .css(self.TRANSFORM, '')
-          .css('opacity', '')
-          .on(self.TRANSITIONEND_EVENT, finished);
-      });
+    /**
+     * all interim elements will come with the 'build' preset
+     */
+    provider.addPreset('build', {
+      methods: ['controller', 'controllerAs', 'onRemove', 'onShow', 'resolve',
+        'template', 'templateUrl', 'themable', 'transformTemplate']
     });
 
-    function finished(ev) {
-      //Make sure this transitionend didn't bubble up from a child
-      if (ev.target === element[0]) {
-        element.off(self.TRANSITIONEND_EVENT, finished);
-        deferred.resolve();
+    factory.$inject = ["$$interimElement", "$animate", "$injector"];
+    return provider;
+
+    /**
+     * Save the configured defaults to be used when the factory is instantiated
+     */
+    function setDefaults(definition) {
+      providerConfig.optionsFactory = definition.options;
+      providerConfig.methods = definition.methods;
+      return provider;
+    }
+    /**
+     * Save the configured preset to be used when the factory is instantiated
+     */
+    function addPreset(name, definition) {
+      definition = definition || {};
+      definition.methods = definition.methods || [];
+      definition.options = definition.options || function() { return {}; };
+
+      if (/^cancel|hide|show$/.test(name)) {
+        throw new Error("Preset '" + name + "' in " + interimFactoryName + " is reserved!");
       }
+      if (definition.methods.indexOf('_options') > -1) {
+        throw new Error("Method '_options' in " + interimFactoryName + " is reserved!");
+      }
+      providerConfig.presets[name] = {
+        methods: definition.methods,
+        optionsFactory: definition.options
+      };
+      return provider;
     }
 
-    return deferred.promise;
+    /**
+     * Create a factory that has the given methods & defaults implementing interimElement
+     */
+    /* @ngInject */
+    function factory($$interimElement, $animate, $injector) {
+      var defaultMethods;
+      var defaultOptions;
+      var interimElementService = $$interimElement();
+
+      /*
+       * publicService is what the developer will be using.
+       * It has methods hide(), cancel(), show(), build(), and any other
+       * presets which were set during the config phase.
+       */
+      var publicService = {
+        hide: interimElementService.hide,
+        cancel: interimElementService.cancel,
+        show: showInterimElement
+      };
+
+      defaultMethods = providerConfig.methods || [];
+      // This must be invoked after the publicService is initialized
+      defaultOptions = invokeFactory(providerConfig.optionsFactory, {});
+
+      angular.forEach(providerConfig.presets, function(definition, name) {
+        var presetDefaults = invokeFactory(definition.optionsFactory, {});
+        var presetMethods = (definition.methods || []).concat(defaultMethods);
+
+        // Every interimElement built with a preset has a field called `$type`,
+        // which matches the name of the preset.
+        // Eg in preset 'confirm', options.$type === 'confirm'
+        angular.extend(presetDefaults, { $type: name });
+
+        // This creates a preset class which has setter methods for every
+        // method given in the `.addPreset()` function, as well as every
+        // method given in the `.setDefaults()` function.
+        //
+        // @example
+        // .setDefaults({
+        //   methods: ['hasBackdrop', 'clickOutsideToClose', 'escapeToClose', 'targetEvent'],
+        //   options: dialogDefaultOptions
+        // })
+        // .addPreset('alert', {
+        //   methods: ['title', 'ok'],
+        //   options: alertDialogOptions
+        // })
+        //
+        // Set values will be passed to the options when interimElemnt.show() is called.
+        function Preset(opts) {
+          this._options = angular.extend({}, presetDefaults, opts);
+        }
+        angular.forEach(presetMethods, function(name) {
+          Preset.prototype[name] = function(value) {
+            this._options[name] = value;
+            return this;
+          };
+        });
+
+        // eg $mdDialog.alert() will return a new alert preset
+        publicService[name] = function(options) {
+          return new Preset(options);
+        };
+      });
+
+      return publicService;
+
+      function showInterimElement(opts) {
+        // opts is either a preset which stores its options on an _options field,
+        // or just an object made up of options
+        return interimElementService.show(
+          angular.extend({}, defaultOptions, (opts || {})._options || opts)
+        );
+      }
+
+      /**
+       * Helper to call $injector.invoke with a local of the factory name for
+       * this provider.
+       * If an $mdDialog is providing options for a dialog and tries to inject
+       * $mdDialog, a circular dependency error will happen.
+       * We get around that by manually injecting $mdDialog as a local.
+       */
+      function invokeFactory(factory, defaultVal) {
+        var locals = {};
+        locals[interimFactoryName] = publicService;
+        return $injector.invoke(factory || function() { return defaultVal; }, {}, locals);
+      }
+
+    }
+
   }
 
-  // **********************************************************
-  // Utility Methods
-  // **********************************************************
+  /* @ngInject */
+  function InterimElementFactory($q, $rootScope, $timeout, $rootElement, $animate, $mdCompiler, $mdTheming) {
+
+    return function createInterimElementService() {
+      /*
+       * @ngdoc service
+       * @name $$interimElement.$service
+       *
+       * @description
+       * A service used to control inserting and removing an element into the DOM.
+       *
+       */
+      var stack = [];
+      var service;
+      return service = {
+        show: show,
+        hide: hide,
+        cancel: cancel,
+      };
+
+      function show(options) {
+        if (stack.length) {
+          service.cancel();
+        }
+
+        var interimElement = new InterimElement(options);
+
+        stack.push(interimElement);
+        return interimElement.show().then(function() {
+          return interimElement.deferred.promise;
+        });
+      }
+
+      /*
+       * @ngdoc method
+       * @name $$interimElement.$service#hide
+       * @kind function
+       *
+       * @description
+       * Removes the `$interimElement` from the DOM and resolves the promise returned from `show`
+       *
+       * @param {*} resolveParam Data to resolve the promise with
+       *
+       * @returns undefined data that resolves after the element has been removed.
+       *
+       */
+      function hide(response) {
+        var interimElement = stack.shift();
+        interimElement && interimElement.remove().then(function() {
+          interimElement.deferred.resolve(response);
+        });
+      }
+
+      /*
+       * @ngdoc method
+       * @name $$interimElement.$service#cancel
+       * @kind function
+       *
+       * @description
+       * Removes the `$interimElement` from the DOM and rejects the promise returned from `show`
+       *
+       * @param {*} reason Data to reject the promise with
+       *
+       * @returns undefined
+       *
+       */
+      function cancel(reason) {
+        var interimElement = stack.shift();
+        interimElement && interimElement.remove().then(function() {
+          interimElement.deferred.reject(reason);
+        });
+      }
 
 
-  function translateString(x, y, z) {
-    return 'translate3d(' + Math.floor(x) + 'px,' + Math.floor(y) + 'px,' + Math.floor(z) + 'px)';
+      /*
+       * Internal Interim Element Object
+       * Used internally to manage the DOM element and related data
+       */
+      function InterimElement(options) {
+        var self;
+        var hideTimeout, element;
+
+        options = options || {};
+        options = angular.extend({
+          scope: options.scope || $rootScope.$new(options.isolateScope),
+          onShow: function(scope, element, options) {
+            return $animate.enter(element, options.parent);
+          },
+          onRemove: function(scope, element, options) {
+            // Element could be undefined if a new element is shown before
+            // the old one finishes compiling.
+            return element && $animate.leave(element) || $q.when();
+          }
+        }, options);
+
+        return self = {
+          options: options,
+          deferred: $q.defer(),
+          show: function() {
+            return $mdCompiler.compile(options).then(function(compileData) {
+              angular.extend(compileData.locals, self.options);
+
+              // Search for parent at insertion time, if not specified
+              if (!options.parent) {
+                options.parent = $rootElement.find('body');
+                if (!options.parent.length) options.parent = $rootElement;
+              }
+              element = compileData.link(options.scope);
+              if (options.themable) $mdTheming(element);
+              var ret = options.onShow(options.scope, element, options);
+              return $q.when(ret)
+                .then(function(){
+                    // Issue onComplete callback when the `show()` finishes
+                    var notify = options.onComplete || angular.noop;
+                    notify.apply(null, [options.scope, element, options]);
+                })
+                .then(startHideTimeout);
+
+              function startHideTimeout() {
+                if (options.hideDelay) {
+                  hideTimeout = $timeout(service.cancel, options.hideDelay) ;
+                }
+              }
+            });
+          },
+          cancelTimeout: function() {
+            if (hideTimeout) {
+              $timeout.cancel(hideTimeout);
+              hideTimeout = undefined;
+            }
+          },
+          remove: function() {
+            self.cancelTimeout();
+            var ret = options.onRemove(options.scope, element, options);
+            return $q.when(ret).then(function() {
+              options.scope.$destroy();
+            });
+          }
+        };
+      }
+    };
   }
 
 }
 
 })();
+})();
 
 (function() {
+(function() {
+'use strict';
 
-angular.module('material.animations')
 
-.directive('inkRipple', [
-  '$mdInkRipple',
-  InkRippleDirective
-])
-
-.factory('$mdInkRipple', [
-  '$window',
-  '$$rAF',
-  '$mdEffects',
-  '$timeout',
-  '$mdUtil',
-  InkRippleService
-]);
+angular.module('material.core')
+  .factory('$mdInkRipple', InkRippleService)
+  .directive('inkRipple', InkRippleDirective)
+  .directive('noink', attrNoDirective())
+  .directive('nobar', attrNoDirective())
+  .directive('nostretch', attrNoDirective());
 
 function InkRippleDirective($mdInkRipple) {
   return function(scope, element, attr) {
@@ -704,8 +1065,9 @@ function InkRippleDirective($mdInkRipple) {
     }
   };
 }
+InkRippleDirective.$inject = ["$mdInkRipple"];
 
-function InkRippleService($window, $$rAF, $mdEffects, $timeout, $mdUtil) {
+function InkRippleService($window, $$rAF, $mdUtil, $timeout, $mdConstant) {
 
   return {
     attachButtonBehavior: attachButtonBehavior,
@@ -768,16 +1130,17 @@ function InkRippleService($window, $$rAF, $mdEffects, $timeout, $mdUtil) {
     };
 
     function rippleIsAllowed() {
-      return !$mdUtil.isParentDisabled(element, 2);
+      return !element[0].hasAttribute('disabled') && 
+        !(element[0].parentNode && element[0].parentNode.hasAttribute('disabled'));
     }
 
     function createRipple(left, top, positionsAreAbsolute) {
 
       var rippleEl = angular.element('<div class="md-ripple">')
-            .css($mdEffects.ANIMATION_DURATION, options.animationDuration + 'ms')
-            .css($mdEffects.ANIMATION_NAME, options.animationName)
-            .css($mdEffects.ANIMATION_TIMING, options.animationTimingFunction)
-            .on($mdEffects.ANIMATIONEND_EVENT, function() {
+            .css($mdConstant.CSS.ANIMATION_DURATION, options.animationDuration + 'ms')
+            .css($mdConstant.CSS.ANIMATION_NAME, options.animationName)
+            .css($mdConstant.CSS.ANIMATION_TIMING, options.animationTimingFunction)
+            .on($mdConstant.CSS.ANIMATIONEND, function() {
               rippleEl.remove();
             });
 
@@ -813,7 +1176,7 @@ function InkRippleService($window, $$rAF, $mdEffects, $timeout, $mdUtil) {
         top: (top - containerWidth / 2) + 'px',
         height: containerWidth + 'px'
       };
-      css[$mdEffects.ANIMATION_DURATION] = options.fadeoutDuration + 'ms';
+      css[$mdConstant.CSS.ANIMATION_DURATION] = options.fadeoutDuration + 'ms';
       rippleEl.css(css);
 
       return rippleEl;
@@ -826,7 +1189,7 @@ function InkRippleService($window, $$rAF, $mdEffects, $timeout, $mdUtil) {
 
         rippleEl = createRipple(ev.center.x, ev.center.y, true);
         pauseTimeout = $timeout(function() {
-          rippleEl && rippleEl.css($mdEffects.ANIMATION_PLAY_STATE, 'paused');
+          rippleEl && rippleEl.css($mdConstant.CSS.ANIMATION_PLAY_STATE, 'paused');
         }, options.mousedownPauseTime, false);
 
         rippleEl.on('$destroy', function() {
@@ -835,17 +1198,14 @@ function InkRippleService($window, $$rAF, $mdEffects, $timeout, $mdUtil) {
 
       } else if (ev.eventType === Hammer.INPUT_END && ev.isFinal) {
         $timeout.cancel(pauseTimeout);
-        rippleEl && rippleEl.css($mdEffects.ANIMATION_PLAY_STATE, '');
+        rippleEl && rippleEl.css($mdConstant.CSS.ANIMATION_PLAY_STATE, '');
       }
     }
 
   }
 
 }
-})();
-
-(function() {
-angular.module('material.animations')
+InkRippleService.$inject = ["$window", "$$rAF", "$mdUtil", "$timeout", "$mdConstant"];
 
 /**
  * noink/nobar/nostretch directive: make any element that has one of
@@ -878,12 +1238,6 @@ angular.module('material.animations')
  * });
  * </hljs>
  */
-.directive({
-  noink: attrNoDirective(),
-  nobar: attrNoDirective(),
-  nostretch: attrNoDirective()
-});
-
 function attrNoDirective() {
   return function() {
     return {
@@ -892,8 +1246,143 @@ function attrNoDirective() {
   };
 }
 })();
+})();
 
 (function() {
+(function() {
+'use strict';
+
+
+angular.module('material.core')
+  .directive('mdTheme', ThemingDirective)
+  .directive('mdThemable', ThemableDirective)
+  .provider('$mdTheming', Theming);
+
+/**
+ * @ngdoc provider
+ * @name $mdThemingProvider
+ * @module material.core
+ *
+ * @description Provider to configure the `$mdTheming` service.
+ */
+
+/**
+ * @ngdoc method
+ * @name $mdThemingProvider#setDefaultTheme
+ * @param {string} themeName Default theme name to be applied to elements. Default value is `default`.
+ */
+
+/**
+ * @ngdoc method
+ * @name $mdThemingProvider#alwaysWatchTheme
+ * @param {boolean} watch Whether or not to always watch themes for changes and re-apply
+ * classes when they change. Default is `false`. Enabling can reduce performance.
+ */
+
+/**
+ * @ngdoc service
+ * @name $mdTheming
+ *
+ * @description
+ *
+ * Service that makes an element apply theming related classes to itself.
+ *
+ * ```js
+ * app.directive('myFancyDirective', function($mdTheming) {
+ *   return {
+ *     restrict: 'e',
+ *     link: function(scope, el, attrs) {
+ *       $mdTheming(el);
+ *     }
+ *   };
+ * });
+ * ```
+ * @param {el=} element to apply theming to
+ */
+
+function Theming($injector) {
+  var defaultTheme = 'default';
+  var alwaysWatchTheme = false;
+  return {
+    setDefaultTheme: function(theme) {
+      defaultTheme = theme;
+    },
+    alwaysWatchTheme: function(alwaysWatch) {
+      alwaysWatchTheme = alwaysWatch;
+    },
+    $get: ['$rootElement', '$rootScope', ThemingService]
+  };
+
+  function ThemingService($rootElement, $rootScope) {
+    applyTheme.inherit = function(el, parent) {
+      var ctrl = parent.controller('mdTheme');
+
+      var attrThemeValue = el.attr('md-theme-watch');
+      if ( (alwaysWatchTheme || angular.isDefined(attrThemeValue)) && attrThemeValue != 'false') { 
+        var deregisterWatch = $rootScope.$watch(function() { 
+          return ctrl && ctrl.$mdTheme || defaultTheme; 
+        }, changeTheme);
+        el.on('$destroy', deregisterWatch);
+      } else {
+        var theme = ctrl && ctrl.$mdTheme || defaultTheme;
+        changeTheme(theme);
+      }
+
+      function changeTheme(theme) {
+        var oldTheme = el.data('$mdThemeName');
+        if (oldTheme) el.removeClass('md-' + oldTheme +'-theme');
+        el.addClass('md-' + theme + '-theme');
+        el.data('$mdThemeName', theme);
+      }
+    };
+
+    return applyTheme;
+
+    function applyTheme(scope, el) {
+      // Allow us to be invoked via a linking function signature.
+      if (el === undefined) { 
+        el = scope;
+        scope = undefined;
+      }
+      if (scope === undefined) {
+        scope = $rootScope;
+      }
+      applyTheme.inherit(el, el);
+    }
+  }
+}
+Theming.$inject = ["$injector"];
+
+function ThemingDirective($interpolate) {
+  return {
+    priority: 100,
+    link: {
+      pre: function(scope, el, attrs) {
+        var ctrl = {
+          $setTheme: function(theme) {
+            ctrl.$mdTheme = theme;
+          }
+        };
+        el.data('$mdThemeController', ctrl);
+        ctrl.$setTheme($interpolate(attrs.mdTheme)(scope));
+        attrs.$observe('mdTheme', ctrl.$setTheme);
+      }
+    }
+  };
+}
+ThemingDirective.$inject = ["$interpolate"];
+
+function ThemableDirective($mdTheming) {
+  return $mdTheming;
+}
+ThemableDirective.$inject = ["$mdTheming"];
+})();
+})();
+
+(function() {
+(function() {
+'use strict';
+
 /*
  * @ngdoc module
  * @name material.components.backdrop
@@ -912,20 +1401,23 @@ function attrNoDirective() {
  * Apply class `opaque` to make the backdrop use the theme backdrop color.
  *
  */
+
 angular.module('material.components.backdrop', [
-  'material.services.theming'
+  'material.core'
 ])
-.directive('mdBackdrop', [
-  '$mdTheming',
-  BackdropDirective
-]);
+  .directive('mdBackdrop', BackdropDirective);
 
 function BackdropDirective($mdTheming) {
   return $mdTheming;
 }
+BackdropDirective.$inject = ["$mdTheming"];
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.bottomSheet
@@ -933,23 +1425,11 @@ function BackdropDirective($mdTheming) {
  * BottomSheet
  */
 angular.module('material.components.bottomSheet', [
-  'material.components.backdrop',
-  'material.services.interimElement',
-  'material.services.theming'
+  'material.core',
+  'material.components.backdrop'
 ])
-.directive('mdBottomSheet', [
-  MdBottomSheetDirective
-])
-.factory('$mdBottomSheet', [
-  '$$interimElement',
-  '$animate',
-  '$mdEffects',
-  '$timeout',
-  '$$rAF',
-  '$compile',
-  '$mdTheming',
-  MdBottomSheet
-]);
+  .directive('mdBottomSheet', MdBottomSheetDirective)
+  .provider('$mdBottomSheet', MdBottomSheetProvider);
 
 function MdBottomSheetDirective() {
   return {
@@ -966,7 +1446,7 @@ function MdBottomSheetDirective() {
  * `$mdBottomSheet` opens a bottom sheet over the app and provides a simple promise API.
  *
  * ### Restrictions
- * 
+ *
  * - The bottom sheet's template must have an outer `<md-bottom-sheet>` element.
  * - Add the `md-grid` class to the bottom sheet for a grid layout.
  * - Add the `md-list` class to the bottom sheet for a list layout.
@@ -1007,10 +1487,10 @@ function MdBottomSheetDirective() {
  *   template string.
  *   - `controller` - `{string=}`: The controller to associate with this bottom sheet.
  *   - `locals` - `{string=}`: An object containing key/value pairs. The keys will
- *   be used as names of values to inject into the controller. For example, 
+ *   be used as names of values to inject into the controller. For example,
  *   `locals: {three: 3}` would inject `three` into the controller with the value
  *   of 3.
- *   - `targetEvent` - `{DOMClickEvent=}`: A click's event object. When passed in as an option, 
+ *   - `targetEvent` - `{DOMClickEvent=}`: A click's event object. When passed in as an option,
  *   the location of the click will be used as the starting point for the opening animation
  *   of the the dialog.
  *   - `resolve` - `{object=}`: Similar to locals, except it takes promises as values
@@ -1026,7 +1506,7 @@ function MdBottomSheetDirective() {
  * @name $mdBottomSheet#hide
  *
  * @description
- * Hide the existing bottom sheet and resolve the promise returned from 
+ * Hide the existing bottom sheet and resolve the promise returned from
  * `$mdBottomSheet.show()`.
  *
  * @param {*=} response An argument for the resolved promise.
@@ -1038,159 +1518,176 @@ function MdBottomSheetDirective() {
  * @name $mdBottomSheet#cancel
  *
  * @description
- * Hide the existing bottom sheet and reject the promise returned from 
+ * Hide the existing bottom sheet and reject the promise returned from
  * `$mdBottomSheet.show()`.
  *
  * @param {*=} response An argument for the rejected promise.
  *
  */
 
-function MdBottomSheet($$interimElement, $animate, $mdEffects, $timeout, $$rAF, $compile, $mdTheming) {
-  var backdrop;
+function MdBottomSheetProvider($$interimElementProvider) {
 
-  var $mdBottomSheet;
-  return $mdBottomSheet = $$interimElement({
-    themable: true,
-    targetEvent: null,
-    onShow: onShow,
-    onRemove: onRemove,
-  });
-
-  function onShow(scope, element, options) {
-    // Add a backdrop that will close on click
-    backdrop = $compile('<md-backdrop class="md-opaque ng-enter">')(scope);
-    backdrop.on('click touchstart', function() {
-      $timeout($mdBottomSheet.cancel);
+  bottomSheetDefaults.$inject = ["$animate", "$mdConstant", "$timeout", "$$rAF", "$compile", "$mdTheming", "$mdBottomSheet"];
+  return $$interimElementProvider('$mdBottomSheet')
+    .setDefaults({
+      options: bottomSheetDefaults
     });
-    $mdTheming.inherit(backdrop, options.parent);
 
-    $animate.enter(backdrop, options.parent, null);
-
-    var bottomSheet = new BottomSheet(element);
-    options.bottomSheet = bottomSheet;
-
-    // Give up focus on calling item
-    options.targetEvent && angular.element(options.targetEvent.target).blur();
-    $mdTheming.inherit(bottomSheet.element, options.parent);
-
-    return $animate.enter(bottomSheet.element, options.parent);
-
-  }
-
-  function onRemove(scope, element, options) {
-    var bottomSheet = options.bottomSheet;
-    $animate.leave(backdrop);
-    return $animate.leave(bottomSheet.element).then(function() {
-      bottomSheet.cleanup();
-
-      // Restore focus
-      options.targetEvent && angular.element(options.targetEvent.target).focus();
-    });
-  }
-
-  /**
-   * BottomSheet class to apply bottom-sheet behavior to an element
-   */
-  function BottomSheet(element) {
-    var MAX_OFFSET = 80; // amount past the bottom of the element that we can drag down, this is same as in _bottomSheet.scss
-    var WIGGLE_AMOUNT = 20; // point where it starts to get "harder" to drag
-    var CLOSING_VELOCITY = 10; // how fast we need to flick down to close the sheet
-    var startY, lastY, velocity, transitionDelay, startTarget;
-
-    // coercion incase $mdCompiler returns multiple elements
-    element = element.eq(0);
-
-    element.on('touchstart', onTouchStart);
-    element.on('touchmove', onTouchMove);
-    element.on('touchend', onTouchEnd);
+  /* @ngInject */
+  function bottomSheetDefaults($animate, $mdConstant, $timeout, $$rAF, $compile, $mdTheming,
+                               $mdBottomSheet) {
+    var backdrop;
 
     return {
-      element: element,
-      cleanup: function cleanup() {
-        element.off('touchstart', onTouchStart);
-        element.off('touchmove', onTouchMove);
-        element.off('touchend', onTouchEnd);
-      }
+      themable: true,
+      targetEvent: null,
+      onShow: onShow,
+      onRemove: onRemove,
     };
 
-    function onTouchStart(e) {
-      e.preventDefault();
-      startTarget = e.target;
-      startY = getY(e);
-      
-      // Disable transitions on transform so that it feels fast
-      transitionDelay = element.css($mdEffects.TRANSITION_DURATION);
-      element.css($mdEffects.TRANSITION_DURATION, '0s');
+    function onShow(scope, element, options) {
+      // Add a backdrop that will close on click
+      backdrop = $compile('<md-backdrop class="md-opaque ng-enter">')(scope);
+      backdrop.on('click touchstart', function() {
+        $timeout($mdBottomSheet.cancel);
+      });
+      $mdTheming.inherit(backdrop, options.parent);
+
+      $animate.enter(backdrop, options.parent, null);
+
+      var bottomSheet = new BottomSheet(element);
+      options.bottomSheet = bottomSheet;
+
+      // Give up focus on calling item
+      options.targetEvent && angular.element(options.targetEvent.target).blur();
+      $mdTheming.inherit(bottomSheet.element, options.parent);
+
+      return $animate.enter(bottomSheet.element, options.parent);
+
     }
 
-    function onTouchEnd(e) {
-      // Re-enable the transitions on transforms
-      element.css($mdEffects.TRANSITION_DURATION, transitionDelay);
+    function onRemove(scope, element, options) {
+      var bottomSheet = options.bottomSheet;
+      $animate.leave(backdrop);
+      return $animate.leave(bottomSheet.element).then(function() {
+        bottomSheet.cleanup();
 
-      var currentY = getY(e);
-      // If we didn't scroll much, and we didn't change targets, assume its a click
-      if ( Math.abs(currentY - startY) < 5  && e.target == startTarget) {
-        angular.element(e.target).triggerHandler('click');
-      } else {
-        // If they went fast enough, trigger a close.
-        if (velocity > CLOSING_VELOCITY) {
-          $timeout($mdBottomSheet.cancel);
+        // Restore focus
+        options.targetEvent && angular.element(options.targetEvent.target).focus();
+      });
+    }
 
-        // Otherwise, untransform so that we go back to our normal position
+    /**
+     * BottomSheet class to apply bottom-sheet behavior to an element
+     */
+    function BottomSheet(element) {
+      var MAX_OFFSET = 80; // amount past the bottom of the element that we can drag down, this is same as in _bottomSheet.scss
+      var WIGGLE_AMOUNT = 20; // point where it starts to get "harder" to drag
+      var CLOSING_VELOCITY = 10; // how fast we need to flick down to close the sheet
+      var startY, lastY, velocity, transitionDelay, startTarget;
+
+      // coercion incase $mdCompiler returns multiple elements
+      element = element.eq(0);
+
+      element.on('touchstart', onTouchStart)
+             .on('touchmove', onTouchMove)
+             .on('touchend', onTouchEnd);
+
+      return {
+        element: element,
+        cleanup: function cleanup() {
+          element.off('touchstart', onTouchStart)
+                 .off('touchmove', onTouchMove)
+                 .off('touchend', onTouchEnd);
+        }
+      };
+
+      function onTouchStart(e) {
+        e.preventDefault();
+        startTarget = e.target;
+        startY = getY(e);
+
+        // Disable transitions on transform so that it feels fast
+        transitionDelay = element.css($mdConstant.CSS.TRANSITION_DURATION);
+        element.css($mdConstant.CSS.TRANSITION_DURATION, '0s');
+      }
+
+      function onTouchEnd(e) {
+        // Re-enable the transitions on transforms
+        element.css($mdConstant.CSS.TRANSITION_DURATION, transitionDelay);
+
+        var currentY = getY(e);
+        // If we didn't scroll much, and we didn't change targets, assume its a click
+        if ( Math.abs(currentY - startY) < 5  && e.target == startTarget) {
+          angular.element(e.target).triggerHandler('click');
         } else {
-          setTransformY(undefined);
+          // If they went fast enough, trigger a close.
+          if (velocity > CLOSING_VELOCITY) {
+            $timeout($mdBottomSheet.cancel);
+
+          // Otherwise, untransform so that we go back to our normal position
+          } else {
+            setTransformY(undefined);
+          }
         }
       }
-    }
 
-    function onTouchMove(e) {
-      var currentY = getY(e);
-      var delta = currentY - startY;
+      function onTouchMove(e) {
+        var currentY = getY(e);
+        var delta = currentY - startY;
 
-      velocity = currentY - lastY;
-      lastY = currentY;
-      
-      // Do some conversion on delta to get a friction-like effect
-      delta = adjustedDelta(delta);
-      setTransformY(delta + MAX_OFFSET);
-    }
+        velocity = currentY - lastY;
+        lastY = currentY;
 
-    /**
-     * Helper function to find the Y aspect of various touch events.
-     **/
-    function getY(e) {
-      var touch = e.touches && e.touches.length ? e.touches[0] : e.changedTouches[0];
-      return touch.clientY;
-    }
+        // Do some conversion on delta to get a friction-like effect
+        delta = adjustedDelta(delta);
+        setTransformY(delta + MAX_OFFSET);
+      }
 
-    /**
-     * Transform the element along the y-axis
-     **/
-    function setTransformY(amt) {
-      if (amt === null || amt === undefined) {
-        element.css($mdEffects.TRANSFORM, '');
-      } else {
-        element.css($mdEffects.TRANSFORM, 'translate3d(0, ' + amt + 'px, 0)');
+      /**
+       * Helper function to find the Y aspect of various touch events.
+       **/
+      function getY(e) {
+        var touch = e.touches && e.touches.length ? e.touches[0] : e.changedTouches[0];
+        return touch.clientY;
+      }
+
+      /**
+       * Transform the element along the y-axis
+       **/
+      function setTransformY(amt) {
+        if (amt === null || amt === undefined) {
+          element.css($mdConstant.CSS.TRANSFORM, '');
+        } else {
+          element.css($mdConstant.CSS.TRANSFORM, 'translate3d(0, ' + amt + 'px, 0)');
+        }
+      }
+
+      // Returns a new value for delta that will never exceed MAX_OFFSET_AMOUNT
+      // Will get harder to exceed it as you get closer to it
+      function adjustedDelta(delta) {
+        if ( delta < 0  && delta < -MAX_OFFSET + WIGGLE_AMOUNT) {
+          delta = -delta;
+          var base = MAX_OFFSET - WIGGLE_AMOUNT;
+          delta = Math.max(-MAX_OFFSET, -Math.min(MAX_OFFSET - 5, base + ( WIGGLE_AMOUNT * (delta - base)) / MAX_OFFSET) - delta / 50);
+        }
+
+        return delta;
       }
     }
 
-    // Returns a new value for delta that will never exceed MAX_OFFSET_AMOUNT
-    // Will get harder to exceed it as you get closer to it
-    function adjustedDelta(delta) {
-      if ( delta < 0  && delta < -MAX_OFFSET + WIGGLE_AMOUNT) {
-        delta = -delta;
-        var base = MAX_OFFSET - WIGGLE_AMOUNT;
-        delta = Math.max(-MAX_OFFSET, -Math.min(MAX_OFFSET - 5, base + ( WIGGLE_AMOUNT * (delta - base)) / MAX_OFFSET) - delta / 50);
-      }
-
-      return delta;
-    }
   }
 
 }
+MdBottomSheetProvider.$inject = ["$$interimElementProvider"];
+
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.button
@@ -1199,17 +1696,9 @@ function MdBottomSheet($$interimElement, $animate, $mdEffects, $timeout, $$rAF, 
  * Button
  */
 angular.module('material.components.button', [
-  'material.core',
-  'material.animations',
-  'material.services.aria',
-  'material.services.theming',
+  'material.core'
 ])
-  .directive('mdButton', [
-    '$mdInkRipple',
-    '$mdTheming',
-    '$mdAria',
-    MdButtonDirective
-  ]);
+  .directive('mdButton', MdButtonDirective);
 
 /**
  * @ngdoc directive
@@ -1286,9 +1775,14 @@ function MdButtonDirective($mdInkRipple, $mdTheming, $mdAria) {
   }
 
 }
+MdButtonDirective.$inject = ["$mdInkRipple", "$mdTheming", "$mdAria"];
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.card
@@ -1297,10 +1791,9 @@ function MdButtonDirective($mdInkRipple, $mdTheming, $mdAria) {
  * Card components.
  */
 angular.module('material.components.card', [
+  'material.core'
 ])
-  .directive('mdCard', [
-    mdCardDirective 
-  ]);
+  .directive('mdCard', mdCardDirective);
 
 
 
@@ -1337,27 +1830,21 @@ function mdCardDirective() {
   };
 }
 })();
+})();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.checkbox
  * @description Checkbox module!
  */
 angular.module('material.components.checkbox', [
-  'material.core',
-  'material.animations',
-  'material.services.theming',
-  'material.services.aria'
+  'material.core'
 ])
-  .directive('mdCheckbox', [ 
-    'inputDirective',
-    '$mdInkRipple',
-    '$mdAria',
-    '$mdConstant',
-    '$mdTheming',
-    MdCheckboxDirective
-  ]);
+  .directive('mdCheckbox', MdCheckboxDirective);
 
 /**
  * @ngdoc directive
@@ -1394,8 +1881,8 @@ angular.module('material.components.checkbox', [
  * </hljs>
  *
  */
-function MdCheckboxDirective(inputDirectives, $mdInkRipple, $mdAria, $mdConstant, $mdTheming) {
-  var inputDirective = inputDirectives[0];
+function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant, $mdTheming) {
+  inputDirective = inputDirective[0];
 
   var CHECKED_CSS = 'md-checked';
 
@@ -1475,11 +1962,15 @@ function MdCheckboxDirective(inputDirectives, $mdInkRipple, $mdAria, $mdConstant
     };
   }
 }
+MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$mdConstant", "$mdTheming"];
 
-
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.content
@@ -1488,13 +1979,9 @@ function MdCheckboxDirective(inputDirectives, $mdInkRipple, $mdAria, $mdConstant
  * Scrollable content
  */
 angular.module('material.components.content', [
-  'material.services.theming',
-  'material.services.registry'
+  'material.core'
 ])
-  .directive('mdContent', [
-    '$mdTheming',
-    mdContentDirective
-  ]);
+  .directive('mdContent', mdContentDirective);
 
 /**
  * @ngdoc directive
@@ -1533,40 +2020,24 @@ function mdContentDirective($mdTheming) {
     this.$element = $element;
   }
 }
+mdContentDirective.$inject = ["$mdTheming"];
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.dialog
  */
 angular.module('material.components.dialog', [
   'material.core',
-  'material.animations',
-  'material.components.backdrop',
-  'material.services.compiler',
-  'material.services.aria',
-  'material.services.interimElement',
-  'material.services.theming',
+  'material.components.backdrop'
 ])
-  .directive('mdDialog', [
-    '$$rAF',
-    '$mdTheming',
-    MdDialogDirective
-  ])
-  .factory('$mdDialog', [
-    '$timeout',
-    '$rootElement',
-    '$compile',
-    '$mdEffects',
-    '$animate',
-    '$mdAria',
-    '$$interimElement',
-    '$mdUtil',
-    '$mdConstant',
-    '$mdTheming',
-    MdDialogService
-  ]);
+  .directive('mdDialog', MdDialogDirective)
+  .provider('$mdDialog', MdDialogProvider);
 
 function MdDialogDirective($$rAF, $mdTheming) {
   return {
@@ -1582,6 +2053,7 @@ function MdDialogDirective($$rAF, $mdTheming) {
     }
   };
 }
+MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
 
 /**
  * @ngdoc service
@@ -1596,7 +2068,7 @@ function MdDialogDirective($$rAF, $mdTheming) {
  * - The dialog is always given an isolate scope.
  * - The dialog's template must have an outer `<md-dialog>` element.
  *   Inside, use an `<md-content>` element for the dialog's content, and use
- *   an element with class `md-actions` for the dialog's actions.  
+ *   an element with class `md-actions` for the dialog's actions.
  *
  * @usage
  * <hljs lang="html">
@@ -1611,50 +2083,62 @@ function MdDialogDirective($$rAF, $mdTheming) {
  * var app = angular.module('app', ['ngMaterial']);
  * app.controller('MyController', function($scope, $mdDialog) {
  *   $scope.openDialog = function($event) {
- *     $mdDialog.show({
- *       targetEvent: $event,
- *       template:
- *         '<md-dialog>' +
- *         '  <md-content>Hello {{ userName }}!</md-content>' +
- *         '  <div class="md-actions">' +
- *         '    <md-button ng-click="closeDialog()">' +
- *         '      Close' +
- *         '    </md-button>' +
- *         '  </div>' +
- *         '</md-dialog>',
- *       controller: 'DialogController',
- *       onComplete: afterShowAnimation,
- *       locals: { name: 'Bobby' }
- *     });
- *
- *     // When the 'enter' animation finishes...
- *     function afterShowAnimation(scope, element, options) {
- *        // post-show code here: DOM element focus, etc.
- *     }
- * });
- * app.controller('DialogController', function($scope, $mdDialog, name) {
- *   $scope.userName = name;
- *   $scope.closeDialog = function() {
- *     $mdDialog.hide();
- *   };
- * });
+ *     $mdDialog.show(
+ *       $mdDialog.alert()
+ *         .title('Hello, ' + $scope.userName)
+ *         .content('This is an example of how easy dialogs can be!')
+ *     );
+ *   });
  * </hljs>
+ */
+
+ /**
+ * @ngdoc method
+ * @name $mdDialog#alert
+ *
+ * @description
+ * Builds a preconfigured dialog with the specified message.
+ *
+ * @returns {obj} an `$mdDialogPreset` with the chainable configuration methods:
+ *
+ * - $mdDialogPreset#title(string) - sets title to string
+ * - $mdDialogPreset#content(string) - sets content / message to string
+ * - $mdDialogPreset#ok(string) - sets okay button text to string
+ *
+ */
+
+ /**
+ * @ngdoc method
+ * @name $mdDialog#confirm
+ *
+ * @description
+ * Builds a preconfigured dialog with the specified message. You can call show and the promise returned
+ * will be resolved only if the user clicks the confirm action on the dialog.
+ *
+ * @returns {obj} an `$mdDialogPreset` with the chainable configuration methods:
+ *
+ * Additionally, it supports the following methods:
+ *
+ * - $mdDialogPreset#title(string) - sets title to string
+ * - $mdDialogPreset#content(string) - sets content / message to string
+ * - $mdDialogPreset#ok(string) - sets okay button text to string
+ * - $mdDialogPreset#cancel(string) - sets cancel button text to string
  *
  */
 
 /**
- *
  * @ngdoc method
  * @name $mdDialog#show
  *
  * @description
  * Show a dialog with the specified options.
  *
- * @param {object} options An options object, with the following properties:
+ * @param {object} optionsOrPreset Either provide an `$mdToastPreset` returned from `alert()`,
+ * `confirm()`, and `build()`, or an options object with the following properties:
  *   - `templateUrl` - `{string=}`: The url of a template that will be used as the content
- *   of the dialog. 
+ *   of the dialog.
  *   - `template` - `{string=}`: Same as templateUrl, except this is an actual template string.
- *   - `targetEvent` - `{DOMClickEvent=}`: A click's event object. When passed in as an option, 
+ *   - `targetEvent` - `{DOMClickEvent=}`: A click's event object. When passed in as an option,
  *     the location of the click will be used as the starting point for the opening animation
  *     of the the dialog.
  *   - `hasBackdrop` - `{boolean=}`: Whether there should be an opaque backdrop behind the dialog.
@@ -1667,7 +2151,9 @@ function MdDialogDirective($$rAF, $mdTheming) {
  *     will be injected with the local `$hideDialog`, which is a function used to hide the dialog.
  *   - `locals` - `{object=}`: An object containing key/value pairs. The keys will be used as names
  *     of values to inject into the controller. For example, `locals: {three: 3}` would inject
- *     `three` into the controller, with the value 3.
+ *     `three` into the controller, with the value 3. If `bindToController` is true, they will be
+ *     coppied to the controller instead.
+ *   - `bindToController` - `bool`: bind the locals to the controller, instead of passing them in
  *   - `resolve` - `{object=}`: Similar to locals, except it takes promises as values, and the
  *     toast will not open until all of the promises resolve.
  *   - `controllerAs` - `{string=}`: An alias to assign the controller to on the scope.
@@ -1688,7 +2174,6 @@ function MdDialogDirective($$rAF, $mdTheming) {
  * Hide an existing dialog and resolve the promise returned from `$mdDialog.show()`.
  *
  * @param {*=} response An argument for the resolved promise.
- *
  */
 
 /**
@@ -1699,134 +2184,231 @@ function MdDialogDirective($$rAF, $mdTheming) {
  * Hide an existing dialog and reject the promise returned from `$mdDialog.show()`.
  *
  * @param {*=} response An argument for the rejected promise.
- *
  */
 
-function MdDialogService($timeout, $rootElement, $compile, $mdEffects, $animate, $mdAria, $$interimElement, $mdUtil, $mdConstant, $mdTheming) {
+function MdDialogProvider($$interimElementProvider) {
 
-  var $dialogService;
-  return $dialogService = $$interimElement({
-    hasBackdrop: true,
-    isolateScope: true,
-    onShow: onShow,
-    onRemove: onRemove,
-    clickOutsideToClose: true,
-    escapeToClose: true,
-    targetEvent: null,
-    transformTemplate: function(template) {
-      return '<div class="md-dialog-container">' + template + '</div>';
+  var alertDialogMethods = ['title', 'content', 'ariaLabel', 'ok'];
+
+  advancedDialogOptions.$inject = ["$mdDialog"];
+  dialogDefaultOptions.$inject = ["$timeout", "$rootElement", "$compile", "$animate", "$mdAria", "$mdUtil", "$mdConstant", "$mdTheming", "$$rAF", "$q", "$mdDialog"];
+  return $$interimElementProvider('$mdDialog')
+    .setDefaults({
+      methods: ['hasBackdrop', 'clickOutsideToClose', 'escapeToClose', 'targetEvent'],
+      options: dialogDefaultOptions
+    })
+    .addPreset('alert', {
+      methods: alertDialogMethods,
+      options: advancedDialogOptions
+    })
+    .addPreset('confirm', {
+      methods: alertDialogMethods.concat('cancel'),
+      options: advancedDialogOptions
+    });
+
+  /* @ngInject */
+  function advancedDialogOptions($mdDialog) {
+    return {
+      template: [
+        '<md-dialog aria-label="{{dialog.label}}">',
+          '<md-content>',
+            '<h2>{{ dialog.title }}</h2>',
+            '<p>{{ dialog.content }}</p>',
+          '</md-content>',
+          '<div class="md-actions">',
+            '<md-button ng-if="dialog.$type == \'confirm\'" ng-click="dialog.abort()">',
+              '{{ dialog.cancel }}',
+            '</md-button>',
+            '<md-button ng-click="dialog.hide()" class="md-primary">',
+              '{{ dialog.ok }}',
+            '</md-button>',
+          '</div>',
+        '</md-dialog>'
+      ].join(''),
+      controller: function mdDialogCtrl() {
+        this.hide = function() {
+          $mdDialog.hide(true);
+        };
+        this.abort = function() {
+          $mdDialog.cancel();
+        };
+      },
+      controllerAs: 'dialog',
+      bindToController: true
+    };
+  }
+
+  /* @ngInject */
+  function dialogDefaultOptions($timeout, $rootElement, $compile, $animate, $mdAria,
+                                $mdUtil, $mdConstant, $mdTheming, $$rAF, $q, $mdDialog) {
+    return {
+      hasBackdrop: true,
+      isolateScope: true,
+      onShow: onShow,
+      onRemove: onRemove,
+      clickOutsideToClose: true,
+      escapeToClose: true,
+      targetEvent: null,
+      transformTemplate: function(template) {
+        return '<div class="md-dialog-container">' + template + '</div>';
+      }
+    };
+
+    // On show method for dialogs
+    function onShow(scope, element, options) {
+      // Incase the user provides a raw dom element, always wrap it in jqLite
+      options.parent = angular.element(options.parent);
+
+      options.popInTarget = angular.element((options.targetEvent || {}).target);
+      var closeButton = findCloseButton();
+
+      configureAria(element.find('md-dialog'));
+
+      if (options.hasBackdrop) {
+        options.backdrop = $compile('<md-backdrop class="md-opaque ng-enter">')(scope);
+        $mdTheming.inherit(options.backdrop, options.parent);
+        $animate.enter(options.backdrop, options.parent, null);
+      }
+
+      return dialogPopIn(
+        element,
+        options.parent,
+        options.popInTarget.length && options.popInTarget
+      )
+      .then(function() {
+        if (options.escapeToClose) {
+          options.rootElementKeyupCallback = function(e) {
+            if (e.keyCode === $mdConstant.KEY_CODE.ESCAPE) {
+              $timeout($mdDialog.cancel);
+            }
+          };
+          $rootElement.on('keyup', options.rootElementKeyupCallback);
+        }
+
+        if (options.clickOutsideToClose) {
+          options.dialogClickOutsideCallback = function(e) {
+            // Only close if we click the flex container outside the backdrop
+            if (e.target === element[0]) {
+              $timeout($mdDialog.cancel);
+            }
+          };
+          element.on('click', options.dialogClickOutsideCallback);
+        }
+        closeButton.focus();
+      });
+
+
+      function findCloseButton() {
+        //If no element with class dialog-close, try to find the last
+        //button child in md-actions and assume it is a close button
+        var closeButton = element[0].querySelector('.dialog-close');
+        if (!closeButton) {
+          var actionButtons = element[0].querySelectorAll('.md-actions button');
+          closeButton = actionButtons[ actionButtons.length - 1 ];
+        }
+        return angular.element(closeButton);
+      }
+
     }
-  });
 
-  function onShow(scope, element, options) {
-    // Incase the user provides a raw dom element, always wrap it in jqLite
-    options.parent = angular.element(options.parent);
+    // On remove function for all dialogs
+    function onRemove(scope, element, options) {
 
-    options.popInTarget = angular.element((options.targetEvent || {}).target); 
-    var closeButton = findCloseButton();
-
-    configureAria(element.find('md-dialog'));
-
-    if (options.hasBackdrop) {
-      options.backdrop = $compile('<md-backdrop class="md-opaque ng-enter">')(scope);
-      $mdTheming.inherit(options.backdrop, options.parent);
-      $animate.enter(options.backdrop, options.parent, null);
-    }
-
-    return $mdEffects.popIn(
-      element, 
-      options.parent, 
-      options.popInTarget.length && options.popInTarget
-    )
-    .then(function() {
+      if (options.backdrop) {
+        $animate.leave(options.backdrop);
+        element.data('backdrop', undefined);
+      }
       if (options.escapeToClose) {
-        options.rootElementKeyupCallback = function(e) {
-          if (e.keyCode === $mdConstant.KEY_CODE.ESCAPE) {
-            $timeout($dialogService.cancel);
-          }
-        };
-        $rootElement.on('keyup', options.rootElementKeyupCallback);
+        $rootElement.off('keyup', options.rootElementKeyupCallback);
       }
-
       if (options.clickOutsideToClose) {
-        options.dialogClickOutsideCallback = function(e) {
-          // Only close if we click the flex container outside the backdrop
-          if (e.target === element[0]) {
-            $timeout($dialogService.cancel);
-          }
-        };
-        element.on('click', options.dialogClickOutsideCallback);
+        element.off('click', options.dialogClickOutsideCallback);
       }
-      closeButton.focus();
-    });
+      return $animate.leave(element).then(function() {
+        element.remove();
+        options.popInTarget && options.popInTarget.focus();
+      });
 
+    }
 
-    function findCloseButton() {
-      //If no element with class dialog-close, try to find the last
-      //button child in md-actions and assume it is a close button
-      var closeButton = element[0].querySelector('.dialog-close');
-      if (!closeButton) {
-        var actionButtons = element[0].querySelectorAll('.md-actions button');
-        closeButton = actionButtons[ actionButtons.length - 1 ];
+    /**
+     * Inject ARIA-specific attributes appropriate for Dialogs
+     */
+    function configureAria(element) {
+      element.attr({
+        'role': 'dialog'
+      });
+
+      var dialogContent = element.find('md-content');
+      if (dialogContent.length === 0){
+        dialogContent = element;
       }
-      return angular.element(closeButton);
+      $mdAria.expectAsync(element, 'aria-label', function() {
+        var words = dialogContent.text().split(/\s+/);
+        if (words.length > 3) words = words.slice(0,3).concat('...');
+        return words.join(' ');
+      });
     }
 
-  }
+    function dialogPopIn(element, parentElement, clickElement) {
+      var deferred = $q.defer();
+      parentElement.append(element);
 
-  function onRemove(scope, element, options) {
+      var startPos;
+      if (clickElement) {
+        var clickRect = clickElement[0].getBoundingClientRect();
+        startPos = 'translate3d(' +
+          (clickRect.left - element[0].offsetWidth) + 'px,' +
+          (clickRect.top - element[0].offsetHeight) + 'px,' +
+          '0) scale(0.2)';
+      } else {
+        startPos = 'translate3d(0,100%,0) scale(0.5)';
+      }
 
-    if (options.backdrop) {
-      $animate.leave(options.backdrop);
-      element.data('backdrop', undefined);
+      element
+      .css($mdConstant.CSS.TRANSFORM, startPos)
+      .css('opacity', 0);
+
+      $$rAF(function() {
+        $$rAF(function() {
+          element
+          .addClass('md-active')
+          .css($mdConstant.CSS.TRANSFORM, '')
+          .css('opacity', '')
+          .on($mdConstant.CSS.TRANSITIONEND, finished);
+        });
+      });
+
+      function finished(ev) {
+        //Make sure this transitionend didn't bubble up from a child
+        if (ev.target === element[0]) {
+          element.off($mdConstant.CSS.TRANSITIONEND, finished);
+          deferred.resolve();
+        }
+      }
+
+      return deferred.promise;
     }
-    if (options.escapeToClose) {
-      $rootElement.off('keyup', options.rootElementKeyupCallback);
-    }
-    if (options.clickOutsideToClose) {
-      element.off('click', options.dialogClickOutsideCallback);
-    }
-    return $animate.leave(element).then(function() {
-      element.remove();
-      options.popInTarget && options.popInTarget.focus();
-    });
-
-  }
-
-  /**
-   * Inject ARIA-specific attributes appropriate for Dialogs
-   */
-  function configureAria(element) {
-    element.attr({
-      'role': 'dialog'
-    });
-
-    var dialogContent = element.find('md-content');
-    if (dialogContent.length === 0){
-      dialogContent = element;
-    }
-    $mdAria.expectAsync(element, 'aria-label', function() {
-      return $mdUtil.stringFromTextBody(dialogContent.text(), 3);
-    });
   }
 }
+MdDialogProvider.$inject = ["$$interimElementProvider"];
+
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.divider
  * @description Divider module!
  */
 angular.module('material.components.divider', [
-  'material.animations',
-  'material.services.aria',
-  'material.services.theming'
+  'material.core'
 ])
-.directive('mdDivider', [
-  '$mdTheming',
-  MdDividerDirective
-]);
+  .directive('mdDivider', MdDividerDirective);
 
 function MdDividerController(){}
 
@@ -1855,19 +2437,24 @@ function MdDividerDirective($mdTheming) {
     controller: [MdDividerController]
   };
 }
+MdDividerDirective.$inject = ["$mdTheming"];
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /*
  * @ngdoc module
  * @name material.components.icon
  * @description
  * Icon
  */
-angular.module('material.components.icon', [])
-  .directive('mdIcon', [
-    mdIconDirective
-  ]);
+angular.module('material.components.icon', [
+  'material.core'
+])
+  .directive('mdIcon', mdIconDirective);
 
 /*
  * @ngdoc directive
@@ -1899,22 +2486,23 @@ function mdIconDirective() {
   };
 }
 })();
+})();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.list
  * @description
  * List module
  */
-angular.module('material.components.list', [])
-
-.directive('mdList', [
-  mdListDirective
+angular.module('material.components.list', [
+  'material.core'
 ])
-.directive('mdItem', [
-  mdItemDirective
-]);
+  .directive('mdList', mdListDirective)
+  .directive('mdItem', mdItemDirective);
 
 /**
  * @ngdoc directive
@@ -1988,24 +2576,21 @@ function mdItemDirective() {
   };
 }
 })();
+})();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.progressCircular
  * @description Circular Progress module!
  */
 angular.module('material.components.progressCircular', [
-  'material.animations',
-  'material.services.aria',
-  'material.services.theming',
+  'material.core'
 ])
-  .directive('mdProgressCircular', [
-    '$$rAF',
-    '$mdEffects',
-    '$mdTheming',
-    MdProgressCircularDirective
-  ]);
+  .directive('mdProgressCircular', MdProgressCircularDirective);
 
 /**
  * @ngdoc directive
@@ -2035,7 +2620,7 @@ angular.module('material.components.progressCircular', [
  * <md-progress-circular mode="indeterminate"></md-progress-circular>
  * </hljs>
  */
-function MdProgressCircularDirective($$rAF, $mdEffects, $mdTheming) {
+function MdProgressCircularDirective($$rAF, $mdConstant, $mdTheming) {
   var fillRotations = new Array(101),
     fixRotations = new Array(101);
 
@@ -2082,7 +2667,7 @@ function MdProgressCircularDirective($$rAF, $mdEffects, $mdTheming) {
     var diameter = attr.diameter || 48;
     var scale = diameter/48;
 
-    circle.style[$mdEffects.TRANSFORM] = 'scale(' + scale.toString() + ')';
+    circle.style[$mdConstant.CSS.TRANSFORM] = 'scale(' + scale.toString() + ')';
 
     attr.$observe('value', function(value) {
       clamped = clamp(value);
@@ -2092,11 +2677,11 @@ function MdProgressCircularDirective($$rAF, $mdEffects, $mdTheming) {
       element.attr('aria-valuenow', clamped);
 
       for (i = 0; i < fill.length; i++) {
-        fill[i].style[$mdEffects.TRANSFORM] = fillRotation;
+        fill[i].style[$mdConstant.CSS.TRANSFORM] = fillRotation;
       }
 
       for (i = 0; i < fix.length; i++) {
-        fix[i].style[$mdEffects.TRANSFORM] = fixRotation;
+        fix[i].style[$mdConstant.CSS.TRANSFORM] = fixRotation;
       }
     });
   }
@@ -2113,25 +2698,24 @@ function MdProgressCircularDirective($$rAF, $mdEffects, $mdTheming) {
     return Math.ceil(value || 0);
   }
 }
+MdProgressCircularDirective.$inject = ["$$rAF", "$mdConstant", "$mdTheming"];
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
+
 /**
  * @ngdoc module
  * @name material.components.progressLinear
  * @description Linear Progress module!
  */
 angular.module('material.components.progressLinear', [
-  'material.animations',
-  'material.services.theming',
-  'material.services.aria'
+  'material.core'
 ])
-.directive('mdProgressLinear', [
-  '$$rAF', 
-  '$mdEffects',
-  '$mdTheming',
-  MdProgressLinearDirective
-]);
+  .directive('mdProgressLinear', MdProgressLinearDirective);
 
 /**
  * @ngdoc directive
@@ -2163,7 +2747,7 @@ angular.module('material.components.progressLinear', [
  * <md-progress-linear mode="query"></md-progress-linear>
  * </hljs>
  */
-function MdProgressLinearDirective($$rAF, $mdEffects, $mdTheming) {
+function MdProgressLinearDirective($$rAF, $mdConstant, $mdTheming) {
 
   return {
     restrict: 'E',
@@ -2195,11 +2779,11 @@ function MdProgressLinearDirective($$rAF, $mdEffects, $mdTheming) {
 
       var clamped = clamp(value);
       element.attr('aria-valuenow', clamped);
-      bar2Style[$mdEffects.TRANSFORM] = progressLinearTransforms[clamped];
+      bar2Style[$mdConstant.CSS.TRANSFORM] = transforms[clamped];
     });
 
     attr.$observe('secondaryvalue', function(value) {
-      bar1Style[$mdEffects.TRANSFORM] = progressLinearTransforms[clamp(value)];
+      bar1Style[$mdConstant.CSS.TRANSFORM] = transforms[clamp(value)];
     });
 
     $$rAF(function() {
@@ -2219,12 +2803,13 @@ function MdProgressLinearDirective($$rAF, $mdEffects, $mdTheming) {
     return Math.ceil(value || 0);
   }
 }
+MdProgressLinearDirective.$inject = ["$$rAF", "$mdConstant", "$mdTheming"];
 
 
 // **********************************************************
 // Private Methods
 // **********************************************************
-var progressLinearTransforms = (function() {
+var transforms = (function() {
   var values = new Array(101);
   for(var i = 0; i < 101; i++){
     values[i] = makeTransform(i);
@@ -2238,9 +2823,14 @@ var progressLinearTransforms = (function() {
     return 'translateX(' + translateX.toString() + '%) scale(' + scale.toString() + ', 1)';
   }
 })();
+
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 
 /**
  * @ngdoc module
@@ -2248,23 +2838,10 @@ var progressLinearTransforms = (function() {
  * @description radioButton module!
  */
 angular.module('material.components.radioButton', [
-  'material.core',
-  'material.animations',
-  'material.services.aria',
-  'material.services.theming'
+  'material.core'
 ])
-  .directive('mdRadioGroup', [
-    '$mdUtil',
-    '$mdConstant',
-    '$mdTheming',
-    mdRadioGroupDirective
-  ])
-  .directive('mdRadioButton', [
-    '$mdAria',
-    '$mdUtil',
-    '$mdTheming',
-    mdRadioButtonDirective
-  ]);
+  .directive('mdRadioGroup', mdRadioGroupDirective)
+  .directive('mdRadioButton', mdRadioButtonDirective);
 
 /**
  * @ngdoc directive
@@ -2398,6 +2975,7 @@ function mdRadioGroupDirective($mdUtil, $mdConstant, $mdTheming) {
   }
 
 }
+mdRadioGroupDirective.$inject = ["$mdUtil", "$mdConstant", "$mdTheming"];
 
 /**
  * @ngdoc directive
@@ -2514,11 +3092,15 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
     }
   }
 }
+mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
 
-
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.sidenav
@@ -2528,36 +3110,14 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
  */
 angular.module('material.components.sidenav', [
   'material.core',
-  'material.services.registry',
-  'material.services.media',
-  'material.components.backdrop',
-  'material.services.theming',
-  'material.animations'
+  'material.components.backdrop'
 ])
-  .factory('$mdSidenav', [
-    '$mdComponentRegistry', 
-    mdSidenavService 
-  ])
-  .directive('mdSidenav', [
-    '$timeout',
-    '$animate',
-    '$parse',
-    '$mdMedia',
-    '$mdConstant',
-    '$compile',
-    '$mdTheming',
-    mdSidenavDirective 
-  ])
-  .controller('$mdSidenavController', [
-    '$scope',
-    '$element',
-    '$attrs',
-    '$timeout',
-    '$mdSidenav',
-    '$mdComponentRegistry',
-    mdSidenavController 
-  ]);
-  
+  .factory('$mdSidenav', mdSidenavService )
+  .directive('mdSidenav', mdSidenavDirective)
+  .controller('$mdSidenavController', mdSidenavController)
+  .factory('$mdMedia', mdMediaFactory)
+  .factory('$mdComponentRegistry', mdComponentRegistry);
+
 /*
  * @private
  * @ngdoc object
@@ -2586,6 +3146,7 @@ function mdSidenavController($scope, $element, $attrs, $timeout, $mdSidenav, $md
     $scope.isOpen = false;
   };
 }
+mdSidenavController.$inject = ["$scope", "$element", "$attrs", "$timeout", "$mdSidenav", "$mdComponentRegistry"];
 
 /*
  * @private
@@ -2633,6 +3194,7 @@ function mdSidenavService($mdComponentRegistry) {
     };
   };
 }
+mdSidenavService.$inject = ["$mdComponentRegistry"];
 
 /**
  * @ngdoc directive
@@ -2770,23 +3332,128 @@ function mdSidenavDirective($timeout, $animate, $parse, $mdMedia, $mdConstant, $
   }
 
 }
+mdSidenavDirective.$inject = ["$timeout", "$animate", "$parse", "$mdMedia", "$mdConstant", "$compile", "$mdTheming"];
+
+/**
+ * Exposes a function on the '$mdMedia' service which will return true or false,
+ * whether the given media query matches. Re-evaluates on resize. Allows presets
+ * for 'sm', 'md', 'lg'.
+ *
+ * @example $mdMedia('sm') == true if device-width <= sm
+ * @example $mdMedia('(min-width: 1200px)') == true if device-width >= 1200px
+ * @example $mdMedia('max-width: 300px') == true if device-width <= 300px (sanitizes input, adding parens)
+ */
+function mdMediaFactory($window, $mdUtil, $timeout) {
+  var cache = $mdUtil.cacheFactory('$mdMedia', { capacity: 15 });
+  var presets = {
+    sm: '(min-width: 600px)',
+    md: '(min-width: 960px)',
+    lg: '(min-width: 1200px)'
+  };
+
+  angular.element($window).on('resize', updateAll);
+
+  return $mdMedia;
+
+  function $mdMedia(query) {
+    query = validate(query);
+    var result;
+    if ( !angular.isDefined(result = cache.get(query)) ) {
+      return add(query);
+    }
+    return result;
+  }
+
+  function validate(query) {
+    return presets[query] || (
+      query.charAt(0) != '(' ?  ('(' + query + ')') : query
+    );
+  }
+
+  function add(query) {
+    return cache.put(query, !!$window.matchMedia(query).matches);
+  }
+  
+  function updateAll() {
+    var keys = cache.keys();
+    if (keys.length) {
+      for (var i = 0, ii = keys.length; i < ii; i++) {
+        cache.put(keys[i], !!$window.matchMedia(keys[i]).matches);
+      }
+      // trigger a $digest()
+      $timeout(angular.noop);
+    }
+  }
+
+}
+mdMediaFactory.$inject = ["$window", "$mdUtil", "$timeout"];
+  
+function mdComponentRegistry($log) {
+  var instances = [];
+
+  return {
+    /**
+     * Used to print an error when an instance for a handle isn't found.
+     */
+    notFoundError: function(handle) {
+      $log.error('No instance found for handle', handle);
+    },
+    /**
+     * Return all registered instances as an array.
+     */
+    getInstances: function() {
+      return instances;
+    },
+
+    /**
+     * Get a registered instance.
+     * @param handle the String handle to look up for a registered instance.
+     */
+    get: function(handle) {
+      var i, j, instance;
+      for(i = 0, j = instances.length; i < j; i++) {
+        instance = instances[i];
+        if(instance.$$mdHandle === handle) {
+          return instance;
+        }
+      }
+      return null;
+    },
+
+    /**
+     * Register an instance.
+     * @param instance the instance to register
+     * @param handle the handle to identify the instance under.
+     */
+    register: function(instance, handle) {
+      instance.$$mdHandle = handle;
+      instances.push(instance);
+
+      return function deregister() {
+        var index = instances.indexOf(instance);
+        if (index !== -1) {
+          instances.splice(index, 1);
+        }
+      };
+    }
+  };
+}
+mdComponentRegistry.$inject = ["$log"];
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.slider
  */
 angular.module('material.components.slider', [
-  'material.core',
-  'material.animations',
-  'material.services.aria',
-  'material.services.theming'
+  'material.core'
 ])
-.directive('mdSlider', [
-  '$mdTheming',
-  SliderDirective
-]);
+  .directive('mdSlider', SliderDirective);
 
 /**
  * @ngdoc directive
@@ -2826,18 +3493,7 @@ function SliderDirective($mdTheming) {
   return {
     scope: {},
     require: ['?ngModel', 'mdSlider'],
-    controller: [
-      '$scope',
-      '$element',
-      '$attrs',
-      '$$rAF',
-      '$window',
-      '$mdEffects',
-      '$mdAria',
-      '$mdUtil',
-      '$mdConstant',
-      SliderController
-    ],
+    controller: SliderController,
     template:
       '<div class="md-track-container">' +
         '<div class="md-track"></div>' +
@@ -2874,43 +3530,44 @@ function SliderDirective($mdTheming) {
     sliderCtrl.init(ngModelCtrl);
   }
 }
+SliderDirective.$inject = ["$mdTheming"];
 
 /**
  * We use a controller for all the logic so that we can expose a few
  * things to unit tests
  */
-function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdAria, $mdUtil, $mdConstant) {
+function SliderController($scope, $element, $attrs, $$rAF, $window, $mdAria, $mdUtil, $mdConstant) {
 
   this.init = function init(ngModelCtrl) {
-    var thumb = angular.element(element[0].querySelector('.md-thumb'));
+    var thumb = angular.element($element[0].querySelector('.md-thumb'));
     var thumbContainer = thumb.parent();
-    var trackContainer = angular.element(element[0].querySelector('.md-track-container'));
-    var activeTrack = angular.element(element[0].querySelector('.md-track-fill'));
-    var tickContainer = angular.element(element[0].querySelector('.md-track-ticks'));
+    var trackContainer = angular.element($element[0].querySelector('.md-track-container'));
+    var activeTrack = angular.element($element[0].querySelector('.md-track-fill'));
+    var tickContainer = angular.element($element[0].querySelector('.md-track-ticks'));
     var throttledRefreshDimensions = $mdUtil.throttle(refreshSliderDimensions, 5000);
 
-    // Default values, overridable by attrs
-    attr.min ? attr.$observe('min', updateMin) : updateMin(0);
-    attr.max ? attr.$observe('max', updateMax) : updateMax(100);
-    attr.step ? attr.$observe('step', updateStep) : updateStep(1);
+    // Default values, overridable by $attrss
+    $attrs.min ? $attrs.$observe('min', updateMin) : updateMin(0);
+    $attrs.max ? $attrs.$observe('max', updateMax) : updateMax(100);
+    $attrs.step ? $attrs.$observe('step', updateStep) : updateStep(1);
 
     // We have to manually stop the $watch on ngDisabled because it exists
-    // on the parent scope, and won't be automatically destroyed when
+    // on the parent $scope, and won't be automatically destroyed when
     // the component is destroyed.
     var stopDisabledWatch = angular.noop;
-    if (attr.ngDisabled) {
-      stopDisabledWatch = scope.$parent.$watch(attr.ngDisabled, updateAriaDisabled);
+    if ($attrs.ngDisabled) {
+      stopDisabledWatch = $scope.$parent.$watch($attrs.ngDisabled, updateAriaDisabled);
     } else {
-      updateAriaDisabled(!!attr.disabled);
+      updateAriaDisabled(!!$attrs.disabled);
     }
 
-    $mdAria.expect(element, 'aria-label');
+    $mdAria.expect($element, 'aria-label');
 
-    element.attr('tabIndex', 0);
-    element.attr('role', 'slider');
-    element.on('keydown', keydownListener);
+    $element.attr('tabIndex', 0);
+    $element.attr('role', 'slider');
+    $element.on('keydown', keydownListener);
 
-    var hammertime = new Hammer(element[0], {
+    var hammertime = new Hammer($element[0], {
       recognizers: [
         [Hammer.Pan, { direction: Hammer.DIRECTION_HORIZONTAL }]
       ]
@@ -2931,7 +3588,7 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
     var debouncedUpdateAll = $$rAF.debounce(updateAll);
     angular.element($window).on('resize', debouncedUpdateAll);
 
-    scope.$on('$destroy', function() {
+    $scope.$on('$destroy', function() {
       angular.element($window).off('resize', debouncedUpdateAll);
       hammertime.destroy();
       stopDisabledWatch();
@@ -2950,26 +3607,26 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
     var step;
     function updateMin(value) {
       min = parseFloat(value);
-      element.attr('aria-valuemin', value);
+      $element.attr('aria-valuemin', value);
     }
     function updateMax(value) {
       max = parseFloat(value);
-      element.attr('aria-valuemax', value);
+      $element.attr('aria-valuemax', value);
     }
     function updateStep(value) {
       step = parseFloat(value);
       redrawTicks();
     }
     function updateAriaDisabled(isDisabled) {
-      element.attr('aria-disabled', !!isDisabled);
+      $element.attr('aria-disabled', !!isDisabled);
     }
 
     // Draw the ticks with canvas.
-    // The alternative to drawing ticks with canvas is to draw one element for each tick,
+    // The alternative to drawing ticks with canvas is to draw one $element for each tick,
     // which could quickly become a performance bottleneck.
     var tickCanvas, tickCtx;
     function redrawTicks() {
-      if (!angular.isDefined(attr.discrete)) return;
+      if (!angular.isDefined($attrs.discrete)) return;
 
       var numSteps = Math.floor( (max - min) / step );
       if (!tickCanvas) {
@@ -3007,7 +3664,7 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
      * left/right arrow listener
      */
     function keydownListener(ev) {
-      if(element[0].hasAttribute('disabled')) {
+      if($element[0].hasAttribute('disabled')) {
         return;
       }
 
@@ -3023,7 +3680,7 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
         }
         ev.preventDefault();
         ev.stopPropagation();
-        scope.$evalAsync(function() {
+        $scope.$evalAsync(function() {
           setModelValue(ngModelCtrl.$viewValue + changeAmount);
         });
       }
@@ -3042,8 +3699,8 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
       }
 
       var percent = (ngModelCtrl.$viewValue - min) / (max - min);
-      scope.modelValue = ngModelCtrl.$viewValue;
-      element.attr('aria-valuenow', ngModelCtrl.$viewValue);
+      $scope.modelValue = ngModelCtrl.$viewValue;
+      $element.attr('aria-valuenow', ngModelCtrl.$viewValue);
       setSliderPercent(percent);
     }
 
@@ -3064,10 +3721,10 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
     function setSliderPercent(percent) {
       activeTrack.css('width', (percent * 100) + '%');
       thumbContainer.css(
-        $mdEffects.TRANSFORM,
+        $mdConstant.CSS.TRANSFORM,
         'translate3d(' + getSliderDimensions().width * percent + 'px,0,0)'
       );
-      element.toggleClass('md-min', percent === 0);
+      $element.toggleClass('md-min', percent === 0);
     }
 
 
@@ -3075,16 +3732,16 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
      * Slide listeners
      */
     var isSliding = false;
-    var isDiscrete = angular.isDefined(attr.discrete);
+    var isDiscrete = angular.isDefined($attrs.discrete);
 
     function onInput(ev) {
       if (!isSliding && ev.eventType === Hammer.INPUT_START &&
-          !element[0].hasAttribute('disabled')) {
+          !$element[0].hasAttribute('disabled')) {
 
         isSliding = true;
 
-        element.addClass('active');
-        element[0].focus();
+        $element.addClass('active');
+        $element[0].focus();
         refreshSliderDimensions();
 
         onPan(ev);
@@ -3096,12 +3753,12 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
         if ( isSliding && isDiscrete ) onPanEnd(ev);
         isSliding = false;
 
-        element.removeClass('panning active');
+        $element.removeClass('panning active');
       }
     }
     function onPanStart() {
       if (!isSliding) return;
-      element.addClass('panning');
+      $element.addClass('panning');
     }
     function onPan(ev) {
       if (!isSliding) return;
@@ -3117,7 +3774,7 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
     }
 
     function onPanEnd(ev) {
-      if ( isDiscrete && !element[0].hasAttribute('disabled') ) {
+      if ( isDiscrete && !$element[0].hasAttribute('disabled') ) {
         // Convert exact to closest discrete value.
         // Slide animate the thumb... and then update the model value.
 
@@ -3146,7 +3803,7 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
      * @param x
      */
     function doSlide( x ) {
-      scope.$evalAsync( function() {
+      $scope.$evalAsync( function() {
         setModelValue( percentToValue( positionToPercent(x) ));
       });
     }
@@ -3183,9 +3840,14 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
 
   };
 }
+SliderController.$inject = ["$scope", "$element", "$attrs", "$$rAF", "$window", "$mdAria", "$mdUtil", "$mdConstant"];
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /*
  * @ngdoc module
  * @name material.components.sticky
@@ -3196,17 +3858,9 @@ function SliderController(scope, element, attr, $$rAF, $window, $mdEffects, $mdA
 
 angular.module('material.components.sticky', [
   'material.core',
-  'material.components.content',
-  'material.animations'
+  'material.components.content'
 ])
-.factory('$mdSticky', [
-  '$document',
-  '$mdEffects',
-  '$compile',
-  '$$rAF',
-  '$mdUtil',
-  MdSticky
-]);
+  .factory('$mdSticky', MdSticky);
 
 /*
  * @ngdoc service
@@ -3224,7 +3878,7 @@ angular.module('material.components.sticky', [
  *     If not provided, it will use the result of `element.clone()`.
  */
 
-function MdSticky($document, $mdEffects, $compile, $$rAF, $mdUtil) {
+function MdSticky($document, $mdConstant, $compile, $$rAF, $mdUtil) {
 
   var browserStickySupport = checkStickySupport();
 
@@ -3434,12 +4088,12 @@ function MdSticky($document, $mdEffects, $compile, $$rAF, $mdUtil) {
      if (amount === null || amount === undefined) {
        if (item.translateY) {
          item.translateY = null;
-         item.clone.css($mdEffects.TRANSFORM, '');
+         item.clone.css($mdConstant.CSS.TRANSFORM, '');
        }
      } else {
        item.translateY = amount;
        item.clone.css(
-         $mdEffects.TRANSFORM, 
+         $mdConstant.CSS.TRANSFORM, 
          'translate3d(' + item.left + 'px,' + amount + 'px,0)'
        );
      }
@@ -3495,9 +4149,14 @@ function MdSticky($document, $mdEffects, $compile, $$rAF, $mdUtil) {
   }
 
 }
+MdSticky.$inject = ["$document", "$mdConstant", "$compile", "$$rAF", "$mdUtil"];
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.subheader
@@ -3505,15 +4164,10 @@ function MdSticky($document, $mdEffects, $compile, $$rAF, $mdUtil) {
  * SubHeader module
  */
 angular.module('material.components.subheader', [
-  'material.components.sticky',
-  'material.services.theming'
+  'material.core',
+  'material.components.sticky'
 ])
-.directive('mdSubheader', [
-  '$mdSticky',
-  '$compile',
-  '$mdTheming',
-  MdSubheaderDirective
-]);
+  .directive('mdSubheader', MdSubheaderDirective);
 
 /**
  * @ngdoc directive
@@ -3566,218 +4220,224 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming) {
     }
   };
 }
+MdSubheaderDirective.$inject = ["$mdSticky", "$compile", "$mdTheming"];
+})();
 })();
 
 (function() {
 (function() {
+'use strict';
+
+
+/**
+ * @ngdoc module
+ * @name material.components.swipe
+ * @description Swipe module!
+ */
+angular.module('material.components.swipe',[])
+  .factory('$mdSwipe', MdSwipeFactory)
+  .directive('mdSwipeLeft', MdSwipeLeftDirective)
+  .directive('mdSwipeRight', MdSwipeRightDirective);
+
+/*
+ * @ngdoc service
+ * @module material.components.swipe
+ * @name $mdSwipe
+ * @description
+ * This service allows directives to easily attach swipe and pan listeners to
+ * the specified element.
+ */
+
+function MdSwipeFactory() {
+  // match expected API functionality
+  var attachNoop = function(){ return angular.noop; };
 
   /**
-   * @ngdoc module
-   * @name material.components.swipe
-   * @description Swipe module!
+   * SwipeService constructor pre-captures scope and customized event types
+   *
+   * @param scope
+   * @param eventTypes
+   * @returns {*}
+   * @constructor
    */
-  angular.module('material.components.swipe',['ng'])
+  return function SwipeService(scope, eventTypes) {
+    if ( !eventTypes ) eventTypes = "swipeleft swiperight";
 
-    /*
-     * @ngdoc service
-     * @module material.components.swipe
-     * @name $mdSwipe
-     * @description
-     * This service allows directives to easily attach swipe and pan listeners to
-     * the specified element.
-     */
-    .factory("$mdSwipe", function() {
+    // publish configureFor() method for specific element instance
+    return function configureFor(element, onSwipeCallback, attachLater ) {
+      var hammertime = new Hammer(element[0], {
+        recognizers : addRecognizers([], eventTypes )
+      });
 
-      // match expected API functionality
-      var attachNoop = function(){ return angular.noop; };
+      // Attach swipe listeners now
+      if ( !attachLater ) attachSwipe();
+
+      // auto-disconnect during destroy
+      scope.$on('$destroy', function() {
+        hammertime.destroy();
+      });
+
+      return attachSwipe;
+
+      // **********************
+      // Internal methods
+      // **********************
 
       /**
-       * SwipeService constructor pre-captures scope and customized event types
+       * Delegate swipe event to callback function
+       * and ensure $digest is triggered.
        *
-       * @param scope
-       * @param eventTypes
-       * @returns {*}
-       * @constructor
+       * @param ev HammerEvent
        */
-      return function SwipeService(scope, eventTypes) {
-        if ( !eventTypes ) eventTypes = "swipeleft swiperight";
+      function swipeHandler(ev) {
 
-        // publish configureFor() method for specific element instance
-        return function configureFor(element, onSwipeCallback, attachLater ) {
-          var hammertime = new Hammer(element[0], {
-            recognizers : addRecognizers([], eventTypes )
+        // Prevent triggering parent hammer listeners
+        ev.srcEvent.stopPropagation();
+
+        if ( angular.isFunction(onSwipeCallback) ) {
+          scope.$apply(function() {
+            onSwipeCallback(ev);
           });
+        }
+      }
 
-          // Attach swipe listeners now
-          if ( !attachLater ) attachSwipe();
+      /**
+       * Enable listeners and return detach() fn
+       */
+      function attachSwipe() {
+        hammertime.on(eventTypes, swipeHandler );
 
-          // auto-disconnect during destroy
-          scope.$on('$destroy', function() {
-            hammertime.destroy();
-          });
-
-          return attachSwipe;
-
-          // **********************
-          // Internal methods
-          // **********************
-
-          /**
-           * Delegate swipe event to callback function
-           * and ensure $digest is triggered.
-           *
-           * @param ev HammerEvent
-           */
-          function swipeHandler(ev) {
-
-            // Prevent triggering parent hammer listeners
-            ev.srcEvent.stopPropagation();
-
-            if ( angular.isFunction(onSwipeCallback) ) {
-              scope.$apply(function() {
-                onSwipeCallback(ev);
-              });
-            }
-          }
-
-          /**
-           * Enable listeners and return detach() fn
-           */
-          function attachSwipe() {
-            hammertime.on(eventTypes, swipeHandler );
-
-            return function detachSwipe() {
-              hammertime.off( eventTypes );
-            };
-          }
-
-          /**
-           * Add optional recognizers such as panleft, panright
-           */
-          function addRecognizers(list, events) {
-            var hasPanning = (events.indexOf("pan") > -1);
-            var hasSwipe   = (events.indexOf("swipe") > -1);
-
-            if (hasPanning) {
-              list.push([ Hammer.Pan, { direction: Hammer.DIRECTION_HORIZONTAL } ]);
-            }
-            if (hasSwipe) {
-              list.push([ Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL } ]);
-            }
-
-            return list;
-          }
-
-        };
-      };
-    })
-
-    /**
-     * @ngdoc directive
-     * @module material.components.swipe
-     * @name mdSwipeLeft
-     *
-     * @restrict A
-     *
-     * @description
-     * The `<div  md-swipe-left="expression">` directive identifies an element on which
-     * HammerJS horizontal swipe left and pan left support will be active. The swipe/pan action
-     * can result in custom activity trigger by evaluating `expression`.
-     *
-     * @param {boolean=} noPan Use of attribute indicates flag to disable detection of `panleft` activity
-     *
-     * @usage
-     * <hljs lang="html">
-     *
-     * <div class="animate-switch-container"
-     *      ng-switch on="data.selectedIndex"
-     *      md-swipe-left="data.selectedIndex+=1;"
-     *      md-swipe-right="data.selectedIndex-=1;" >
-     *
-     * </div>
-     * </hljs>
-     *
-     */
-    .directive("mdSwipeLeft", ['$parse', '$mdSwipe',
-      function MdSwipeLeft($parse, $mdSwipe) {
-        return {
-          restrict: 'A',
-          link :  swipePostLink( $parse, $mdSwipe, "SwipeLeft" )
-        };
-      }])
-
-    /**
-     * @ngdoc directive
-     * @module material.components.swipe
-     * @name mdSwipeRight
-     *
-     * @restrict A
-     *
-     * @description
-     * The `<div  md-swipe-right="expression">` directive identifies functionality
-     * that attaches HammerJS horizontal swipe right and pan right support to an element. The swipe/pan action
-     * can result in activity trigger by evaluating `expression`
-     *
-     * @param {boolean=} noPan Use of attribute indicates flag to disable detection of `panright` activity
-     *
-     * @usage
-     * <hljs lang="html">
-     *
-     * <div class="animate-switch-container"
-     *      ng-switch on="data.selectedIndex"
-     *      md-swipe-left="data.selectedIndex+=1;"
-     *      md-swipe-right="data.selectedIndex-=1;" >
-     *
-     * </div>
-     * </hljs>
-     *
-     */
-    .directive( "mdSwipeRight", ['$parse', '$mdSwipe',
-      function MdSwipeRight($parse, $mdSwipe) {
-        return {
-          restrict: 'A',
-          link: swipePostLink( $parse, $mdSwipe, "SwipeRight" )
+        return function detachSwipe() {
+          hammertime.off( eventTypes );
         };
       }
-    ]);
 
-    /**
-     * Factory to build PostLink function specific to Swipe or Pan direction
-     *
-     * @param $parse
-     * @param $mdSwipe
-     * @param name
-     * @returns {Function}
-     */
-    function swipePostLink($parse, $mdSwipe, name ) {
+      /**
+       * Add optional recognizers such as panleft, panright
+       */
+      function addRecognizers(list, events) {
+        var hasPanning = (events.indexOf("pan") > -1);
+        var hasSwipe   = (events.indexOf("swipe") > -1);
 
-      return function(scope, element, attrs) {
-        var direction = name.toLowerCase();
-        var directiveName= "md" + name;
+        if (hasPanning) {
+          list.push([ Hammer.Pan, { direction: Hammer.DIRECTION_HORIZONTAL } ]);
+        }
+        if (hasSwipe) {
+          list.push([ Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL } ]);
+        }
 
-        var parentGetter = $parse(attrs[directiveName]) || angular.noop;
-        var configureSwipe = $mdSwipe(scope, direction);
-        var requestSwipe = function(locals) {
-          // build function to request scope-specific swipe response
-          parentGetter(scope, locals);
-        };
-
-        configureSwipe( element, function onHandleSwipe(ev) {
-          if ( ev.type == direction ) {
-            requestSwipe();
-          }
-        });
-
+        return list;
       }
-    }
+
+    };
+  };
+}
+
+/**
+ * @ngdoc directive
+ * @module material.components.swipe
+ * @name mdSwipeLeft
+ *
+ * @restrict A
+ *
+ * @description
+ * The `<div  md-swipe-left="expression">` directive identifies an element on which
+ * HammerJS horizontal swipe left and pan left support will be active. The swipe/pan action
+ * can result in custom activity trigger by evaluating `expression`.
+ *
+ * @param {boolean=} noPan Use of attribute indicates flag to disable detection of `panleft` activity
+ *
+ * @usage
+ * <hljs lang="html">
+ *
+ * <div class="animate-switch-container"
+ *      ng-switch on="data.selectedIndex"
+ *      md-swipe-left="data.selectedIndex+=1;"
+ *      md-swipe-right="data.selectedIndex-=1;" >
+ *
+ * </div>
+ * </hljs>
+ *
+ */
+function MdSwipeLeftDirective($parse, $mdSwipe) {
+  return {
+    restrict: 'A',
+    link :  swipePostLink( $parse, $mdSwipe, "SwipeLeft" )
+  };
+}
+MdSwipeLeftDirective.$inject = ["$parse", "$mdSwipe"];
+
+/**
+ * @ngdoc directive
+ * @module material.components.swipe
+ * @name mdSwipeRight
+ *
+ * @restrict A
+ *
+ * @description
+ * The `<div  md-swipe-right="expression">` directive identifies functionality
+ * that attaches HammerJS horizontal swipe right and pan right support to an element. The swipe/pan action
+ * can result in activity trigger by evaluating `expression`
+ *
+ * @param {boolean=} noPan Use of attribute indicates flag to disable detection of `panright` activity
+ *
+ * @usage
+ * <hljs lang="html">
+ *
+ * <div class="animate-switch-container"
+ *      ng-switch on="data.selectedIndex"
+ *      md-swipe-left="data.selectedIndex+=1;"
+ *      md-swipe-right="data.selectedIndex-=1;" >
+ *
+ * </div>
+ * </hljs>
+ *
+ */
+function MdSwipeRightDirective($parse, $mdSwipe) {
+  return {
+    restrict: 'A',
+    link :  swipePostLink( $parse, $mdSwipe, "SwipeRight" )
+  };
+}
+MdSwipeRightDirective.$inject = ["$parse", "$mdSwipe"];
+
+/**
+ * Factory to build PostLink function specific to Swipe or Pan direction
+ *
+ * @param $parse
+ * @param $mdSwipe
+ * @param name
+ * @returns {Function}
+ */
+function swipePostLink($parse, $mdSwipe, name ) {
+
+  return function(scope, element, attrs) {
+    var direction = name.toLowerCase();
+    var directiveName= "md" + name;
+
+    var parentGetter = $parse(attrs[directiveName]) || angular.noop;
+    var configureSwipe = $mdSwipe(scope, direction);
+    var requestSwipe = function(locals) {
+      // build function to request scope-specific swipe response
+      parentGetter(scope, locals);
+    };
+
+    configureSwipe( element, function onHandleSwipe(ev) {
+      if ( ev.type == direction ) {
+        requestSwipe();
+      }
+    });
+
+  };
+}
 
 })();
-
-
-
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @private
  * @ngdoc module
@@ -3785,17 +4445,11 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming) {
  */
 
 angular.module('material.components.switch', [
+  'material.core',
   'material.components.checkbox',
-  'material.components.radioButton',
-  'material.services.theming'
+  'material.components.radioButton'
 ])
-
-.directive('mdSwitch', [
-  'mdCheckboxDirective',
-  'mdRadioButtonDirective',
-  '$mdTheming',
-  MdSwitch
-]);
+  .directive('mdSwitch', MdSwitch);
 
 /**
  * @private
@@ -3831,9 +4485,9 @@ angular.module('material.components.switch', [
  *
  * </hljs>
  */
-function MdSwitch(checkboxDirectives, radioButtonDirectives, $mdTheming) {
-  var checkboxDirective = checkboxDirectives[0];
-  var radioButtonDirective = radioButtonDirectives[0];
+function MdSwitch(mdCheckboxDirective, mdRadioButtonDirective, $mdTheming) {
+  var checkboxDirective = mdCheckboxDirective[0];
+  var radioButtonDirective = mdRadioButtonDirective[0];
 
   return {
     restrict: 'E',
@@ -3863,9 +4517,14 @@ function MdSwitch(checkboxDirectives, radioButtonDirectives, $mdTheming) {
     };
   }
 }
+MdSwitch.$inject = ["mdCheckboxDirective", "mdRadioButtonDirective", "$mdTheming"];
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.tabs
@@ -3873,25 +4532,31 @@ function MdSwitch(checkboxDirectives, radioButtonDirectives, $mdTheming) {
  *
  * Tabs
  */
+/*
+ * @see js folder for tabs implementation
+ */
 angular.module('material.components.tabs', [
-  'material.core',
-  'material.animations',
-  'material.services.theming',
-  'material.services.aria'
+  'material.core'
 ]);
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.textField
  * @description
  * Form
  */
-angular.module('material.components.textField', ['material.core', 'material.services.theming'])
-       .directive('mdInputGroup', [ mdInputGroupDirective ])
-       .directive('mdInput', ['$mdUtil', mdInputDirective ])
-       .directive('mdTextFloat', [ '$mdTheming', '$mdUtil', mdTextFloatDirective ]);
+angular.module('material.components.textField', [
+  'material.core'
+])
+  .directive('mdInputGroup', mdInputGroupDirective)
+  .directive('mdInput', mdInputDirective)
+  .directive('mdTextFloat', mdTextFloatDirective);
 
 
 
@@ -3961,6 +4626,7 @@ function mdTextFloatDirective($mdTheming, $mdUtil) {
     '</md-input-group>'
   };
 }
+mdTextFloatDirective.$inject = ["$mdTheming", "$mdUtil"];
 
 /*
  * @private
@@ -4028,7 +4694,8 @@ function mdInputDirective($mdUtil) {
       var ngModelCtrl = ctrls[1];
 
       // scan for disabled and transpose the `type` value to the <input> element
-      var isDisabled = $mdUtil.isParentDisabled(element);
+      var parent = element[0].parentNode;
+      var isDisabled = parent && parent.hasAttribute('disabled');
 
       element.attr({
         'tabindex': isDisabled ? -1 : 0,
@@ -4074,13 +4741,15 @@ function mdInputDirective($mdUtil) {
     }
   };
 }
+mdInputDirective.$inject = ["$mdUtil"];
 
-
-
-
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.toast
@@ -4088,19 +4757,12 @@ function mdInputDirective($mdUtil) {
  * Toast
  */
 angular.module('material.components.toast', [
-  'material.services.interimElement',
-  'material.components.swipe'
+  'material.core',
+  'material.components.swipe',
+  'material.components.button'
 ])
-  .directive('mdToast', [
-    MdToastDirective
-  ])
-  .factory('$mdToast', [
-    '$timeout',
-    '$$interimElement',
-    '$animate',
-    '$mdSwipe',
-    MdToastService
-  ]);
+  .directive('mdToast', MdToastDirective)
+  .provider('$mdToast', MdToastProvider);
 
 function MdToastDirective() {
   return {
@@ -4114,11 +4776,11 @@ function MdToastDirective() {
  * @module material.components.toast
  *
  * @description
- * `$mdToast` opens a toast nofication on any position on the screen with an optional
- * duration, and provides a simple promise API.
+ * `$mdToast` is a service to butild a toast nofication on any position 
+ * on the screen with an optional duration, and provides a simple promise API.
  *
  *
- * ### Restrictions
+ * ### Restrictions on custom toasts
  * - The toast's template must have an outer `<md-toast>` element.
  * - For a toast action, use element with class `md-action`.
  * - Add the class `md-capsule` for curved corners.
@@ -4136,10 +4798,7 @@ function MdToastDirective() {
  * var app = angular.module('app', ['ngMaterial']);
  * app.controller('MyController', function($scope, $mdToast) {
  *   $scope.openToast = function($event) {
- *     $mdToast.show({
- *       template: '<md-toast>Hello!</md-toast>',
- *       hideDelay: 3000
- *     });
+ *     $mdToast.show($mdToast.simple().content('Hello!'));
  *   };
  * });
  * </hljs>
@@ -4147,12 +4806,37 @@ function MdToastDirective() {
 
  /**
  * @ngdoc method
- * @name $mdToast#show
+ * @name $mdToast#simple
  *
  * @description
- * Show a toast dialog with the specified options.
+ * Builds a preconfigured toast.
  *
- * @param {object} options An options object, with the following properties:
+ * @returns {obj} a `$mdToastPreset` with the chainable configuration methods:
+ *
+ * - $mdToastPreset#content(string) - sets toast content to string
+ * - $mdToastPreset#action(string) - adds an action button, which resolves the promise returned from `show()` if clicked.
+ * - $mdToastPreset#highlightAction(boolean) - sets action button to be highlighted
+ * - $mdToastPreset#capsule(boolean) - adds 'md-capsule' class to the toast (curved corners)
+ */
+
+ /**
+ * @ngdoc method
+ * @name $mdToast#build
+ *
+ * @description
+ * Creates a custom `$mdToastPreset` that you can configure.
+ *
+ * @returns {obj} a `$mdToastPreset` with the chainable configuration methods for shows' options (see below).
+ */
+
+ /**
+ * @ngdoc method
+ * @name $mdToast#show
+ *
+ * @description Shows the toast.
+ *
+ * @param {object} optionsOrPreset Either provide an `$mdToastPreset` returned from `simple()` 
+ * and `build()`, or an options object with the following properties:
  *
  *   - `templateUrl` - `{string=}`: The url of an html template file that will
  *     be used as the content of the toast. Restrictions: the template must
@@ -4160,7 +4844,7 @@ function MdToastDirective() {
  *   - `template` - `{string=}`: Same as templateUrl, except this is an actual
  *     template string.
  *   - `hideDelay` - `{number=}`: How many milliseconds the toast should stay
- *     active before automatically closing.  Set to 0 or false to have the toast stay open until 
+ *     active before automatically closing.  Set to 0 or false to have the toast stay open until
  *     closed manually. Default: 3000.
  *   - `position` - `{string=}`: Where to place the toast. Available: any combination
  *     of 'bottom', 'left', 'top', 'right', 'fit'. Default: 'bottom left'.
@@ -4176,7 +4860,7 @@ function MdToastDirective() {
  *   - `controllerAs` - `{string=}`: An alias to assign the controller to on the scope.
  *
  * @returns {promise} A promise that can be resolved with `$mdToast.hide()` or
- * rejected with `$mdBottomSheet.cancel()`.
+ * rejected with `$mdToast.cancel()`.
  */
 
 /**
@@ -4184,7 +4868,7 @@ function MdToastDirective() {
  * @name $mdToast#hide
  *
  * @description
- * Hide the existing toast and resolve the promise returned from `$mdToast.show()`.
+ * Hide an existing toast and resolve the promise returned from `$mdToast.show()`.
  *
  * @param {*=} response An argument for the resolved promise.
  *
@@ -4195,74 +4879,102 @@ function MdToastDirective() {
  * @name $mdToast#cancel
  *
  * @description
- * Hide the existing toast and reject the promise returned from 
+ * Hide the existing toast and reject the promise returned from
  * `$mdToast.show()`.
  *
  * @param {*=} response An argument for the rejected promise.
  *
  */
 
-function MdToastService($timeout, $$interimElement, $animate, $mdSwipe, $mdTheming) {
+function MdToastProvider($$interimElementProvider) {
 
-  var factoryDef = {
-    onShow: onShow,
-    onRemove: onRemove,
-    position: 'bottom left',
-    themable: true,
-    hideDelay: 3000
-  };
-
-  var $mdToast = $$interimElement(factoryDef);
-  return $mdToast;
-
-  function onShow(scope, element, options) {
-    // 'top left' -> 'md-top md-left'
-    element.addClass(options.position.split(' ').map(function(pos) {
-      return 'md-' + pos;
-    }).join(' '));
-    options.parent.addClass(toastOpenClass(options.position));
-
-    var configureSwipe = $mdSwipe(scope, 'swipeleft swiperight');
-    options.detachSwipe = configureSwipe(element, function(ev) {
-      //Add swipeleft/swiperight class to element so it can animate correctly
-      element.addClass('md-' + ev.type);
-      $timeout($mdToast.hide);
+  toastDefaultOptions.$inject = ["$timeout", "$animate", "$mdSwipe", "$mdTheming", "$mdToast"];
+  return $$interimElementProvider('$mdToast')
+    .setDefaults({
+      methods: ['position', 'hideDelay', 'capsule'],
+      options: toastDefaultOptions
+    })
+    .addPreset('simple', {
+      methods: ['content', 'action', 'highlightAction'],
+      options: /* @ngInject */ ["$mdToast", function($mdToast) {
+        return {
+          template: [
+            '<md-toast ng-class="{\'md-capsule\': toast.capsule}">',
+              '<span flex>{{ toast.content }}</span>',
+              '<md-button ng-if="toast.action" ng-click="toast.resolve()" ng-class="{\'md-action\': toast.highlightAction}">',
+                '{{toast.action}}',
+              '</md-button>',
+            '</md-toast>'
+          ].join(''),
+          controller: function mdToastCtrl() {
+            this.resolve = function() {
+              $mdToast.hide();
+            };
+          },
+          controllerAs: 'toast',
+          bindToController: true
+        };
+      }]
     });
 
-    return $animate.enter(element, options.parent);
+  /* @ngInject */
+  function toastDefaultOptions($timeout, $animate, $mdSwipe, $mdTheming, $mdToast) {
+    return {
+      onShow: onShow,
+      onRemove: onRemove,
+      position: 'bottom left',
+      themable: true,
+      hideDelay: 3000
+    };
+
+    function onShow(scope, element, options) {
+      // 'top left' -> 'md-top md-left'
+      element.addClass(options.position.split(' ').map(function(pos) {
+        return 'md-' + pos;
+      }).join(' '));
+      options.parent.addClass(toastOpenClass(options.position));
+
+      var configureSwipe = $mdSwipe(scope, 'swipeleft swiperight');
+      options.detachSwipe = configureSwipe(element, function(ev) {
+        //Add swipeleft/swiperight class to element so it can animate correctly
+        element.addClass('md-' + ev.type);
+        $timeout($mdToast.cancel);
+      });
+
+      return $animate.enter(element, options.parent);
+    }
+
+    function onRemove(scope, element, options) {
+      options.detachSwipe();
+      options.parent.removeClass(toastOpenClass(options.position));
+      return $animate.leave(element);
+    }
+
+    function toastOpenClass(position) {
+      return 'md-toast-open-' +
+        (position.indexOf('top') > -1 ? 'top' : 'bottom');
+    }
   }
 
-  function onRemove(scope, element, options) {
-    options.detachSwipe();
-    options.parent.removeClass(toastOpenClass(options.position));
-    return $animate.leave(element);
-  }
-
-  function toastOpenClass(position) {
-    return 'md-toast-open-' +
-      (position.indexOf('top') > -1 ? 'top' : 'bottom');
-  }
 }
+MdToastProvider.$inject = ["$$interimElementProvider"];
+
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.toolbar
  */
 angular.module('material.components.toolbar', [
   'material.core',
-  'material.components.content',
-  'material.services.theming',
-  'material.animations'
+  'material.components.content'
 ])
-  .directive('mdToolbar', [
-    '$$rAF',
-    '$mdEffects',
-    '$mdUtil',
-    '$mdTheming',
-    mdToolbarDirective
-  ]);
+  .directive('mdToolbar', mdToolbarDirective);
 
 /**
  * @ngdoc directive
@@ -4311,7 +5023,7 @@ angular.module('material.components.toolbar', [
  * shrinking by. For example, if 0.25 is given then the toolbar will shrink
  * at one fourth the rate at which the user scrolls down. Default 0.5.
  */ 
-function mdToolbarDirective($$rAF, $mdEffects, $mdUtil, $mdTheming) {
+function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming) {
 
   return {
     restrict: 'E',
@@ -4343,7 +5055,8 @@ function mdToolbarDirective($$rAF, $mdEffects, $mdUtil, $mdTheming) {
         scope.$on('$mdContentLoaded', onMdContentLoad);
 
         function onMdContentLoad($event, newContentEl) {
-          if ($mdUtil.elementIsSibling(element, newContentEl)) {
+          // Toolbar and content must be siblings
+          if (element.parent()[0] === newContentEl.parent()[0]) {
             // unhook old content event listener if exists
             if (contentElement) {
               contentElement.off('scroll', debouncedContentScroll);
@@ -4383,11 +5096,11 @@ function mdToolbarDirective($$rAF, $mdEffects, $mdUtil, $mdTheming) {
           );
 
           element.css(
-            $mdEffects.TRANSFORM, 
+            $mdConstant.CSS.TRANSFORM, 
             'translate3d(0,' + (-y * shrinkSpeedFactor) + 'px,0)'
           );
           contentElement.css(
-            $mdEffects.TRANSFORM, 
+            $mdConstant.CSS.TRANSFORM, 
             'translate3d(0,' + ((toolbarHeight - y) * shrinkSpeedFactor) + 'px,0)'
           );
 
@@ -4400,27 +5113,22 @@ function mdToolbarDirective($$rAF, $mdEffects, $mdUtil, $mdTheming) {
   };
 
 }
+mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming"];
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.tooltip
  */
 angular.module('material.components.tooltip', [
-  'material.core',
-  'material.services.theming'
+  'material.core'
 ])
-
-.directive('mdTooltip', [
-  '$timeout',
-  '$window',
-  '$$rAF',
-  '$document',
-  '$mdUtil',
-  '$mdTheming',
-  MdTooltipDirective
-]);
+  .directive('mdTooltip', MdTooltipDirective);
 
 /**
  * @ngdoc directive
@@ -4595,804 +5303,35 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
   }
 
 }
+MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdUtil", "$mdTheming"];
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 /**
  * @ngdoc module
  * @name material.components.whiteframe
  */
 angular.module('material.components.whiteframe', []);
 })();
-
-(function() {
-angular.module('material.services.aria', [])
-
-.service('$mdAria', [
-  '$$rAF',
-  '$log',
-  AriaService
-]);
-
-function AriaService($$rAF, $log) {
-
-  return {
-    expect: expect,
-    expectAsync: expectAsync,
-    expectWithText: expectWithText
-  };
-
-  /**
-   * Check if expected attribute has been specified on the target element
-   * @param element
-   * @param attrName
-   * @param {optional} defaultValue What to set the attr to if no value is found
-   */
-  function expect(element, attrName, defaultValue) {
-    var node = element[0];
-    if (!node.hasAttribute(attrName)) {
-
-      defaultValue = angular.isString(defaultValue) && defaultValue.trim() || '';
-      if (defaultValue.length) {
-        element.attr(attrName, defaultValue);
-      } else {
-        $log.warn('ARIA: Attribute "', attrName, '", required for accessibility, is missing on node:', node);
-      }
-
-    }
-  }
-
-  function expectAsync(element, attrName, defaultValueGetter) {
-    // Problem: when retrieving the element's contents synchronously to find the label,
-    // the text may not be defined yet in the case of a binding.
-    // There is a higher chance that a binding will be defined if we wait one frame.
-    $$rAF(function() {
-      expect(element, attrName, defaultValueGetter());
-    });
-  }
-
-  function expectWithText(element, attrName) {
-    expectAsync(element, attrName, function() {
-      return element.text().trim();
-    });
-  }
-
-}
 })();
 
 (function() {
-angular.module('material.services.attrBind', [
-])
-  .factory('$attrBind', [
-    '$parse', 
-    '$interpolate', 
-    MdAttrBind 
-  ]);
-
-/**
- *  This service allows directives to easily databind attributes to private scope properties.
- *
- * @private
- */
-function MdAttrBind($parse, $interpolate) {
-  var LOCAL_REGEXP = /^\s*([@=&])(\??)\s*(\w*)\s*$/;
-
-  return function (scope, attrs, bindDefinition, bindDefaults) {
-    angular.forEach(bindDefinition || {}, function (definition, scopeName) {
-      //Adapted from angular.js $compile
-      var match = definition.match(LOCAL_REGEXP) || [],
-        attrName = match[3] || scopeName,
-        mode = match[1], // @, =, or &
-        parentGet,
-        unWatchFn;
-
-      switch (mode) {
-        case '@':   // One-way binding from attribute into scope
-
-          attrs.$observe(attrName, function (value) {
-            scope[scopeName] = value;
-          });
-          attrs.$$observers[attrName].$$scope = scope;
-
-          if (!bypassWithDefaults(attrName, scopeName)) {
-            // we trigger an interpolation to ensure
-            // the value is there for use immediately
-            scope[scopeName] = $interpolate(attrs[attrName])(scope);
-          }
-          break;
-
-        case '=':   // Two-way binding...
-
-          if (!bypassWithDefaults(attrName, scopeName)) {
-            // Immediate evaluation
-            scope[scopeName] = (attrs[attrName] === "") ? true : scope.$eval(attrs[attrName]);
-
-            // Data-bind attribute to scope (incoming) and
-            // auto-release watcher when scope is destroyed
-
-            unWatchFn = scope.$watch(attrs[attrName], function (value) {
-              scope[scopeName] = value;
-            });
-            scope.$on('$destroy', unWatchFn);
-          }
-
-          break;
-
-        case '&':   // execute an attribute-defined expression in the context of the parent scope
-
-          if (!bypassWithDefaults(attrName, scopeName, angular.noop)) {
-            /* jshint -W044 */
-            if (attrs[attrName] && attrs[attrName].match(RegExp(scopeName + '\(.*?\)'))) {
-              throw new Error('& expression binding "' + scopeName + '" looks like it will recursively call "' +
-                attrs[attrName] + '" and cause a stack overflow! Please choose a different scopeName.');
-            }
-
-            parentGet = $parse(attrs[attrName]);
-            scope[scopeName] = function (locals) {
-              return parentGet(scope, locals);
-            };
-          }
-
-          break;
-      }
-    });
-
-    /**
-     * Optional fallback value if attribute is not specified on element
-     * @param scopeName
-     */
-    function bypassWithDefaults(attrName, scopeName, defaultVal) {
-      if (!angular.isDefined(attrs[attrName])) {
-        var hasDefault = bindDefaults && bindDefaults.hasOwnProperty(scopeName);
-        scope[scopeName] = hasDefault ? bindDefaults[scopeName] : defaultVal;
-        return true;
-      }
-      return false;
-    }
-
-  };
-}
-})();
-
 (function() {
-/*
- * @ngdoc module
- * @name material.services.compiler
- * @description compiler service
- */
-angular.module('material.services.compiler', [
-])
-  .service('$mdCompiler', [
-    '$q',
-    '$http',
-    '$injector',
-    '$compile',
-    '$controller',
-    '$templateCache',
-    mdCompilerService
-  ]);
+'use strict';
 
-function mdCompilerService($q, $http, $injector, $compile, $controller, $templateCache) {
-
-  /*
-   * @ngdoc service
-   * @name $mdCompiler
-   * @module material.services.compiler
-   * @description
-   * The $mdCompiler service is an abstraction of angular's compiler, that allows the developer
-   * to easily compile an element with a templateUrl, controller, and locals.
-   *
-   * @usage
-   * <hljs lang="js">
-   * $mdCompiler.compile({
-   *   templateUrl: 'modal.html',
-   *   controller: 'ModalCtrl',
-   *   locals: {
-   *     modal: myModalInstance;
-   *   }
-   * }).then(function(compileData) {
-   *   compileData.element; // modal.html's template in an element
-   *   compileData.link(myScope); //attach controller & scope to element
-   * });
-   * </hljs>
-   */
-
-   /*
-    * @ngdoc method
-    * @name $mdCompiler#compile
-    * @description A helper to compile an HTML template/templateUrl with a given controller,
-    * locals, and scope.
-    * @param {object} options An options object, with the following properties:
-    *
-    *    - `controller` - `{(string=|function()=}` Controller fn that should be associated with
-    *      newly created scope or the name of a registered controller if passed as a string.
-    *    - `controllerAs` - `{string=}` A controller alias name. If present the controller will be
-    *      published to scope under the `controllerAs` name.
-    *    - `template` - `{string=}` An html template as a string.
-    *    - `templateUrl` - `{string=}` A path to an html template.
-    *    - `transformTemplate` - `{function(template)=}` A function which transforms the template after
-    *      it is loaded. It will be given the template string as a parameter, and should
-    *      return a a new string representing the transformed template.
-    *    - `resolve` - `{Object.<string, function>=}` - An optional map of dependencies which should
-    *      be injected into the controller. If any of these dependencies are promises, the compiler
-    *      will wait for them all to be resolved, or if one is rejected before the controller is
-    *      instantiated `compile()` will fail..
-    *      * `key` - `{string}`: a name of a dependency to be injected into the controller.
-    *      * `factory` - `{string|function}`: If `string` then it is an alias for a service.
-    *        Otherwise if function, then it is injected and the return value is treated as the
-    *        dependency. If the result is a promise, it is resolved before its value is 
-    *        injected into the controller.
-    *
-    * @returns {object=} promise A promise, which will be resolved with a `compileData` object.
-    * `compileData` has the following properties: 
-    *
-    *   - `element` - `{element}`: an uncompiled element matching the provided template.
-    *   - `link` - `{function(scope)}`: A link function, which, when called, will compile
-    *     the element and instantiate the provided controller (if given).
-    *   - `locals` - `{object}`: The locals which will be passed into the controller once `link` is
-    *     called.
-    */
-  this.compile = function(options) {
-    var templateUrl = options.templateUrl;
-    var template = options.template || '';
-    var controller = options.controller;
-    var controllerAs = options.controllerAs;
-    var resolve = options.resolve || {};
-    var locals = options.locals || {};
-    var transformTemplate = options.transformTemplate || angular.identity;
-
-    // Take resolve values and invoke them.  
-    // Resolves can either be a string (value: 'MyRegisteredAngularConst'),
-    // or an invokable 'factory' of sorts: (value: function ValueGetter($dependency) {})
-    angular.forEach(resolve, function(value, key) {
-      if (angular.isString(value)) {
-        resolve[key] = $injector.get(value);
-      } else {
-        resolve[key] = $injector.invoke(value);
-      }
-    });
-    //Add the locals, which are just straight values to inject
-    //eg locals: { three: 3 }, will inject three into the controller
-    angular.extend(resolve, locals);
-
-    if (templateUrl) {
-      resolve.$template = $http.get(templateUrl, {cache: $templateCache})
-        .then(function(response) {
-          return response.data;
-        });
-    } else {
-      resolve.$template = $q.when(template);
-    }
-
-    // Wait for all the resolves to finish if they are promises
-    return $q.all(resolve).then(function(locals) {
-
-      var template = transformTemplate(locals.$template);
-      var element = angular.element('<div>').html(template).contents();
-      var linkFn = $compile(element);
-
-      //Return a linking function that can be used later when the element is ready
-      return {
-        locals: locals,
-        element: element,
-        link: function link(scope) {
-          locals.$scope = scope;
-
-          //Instantiate controller if it exists, because we have scope
-          if (controller) {
-            var ctrl = $controller(controller, locals);
-            //See angular-route source for this logic
-            element.data('$ngControllerController', ctrl);
-            element.children().data('$ngControllerController', ctrl);
-
-            if (controllerAs) {
-              scope[controllerAs] = ctrl;
-            }
-          }
-
-          return linkFn(scope);
-        }
-      };
-    });
-
-  };
-}
-})();
-
-(function() {
-/*
- * @ngdoc module
- * @name material.services.interimElement
- * @description InterimElement
- */
-
-angular.module('material.services.interimElement', [
-  'material.services.compiler',
-  'material.services.theming'
-])
-.factory('$$interimElement', [
-  '$q',
-  '$rootScope',
-  '$timeout',
-  '$rootElement',
-  '$animate',
-  '$mdCompiler',
-  '$mdTheming',
-  InterimElementFactory
-]);
-
-/*
- * @ngdoc service
- * @name $$interimElement
- *
- * @description
- *
- * Factory that contructs `$$interimElement.$service` services. 
- * Used internally in material design for elements that appear on screen temporarily.
- * The service provides a promise-like API for interacting with the temporary
- * elements.
- *
- * ```js
- * app.service('$mdToast', function($$interimElement) {
- *   var $mdToast = $$interimElement(toastDefaultOptions);
- *   return $mdToast;
- * });
- * ```
- * @param {object=} defaultOptions Options used by default for the `show` method on the service.
- *
- * @returns {$$interimElement.$service}
- *
- */
-
-function InterimElementFactory($q, $rootScope, $timeout, $rootElement, $animate, $mdCompiler, $mdTheming) {
-
-  return function createInterimElementService(defaults) {
-
-    /*
-     * @ngdoc service
-     * @name $$interimElement.$service
-     *
-     * @description
-     * A service used to control inserting and removing an element into the DOM.
-     *
-     */
-
-
-    var stack = [];
-
-    defaults = angular.extend({
-      onShow: function(scope, $el, options) {
-        return $animate.enter($el, options.parent);
-      },
-      onRemove: function(scope, $el, options) {
-        return $animate.leave($el);
-      },
-    }, defaults || {});
-
-    var service;
-    return service = {
-      show: show,
-      hide: hide,
-      cancel: cancel
-    };
-
-    /*
-     * @ngdoc method
-     * @name $$interimElement.$service#show
-     * @kind function
-     *
-     * @description
-     * Compiles and inserts an element into the DOM.
-     *
-     * @param {Object} options Options object to compile with.
-     *
-     * @returns {Promise} Promise that will resolve when the service
-     * has `#close()` or `#cancel()` called.
-     *
-     */
-    function show(options) {
-      if (stack.length) {
-        service.hide();
-      }
-
-      var interimElement = new InterimElement(options);
-      stack.push(interimElement);
-      return interimElement.show().then(function() {
-        return interimElement.deferred.promise;
-      });
-    }
-
-    /*
-     * @ngdoc method
-     * @name $$interimElement.$service#hide
-     * @kind function
-     *
-     * @description
-     * Removes the `$interimElement` from the DOM and resolves the promise returned from `show`
-     *
-     * @param {*} resolveParam Data to resolve the promise with
-     *
-     * @returns undefined data that resolves after the element has been removed.
-     *
-     */
-    function hide(success) {
-      var interimElement = stack.shift();
-      interimElement && interimElement.remove().then(function() {
-        interimElement.deferred.resolve(success);
-      });
-    }
-
-    /*
-     * @ngdoc method
-     * @name $$interimElement.$service#cancel
-     * @kind function
-     *
-     * @description
-     * Removes the `$interimElement` from the DOM and rejects the promise returned from `show`
-     *
-     * @param {*} reason Data to reject the promise with
-     *
-     * @returns undefined
-     *
-     */
-    function cancel(reason) {
-      var interimElement = stack.shift();
-      interimElement && interimElement.remove().then(function() {
-        interimElement.deferred.reject(reason);
-      });
-    }
-
-
-    /*
-     * Internal Interim Element Object
-     * Used internally to manage the DOM element and related data
-     */
-    function InterimElement(options) {
-      var self;
-      var hideTimeout, element;
-
-      options = options || {};
-
-      options = angular.extend({
-        scope: options.scope || $rootScope.$new(options.isolateScope)
-      }, defaults, options);
-
-      return self = {
-        options: options,
-        deferred: $q.defer(),
-        show: function() {
-          return $mdCompiler.compile(options).then(function(compiledData) {
-            // Search for parent at insertion time, if not specified
-            if (!options.parent) {
-              options.parent = $rootElement.find('body');
-              if (!options.parent.length) options.parent = $rootElement;
-            }
-            element = compiledData.link(options.scope);
-            if (options.themable) $mdTheming(element);
-            var ret = options.onShow(options.scope, element, options);
-            return $q.when(ret)
-              .then(function(){
-                  // Issue onComplete callback when the `show()` finishes
-                  var notify = options.onComplete || angular.noop;
-                  notify.apply(null, [options.scope, element, options]);
-              })
-              .then(startHideTimeout);
-
-            function startHideTimeout() {
-              if (options.hideDelay) {
-                hideTimeout = $timeout(service.hide, options.hideDelay) ;
-              }
-            }
-          });
-        },
-        cancelTimeout: function() {
-          if (hideTimeout) {
-            $timeout.cancel(hideTimeout);
-            hideTimeout = undefined;
-          }
-        },
-        remove: function() {
-          self.cancelTimeout();
-          var ret = options.onRemove(options.scope, element, options);
-          return $q.when(ret).then(function() {
-            options.scope.$destroy();
-          });
-        }
-      };
-    }
-  };
-}
-
-})();
-
-(function() {
-angular.module('material.services.media', [
-  'material.core'
-])
-
-.factory('$mdMedia', [
-  '$window',
-  '$mdUtil',
-  '$timeout',
-  mdMediaFactory
-]);
-
-function mdMediaFactory($window, $mdUtil, $timeout) {
-  var cache = $mdUtil.cacheFactory('$mdMedia', { capacity: 15 });
-  var presets = {
-    sm: '(min-width: 600px)',
-    md: '(min-width: 960px)',
-    lg: '(min-width: 1200px)'
-  };
-
-  angular.element($window).on('resize', updateAll);
-
-  return $mdMedia;
-
-  function $mdMedia(query) {
-    query = validate(query);
-    var result;
-    if ( !angular.isDefined(result = cache.get(query)) ) {
-      return add(query);
-    }
-    return result;
-  }
-
-  function validate(query) {
-    return presets[query] || (
-      query.charAt(0) != '(' ?  ('(' + query + ')') : query
-    );
-  }
-
-  function add(query) {
-    return cache.put(query, !!$window.matchMedia(query).matches);
-  }
-  
-  function updateAll() {
-    var keys = cache.keys();
-    if (keys.length) {
-      for (var i = 0, ii = keys.length; i < ii; i++) {
-        cache.put(keys[i], !!$window.matchMedia(keys[i]).matches);
-      }
-      // trigger a $digest()
-      $timeout(angular.noop);
-    }
-  }
-
-}
-})();
-
-(function() {
-/*
- * @ngdoc module
- * @name material.services.registry
- *
- * @description
- * A component registry system for accessing various component instances in an app.
- */
-angular.module('material.services.registry', [
-])
-  .factory('$mdComponentRegistry', [
-    '$log', 
-    mdComponentRegistry 
-  ]);
-
-/*
- * @ngdoc service
- * @name $mdComponentRegistry
- * @module material.services.registry
- *
- * @description
- * $mdComponentRegistry enables the user to interact with multiple instances of
- * certain complex components in a running app.
- */
-function mdComponentRegistry($log) {
-  var instances = [];
-
-  return {
-    /**
-     * Used to print an error when an instance for a handle isn't found.
-     */
-    notFoundError: function(handle) {
-      $log.error('No instance found for handle', handle);
-    },
-    /**
-     * Return all registered instances as an array.
-     */
-    getInstances: function() {
-      return instances;
-    },
-
-    /**
-     * Get a registered instance.
-     * @param handle the String handle to look up for a registered instance.
-     */
-    get: function(handle) {
-      var i, j, instance;
-      for(i = 0, j = instances.length; i < j; i++) {
-        instance = instances[i];
-        if(instance.$$mdHandle === handle) {
-          return instance;
-        }
-      }
-      return null;
-    },
-
-    /**
-     * Register an instance.
-     * @param instance the instance to register
-     * @param handle the handle to identify the instance under.
-     */
-    register: function(instance, handle) {
-      instance.$$mdHandle = handle;
-      instances.push(instance);
-
-      return function deregister() {
-        var index = instances.indexOf(instance);
-        if (index !== -1) {
-          instances.splice(index, 1);
-        }
-      };
-    }
-  }
-}
-
-})();
-
-(function() {
-/*
- * @ngdoc module
- * @name material.services.theming
- * @description Used to provide theming to angular-material directives
- */
-
-angular.module('material.services.theming', [
-])
-.directive('mdTheme', [
-  '$interpolate',
-  ThemingDirective
-])
-.directive('mdThemable', [
-  '$mdTheming',
-  ThemableDirective
-])
-.provider('$mdTheming', [
-  Theming
-]);
-
-/**
- * @ngdoc provider
- * @name $mdThemingProvider
- *
- * @description Provider to configure the `$mdTheming` service.
- */
-
-/**
- * @ngdoc method
- * @name $mdThemingProvider#setDefaultTheme
- * @param {string} themeName Default theme name to be applied to elements. Default value is `default`.
- */
-
-/**
- * @ngdoc method
- * @name $mdThemingProvider#alwaysWatchTheme
- * @param {boolean} watch Whether or not to always watch themes for changes and re-apply
- * classes when they change. Default is `false`. Enabling can reduce performance.
- */
-
-/**
- * @ngdoc service
- * @name $mdTheming
- *
- * @description
- *
- * Service that makes an element apply theming related classes to itself.
- *
- * ```js
- * app.directive('myFancyDirective', function($mdTheming) {
- *   return {
- *     restrict: 'e',
- *     link: function(scope, el, attrs) {
- *       $mdTheming(el);
- *     }
- *   };
- * });
- * ```
- * @param {el=} element to apply theming to
- */
-
-function Theming($injector) {
-  var defaultTheme = 'default';
-  var alwaysWatchTheme = false;
-  return {
-    setDefaultTheme: function(theme) {
-      defaultTheme = theme;
-    },
-    alwaysWatchTheme: function(alwaysWatch) {
-      alwaysWatchTheme = alwaysWatch;
-    },
-    $get: ['$rootElement', '$rootScope', ThemingService]
-  };
-
-  function ThemingService($rootElement, $rootScope) {
-    applyTheme.inherit = function(el, parent) {
-      var ctrl = parent.controller('mdTheme');
-
-      var attrThemeValue = el.attr('md-theme-watch');
-      if ( (alwaysWatchTheme || angular.isDefined(attrThemeValue)) && attrThemeValue != 'false') { 
-        var deregisterWatch = $rootScope.$watch(function() { 
-          return ctrl && ctrl.$mdTheme || defaultTheme; 
-        }, changeTheme);
-        el.on('$destroy', deregisterWatch);
-      } else {
-        var theme = ctrl && ctrl.$mdTheme || defaultTheme;
-        changeTheme(theme);
-      }
-
-      function changeTheme(theme) {
-        var oldTheme = el.data('$mdThemeName');
-        if (oldTheme) el.removeClass('md-' + oldTheme +'-theme');
-        el.addClass('md-' + theme + '-theme');
-        el.data('$mdThemeName', theme);
-      }
-    };
-
-    return applyTheme;
-
-    function applyTheme(scope, el) {
-      // Allow us to be invoked via a linking function signature.
-      if (el === undefined) { 
-        el = scope;
-        scope = undefined;
-      }
-      if (scope === undefined) {
-        scope = $rootScope;
-      }
-      applyTheme.inherit(el, el);
-    }
-  }
-}
-
-function ThemingDirective($interpolate) {
-  return {
-    priority: 100,
-    link: {
-      pre: function(scope, el, attrs) {
-        var ctrl = {
-          $setTheme: function(theme) {
-            ctrl.$mdTheme = theme;
-          }
-        };
-        el.data('$mdThemeController', ctrl);
-        ctrl.$setTheme($interpolate(attrs.mdTheme)(scope));
-        attrs.$observe('mdTheme', ctrl.$setTheme);
-      }
-    }
-  };
-}
-
-function ThemableDirective($mdTheming) {
-  return $mdTheming;
-}
-})();
-
-(function() {
 /**
  * Conditionally configure ink bar animations when the
  * tab selection changes. If `nobar` then do not show the
  * bar nor animate.
  */
 angular.module('material.components.tabs')
+  .directive('mdTabsInkBar', MdTabInkDirective);
 
-.directive('mdTabsInkBar', [
-  '$mdEffects',
-  '$window',
-  '$$rAF',
-  '$timeout',
-  MdTabInkDirective
-]);
-
-function MdTabInkDirective($mdEffects, $window, $$rAF, $timeout) {
+function MdTabInkDirective($mdConstant, $window, $$rAF, $timeout) {
 
   return {
     restrict: 'E',
@@ -5438,29 +5377,26 @@ function MdTabInkDirective($mdEffects, $window, $$rAF, $timeout) {
           display : width > 0 ? 'block' : 'none',
           width: width + 'px'
         });
-        element.css($mdEffects.TRANSFORM, 'translate3d(' + left + 'px,0,0)');
+        element.css($mdConstant.CSS.TRANSFORM, 'translate3d(' + left + 'px,0,0)');
       }
     }
 
   }
 
 }
+MdTabInkDirective.$inject = ["$mdConstant", "$window", "$$rAF", "$timeout"];
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 
 angular.module('material.components.tabs')
+  .directive('mdTabsPagination', TabPaginationDirective);
 
-.directive('mdTabsPagination', [
-  '$mdEffects',
-  '$window',
-  '$$rAF',
-  '$$q',
-  '$timeout',
-  TabPaginationDirective
-]);
-
-function TabPaginationDirective($mdEffects, $window, $$rAF, $$q, $timeout) {
+function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout) {
 
   // TODO allow configuration of TAB_MIN_WIDTH
   // Must match tab min-width rule in _tabs.scss
@@ -5601,15 +5537,15 @@ function TabPaginationDirective($mdEffects, $window, $$rAF, $$q, $timeout) {
       var deferred = $$q.defer();
 
       tabsCtrl.$$pagingOffset = x;
-      tabsParent.css($mdEffects.TRANSFORM, 'translate3d(' + x + 'px,0,0)');
-      tabsParent.on($mdEffects.TRANSITIONEND_EVENT, onTabsParentTransitionEnd);
+      tabsParent.css($mdConstant.CSS.TRANSFORM, 'translate3d(' + x + 'px,0,0)');
+      tabsParent.on($mdConstant.CSS.TRANSITIONEND, onTabsParentTransitionEnd);
 
       return deferred.promise;
 
       function onTabsParentTransitionEnd(ev) {
         // Make sure this event didn't bubble up from an animation in a child element.
         if (ev.target === tabsParent[0]) {
-          tabsParent.off($mdEffects.TRANSITIONEND_EVENT, onTabsParentTransitionEnd);
+          tabsParent.off($mdConstant.CSS.TRANSITIONEND, onTabsParentTransitionEnd);
           deferred.resolve();
         }
       }
@@ -5644,28 +5580,25 @@ function TabPaginationDirective($mdEffects, $window, $$rAF, $$q, $timeout) {
   }
 
 }
+TabPaginationDirective.$inject = ["$mdConstant", "$window", "$$rAF", "$$q", "$timeout"];
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 
 angular.module('material.components.tabs')
+  .controller('$mdTab', TabItemController);
 
-.controller('$mdTab', [
-  '$scope',
-  '$element',
-  '$compile',
-  '$animate',
-  '$mdUtil',
-  TabItemController
-]);
-
-function TabItemController(scope, element, $compile, $animate, $mdUtil) {
+function TabItemController($scope, $element, $compile, $animate, $mdUtil) {
   var self = this;
 
   // Properties
   self.contentContainer = angular.element('<div class="md-tab-content ng-hide">');
-  self.hammertime = Hammer(self.contentContainer[0]);
-  self.element = element;
+  self.hammertime = new Hammer(self.contentContainer[0]);
+  self.element = $element;
 
   // Methods
   self.isDisabled = isDisabled;
@@ -5675,7 +5608,7 @@ function TabItemController(scope, element, $compile, $animate, $mdUtil) {
   self.onDeselect = onDeselect;
 
   function isDisabled() {
-    return element[0].hasAttribute('disabled');
+    return $element[0].hasAttribute('disabled');
   }
   
   /**
@@ -5685,7 +5618,7 @@ function TabItemController(scope, element, $compile, $animate, $mdUtil) {
   function onAdd(contentArea) {
     if (self.content.length) {
       self.contentContainer.append(self.content);
-      self.contentScope = scope.$parent.$new();
+      self.contentScope = $scope.$parent.$new();
       contentArea.append(self.contentContainer);
 
       $compile(self.contentContainer)(self.contentScope);
@@ -5704,45 +5637,42 @@ function TabItemController(scope, element, $compile, $animate, $mdUtil) {
   function onSelect() {
     // Resume watchers and events firing when tab is selected
     $mdUtil.reconnectScope(self.contentScope);
-    self.hammertime.on('swipeleft swiperight', scope.onSwipe);
+    self.hammertime.on('swipeleft swiperight', $scope.onSwipe);
 
-    element.addClass('active');
-    element.attr('aria-selected', true);
-    element.attr('tabIndex', 0);
+    $element.addClass('active');
+    $element.attr('aria-selected', true);
+    $element.attr('tabIndex', 0);
     $animate.removeClass(self.contentContainer, 'ng-hide');
 
-    scope.onSelect();
+    $scope.onSelect();
   }
 
   function onDeselect() {
     // Stop watchers & events from firing while tab is deselected
     $mdUtil.disconnectScope(self.contentScope);
-    self.hammertime.off('swipeleft swiperight', scope.onSwipe);
+    self.hammertime.off('swipeleft swiperight', $scope.onSwipe);
 
-    element.removeClass('active');
-    element.attr('aria-selected', false);
+    $element.removeClass('active');
+    $element.attr('aria-selected', false);
     // Only allow tabbing to the active tab
-    element.attr('tabIndex', -1);
+    $element.attr('tabIndex', -1);
     $animate.addClass(self.contentContainer, 'ng-hide');
 
-    scope.onDeselect();
+    $scope.onDeselect();
   }
 
 }
+TabItemController.$inject = ["$scope", "$element", "$compile", "$animate", "$mdUtil"];
 
+})();
 })();
 
 (function() {
-angular.module('material.components.tabs')
+(function() {
+'use strict';
 
-.directive('mdTab', [
-  '$mdInkRipple',
-  '$compile',
-  '$mdAria',
-  '$mdUtil',
-  '$mdConstant',
-  MdTabDirective
-]);
+angular.module('material.components.tabs')
+  .directive('mdTab', MdTabDirective);
 
 /**
  * @ngdoc directive
@@ -5967,28 +5897,27 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
   }
 
 }
+MdTabDirective.$inject = ["$mdInkRipple", "$compile", "$mdAria", "$mdUtil", "$mdConstant"];
 
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 angular.module('material.components.tabs')
+  .controller('$mdTabs', MdTabsController);
 
-.controller('$mdTabs', [
-  '$scope', 
-  '$element',
-  '$mdUtil',
-  MdTabsController
-]);
-
-function MdTabsController(scope, element, $mdUtil) {
+function MdTabsController($scope, $element, $mdUtil) {
 
   var tabsList = $mdUtil.iterator([], false);
   var self = this;
 
   // Properties
-  self.element = element;
-  // The section containing the tab content elements
-  self.contentArea = angular.element(element[0].querySelector('.md-tabs-content'));
+  self.$element = $element;
+  // The section containing the tab content $elements
+  self.contentArea = angular.element($element[0].querySelector('.md-tabs-content'));
 
   // Methods from iterator
   self.inRange = tabsList.inRange;
@@ -6006,7 +5935,7 @@ function MdTabsController(scope, element, $mdUtil) {
   self.next = next;
   self.previous = previous;
 
-  scope.$on('$destroy', function() {
+  $scope.$on('$destroy', function() {
     self.deselect(self.selected());
     for (var i = tabsList.count() - 1; i >= 0; i--) {
       self.remove(tabsList[i], true);
@@ -6015,7 +5944,7 @@ function MdTabsController(scope, element, $mdUtil) {
 
   // Get the selected tab
   function selected() {
-    return self.itemAt(scope.selectedIndex);
+    return self.itemAt($scope.selectedIndex);
   }
 
   // Add a new tab.
@@ -6027,11 +5956,11 @@ function MdTabsController(scope, element, $mdUtil) {
 
     // Select the new tab if we don't have a selectedIndex, or if the
     // selectedIndex we've been waiting for is this tab
-    if (scope.selectedIndex === -1 || !angular.isNumber(scope.selectedIndex) || 
-        scope.selectedIndex === self.indexOf(tab)) {
+    if ($scope.selectedIndex === -1 || !angular.isNumber($scope.selectedIndex) || 
+        $scope.selectedIndex === self.indexOf(tab)) {
       self.select(tab);
     }
-    scope.$broadcast('$mdTabsChanged');
+    $scope.$broadcast('$mdTabsChanged');
   }
 
   function remove(tab, noReselect) {
@@ -6050,7 +5979,7 @@ function MdTabsController(scope, element, $mdUtil) {
     tabsList.remove(tab);
     tab.onRemove();
 
-    scope.$broadcast('$mdTabsChanged');
+    $scope.$broadcast('$mdTabsChanged');
   }
 
   // Move a tab (used when ng-repeat order changes)
@@ -6061,7 +5990,7 @@ function MdTabsController(scope, element, $mdUtil) {
     tabsList.add(tab, toIndex);
     if (isSelected) self.select(tab);
 
-    scope.$broadcast('$mdTabsChanged');
+    $scope.$broadcast('$mdTabsChanged');
   }
 
   function select(tab) {
@@ -6070,7 +5999,7 @@ function MdTabsController(scope, element, $mdUtil) {
 
     self.deselect(self.selected());
 
-    scope.selectedIndex = self.indexOf(tab);
+    $scope.selectedIndex = self.indexOf(tab);
     tab.isSelected = true;
     tab.onSelect();
   }
@@ -6079,7 +6008,7 @@ function MdTabsController(scope, element, $mdUtil) {
     if (!tab || !tab.isSelected) return;
     if (!tabsList.contains(tab)) return;
 
-    scope.selectedIndex = -1;
+    $scope.selectedIndex = -1;
     tab.isSelected = false;
     tab.onDeselect();
   }
@@ -6096,10 +6025,16 @@ function MdTabsController(scope, element, $mdUtil) {
   }
 
 }
+MdTabsController.$inject = ["$scope", "$element", "$mdUtil"];
+})();
 })();
 
 (function() {
+(function() {
+'use strict';
+
 angular.module('material.components.tabs')
+  .directive('mdTabs', TabsDirective);
 
 /**
  * @ngdoc directive
@@ -6173,12 +6108,6 @@ angular.module('material.components.tabs')
  * </hljs>
  *
  */
-.directive('mdTabs', [
-  '$parse',
-  '$mdTheming',
-  TabsDirective
-]);
-
 function TabsDirective($parse, $mdTheming) {
   return {
     restrict: 'E',
@@ -6250,4 +6179,6 @@ function TabsDirective($parse, $mdTheming) {
 
   }
 }
+TabsDirective.$inject = ["$parse", "$mdTheming"];
+})();
 })();
