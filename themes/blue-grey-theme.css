@@ -87,9 +87,9 @@ md-progress-linear.md-blue-grey-theme .md-container {
   background-color: #cfd8dc; }
 md-progress-linear.md-blue-grey-theme .md-bar {
   background-color: #607d8b; }
-md-progress-linear.md-blue-grey-theme[mode=buffer] .md-dashed:before {
+md-progress-linear.md-blue-grey-theme[md-mode=buffer] .md-dashed:before {
   background: radial-gradient(#cfd8dc 0%, #cfd8dc 16%, transparent 42%); }
-md-progress-linear.md-blue-grey-theme[mode=buffer] .md-bar1 {
+md-progress-linear.md-blue-grey-theme[md-mode=buffer] .md-bar1 {
   background-color: #cfd8dc; }
 
 md-radio-button.md-blue-grey-theme .md-container .md-ripple, md-switch.md-blue-grey-theme .md-switch-thumb .md-container .md-ripple {

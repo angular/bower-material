@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-2451f2e
+ * v0.5.1-master-eb2f2f8
  */
 goog.provide('ng.material.components.radioButton');
 goog.require('ng.material.core');
@@ -34,7 +34,7 @@ angular.module('material.components.radioButton', [
  * `<md-radio-button>` tags.
  *
  * @param {string} ngModel Assignable angular expression to data-bind to.
- * @param {boolean=} noink Use of attribute indicates flag to disable ink ripple effects.
+ * @param {boolean=} mdNoInk Use of attribute indicates flag to disable ink ripple effects.
  *
  * @usage
  * <hljs lang="html">

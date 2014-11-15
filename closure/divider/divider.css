@@ -2,11 +2,11 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-2451f2e
+ * v0.5.1-master-eb2f2f8
  */
 md-divider {
   display: block;
   border-top: 1px solid;
   margin: 0; }
-  md-divider[inset] {
+  md-divider[md-inset] {
     margin-left: 80px; }

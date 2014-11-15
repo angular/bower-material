@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-2451f2e
+ * v0.5.1-master-eb2f2f8
  */
 goog.provide('ng.material.components.sidenav');
 goog.require('ng.material.components.backdrop');
@@ -40,7 +40,7 @@ function mdSidenavController($scope, $element, $attrs, $timeout, $mdSidenav, $md
 
   var self = this;
 
-  this.destroy = $mdComponentRegistry.register(this, $attrs.componentId);
+  this.destroy = $mdComponentRegistry.register(this, $attrs.mdComponentId);
 
   this.isOpen = function() {
     return !!$scope.isOpen;
@@ -120,7 +120,7 @@ mdSidenavService.$inject = ["$mdComponentRegistry"];
  * @usage
  * <hljs lang="html">
  * <div layout="horizontal" ng-controller="MyController">
- *   <md-sidenav component-id="left" class="md-sidenav-left">
+ *   <md-sidenav md-component-id="left" class="md-sidenav-left">
  *     Left Nav!
  *   </md-sidenav>
  *
@@ -131,8 +131,8 @@ mdSidenavService.$inject = ["$mdComponentRegistry"];
  *     </md-button>
  *   </md-content>
  *
- *   <md-sidenav component-id="right" 
- *     is-locked-open="$media('min-width: 333px')"
+ *   <md-sidenav md-component-id="right"
+ *     md-is-locked-open="$media('min-width: 333px')"
  *     class="md-sidenav-right">
  *     Right Nav!
  *   </md-sidenav>
@@ -148,9 +148,9 @@ mdSidenavService.$inject = ["$mdComponentRegistry"];
  * });
  * </hljs>
  *
- * @param {expression=} is-open A model bound to whether the sidenav is opened.
- * @param {string=} component-id componentId to use with $mdSidenav service.
- * @param {expression=} is-locked-open When this expression evalutes to true,
+ * @param {expression=} mdIsOpen A model bound to whether the sidenav is opened.
+ * @param {string=} mdComponentId componentId to use with $mdSidenav service.
+ * @param {expression=} mdIsLockedOpen When this expression evalutes to true,
  * the sidenav 'locks open': it falls into the content's flow instead
  * of appearing over it. This overrides the `is-open` attribute.
  *
@@ -158,15 +158,15 @@ mdSidenavService.$inject = ["$mdComponentRegistry"];
  * can be given a media query or one of the `sm`, `md` or `lg` presets.
  * Examples:
  *
- *   - `<md-sidenav is-locked-open="shouldLockOpen"></md-sidenav>`
- *   - `<md-sidenav is-locked-open="$media('min-width: 1000px')"></md-sidenav>`
- *   - `<md-sidenav is-locked-open="$media('sm')"></md-sidenav>` <!-- locks open on small screens !-->
+ *   - `<md-sidenav md-is-locked-open="shouldLockOpen"></md-sidenav>`
+ *   - `<md-sidenav md-is-locked-open="$media('min-width: 1000px')"></md-sidenav>`
+ *   - `<md-sidenav md-is-locked-open="$media('sm')"></md-sidenav>` <!-- locks open on small screens !-->
  */
 function mdSidenavDirective($timeout, $animate, $parse, $mdMedia, $mdConstant, $compile, $mdTheming) {
   return {
     restrict: 'E',
     scope: {
-      isOpen: '=?'
+      isOpen: '=?mdIsOpen'
     },
     controller: '$mdSidenavController',
     compile: function(element) {
@@ -177,7 +177,7 @@ function mdSidenavDirective($timeout, $animate, $parse, $mdMedia, $mdConstant, $
   };
 
   function postLink(scope, element, attr, sidenavCtrl) {
-    var isLockedOpenParsed = $parse(attr.isLockedOpen);
+    var isLockedOpenParsed = $parse(attr.mdIsLockedOpen);
     var backdrop = $compile(
       '<md-backdrop class="md-sidenav-backdrop md-opaque">'
     )(scope);
@@ -282,7 +282,7 @@ function mdMediaFactory($window, $mdUtil, $timeout) {
   function add(query) {
     return cache.put(query, !!$window.matchMedia(query).matches);
   }
-  
+
   function updateAll() {
     var keys = cache.keys();
     if (keys.length) {
@@ -296,7 +296,7 @@ function mdMediaFactory($window, $mdUtil, $timeout) {
 
 }
 mdMediaFactory.$inject = ["$window", "$mdUtil", "$timeout"];
-  
+
 function mdComponentRegistry($log) {
   var instances = [];
 

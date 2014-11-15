@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-2451f2e
+ * v0.5.1-master-eb2f2f8
  */
 goog.provide('ng.material.core');
 
@@ -1039,14 +1039,14 @@ function InterimElementProvider() {
 
 angular.module('material.core')
   .factory('$mdInkRipple', InkRippleService)
-  .directive('inkRipple', InkRippleDirective)
-  .directive('noink', attrNoDirective())
-  .directive('nobar', attrNoDirective())
-  .directive('nostretch', attrNoDirective());
+  .directive('mdInkRipple', InkRippleDirective)
+  .directive('mdNoInk', attrNoDirective())
+  .directive('mdNoBar', attrNoDirective())
+  .directive('mdNoStretch', attrNoDirective());
 
 function InkRippleDirective($mdInkRipple) {
   return function(scope, element, attr) {
-    if (attr.inkRipple == 'checkbox') {
+    if (attr.mdInkRipple == 'checkbox') {
       $mdInkRipple.attachCheckboxBehavior(element);
     } else {
       $mdInkRipple.attachButtonBehavior(element);
@@ -1086,8 +1086,8 @@ function InkRippleService($window, $$rAF, $mdUtil, $timeout, $mdConstant) {
   }
 
   function attach(element, options) {
-    // Parent element with noink attr? Abort.
-    if (element.controller('noink')) return angular.noop;
+    // Parent element with mdNoInk attr? Abort.
+    if (element.controller('mdNoInk')) return angular.noop;
     var contentParent = element.controller('mdContent');
 
     options = angular.extend({
@@ -1202,7 +1202,7 @@ InkRippleService.$inject = ["$window", "$$rAF", "$mdUtil", "$timeout", "$mdConst
  *
  * @usage
  * <hljs lang="html">
- * <parent noink>
+ * <parent md-no-ink>
  *   <child detect-no>
  *   </child>
  * </parent>
@@ -1211,15 +1211,15 @@ InkRippleService.$inject = ["$window", "$$rAF", "$mdUtil", "$timeout", "$mdConst
  * <hljs lang="js">
  * myApp.directive('detectNo', function() {
  *   return {
- *     require: ['^?noink', ^?nobar'],
+ *     require: ['^?mdNoInk', ^?mdNoBar'],
  *     link: function(scope, element, attr, ctrls) {
  *       var noinkCtrl = ctrls[0];
  *       var nobarCtrl = ctrls[1];
  *       if (noInkCtrl) {
- *         alert("the noink flag has been specified on an ancestor!");
+ *         alert("the md-no-ink flag has been specified on an ancestor!");
  *       }
  *       if (nobarCtrl) {
- *         alert("the nobar flag has been specified on an ancestor!");
+ *         alert("the md-no-bar flag has been specified on an ancestor!");
  *       }
  *     }
  *   };

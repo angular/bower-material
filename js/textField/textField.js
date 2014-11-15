@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-2451f2e
+ * v0.5.1-master-eb2f2f8
  */
 (function() {
 'use strict';
@@ -32,7 +32,7 @@ angular.module('material.components.textField', [
  * @description
  * Use the `<md-text-float>` directive to quickly construct `Floating Label` text fields
  *
- * @param {string} fid Attribute used for accessibility link pairing between the Label and Input elements
+ * @param {string} mdFid Attribute used for accessibility link pairing between the Label and Input elements
  * @param {string=} type Optional value to define the type of input field. Defaults to string.
  * @param {string} label Attribute to specify the input text field hint.
  * @param {string=} ng-model Optional value to assign as existing input text string
@@ -53,14 +53,14 @@ function mdTextFloatDirective($mdTheming, $mdUtil) {
     restrict: 'E',
     replace: true,
     scope : {
-      fid : '@?',
+      fid : '@?mdFid',
       label : '@?',
       value : '=ngModel'
     },
     compile : function(element, attr) {
 
-      if ( angular.isUndefined(attr.fid) ) {
-        attr.fid = $mdUtil.nextUid();
+      if ( angular.isUndefined(attr.mdFid) ) {
+        attr.mdFid = $mdUtil.nextUid();
       }
 
       return {

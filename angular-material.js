@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-2451f2e
+ * v0.5.1-master-eb2f2f8
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -1038,14 +1038,14 @@ function InterimElementProvider() {
 
 angular.module('material.core')
   .factory('$mdInkRipple', InkRippleService)
-  .directive('inkRipple', InkRippleDirective)
-  .directive('noink', attrNoDirective())
-  .directive('nobar', attrNoDirective())
-  .directive('nostretch', attrNoDirective());
+  .directive('mdInkRipple', InkRippleDirective)
+  .directive('mdNoInk', attrNoDirective())
+  .directive('mdNoBar', attrNoDirective())
+  .directive('mdNoStretch', attrNoDirective());
 
 function InkRippleDirective($mdInkRipple) {
   return function(scope, element, attr) {
-    if (attr.inkRipple == 'checkbox') {
+    if (attr.mdInkRipple == 'checkbox') {
       $mdInkRipple.attachCheckboxBehavior(element);
     } else {
       $mdInkRipple.attachButtonBehavior(element);
@@ -1085,8 +1085,8 @@ function InkRippleService($window, $$rAF, $mdUtil, $timeout, $mdConstant) {
   }
 
   function attach(element, options) {
-    // Parent element with noink attr? Abort.
-    if (element.controller('noink')) return angular.noop;
+    // Parent element with mdNoInk attr? Abort.
+    if (element.controller('mdNoInk')) return angular.noop;
     var contentParent = element.controller('mdContent');
 
     options = angular.extend({
@@ -1201,7 +1201,7 @@ InkRippleService.$inject = ["$window", "$$rAF", "$mdUtil", "$timeout", "$mdConst
  *
  * @usage
  * <hljs lang="html">
- * <parent noink>
+ * <parent md-no-ink>
  *   <child detect-no>
  *   </child>
  * </parent>
@@ -1210,15 +1210,15 @@ InkRippleService.$inject = ["$window", "$$rAF", "$mdUtil", "$timeout", "$mdConst
  * <hljs lang="js">
  * myApp.directive('detectNo', function() {
  *   return {
- *     require: ['^?noink', ^?nobar'],
+ *     require: ['^?mdNoInk', ^?mdNoBar'],
  *     link: function(scope, element, attr, ctrls) {
  *       var noinkCtrl = ctrls[0];
  *       var nobarCtrl = ctrls[1];
  *       if (noInkCtrl) {
- *         alert("the noink flag has been specified on an ancestor!");
+ *         alert("the md-no-ink flag has been specified on an ancestor!");
  *       }
  *       if (nobarCtrl) {
- *         alert("the nobar flag has been specified on an ancestor!");
+ *         alert("the md-no-bar flag has been specified on an ancestor!");
  *       }
  *     }
  *   };
@@ -1692,9 +1692,9 @@ angular.module('material.components.button', [
  * If you supply a `href` or `ng-href` attribute, it will become an `<a>` element. Otherwise, it will
  * become a `<button>` element.
  *
- * @param {boolean=} noink If present, disable ripple ink effects.
+ * @param {boolean=} mdNoInk If present, disable ripple ink effects.
  * @param {boolean=} disabled If present, disable selection.
- * @param {string=} aria-label Publish the button label used by screen-readers for accessibility. Defaults to the button's text.
+ * @param {string=} ariaLabel Publish the button label used by screen-readers for accessibility. Defaults to the button's text.
  *
  * @usage
  * <hljs lang="html">
@@ -1835,7 +1835,7 @@ angular.module('material.components.checkbox', [
  * @param {expression=} ngTrueValue The value to which the expression should be set when selected.
  * @param {expression=} ngFalseValue The value to which the expression should be set when not selected.
  * @param {string=} ngChange Angular expression to be executed when input changes due to user interaction with the input element.
- * @param {boolean=} noink Use of attribute indicates use of ripple ink effects
+ * @param {boolean=} mdNoInk Use of attribute indicates use of ripple ink effects
  * @param {boolean=} disabled Use of attribute indicates the switch is disabled: no ink effects and not selectable
  * @param {string=} ariaLabel Publish the button label used by screen-readers for accessibility. Defaults to the checkbox's text.
  *
@@ -1845,7 +1845,7 @@ angular.module('material.components.checkbox', [
  *   Finished ?
  * </md-checkbox>
  *
- * <md-checkbox noink ng-model="hasInk" aria-label="No Ink Effects">
+ * <md-checkbox md-no-ink ng-model="hasInk" aria-label="No Ink Effects">
  *   No Ink Effects
  * </md-checkbox>
  *
@@ -1866,7 +1866,7 @@ function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant,
     transclude: true,
     require: '?ngModel',
     template: 
-      '<div class="md-container" ink-ripple="checkbox">' +
+      '<div class="md-container" md-ink-ripple="checkbox">' +
         '<div class="md-icon"></div>' +
       '</div>' +
       '<div ng-transclude class="md-label"></div>',
@@ -2390,12 +2390,12 @@ function MdDividerController(){}
  * @description
  * Dividers group and separate content within lists and page layouts using strong visual and spatial distinctions. This divider is a thin rule, lightweight enough to not distract the user from content.
  *
- * @param {boolean=} inset Add this attribute to activate the inset divider style.
+ * @param {boolean=} mdInset Add this attribute to activate the inset divider style.
  * @usage
  * <hljs lang="html">
  * <md-divider></md-divider>
  *
- * <md-divider inset></md-divider>
+ * <md-divider md-inset></md-divider>
  * </hljs>
  *
  */
@@ -2568,19 +2568,19 @@ angular.module('material.components.progressCircular', [
  *
  * For operations where the user is asked to wait a moment while something finishes up, and it’s not necessary to expose what's happening behind the scenes and how long it will take, use an indeterminate indicator.
  *
- * @param {string} mode Select from one of two modes: determinate and indeterminate.
+ * @param {string} mdMode Select from one of two modes: determinate and indeterminate.
  * @param {number=} value In determinate mode, this number represents the percentage of the circular progress. Default: 0
- * @param {number=} diameter This specifies the diamter of the circular progress. Default: 48
+ * @param {number=} mdDiameter This specifies the diamter of the circular progress. Default: 48
  *
  * @usage
  * <hljs lang="html">
- * <md-progress-circular mode="determinate" value="..."></md-progress-circular>
+ * <md-progress-circular md-mode="determinate" value="..."></md-progress-circular>
  *
- * <md-progress-circular mode="determinate" ng-value="..."></md-progress-circular>
+ * <md-progress-circular md-mode="determinate" ng-value="..."></md-progress-circular>
  *
- * <md-progress-circular mode="determinate" value="..." diameter="100"></md-progress-circular>
+ * <md-progress-circular md-mode="determinate" value="..." diameter="100"></md-progress-circular>
  *
- * <md-progress-circular mode="indeterminate"></md-progress-circular>
+ * <md-progress-circular md-mode="indeterminate"></md-progress-circular>
  * </hljs>
  */
 function MdProgressCircularDirective($$rAF, $mdConstant, $mdTheming) {
@@ -2627,7 +2627,7 @@ function MdProgressCircularDirective($$rAF, $mdConstant, $mdTheming) {
       fix = circle.querySelectorAll('.md-fill.md-fix'),
       i, clamped, fillRotation, fixRotation;
 
-    var diameter = attr.diameter || 48;
+    var diameter = attr.mdDiameter || 48;
     var scale = diameter/48;
 
     circle.style[$mdConstant.CSS.TRANSFORM] = 'scale(' + scale.toString() + ')';
@@ -2691,21 +2691,21 @@ angular.module('material.components.progressLinear', [
  *
  * For operations where the user is asked to wait a moment while something finishes up, and it’s not necessary to expose what's happening behind the scenes and how long it will take, use an indeterminate indicator.
  *
- * @param {string} mode Select from one of four modes: determinate, indeterminate, buffer or query.
+ * @param {string} mdMode Select from one of four modes: determinate, indeterminate, buffer or query.
  * @param {number=} value In determinate and buffer modes, this number represents the percentage of the primary progress bar. Default: 0
- * @param {number=} secondaryValue In the buffer mode, this number represents the precentage of the secondary progress bar. Default: 0
+ * @param {number=} mdBufferValue In the buffer mode, this number represents the precentage of the secondary progress bar. Default: 0
  *
  * @usage
  * <hljs lang="html">
- * <md-progress-linear mode="determinate" value="..."></md-progress-linear>
+ * <md-progress-linear md-mode="determinate" value="..."></md-progress-linear>
  *
- * <md-progress-linear mode="determinate" ng-value="..."></md-progress-linear>
+ * <md-progress-linear md-mode="determinate" ng-value="..."></md-progress-linear>
  *
- * <md-progress-linear mode="indeterminate"></md-progress-linear>
+ * <md-progress-linear md-mode="indeterminate"></md-progress-linear>
  *
- * <md-progress-linear mode="buffer" value="..." secondaryValue="..."></md-progress-linear>
+ * <md-progress-linear md-mode="buffer" value="..." md-buffer-value="..."></md-progress-linear>
  *
- * <md-progress-linear mode="query"></md-progress-linear>
+ * <md-progress-linear md-mode="query"></md-progress-linear>
  * </hljs>
  */
 function MdProgressLinearDirective($$rAF, $mdConstant, $mdTheming) {
@@ -2734,7 +2734,7 @@ function MdProgressLinearDirective($$rAF, $mdConstant, $mdTheming) {
       container = angular.element(element[0].querySelector('.md-container'));
 
     attr.$observe('value', function(value) {
-      if (attr.mode == 'query') {
+      if (attr.mdMode == 'query') {
         return;
       }
 
@@ -2743,7 +2743,7 @@ function MdProgressLinearDirective($$rAF, $mdConstant, $mdTheming) {
       bar2Style[$mdConstant.CSS.TRANSFORM] = transforms[clamped];
     });
 
-    attr.$observe('secondaryvalue', function(value) {
+    attr.$observe('mdBufferValue', function(value) {
       bar1Style[$mdConstant.CSS.TRANSFORM] = transforms[clamp(value)];
     });
 
@@ -2815,7 +2815,7 @@ angular.module('material.components.radioButton', [
  * `<md-radio-button>` tags.
  *
  * @param {string} ngModel Assignable angular expression to data-bind to.
- * @param {boolean=} noink Use of attribute indicates flag to disable ink ripple effects.
+ * @param {boolean=} mdNoInk Use of attribute indicates flag to disable ink ripple effects.
  *
  * @usage
  * <hljs lang="html">
@@ -3088,7 +3088,7 @@ function mdSidenavController($scope, $element, $attrs, $timeout, $mdSidenav, $md
 
   var self = this;
 
-  this.destroy = $mdComponentRegistry.register(this, $attrs.componentId);
+  this.destroy = $mdComponentRegistry.register(this, $attrs.mdComponentId);
 
   this.isOpen = function() {
     return !!$scope.isOpen;
@@ -3168,7 +3168,7 @@ mdSidenavService.$inject = ["$mdComponentRegistry"];
  * @usage
  * <hljs lang="html">
  * <div layout="horizontal" ng-controller="MyController">
- *   <md-sidenav component-id="left" class="md-sidenav-left">
+ *   <md-sidenav md-component-id="left" class="md-sidenav-left">
  *     Left Nav!
  *   </md-sidenav>
  *
@@ -3179,8 +3179,8 @@ mdSidenavService.$inject = ["$mdComponentRegistry"];
  *     </md-button>
  *   </md-content>
  *
- *   <md-sidenav component-id="right" 
- *     is-locked-open="$media('min-width: 333px')"
+ *   <md-sidenav md-component-id="right"
+ *     md-is-locked-open="$media('min-width: 333px')"
  *     class="md-sidenav-right">
  *     Right Nav!
  *   </md-sidenav>
@@ -3196,9 +3196,9 @@ mdSidenavService.$inject = ["$mdComponentRegistry"];
  * });
  * </hljs>
  *
- * @param {expression=} is-open A model bound to whether the sidenav is opened.
- * @param {string=} component-id componentId to use with $mdSidenav service.
- * @param {expression=} is-locked-open When this expression evalutes to true,
+ * @param {expression=} mdIsOpen A model bound to whether the sidenav is opened.
+ * @param {string=} mdComponentId componentId to use with $mdSidenav service.
+ * @param {expression=} mdIsLockedOpen When this expression evalutes to true,
  * the sidenav 'locks open': it falls into the content's flow instead
  * of appearing over it. This overrides the `is-open` attribute.
  *
@@ -3206,15 +3206,15 @@ mdSidenavService.$inject = ["$mdComponentRegistry"];
  * can be given a media query or one of the `sm`, `md` or `lg` presets.
  * Examples:
  *
- *   - `<md-sidenav is-locked-open="shouldLockOpen"></md-sidenav>`
- *   - `<md-sidenav is-locked-open="$media('min-width: 1000px')"></md-sidenav>`
- *   - `<md-sidenav is-locked-open="$media('sm')"></md-sidenav>` <!-- locks open on small screens !-->
+ *   - `<md-sidenav md-is-locked-open="shouldLockOpen"></md-sidenav>`
+ *   - `<md-sidenav md-is-locked-open="$media('min-width: 1000px')"></md-sidenav>`
+ *   - `<md-sidenav md-is-locked-open="$media('sm')"></md-sidenav>` <!-- locks open on small screens !-->
  */
 function mdSidenavDirective($timeout, $animate, $parse, $mdMedia, $mdConstant, $compile, $mdTheming) {
   return {
     restrict: 'E',
     scope: {
-      isOpen: '=?'
+      isOpen: '=?mdIsOpen'
     },
     controller: '$mdSidenavController',
     compile: function(element) {
@@ -3225,7 +3225,7 @@ function mdSidenavDirective($timeout, $animate, $parse, $mdMedia, $mdConstant, $
   };
 
   function postLink(scope, element, attr, sidenavCtrl) {
-    var isLockedOpenParsed = $parse(attr.isLockedOpen);
+    var isLockedOpenParsed = $parse(attr.mdIsLockedOpen);
     var backdrop = $compile(
       '<md-backdrop class="md-sidenav-backdrop md-opaque">'
     )(scope);
@@ -3330,7 +3330,7 @@ function mdMediaFactory($window, $mdUtil, $timeout) {
   function add(query) {
     return cache.put(query, !!$window.matchMedia(query).matches);
   }
-  
+
   function updateAll() {
     var keys = cache.keys();
     if (keys.length) {
@@ -3344,7 +3344,7 @@ function mdMediaFactory($window, $mdUtil, $timeout) {
 
 }
 mdMediaFactory.$inject = ["$window", "$mdUtil", "$timeout"];
-  
+
 function mdComponentRegistry($log) {
   var instances = [];
 
@@ -3423,7 +3423,7 @@ angular.module('material.components.slider', [
  * of values, and 'discrete' mode, where the user slides between only a few
  * select values.
  *
- * To enable discrete mode, add the `discrete` attribute to a slider,
+ * To enable discrete mode, add the `md-discrete` attribute to a slider,
  * and use the `step` attribute to change the distance between
  * values the user is allowed to pick.
  *
@@ -3435,11 +3435,11 @@ angular.module('material.components.slider', [
  * </hljs>
  * <h4>Discrete Mode</h4>
  * <hljs lang="html">
- * <md-slider discrete ng-model="myDiscreteValue" step="10" min="10" max="130">
+ * <md-slider md-discrete ng-model="myDiscreteValue" step="10" min="10" max="130">
  * </md-slider>
  * </hljs>
  *
- * @param {boolean=} discrete Whether to enable discrete mode.
+ * @param {boolean=} mdDiscrete Whether to enable discrete mode.
  * @param {number=} step The distance between values the user is allowed to pick. Default 1.
  * @param {number=} min The minimum value the user is allowed to pick. Default 0.
  * @param {number=} max The maximum value the user is allowed to pick. Default 100.
@@ -3581,7 +3581,7 @@ function SliderController($scope, $element, $attrs, $$rAF, $window, $mdAria, $md
     // which could quickly become a performance bottleneck.
     var tickCanvas, tickCtx;
     function redrawTicks() {
-      if (!angular.isDefined($attrs.discrete)) return;
+      if (!angular.isDefined($attrs.mdDiscrete)) return;
 
       var numSteps = Math.floor( (max - min) / step );
       if (!tickCanvas) {
@@ -3687,7 +3687,7 @@ function SliderController($scope, $element, $attrs, $$rAF, $window, $mdAria, $md
      * Slide listeners
      */
     var isSliding = false;
-    var isDiscrete = angular.isDefined($attrs.discrete);
+    var isDiscrete = angular.isDefined($attrs.mdDiscrete);
 
     function onInput(ev) {
       if (!isSliding && ev.eventType === Hammer.INPUT_START &&
@@ -4294,7 +4294,7 @@ function MdSwipeFactory() {
  * HammerJS horizontal swipe left and pan left support will be active. The swipe/pan action
  * can result in custom activity trigger by evaluating `expression`.
  *
- * @param {boolean=} noPan Use of attribute indicates flag to disable detection of `panleft` activity
+ * @param {boolean=} mdNoPan Use of attribute indicates flag to disable detection of `panleft` activity
  *
  * @usage
  * <hljs lang="html">
@@ -4328,7 +4328,7 @@ MdSwipeLeftDirective.$inject = ["$parse", "$mdSwipe"];
  * that attaches HammerJS horizontal swipe right and pan right support to an element. The swipe/pan action
  * can result in activity trigger by evaluating `expression`
  *
- * @param {boolean=} noPan Use of attribute indicates flag to disable detection of `panright` activity
+ * @param {boolean=} mdNoPan Use of attribute indicates flag to disable detection of `panright` activity
  *
  * @usage
  * <hljs lang="html">
@@ -4412,7 +4412,7 @@ angular.module('material.components.switch', [
  * @param {expression=} ngTrueValue The value to which the expression should be set when selected.
  * @param {expression=} ngFalseValue The value to which the expression should be set when not selected.
  * @param {string=} ngChange Angular expression to be executed when input changes due to user interaction with the input element.
- * @param {boolean=} noink Use of attribute indicates use of ripple ink effects.
+ * @param {boolean=} mdNoInk Use of attribute indicates use of ripple ink effects.
  * @param {boolean=} disabled Use of attribute indicates the switch is disabled: no ink effects and not selectable
  * @param {string=} ariaLabel Publish the button label used by screen-readers for accessibility. Defaults to the switch's text.
  *
@@ -4422,7 +4422,7 @@ angular.module('material.components.switch', [
  *   Finished ?
  * </md-switch>
  *
- * <md-switch noink ng-model="hasInk" aria-label="No Ink Effects">
+ * <md-switch md-no-ink ng-model="hasInk" aria-label="No Ink Effects">
  *   No Ink Effects
  * </md-switch>
  *
@@ -4513,7 +4513,7 @@ angular.module('material.components.textField', [
  * @description
  * Use the `<md-text-float>` directive to quickly construct `Floating Label` text fields
  *
- * @param {string} fid Attribute used for accessibility link pairing between the Label and Input elements
+ * @param {string} mdFid Attribute used for accessibility link pairing between the Label and Input elements
  * @param {string=} type Optional value to define the type of input field. Defaults to string.
  * @param {string} label Attribute to specify the input text field hint.
  * @param {string=} ng-model Optional value to assign as existing input text string
@@ -4534,14 +4534,14 @@ function mdTextFloatDirective($mdTheming, $mdUtil) {
     restrict: 'E',
     replace: true,
     scope : {
-      fid : '@?',
+      fid : '@?mdFid',
       label : '@?',
       value : '=ngModel'
     },
     compile : function(element, attr) {
 
-      if ( angular.isUndefined(attr.fid) ) {
-        attr.fid = $mdUtil.nextUid();
+      if ( angular.isUndefined(attr.mdFid) ) {
+        attr.mdFid = $mdUtil.nextUid();
       }
 
       return {
@@ -4952,16 +4952,16 @@ angular.module('material.components.toolbar', [
  * </div>
  * </hljs>
  *
- * @param {boolean=} scrollShrink Whether the header should shrink away as 
- * the user scrolls down, and reveal itself as the user scrolls up. 
- * Note: for scrollShrink to work, the toolbar must be a sibling of a 
+ * @param {boolean=} mdScrollShrink Whether the header should shrink away as
+ * the user scrolls down, and reveal itself as the user scrolls up.
+ * Note: for scrollShrink to work, the toolbar must be a sibling of a
  * `md-content` element, placed before it. See the scroll shrink demo.
  *
  *
- * @param {number=} shrinkSpeedFactor How much to change the speed of the toolbar's
+ * @param {number=} mdShrinkSpeedFactor How much to change the speed of the toolbar's
  * shrinking by. For example, if 0.25 is given then the toolbar will shrink
  * at one fourth the rate at which the user scrolls down. Default 0.5.
- */ 
+ */
 function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming) {
 
   return {
@@ -4970,7 +4970,7 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming) {
     link: function(scope, element, attr) {
       $mdTheming(element);
 
-      if (angular.isDefined(attr.scrollShrink)) {
+      if (angular.isDefined(attr.mdScrollShrink)) {
         setupScrollShrink();
       }
 
@@ -4980,7 +4980,7 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming) {
         // Store the last scroll top position
         var prevScrollTop = 0;
 
-        var shrinkSpeedFactor = attr.shrinkSpeedFactor || 0.5;
+        var shrinkSpeedFactor = attr.mdShrinkSpeedFactor || 0.5;
 
         var toolbarHeight;
         var contentElement;
@@ -5018,7 +5018,7 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming) {
           // As the user scrolls down, the content will be transformed up slowly
           // to put the content underneath where the toolbar was.
           contentElement.css(
-            'margin-top', 
+            'margin-top',
             (-toolbarHeight * shrinkSpeedFactor) + 'px'
           );
           onContentScroll();
@@ -5030,16 +5030,16 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming) {
           debouncedUpdateHeight();
 
           y = Math.min(
-            toolbarHeight / shrinkSpeedFactor, 
+            toolbarHeight / shrinkSpeedFactor,
             Math.max(0, y + scrollTop - prevScrollTop)
           );
 
           element.css(
-            $mdConstant.CSS.TRANSFORM, 
+            $mdConstant.CSS.TRANSFORM,
             'translate3d(0,' + (-y * shrinkSpeedFactor) + 'px,0)'
           );
           contentElement.css(
-            $mdConstant.CSS.TRANSFORM, 
+            $mdConstant.CSS.TRANSFORM,
             'translate3d(0,' + ((toolbarHeight - y) * shrinkSpeedFactor) + 'px,0)'
           );
 
@@ -5087,7 +5087,7 @@ angular.module('material.components.tooltip', [
  * </md-icon>
  * </hljs>
  *
- * @param {expression=} visible Boolean bound to whether the tooltip is 
+ * @param {expression=} mdVisible Boolean bound to whether the tooltip is
  * currently visible.
  */
 function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdTheming) {
@@ -5102,11 +5102,11 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     restrict: 'E',
     transclude: true,
     require: '^?mdContent',
-    template: 
+    template:
       '<div class="md-background"></div>' +
       '<div class="md-content" ng-transclude></div>',
     scope: {
-      visible: '=?'
+      visible: '=?mdVisible'
     },
     link: postLink
   };
@@ -5133,13 +5133,12 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       if (isVisible) showTooltip();
       else hideTooltip();
     });
-    
-    var debouncedOnResize = $$rAF.debounce(onWindowResize);
-    angular.element($window).on('resize', debouncedOnResize);
-    function onWindowResize() {
+
+    var debouncedOnResize = $$rAF.debounce(function windowResize() {
       // Reposition on resize
       if (scope.visible) positionTooltip();
-    }
+    });
+    angular.element($window).on('resize', debouncedOnResize);
 
     // Be sure to completely cleanup the element on destroy
     scope.$on('$destroy', function() {
@@ -5178,7 +5177,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       parent.attr('aria-describedby', element.attr('id'));
       tooltipParent.append(element);
 
-      // Wait until the element has been in the dom for two frames before 
+      // Wait until the element has been in the dom for two frames before
       // fading it in.
       // Additionally, we position the tooltip twice to avoid positioning bugs
       //positionTooltip();
@@ -5202,7 +5201,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       }, 200, false);
     }
 
-    function positionTooltip(rerun) {
+    function positionTooltip() {
       var tipRect = element[0].getBoundingClientRect();
       var parentRect = parent[0].getBoundingClientRect();
 
@@ -5220,7 +5219,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
 
       // If element bleeds over left/right of the window, place it on the edge of the window.
       newPosition.left = Math.min(
-        newPosition.left, 
+        newPosition.left,
         $window.innerWidth - tipRect.width - TOOLTIP_WINDOW_EDGE_SPACE
       );
       newPosition.left = Math.max(newPosition.left, TOOLTIP_WINDOW_EDGE_SPACE);
@@ -5258,7 +5257,7 @@ angular.module('material.components.whiteframe', []);
 
 /**
  * Conditionally configure ink bar animations when the
- * tab selection changes. If `nobar` then do not show the
+ * tab selection changes. If `mdNoBar` then do not show the
  * bar nor animate.
  */
 angular.module('material.components.tabs')
@@ -5268,7 +5267,7 @@ function MdTabInkDirective($mdConstant, $window, $$rAF, $timeout) {
 
   return {
     restrict: 'E',
-    require: ['^?nobar', '^mdTabs'],
+    require: ['^?mdNoBar', '^mdTabs'],
     link: postLink
   };
 
@@ -5623,16 +5622,16 @@ angular.module('material.components.tabs')
  * be initiated via data binding changes, programmatic invocation, or user gestures.
  *
  * @param {string=} label Optional attribute to specify a simple string as the tab label
- * @param {boolean=} active When evaluteing to true, selects the tab.
+ * @param {boolean=} mdActive When evaluteing to true, selects the tab.
  * @param {boolean=} disabled If present, disabled tab selection.
- * @param {expression=} deselected Expression to be evaluated after the tab has been de-selected.
- * @param {expression=} selected Expression to be evaluated after the tab has been selected.
+ * @param {expression=} mdOnDeselect Expression to be evaluated after the tab has been de-selected.
+ * @param {expression=} mdOnSelect Expression to be evaluated after the tab has been selected.
  *
  *
  * @usage
  *
  * <hljs lang="html">
- * <md-tab label="" disabled="" selected="" deselected="" >
+ * <md-tab label="" disabled="" md-on-select="" md-on-deselect="" >
  *   <h3>My Tab content</h3>
  * </md-tab>
  *
@@ -5656,8 +5655,8 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
     require: ['mdTab', '^mdTabs'],
     controller: '$mdTab',
     scope: {
-      onSelect: '&',
-      onDeselect: '&',
+      onSelect: '&mdOnSelect',
+      onDeselect: '&mdOnDeselect',
       label: '@'
     },
     compile: compile
@@ -5707,7 +5706,7 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
       if (angular.isNumber(scope.$parent.$index)) {
         watchNgRepeatIndex();
       }
-      if (angular.isDefined(attr.active)) {
+      if (angular.isDefined(attr.mdActive)) {
         watchActiveAttribute();
       }
       watchDisabled();
@@ -5766,7 +5765,7 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
       }
 
       function watchActiveAttribute() {
-        var unwatch = scope.$parent.$watch('!!(' + attr.active + ')', activeWatchAction);
+        var unwatch = scope.$parent.$watch('!!(' + attr.mdActive + ')', activeWatchAction);
         scope.$on('$destroy', unwatch);
         
         function activeWatchAction(isActive) {
@@ -6000,20 +5999,20 @@ angular.module('material.components.tabs')
  * *  If the currently active tab is the last tab, then next() action will select the first tab.
  * *  Any markup (other than **`<md-tab>`** tags) will be transcluded into the tab header area BEFORE the tab buttons.
  *
- * @param {integer=} selected Index of the active/selected tab
- * @param {boolean=} noink If present, disables ink ripple effects.
- * @param {boolean=} nobar If present, disables the selection ink bar.
- * @param {string=}  align-tabs Attribute to indicate position of tab buttons: bottom or top; default is `top`
+ * @param {integer=} mdSelected Index of the active/selected tab
+ * @param {boolean=} mdNoInk If present, disables ink ripple effects.
+ * @param {boolean=} mdNoBar If present, disables the selection ink bar.
+ * @param {string=}  mdAlignTabs Attribute to indicate position of tab buttons: bottom or top; default is `top`
  *
  * @usage
  * <hljs lang="html">
- * <md-tabs selected="selectedIndex" >
+ * <md-tabs md-selected="selectedIndex" >
  *   <img ng-src="/img/angular.png" class="centered">
  *
  *   <md-tab
  *      ng-repeat="tab in tabs | orderBy:predicate:reversed"
- *      on-select="onTabSelected(tab)"
- *      on-deselect="announceDeselected(tab)"
+ *      md-on-select="onTabSelected(tab)"
+ *      md-on-deselect="announceDeselected(tab)"
  *      disabled="tab.disabled" >
  *
  *       <md-tab-label>
@@ -6038,7 +6037,7 @@ function TabsDirective($parse, $mdTheming) {
     require: 'mdTabs',
     transclude: true,
     scope: {
-      selectedIndex: '=?selected'
+      selectedIndex: '=?mdSelected'
     },
     template:
       '<section class="md-header" ' +

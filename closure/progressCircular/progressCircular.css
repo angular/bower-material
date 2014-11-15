@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-2451f2e
+ * v0.5.1-master-eb2f2f8
  */
 md-progress-circular {
   display: block;
@@ -36,19 +36,19 @@ md-progress-circular {
     margin-left: 6px;
     margin-top: 6px;
     border-radius: 50%; }
-  md-progress-circular[mode=indeterminate] .md-wrapper1, md-progress-circular[mode=indeterminate] .md-wrapper2 {
+  md-progress-circular[md-mode=indeterminate] .md-wrapper1, md-progress-circular[md-mode=indeterminate] .md-wrapper2 {
     -webkit-transform-origin: 50% 50%;
             transform-origin: 50% 50%; }
-  md-progress-circular[mode=indeterminate] .md-wrapper1 {
+  md-progress-circular[md-mode=indeterminate] .md-wrapper1 {
     -webkit-animation: indeterminate_rotate1 3s infinite linear;
             animation: indeterminate_rotate1 3s infinite linear; }
-  md-progress-circular[mode=indeterminate] .md-wrapper2 {
+  md-progress-circular[md-mode=indeterminate] .md-wrapper2 {
     -webkit-animation: indeterminate_rotate2 1.5s infinite linear;
             animation: indeterminate_rotate2 1.5s infinite linear; }
-  md-progress-circular[mode=indeterminate] .md-fill, md-progress-circular[mode=indeterminate] .md-mask.md-full {
+  md-progress-circular[md-mode=indeterminate] .md-fill, md-progress-circular[md-mode=indeterminate] .md-mask.md-full {
     -webkit-animation: indeterminate_size_fill 1.5s infinite linear;
             animation: indeterminate_size_fill 1.5s infinite linear; }
-  md-progress-circular[mode=indeterminate] .md-fill.md-fix {
+  md-progress-circular[md-mode=indeterminate] .md-fill.md-fix {
     -webkit-animation: indeterminate_size_fix 1.5s infinite linear;
             animation: indeterminate_size_fix 1.5s infinite linear; }
 

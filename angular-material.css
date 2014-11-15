@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-2451f2e
+ * v0.5.1-master-eb2f2f8
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -1581,6 +1581,62 @@ md-card {
     display: block;
     width: 100%; }
 
+md-checkbox {
+  display: block;
+  margin: 15px;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none; }
+  md-checkbox .md-container {
+    position: relative;
+    top: 4px;
+    display: inline-block;
+    width: 18px;
+    height: 18px; }
+    md-checkbox .md-container .md-ripple-container {
+      position: absolute;
+      display: block;
+      width: 54px;
+      height: 54px;
+      left: -18px;
+      top: -18px; }
+  md-checkbox .md-icon {
+    transition: 240ms;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 18px;
+    height: 18px;
+    border: 2px solid;
+    border-radius: 2px; }
+  md-checkbox.md-checked .md-icon {
+    border: none; }
+  md-checkbox[disabled] {
+    cursor: no-drop; }
+  md-checkbox:focus .md-label {
+    border-color: black; }
+  md-checkbox.md-checked .md-icon:after {
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    display: table;
+    width: 6px;
+    height: 12px;
+    border: 2px solid;
+    border-top: 0;
+    border-left: 0;
+    content: ' '; }
+  md-checkbox .md-label {
+    border: 1px dotted transparent;
+    position: relative;
+    display: inline-block;
+    margin-left: 10px;
+    vertical-align: middle;
+    white-space: normal;
+    pointer-events: none; }
+
 md-content {
   display: block;
   position: relative;
@@ -1673,7 +1729,7 @@ md-divider {
   display: block;
   border-top: 1px solid;
   margin: 0; }
-  md-divider[inset] {
+  md-divider[md-inset] {
     margin-left: 80px; }
 
 md-icon {
@@ -1687,62 +1743,6 @@ md-icon {
 svg, object {
   fill: currentColor;
   color: currentColor; }
-
-md-checkbox {
-  display: block;
-  margin: 15px;
-  white-space: nowrap;
-  cursor: pointer;
-  outline: none; }
-  md-checkbox .md-container {
-    position: relative;
-    top: 4px;
-    display: inline-block;
-    width: 18px;
-    height: 18px; }
-    md-checkbox .md-container .md-ripple-container {
-      position: absolute;
-      display: block;
-      width: 54px;
-      height: 54px;
-      left: -18px;
-      top: -18px; }
-  md-checkbox .md-icon {
-    transition: 240ms;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 18px;
-    height: 18px;
-    border: 2px solid;
-    border-radius: 2px; }
-  md-checkbox.md-checked .md-icon {
-    border: none; }
-  md-checkbox[disabled] {
-    cursor: no-drop; }
-  md-checkbox:focus .md-label {
-    border-color: black; }
-  md-checkbox.md-checked .md-icon:after {
-    -webkit-transform: rotate(45deg);
-            transform: rotate(45deg);
-    position: absolute;
-    left: 6px;
-    top: 2px;
-    display: table;
-    width: 6px;
-    height: 12px;
-    border: 2px solid;
-    border-top: 0;
-    border-left: 0;
-    content: ' '; }
-  md-checkbox .md-label {
-    border: 1px dotted transparent;
-    position: relative;
-    display: inline-block;
-    margin-left: 10px;
-    vertical-align: middle;
-    white-space: normal;
-    pointer-events: none; }
 
 md-list {
   padding: 8px 0px 8px 0px; }
@@ -1827,19 +1827,19 @@ md-progress-circular {
     margin-left: 6px;
     margin-top: 6px;
     border-radius: 50%; }
-  md-progress-circular[mode=indeterminate] .md-wrapper1, md-progress-circular[mode=indeterminate] .md-wrapper2 {
+  md-progress-circular[md-mode=indeterminate] .md-wrapper1, md-progress-circular[md-mode=indeterminate] .md-wrapper2 {
     -webkit-transform-origin: 50% 50%;
             transform-origin: 50% 50%; }
-  md-progress-circular[mode=indeterminate] .md-wrapper1 {
+  md-progress-circular[md-mode=indeterminate] .md-wrapper1 {
     -webkit-animation: indeterminate_rotate1 3s infinite linear;
             animation: indeterminate_rotate1 3s infinite linear; }
-  md-progress-circular[mode=indeterminate] .md-wrapper2 {
+  md-progress-circular[md-mode=indeterminate] .md-wrapper2 {
     -webkit-animation: indeterminate_rotate2 1.5s infinite linear;
             animation: indeterminate_rotate2 1.5s infinite linear; }
-  md-progress-circular[mode=indeterminate] .md-fill, md-progress-circular[mode=indeterminate] .md-mask.md-full {
+  md-progress-circular[md-mode=indeterminate] .md-fill, md-progress-circular[md-mode=indeterminate] .md-mask.md-full {
     -webkit-animation: indeterminate_size_fill 1.5s infinite linear;
             animation: indeterminate_size_fill 1.5s infinite linear; }
-  md-progress-circular[mode=indeterminate] .md-fill.md-fix {
+  md-progress-circular[md-mode=indeterminate] .md-fill.md-fix {
     -webkit-animation: indeterminate_size_fix 1.5s infinite linear;
             animation: indeterminate_size_fix 1.5s infinite linear; }
 
@@ -1992,17 +1992,17 @@ md-progress-linear {
     width: 100%; }
   md-progress-linear .md-bar1, md-progress-linear .md-bar2 {
     transition: all 0.2s linear; }
-  md-progress-linear[mode=determinate] .md-bar1 {
+  md-progress-linear[md-mode=determinate] .md-bar1 {
     display: none; }
-  md-progress-linear[mode=indeterminate] .md-bar1 {
+  md-progress-linear[md-mode=indeterminate] .md-bar1 {
     -webkit-animation: indeterminate1 4s infinite linear;
             animation: indeterminate1 4s infinite linear; }
-  md-progress-linear[mode=indeterminate] .md-bar2 {
+  md-progress-linear[md-mode=indeterminate] .md-bar2 {
     -webkit-animation: indeterminate2 4s infinite linear;
             animation: indeterminate2 4s infinite linear; }
-  md-progress-linear[mode=buffer] .md-container {
+  md-progress-linear[md-mode=buffer] .md-container {
     background-color: transparent !important; }
-  md-progress-linear[mode=buffer] .md-dashed:before {
+  md-progress-linear[md-mode=buffer] .md-dashed:before {
     content: "";
     display: block;
     height: 5px;
@@ -2014,7 +2014,7 @@ md-progress-linear {
     background-position: 0px -23px;
     -webkit-animation: buffer 3s infinite linear;
             animation: buffer 3s infinite linear; }
-  md-progress-linear[mode=query] .md-bar2 {
+  md-progress-linear[md-mode=query] .md-bar2 {
     -webkit-animation: query 0.8s infinite cubic-bezier(0.39, 0.575, 0.565, 1);
             animation: query 0.8s infinite cubic-bezier(0.39, 0.575, 0.565, 1); }
 
@@ -2607,26 +2607,26 @@ md-slider {
     outline: none; }
   md-slider.panning .md-thumb-container, md-slider.panning .md-track-fill {
     transition: none; }
-  md-slider:not([discrete]) {
+  md-slider:not([md-discrete]) {
     /* Hide the sign and ticks in non-discrete mode */ }
-    md-slider:not([discrete]) .md-track-ticks, md-slider:not([discrete]) .md-sign {
+    md-slider:not([md-discrete]) .md-track-ticks, md-slider:not([md-discrete]) .md-sign {
       display: none; }
-    md-slider:not([discrete]):not([disabled]):hover .md-thumb {
+    md-slider:not([md-discrete]):not([disabled]):hover .md-thumb {
       -webkit-transform: scale(0.6);
               transform: scale(0.6); }
-    md-slider:not([discrete]):not([disabled]):focus .md-focus-thumb, md-slider:not([discrete]):not([disabled]).active .md-focus-thumb {
+    md-slider:not([md-discrete]):not([disabled]):focus .md-focus-thumb, md-slider:not([md-discrete]):not([disabled]).active .md-focus-thumb {
       display: block; }
-    md-slider:not([discrete]):not([disabled]):focus .md-focus-ring, md-slider:not([discrete]):not([disabled]).active .md-focus-ring {
+    md-slider:not([md-discrete]):not([disabled]):focus .md-focus-ring, md-slider:not([md-discrete]):not([disabled]).active .md-focus-ring {
       -webkit-transform: scale(1);
               transform: scale(1); }
-    md-slider:not([discrete]):not([disabled]):focus .md-thumb, md-slider:not([discrete]):not([disabled]).active .md-thumb {
+    md-slider:not([md-discrete]):not([disabled]):focus .md-thumb, md-slider:not([md-discrete]):not([disabled]).active .md-thumb {
       -webkit-transform: scale(0.85);
               transform: scale(0.85); }
-  md-slider[discrete] {
+  md-slider[md-discrete] {
     /* Hide the focus thumb in discrete mode */ }
-    md-slider[discrete] .md-focus-thumb, md-slider[discrete] .md-focus-ring {
+    md-slider[md-discrete] .md-focus-thumb, md-slider[md-discrete] .md-focus-ring {
       display: none; }
-    md-slider[discrete]:not([disabled]):focus .md-sign, md-slider[discrete]:not([disabled]):focus .md-sign:after, md-slider[discrete]:not([disabled]).active .md-sign, md-slider[discrete]:not([disabled]).active .md-sign:after {
+    md-slider[md-discrete]:not([disabled]):focus .md-sign, md-slider[md-discrete]:not([disabled]):focus .md-sign:after, md-slider[md-discrete]:not([disabled]).active .md-sign, md-slider[md-discrete]:not([disabled]).active .md-sign:after {
       opacity: 1;
       -webkit-transform: translate3d(0, 0, 0) scale(1);
               transform: translate3d(0, 0, 0) scale(1); }
@@ -3327,9 +3327,9 @@ md-progress-linear.md-default-theme .md-container {
   background-color: #b3e5fc; }
 md-progress-linear.md-default-theme .md-bar {
   background-color: #03a9f4; }
-md-progress-linear.md-default-theme[mode=buffer] .md-dashed:before {
+md-progress-linear.md-default-theme[md-mode=buffer] .md-dashed:before {
   background: radial-gradient(#b3e5fc 0%, #b3e5fc 16%, transparent 42%); }
-md-progress-linear.md-default-theme[mode=buffer] .md-bar1 {
+md-progress-linear.md-default-theme[md-mode=buffer] .md-bar1 {
   background-color: #b3e5fc; }
 
 md-radio-button.md-default-theme .md-container .md-ripple, md-switch.md-default-theme .md-switch-thumb .md-container .md-ripple {

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-2451f2e
+ * v0.5.1-master-eb2f2f8
  */
 goog.provide('ng.material.components.slider');
 goog.require('ng.material.core');
@@ -31,7 +31,7 @@ angular.module('material.components.slider', [
  * of values, and 'discrete' mode, where the user slides between only a few
  * select values.
  *
- * To enable discrete mode, add the `discrete` attribute to a slider,
+ * To enable discrete mode, add the `md-discrete` attribute to a slider,
  * and use the `step` attribute to change the distance between
  * values the user is allowed to pick.
  *
@@ -43,11 +43,11 @@ angular.module('material.components.slider', [
  * </hljs>
  * <h4>Discrete Mode</h4>
  * <hljs lang="html">
- * <md-slider discrete ng-model="myDiscreteValue" step="10" min="10" max="130">
+ * <md-slider md-discrete ng-model="myDiscreteValue" step="10" min="10" max="130">
  * </md-slider>
  * </hljs>
  *
- * @param {boolean=} discrete Whether to enable discrete mode.
+ * @param {boolean=} mdDiscrete Whether to enable discrete mode.
  * @param {number=} step The distance between values the user is allowed to pick. Default 1.
  * @param {number=} min The minimum value the user is allowed to pick. Default 0.
  * @param {number=} max The maximum value the user is allowed to pick. Default 100.
@@ -189,7 +189,7 @@ function SliderController($scope, $element, $attrs, $$rAF, $window, $mdAria, $md
     // which could quickly become a performance bottleneck.
     var tickCanvas, tickCtx;
     function redrawTicks() {
-      if (!angular.isDefined($attrs.discrete)) return;
+      if (!angular.isDefined($attrs.mdDiscrete)) return;
 
       var numSteps = Math.floor( (max - min) / step );
       if (!tickCanvas) {
@@ -295,7 +295,7 @@ function SliderController($scope, $element, $attrs, $$rAF, $window, $mdAria, $md
      * Slide listeners
      */
     var isSliding = false;
-    var isDiscrete = angular.isDefined($attrs.discrete);
+    var isDiscrete = angular.isDefined($attrs.mdDiscrete);
 
     function onInput(ev) {
       if (!isSliding && ev.eventType === Hammer.INPUT_START &&
