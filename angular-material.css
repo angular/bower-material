@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1
+ * v0.5.1-master-2451f2e
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -1282,6 +1282,22 @@ input[type="search"] {
     display: none; }
  }
 
+md-backdrop {
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0);
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  transition: all 0.2s ease-out; }
+  md-backdrop.ng-enter {
+    transition-delay: 0.1s; }
+  md-backdrop.ng-enter, md-backdrop.ng-leave.ng-leave-active {
+    opacity: 0; }
+  md-backdrop.ng-leave, md-backdrop.ng-enter.ng-enter-active {
+    opacity: 1; }
+
 md-bottom-sheet {
   position: absolute;
   left: 0;
@@ -1437,22 +1453,6 @@ md-bottom-sheet {
         text-align: center;
         padding-top: 8px; }
 
-md-backdrop {
-  z-index: 5;
-  background-color: rgba(0, 0, 0, 0);
-  position: fixed;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  transition: all 0.2s ease-out; }
-  md-backdrop.ng-enter {
-    transition-delay: 0.1s; }
-  md-backdrop.ng-enter, md-backdrop.ng-leave.ng-leave-active {
-    opacity: 0; }
-  md-backdrop.ng-leave, md-backdrop.ng-enter.ng-enter-active {
-    opacity: 1; }
-
 /**
  * Position a FAB button.
  */
@@ -1581,62 +1581,6 @@ md-card {
     display: block;
     width: 100%; }
 
-md-checkbox {
-  display: block;
-  margin: 15px;
-  white-space: nowrap;
-  cursor: pointer;
-  outline: none; }
-  md-checkbox .md-container {
-    position: relative;
-    top: 4px;
-    display: inline-block;
-    width: 18px;
-    height: 18px; }
-    md-checkbox .md-container .md-ripple-container {
-      position: absolute;
-      display: block;
-      width: 54px;
-      height: 54px;
-      left: -18px;
-      top: -18px; }
-  md-checkbox .md-icon {
-    transition: 240ms;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 18px;
-    height: 18px;
-    border: 2px solid;
-    border-radius: 2px; }
-  md-checkbox.md-checked .md-icon {
-    border: none; }
-  md-checkbox[disabled] {
-    cursor: no-drop; }
-  md-checkbox:focus .md-label {
-    border-color: black; }
-  md-checkbox.md-checked .md-icon:after {
-    -webkit-transform: rotate(45deg);
-            transform: rotate(45deg);
-    position: absolute;
-    left: 6px;
-    top: 2px;
-    display: table;
-    width: 6px;
-    height: 12px;
-    border: 2px solid;
-    border-top: 0;
-    border-left: 0;
-    content: ' '; }
-  md-checkbox .md-label {
-    border: 1px dotted transparent;
-    position: relative;
-    display: inline-block;
-    margin-left: 10px;
-    vertical-align: middle;
-    white-space: normal;
-    pointer-events: none; }
-
 md-content {
   display: block;
   position: relative;
@@ -1743,6 +1687,62 @@ md-icon {
 svg, object {
   fill: currentColor;
   color: currentColor; }
+
+md-checkbox {
+  display: block;
+  margin: 15px;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none; }
+  md-checkbox .md-container {
+    position: relative;
+    top: 4px;
+    display: inline-block;
+    width: 18px;
+    height: 18px; }
+    md-checkbox .md-container .md-ripple-container {
+      position: absolute;
+      display: block;
+      width: 54px;
+      height: 54px;
+      left: -18px;
+      top: -18px; }
+  md-checkbox .md-icon {
+    transition: 240ms;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 18px;
+    height: 18px;
+    border: 2px solid;
+    border-radius: 2px; }
+  md-checkbox.md-checked .md-icon {
+    border: none; }
+  md-checkbox[disabled] {
+    cursor: no-drop; }
+  md-checkbox:focus .md-label {
+    border-color: black; }
+  md-checkbox.md-checked .md-icon:after {
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    display: table;
+    width: 6px;
+    height: 12px;
+    border: 2px solid;
+    border-top: 0;
+    border-left: 0;
+    content: ' '; }
+  md-checkbox .md-label {
+    border: 1px dotted transparent;
+    position: relative;
+    display: inline-block;
+    margin-left: 10px;
+    vertical-align: middle;
+    white-space: normal;
+    pointer-events: none; }
 
 md-list {
   padding: 8px 0px 8px 0px; }

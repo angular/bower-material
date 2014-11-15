@@ -2,12 +2,9 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1
+ * v0.5.1-master-2451f2e
  */
-(function() {
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);})();
-
-(function() {
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
 'use strict';
 
@@ -66,9 +63,7 @@ function MdCoreConfigure($provide) {
 MdCoreConfigure.$inject = ["$provide"];
 
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -111,9 +106,7 @@ function MdConstantFactory($$rAF, $sniffer) {
 MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
 
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -516,9 +509,7 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
 };
 
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -571,9 +562,7 @@ function AriaService($$rAF, $log) {
 }
 AriaService.$inject = ["$$rAF", "$log"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -712,9 +701,7 @@ function mdCompilerService($q, $http, $injector, $compile, $controller, $templat
 }
 mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controller", "$templateCache"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -1011,11 +998,10 @@ function InterimElementProvider() {
               var ret = options.onShow(options.scope, element, options);
               return $q.when(ret)
                 .then(function(){
-                    // Issue onComplete callback when the `show()` finishes
-                    var notify = options.onComplete || angular.noop;
-                    notify.apply(null, [options.scope, element, options]);
-                })
-                .then(startHideTimeout);
+                  // Issue onComplete callback when the `show()` finishes
+                  (options.onComplete || angular.noop)(options.scope, element, options);
+                  startHideTimeout();
+                });
 
               function startHideTimeout() {
                 if (options.hideDelay) {
@@ -1045,9 +1031,7 @@ function InterimElementProvider() {
 }
 
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -1249,9 +1233,7 @@ function attrNoDirective() {
   };
 }
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -1380,9 +1362,7 @@ function ThemableDirective($mdTheming) {
 }
 ThemableDirective.$inject = ["$mdTheming"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -1415,9 +1395,7 @@ function BackdropDirective($mdTheming) {
 }
 BackdropDirective.$inject = ["$mdTheming"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -1685,9 +1663,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
 MdBottomSheetProvider.$inject = ["$$interimElementProvider"];
 
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -1780,9 +1756,7 @@ function MdButtonDirective($mdInkRipple, $mdTheming, $mdAria) {
 }
 MdButtonDirective.$inject = ["$mdInkRipple", "$mdTheming", "$mdAria"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -1833,9 +1807,7 @@ function mdCardDirective() {
   };
 }
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -1968,9 +1940,7 @@ function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant,
 MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$mdConstant", "$mdTheming"];
 
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -2025,9 +1995,7 @@ function mdContentDirective($mdTheming) {
 }
 mdContentDirective.$inject = ["$mdTheming"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -2397,9 +2365,7 @@ function MdDialogProvider($$interimElementProvider) {
 MdDialogProvider.$inject = ["$$interimElementProvider"];
 
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -2442,9 +2408,7 @@ function MdDividerDirective($mdTheming) {
 }
 MdDividerDirective.$inject = ["$mdTheming"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -2489,9 +2453,7 @@ function mdIconDirective() {
   };
 }
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -2579,9 +2541,7 @@ function mdItemDirective() {
   };
 }
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -2703,9 +2663,7 @@ function MdProgressCircularDirective($$rAF, $mdConstant, $mdTheming) {
 }
 MdProgressCircularDirective.$inject = ["$$rAF", "$mdConstant", "$mdTheming"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -2828,9 +2786,7 @@ var transforms = (function() {
 })();
 
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -3098,9 +3054,7 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
 mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
 
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -3443,9 +3397,7 @@ function mdComponentRegistry($log) {
 }
 mdComponentRegistry.$inject = ["$log"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -3845,9 +3797,7 @@ function SliderController($scope, $element, $attrs, $$rAF, $window, $mdAria, $md
 }
 SliderController.$inject = ["$scope", "$element", "$attrs", "$$rAF", "$window", "$mdAria", "$mdUtil", "$mdConstant"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -4154,9 +4104,7 @@ function MdSticky($document, $mdConstant, $compile, $$rAF, $mdUtil) {
 }
 MdSticky.$inject = ["$document", "$mdConstant", "$compile", "$$rAF", "$mdUtil"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -4225,9 +4173,7 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming) {
 }
 MdSubheaderDirective.$inject = ["$mdSticky", "$compile", "$mdTheming"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -4435,9 +4381,7 @@ function swipePostLink($parse, $mdSwipe, name ) {
 }
 
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -4522,9 +4466,7 @@ function MdSwitch(mdCheckboxDirective, mdRadioButtonDirective, $mdTheming) {
 }
 MdSwitch.$inject = ["mdCheckboxDirective", "mdRadioButtonDirective", "$mdTheming"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -4542,9 +4484,7 @@ angular.module('material.components.tabs', [
   'material.core'
 ]);
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -4747,9 +4687,7 @@ function mdInputDirective($mdUtil) {
 mdInputDirective.$inject = ["$mdUtil"];
 
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -4963,9 +4901,7 @@ function MdToastProvider($$interimElementProvider) {
 MdToastProvider.$inject = ["$$interimElementProvider"];
 
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -5118,9 +5054,7 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming) {
 }
 mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -5308,9 +5242,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
 }
 MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdUtil", "$mdTheming"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -5320,9 +5252,7 @@ MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdU
  */
 angular.module('material.components.whiteframe', []);
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -5389,9 +5319,7 @@ function MdTabInkDirective($mdConstant, $window, $$rAF, $timeout) {
 }
 MdTabInkDirective.$inject = ["$mdConstant", "$window", "$$rAF", "$timeout"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -5585,9 +5513,7 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout) {
 }
 TabPaginationDirective.$inject = ["$mdConstant", "$window", "$$rAF", "$$q", "$timeout"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -5668,9 +5594,7 @@ function TabItemController($scope, $element, $compile, $animate, $mdUtil) {
 TabItemController.$inject = ["$scope", "$element", "$compile", "$animate", "$mdUtil"];
 
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -5903,9 +5827,7 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
 MdTabDirective.$inject = ["$mdInkRipple", "$compile", "$mdAria", "$mdUtil", "$mdConstant"];
 
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -6030,9 +5952,7 @@ function MdTabsController($scope, $element, $mdUtil) {
 }
 MdTabsController.$inject = ["$scope", "$element", "$mdUtil"];
 })();
-})();
 
-(function() {
 (function() {
 'use strict';
 
@@ -6183,5 +6103,4 @@ function TabsDirective($parse, $mdTheming) {
   }
 }
 TabsDirective.$inject = ["$parse", "$mdTheming"];
-})();
 })();
