@@ -747,7 +747,7 @@ angular.module('material.core')
 
 function InterimElementProvider() {
   createInterimElementProvider.$get = InterimElementFactory;
-  InterimElementFactory.$inject = ["$q", "$rootScope", "$timeout", "$rootElement", "$animate", "$mdCompiler", "$mdTheming"];
+  InterimElementFactory.$inject = ["$document", "$q", "$rootScope", "$timeout", "$rootElement", "$animate", "$mdCompiler", "$mdTheming"];
   return createInterimElementProvider;
 
   /**
@@ -770,7 +770,7 @@ function InterimElementProvider() {
      */
     provider.addPreset('build', {
       methods: ['controller', 'controllerAs', 'onRemove', 'onShow', 'resolve',
-        'template', 'templateUrl', 'themable', 'transformTemplate']
+        'template', 'templateUrl', 'themable', 'transformTemplate', 'parent']
     });
 
     factory.$inject = ["$$interimElement", "$animate", "$injector"];
@@ -897,7 +897,7 @@ function InterimElementProvider() {
   }
 
   /* @ngInject */
-  function InterimElementFactory($q, $rootScope, $timeout, $rootElement, $animate, $mdCompiler, $mdTheming) {
+  function InterimElementFactory($document, $q, $rootScope, $timeout, $rootElement, $animate, $mdCompiler, $mdTheming) {
 
     return function createInterimElementService() {
       /*
@@ -999,10 +999,13 @@ function InterimElementProvider() {
               angular.extend(compileData.locals, self.options);
 
               // Search for parent at insertion time, if not specified
-              if (!options.parent) {
+              if (angular.isString(options.parent)) {
+                options.parent = angular.element($document[0].querySelector(options.parent));
+              } else if (!options.parent) {
                 options.parent = $rootElement.find('body');
                 if (!options.parent.length) options.parent = $rootElement;
               }
+
               element = compileData.link(options.scope);
               if (options.themable) $mdTheming(element);
               var ret = options.onShow(options.scope, element, options);

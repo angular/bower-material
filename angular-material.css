@@ -1282,22 +1282,6 @@ input[type="search"] {
     display: none; }
  }
 
-md-backdrop {
-  z-index: 5;
-  background-color: rgba(0, 0, 0, 0);
-  position: fixed;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  transition: all 0.2s ease-out; }
-  md-backdrop.ng-enter {
-    transition-delay: 0.1s; }
-  md-backdrop.ng-enter, md-backdrop.ng-leave.ng-leave-active {
-    opacity: 0; }
-  md-backdrop.ng-leave, md-backdrop.ng-enter.ng-enter-active {
-    opacity: 1; }
-
 md-bottom-sheet {
   position: absolute;
   left: 0;
@@ -1452,6 +1436,22 @@ md-bottom-sheet {
         width: 64px;
         text-align: center;
         padding-top: 8px; }
+
+md-backdrop {
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0);
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  transition: all 0.2s ease-out; }
+  md-backdrop.ng-enter {
+    transition-delay: 0.1s; }
+  md-backdrop.ng-enter, md-backdrop.ng-leave.ng-leave-active {
+    opacity: 0; }
+  md-backdrop.ng-leave, md-backdrop.ng-enter.ng-enter-active {
+    opacity: 1; }
 
 /**
  * Position a FAB button.
