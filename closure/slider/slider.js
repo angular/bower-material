@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-92b7643
+ * v0.5.1-master-2877585
  */
 goog.provide('ng.material.components.slider');
 goog.require('ng.material.core');
@@ -68,7 +68,7 @@ function SliderDirective($mdTheming) {
         '<div class="md-focus-thumb"></div>' +
         '<div class="md-focus-ring"></div>' +
         '<div class="md-sign">' +
-          '<span class="md-thumb-text" ng-bind="modelValue"></span>' +
+          '<span class="md-thumb-text"></span>' +
         '</div>' +
         '<div class="md-disabled-thumb"></div>' +
       '</div>',
@@ -103,6 +103,7 @@ function SliderController($scope, $element, $attrs, $$rAF, $window, $mdAria, $md
 
   this.init = function init(ngModelCtrl) {
     var thumb = angular.element($element[0].querySelector('.md-thumb'));
+    var thumbText = angular.element($element[0].querySelector('.md-thumb-text'));
     var thumbContainer = thumb.parent();
     var trackContainer = angular.element($element[0].querySelector('.md-track-container'));
     var activeTrack = angular.element($element[0].querySelector('.md-track-fill'));
@@ -376,7 +377,10 @@ function SliderController($scope, $element, $attrs, $$rAF, $window, $mdAria, $md
      * @param x
      */
     function adjustThumbPosition( x ) {
+      var exactVal = percentToValue( positionToPercent( x ));
+      var closestVal = minMaxValidator( stepValidator(exactVal) );
       setSliderPercent( positionToPercent(x) );
+      thumbText.text( closestVal );
     }
 
     /**
