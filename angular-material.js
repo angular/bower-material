@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-2877585
+ * v0.5.1-master-32d1166
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -1799,13 +1799,15 @@ angular.module('material.components.card', [
  * </hljs>
  *
  */
-function mdCardDirective() {
+function mdCardDirective($mdTheming) {
   return {
     restrict: 'E',
     link: function($scope, $element, $attr) {
+      $mdTheming($element);
     }
   };
 }
+mdCardDirective.$inject = ["$mdTheming"];
 })();
 
 (function() {
