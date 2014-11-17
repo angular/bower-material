@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-a7763fd
+ * v0.5.1-master-4a75d59
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -1244,10 +1244,12 @@ md-backdrop {
   left: 0;
   top: 0;
   right: 0;
-  bottom: 0;
-  transition: all 0.2s ease-out; }
+  bottom: 0; }
   md-backdrop.ng-enter {
-    transition-delay: 0.1s; }
+    transition-delay: 0.1s;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  md-backdrop.ng-leave {
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-backdrop.ng-enter, md-backdrop.ng-leave.ng-leave-active {
     opacity: 0; }
   md-backdrop.ng-leave, md-backdrop.ng-enter.ng-enter-active {
@@ -1263,7 +1265,7 @@ md-bottom-sheet {
   border-top: 1px solid;
   -webkit-transform: translate3d(0, 80px, 0);
           transform: translate3d(0, 80px, 0);
-  transition: 0.2s linear;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition-property: -webkit-transform;
   transition-property: transform; }
   md-bottom-sheet.md-has-header {
@@ -1279,7 +1281,8 @@ md-bottom-sheet {
             transform: translate3d(0, 80px, 0) !important; }
   md-bottom-sheet.ng-leave-active {
     -webkit-transform: translate3d(0, 100%, 0) !important;
-            transform: translate3d(0, 100%, 0) !important; }
+            transform: translate3d(0, 100%, 0) !important;
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-bottom-sheet .md-subheader {
     background-color: transparent;
     font-family: 'RobotoDraft', 'Helvetica Neue', Helvetica, Arial;
@@ -1631,11 +1634,12 @@ md-content {
   bottom: 0;
   z-index: 10; }
   .md-dialog-container.md-active {
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     -webkit-transform: translate3d(0, 0, 0) scale(1);
             transform: translate3d(0, 0, 0) scale(1);
     opacity: 1; }
   .md-dialog-container.ng-leave.ng-leave-active {
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
     -webkit-transform: translate3d(0, 100%, 0) scale(0.5);
             transform: translate3d(0, 100%, 0) scale(0.5);
     opacity: 0; }
@@ -2365,15 +2369,14 @@ md-sidenav {
        apply all styling in a show/hide animation */
     transition: 0s all; }
   md-sidenav.md-closed-add.md-closed-add-active, md-sidenav.md-closed-remove.md-closed-remove-active {
-    transition: -webkit-transform 0.3s ease-in-out;
-    transition: transform 0.3s ease-in-out; }
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
   md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-left, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-right {
     position: static;
     display: block;
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }
 
-.md-sidenav-backdrop.locked-open {
+.md-sidenav-backdrop.md-locked-open {
   display: none; }
 
 .md-sidenav-left, md-sidenav {
@@ -2770,8 +2773,7 @@ md-tabs[center] .md-header:not(.md-paginating) .md-header-items {
     display: -ms-flexbox;
     display: flex;
     box-sizing: border-box;
-    transition: -webkit-transform 0.2s linear;
-    transition: transform 0.2s linear;
+    transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0);
     width: 100%;
@@ -2788,7 +2790,7 @@ md-tabs-ink-bar {
   left: 0;
   bottom: 0;
   box-sizing: border-box;
-  transition: all 0.2s linear;
+  transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
   height: 2px;
   margin-top: -2px; }
 
@@ -2863,11 +2865,11 @@ md-input-group, .md-input-group {
             transform: translate3d(0, 22px, 0);
     -webkit-transform-origin: left center;
             transform-origin: left center;
-    transition: all ease-out 150ms;
-    transition: all ease-out 150ms; }
+    transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1);
+    transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
   md-input-group input, md-input-group textarea, .md-input-group input, .md-input-group textarea {
     border-bottom-width: 1px;
-    transition: all ease-out 150ms; }
+    transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
   md-input-group.md-input-focused label, .md-input-group.md-input-focused label {
     -webkit-transform: translate3d(0, 4px, 0) scale(0.75);
             transform: translate3d(0, 4px, 0) scale(0.75); }
@@ -2897,7 +2899,7 @@ md-input-group, .md-input-group {
             transform: translate3d(0, 22px, 0);
     -webkit-transform-origin: left center;
             transform-origin: left center;
-    transition: all ease-out 150ms; }
+    transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
 
 md-toast {
   display: -webkit-flex;
@@ -2922,14 +2924,14 @@ md-toast {
   opacity: 1;
   -webkit-transform: translate3d(0, 0, 0) rotateZ(0deg);
           transform: translate3d(0, 0, 0) rotateZ(0deg);
-  transition: 0.2s linear;
-  transition-property: -webkit-transform, opacity;
-  transition-property: transform, opacity;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   /* Transition differently when swiping */ }
   md-toast.md-capsule {
     border-radius: 24px; }
+  md-toast.ng-leave-active {
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-toast.md-swipeleft, md-toast.md-swiperight, md-toast.md-swipeup, md-toast.md-swipedown {
-    transition: 0.15s ease-out; }
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
   md-toast.ng-enter {
     -webkit-transform: translate3d(0, 100%, 0);
             transform: translate3d(0, 100%, 0);
@@ -3134,11 +3136,10 @@ md-tooltip {
     background: transparent;
     opacity: 0.3;
     transition: inherit; }
-  md-tooltip.md-show, md-tooltip.md-hide {
-    transition: 0.2s ease-out;
-    transition-property: -webkit-transform, opacity;
-    transition-property: transform, opacity; }
+  md-tooltip.md-hide {
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-tooltip.md-show {
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     pointer-events: auto;
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }

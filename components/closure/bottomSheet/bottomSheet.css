@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-a7763fd
+ * v0.5.1-master-4a75d59
  */
 md-bottom-sheet {
   position: absolute;
@@ -14,7 +14,7 @@ md-bottom-sheet {
   border-top: 1px solid;
   -webkit-transform: translate3d(0, 80px, 0);
           transform: translate3d(0, 80px, 0);
-  transition: 0.2s linear;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition-property: -webkit-transform;
   transition-property: transform; }
   md-bottom-sheet.md-has-header {
@@ -30,7 +30,8 @@ md-bottom-sheet {
             transform: translate3d(0, 80px, 0) !important; }
   md-bottom-sheet.ng-leave-active {
     -webkit-transform: translate3d(0, 100%, 0) !important;
-            transform: translate3d(0, 100%, 0) !important; }
+            transform: translate3d(0, 100%, 0) !important;
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-bottom-sheet .md-subheader {
     background-color: transparent;
     font-family: 'RobotoDraft', 'Helvetica Neue', Helvetica, Arial;
