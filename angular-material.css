@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-4bb940a
+ * v0.5.1-master-b214b74
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -1526,16 +1526,6 @@ md-bottom-sheet {
     border-right-width: 1px;
     border-radius: 0px 2px 2px 0px; }
 
-md-card {
-  display: block;
-  box-sizing: border-box;
-  box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
-  margin: 8px;
-  padding: 8px; }
-  md-card .md-card-image {
-    display: block;
-    width: 100%; }
-
 md-checkbox {
   display: block;
   margin: 15px;
@@ -1679,6 +1669,16 @@ md-dialog {
       margin-left: 8px; }
   md-dialog.md-content-overflow .md-actions {
     border-top: 1px solid; }
+
+md-card {
+  display: block;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
+  margin: 8px;
+  padding: 8px; }
+  md-card .md-card-image {
+    display: block;
+    width: 100%; }
 
 md-divider {
   display: block;
