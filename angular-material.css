@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-9adec2a
+ * v0.5.1-master-4f755ea
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -216,6 +216,11 @@ input[type="search"] {
 [layout-padding] + [layout-padding] {
   margin-top: -8px;
   padding-top: 0; }
+
+[layout-wrap] {
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap; }
 
 [layout-fill] {
   margin: 0;
