@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-42e0d7f
+ * v0.5.1-master-2ece8cd
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -1102,8 +1102,9 @@ function InkRippleService($window, $timeout) {
     };
 
     function rippleIsAllowed() {
+      var parent;
       return !element[0].hasAttribute('disabled') &&
-          !(element[0].parentNode && element[0].parentNode.hasAttribute('disabled'));
+          !((parent = element[0].parentNode) && parent.hasAttribute('disabled'));
     }
 
     function removeElement(element, wait) {
@@ -1707,7 +1708,7 @@ angular.module('material.components.button', [
  *  <md-button href="http://google.com" class="md-button-colored">
  *    I'm a link
  *  </md-button>
- *  <md-button disabled class="md-colored">
+ *  <md-button ng-disabled="true" class="md-colored">
  *    I'm a disabled button
  *  </md-button>
  * </hljs>
@@ -1727,12 +1728,11 @@ function MdButtonDirective($mdInkRipple, $mdTheming, $mdAria) {
   }
   
   function getTemplate(element, attr) {
-    var tag = isAnchor(attr) ? 'a' : 'button';
-    //We need to manually pass disabled to the replaced element because
-    //of a bug where it isn't always passed.
-    var disabled = element[0].hasAttribute('disabled') ? ' disabled ' : ' ';
-
-    return '<' + tag + disabled + 'class="md-button" ng-transclude></' + tag + '>';
+    if (isAnchor(attr)) {
+      return '<a class="md-button" ng-transclude></a>';
+    } else {
+      return '<button class="md-button" ng-transclude></button>';
+    }
   }
 
   function postLink(scope, element, attr) {
@@ -1748,9 +1748,7 @@ function MdButtonDirective($mdInkRipple, $mdTheming, $mdAria) {
     // For anchor elements, we have to set tabindex manually when the 
     // element is disabled
     if (isAnchor(attr)) {
-      scope.$watch(function() {
-        return node.hasAttribute('disabled');
-      }, function(isDisabled) {
+      scope.$watch(attr.ngDisabled, function(isDisabled) {
         element.attr('tabindex', isDisabled ? -1 : 0);
       });
     }
@@ -1841,7 +1839,6 @@ angular.module('material.components.checkbox', [
  * @param {expression=} ngFalseValue The value to which the expression should be set when not selected.
  * @param {string=} ngChange Angular expression to be executed when input changes due to user interaction with the input element.
  * @param {boolean=} mdNoInk Use of attribute indicates use of ripple ink effects
- * @param {boolean=} disabled Use of attribute indicates the switch is disabled: no ink effects and not selectable
  * @param {string=} ariaLabel Publish the button label used by screen-readers for accessibility. Defaults to the checkbox's text.
  *
  * @usage
@@ -1854,7 +1851,7 @@ angular.module('material.components.checkbox', [
  *   No Ink Effects
  * </md-checkbox>
  *
- * <md-checkbox disabled ng-model="isDisabled" aria-label="Disabled">
+ * <md-checkbox ng-disabled="true" ng-model="isDisabled" aria-label="Disabled">
  *   Disabled
  * </md-checkbox>
  *
@@ -3608,8 +3605,6 @@ function SliderController($scope, $element, $attrs, $$rAF, $window, $mdAria, $md
     var stopDisabledWatch = angular.noop;
     if ($attrs.ngDisabled) {
       stopDisabledWatch = $scope.$parent.$watch($attrs.ngDisabled, updateAriaDisabled);
-    } else {
-      updateAriaDisabled(!!$attrs.disabled);
     }
 
     $mdAria.expect($element, 'aria-label');
@@ -4011,9 +4006,6 @@ function MdSticky($document, $mdConstant, $compile, $$rAF, $mdUtil) {
     }
 
     function refreshElements() {
-      var contentRect = contentEl[0].getBoundingClientRect();
-
-
       // Sort our collection of elements by their current position in the DOM.
       // We need to do this because our elements' order of being added may not
       // be the same as their order of display.
@@ -4512,7 +4504,6 @@ angular.module('material.components.switch', [
  * @param {expression=} ngFalseValue The value to which the expression should be set when not selected.
  * @param {string=} ngChange Angular expression to be executed when input changes due to user interaction with the input element.
  * @param {boolean=} mdNoInk Use of attribute indicates use of ripple ink effects.
- * @param {boolean=} disabled Use of attribute indicates the switch is disabled: no ink effects and not selectable
  * @param {string=} ariaLabel Publish the button label used by screen-readers for accessibility. Defaults to the switch's text.
  *
  * @usage
@@ -4525,7 +4516,7 @@ angular.module('material.components.switch', [
  *   No Ink Effects
  * </md-switch>
  *
- * <md-switch disabled ng-model="isDisabled" aria-label="Disabled">
+ * <md-switch ng-disabled="true" ng-model="isDisabled" aria-label="Disabled">
  *   Disabled
  * </md-switch>
  *
@@ -4548,17 +4539,11 @@ function MdSwitch(mdCheckboxDirective, mdRadioButtonDirective, $mdTheming) {
   };
 
   function compile(element, attr) {
-    
     var thumb = angular.element(element[0].querySelector('.md-switch-thumb'));
-    //Copy down disabled attributes for checkboxDirective to use
-    thumb.attr('disabled', attr.disabled);
-    thumb.attr('ngDisabled', attr.ngDisabled);
-
     var checkboxLink = checkboxDirective.compile(thumb, attr);
 
     return function (scope, element, attr, ngModelCtrl) {
       $mdTheming(element);
-      var thumb = angular.element(element[0].querySelector('.md-switch-thumb'));
       return checkboxLink(scope, thumb, attr, ngModelCtrl);
     };
   }
@@ -4622,13 +4607,13 @@ angular.module('material.components.textField', [
  * <md-text-float label="LastName" ng-model="user.lastName" > </md-text-float>
  *
  * <!-- Specify a read-only input field by using the `disabled` attribute -->
- * <md-text-float label="Company"  ng-model="user.company"    disabled > </md-text-float>
+ * <md-text-float label="Company"  ng-model="user.company" ng-disabled="true" > </md-text-float>
  *
  * <!-- Specify an input type if desired. -->
  * <md-text-float label="eMail"    ng-model="user.email" type="email" ></md-text-float>
  * </hljs>
  */
-function mdTextFloatDirective($mdTheming, $mdUtil) {
+function mdTextFloatDirective($mdTheming, $mdUtil, $parse) {
   return {
     restrict: 'E',
     replace: true,
@@ -4645,30 +4630,24 @@ function mdTextFloatDirective($mdTheming, $mdUtil) {
 
       return {
         pre : function(scope, element, attrs) {
-          // transpose `disabled` flag
-          if ( angular.isDefined(attrs.disabled) ) {
-            element.attr('disabled', true);
-            scope.isDisabled = true;
-          }
+          var disabledParsed = $parse(attrs.ngDisabled);
+          scope.isDisabled = function() {
+            return disabledParsed(scope.$parent);
+          };
 
           scope.inputType = attrs.type || "text";
-          element.removeAttr('type');
-
-          // transpose optional `class` settings
-          element.attr('class', attrs.class );
-
         },
         post: $mdTheming
       };
     },
     template:
-    '<md-input-group ng-disabled="isDisabled" tabindex="-1">' +
+    '<md-input-group tabindex="-1">' +
     ' <label for="{{fid}}" >{{label}}</label>' +
-    ' <md-input id="{{fid}}" ng-model="value" type="{{inputType}}"></md-input>' +
+    ' <md-input id="{{fid}}" ng-disabled="isDisabled()" ng-model="value" type="{{inputType}}"></md-input>' +
     '</md-input-group>'
   };
 }
-mdTextFloatDirective.$inject = ["$mdTheming", "$mdUtil"];
+mdTextFloatDirective.$inject = ["$mdTheming", "$mdUtil", "$parse"];
 
 /*
  * @private
@@ -4735,15 +4714,11 @@ function mdInputDirective($mdUtil) {
       var inputGroupCtrl = ctrls[0];
       var ngModelCtrl = ctrls[1];
 
-      // scan for disabled and transpose the `type` value to the <input> element
-      var parent = element[0].parentNode;
-      var isDisabled = parent && parent.hasAttribute('disabled');
-
-      element.attr({
-        'tabindex': isDisabled ? -1 : 0,
-        'aria-disabled': isDisabled ? 'true' : 'false',
-        'type': attr.type || element.parent().attr('type') || "text"
+      scope.$watch(scope.isDisabled, function(isDisabled) {
+        element.attr('aria-disabled', !!isDisabled);
+        element.attr('tabindex', !!isDisabled);
       });
+      element.attr('type', attr.type || element.parent().attr('type') || "text");
 
       // When the input value changes, check if it "has" a value, and
       // set the appropriate class on the input group
@@ -4778,7 +4753,7 @@ function mdInputDirective($mdUtil) {
       function isNotEmpty(value) {
         value = angular.isUndefined(value) ? element.val() : value;
         return (angular.isDefined(value) && (value!==null) &&
-               (value.toString().trim() != ""));
+               (value.toString().trim() !== ""));
       }
     }
   };
@@ -5619,7 +5594,7 @@ TabPaginationDirective.$inject = ["$mdConstant", "$window", "$$rAF", "$$q", "$ti
 angular.module('material.components.tabs')
   .controller('$mdTab', TabItemController);
 
-function TabItemController($scope, $element, $compile, $animate, $mdUtil) {
+function TabItemController($scope, $element, $attrs, $compile, $animate, $mdUtil, $parse) {
   var self = this;
 
   // Properties
@@ -5634,8 +5609,9 @@ function TabItemController($scope, $element, $compile, $animate, $mdUtil) {
   self.onSelect = onSelect;
   self.onDeselect = onDeselect;
 
+  var disabledParsed = $parse($attrs.ngDisabled);
   function isDisabled() {
-    return $element[0].hasAttribute('disabled');
+    return disabledParsed($scope.$parent);
   }
   
   /**
@@ -5689,7 +5665,7 @@ function TabItemController($scope, $element, $compile, $animate, $mdUtil) {
   }
 
 }
-TabItemController.$inject = ["$scope", "$element", "$compile", "$animate", "$mdUtil"];
+TabItemController.$inject = ["$scope", "$element", "$attrs", "$compile", "$animate", "$mdUtil", "$parse"];
 
 })();
 
