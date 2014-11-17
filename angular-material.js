@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-dd14821
+ * v0.5.1-master-768cc09
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -1536,6 +1536,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
       backdrop.on('click touchstart', function() {
         $timeout($mdBottomSheet.cancel);
       });
+
       $mdTheming.inherit(backdrop, options.parent);
 
       $animate.enter(backdrop, options.parent, null);
@@ -1547,7 +1548,15 @@ function MdBottomSheetProvider($$interimElementProvider) {
       options.targetEvent && angular.element(options.targetEvent.target).blur();
       $mdTheming.inherit(bottomSheet.element, options.parent);
 
-      return $animate.enter(bottomSheet.element, options.parent);
+      return $animate.enter(bottomSheet.element, options.parent)
+        .then(function() {
+          var focusableItems = angular.element(
+            element[0].querySelector('button') ||
+            element[0].querySelector('a') ||
+            element[0].querySelector('[ng-click]')
+          );
+          focusableItems.eq(0).focus();
+        });
 
     }
 
