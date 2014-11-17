@@ -1,7 +1,7 @@
 {
   "name": "angular-material-tabs",
-  "version": "0.5.1-master-aa90f2a",
+  "version": "0.5.1-master-a908799",
   "dependencies": {
-    "angular-material-core": "0.5.1-master-aa90f2a"
+    "angular-material-core": "0.5.1-master-a908799"
   }
 }

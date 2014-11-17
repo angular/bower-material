@@ -2,6 +2,6 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-aa90f2a
+ * v0.5.1-master-a908799
  */
 !function(){"use strict";function t(){return{restrict:"E",link:function(t,i){i.attr({role:"list"})}}}function i(){return{restrict:"E",link:function(t,i){i.attr({role:"listitem"})}}}angular.module("material.components.list",["material.core"]).directive("mdList",t).directive("mdItem",i)}();
