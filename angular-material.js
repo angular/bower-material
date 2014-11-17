@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-4a75d59
+ * v0.5.1-master-42e0d7f
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -1155,7 +1155,7 @@ function InkRippleService($window, $timeout) {
       //-- Use minimum timeout to trigger CSS animation
       $timeout(function () {
         if (options.dimBackground) {
-          rippleContainer.addClass('full visible');
+          rippleContainer.addClass('md-ripple-full md-ripple-visible');
           rippleContainer.css({ backgroundColor: css.backgroundColor.replace(')', ', 0.1').replace('(', 'a(') });
         }
         rippleEl.addClass('md-ripple-placed md-ripple-visible md-ripple-scaled md-ripple-full');
@@ -2935,10 +2935,10 @@ function mdRadioGroupDirective($mdUtil, $mdConstant, $mdTheming) {
     restrict: 'E',
     controller: ['$element', RadioGroupController],
     require: ['mdRadioGroup', '?ngModel'],
-    link: link
+    link: linkRadioGroup
   };
 
-  function link(scope, element, attr, ctrls) {
+  function linkRadioGroup(scope, element, attr, ctrls) {
     $mdTheming(element);
     var rgCtrl = ctrls[0],
       ngModelCtrl = ctrls[1] || {
@@ -3076,7 +3076,7 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
     restrict: 'E',
     require: '^mdRadioGroup',
     transclude: true,
-    template: '<div class="md-container" ink-ripple="checkbox">' +
+    template: '<div class="md-container" md-ink-ripple="checkbox">' +
                 '<div class="md-off"></div>' +
                 '<div class="md-on"></div>' +
               '</div>' +

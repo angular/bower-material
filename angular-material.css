@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-4a75d59
+ * v0.5.1-master-42e0d7f
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -176,7 +176,7 @@ input[type="search"] {
   top: 0;
   width: 100%;
   height: 100%;
-  transition: all 0.65s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  transition: all 0.55s cubic-bezier(0.25, 0.8, 0.25, 1); }
 
 .md-ripple {
   position: absolute;
@@ -192,7 +192,7 @@ input[type="search"] {
     -webkit-transform: scale(1);
             transform: scale(1); }
   .md-ripple.md-ripple-full, .md-ripple.md-ripple-visible {
-    opacity: 0.15; }
+    opacity: 0.2; }
   .md-ripple.md-ripple-held {
     opacity: 0.15;
     -webkit-transform: scale(0.35);
