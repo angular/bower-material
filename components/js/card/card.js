@@ -2,6 +2,6 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-6d456da
+ * v0.5.1-master-db5e71c
  */
 !function(){"use strict";function n(n){return{restrict:"E",link:function(t,e){n(e)}}}angular.module("material.components.card",["material.core"]).directive("mdCard",n),n.$inject=["$mdTheming"]}();
