@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-32ba2b0
+ * v0.5.1-master-6d456da
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -1402,6 +1402,24 @@ input[type="search"] {
       -ms-flex-align: end;
           align-items: flex-end; }
 
+md-backdrop {
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0);
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0; }
+  md-backdrop.ng-enter {
+    transition-delay: 0.1s;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  md-backdrop.ng-leave {
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
+  md-backdrop.ng-enter, md-backdrop.ng-leave.ng-leave-active {
+    opacity: 0; }
+  md-backdrop.ng-leave, md-backdrop.ng-enter.ng-enter-active {
+    opacity: 1; }
+
 md-bottom-sheet {
   position: absolute;
   left: 0;
@@ -1557,24 +1575,6 @@ md-bottom-sheet {
         width: 64px;
         text-align: center;
         padding-top: 8px; }
-
-md-backdrop {
-  z-index: 5;
-  background-color: rgba(0, 0, 0, 0);
-  position: fixed;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0; }
-  md-backdrop.ng-enter {
-    transition-delay: 0.1s;
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
-  md-backdrop.ng-leave {
-    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
-  md-backdrop.ng-enter, md-backdrop.ng-leave.ng-leave-active {
-    opacity: 0; }
-  md-backdrop.ng-leave, md-backdrop.ng-enter.ng-enter-active {
-    opacity: 1; }
 
 /**
  * Position a FAB button.
