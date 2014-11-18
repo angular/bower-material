@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-8975ee8
+ * v0.5.1-master-32ba2b0
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -3268,7 +3268,7 @@ mdSidenavService.$inject = ["$mdComponentRegistry"];
  *
  * @usage
  * <hljs lang="html">
- * <div layout="horizontal" ng-controller="MyController">
+ * <div layout="row" ng-controller="MyController">
  *   <md-sidenav md-component-id="left" class="md-sidenav-left">
  *     Left Nav!
  *   </md-sidenav>
@@ -5014,7 +5014,7 @@ angular.module('material.components.toolbar', [
  *
  * @usage
  * <hljs lang="html">
- * <div layout="vertical" layout-fill>
+ * <div layout="column" layout-fill>
  *   <md-toolbar>
  *
  *     <div class="md-toolbar-tools">
