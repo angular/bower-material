@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-d515a6c
+ * v0.6.0-rc1-master-5e4ab61
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -1150,7 +1150,7 @@ function InkRippleService($window, $timeout) {
       var containerWidth = rippleContainer.prop('offsetWidth'),
           containerHeight = rippleContainer.prop('offsetHeight'),
           multiplier = element.hasClass('md-fab') ? 1.1 : 0.8,
-          diagonalWidth = Math.max(containerWidth, containerHeight) * multiplier;
+          rippleWidth = Math.max(containerWidth, containerHeight) * multiplier;
 
       if (contentParent) {
         top += contentParent.$element.prop('scrollTop');
@@ -1158,10 +1158,10 @@ function InkRippleService($window, $timeout) {
 
       var css = {
         backgroundColor: $window.getComputedStyle(rippleEl[0]).color ||  $window.getComputedStyle(node).color,
-        width: diagonalWidth + 'px',
-        height: diagonalWidth + 'px',
-        marginLeft: (diagonalWidth * -0.5) + 'px',
-        marginTop: (diagonalWidth * -0.5) + 'px'
+        width: rippleWidth + 'px',
+        height: rippleWidth + 'px',
+        marginLeft: (rippleWidth * -0.5) + 'px',
+        marginTop: (rippleWidth * -0.5) + 'px'
       };
 
       if (options.center) {
