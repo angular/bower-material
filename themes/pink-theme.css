@@ -2,21 +2,11 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-96d3208
+ * v0.6.0-rc1
  */
 md-backdrop.md-opaque.md-pink-theme {
   background-color: rgba(0, 0, 0, 0.3);
   position: absolute; }
-
-md-bottom-sheet.md-pink-theme {
-  background-color: #fafafa;
-  border-top-color: #bdbdbd; }
-  md-bottom-sheet.md-pink-theme.md-list md-item {
-    color: rgba(0, 0, 0, 0.54); }
-  md-bottom-sheet.md-pink-theme .md-subheader {
-    background-color: #fafafa; }
-  md-bottom-sheet.md-pink-theme .md-subheader {
-    color: rgba(0, 0, 0, 0.54); }
 
 .md-button.md-pink-theme {
   border-radius: 3px; }
@@ -49,6 +39,16 @@ md-bottom-sheet.md-pink-theme {
     fill: rgba(0, 0, 0, 0.26);
     background-color: transparent;
     cursor: not-allowed; }
+
+md-bottom-sheet.md-pink-theme {
+  background-color: #fafafa;
+  border-top-color: #bdbdbd; }
+  md-bottom-sheet.md-pink-theme.md-list md-item {
+    color: rgba(0, 0, 0, 0.54); }
+  md-bottom-sheet.md-pink-theme .md-subheader {
+    background-color: #fafafa; }
+  md-bottom-sheet.md-pink-theme .md-subheader {
+    color: rgba(0, 0, 0, 0.54); }
 
 md-card.md-pink-theme {
   border-radius: 2px; }
