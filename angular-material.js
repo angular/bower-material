@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-370f9d6
+ * v0.6.0-rc1-master-d515a6c
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -525,14 +525,15 @@ function AriaService($$rAF, $log) {
   };
 
   /**
-   * Check if expected attribute has been specified on the target element
+   * Check if expected attribute has been specified on the target element or child
    * @param element
    * @param attrName
    * @param {optional} defaultValue What to set the attr to if no value is found
    */
   function expect(element, attrName, defaultValue) {
     var node = element[0];
-    if (!node.hasAttribute(attrName)) {
+
+    if (!node.hasAttribute(attrName) && !childHasAttribute(node, attrName)) {
 
       defaultValue = angular.isString(defaultValue) && defaultValue.trim() || '';
       if (defaultValue.length) {
@@ -559,6 +560,29 @@ function AriaService($$rAF, $log) {
     });
   }
 
+  function childHasAttribute(node, attrName) {
+    var hasChildren = node.hasChildNodes(),
+        childHasAttribute = false;
+
+    function isHidden(el) {
+      var style = el.currentStyle ? el.currentStyle :
+                            getComputedStyle(el);
+      return (style.display === 'none');
+    }
+
+    if(hasChildren) {
+      var children = node.childNodes;
+      for(var i=0; i<children.length; i++){
+        var child = children[i];
+        if(child.nodeType === 1 && child.hasAttribute(attrName)) {
+          if(!isHidden(child)){
+            childHasAttribute = true;
+          }
+        }
+      }
+    }
+    return childHasAttribute;
+  }
 }
 AriaService.$inject = ["$$rAF", "$log"];
 })();
