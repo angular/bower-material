@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-5e4ab61
+ * v0.6.0-rc1-master-117772b
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -192,13 +192,8 @@ input[type="search"] {
   .md-ripple.md-ripple-scaled {
     -webkit-transform: scale(1);
             transform: scale(1); }
-  .md-ripple.md-ripple-full, .md-ripple.md-ripple-visible {
+  .md-ripple.md-ripple-active, .md-ripple.md-ripple-full, .md-ripple.md-ripple-visible {
     opacity: 0.2; }
-  .md-ripple.md-ripple-held {
-    opacity: 0.15;
-    -webkit-transform: scale(0.35);
-            transform: scale(0.35);
-    transition: none; }
 
 /* Sizes:
   0    <= size <= 600  Phone

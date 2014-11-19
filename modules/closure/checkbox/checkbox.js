@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-5e4ab61
+ * v0.6.0-rc1-master-117772b
  */
 goog.provide('ng.material.components.checkbox');
 goog.require('ng.material.core');
@@ -63,7 +63,7 @@ function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant,
     transclude: true,
     require: '?ngModel',
     template: 
-      '<div class="md-container" md-ink-ripple="checkbox">' +
+      '<div class="md-container" md-ink-ripple md-ink-ripple-checkbox>' +
         '<div class="md-icon"></div>' +
       '</div>' +
       '<div ng-transclude class="md-label"></div>',

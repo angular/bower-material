@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-5e4ab61
+ * v0.6.0-rc1-master-117772b
  */
 goog.provide('ng.material.components.radioButton');
 goog.require('ng.material.core');
@@ -206,7 +206,7 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
     restrict: 'E',
     require: '^mdRadioGroup',
     transclude: true,
-    template: '<div class="md-container" md-ink-ripple="checkbox">' +
+    template: '<div class="md-container" md-ink-ripple md-ink-ripple-checkbox>' +
                 '<div class="md-off"></div>' +
                 '<div class="md-on"></div>' +
               '</div>' +
