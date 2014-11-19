@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-6d91b9f
+ * v0.6.0-rc1-master-370f9d6
  */
 md-tabs {
   display: block;
@@ -85,13 +85,18 @@ md-tabs[center] .md-header:not(.md-paginating) .md-header-items {
     height: 100%; }
 
 md-tabs-ink-bar {
+  display: none;
   position: absolute;
   left: 0;
   bottom: 0;
+  margin-left: -50%;
+  width: 100%;
   box-sizing: border-box;
-  transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
   height: 2px;
-  margin-top: -2px; }
+  margin-top: -2px;
+  transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+  transition-property: -webkit-transform;
+  transition-property: transform; }
 
 md-tab {
   display: -webkit-flex;
