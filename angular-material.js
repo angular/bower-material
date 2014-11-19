@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.5.1-master-6845d52
+ * v0.5.1-master-96d3208
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -2915,6 +2915,11 @@ angular.module('material.components.radioButton', [
  * container for the 1..n grouped radio buttons; specified using nested
  * `<md-radio-button>` tags.
  *
+ * Note: `<md-radio-group>` and `<md-radio-button>` handle tabindex differently
+ * than the native `<input type='radio'>` controls. Whereas the native controls
+ * force the user to tab through all the radio buttons, `<md-radio-group>`
+ * is focusable, and by default the `<md-radio-button>`s are not.
+ *
  * @param {string} ngModel Assignable angular expression to data-bind to.
  * @param {boolean=} mdNoInk Use of attribute indicates flag to disable ink ripple effects.
  *
@@ -2965,10 +2970,11 @@ function mdRadioGroupDirective($mdUtil, $mdConstant, $mdTheming) {
     rgCtrl.init(ngModelCtrl);
 
     element.attr({
-      'role': 'radiogroup',
-      'tabIndex': '0'
-    })
-    .on('keydown', keydownListener);
+              'role': 'radiogroup',
+              'tabIndex': element.attr('tabindex') || '0'
+            })
+            .on('keydown', keydownListener);
+
   }
 
   function RadioGroupController($element) {
