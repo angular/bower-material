@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-b3b385b
+ * v0.6.0-rc1-master-618186b
  */
 (function() {
 'use strict';
@@ -12,6 +12,18 @@
  * @name material.components.subheader
  * @description
  * SubHeader module
+ *
+ *  Subheaders are special list tiles that delineate distinct sections of a
+ *  list or grid list and are typically related to the current filtering or
+ *  sorting criteria. Subheader tiles are either displayed inline with tiles or
+ *  can be associated with content, for example, in an adjacent column.
+ *
+ *  Upon scrolling, subheaders remain pinned to the top of the screen and remain
+ *  pinned until pushed on or off screen by the next subheader. @see [Material
+ *  Design Specifications](https://www.google.com/design/spec/components/subheaders.html)
+ *
+ *  > To improve the visual grouping of content, use the system color for your subheaders.
+ *
  */
 angular.module('material.components.subheader', [
   'material.core',

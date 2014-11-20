@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-b3b385b
+ * v0.6.0-rc1-master-618186b
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -4361,6 +4361,18 @@ MdSticky.$inject = ["$document", "$mdConstant", "$compile", "$$rAF", "$mdUtil"];
  * @name material.components.subheader
  * @description
  * SubHeader module
+ *
+ *  Subheaders are special list tiles that delineate distinct sections of a
+ *  list or grid list and are typically related to the current filtering or
+ *  sorting criteria. Subheader tiles are either displayed inline with tiles or
+ *  can be associated with content, for example, in an adjacent column.
+ *
+ *  Upon scrolling, subheaders remain pinned to the top of the screen and remain
+ *  pinned until pushed on or off screen by the next subheader. @see [Material
+ *  Design Specifications](https://www.google.com/design/spec/components/subheaders.html)
+ *
+ *  > To improve the visual grouping of content, use the system color for your subheaders.
+ *
  */
 angular.module('material.components.subheader', [
   'material.core',
@@ -4716,7 +4728,20 @@ MdSwitch.$inject = ["mdCheckboxDirective", "mdRadioButtonDirective", "$mdTheming
  * @name material.components.tabs
  * @description
  *
- * Tabs
+ *  Tabs, created with the `<md-tabs>` directive provide *tabbed* navigation with different styles.
+ *  The Tabs component consists of clickable tabs that are aligned horizontally side-by-side.
+ *
+ *  Features include support for:
+ *
+ *  - static or dynamic tabs,
+ *  - responsive designs,
+ *  - accessibility support (ARIA),
+ *  - tab pagination,
+ *  - external or internal tab content,
+ *  - focus indicators and arrow-key navigations,
+ *  - programmatic lookup and access to tab controllers, and
+ *  - dynamic transitions through different tab contents.
+ *
  */
 /*
  * @see js folder for tabs implementation
