@@ -4,7 +4,7 @@ This repository contains the Bower release of [angular-material](https://github.
 
 ### Installing Angular-Material
 
-To install and use the Angular Material distribution files, change to your projects root directory.
+To install and use the Angular Material distribution files, change to your project's root directory.
 
 ```bash
 # To get the latest stable version, use Bower from the command line.
