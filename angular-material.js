@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-0b0cef5
+ * v0.6.0-rc1-master-57f10f7
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -1942,7 +1942,7 @@ angular.module('material.components.card', [
  * @usage
  * <hljs lang="html">
  * <md-card>
- *  <img src="/img/washedout.png" class="md-card-image">
+ *  <img src="img/washedout.png" class="md-card-image">
  *  <h2>Paracosm</h2>
  *  <p>
  *    The titles of Washed Out's breakthrough song and the first single from Paracosm share the * two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
@@ -6247,7 +6247,7 @@ angular.module('material.components.tabs')
  * @usage
  * <hljs lang="html">
  * <md-tabs md-selected="selectedIndex" >
- *   <img ng-src="/img/angular.png" class="centered">
+ *   <img ng-src="img/angular.png" class="centered">
  *
  *   <md-tab
  *      ng-repeat="tab in tabs | orderBy:predicate:reversed"
@@ -6257,7 +6257,7 @@ angular.module('material.components.tabs')
  *
  *       <md-tab-label>
  *           {{tab.title}}
- *           <img src="/img/removeTab.png"
+ *           <img src="img/removeTab.png"
  *                ng-click="removeTab(tab)"
  *                class="delete" >
  *       </md-tab-label>

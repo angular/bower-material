@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-0b0cef5
+ * v0.6.0-rc1-master-57f10f7
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.core');
@@ -776,7 +776,7 @@ angular.module('material.components.tabs')
  * @usage
  * <hljs lang="html">
  * <md-tabs md-selected="selectedIndex" >
- *   <img ng-src="/img/angular.png" class="centered">
+ *   <img ng-src="img/angular.png" class="centered">
  *
  *   <md-tab
  *      ng-repeat="tab in tabs | orderBy:predicate:reversed"
@@ -786,7 +786,7 @@ angular.module('material.components.tabs')
  *
  *       <md-tab-label>
  *           {{tab.title}}
- *           <img src="/img/removeTab.png"
+ *           <img src="img/removeTab.png"
  *                ng-click="removeTab(tab)"
  *                class="delete" >
  *       </md-tab-label>
