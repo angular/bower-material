@@ -4,16 +4,35 @@ This repository contains the Bower release of [angular-material](https://github.
 
 ### Installing Angular-Material
 
-> Please note that using Angular Material requires **Angular 1.3.x** or higher.
+Change to your projects root directory.
+To get the latest stable version, use Bower from the command line:
 
-Below is a sample set of commands:
+```sh
+bower install angular-material
+```
+
+To get the most recent, last committed-to-master version use:
+
+```sh
+bower install angular-material#master 
+```
+
+To save the bower settings for future use:
 
 ```bash
-cd yourProjectDir
 bower install angular-material --save
 ```
 
-### Usage
+Later, you can use easily update with:
+
+```bash
+bower update
+```
+
+> Please note that using Angular Material requires **Angular 1.3.x** or higher.
+
+
+### Using the Bower-Material Library
 
 Now that you have installed [locally] the Angular libraries, simply include the scripts and stylesheet in your main HTML file:
 
