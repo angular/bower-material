@@ -1,8 +1,8 @@
 {
   "name": "angular-material-sticky",
-  "version": "0.6.0-rc1-master-57f10f7",
+  "version": "0.6.0-rc1-master-fca5376",
   "dependencies": {
-    "angular-material-core": "0.6.0-rc1-master-57f10f7",
-    "angular-material-content": "0.6.0-rc1-master-57f10f7"
+    "angular-material-core": "0.6.0-rc1-master-fca5376",
+    "angular-material-content": "0.6.0-rc1-master-fca5376"
   }
 }
