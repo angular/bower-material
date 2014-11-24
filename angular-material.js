@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-12f2574
+ * v0.6.0-rc1-master-477151a
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -1763,7 +1763,7 @@ function MdBottomSheetDirective() {
 
 function MdBottomSheetProvider($$interimElementProvider) {
 
-  bottomSheetDefaults.$inject = ["$animate", "$mdConstant", "$timeout", "$$rAF", "$compile", "$mdTheming", "$mdBottomSheet", "$rootElement"];
+  bottomSheetDefaults.$inject = ["$animate", "$mdConstant", "$timeout", "$$rAF", "$compile", "$mdTheming", "$mdBottomSheet"];
   return $$interimElementProvider('$mdBottomSheet')
     .setDefaults({
       options: bottomSheetDefaults
@@ -1771,7 +1771,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
 
   /* @ngInject */
   function bottomSheetDefaults($animate, $mdConstant, $timeout, $$rAF, $compile, $mdTheming,
-                               $mdBottomSheet, $rootElement) {
+                               $mdBottomSheet) {
     var backdrop;
 
     return {
@@ -1779,7 +1779,6 @@ function MdBottomSheetProvider($$interimElementProvider) {
       targetEvent: null,
       onShow: onShow,
       onRemove: onRemove,
-      escapeToClose: true
     };
 
     function onShow(scope, element, options) {
@@ -1808,15 +1807,6 @@ function MdBottomSheetProvider($$interimElementProvider) {
             element[0].querySelector('[ng-click]')
           );
           focusableItems.eq(0).focus();
-
-          if (options.escapeToClose) {
-            options.rootElementKeyupCallback = function(e) {
-              if (e.keyCode === $mdConstant.KEY_CODE.ESCAPE) {
-                $timeout($mdBottomSheet.cancel);
-              }
-            };
-            $rootElement.on('keyup', options.rootElementKeyupCallback);
-          }
         });
 
     }
