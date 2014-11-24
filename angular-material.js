@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-5cdcf29
+ * v0.6.0-rc1-master-2aa1a75
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -1085,11 +1085,14 @@ function InkRippleService($window, $timeout) {
   return {
     attachButtonBehavior: attachButtonBehavior,
     attachCheckboxBehavior: attachCheckboxBehavior,
+    attachTabBehavior: attachTabBehavior,
     attach: attach
   };
 
   function attachButtonBehavior(scope, element) {
     return attach(scope, element, {
+      isFAB: element.hasClass('md-fab'),
+      isMenuItem: element.hasClass('md-menu-item'),
       center: false,
       dimBackground: true
     });
@@ -1102,10 +1105,18 @@ function InkRippleService($window, $timeout) {
     });
   }
 
+  function attachTabBehavior(scope, element) {
+    return attach(scope, element, {
+      center: false,
+      dimBackground: true,
+      outline: true
+    })
+  }
+
   function attach(scope, element, options) {
     if (element.controller('mdNoInk')) return angular.noop;
 
-    var rippleContainer,
+    var rippleContainer, rippleSize,
         controller = element.controller('mdInkRipple') || {},
         counter = 0,
         ripples = [],
@@ -1115,8 +1126,7 @@ function InkRippleService($window, $timeout) {
         isHeld = false,
         node = element[0],
         hammertime = new Hammer(node),
-        color = parseColor(element.attr('md-ink-ripple')) || parseColor($window.getComputedStyle(node).color || 'rgb(0, 0, 0)'),
-        contentParent = element.controller('mdContent');
+        color = parseColor(element.attr('md-ink-ripple')) || parseColor($window.getComputedStyle(node).color || 'rgb(0, 0, 0)');
 
     options = angular.extend({
       mousedown: true,
@@ -1124,7 +1134,10 @@ function InkRippleService($window, $timeout) {
       focus: true,
       center: false,
       mousedownPauseTime: 150,
-      dimBackground: false
+      dimBackground: false,
+      outline: false,
+      isFAB: false,
+      isMenuItem: false
     }, options || {});
 
     options.mousedown && hammertime.on('hammer.input', onInput);
@@ -1211,6 +1224,14 @@ function InkRippleService($window, $timeout) {
         elem.addClass('md-ripple-visible');
       } else {
         elem.removeClass('md-ripple-visible');
+        if (options.outline) {
+          elem.css({
+            width: rippleSize + 'px',
+            height: rippleSize + 'px',
+            marginLeft: (rippleSize * -1) + 'px',
+            marginTop: (rippleSize * -1) + 'px'
+          });
+        }
         removeElement(elem, 650);
       }
     }
@@ -1226,11 +1247,13 @@ function InkRippleService($window, $timeout) {
     function createRipple(left, top) {
 
       var container = getRippleContainer(),
-          size = getRippleSize(),
+          size = getRippleSize(left, top),
           css = getRippleCss(size, left, top),
           elem = getRippleElement(css),
           index = ripples.indexOf(elem),
           state = states[index];
+
+      rippleSize = size;
 
       state.animating = true;
 
@@ -1238,7 +1261,16 @@ function InkRippleService($window, $timeout) {
         if (options.dimBackground) {
           container.css({ backgroundColor: color });
         }
-        elem.addClass('md-ripple-placed md-ripple-scaled').css({ left: '50%', top: '50%' });
+        elem.addClass('md-ripple-placed md-ripple-scaled');
+        if (options.outline) {
+          elem.css({
+            borderWidth: (size * 0.5) + 'px',
+            marginLeft: (size * -0.5) + 'px',
+            marginTop: (size * -0.5) + 'px'
+          });
+        } else {
+          elem.css({ left: '50%', top: '50%' });
+        }
         updateElement(elem);
         $timeout(function () {
           state.animating = false;
@@ -1269,14 +1301,21 @@ function InkRippleService($window, $timeout) {
        *
        * @returns {number} calculated ripple diameter
        */
-      function getRippleSize() {
+      function getRippleSize(left, top) {
         var width = container.prop('offsetWidth'),
             height = container.prop('offsetHeight'),
-            multiplier, size;
-        if (element.hasClass('md-menu-item')) {
-          size = Math.sqrt( Math.pow(width, 2) + Math.pow(height, 2) );
+            multiplier, size, rect;
+        if (options.isMenuItem) {
+          size = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
+        } else if (options.outline) {
+          rect = node.getBoundingClientRect();
+          left -= rect.left;
+          top -= rect.top;
+          width = Math.max(left, width - left);
+          height = Math.max(top, height - top);
+          size = 2 * Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
         } else {
-          multiplier = element.hasClass('md-fab') ? 1.1 : 0.8;
+          multiplier = options.isFAB ? 1.1 : 0.8;
           size = Math.max(width, height) * multiplier;
         }
         return size;
@@ -1295,13 +1334,17 @@ function InkRippleService($window, $timeout) {
         var rect,
             css = {
               backgroundColor: rgbaToRGB(color),
+              borderColor: rgbaToRGB(color),
               width: size + 'px',
-              height: size + 'px',
-              marginLeft: (size * -0.5) + 'px',
-              marginTop: (size * -0.5) + 'px'
+              height: size + 'px'
             };
 
-        contentParent && (top += contentParent.$element.prop('scrollTop'));
+        if (options.outline) {
+          css.width = 0;
+          css.height = 0;
+        } else {
+          css.marginLeft = css.marginTop = (size * -0.5) + 'px';
+        }
 
         if (options.center) {
           css.left = css.top = '50%';
@@ -5594,8 +5637,9 @@ function MdTabInkDirective($mdConstant, $window, $$rAF, $timeout) {
   };
 
   function postLink(scope, element, attr, ctrls) {
-    var nobar = ctrls[0];
-    var tabsCtrl = ctrls[1];
+    var nobar = ctrls[0],
+        tabsCtrl = ctrls[1],
+        timeout;
 
     if (nobar) return;
 
@@ -5612,9 +5656,16 @@ function MdTabInkDirective($mdConstant, $window, $$rAF, $timeout) {
       if (!hideInkBar) { 
         var count = tabsCtrl.count();
         var scale = 1 / count;
-        var left = (tabsCtrl.indexOf(selected) / count) + (1 / count / 2);
-        element.css($mdConstant.CSS.TRANSFORM, 'scaleX(' + scale + ') ' +
-                    'translate3d(' + left / scale * 100 + '%,0,0)');
+        var left = tabsCtrl.indexOf(selected);
+        element.addClass('md-ink-bar-grow');
+        element.css({
+          width: Math.round(scale * 100) + '%',
+          left:  (left / scale) + '%'
+        });
+        if (timeout) $timeout.cancel(timeout);
+        timeout = $timeout(function () {
+          element.removeClass('md-ink-bar-grow');
+        }, 250, false);
       }
     }
 
@@ -5996,7 +6047,7 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
       transcludeTabContent();
       configureAria();
 
-      var detachRippleFn = $mdInkRipple.attachButtonBehavior(scope, element);
+      var detachRippleFn = $mdInkRipple.attachTabBehavior(scope, element);
       tabsCtrl.add(tabItemCtrl);
       scope.$on('$destroy', function() {
         detachRippleFn();
