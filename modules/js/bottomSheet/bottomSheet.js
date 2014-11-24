@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-ae1c152
+ * v0.6.0-rc1-master-12f2574
  */
 (function() {
 'use strict';
@@ -116,7 +116,7 @@ function MdBottomSheetDirective() {
 
 function MdBottomSheetProvider($$interimElementProvider) {
 
-  bottomSheetDefaults.$inject = ["$animate", "$mdConstant", "$timeout", "$$rAF", "$compile", "$mdTheming", "$mdBottomSheet"];
+  bottomSheetDefaults.$inject = ["$animate", "$mdConstant", "$timeout", "$$rAF", "$compile", "$mdTheming", "$mdBottomSheet", "$rootElement"];
   return $$interimElementProvider('$mdBottomSheet')
     .setDefaults({
       options: bottomSheetDefaults
@@ -124,7 +124,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
 
   /* @ngInject */
   function bottomSheetDefaults($animate, $mdConstant, $timeout, $$rAF, $compile, $mdTheming,
-                               $mdBottomSheet) {
+                               $mdBottomSheet, $rootElement) {
     var backdrop;
 
     return {
@@ -132,6 +132,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
       targetEvent: null,
       onShow: onShow,
       onRemove: onRemove,
+      escapeToClose: true
     };
 
     function onShow(scope, element, options) {
@@ -160,6 +161,15 @@ function MdBottomSheetProvider($$interimElementProvider) {
             element[0].querySelector('[ng-click]')
           );
           focusableItems.eq(0).focus();
+
+          if (options.escapeToClose) {
+            options.rootElementKeyupCallback = function(e) {
+              if (e.keyCode === $mdConstant.KEY_CODE.ESCAPE) {
+                $timeout($mdBottomSheet.cancel);
+              }
+            };
+            $rootElement.on('keyup', options.rootElementKeyupCallback);
+          }
         });
 
     }
