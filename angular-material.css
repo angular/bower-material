@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-477151a
+ * v0.6.0-rc1-master-7acca43
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -201,6 +201,12 @@ md-tab > .md-ripple-container .md-ripple {
       -ms-flex: 1;
           flex: 1; }
 
+[flex] {
+  -webkit-flex: 0 0 100%;
+      -ms-flex: 0 0 100%;
+          flex: 0 0 100%;
+  max-width: 100%; }
+
 [flex="0"] {
   -webkit-flex: 0 0 0%;
       -ms-flex: 0 0 0%;
@@ -356,6 +362,12 @@ md-tab > .md-ripple-container .md-ripple {
         -ms-flex-direction: row;
             flex-direction: row; }
 
+  [flex-sm] {
+    -webkit-flex: 0 0 100%;
+        -ms-flex: 0 0 100%;
+            flex: 0 0 100%;
+    max-width: 100%; }
+
   [flex-sm="0"] {
     -webkit-flex: 0 0 0%;
         -ms-flex: 0 0 0%;
@@ -508,6 +520,12 @@ md-tab > .md-ripple-container .md-ripple {
     -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row; }
+
+  [flex-gt-sm] {
+    -webkit-flex: 0 0 100%;
+        -ms-flex: 0 0 100%;
+            flex: 0 0 100%;
+    max-width: 100%; }
 
   [flex-gt-sm="0"] {
     -webkit-flex: 0 0 0%;
@@ -662,6 +680,12 @@ md-tab > .md-ripple-container .md-ripple {
         -ms-flex-direction: row;
             flex-direction: row; }
 
+  [flex-md] {
+    -webkit-flex: 0 0 100%;
+        -ms-flex: 0 0 100%;
+            flex: 0 0 100%;
+    max-width: 100%; }
+
   [flex-md="0"] {
     -webkit-flex: 0 0 0%;
         -ms-flex: 0 0 0%;
@@ -814,6 +838,12 @@ md-tab > .md-ripple-container .md-ripple {
     -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row; }
+
+  [flex-gt-md] {
+    -webkit-flex: 0 0 100%;
+        -ms-flex: 0 0 100%;
+            flex: 0 0 100%;
+    max-width: 100%; }
 
   [flex-gt-md="0"] {
     -webkit-flex: 0 0 0%;
@@ -968,6 +998,12 @@ md-tab > .md-ripple-container .md-ripple {
         -ms-flex-direction: row;
             flex-direction: row; }
 
+  [flex-lg] {
+    -webkit-flex: 0 0 100%;
+        -ms-flex: 0 0 100%;
+            flex: 0 0 100%;
+    max-width: 100%; }
+
   [flex-lg="0"] {
     -webkit-flex: 0 0 0%;
         -ms-flex: 0 0 0%;
@@ -1120,6 +1156,12 @@ md-tab > .md-ripple-container .md-ripple {
     -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row; }
+
+  [flex-gt-lg] {
+    -webkit-flex: 0 0 100%;
+        -ms-flex: 0 0 100%;
+            flex: 0 0 100%;
+    max-width: 100%; }
 
   [flex-gt-lg="0"] {
     -webkit-flex: 0 0 0%;
