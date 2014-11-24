@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-e5c19eb
+ * v0.6.0-rc1-master-11e48eb
  */
 md-tabs {
   display: block;
@@ -95,11 +95,25 @@ md-tabs-ink-bar {
   margin-top: -2px;
   -webkit-transform: scaleX(1);
           transform: scaleX(1);
-  transition: left 0.5s cubic-bezier(0.35, 0, 0.25, 1), width 0.5s cubic-bezier(0.35, 0, 0.25, 1), -webkit-transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
-  transition: left 0.5s cubic-bezier(0.35, 0, 0.25, 1), width 0.5s cubic-bezier(0.35, 0, 0.25, 1), transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1); }
-  md-tabs-ink-bar.md-ink-bar-grow {
-    transition: left 0.5s cubic-bezier(0.35, 0, 0.25, 1), width 0.5s cubic-bezier(0.35, 0, 0.25, 1), -webkit-transform 0.25s cubic-bezier(0.55, 0, 0.55, 0.2);
-    transition: left 0.5s cubic-bezier(0.35, 0, 0.25, 1), width 0.5s cubic-bezier(0.35, 0, 0.25, 1), transform 0.25s cubic-bezier(0.55, 0, 0.55, 0.2);
+  transition: -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+  transition: transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0; }
+  md-tabs-ink-bar md-tabs-ink-bar-inner {
+    transition: -webkit-transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+    -webkit-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0; }
+  md-tabs-ink-bar.md-ink-bar-grow md-tabs-ink-bar-inner {
+    transition: -webkit-transform 0.25s cubic-bezier(0.55, 0, 0.55, 0.2);
+    transition: transform 0.25s cubic-bezier(0.55, 0, 0.55, 0.2);
     -webkit-transform: scaleX(1.35);
             transform: scaleX(1.35); }
 

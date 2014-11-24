@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-e5c19eb
+ * v0.6.0-rc1-master-11e48eb
  */
 goog.provide('ng.material.components.textField');
 goog.require('ng.material.core');

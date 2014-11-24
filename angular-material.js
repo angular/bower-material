@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-e5c19eb
+ * v0.6.0-rc1-master-11e48eb
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -5643,6 +5643,7 @@ function MdTabInkDirective($mdConstant, $window, $$rAF, $timeout) {
   return {
     restrict: 'E',
     require: ['^?mdNoBar', '^mdTabs'],
+    template: '<md-tabs-ink-bar-inner></md-tabs-ink-bar-inner>',
     link: postLink
   };
 
@@ -5667,15 +5668,14 @@ function MdTabInkDirective($mdConstant, $window, $$rAF, $timeout) {
         var count = tabsCtrl.count();
         var scale = 1 / count;
         var left = tabsCtrl.indexOf(selected);
+        element.css($mdConstant.CSS.TRANSFORM, 'scaleX(' + scale + ') ' +
+                    'translate3d(' + left * 100 + '%,0,0)');
         element.addClass('md-ink-bar-grow');
-        element.css({
-          width: Math.round(scale * 100) + '%',
-          left:  (left / scale) + '%'
-        });
         if (timeout) $timeout.cancel(timeout);
         timeout = $timeout(function () {
           element.removeClass('md-ink-bar-grow');
         }, 250, false);
+
       }
     }
 
