@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-fca5376
+ * v0.6.0-rc1-master-8651886
  */
 md-backdrop.md-opaque.md-deep-orange-theme {
   background-color: rgba(0, 0, 0, 0.3);
@@ -203,3 +203,32 @@ md-tooltip.md-deep-orange-theme {
   color: #ffffff; }
   md-tooltip.md-deep-orange-theme .md-background {
     background-color: rgba(0, 0, 0, 0.52); }
+
+.md-deep-orange-theme *[md-color-level='50'], .md-deep-orange-theme[md-color-level='50'] {
+  color: #fbe9e7 !important; }
+.md-deep-orange-theme *[md-color-level='100'], .md-deep-orange-theme[md-color-level='100'] {
+  color: #ffccbc !important; }
+.md-deep-orange-theme *[md-color-level='200'], .md-deep-orange-theme[md-color-level='200'] {
+  color: #ffab91 !important; }
+.md-deep-orange-theme *[md-color-level='300'], .md-deep-orange-theme[md-color-level='300'] {
+  color: #ff8a65 !important; }
+.md-deep-orange-theme *[md-color-level='400'], .md-deep-orange-theme[md-color-level='400'] {
+  color: #ff7043 !important; }
+.md-deep-orange-theme *[md-color-level='500'], .md-deep-orange-theme[md-color-level='500'] {
+  color: #ff5722 !important; }
+.md-deep-orange-theme *[md-color-level='600'], .md-deep-orange-theme[md-color-level='600'] {
+  color: #f4511e !important; }
+.md-deep-orange-theme *[md-color-level='700'], .md-deep-orange-theme[md-color-level='700'] {
+  color: #e64a19 !important; }
+.md-deep-orange-theme *[md-color-level='800'], .md-deep-orange-theme[md-color-level='800'] {
+  color: #d84315 !important; }
+.md-deep-orange-theme *[md-color-level='900'], .md-deep-orange-theme[md-color-level='900'] {
+  color: #bf360c !important; }
+.md-deep-orange-theme *[md-color-level='A100'], .md-deep-orange-theme[md-color-level='A100'] {
+  color: #ff9e80 !important; }
+.md-deep-orange-theme *[md-color-level='A200'], .md-deep-orange-theme[md-color-level='A200'] {
+  color: #ff6e40 !important; }
+.md-deep-orange-theme *[md-color-level='A400'], .md-deep-orange-theme[md-color-level='A400'] {
+  color: #ff3d00 !important; }
+.md-deep-orange-theme *[md-color-level='A700'], .md-deep-orange-theme[md-color-level='A700'] {
+  color: #dd2c00 !important; }

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-fca5376
+ * v0.6.0-rc1-master-8651886
  */
 (function() {
 'use strict';
@@ -1137,10 +1137,10 @@ function InkRippleService($window, $timeout) {
           },
           function (newValue) {
             isActive = newValue;
-            if (isActive) {
-              if (ripples.length === 0) {
+            if (isActive && !ripples.length) {
+              $timeout(function () {
                 createRipple(0, 0);
-              }
+              }, 0, false);
             }
             angular.forEach(ripples, updateElement);
           }
@@ -1386,6 +1386,7 @@ function attrNoDirective() {
 angular.module('material.core')
   .directive('mdTheme', ThemingDirective)
   .directive('mdThemable', ThemableDirective)
+  .directive('mdThemeLevels', ThemeLevelsDirective)
   .provider('$mdTheming', ThemingProvider);
 
 /**
@@ -1481,7 +1482,40 @@ function ThemingProvider() {
   }
 }
 
+function ThemeLevelsDirective($window, $mdTheming) {
+  var lookup = {},
+      dummyElement = angular.element('<div>'),
+      body = angular.element(document.body);
 
+  return function (scope, element, attr) {
+    var styles = scope.$eval(attr.mdThemeLevels),
+        themeName;
+    angular.forEach(styles, function (value, key) {
+      styles[key] = getColor(value);
+    });
+    element.css(styles);
+    $mdTheming(element);
+    themeName = element.controller('mdTheme').$mdTheme;
+    function getColor(level) {
+      //-- get or create theme
+      var theme = lookup[themeName],
+          color;
+      if (!theme) theme = lookup[themeName] = {};
+      //-- attempt to get color
+      color = theme[level];
+      //-- if color has been found already, return it
+      if (color) return color;
+      //-- otherwise, use the dummy DOM element to find it
+      element.append(dummyElement);
+      $mdTheming(dummyElement);
+      dummyElement.attr('md-color-level', level);
+      theme[level] = color = $window.getComputedStyle(dummyElement[0]).color;
+      dummyElement.remove();
+      return color;
+    }
+  };
+}
+ThemeLevelsDirective.$inject = ["$window", "$mdTheming"];
 
 function ThemingDirective($interpolate) {
   return {
