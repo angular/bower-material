@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-2aa1a75
+ * v0.6.0-rc1-master-ae1c152
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -2462,11 +2462,16 @@ md-sidenav {
   bottom: 0;
   z-index: 6;
   background-color: white;
-  overflow: auto; }
+  overflow: auto;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column; }
   md-sidenav.md-closed {
     display: none; }
   md-sidenav.md-closed-add, md-sidenav.md-closed-remove {
-    display: block;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
     /* this is required as of 1.3x to properly
        apply all styling in a show/hide animation */
     transition: 0s all; }
@@ -2474,7 +2479,9 @@ md-sidenav {
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
   md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-left, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-right {
     position: static;
-    display: block;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }
 
