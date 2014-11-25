@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-b42b958
+ * v0.6.0-rc1-master-09f8525
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.core');
@@ -84,7 +84,7 @@ function MdTabInkDirective($mdConstant, $window, $$rAF, $timeout) {
         if (timeout) $timeout.cancel(timeout);
         timeout = $timeout(function () {
           element.removeClass('md-ink-bar-grow');
-        }, 500, false);
+        }, 250, false);
 
       }
     }
