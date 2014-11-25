@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-9c56383
+ * v0.6.0-rc2
  */
 (function() {
 'use strict';
@@ -1212,7 +1212,7 @@ function InkRippleService($window, $timeout) {
 
     function updateElement(elem) {
       var index = ripples.indexOf(elem),
-          state = states[index],
+          state = states[index] || {},
           elemIsActive = ripples.length > 1 ? false : isActive,
           elemIsHeld   = ripples.length > 1 ? false : isHeld;
       if (elemIsActive || state.animating || elemIsHeld) {
@@ -1246,7 +1246,7 @@ function InkRippleService($window, $timeout) {
           css = getRippleCss(size, left, top),
           elem = getRippleElement(css),
           index = ripples.indexOf(elem),
-          state = states[index];
+          state = states[index] || {};
 
       rippleSize = size;
 
