@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc2-master-0412152
+ * v0.6.0-rc2-master-7fc6b42
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -333,11 +333,11 @@ md-tab > .md-ripple-container .md-ripple {
           flex: 0 0 66.66%;
   max-width: 66.66%; }
 
-[hide]:not([show]), [hide]:not([show-sm]), [hide]:not([show-md]), [hide]:not([show-lg]), [hide]:not([show-gt-sm]), [hide]:not([show-gt-md]), [hide]:not([show-gt-lg]) {
+[hide]:not([show]):not([show-sm]):not([show-md]):not([show-lg]):not([show-gt-sm]):not([show-gt-md]):not([show-gt-lg]) {
   display: none; }
 
 @media (max-width: 600px) {
-  [hide-sm]:not([show]), [hide-sm]:not([show-sm]), [hide-sm]:not([show-md]), [hide-sm]:not([show-lg]), [hide-sm]:not([show-gt-sm]), [hide-sm]:not([show-gt-md]), [hide-sm]:not([show-gt-lg]) {
+  [hide-sm]:not([show-sm]) {
     display: none; }
 
   [layout-sm] {
@@ -495,7 +495,7 @@ md-tab > .md-ripple-container .md-ripple {
  }
 
 @media (min-width: 600px) {
-  [hide-gt-sm]:not([show]), [hide-gt-sm]:not([show-sm]), [hide-gt-sm]:not([show-md]), [hide-gt-sm]:not([show-lg]), [hide-gt-sm]:not([show-gt-sm]), [hide-gt-sm]:not([show-gt-md]), [hide-gt-sm]:not([show-gt-lg]) {
+  [hide-gt-sm]:not([show-gt-sm]):not([show-md]):not([show-gt-md]):not([show-lg]):not([show-gt-lg]) {
     display: none; }
 
   [layout-gt-sm] {
@@ -653,7 +653,7 @@ md-tab > .md-ripple-container .md-ripple {
  }
 
 @media (min-width: 600px) and (max-width: 960px) {
-  [hide-md]:not([show]), [hide-md]:not([show-sm]), [hide-md]:not([show-md]), [hide-md]:not([show-lg]), [hide-md]:not([show-gt-sm]), [hide-md]:not([show-gt-md]), [hide-md]:not([show-gt-lg]) {
+  [hide-md]:not([show-md]) {
     display: none; }
 
   [layout-md] {
@@ -811,7 +811,7 @@ md-tab > .md-ripple-container .md-ripple {
  }
 
 @media (min-width: 960px) {
-  [hide-gt-md]:not([show]), [hide-gt-md]:not([show-sm]), [hide-gt-md]:not([show-md]), [hide-gt-md]:not([show-lg]), [hide-gt-md]:not([show-gt-sm]), [hide-gt-md]:not([show-gt-md]), [hide-gt-md]:not([show-gt-lg]) {
+  [hide-gt-md]:not([show-gt-md]):not([show-lg]):not([show-gt-lg]) {
     display: none; }
 
   [layout-gt-md] {
@@ -969,7 +969,7 @@ md-tab > .md-ripple-container .md-ripple {
  }
 
 @media (min-width: 960px) and (max-width: 1200px) {
-  [hide-lg]:not([show]), [hide-lg]:not([show-sm]), [hide-lg]:not([show-md]), [hide-lg]:not([show-lg]), [hide-lg]:not([show-gt-sm]), [hide-lg]:not([show-gt-md]), [hide-lg]:not([show-gt-lg]) {
+  [hide-lg]:not([show-lg]) {
     display: none; }
 
   [layout-lg] {
@@ -1127,7 +1127,7 @@ md-tab > .md-ripple-container .md-ripple {
  }
 
 @media (min-width: 1200px) {
-  [hide-gt-lg]:not([show]), [hide-gt-lg]:not([show-sm]), [hide-gt-lg]:not([show-md]), [hide-gt-lg]:not([show-lg]), [hide-gt-lg]:not([show-gt-sm]), [hide-gt-lg]:not([show-gt-md]), [hide-gt-lg]:not([show-gt-lg]) {
+  [hide-gt-lg]:not([show-gt-lg]) {
     display: none; }
 
   [layout-gt-lg] {
