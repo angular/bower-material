@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-6c4413e
+ * v0.6.0-rc1-master-9c56383
  */
 goog.provide('ng.material.core');
 
@@ -1090,32 +1090,45 @@ function InkRippleService($window, $timeout) {
     attach: attach
   };
 
-  function attachButtonBehavior(scope, element) {
-    return attach(scope, element, {
+  function attachButtonBehavior(scope, element, options) {
+    return attach(scope, element, angular.extend({
       isFAB: element.hasClass('md-fab'),
       isMenuItem: element.hasClass('md-menu-item'),
       center: false,
       dimBackground: true
-    });
+    }, options));
   }
 
-  function attachCheckboxBehavior(scope, element) {
-    return attach(scope, element, {
+  function attachCheckboxBehavior(scope, element, options) {
+    return attach(scope, element, angular.extend({
       center: true,
       dimBackground: false
-    });
+    }, options));
   }
 
-  function attachTabBehavior(scope, element) {
-    return attach(scope, element, {
+  function attachTabBehavior(scope, element, options) {
+    return attach(scope, element, angular.extend({
       center: false,
       dimBackground: true,
       outline: true
-    });
+    }, options));
   }
 
   function attach(scope, element, options) {
     if (element.controller('mdNoInk')) return angular.noop;
+
+    options = angular.extend({
+      colorElement: element,
+      mousedown: true,
+      hover: true,
+      focus: true,
+      center: false,
+      mousedownPauseTime: 150,
+      dimBackground: false,
+      outline: false,
+      isFAB: false,
+      isMenuItem: false
+    }, options);
 
     var rippleContainer, rippleSize,
         controller = element.controller('mdInkRipple') || {},
@@ -1127,39 +1140,22 @@ function InkRippleService($window, $timeout) {
         isHeld = false,
         node = element[0],
         hammertime = new Hammer(node),
-        color = parseColor(element.attr('md-ink-ripple')) || parseColor($window.getComputedStyle(node).color || 'rgb(0, 0, 0)');
-
-    options = angular.extend({
-      mousedown: true,
-      hover: true,
-      focus: true,
-      center: false,
-      mousedownPauseTime: 150,
-      dimBackground: false,
-      outline: false,
-      isFAB: false,
-      isMenuItem: false
-    }, options || {});
+        color = parseColor(element.attr('md-ink-ripple')) || parseColor($window.getComputedStyle(options.colorElement[0]).color || 'rgb(0, 0, 0)');
 
     options.mousedown && hammertime.on('hammer.input', onInput);
 
     controller.createRipple = createRipple;
 
     if (isActiveExpr) {
-      scope.$watch(
-          function () {
-            return scope.$eval(isActiveExpr);
-          },
-          function (newValue) {
-            isActive = newValue;
-            if (isActive && !ripples.length) {
-              $timeout(function () {
-                createRipple(0, 0);
-              }, 0, false);
-            }
-            angular.forEach(ripples, updateElement);
-          }
-      );
+      scope.$watch(isActiveExpr, function watchActive(newValue) {
+        isActive = newValue;
+        if (isActive && !ripples.length) {
+          $timeout(function () {
+            createRipple(0, 0);
+          }, 0, false);
+        }
+        angular.forEach(ripples, updateElement);
+      });
     }
 
     // Publish self-detach method if desired...

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-6c4413e
+ * v0.6.0-rc1-master-9c56383
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.core');
@@ -64,17 +64,19 @@ function MdTabInkDirective($mdConstant, $window, $$rAF, $timeout) {
 
     if (nobar) return;
 
+    tabsCtrl.inkBarElement = element;
+
     scope.$watch(tabsCtrl.selected, updateBar);
     scope.$on('$mdTabsChanged', updateBar);
 
     function updateBar() {
       var selected = tabsCtrl.selected();
 
-      var hideInkBar = !selected || tabsCtrl.count() < 2 || 
+      var hideInkBar = !selected || tabsCtrl.count() < 2 ||
         (scope.pagination && scope.pagination.itemsPerPage === 1);
       element.css('display', hideInkBar ? 'none' : 'block');
 
-      if (!hideInkBar) { 
+      if (!hideInkBar) {
         var count = tabsCtrl.count();
         var scale = 1 / count;
         var left = tabsCtrl.indexOf(selected);
@@ -467,7 +469,9 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
       transcludeTabContent();
       configureAria();
 
-      var detachRippleFn = $mdInkRipple.attachTabBehavior(scope, element);
+      var detachRippleFn = $mdInkRipple.attachTabBehavior(scope, element, {
+        colorElement: tabsCtrl.inkBarElement
+      });
       tabsCtrl.add(tabItemCtrl);
       scope.$on('$destroy', function() {
         detachRippleFn();
@@ -544,7 +548,7 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
       function watchActiveAttribute() {
         var unwatch = scope.$parent.$watch('!!(' + attr.mdActive + ')', activeWatchAction);
         scope.$on('$destroy', unwatch);
-        
+
         function activeWatchAction(isActive) {
           var isSelected = tabsCtrl.selected() === tabItemCtrl;
 
@@ -558,7 +562,7 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
 
       function watchDisabled() {
         scope.$watch(tabItemCtrl.isDisabled, disabledWatchAction);
-        
+
         function disabledWatchAction(isDisabled) {
           element.attr('aria-disabled', isDisabled);
 

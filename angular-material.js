@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-6c4413e
+ * v0.6.0-rc1-master-9c56383
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -1089,32 +1089,45 @@ function InkRippleService($window, $timeout) {
     attach: attach
   };
 
-  function attachButtonBehavior(scope, element) {
-    return attach(scope, element, {
+  function attachButtonBehavior(scope, element, options) {
+    return attach(scope, element, angular.extend({
       isFAB: element.hasClass('md-fab'),
       isMenuItem: element.hasClass('md-menu-item'),
       center: false,
       dimBackground: true
-    });
+    }, options));
   }
 
-  function attachCheckboxBehavior(scope, element) {
-    return attach(scope, element, {
+  function attachCheckboxBehavior(scope, element, options) {
+    return attach(scope, element, angular.extend({
       center: true,
       dimBackground: false
-    });
+    }, options));
   }
 
-  function attachTabBehavior(scope, element) {
-    return attach(scope, element, {
+  function attachTabBehavior(scope, element, options) {
+    return attach(scope, element, angular.extend({
       center: false,
       dimBackground: true,
       outline: true
-    });
+    }, options));
   }
 
   function attach(scope, element, options) {
     if (element.controller('mdNoInk')) return angular.noop;
+
+    options = angular.extend({
+      colorElement: element,
+      mousedown: true,
+      hover: true,
+      focus: true,
+      center: false,
+      mousedownPauseTime: 150,
+      dimBackground: false,
+      outline: false,
+      isFAB: false,
+      isMenuItem: false
+    }, options);
 
     var rippleContainer, rippleSize,
         controller = element.controller('mdInkRipple') || {},
@@ -1126,39 +1139,22 @@ function InkRippleService($window, $timeout) {
         isHeld = false,
         node = element[0],
         hammertime = new Hammer(node),
-        color = parseColor(element.attr('md-ink-ripple')) || parseColor($window.getComputedStyle(node).color || 'rgb(0, 0, 0)');
-
-    options = angular.extend({
-      mousedown: true,
-      hover: true,
-      focus: true,
-      center: false,
-      mousedownPauseTime: 150,
-      dimBackground: false,
-      outline: false,
-      isFAB: false,
-      isMenuItem: false
-    }, options || {});
+        color = parseColor(element.attr('md-ink-ripple')) || parseColor($window.getComputedStyle(options.colorElement[0]).color || 'rgb(0, 0, 0)');
 
     options.mousedown && hammertime.on('hammer.input', onInput);
 
     controller.createRipple = createRipple;
 
     if (isActiveExpr) {
-      scope.$watch(
-          function () {
-            return scope.$eval(isActiveExpr);
-          },
-          function (newValue) {
-            isActive = newValue;
-            if (isActive && !ripples.length) {
-              $timeout(function () {
-                createRipple(0, 0);
-              }, 0, false);
-            }
-            angular.forEach(ripples, updateElement);
-          }
-      );
+      scope.$watch(isActiveExpr, function watchActive(newValue) {
+        isActive = newValue;
+        if (isActive && !ripples.length) {
+          $timeout(function () {
+            createRipple(0, 0);
+          }, 0, false);
+        }
+        angular.forEach(ripples, updateElement);
+      });
     }
 
     // Publish self-detach method if desired...
@@ -5654,17 +5650,19 @@ function MdTabInkDirective($mdConstant, $window, $$rAF, $timeout) {
 
     if (nobar) return;
 
+    tabsCtrl.inkBarElement = element;
+
     scope.$watch(tabsCtrl.selected, updateBar);
     scope.$on('$mdTabsChanged', updateBar);
 
     function updateBar() {
       var selected = tabsCtrl.selected();
 
-      var hideInkBar = !selected || tabsCtrl.count() < 2 || 
+      var hideInkBar = !selected || tabsCtrl.count() < 2 ||
         (scope.pagination && scope.pagination.itemsPerPage === 1);
       element.css('display', hideInkBar ? 'none' : 'block');
 
-      if (!hideInkBar) { 
+      if (!hideInkBar) {
         var count = tabsCtrl.count();
         var scale = 1 / count;
         var left = tabsCtrl.indexOf(selected);
@@ -6057,7 +6055,9 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
       transcludeTabContent();
       configureAria();
 
-      var detachRippleFn = $mdInkRipple.attachTabBehavior(scope, element);
+      var detachRippleFn = $mdInkRipple.attachTabBehavior(scope, element, {
+        colorElement: tabsCtrl.inkBarElement
+      });
       tabsCtrl.add(tabItemCtrl);
       scope.$on('$destroy', function() {
         detachRippleFn();
@@ -6134,7 +6134,7 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
       function watchActiveAttribute() {
         var unwatch = scope.$parent.$watch('!!(' + attr.mdActive + ')', activeWatchAction);
         scope.$on('$destroy', unwatch);
-        
+
         function activeWatchAction(isActive) {
           var isSelected = tabsCtrl.selected() === tabItemCtrl;
 
@@ -6148,7 +6148,7 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
 
       function watchDisabled() {
         scope.$watch(tabItemCtrl.isDisabled, disabledWatchAction);
-        
+
         function disabledWatchAction(isDisabled) {
           element.attr('aria-disabled', isDisabled);
 

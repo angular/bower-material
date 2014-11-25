@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-6c4413e
+ * v0.6.0-rc1-master-9c56383
  */
 md-backdrop.md-opaque.md-light-green-theme {
   background-color: rgba(0, 0, 0, 0.3);
@@ -151,8 +151,10 @@ md-switch.md-light-green-theme .md-switch-thumb:focus .md-label {
 
 md-tabs.md-light-green-theme .md-header {
   background-color: #8bc34a; }
-md-tabs.md-light-green-theme md-tabs-ink-bar md-tabs-ink-bar-inner {
-  background: #ffff85; }
+md-tabs.md-light-green-theme md-tabs-ink-bar {
+  color: #ffff85; }
+  md-tabs.md-light-green-theme md-tabs-ink-bar md-tabs-ink-bar-inner {
+    background: #ffff85; }
 md-tabs.md-light-green-theme md-tab {
   color: #dcedc8; }
   md-tabs.md-light-green-theme md-tab.active {
