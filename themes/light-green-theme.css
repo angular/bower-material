@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc2-master-e2c50a8
+ * v0.6.0-rc2-master-682a450
  */
 md-backdrop.md-opaque.md-light-green-theme {
   background-color: rgba(0, 0, 0, 0.3);
@@ -204,32 +204,3 @@ md-tooltip.md-light-green-theme {
   color: #ffffff; }
   md-tooltip.md-light-green-theme .md-background {
     background-color: rgba(0, 0, 0, 0.52); }
-
-.md-light-green-theme *[md-color-level='50'], .md-light-green-theme[md-color-level='50'] {
-  color: #f1f8e9 !important; }
-.md-light-green-theme *[md-color-level='100'], .md-light-green-theme[md-color-level='100'] {
-  color: #dcedc8 !important; }
-.md-light-green-theme *[md-color-level='200'], .md-light-green-theme[md-color-level='200'] {
-  color: #c5e1a5 !important; }
-.md-light-green-theme *[md-color-level='300'], .md-light-green-theme[md-color-level='300'] {
-  color: #aed581 !important; }
-.md-light-green-theme *[md-color-level='400'], .md-light-green-theme[md-color-level='400'] {
-  color: #9ccc65 !important; }
-.md-light-green-theme *[md-color-level='500'], .md-light-green-theme[md-color-level='500'] {
-  color: #8bc34a !important; }
-.md-light-green-theme *[md-color-level='600'], .md-light-green-theme[md-color-level='600'] {
-  color: #7cb342 !important; }
-.md-light-green-theme *[md-color-level='700'], .md-light-green-theme[md-color-level='700'] {
-  color: #689f38 !important; }
-.md-light-green-theme *[md-color-level='800'], .md-light-green-theme[md-color-level='800'] {
-  color: #558b2f !important; }
-.md-light-green-theme *[md-color-level='900'], .md-light-green-theme[md-color-level='900'] {
-  color: #33691e !important; }
-.md-light-green-theme *[md-color-level='A100'], .md-light-green-theme[md-color-level='A100'] {
-  color: #ccff90 !important; }
-.md-light-green-theme *[md-color-level='A200'], .md-light-green-theme[md-color-level='A200'] {
-  color: #b2ff59 !important; }
-.md-light-green-theme *[md-color-level='A400'], .md-light-green-theme[md-color-level='A400'] {
-  color: #76ff03 !important; }
-.md-light-green-theme *[md-color-level='A700'], .md-light-green-theme[md-color-level='A700'] {
-  color: #64dd17 !important; }

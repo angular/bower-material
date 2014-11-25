@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc2-master-e2c50a8
+ * v0.6.0-rc2-master-682a450
  */
 md-backdrop.md-opaque.md-blue-grey-theme {
   background-color: rgba(0, 0, 0, 0.3);
@@ -204,32 +204,3 @@ md-tooltip.md-blue-grey-theme {
   color: #ffffff; }
   md-tooltip.md-blue-grey-theme .md-background {
     background-color: rgba(0, 0, 0, 0.52); }
-
-.md-blue-grey-theme *[md-color-level='50'], .md-blue-grey-theme[md-color-level='50'] {
-  color: #eceff1 !important; }
-.md-blue-grey-theme *[md-color-level='100'], .md-blue-grey-theme[md-color-level='100'] {
-  color: #cfd8dc !important; }
-.md-blue-grey-theme *[md-color-level='200'], .md-blue-grey-theme[md-color-level='200'] {
-  color: #b0bec5 !important; }
-.md-blue-grey-theme *[md-color-level='300'], .md-blue-grey-theme[md-color-level='300'] {
-  color: #90a4ae !important; }
-.md-blue-grey-theme *[md-color-level='400'], .md-blue-grey-theme[md-color-level='400'] {
-  color: #78909c !important; }
-.md-blue-grey-theme *[md-color-level='500'], .md-blue-grey-theme[md-color-level='500'] {
-  color: #607d8b !important; }
-.md-blue-grey-theme *[md-color-level='600'], .md-blue-grey-theme[md-color-level='600'] {
-  color: #546e7a !important; }
-.md-blue-grey-theme *[md-color-level='700'], .md-blue-grey-theme[md-color-level='700'] {
-  color: #455a64 !important; }
-.md-blue-grey-theme *[md-color-level='800'], .md-blue-grey-theme[md-color-level='800'] {
-  color: #37474f !important; }
-.md-blue-grey-theme *[md-color-level='900'], .md-blue-grey-theme[md-color-level='900'] {
-  color: #263238 !important; }
-.md-blue-grey-theme *[md-color-level='A100'], .md-blue-grey-theme[md-color-level='A100'] {
-  color: !important; }
-.md-blue-grey-theme *[md-color-level='A200'], .md-blue-grey-theme[md-color-level='A200'] {
-  color: !important; }
-.md-blue-grey-theme *[md-color-level='A400'], .md-blue-grey-theme[md-color-level='A400'] {
-  color: !important; }
-.md-blue-grey-theme *[md-color-level='A700'], .md-blue-grey-theme[md-color-level='A700'] {
-  color: !important; }

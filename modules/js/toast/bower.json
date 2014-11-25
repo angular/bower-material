@@ -1,9 +1,9 @@
 {
   "name": "angular-material-toast",
-  "version": "0.6.0-rc2-master-e2c50a8",
+  "version": "0.6.0-rc2-master-682a450",
   "dependencies": {
-    "angular-material-core": "0.6.0-rc2-master-e2c50a8",
-    "angular-material-swipe": "0.6.0-rc2-master-e2c50a8",
-    "angular-material-button": "0.6.0-rc2-master-e2c50a8"
+    "angular-material-core": "0.6.0-rc2-master-682a450",
+    "angular-material-swipe": "0.6.0-rc2-master-682a450",
+    "angular-material-button": "0.6.0-rc2-master-682a450"
   }
 }

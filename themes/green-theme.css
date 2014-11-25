@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc2-master-e2c50a8
+ * v0.6.0-rc2-master-682a450
  */
 md-backdrop.md-opaque.md-green-theme {
   background-color: rgba(0, 0, 0, 0.3);
@@ -204,32 +204,3 @@ md-tooltip.md-green-theme {
   color: #ffffff; }
   md-tooltip.md-green-theme .md-background {
     background-color: rgba(0, 0, 0, 0.52); }
-
-.md-green-theme *[md-color-level='50'], .md-green-theme[md-color-level='50'] {
-  color: #e8f5e9 !important; }
-.md-green-theme *[md-color-level='100'], .md-green-theme[md-color-level='100'] {
-  color: #c8e6c9 !important; }
-.md-green-theme *[md-color-level='200'], .md-green-theme[md-color-level='200'] {
-  color: #a5d6a7 !important; }
-.md-green-theme *[md-color-level='300'], .md-green-theme[md-color-level='300'] {
-  color: #81c784 !important; }
-.md-green-theme *[md-color-level='400'], .md-green-theme[md-color-level='400'] {
-  color: #66bb6a !important; }
-.md-green-theme *[md-color-level='500'], .md-green-theme[md-color-level='500'] {
-  color: #4caf50 !important; }
-.md-green-theme *[md-color-level='600'], .md-green-theme[md-color-level='600'] {
-  color: #43a047 !important; }
-.md-green-theme *[md-color-level='700'], .md-green-theme[md-color-level='700'] {
-  color: #388e3c !important; }
-.md-green-theme *[md-color-level='800'], .md-green-theme[md-color-level='800'] {
-  color: #2e7d32 !important; }
-.md-green-theme *[md-color-level='900'], .md-green-theme[md-color-level='900'] {
-  color: #1b5e20 !important; }
-.md-green-theme *[md-color-level='A100'], .md-green-theme[md-color-level='A100'] {
-  color: #b9f6ca !important; }
-.md-green-theme *[md-color-level='A200'], .md-green-theme[md-color-level='A200'] {
-  color: #69f0ae !important; }
-.md-green-theme *[md-color-level='A400'], .md-green-theme[md-color-level='A400'] {
-  color: #00e676 !important; }
-.md-green-theme *[md-color-level='A700'], .md-green-theme[md-color-level='A700'] {
-  color: #00c853 !important; }

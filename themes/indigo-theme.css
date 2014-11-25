@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc2-master-e2c50a8
+ * v0.6.0-rc2-master-682a450
  */
 md-backdrop.md-opaque.md-indigo-theme {
   background-color: rgba(0, 0, 0, 0.3);
@@ -204,32 +204,3 @@ md-tooltip.md-indigo-theme {
   color: #ffffff; }
   md-tooltip.md-indigo-theme .md-background {
     background-color: rgba(0, 0, 0, 0.52); }
-
-.md-indigo-theme *[md-color-level='50'], .md-indigo-theme[md-color-level='50'] {
-  color: #e8eaf6 !important; }
-.md-indigo-theme *[md-color-level='100'], .md-indigo-theme[md-color-level='100'] {
-  color: #c5cae9 !important; }
-.md-indigo-theme *[md-color-level='200'], .md-indigo-theme[md-color-level='200'] {
-  color: #9fa8da !important; }
-.md-indigo-theme *[md-color-level='300'], .md-indigo-theme[md-color-level='300'] {
-  color: #7986cb !important; }
-.md-indigo-theme *[md-color-level='400'], .md-indigo-theme[md-color-level='400'] {
-  color: #5c6bc0 !important; }
-.md-indigo-theme *[md-color-level='500'], .md-indigo-theme[md-color-level='500'] {
-  color: #3f51b5 !important; }
-.md-indigo-theme *[md-color-level='600'], .md-indigo-theme[md-color-level='600'] {
-  color: #3949ab !important; }
-.md-indigo-theme *[md-color-level='700'], .md-indigo-theme[md-color-level='700'] {
-  color: #303f9f !important; }
-.md-indigo-theme *[md-color-level='800'], .md-indigo-theme[md-color-level='800'] {
-  color: #283593 !important; }
-.md-indigo-theme *[md-color-level='900'], .md-indigo-theme[md-color-level='900'] {
-  color: #1a237e !important; }
-.md-indigo-theme *[md-color-level='A100'], .md-indigo-theme[md-color-level='A100'] {
-  color: #8c9eff !important; }
-.md-indigo-theme *[md-color-level='A200'], .md-indigo-theme[md-color-level='A200'] {
-  color: #536dfe !important; }
-.md-indigo-theme *[md-color-level='A400'], .md-indigo-theme[md-color-level='A400'] {
-  color: #3d5afe !important; }
-.md-indigo-theme *[md-color-level='A700'], .md-indigo-theme[md-color-level='A700'] {
-  color: #304ffe !important; }

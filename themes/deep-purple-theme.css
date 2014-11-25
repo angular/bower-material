@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc2-master-e2c50a8
+ * v0.6.0-rc2-master-682a450
  */
 md-backdrop.md-opaque.md-deep-purple-theme {
   background-color: rgba(0, 0, 0, 0.3);
@@ -204,32 +204,3 @@ md-tooltip.md-deep-purple-theme {
   color: #ffffff; }
   md-tooltip.md-deep-purple-theme .md-background {
     background-color: rgba(0, 0, 0, 0.52); }
-
-.md-deep-purple-theme *[md-color-level='50'], .md-deep-purple-theme[md-color-level='50'] {
-  color: #ede7f6 !important; }
-.md-deep-purple-theme *[md-color-level='100'], .md-deep-purple-theme[md-color-level='100'] {
-  color: #d1c4e9 !important; }
-.md-deep-purple-theme *[md-color-level='200'], .md-deep-purple-theme[md-color-level='200'] {
-  color: #b39ddb !important; }
-.md-deep-purple-theme *[md-color-level='300'], .md-deep-purple-theme[md-color-level='300'] {
-  color: #9575cd !important; }
-.md-deep-purple-theme *[md-color-level='400'], .md-deep-purple-theme[md-color-level='400'] {
-  color: #7e57c2 !important; }
-.md-deep-purple-theme *[md-color-level='500'], .md-deep-purple-theme[md-color-level='500'] {
-  color: #673ab7 !important; }
-.md-deep-purple-theme *[md-color-level='600'], .md-deep-purple-theme[md-color-level='600'] {
-  color: #5e35b1 !important; }
-.md-deep-purple-theme *[md-color-level='700'], .md-deep-purple-theme[md-color-level='700'] {
-  color: #512da8 !important; }
-.md-deep-purple-theme *[md-color-level='800'], .md-deep-purple-theme[md-color-level='800'] {
-  color: #4527a0 !important; }
-.md-deep-purple-theme *[md-color-level='900'], .md-deep-purple-theme[md-color-level='900'] {
-  color: #311b92 !important; }
-.md-deep-purple-theme *[md-color-level='A100'], .md-deep-purple-theme[md-color-level='A100'] {
-  color: #b388ff !important; }
-.md-deep-purple-theme *[md-color-level='A200'], .md-deep-purple-theme[md-color-level='A200'] {
-  color: #7c4dff !important; }
-.md-deep-purple-theme *[md-color-level='A400'], .md-deep-purple-theme[md-color-level='A400'] {
-  color: #651fff !important; }
-.md-deep-purple-theme *[md-color-level='A700'], .md-deep-purple-theme[md-color-level='A700'] {
-  color: #6200ea !important; }
