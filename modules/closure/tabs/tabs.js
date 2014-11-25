@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc2-master-3750bff
+ * v0.6.0-rc2-master-e2c50a8
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.core');
@@ -53,7 +53,6 @@ function MdTabInkDirective($mdConstant, $window, $$rAF, $timeout) {
   return {
     restrict: 'E',
     require: ['^?mdNoBar', '^mdTabs'],
-    template: '<md-tabs-ink-bar-inner></md-tabs-ink-bar-inner>',
     link: postLink
   };
 
@@ -835,6 +834,7 @@ function TabsDirective($parse, $mdTheming) {
           // flex container for <md-tab> elements
           '<div class="md-header-items">' +
             '<md-tabs-ink-bar></md-tabs-ink-bar>' +
+            '<md-tabs-ink-bar class="md-ink-bar-delayed"></md-tabs-ink-bar>' +
           '</div>' +
         '</div>' +
 
