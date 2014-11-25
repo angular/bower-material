@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-09f8525
+ * v0.6.0-rc1-master-6c4413e
  */
 goog.provide('ng.material.core');
 
@@ -1111,7 +1111,7 @@ function InkRippleService($window, $timeout) {
       center: false,
       dimBackground: true,
       outline: true
-    })
+    });
   }
 
   function attach(scope, element, options) {
@@ -1233,7 +1233,7 @@ function InkRippleService($window, $timeout) {
             marginTop: (rippleSize * -1) + 'px'
           });
         }
-        removeElement(elem, 650);
+        removeElement(elem, options.outline ? 450 : 650);
       }
     }
 
@@ -1276,7 +1276,7 @@ function InkRippleService($window, $timeout) {
         $timeout(function () {
           state.animating = false;
           updateElement(elem);
-        }, 225, false);
+        }, (options.outline ? 450 : 225), false);
       }, 0, false);
 
       return elem;

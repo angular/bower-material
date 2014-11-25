@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc1-master-09f8525
+ * v0.6.0-rc1-master-6c4413e
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -1110,7 +1110,7 @@ function InkRippleService($window, $timeout) {
       center: false,
       dimBackground: true,
       outline: true
-    })
+    });
   }
 
   function attach(scope, element, options) {
@@ -1232,7 +1232,7 @@ function InkRippleService($window, $timeout) {
             marginTop: (rippleSize * -1) + 'px'
           });
         }
-        removeElement(elem, 650);
+        removeElement(elem, options.outline ? 450 : 650);
       }
     }
 
@@ -1275,7 +1275,7 @@ function InkRippleService($window, $timeout) {
         $timeout(function () {
           state.animating = false;
           updateElement(elem);
-        }, 225, false);
+        }, (options.outline ? 450 : 225), false);
       }, 0, false);
 
       return elem;
