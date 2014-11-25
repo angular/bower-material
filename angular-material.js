@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc2-master-7fc6b42
+ * v0.6.0-rc2-master-eb7628f
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -5621,7 +5621,7 @@ function MdTabInkDirective($mdConstant, $window, $$rAF, $timeout) {
       var selected = tabsCtrl.selected();
 
       var hideInkBar = !selected || tabsCtrl.count() < 2 ||
-        (scope.pagination && scope.pagination.itemsPerPage === 1);
+        (scope.pagination || {}).itemsPerPage === 1;
       element.css('display', hideInkBar ? 'none' : 'block');
 
       if (!hideInkBar) {

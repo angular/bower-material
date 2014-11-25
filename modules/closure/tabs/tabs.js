@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc2-master-7fc6b42
+ * v0.6.0-rc2-master-eb7628f
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.core');
@@ -72,7 +72,7 @@ function MdTabInkDirective($mdConstant, $window, $$rAF, $timeout) {
       var selected = tabsCtrl.selected();
 
       var hideInkBar = !selected || tabsCtrl.count() < 2 ||
-        (scope.pagination && scope.pagination.itemsPerPage === 1);
+        (scope.pagination || {}).itemsPerPage === 1;
       element.css('display', hideInkBar ? 'none' : 'block');
 
       if (!hideInkBar) {
