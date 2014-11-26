@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc2-master-2286539
+ * v0.6.0-rc2-master-4f59a28
  */
 (function() {
 'use strict';
@@ -427,16 +427,16 @@ function MdDialogProvider($$interimElementProvider) {
       if (clickElement) {
         var clickRect = clickElement[0].getBoundingClientRect();
         startPos = 'translate3d(' +
-          (clickRect.left - element[0].offsetWidth / 2) + 'px,' +
-          (clickRect.top - element[0].offsetHeight / 2) + 'px,' +
+          (clickRect.left - element[0].offsetWidth) + 'px,' +
+          (clickRect.top - element[0].offsetHeight) + 'px,' +
           '0) scale(0.2)';
       } else {
         startPos = 'translate3d(0,100%,0) scale(0.5)';
       }
 
       element
-        .css($mdConstant.CSS.TRANSFORM, startPos)
-        .css('opacity', 0);
+      .css($mdConstant.CSS.TRANSFORM, startPos)
+      .css('opacity', 0);
 
       $$rAF(function() {
         $$rAF(function() {
