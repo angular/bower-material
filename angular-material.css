@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc2-master-8b44052
+ * v0.6.0-rc2-master-2286539
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -180,10 +180,10 @@ md-tab > .md-ripple-container .md-ripple {
       -ms-flex-direction: row;
           flex-direction: row; }
 
-[layout-margin], [layout-margin] > [flex], [layout-margin], [layout-margin] > [flex] {
+[layout-padding], [layout-padding] > [flex], [layout-margin], [layout-margin] > [flex] {
   margin: 8px; }
 
-[layout-margin] + [layout-margin], [layout-margin] + [layout-margin] {
+[layout-padding] + [layout-padding], [layout-margin] + [layout-margin] {
   margin-top: -8px; }
 
 [layout-wrap] {

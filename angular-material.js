@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc2-master-8b44052
+ * v0.6.0-rc2-master-2286539
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -2650,16 +2650,16 @@ function MdDialogProvider($$interimElementProvider) {
       if (clickElement) {
         var clickRect = clickElement[0].getBoundingClientRect();
         startPos = 'translate3d(' +
-          (clickRect.left - element[0].offsetWidth) + 'px,' +
-          (clickRect.top - element[0].offsetHeight) + 'px,' +
+          (clickRect.left - element[0].offsetWidth / 2) + 'px,' +
+          (clickRect.top - element[0].offsetHeight / 2) + 'px,' +
           '0) scale(0.2)';
       } else {
         startPos = 'translate3d(0,100%,0) scale(0.5)';
       }
 
       element
-      .css($mdConstant.CSS.TRANSFORM, startPos)
-      .css('opacity', 0);
+        .css($mdConstant.CSS.TRANSFORM, startPos)
+        .css('opacity', 0);
 
       $$rAF(function() {
         $$rAF(function() {
