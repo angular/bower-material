@@ -1,7 +1,7 @@
 {
   "name": "angular-material-textField",
-  "version": "0.6.0-rc3-master-a8db48a",
+  "version": "0.6.0-rc3-master-8bacc4f",
   "dependencies": {
-    "angular-material-core": "0.6.0-rc3-master-a8db48a"
+    "angular-material-core": "0.6.0-rc3-master-8bacc4f"
   }
 }
