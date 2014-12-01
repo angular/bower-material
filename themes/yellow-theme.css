@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc3-master-5133f8e
+ * v0.6.0-rc3-master-12d458e
  */
 md-backdrop.md-opaque.md-yellow-theme {
   background-color: rgba(0, 0, 0, 0.3);
@@ -199,6 +199,8 @@ md-toast.md-yellow-theme {
 md-toolbar.md-yellow-theme {
   background-color: #ffeb3b;
   color: rgba(0, 0, 0, 0.73); }
+  md-toolbar.md-yellow-theme .md-button {
+    color: rgba(0, 0, 0, 0.73); }
 
 md-tooltip.md-yellow-theme {
   color: #ffffff; }

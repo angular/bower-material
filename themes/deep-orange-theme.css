@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc3-master-5133f8e
+ * v0.6.0-rc3-master-12d458e
  */
 md-backdrop.md-opaque.md-deep-orange-theme {
   background-color: rgba(0, 0, 0, 0.3);
@@ -199,6 +199,8 @@ md-toast.md-deep-orange-theme {
 md-toolbar.md-deep-orange-theme {
   background-color: #ff5722;
   color: white; }
+  md-toolbar.md-deep-orange-theme .md-button {
+    color: white; }
 
 md-tooltip.md-deep-orange-theme {
   color: #ffffff; }
