@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0
+ * v0.6.0-master-51ec3dc
  */
 md-backdrop {
   z-index: 5;
@@ -13,13 +13,10 @@ md-backdrop {
   right: 0;
   bottom: 0; }
   md-backdrop.ng-enter {
-    -webkit-transition-delay: 0.1s;
-            transition-delay: 0.1s;
-    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    transition-delay: 0.1s;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
   md-backdrop.ng-leave {
-    -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-            transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-backdrop.ng-enter, md-backdrop.ng-leave.ng-leave-active {
     opacity: 0; }
   md-backdrop.ng-leave, md-backdrop.ng-enter.ng-enter-active {

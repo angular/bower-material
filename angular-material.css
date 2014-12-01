@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0
+ * v0.6.0-master-51ec3dc
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -114,8 +114,7 @@ input[type="search"] {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4); }
 
 .md-shadow-animated.md-shadow {
-  -webkit-transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-          transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1); }
+  transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1); }
 
 /*
  * A container inside of a rippling element (eg a button),
@@ -129,8 +128,7 @@ input[type="search"] {
   top: 0;
   width: 100%;
   height: 100%;
-  -webkit-transition: all 0.55s cubic-bezier(0.25, 0.8, 0.25, 1);
-          transition: all 0.55s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  transition: all 0.55s cubic-bezier(0.25, 0.8, 0.25, 1); }
 
 .md-ripple {
   position: absolute;
@@ -141,8 +139,8 @@ input[type="search"] {
   opacity: 0;
   border-radius: 50%; }
   .md-ripple.md-ripple-placed {
-    -webkit-transition: left 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), margin 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), border 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
-            transition: left 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), margin 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), border 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    transition: left 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), margin 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), border 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: left 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), margin 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), border 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1); }
   .md-ripple.md-ripple-scaled {
     -webkit-transform: scale(1);
             transform: scale(1); }
@@ -168,21 +166,16 @@ md-tab > .md-ripple-container .md-ripple {
 */
 [layout] {
   box-sizing: border-box;
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex; }
 
 [layout=column] {
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column; }
 
 [layout=row] {
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: row;
       -ms-flex-direction: row;
           flex-direction: row; }
@@ -204,160 +197,137 @@ md-tab > .md-ripple-container .md-ripple {
   width: 100%; }
 
 [flex] {
-  -webkit-box-flex: 1;
   -webkit-flex: 1;
       -ms-flex: 1;
           flex: 1; }
 
 [flex="0"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 0%;
       -ms-flex: 0 0 0%;
           flex: 0 0 0%;
   max-width: 0%; }
 
 [flex="5"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 5%;
       -ms-flex: 0 0 5%;
           flex: 0 0 5%;
   max-width: 5%; }
 
 [flex="10"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 10%;
       -ms-flex: 0 0 10%;
           flex: 0 0 10%;
   max-width: 10%; }
 
 [flex="15"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 15%;
       -ms-flex: 0 0 15%;
           flex: 0 0 15%;
   max-width: 15%; }
 
 [flex="20"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 20%;
       -ms-flex: 0 0 20%;
           flex: 0 0 20%;
   max-width: 20%; }
 
 [flex="25"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 25%;
       -ms-flex: 0 0 25%;
           flex: 0 0 25%;
   max-width: 25%; }
 
 [flex="30"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 30%;
       -ms-flex: 0 0 30%;
           flex: 0 0 30%;
   max-width: 30%; }
 
 [flex="35"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 35%;
       -ms-flex: 0 0 35%;
           flex: 0 0 35%;
   max-width: 35%; }
 
 [flex="40"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 40%;
       -ms-flex: 0 0 40%;
           flex: 0 0 40%;
   max-width: 40%; }
 
 [flex="45"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 45%;
       -ms-flex: 0 0 45%;
           flex: 0 0 45%;
   max-width: 45%; }
 
 [flex="50"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 50%;
       -ms-flex: 0 0 50%;
           flex: 0 0 50%;
   max-width: 50%; }
 
 [flex="55"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 55%;
       -ms-flex: 0 0 55%;
           flex: 0 0 55%;
   max-width: 55%; }
 
 [flex="60"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 60%;
       -ms-flex: 0 0 60%;
           flex: 0 0 60%;
   max-width: 60%; }
 
 [flex="65"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 65%;
       -ms-flex: 0 0 65%;
           flex: 0 0 65%;
   max-width: 65%; }
 
 [flex="70"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 70%;
       -ms-flex: 0 0 70%;
           flex: 0 0 70%;
   max-width: 70%; }
 
 [flex="75"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 75%;
       -ms-flex: 0 0 75%;
           flex: 0 0 75%;
   max-width: 75%; }
 
 [flex="80"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 80%;
       -ms-flex: 0 0 80%;
           flex: 0 0 80%;
   max-width: 80%; }
 
 [flex="85"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 85%;
       -ms-flex: 0 0 85%;
           flex: 0 0 85%;
   max-width: 85%; }
 
 [flex="90"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 90%;
       -ms-flex: 0 0 90%;
           flex: 0 0 90%;
   max-width: 90%; }
 
 [flex="95"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 95%;
       -ms-flex: 0 0 95%;
           flex: 0 0 95%;
   max-width: 95%; }
 
 [flex="33"], [flex="34"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 33.33%;
       -ms-flex: 0 0 33.33%;
           flex: 0 0 33.33%;
   max-width: 33.33%; }
 
 [flex="66"], [flex="67"] {
-  -webkit-box-flex: 0;
   -webkit-flex: 0 0 66.66%;
       -ms-flex: 0 0 66.66%;
           flex: 0 0 66.66%;
@@ -372,180 +342,152 @@ md-tab > .md-ripple-container .md-ripple {
 
   [layout-sm] {
     box-sizing: border-box;
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex; }
 
   [layout-sm=column] {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column; }
 
   [layout-sm=row] {
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row; }
 
   [flex-sm] {
-    -webkit-box-flex: 1;
     -webkit-flex: 1;
         -ms-flex: 1;
             flex: 1; }
 
   [flex-sm="0"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 0%;
         -ms-flex: 0 0 0%;
             flex: 0 0 0%;
     max-width: 0%; }
 
   [flex-sm="5"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 5%;
         -ms-flex: 0 0 5%;
             flex: 0 0 5%;
     max-width: 5%; }
 
   [flex-sm="10"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 10%;
         -ms-flex: 0 0 10%;
             flex: 0 0 10%;
     max-width: 10%; }
 
   [flex-sm="15"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 15%;
         -ms-flex: 0 0 15%;
             flex: 0 0 15%;
     max-width: 15%; }
 
   [flex-sm="20"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 20%;
         -ms-flex: 0 0 20%;
             flex: 0 0 20%;
     max-width: 20%; }
 
   [flex-sm="25"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 25%;
         -ms-flex: 0 0 25%;
             flex: 0 0 25%;
     max-width: 25%; }
 
   [flex-sm="30"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 30%;
         -ms-flex: 0 0 30%;
             flex: 0 0 30%;
     max-width: 30%; }
 
   [flex-sm="35"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 35%;
         -ms-flex: 0 0 35%;
             flex: 0 0 35%;
     max-width: 35%; }
 
   [flex-sm="40"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 40%;
         -ms-flex: 0 0 40%;
             flex: 0 0 40%;
     max-width: 40%; }
 
   [flex-sm="45"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 45%;
         -ms-flex: 0 0 45%;
             flex: 0 0 45%;
     max-width: 45%; }
 
   [flex-sm="50"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 50%;
         -ms-flex: 0 0 50%;
             flex: 0 0 50%;
     max-width: 50%; }
 
   [flex-sm="55"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 55%;
         -ms-flex: 0 0 55%;
             flex: 0 0 55%;
     max-width: 55%; }
 
   [flex-sm="60"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 60%;
         -ms-flex: 0 0 60%;
             flex: 0 0 60%;
     max-width: 60%; }
 
   [flex-sm="65"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 65%;
         -ms-flex: 0 0 65%;
             flex: 0 0 65%;
     max-width: 65%; }
 
   [flex-sm="70"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 70%;
         -ms-flex: 0 0 70%;
             flex: 0 0 70%;
     max-width: 70%; }
 
   [flex-sm="75"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 75%;
         -ms-flex: 0 0 75%;
             flex: 0 0 75%;
     max-width: 75%; }
 
   [flex-sm="80"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 80%;
         -ms-flex: 0 0 80%;
             flex: 0 0 80%;
     max-width: 80%; }
 
   [flex-sm="85"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 85%;
         -ms-flex: 0 0 85%;
             flex: 0 0 85%;
     max-width: 85%; }
 
   [flex-sm="90"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 90%;
         -ms-flex: 0 0 90%;
             flex: 0 0 90%;
     max-width: 90%; }
 
   [flex-sm="95"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 95%;
         -ms-flex: 0 0 95%;
             flex: 0 0 95%;
     max-width: 95%; }
 
   [flex-sm="33"], [flex-sm="34"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 33.33%;
         -ms-flex: 0 0 33.33%;
             flex: 0 0 33.33%;
     max-width: 33.33%; }
 
   [flex-sm="66"], [flex-sm="67"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 66.66%;
         -ms-flex: 0 0 66.66%;
             flex: 0 0 66.66%;
@@ -558,180 +500,152 @@ md-tab > .md-ripple-container .md-ripple {
 
   [layout-gt-sm] {
     box-sizing: border-box;
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex; }
 
   [layout-gt-sm=column] {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column; }
 
   [layout-gt-sm=row] {
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row; }
 
   [flex-gt-sm] {
-    -webkit-box-flex: 1;
     -webkit-flex: 1;
         -ms-flex: 1;
             flex: 1; }
 
   [flex-gt-sm="0"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 0%;
         -ms-flex: 0 0 0%;
             flex: 0 0 0%;
     max-width: 0%; }
 
   [flex-gt-sm="5"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 5%;
         -ms-flex: 0 0 5%;
             flex: 0 0 5%;
     max-width: 5%; }
 
   [flex-gt-sm="10"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 10%;
         -ms-flex: 0 0 10%;
             flex: 0 0 10%;
     max-width: 10%; }
 
   [flex-gt-sm="15"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 15%;
         -ms-flex: 0 0 15%;
             flex: 0 0 15%;
     max-width: 15%; }
 
   [flex-gt-sm="20"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 20%;
         -ms-flex: 0 0 20%;
             flex: 0 0 20%;
     max-width: 20%; }
 
   [flex-gt-sm="25"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 25%;
         -ms-flex: 0 0 25%;
             flex: 0 0 25%;
     max-width: 25%; }
 
   [flex-gt-sm="30"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 30%;
         -ms-flex: 0 0 30%;
             flex: 0 0 30%;
     max-width: 30%; }
 
   [flex-gt-sm="35"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 35%;
         -ms-flex: 0 0 35%;
             flex: 0 0 35%;
     max-width: 35%; }
 
   [flex-gt-sm="40"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 40%;
         -ms-flex: 0 0 40%;
             flex: 0 0 40%;
     max-width: 40%; }
 
   [flex-gt-sm="45"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 45%;
         -ms-flex: 0 0 45%;
             flex: 0 0 45%;
     max-width: 45%; }
 
   [flex-gt-sm="50"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 50%;
         -ms-flex: 0 0 50%;
             flex: 0 0 50%;
     max-width: 50%; }
 
   [flex-gt-sm="55"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 55%;
         -ms-flex: 0 0 55%;
             flex: 0 0 55%;
     max-width: 55%; }
 
   [flex-gt-sm="60"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 60%;
         -ms-flex: 0 0 60%;
             flex: 0 0 60%;
     max-width: 60%; }
 
   [flex-gt-sm="65"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 65%;
         -ms-flex: 0 0 65%;
             flex: 0 0 65%;
     max-width: 65%; }
 
   [flex-gt-sm="70"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 70%;
         -ms-flex: 0 0 70%;
             flex: 0 0 70%;
     max-width: 70%; }
 
   [flex-gt-sm="75"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 75%;
         -ms-flex: 0 0 75%;
             flex: 0 0 75%;
     max-width: 75%; }
 
   [flex-gt-sm="80"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 80%;
         -ms-flex: 0 0 80%;
             flex: 0 0 80%;
     max-width: 80%; }
 
   [flex-gt-sm="85"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 85%;
         -ms-flex: 0 0 85%;
             flex: 0 0 85%;
     max-width: 85%; }
 
   [flex-gt-sm="90"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 90%;
         -ms-flex: 0 0 90%;
             flex: 0 0 90%;
     max-width: 90%; }
 
   [flex-gt-sm="95"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 95%;
         -ms-flex: 0 0 95%;
             flex: 0 0 95%;
     max-width: 95%; }
 
   [flex-gt-sm="33"], [flex-gt-sm="34"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 33.33%;
         -ms-flex: 0 0 33.33%;
             flex: 0 0 33.33%;
     max-width: 33.33%; }
 
   [flex-gt-sm="66"], [flex-gt-sm="67"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 66.66%;
         -ms-flex: 0 0 66.66%;
             flex: 0 0 66.66%;
@@ -744,180 +658,152 @@ md-tab > .md-ripple-container .md-ripple {
 
   [layout-md] {
     box-sizing: border-box;
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex; }
 
   [layout-md=column] {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column; }
 
   [layout-md=row] {
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row; }
 
   [flex-md] {
-    -webkit-box-flex: 1;
     -webkit-flex: 1;
         -ms-flex: 1;
             flex: 1; }
 
   [flex-md="0"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 0%;
         -ms-flex: 0 0 0%;
             flex: 0 0 0%;
     max-width: 0%; }
 
   [flex-md="5"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 5%;
         -ms-flex: 0 0 5%;
             flex: 0 0 5%;
     max-width: 5%; }
 
   [flex-md="10"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 10%;
         -ms-flex: 0 0 10%;
             flex: 0 0 10%;
     max-width: 10%; }
 
   [flex-md="15"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 15%;
         -ms-flex: 0 0 15%;
             flex: 0 0 15%;
     max-width: 15%; }
 
   [flex-md="20"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 20%;
         -ms-flex: 0 0 20%;
             flex: 0 0 20%;
     max-width: 20%; }
 
   [flex-md="25"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 25%;
         -ms-flex: 0 0 25%;
             flex: 0 0 25%;
     max-width: 25%; }
 
   [flex-md="30"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 30%;
         -ms-flex: 0 0 30%;
             flex: 0 0 30%;
     max-width: 30%; }
 
   [flex-md="35"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 35%;
         -ms-flex: 0 0 35%;
             flex: 0 0 35%;
     max-width: 35%; }
 
   [flex-md="40"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 40%;
         -ms-flex: 0 0 40%;
             flex: 0 0 40%;
     max-width: 40%; }
 
   [flex-md="45"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 45%;
         -ms-flex: 0 0 45%;
             flex: 0 0 45%;
     max-width: 45%; }
 
   [flex-md="50"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 50%;
         -ms-flex: 0 0 50%;
             flex: 0 0 50%;
     max-width: 50%; }
 
   [flex-md="55"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 55%;
         -ms-flex: 0 0 55%;
             flex: 0 0 55%;
     max-width: 55%; }
 
   [flex-md="60"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 60%;
         -ms-flex: 0 0 60%;
             flex: 0 0 60%;
     max-width: 60%; }
 
   [flex-md="65"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 65%;
         -ms-flex: 0 0 65%;
             flex: 0 0 65%;
     max-width: 65%; }
 
   [flex-md="70"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 70%;
         -ms-flex: 0 0 70%;
             flex: 0 0 70%;
     max-width: 70%; }
 
   [flex-md="75"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 75%;
         -ms-flex: 0 0 75%;
             flex: 0 0 75%;
     max-width: 75%; }
 
   [flex-md="80"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 80%;
         -ms-flex: 0 0 80%;
             flex: 0 0 80%;
     max-width: 80%; }
 
   [flex-md="85"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 85%;
         -ms-flex: 0 0 85%;
             flex: 0 0 85%;
     max-width: 85%; }
 
   [flex-md="90"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 90%;
         -ms-flex: 0 0 90%;
             flex: 0 0 90%;
     max-width: 90%; }
 
   [flex-md="95"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 95%;
         -ms-flex: 0 0 95%;
             flex: 0 0 95%;
     max-width: 95%; }
 
   [flex-md="33"], [flex-md="34"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 33.33%;
         -ms-flex: 0 0 33.33%;
             flex: 0 0 33.33%;
     max-width: 33.33%; }
 
   [flex-md="66"], [flex-md="67"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 66.66%;
         -ms-flex: 0 0 66.66%;
             flex: 0 0 66.66%;
@@ -930,180 +816,152 @@ md-tab > .md-ripple-container .md-ripple {
 
   [layout-gt-md] {
     box-sizing: border-box;
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex; }
 
   [layout-gt-md=column] {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column; }
 
   [layout-gt-md=row] {
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row; }
 
   [flex-gt-md] {
-    -webkit-box-flex: 1;
     -webkit-flex: 1;
         -ms-flex: 1;
             flex: 1; }
 
   [flex-gt-md="0"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 0%;
         -ms-flex: 0 0 0%;
             flex: 0 0 0%;
     max-width: 0%; }
 
   [flex-gt-md="5"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 5%;
         -ms-flex: 0 0 5%;
             flex: 0 0 5%;
     max-width: 5%; }
 
   [flex-gt-md="10"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 10%;
         -ms-flex: 0 0 10%;
             flex: 0 0 10%;
     max-width: 10%; }
 
   [flex-gt-md="15"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 15%;
         -ms-flex: 0 0 15%;
             flex: 0 0 15%;
     max-width: 15%; }
 
   [flex-gt-md="20"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 20%;
         -ms-flex: 0 0 20%;
             flex: 0 0 20%;
     max-width: 20%; }
 
   [flex-gt-md="25"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 25%;
         -ms-flex: 0 0 25%;
             flex: 0 0 25%;
     max-width: 25%; }
 
   [flex-gt-md="30"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 30%;
         -ms-flex: 0 0 30%;
             flex: 0 0 30%;
     max-width: 30%; }
 
   [flex-gt-md="35"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 35%;
         -ms-flex: 0 0 35%;
             flex: 0 0 35%;
     max-width: 35%; }
 
   [flex-gt-md="40"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 40%;
         -ms-flex: 0 0 40%;
             flex: 0 0 40%;
     max-width: 40%; }
 
   [flex-gt-md="45"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 45%;
         -ms-flex: 0 0 45%;
             flex: 0 0 45%;
     max-width: 45%; }
 
   [flex-gt-md="50"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 50%;
         -ms-flex: 0 0 50%;
             flex: 0 0 50%;
     max-width: 50%; }
 
   [flex-gt-md="55"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 55%;
         -ms-flex: 0 0 55%;
             flex: 0 0 55%;
     max-width: 55%; }
 
   [flex-gt-md="60"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 60%;
         -ms-flex: 0 0 60%;
             flex: 0 0 60%;
     max-width: 60%; }
 
   [flex-gt-md="65"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 65%;
         -ms-flex: 0 0 65%;
             flex: 0 0 65%;
     max-width: 65%; }
 
   [flex-gt-md="70"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 70%;
         -ms-flex: 0 0 70%;
             flex: 0 0 70%;
     max-width: 70%; }
 
   [flex-gt-md="75"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 75%;
         -ms-flex: 0 0 75%;
             flex: 0 0 75%;
     max-width: 75%; }
 
   [flex-gt-md="80"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 80%;
         -ms-flex: 0 0 80%;
             flex: 0 0 80%;
     max-width: 80%; }
 
   [flex-gt-md="85"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 85%;
         -ms-flex: 0 0 85%;
             flex: 0 0 85%;
     max-width: 85%; }
 
   [flex-gt-md="90"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 90%;
         -ms-flex: 0 0 90%;
             flex: 0 0 90%;
     max-width: 90%; }
 
   [flex-gt-md="95"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 95%;
         -ms-flex: 0 0 95%;
             flex: 0 0 95%;
     max-width: 95%; }
 
   [flex-gt-md="33"], [flex-gt-md="34"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 33.33%;
         -ms-flex: 0 0 33.33%;
             flex: 0 0 33.33%;
     max-width: 33.33%; }
 
   [flex-gt-md="66"], [flex-gt-md="67"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 66.66%;
         -ms-flex: 0 0 66.66%;
             flex: 0 0 66.66%;
@@ -1116,180 +974,152 @@ md-tab > .md-ripple-container .md-ripple {
 
   [layout-lg] {
     box-sizing: border-box;
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex; }
 
   [layout-lg=column] {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column; }
 
   [layout-lg=row] {
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row; }
 
   [flex-lg] {
-    -webkit-box-flex: 1;
     -webkit-flex: 1;
         -ms-flex: 1;
             flex: 1; }
 
   [flex-lg="0"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 0%;
         -ms-flex: 0 0 0%;
             flex: 0 0 0%;
     max-width: 0%; }
 
   [flex-lg="5"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 5%;
         -ms-flex: 0 0 5%;
             flex: 0 0 5%;
     max-width: 5%; }
 
   [flex-lg="10"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 10%;
         -ms-flex: 0 0 10%;
             flex: 0 0 10%;
     max-width: 10%; }
 
   [flex-lg="15"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 15%;
         -ms-flex: 0 0 15%;
             flex: 0 0 15%;
     max-width: 15%; }
 
   [flex-lg="20"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 20%;
         -ms-flex: 0 0 20%;
             flex: 0 0 20%;
     max-width: 20%; }
 
   [flex-lg="25"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 25%;
         -ms-flex: 0 0 25%;
             flex: 0 0 25%;
     max-width: 25%; }
 
   [flex-lg="30"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 30%;
         -ms-flex: 0 0 30%;
             flex: 0 0 30%;
     max-width: 30%; }
 
   [flex-lg="35"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 35%;
         -ms-flex: 0 0 35%;
             flex: 0 0 35%;
     max-width: 35%; }
 
   [flex-lg="40"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 40%;
         -ms-flex: 0 0 40%;
             flex: 0 0 40%;
     max-width: 40%; }
 
   [flex-lg="45"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 45%;
         -ms-flex: 0 0 45%;
             flex: 0 0 45%;
     max-width: 45%; }
 
   [flex-lg="50"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 50%;
         -ms-flex: 0 0 50%;
             flex: 0 0 50%;
     max-width: 50%; }
 
   [flex-lg="55"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 55%;
         -ms-flex: 0 0 55%;
             flex: 0 0 55%;
     max-width: 55%; }
 
   [flex-lg="60"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 60%;
         -ms-flex: 0 0 60%;
             flex: 0 0 60%;
     max-width: 60%; }
 
   [flex-lg="65"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 65%;
         -ms-flex: 0 0 65%;
             flex: 0 0 65%;
     max-width: 65%; }
 
   [flex-lg="70"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 70%;
         -ms-flex: 0 0 70%;
             flex: 0 0 70%;
     max-width: 70%; }
 
   [flex-lg="75"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 75%;
         -ms-flex: 0 0 75%;
             flex: 0 0 75%;
     max-width: 75%; }
 
   [flex-lg="80"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 80%;
         -ms-flex: 0 0 80%;
             flex: 0 0 80%;
     max-width: 80%; }
 
   [flex-lg="85"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 85%;
         -ms-flex: 0 0 85%;
             flex: 0 0 85%;
     max-width: 85%; }
 
   [flex-lg="90"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 90%;
         -ms-flex: 0 0 90%;
             flex: 0 0 90%;
     max-width: 90%; }
 
   [flex-lg="95"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 95%;
         -ms-flex: 0 0 95%;
             flex: 0 0 95%;
     max-width: 95%; }
 
   [flex-lg="33"], [flex-lg="34"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 33.33%;
         -ms-flex: 0 0 33.33%;
             flex: 0 0 33.33%;
     max-width: 33.33%; }
 
   [flex-lg="66"], [flex-lg="67"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 66.66%;
         -ms-flex: 0 0 66.66%;
             flex: 0 0 66.66%;
@@ -1302,180 +1132,152 @@ md-tab > .md-ripple-container .md-ripple {
 
   [layout-gt-lg] {
     box-sizing: border-box;
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex; }
 
   [layout-gt-lg=column] {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column; }
 
   [layout-gt-lg=row] {
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row; }
 
   [flex-gt-lg] {
-    -webkit-box-flex: 1;
     -webkit-flex: 1;
         -ms-flex: 1;
             flex: 1; }
 
   [flex-gt-lg="0"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 0%;
         -ms-flex: 0 0 0%;
             flex: 0 0 0%;
     max-width: 0%; }
 
   [flex-gt-lg="5"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 5%;
         -ms-flex: 0 0 5%;
             flex: 0 0 5%;
     max-width: 5%; }
 
   [flex-gt-lg="10"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 10%;
         -ms-flex: 0 0 10%;
             flex: 0 0 10%;
     max-width: 10%; }
 
   [flex-gt-lg="15"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 15%;
         -ms-flex: 0 0 15%;
             flex: 0 0 15%;
     max-width: 15%; }
 
   [flex-gt-lg="20"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 20%;
         -ms-flex: 0 0 20%;
             flex: 0 0 20%;
     max-width: 20%; }
 
   [flex-gt-lg="25"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 25%;
         -ms-flex: 0 0 25%;
             flex: 0 0 25%;
     max-width: 25%; }
 
   [flex-gt-lg="30"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 30%;
         -ms-flex: 0 0 30%;
             flex: 0 0 30%;
     max-width: 30%; }
 
   [flex-gt-lg="35"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 35%;
         -ms-flex: 0 0 35%;
             flex: 0 0 35%;
     max-width: 35%; }
 
   [flex-gt-lg="40"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 40%;
         -ms-flex: 0 0 40%;
             flex: 0 0 40%;
     max-width: 40%; }
 
   [flex-gt-lg="45"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 45%;
         -ms-flex: 0 0 45%;
             flex: 0 0 45%;
     max-width: 45%; }
 
   [flex-gt-lg="50"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 50%;
         -ms-flex: 0 0 50%;
             flex: 0 0 50%;
     max-width: 50%; }
 
   [flex-gt-lg="55"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 55%;
         -ms-flex: 0 0 55%;
             flex: 0 0 55%;
     max-width: 55%; }
 
   [flex-gt-lg="60"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 60%;
         -ms-flex: 0 0 60%;
             flex: 0 0 60%;
     max-width: 60%; }
 
   [flex-gt-lg="65"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 65%;
         -ms-flex: 0 0 65%;
             flex: 0 0 65%;
     max-width: 65%; }
 
   [flex-gt-lg="70"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 70%;
         -ms-flex: 0 0 70%;
             flex: 0 0 70%;
     max-width: 70%; }
 
   [flex-gt-lg="75"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 75%;
         -ms-flex: 0 0 75%;
             flex: 0 0 75%;
     max-width: 75%; }
 
   [flex-gt-lg="80"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 80%;
         -ms-flex: 0 0 80%;
             flex: 0 0 80%;
     max-width: 80%; }
 
   [flex-gt-lg="85"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 85%;
         -ms-flex: 0 0 85%;
             flex: 0 0 85%;
     max-width: 85%; }
 
   [flex-gt-lg="90"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 90%;
         -ms-flex: 0 0 90%;
             flex: 0 0 90%;
     max-width: 90%; }
 
   [flex-gt-lg="95"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 95%;
         -ms-flex: 0 0 95%;
             flex: 0 0 95%;
     max-width: 95%; }
 
   [flex-gt-lg="33"], [flex-gt-lg="34"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 33.33%;
         -ms-flex: 0 0 33.33%;
             flex: 0 0 33.33%;
     max-width: 33.33%; }
 
   [flex-gt-lg="66"], [flex-gt-lg="67"] {
-    -webkit-box-flex: 0;
     -webkit-flex: 0 0 66.66%;
         -ms-flex: 0 0 66.66%;
             flex: 0 0 66.66%;
@@ -1483,73 +1285,61 @@ md-tab > .md-ripple-container .md-ripple {
  }
 
 [flex-order="0"] {
-  -webkit-box-ordinal-group: 1;
   -webkit-order: 0;
       -ms-flex-order: 0;
           order: 0; }
 
 [flex-order="1"] {
-  -webkit-box-ordinal-group: 2;
   -webkit-order: 1;
       -ms-flex-order: 1;
           order: 1; }
 
 [flex-order="2"] {
-  -webkit-box-ordinal-group: 3;
   -webkit-order: 2;
       -ms-flex-order: 2;
           order: 2; }
 
 [flex-order="3"] {
-  -webkit-box-ordinal-group: 4;
   -webkit-order: 3;
       -ms-flex-order: 3;
           order: 3; }
 
 [flex-order="4"] {
-  -webkit-box-ordinal-group: 5;
   -webkit-order: 4;
       -ms-flex-order: 4;
           order: 4; }
 
 [flex-order="5"] {
-  -webkit-box-ordinal-group: 6;
   -webkit-order: 5;
       -ms-flex-order: 5;
           order: 5; }
 
 [flex-order="6"] {
-  -webkit-box-ordinal-group: 7;
   -webkit-order: 6;
       -ms-flex-order: 6;
           order: 6; }
 
 [flex-order="7"] {
-  -webkit-box-ordinal-group: 8;
   -webkit-order: 7;
       -ms-flex-order: 7;
           order: 7; }
 
 [flex-order="8"] {
-  -webkit-box-ordinal-group: 9;
   -webkit-order: 8;
       -ms-flex-order: 8;
           order: 8; }
 
 [flex-order="9"] {
-  -webkit-box-ordinal-group: 10;
   -webkit-order: 9;
       -ms-flex-order: 9;
           order: 9; }
 
 [layout-align="center"], [layout-align="center center"], [layout-align="center start"], [layout-align="center end"] {
-  -webkit-box-pack: center;
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center; }
 
 [layout-align="end"], [layout-align="end center"], [layout-align="end start"], [layout-align="end end"] {
-  -webkit-box-pack: end;
   -webkit-justify-content: flex-end;
       -ms-flex-pack: end;
           justify-content: flex-end; }
@@ -1560,25 +1350,21 @@ md-tab > .md-ripple-container .md-ripple {
           justify-content: space-around; }
 
 [layout-align="space-between"], [layout-align="space-between center"], [layout-align="space-between start"], [layout-align="space-between end"] {
-  -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
       -ms-flex-pack: justify;
           justify-content: space-between; }
 
 [layout-align="center center"], [layout-align="start center"], [layout-align="end center"], [layout-align="space-between center"], [layout-align="space-around center"] {
-  -webkit-box-align: center;
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center; }
 
 [layout-align="center start"], [layout-align="start start"], [layout-align="end start"], [layout-align="space-between start"], [layout-align="space-around start"] {
-  -webkit-box-align: start;
   -webkit-align-items: flex-start;
       -ms-flex-align: start;
           align-items: flex-start; }
 
 [layout-align="center end"], [layout-align="start end"], [layout-align="end end"], [layout-align="space-between end"], [layout-align="space-around end"] {
-  -webkit-box-align: end;
   -webkit-align-items: flex-end;
       -ms-flex-align: end;
           align-items: flex-end; }
@@ -1592,13 +1378,10 @@ md-backdrop {
   right: 0;
   bottom: 0; }
   md-backdrop.ng-enter {
-    -webkit-transition-delay: 0.1s;
-            transition-delay: 0.1s;
-    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    transition-delay: 0.1s;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
   md-backdrop.ng-leave {
-    -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-            transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-backdrop.ng-enter, md-backdrop.ng-leave.ng-leave-active {
     opacity: 0; }
   md-backdrop.ng-leave, md-backdrop.ng-enter.ng-enter-active {
@@ -1614,10 +1397,9 @@ md-bottom-sheet {
   border-top: 1px solid;
   -webkit-transform: translate3d(0, 80px, 0);
           transform: translate3d(0, 80px, 0);
-  -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-          transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  -webkit-transition-property: -webkit-transform;
-          transition-property: transform; }
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition-property: -webkit-transform;
+  transition-property: transform; }
   md-bottom-sheet.md-has-header {
     padding-top: 0; }
   md-bottom-sheet.ng-enter {
@@ -1632,8 +1414,7 @@ md-bottom-sheet {
   md-bottom-sheet.ng-leave-active {
     -webkit-transform: translate3d(0, 100%, 0) !important;
             transform: translate3d(0, 100%, 0) !important;
-    -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-            transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-bottom-sheet .md-subheader {
     background-color: transparent;
     font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
@@ -1646,7 +1427,6 @@ md-bottom-sheet {
     width: 24px;
     fill: #444; }
   md-bottom-sheet md-item {
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
@@ -1654,7 +1434,6 @@ md-bottom-sheet {
     md-bottom-sheet md-item:hover {
       cursor: pointer; }
   md-bottom-sheet.md-list md-item {
-    -webkit-box-align: center;
     -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
@@ -1668,105 +1447,82 @@ md-bottom-sheet {
     padding-right: 24px;
     padding-top: 0; }
     md-bottom-sheet.md-grid md-list {
-      display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
-      -webkit-box-orient: horizontal;
-      -webkit-box-direction: normal;
       -webkit-flex-direction: row;
           -ms-flex-direction: row;
               flex-direction: row;
       -webkit-flex-wrap: wrap;
           -ms-flex-wrap: wrap;
               flex-wrap: wrap;
-      -webkit-transition: all 0.5s;
-              transition: all 0.5s;
-      -webkit-box-align: center;
+      transition: all 0.5s;
       -webkit-align-items: center;
           -ms-flex-align: center;
               align-items: center; }
     md-bottom-sheet.md-grid md-item {
-      -webkit-box-orient: vertical;
-      -webkit-box-direction: normal;
       -webkit-flex-direction: column;
           -ms-flex-direction: column;
               flex-direction: column;
-      -webkit-box-align: center;
       -webkit-align-items: center;
           -ms-flex-align: center;
               align-items: center;
-      -webkit-transition: all 0.5s;
-              transition: all 0.5s;
+      transition: all 0.5s;
       height: 96px;
       margin-top: 8px;
       margin-bottom: 8px;
       /* Mixin for how many grid items to show per row */ }
       @media screen and (max-width: 600px) {
         md-bottom-sheet.md-grid md-item {
-          -webkit-box-flex: 1;
           -webkit-flex: 1 1 33.33333%;
               -ms-flex: 1 1 33.33333%;
                   flex: 1 1 33.33333%;
           max-width: 33.33333%; }
           md-bottom-sheet.md-grid md-item:nth-of-type(3n+1) {
-            -webkit-box-align: start;
             -webkit-align-items: flex-start;
                 -ms-flex-align: start;
                     align-items: flex-start; }
           md-bottom-sheet.md-grid md-item:nth-of-type(3n) {
-            -webkit-box-align: end;
             -webkit-align-items: flex-end;
                 -ms-flex-align: end;
                     align-items: flex-end; } }
       @media screen and (min-width: 600px) and (max-width: 960px) {
         md-bottom-sheet.md-grid md-item {
-          -webkit-box-flex: 1;
           -webkit-flex: 1 1 25%;
               -ms-flex: 1 1 25%;
                   flex: 1 1 25%;
           max-width: 25%; } }
       @media screen and (min-width: 960px) and (max-width: 1200px) {
         md-bottom-sheet.md-grid md-item {
-          -webkit-box-flex: 1;
           -webkit-flex: 1 1 16.66667%;
               -ms-flex: 1 1 16.66667%;
                   flex: 1 1 16.66667%;
           max-width: 16.66667%; } }
       @media screen and (min-width: 1200px) {
         md-bottom-sheet.md-grid md-item {
-          -webkit-box-flex: 1;
           -webkit-flex: 1 1 14.28571%;
               -ms-flex: 1 1 14.28571%;
                   flex: 1 1 14.28571%;
           max-width: 14.28571%; } }
       md-bottom-sheet.md-grid md-item .md-item-content {
-        display: -webkit-box;
         display: -webkit-flex;
         display: -ms-flexbox;
         display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
         -webkit-flex-direction: column;
             -ms-flex-direction: column;
                 flex-direction: column;
-        -webkit-box-align: center;
         -webkit-align-items: center;
             -ms-flex-align: center;
                 align-items: center;
         width: 48px;
         padding-bottom: 16px; }
       md-bottom-sheet.md-grid md-item .md-grid-item-content {
-        display: -webkit-box;
         display: -webkit-flex;
         display: -ms-flexbox;
         display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
         -webkit-flex-direction: column;
             -ms-flex-direction: column;
                 flex-direction: column;
-        -webkit-box-align: center;
         -webkit-align-items: center;
             -ms-flex-align: center;
                 align-items: center;
@@ -1813,11 +1569,10 @@ md-bottom-sheet {
   text-decoration: none;
   cursor: pointer;
   overflow: hidden;
-  -webkit-transition: box-shadow 0.5s cubic-bezier(0.35, 0, 0.25, 1), background-color 0.5s cubic-bezier(0.35, 0, 0.25, 1), -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
-          transition: box-shadow 0.5s cubic-bezier(0.35, 0, 0.25, 1), background-color 0.5s cubic-bezier(0.35, 0, 0.25, 1), transform 0.5s cubic-bezier(0.35, 0, 0.25, 1); }
+  transition: box-shadow 0.5s cubic-bezier(0.35, 0, 0.25, 1), background-color 0.5s cubic-bezier(0.35, 0, 0.25, 1), -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+  transition: box-shadow 0.5s cubic-bezier(0.35, 0, 0.25, 1), background-color 0.5s cubic-bezier(0.35, 0, 0.25, 1), transform 0.5s cubic-bezier(0.35, 0, 0.25, 1); }
   .md-button.ng-hide {
-    -webkit-transition: none;
-            transition: none; }
+    transition: none; }
   .md-button.md-cornered {
     border-radius: 0; }
   .md-button.md-icon {
@@ -1835,10 +1590,9 @@ md-bottom-sheet {
     overflow: hidden;
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0);
-    -webkit-transition: 0.2s linear;
-            transition: 0.2s linear;
-    -webkit-transition-property: -webkit-transform, box-shadow;
-            transition-property: transform, box-shadow; }
+    transition: 0.2s linear;
+    transition-property: -webkit-transform, box-shadow;
+    transition-property: transform, box-shadow; }
     .md-button.md-fab.md-fab-bottom-right {
       top: auto;
       right: 28px;
@@ -1885,18 +1639,15 @@ md-bottom-sheet {
             transform: translate3d(0, -33px, 0); }
 
 .md-button-group {
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-flex: 1;
   -webkit-flex: 1;
       -ms-flex: 1;
           flex: 1;
   width: 100%; }
 
 .md-button-group > .md-button {
-  -webkit-box-flex: 1;
   -webkit-flex: 1;
       -ms-flex: 1;
           flex: 1;
@@ -1946,8 +1697,7 @@ md-checkbox {
       right: -15px;
       bottom: -15px; }
   md-checkbox .md-icon {
-    -webkit-transition: 240ms;
-            transition: 240ms;
+    transition: 240ms;
     position: absolute;
     top: 0;
     left: 0;
@@ -2003,15 +1753,12 @@ md-content {
  }
 
 .md-dialog-container {
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
-  -webkit-box-align: center;
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
@@ -2022,14 +1769,12 @@ md-content {
   bottom: 0;
   z-index: 10; }
   .md-dialog-container.md-active {
-    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     -webkit-transform: translate3d(0, 0, 0) scale(1);
             transform: translate3d(0, 0, 0) scale(1);
     opacity: 1; }
   .md-dialog-container.ng-leave.ng-leave-active {
-    -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-            transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
     -webkit-transform: translate3d(0, 100%, 0) scale(0.5);
             transform: translate3d(0, 100%, 0) scale(0.5);
     opacity: 0; }
@@ -2041,17 +1786,13 @@ md-dialog {
   margin: auto;
   position: relative;
   box-shadow: 0px 27px 24px 0 rgba(0, 0, 0, 0.2);
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column; }
   md-dialog md-content {
-    -webkit-box-ordinal-group: 2;
     -webkit-order: 1;
         -ms-flex-order: 1;
             order: 1;
@@ -2061,20 +1802,16 @@ md-dialog {
     md-dialog md-content *:first-child {
       margin-top: 0px; }
   md-dialog .md-actions {
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-ordinal-group: 3;
     -webkit-order: 2;
         -ms-flex-order: 2;
             order: 2;
     box-sizing: border-box;
-    -webkit-box-align: center;
     -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
-    -webkit-box-pack: end;
     -webkit-justify-content: flex-end;
         -ms-flex-pack: end;
             justify-content: flex-end;
@@ -2108,16 +1845,12 @@ md-list {
   padding: 8px 0px 8px 0px; }
 
 md-item-content {
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: row;
       -ms-flex-direction: row;
           flex-direction: row;
@@ -2136,7 +1869,6 @@ md-item-content {
  * The center content tile for a list item.
  */
 .md-tile-content {
-  -webkit-box-flex: 1;
   -webkit-flex: 1;
       -ms-flex: 1;
           flex: 1;
@@ -2322,8 +2054,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="0"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-135deg);
             transform: rotate(-135deg); }
   md-progress-circular[value="0"] .md-inner .md-gap {
@@ -2334,8 +2066,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="1"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-131.4deg);
             transform: rotate(-131.4deg); }
   md-progress-circular[value="1"] .md-inner .md-gap {
@@ -2346,8 +2078,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="2"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-127.8deg);
             transform: rotate(-127.8deg); }
   md-progress-circular[value="2"] .md-inner .md-gap {
@@ -2358,8 +2090,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="3"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-124.2deg);
             transform: rotate(-124.2deg); }
   md-progress-circular[value="3"] .md-inner .md-gap {
@@ -2370,8 +2102,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="4"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-120.6deg);
             transform: rotate(-120.6deg); }
   md-progress-circular[value="4"] .md-inner .md-gap {
@@ -2382,8 +2114,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="5"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-117deg);
             transform: rotate(-117deg); }
   md-progress-circular[value="5"] .md-inner .md-gap {
@@ -2394,8 +2126,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="6"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-113.4deg);
             transform: rotate(-113.4deg); }
   md-progress-circular[value="6"] .md-inner .md-gap {
@@ -2406,8 +2138,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="7"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-109.8deg);
             transform: rotate(-109.8deg); }
   md-progress-circular[value="7"] .md-inner .md-gap {
@@ -2418,8 +2150,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="8"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-106.2deg);
             transform: rotate(-106.2deg); }
   md-progress-circular[value="8"] .md-inner .md-gap {
@@ -2430,8 +2162,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="9"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-102.6deg);
             transform: rotate(-102.6deg); }
   md-progress-circular[value="9"] .md-inner .md-gap {
@@ -2442,8 +2174,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="10"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-99deg);
             transform: rotate(-99deg); }
   md-progress-circular[value="10"] .md-inner .md-gap {
@@ -2454,8 +2186,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="11"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-95.4deg);
             transform: rotate(-95.4deg); }
   md-progress-circular[value="11"] .md-inner .md-gap {
@@ -2466,8 +2198,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="12"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-91.8deg);
             transform: rotate(-91.8deg); }
   md-progress-circular[value="12"] .md-inner .md-gap {
@@ -2478,8 +2210,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="13"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-88.2deg);
             transform: rotate(-88.2deg); }
   md-progress-circular[value="13"] .md-inner .md-gap {
@@ -2490,8 +2222,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="14"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-84.6deg);
             transform: rotate(-84.6deg); }
   md-progress-circular[value="14"] .md-inner .md-gap {
@@ -2502,8 +2234,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="15"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-81deg);
             transform: rotate(-81deg); }
   md-progress-circular[value="15"] .md-inner .md-gap {
@@ -2514,8 +2246,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="16"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-77.4deg);
             transform: rotate(-77.4deg); }
   md-progress-circular[value="16"] .md-inner .md-gap {
@@ -2526,8 +2258,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="17"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-73.8deg);
             transform: rotate(-73.8deg); }
   md-progress-circular[value="17"] .md-inner .md-gap {
@@ -2538,8 +2270,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="18"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-70.2deg);
             transform: rotate(-70.2deg); }
   md-progress-circular[value="18"] .md-inner .md-gap {
@@ -2550,8 +2282,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="19"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-66.6deg);
             transform: rotate(-66.6deg); }
   md-progress-circular[value="19"] .md-inner .md-gap {
@@ -2562,8 +2294,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="20"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-63deg);
             transform: rotate(-63deg); }
   md-progress-circular[value="20"] .md-inner .md-gap {
@@ -2574,8 +2306,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="21"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-59.4deg);
             transform: rotate(-59.4deg); }
   md-progress-circular[value="21"] .md-inner .md-gap {
@@ -2586,8 +2318,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="22"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-55.8deg);
             transform: rotate(-55.8deg); }
   md-progress-circular[value="22"] .md-inner .md-gap {
@@ -2598,8 +2330,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="23"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-52.2deg);
             transform: rotate(-52.2deg); }
   md-progress-circular[value="23"] .md-inner .md-gap {
@@ -2610,8 +2342,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="24"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-48.6deg);
             transform: rotate(-48.6deg); }
   md-progress-circular[value="24"] .md-inner .md-gap {
@@ -2622,8 +2354,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="25"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-45deg);
             transform: rotate(-45deg); }
   md-progress-circular[value="25"] .md-inner .md-gap {
@@ -2634,8 +2366,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="26"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-41.4deg);
             transform: rotate(-41.4deg); }
   md-progress-circular[value="26"] .md-inner .md-gap {
@@ -2646,8 +2378,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="27"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-37.8deg);
             transform: rotate(-37.8deg); }
   md-progress-circular[value="27"] .md-inner .md-gap {
@@ -2658,8 +2390,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="28"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-34.2deg);
             transform: rotate(-34.2deg); }
   md-progress-circular[value="28"] .md-inner .md-gap {
@@ -2670,8 +2402,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="29"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-30.6deg);
             transform: rotate(-30.6deg); }
   md-progress-circular[value="29"] .md-inner .md-gap {
@@ -2682,8 +2414,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="30"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-27deg);
             transform: rotate(-27deg); }
   md-progress-circular[value="30"] .md-inner .md-gap {
@@ -2694,8 +2426,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="31"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-23.4deg);
             transform: rotate(-23.4deg); }
   md-progress-circular[value="31"] .md-inner .md-gap {
@@ -2706,8 +2438,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="32"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-19.8deg);
             transform: rotate(-19.8deg); }
   md-progress-circular[value="32"] .md-inner .md-gap {
@@ -2718,8 +2450,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="33"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-16.2deg);
             transform: rotate(-16.2deg); }
   md-progress-circular[value="33"] .md-inner .md-gap {
@@ -2730,8 +2462,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="34"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-12.6deg);
             transform: rotate(-12.6deg); }
   md-progress-circular[value="34"] .md-inner .md-gap {
@@ -2742,8 +2474,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="35"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-9deg);
             transform: rotate(-9deg); }
   md-progress-circular[value="35"] .md-inner .md-gap {
@@ -2754,8 +2486,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="36"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-5.4deg);
             transform: rotate(-5.4deg); }
   md-progress-circular[value="36"] .md-inner .md-gap {
@@ -2766,8 +2498,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="37"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(-1.8deg);
             transform: rotate(-1.8deg); }
   md-progress-circular[value="37"] .md-inner .md-gap {
@@ -2778,8 +2510,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="38"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(1.8deg);
             transform: rotate(1.8deg); }
   md-progress-circular[value="38"] .md-inner .md-gap {
@@ -2790,8 +2522,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="39"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(5.4deg);
             transform: rotate(5.4deg); }
   md-progress-circular[value="39"] .md-inner .md-gap {
@@ -2802,8 +2534,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="40"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(9deg);
             transform: rotate(9deg); }
   md-progress-circular[value="40"] .md-inner .md-gap {
@@ -2814,8 +2546,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="41"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(12.6deg);
             transform: rotate(12.6deg); }
   md-progress-circular[value="41"] .md-inner .md-gap {
@@ -2826,8 +2558,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="42"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(16.2deg);
             transform: rotate(16.2deg); }
   md-progress-circular[value="42"] .md-inner .md-gap {
@@ -2838,8 +2570,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="43"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(19.8deg);
             transform: rotate(19.8deg); }
   md-progress-circular[value="43"] .md-inner .md-gap {
@@ -2850,8 +2582,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="44"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(23.4deg);
             transform: rotate(23.4deg); }
   md-progress-circular[value="44"] .md-inner .md-gap {
@@ -2862,8 +2594,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="45"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(27deg);
             transform: rotate(27deg); }
   md-progress-circular[value="45"] .md-inner .md-gap {
@@ -2874,8 +2606,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="46"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(30.6deg);
             transform: rotate(30.6deg); }
   md-progress-circular[value="46"] .md-inner .md-gap {
@@ -2886,8 +2618,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="47"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(34.2deg);
             transform: rotate(34.2deg); }
   md-progress-circular[value="47"] .md-inner .md-gap {
@@ -2898,8 +2630,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="48"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(37.8deg);
             transform: rotate(37.8deg); }
   md-progress-circular[value="48"] .md-inner .md-gap {
@@ -2910,8 +2642,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="49"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(41.4deg);
             transform: rotate(41.4deg); }
   md-progress-circular[value="49"] .md-inner .md-gap {
@@ -2922,8 +2654,8 @@ md-progress-circular {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg); }
   md-progress-circular[value="50"] .md-inner .md-right .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(45deg);
             transform: rotate(45deg); }
   md-progress-circular[value="50"] .md-inner .md-gap {
@@ -2931,8 +2663,8 @@ md-progress-circular {
     border-bottom-style: solid;
     border-bottom-color: transparent !important; }
   md-progress-circular[value="51"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(138.6deg);
             transform: rotate(138.6deg); }
   md-progress-circular[value="51"] .md-inner .md-right .md-half-circle {
@@ -2941,11 +2673,10 @@ md-progress-circular {
   md-progress-circular[value="51"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="52"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(142.2deg);
             transform: rotate(142.2deg); }
   md-progress-circular[value="52"] .md-inner .md-right .md-half-circle {
@@ -2954,11 +2685,10 @@ md-progress-circular {
   md-progress-circular[value="52"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="53"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(145.8deg);
             transform: rotate(145.8deg); }
   md-progress-circular[value="53"] .md-inner .md-right .md-half-circle {
@@ -2967,11 +2697,10 @@ md-progress-circular {
   md-progress-circular[value="53"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="54"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(149.4deg);
             transform: rotate(149.4deg); }
   md-progress-circular[value="54"] .md-inner .md-right .md-half-circle {
@@ -2980,11 +2709,10 @@ md-progress-circular {
   md-progress-circular[value="54"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="55"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(153deg);
             transform: rotate(153deg); }
   md-progress-circular[value="55"] .md-inner .md-right .md-half-circle {
@@ -2993,11 +2721,10 @@ md-progress-circular {
   md-progress-circular[value="55"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="56"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(156.6deg);
             transform: rotate(156.6deg); }
   md-progress-circular[value="56"] .md-inner .md-right .md-half-circle {
@@ -3006,11 +2733,10 @@ md-progress-circular {
   md-progress-circular[value="56"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="57"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(160.2deg);
             transform: rotate(160.2deg); }
   md-progress-circular[value="57"] .md-inner .md-right .md-half-circle {
@@ -3019,11 +2745,10 @@ md-progress-circular {
   md-progress-circular[value="57"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="58"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(163.8deg);
             transform: rotate(163.8deg); }
   md-progress-circular[value="58"] .md-inner .md-right .md-half-circle {
@@ -3032,11 +2757,10 @@ md-progress-circular {
   md-progress-circular[value="58"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="59"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(167.4deg);
             transform: rotate(167.4deg); }
   md-progress-circular[value="59"] .md-inner .md-right .md-half-circle {
@@ -3045,11 +2769,10 @@ md-progress-circular {
   md-progress-circular[value="59"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="60"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(171deg);
             transform: rotate(171deg); }
   md-progress-circular[value="60"] .md-inner .md-right .md-half-circle {
@@ -3058,11 +2781,10 @@ md-progress-circular {
   md-progress-circular[value="60"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="61"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(174.6deg);
             transform: rotate(174.6deg); }
   md-progress-circular[value="61"] .md-inner .md-right .md-half-circle {
@@ -3071,11 +2793,10 @@ md-progress-circular {
   md-progress-circular[value="61"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="62"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(178.2deg);
             transform: rotate(178.2deg); }
   md-progress-circular[value="62"] .md-inner .md-right .md-half-circle {
@@ -3084,11 +2805,10 @@ md-progress-circular {
   md-progress-circular[value="62"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="63"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(181.8deg);
             transform: rotate(181.8deg); }
   md-progress-circular[value="63"] .md-inner .md-right .md-half-circle {
@@ -3097,11 +2817,10 @@ md-progress-circular {
   md-progress-circular[value="63"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="64"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(185.4deg);
             transform: rotate(185.4deg); }
   md-progress-circular[value="64"] .md-inner .md-right .md-half-circle {
@@ -3110,11 +2829,10 @@ md-progress-circular {
   md-progress-circular[value="64"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="65"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(189deg);
             transform: rotate(189deg); }
   md-progress-circular[value="65"] .md-inner .md-right .md-half-circle {
@@ -3123,11 +2841,10 @@ md-progress-circular {
   md-progress-circular[value="65"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="66"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(192.6deg);
             transform: rotate(192.6deg); }
   md-progress-circular[value="66"] .md-inner .md-right .md-half-circle {
@@ -3136,11 +2853,10 @@ md-progress-circular {
   md-progress-circular[value="66"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="67"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(196.2deg);
             transform: rotate(196.2deg); }
   md-progress-circular[value="67"] .md-inner .md-right .md-half-circle {
@@ -3149,11 +2865,10 @@ md-progress-circular {
   md-progress-circular[value="67"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="68"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(199.8deg);
             transform: rotate(199.8deg); }
   md-progress-circular[value="68"] .md-inner .md-right .md-half-circle {
@@ -3162,11 +2877,10 @@ md-progress-circular {
   md-progress-circular[value="68"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="69"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(203.4deg);
             transform: rotate(203.4deg); }
   md-progress-circular[value="69"] .md-inner .md-right .md-half-circle {
@@ -3175,11 +2889,10 @@ md-progress-circular {
   md-progress-circular[value="69"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="70"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(207deg);
             transform: rotate(207deg); }
   md-progress-circular[value="70"] .md-inner .md-right .md-half-circle {
@@ -3188,11 +2901,10 @@ md-progress-circular {
   md-progress-circular[value="70"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="71"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(210.6deg);
             transform: rotate(210.6deg); }
   md-progress-circular[value="71"] .md-inner .md-right .md-half-circle {
@@ -3201,11 +2913,10 @@ md-progress-circular {
   md-progress-circular[value="71"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="72"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(214.2deg);
             transform: rotate(214.2deg); }
   md-progress-circular[value="72"] .md-inner .md-right .md-half-circle {
@@ -3214,11 +2925,10 @@ md-progress-circular {
   md-progress-circular[value="72"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="73"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(217.8deg);
             transform: rotate(217.8deg); }
   md-progress-circular[value="73"] .md-inner .md-right .md-half-circle {
@@ -3227,11 +2937,10 @@ md-progress-circular {
   md-progress-circular[value="73"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="74"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(221.4deg);
             transform: rotate(221.4deg); }
   md-progress-circular[value="74"] .md-inner .md-right .md-half-circle {
@@ -3240,11 +2949,10 @@ md-progress-circular {
   md-progress-circular[value="74"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="75"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(225deg);
             transform: rotate(225deg); }
   md-progress-circular[value="75"] .md-inner .md-right .md-half-circle {
@@ -3253,11 +2961,10 @@ md-progress-circular {
   md-progress-circular[value="75"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="76"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(228.6deg);
             transform: rotate(228.6deg); }
   md-progress-circular[value="76"] .md-inner .md-right .md-half-circle {
@@ -3266,11 +2973,10 @@ md-progress-circular {
   md-progress-circular[value="76"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="77"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(232.2deg);
             transform: rotate(232.2deg); }
   md-progress-circular[value="77"] .md-inner .md-right .md-half-circle {
@@ -3279,11 +2985,10 @@ md-progress-circular {
   md-progress-circular[value="77"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="78"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(235.8deg);
             transform: rotate(235.8deg); }
   md-progress-circular[value="78"] .md-inner .md-right .md-half-circle {
@@ -3292,11 +2997,10 @@ md-progress-circular {
   md-progress-circular[value="78"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="79"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(239.4deg);
             transform: rotate(239.4deg); }
   md-progress-circular[value="79"] .md-inner .md-right .md-half-circle {
@@ -3305,11 +3009,10 @@ md-progress-circular {
   md-progress-circular[value="79"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="80"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(243deg);
             transform: rotate(243deg); }
   md-progress-circular[value="80"] .md-inner .md-right .md-half-circle {
@@ -3318,11 +3021,10 @@ md-progress-circular {
   md-progress-circular[value="80"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="81"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(246.6deg);
             transform: rotate(246.6deg); }
   md-progress-circular[value="81"] .md-inner .md-right .md-half-circle {
@@ -3331,11 +3033,10 @@ md-progress-circular {
   md-progress-circular[value="81"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="82"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(250.2deg);
             transform: rotate(250.2deg); }
   md-progress-circular[value="82"] .md-inner .md-right .md-half-circle {
@@ -3344,11 +3045,10 @@ md-progress-circular {
   md-progress-circular[value="82"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="83"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(253.8deg);
             transform: rotate(253.8deg); }
   md-progress-circular[value="83"] .md-inner .md-right .md-half-circle {
@@ -3357,11 +3057,10 @@ md-progress-circular {
   md-progress-circular[value="83"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="84"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(257.4deg);
             transform: rotate(257.4deg); }
   md-progress-circular[value="84"] .md-inner .md-right .md-half-circle {
@@ -3370,11 +3069,10 @@ md-progress-circular {
   md-progress-circular[value="84"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="85"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(261deg);
             transform: rotate(261deg); }
   md-progress-circular[value="85"] .md-inner .md-right .md-half-circle {
@@ -3383,11 +3081,10 @@ md-progress-circular {
   md-progress-circular[value="85"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="86"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(264.6deg);
             transform: rotate(264.6deg); }
   md-progress-circular[value="86"] .md-inner .md-right .md-half-circle {
@@ -3396,11 +3093,10 @@ md-progress-circular {
   md-progress-circular[value="86"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="87"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(268.2deg);
             transform: rotate(268.2deg); }
   md-progress-circular[value="87"] .md-inner .md-right .md-half-circle {
@@ -3409,11 +3105,10 @@ md-progress-circular {
   md-progress-circular[value="87"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="88"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(271.8deg);
             transform: rotate(271.8deg); }
   md-progress-circular[value="88"] .md-inner .md-right .md-half-circle {
@@ -3422,11 +3117,10 @@ md-progress-circular {
   md-progress-circular[value="88"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="89"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(275.4deg);
             transform: rotate(275.4deg); }
   md-progress-circular[value="89"] .md-inner .md-right .md-half-circle {
@@ -3435,11 +3129,10 @@ md-progress-circular {
   md-progress-circular[value="89"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="90"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(279deg);
             transform: rotate(279deg); }
   md-progress-circular[value="90"] .md-inner .md-right .md-half-circle {
@@ -3448,11 +3141,10 @@ md-progress-circular {
   md-progress-circular[value="90"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="91"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(282.6deg);
             transform: rotate(282.6deg); }
   md-progress-circular[value="91"] .md-inner .md-right .md-half-circle {
@@ -3461,11 +3153,10 @@ md-progress-circular {
   md-progress-circular[value="91"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="92"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(286.2deg);
             transform: rotate(286.2deg); }
   md-progress-circular[value="92"] .md-inner .md-right .md-half-circle {
@@ -3474,11 +3165,10 @@ md-progress-circular {
   md-progress-circular[value="92"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="93"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(289.8deg);
             transform: rotate(289.8deg); }
   md-progress-circular[value="93"] .md-inner .md-right .md-half-circle {
@@ -3487,11 +3177,10 @@ md-progress-circular {
   md-progress-circular[value="93"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="94"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(293.4deg);
             transform: rotate(293.4deg); }
   md-progress-circular[value="94"] .md-inner .md-right .md-half-circle {
@@ -3500,11 +3189,10 @@ md-progress-circular {
   md-progress-circular[value="94"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="95"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(297deg);
             transform: rotate(297deg); }
   md-progress-circular[value="95"] .md-inner .md-right .md-half-circle {
@@ -3513,11 +3201,10 @@ md-progress-circular {
   md-progress-circular[value="95"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="96"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(300.6deg);
             transform: rotate(300.6deg); }
   md-progress-circular[value="96"] .md-inner .md-right .md-half-circle {
@@ -3526,11 +3213,10 @@ md-progress-circular {
   md-progress-circular[value="96"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="97"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(304.2deg);
             transform: rotate(304.2deg); }
   md-progress-circular[value="97"] .md-inner .md-right .md-half-circle {
@@ -3539,11 +3225,10 @@ md-progress-circular {
   md-progress-circular[value="97"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="98"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(307.8deg);
             transform: rotate(307.8deg); }
   md-progress-circular[value="98"] .md-inner .md-right .md-half-circle {
@@ -3552,11 +3237,10 @@ md-progress-circular {
   md-progress-circular[value="98"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="99"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(311.4deg);
             transform: rotate(311.4deg); }
   md-progress-circular[value="99"] .md-inner .md-right .md-half-circle {
@@ -3565,11 +3249,10 @@ md-progress-circular {
   md-progress-circular[value="99"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[value="100"] .md-inner .md-left .md-half-circle {
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear;
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear;
     -webkit-transform: rotate(315deg);
             transform: rotate(315deg); }
   md-progress-circular[value="100"] .md-inner .md-right .md-half-circle {
@@ -3578,8 +3261,7 @@ md-progress-circular {
   md-progress-circular[value="100"] .md-inner .md-gap {
     border-bottom-width: 5px;
     border-bottom-style: solid;
-    -webkit-transition: border-bottom-color 0.1s linear;
-            transition: border-bottom-color 0.1s linear; }
+    transition: border-bottom-color 0.1s linear; }
   md-progress-circular[md-mode=indeterminate] .md-spinner-wrapper {
     -webkit-animation: outer-rotate 2.91667s linear infinite;
             animation: outer-rotate 2.91667s linear infinite; }
@@ -3611,8 +3293,7 @@ md-progress-linear {
     top: 5px;
     -webkit-transform: translate(0, 5px) scale(1, 0);
             transform: translate(0, 5px) scale(1, 0);
-    -webkit-transition: all 0.3s linear;
-            transition: all 0.3s linear; }
+    transition: all 0.3s linear; }
   md-progress-linear .md-container.md-ready {
     -webkit-transform: translate(0, 0) scale(1, 1);
             transform: translate(0, 0) scale(1, 1); }
@@ -3621,8 +3302,7 @@ md-progress-linear {
     position: absolute;
     width: 100%; }
   md-progress-linear .md-bar1, md-progress-linear .md-bar2 {
-    -webkit-transition: all 0.2s linear;
-            transition: all 0.2s linear; }
+    transition: all 0.2s linear; }
   md-progress-linear[md-mode=determinate] .md-bar1 {
     display: none; }
   md-progress-linear[md-mode=indeterminate] .md-bar1 {
@@ -3992,8 +3672,7 @@ md-radio-button, .md-switch-thumb {
     height: 16px;
     border: solid 2px;
     border-radius: 50%;
-    -webkit-transition: border-color ease 0.28s;
-            transition: border-color ease 0.28s; }
+    transition: border-color ease 0.28s; }
   md-radio-button .md-on, .md-switch-thumb .md-on {
     position: absolute;
     top: 0;
@@ -4001,8 +3680,8 @@ md-radio-button, .md-switch-thumb {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    -webkit-transition: -webkit-transform ease 0.28s;
-            transition: transform ease 0.28s;
+    transition: -webkit-transform ease 0.28s;
+    transition: transform ease 0.28s;
     -webkit-transform: scale(0);
             transform: scale(0); }
   md-radio-button.md-checked .md-on, .md-switch-thumb.md-checked .md-on {
@@ -4031,28 +3710,22 @@ md-sidenav {
   z-index: 6;
   background-color: white;
   overflow: auto;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column; }
   md-sidenav.md-closed {
     display: none; }
   md-sidenav.md-closed-add, md-sidenav.md-closed-remove {
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     /* this is required as of 1.3x to properly
        apply all styling in a show/hide animation */
-    -webkit-transition: 0s all;
-            transition: 0s all; }
+    transition: 0s all; }
   md-sidenav.md-closed-add.md-closed-add-active, md-sidenav.md-closed-remove.md-closed-remove-active {
-    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
   md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-left, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-right {
     position: static;
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
@@ -4136,8 +3809,7 @@ md-slider {
     right: 0;
     height: 100%; }
   md-slider .md-track-fill {
-    -webkit-transition: width 0.05s linear;
-            transition: width 0.05s linear; }
+    transition: width 0.05s linear; }
   md-slider .md-track-ticks {
     position: absolute;
     left: 0;
@@ -4149,8 +3821,8 @@ md-slider {
     top: 0;
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0);
-    -webkit-transition: -webkit-transform 0.1s linear;
-            transition: transform 0.1s linear; }
+    transition: -webkit-transform 0.1s linear;
+    transition: transform 0.1s linear; }
   md-slider .md-thumb {
     z-index: 1;
     position: absolute;
@@ -4161,8 +3833,7 @@ md-slider {
     border-radius: 38px;
     -webkit-transform: scale(0.5);
             transform: scale(0.5);
-    -webkit-transition: all 0.1s linear;
-            transition: all 0.1s linear; }
+    transition: all 0.1s linear; }
     md-slider .md-thumb:after {
       content: '';
       position: absolute;
@@ -4174,15 +3845,12 @@ md-slider {
       border: 3px solid; }
   md-slider .md-sign {
     /* Center the children (slider-thumb-text) */
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
     -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
-    -webkit-box-pack: center;
     -webkit-justify-content: center;
         -ms-flex-pack: center;
             justify-content: center;
@@ -4194,8 +3862,7 @@ md-slider {
     border-radius: 28px;
     -webkit-transform: scale(0.4) translate3d(0, 70px, 0);
             transform: scale(0.4) translate3d(0, 70px, 0);
-    -webkit-transition: all 0.2s ease-in-out;
-            transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
     /* The arrow pointing down under the sign */ }
     md-slider .md-sign:after {
       position: absolute;
@@ -4209,8 +3876,7 @@ md-slider {
       opacity: 0;
       -webkit-transform: translate3d(0, -8px, 0);
               transform: translate3d(0, -8px, 0);
-      -webkit-transition: all 0.2s ease-in-out;
-              transition: all 0.2s ease-in-out; }
+      transition: all 0.2s ease-in-out; }
     md-slider .md-sign .md-thumb-text {
       z-index: 1;
       font-size: 12px;
@@ -4238,8 +3904,7 @@ md-slider {
     background-color: transparent;
     -webkit-transform: scale(0);
             transform: scale(0);
-    -webkit-transition: all 0.2s linear;
-            transition: all 0.2s linear; }
+    transition: all 0.2s linear; }
   md-slider .md-disabled-thumb {
     position: absolute;
     left: -22px;
@@ -4258,8 +3923,7 @@ md-slider {
   md-slider:focus {
     outline: none; }
   md-slider.panning .md-thumb-container, md-slider.panning .md-track-fill {
-    -webkit-transition: none;
-            transition: none; }
+    transition: none; }
   md-slider:not([md-discrete]) {
     /* Hide the sign and ticks in non-discrete mode */ }
     md-slider:not([md-discrete]) .md-track-ticks, md-slider:not([md-discrete]) .md-sign {
@@ -4346,8 +4010,7 @@ md-slider {
   margin-right: 16px;
   position: relative; }
   .md-subheader:not(.md-sticky-no-effect) {
-    -webkit-transition: 0.2s ease-out margin;
-            transition: 0.2s ease-out margin; }
+    transition: 0.2s ease-out margin; }
     .md-subheader:not(.md-sticky-no-effect):after {
       position: absolute;
       left: 0;
@@ -4366,11 +4029,9 @@ md-switch {
   position: relative;
   height: 24px;
   margin: 8px;
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
@@ -4390,8 +4051,8 @@ md-switch {
     outline: none; }
     md-switch .md-switch-thumb .md-container {
       position: absolute;
-      -webkit-transition: -webkit-transform 0.2s linear;
-              transition: transform 0.2s linear;
+      transition: -webkit-transform 0.2s linear;
+      transition: transform 0.2s linear;
       -webkit-transform: translate3d(0, 0, 0);
               transform: translate3d(0, 0, 0); }
     md-switch .md-switch-thumb.md-checked .md-container {
@@ -4414,15 +4075,12 @@ md-tabs {
 .md-paginator {
   z-index: 1;
   margin-right: -2px;
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
-  -webkit-box-align: center;
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
@@ -4447,7 +4105,6 @@ md-tabs {
 
 /* If `center` justified, change to left-justify if paginating */
 md-tabs[center] .md-header:not(.md-paginating) .md-header-items {
-  -webkit-box-pack: center;
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center; }
@@ -4468,13 +4125,11 @@ md-tabs[center] .md-header:not(.md-paginating) .md-header-items {
   text-transform: uppercase;
   margin: auto; }
   .md-header-items-container .md-header-items {
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     box-sizing: border-box;
-    -webkit-transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
-            transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+    transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0);
     width: 100%;
@@ -4498,28 +4153,24 @@ md-tabs-ink-bar {
   margin-top: -2px;
   -webkit-transform: scaleX(1);
           transform: scaleX(1);
-  -webkit-transition: -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
-          transition: transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+  transition: -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+  transition: transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
   -webkit-transform-origin: 0 0;
           transform-origin: 0 0; }
   md-tabs-ink-bar.md-ink-bar-delayed {
-    -webkit-transition: -webkit-transform 0.5s cubic-bezier(0.45, 0, 0.15, 1);
-            transition: transform 0.5s cubic-bezier(0.45, 0, 0.15, 1); }
+    transition: -webkit-transform 0.5s cubic-bezier(0.45, 0, 0.15, 1);
+    transition: transform 0.5s cubic-bezier(0.45, 0, 0.15, 1); }
 
 md-tab {
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-flex: 1;
   -webkit-flex: 1;
       -ms-flex: 1;
           flex: 1;
-  -webkit-box-align: center;
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-  -webkit-box-pack: center;
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -4542,7 +4193,6 @@ md-tab {
   md-tab:focus {
     outline: none; }
   md-tab md-tab-label {
-    -webkit-box-flex: 1;
     -webkit-flex: 1;
         -ms-flex: 1;
             flex: 1;
@@ -4582,14 +4232,11 @@ md-input-group, .md-input-group {
             transform: translate3d(0, 22px, 0);
     -webkit-transform-origin: left center;
             transform-origin: left center;
-    -webkit-transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1);
-            transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1);
-    -webkit-transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1);
-            transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
+    transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1);
+    transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
   md-input-group input, md-input-group textarea, .md-input-group input, .md-input-group textarea {
     border-bottom-width: 1px;
-    -webkit-transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1);
-            transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
+    transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
   md-input-group.md-input-focused label, .md-input-group.md-input-focused label {
     -webkit-transform: translate3d(0, 4px, 0) scale(0.75);
             transform: translate3d(0, 4px, 0) scale(0.75); }
@@ -4619,17 +4266,14 @@ md-input-group, .md-input-group {
             transform: translate3d(0, 22px, 0);
     -webkit-transform-origin: left center;
             transform-origin: left center;
-    -webkit-transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1);
-            transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
+    transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
 
 md-toast {
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   position: absolute;
   box-sizing: border-box;
-  -webkit-box-align: center;
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
@@ -4647,17 +4291,14 @@ md-toast {
   opacity: 1;
   -webkit-transform: translate3d(0, 0, 0) rotateZ(0deg);
           transform: translate3d(0, 0, 0) rotateZ(0deg);
-  -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-          transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   /* Transition differently when swiping */ }
   md-toast.md-capsule {
     border-radius: 24px; }
   md-toast.ng-leave-active {
-    -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-            transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-toast.md-swipeleft, md-toast.md-swiperight, md-toast.md-swipeup, md-toast.md-swipedown {
-    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
   md-toast.ng-enter {
     -webkit-transform: translate3d(0, 100%, 0);
             transform: translate3d(0, 100%, 0);
@@ -4733,12 +4374,9 @@ md-toast {
  }
 
 md-toolbar {
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column;
@@ -4763,16 +4401,12 @@ md-toolbar {
     margin-left: 64px; }
 
 .md-toolbar-tools {
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: row;
       -ms-flex-direction: row;
           flex-direction: row;
@@ -4876,14 +4510,11 @@ md-tooltip {
     padding: 8px;
     background: transparent;
     opacity: 0.3;
-    -webkit-transition: inherit;
-            transition: inherit; }
+    transition: inherit; }
   md-tooltip.md-hide {
-    -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-            transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-tooltip.md-show {
-    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     pointer-events: auto;
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }
@@ -5036,7 +4667,6 @@ md-progress-linear.md-default-theme .md-container {
 md-progress-linear.md-default-theme .md-bar {
   background-color: #03a9f4; }
 md-progress-linear.md-default-theme[md-mode=buffer] .md-dashed:before {
-  background: -webkit-radial-gradient(#b3e5fc 0%, #b3e5fc 16%, transparent 42%);
   background: radial-gradient(#b3e5fc 0%, #b3e5fc 16%, transparent 42%); }
 md-progress-linear.md-default-theme[md-mode=buffer] .md-bar1 {
   background-color: #b3e5fc; }
@@ -5129,7 +4759,6 @@ md-input-group.md-default-theme.md-input-has-value:not(.md-input-focused) label 
 md-input-group.md-default-theme[disabled] input, md-input-group.md-default-theme[disabled] textarea {
   border-bottom-color: rgba(0, 0, 0, 0.12);
   color: rgba(0, 0, 0, 0.26);
-  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.19) 0%, rgba(0, 0, 0, 0.19) 50%, rgba(0, 0, 0, 0) 0%);
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0.19) 0%, rgba(0, 0, 0, 0.19) 50%, rgba(0, 0, 0, 0) 0%); }
 
 md-toast.md-default-theme {
