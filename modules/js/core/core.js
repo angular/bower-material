@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc3-master-98c3152
+ * v0.6.0-rc3-master-c1cb995
  */
 (function() {
 'use strict';
@@ -99,6 +99,14 @@ function MdConstantFactory($$rAF, $sniffer) {
       ANIMATION_NAME: vendorProperty('animationName'),
       ANIMATION_TIMING: vendorProperty('animationTimingFunction'),
       ANIMATION_DIRECTION: vendorProperty('animationDirection')
+    },
+    MEDIA: {
+      'sm': '(max-width: 600px)',
+      'gt-sm': '(min-width: 600px)',
+      'md': '(min-width: 600px) and (max-width: 960px)',
+      'gt-md': '(min-width: 960px)',
+      'lg': '(min-width: 960px) and (max-width: 1200px)',
+      'gt-lg': '(min-width: 1200px)'
     }
   };
 }
