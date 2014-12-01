@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc3-master-9406981
+ * v0.6.0-rc3-master-bd6478b
  */
 (function() {
 'use strict';
@@ -168,10 +168,12 @@ function SliderController($scope, $element, $attrs, $$rAF, $window, $mdAria, $md
     function updateMin(value) {
       min = parseFloat(value);
       $element.attr('aria-valuemin', value);
+      updateAll();
     }
     function updateMax(value) {
       max = parseFloat(value);
       $element.attr('aria-valuemax', value);
+      updateAll();
     }
     function updateStep(value) {
       step = parseFloat(value);

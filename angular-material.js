@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc3-master-9406981
+ * v0.6.0-rc3-master-bd6478b
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -3892,10 +3892,12 @@ function SliderController($scope, $element, $attrs, $$rAF, $window, $mdAria, $md
     function updateMin(value) {
       min = parseFloat(value);
       $element.attr('aria-valuemin', value);
+      updateAll();
     }
     function updateMax(value) {
       max = parseFloat(value);
       $element.attr('aria-valuemax', value);
+      updateAll();
     }
     function updateStep(value) {
       step = parseFloat(value);
