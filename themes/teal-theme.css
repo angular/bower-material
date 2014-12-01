@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc3-master-12d458e
+ * v0.6.0
  */
 md-backdrop.md-opaque.md-teal-theme {
   background-color: rgba(0, 0, 0, 0.3);
@@ -84,10 +84,15 @@ md-divider.md-teal-theme {
 
 md-progress-circular.md-teal-theme {
   background-color: transparent; }
-  md-progress-circular.md-teal-theme .md-circle .md-mask .md-fill {
-    background-color: #009688; }
-  md-progress-circular.md-teal-theme .md-inset {
-    background-color: #ffffff; }
+  md-progress-circular.md-teal-theme .md-inner .md-gap {
+    border-top-color: #009688;
+    border-bottom-color: #009688; }
+  md-progress-circular.md-teal-theme .md-inner .md-left .md-half-circle, md-progress-circular.md-teal-theme .md-inner .md-right .md-half-circle {
+    border-top-color: #009688; }
+  md-progress-circular.md-teal-theme .md-inner .md-right .md-half-circle {
+    border-right-color: #009688; }
+  md-progress-circular.md-teal-theme .md-inner .md-left .md-half-circle {
+    border-left-color: #009688; }
 
 md-progress-linear.md-teal-theme .md-container {
   background-color: #b2dfdb; }

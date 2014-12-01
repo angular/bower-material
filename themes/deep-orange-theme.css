@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc3-master-12d458e
+ * v0.6.0
  */
 md-backdrop.md-opaque.md-deep-orange-theme {
   background-color: rgba(0, 0, 0, 0.3);
@@ -84,10 +84,15 @@ md-divider.md-deep-orange-theme {
 
 md-progress-circular.md-deep-orange-theme {
   background-color: transparent; }
-  md-progress-circular.md-deep-orange-theme .md-circle .md-mask .md-fill {
-    background-color: #ff5722; }
-  md-progress-circular.md-deep-orange-theme .md-inset {
-    background-color: #ffffff; }
+  md-progress-circular.md-deep-orange-theme .md-inner .md-gap {
+    border-top-color: #ff5722;
+    border-bottom-color: #ff5722; }
+  md-progress-circular.md-deep-orange-theme .md-inner .md-left .md-half-circle, md-progress-circular.md-deep-orange-theme .md-inner .md-right .md-half-circle {
+    border-top-color: #ff5722; }
+  md-progress-circular.md-deep-orange-theme .md-inner .md-right .md-half-circle {
+    border-right-color: #ff5722; }
+  md-progress-circular.md-deep-orange-theme .md-inner .md-left .md-half-circle {
+    border-left-color: #ff5722; }
 
 md-progress-linear.md-deep-orange-theme .md-container {
   background-color: #ffccbc; }

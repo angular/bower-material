@@ -2,9 +2,9 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc3-master-12d458e
+ * v0.6.0
  */
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.menu","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
 'use strict';
 
@@ -2874,6 +2874,28 @@ function mdItemDirective() {
 }
 })();
 
+
+angular.module('material.components.menu', [
+])
+
+.factory('$mdMenu', MenuProvider);
+
+function MenuProvider($$interimElementProvider) {
+  return $$interimElementProvider('$mdMenu')
+    .setDefaults({
+      methods: ['placement'],
+      options: menuDefaultOptions
+    });
+
+  /* @ngInject */
+  function menuDefaultOptions() {
+
+  }
+}
+MenuProvider.$inject = ["$$interimElementProvider"];
+
+
+
 (function() {
 'use strict';
 
@@ -2929,18 +2951,18 @@ function MdProgressCircularDirective($$rAF, $mdConstant, $mdTheming) {
 
   return {
     restrict: 'E',
-    template: 
-      '<div class="md-wrapper1"><div class="md-wrapper2"><div class="md-circle">' +
-        '<div class="md-mask md-full">' +
-          '<div class="md-fill"></div>' +
-        '</div>' +
-        '<div class="md-mask md-half">' +
-          '<div class="md-fill"></div>' +
-          '<div class="md-fill md-fix"></div>' +
-        '</div>' +
-        '<div class="md-shadow"></div>' +
-      '</div>' +
-      '<div class="md-inset"></div></div></div>',
+    template:
+        '<div class="md-spinner-wrapper">' +
+          '<div class="md-inner">' +
+            '<div class="md-gap"></div>' +
+            '<div class="md-left">' +
+              '<div class="md-half-circle"></div>' +
+            '</div>' +
+            '<div class="md-right">' +
+              '<div class="md-half-circle"></div>' +
+            '</div>' +
+          '</div>' +
+        '</div>',
     compile: compile
   };
 

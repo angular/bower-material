@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc3-master-12d458e
+ * v0.6.0
  */
 md-backdrop.md-opaque.md-blue-grey-theme {
   background-color: rgba(0, 0, 0, 0.3);
@@ -84,10 +84,15 @@ md-divider.md-blue-grey-theme {
 
 md-progress-circular.md-blue-grey-theme {
   background-color: transparent; }
-  md-progress-circular.md-blue-grey-theme .md-circle .md-mask .md-fill {
-    background-color: #607d8b; }
-  md-progress-circular.md-blue-grey-theme .md-inset {
-    background-color: #ffffff; }
+  md-progress-circular.md-blue-grey-theme .md-inner .md-gap {
+    border-top-color: #607d8b;
+    border-bottom-color: #607d8b; }
+  md-progress-circular.md-blue-grey-theme .md-inner .md-left .md-half-circle, md-progress-circular.md-blue-grey-theme .md-inner .md-right .md-half-circle {
+    border-top-color: #607d8b; }
+  md-progress-circular.md-blue-grey-theme .md-inner .md-right .md-half-circle {
+    border-right-color: #607d8b; }
+  md-progress-circular.md-blue-grey-theme .md-inner .md-left .md-half-circle {
+    border-left-color: #607d8b; }
 
 md-progress-linear.md-blue-grey-theme .md-container {
   background-color: #cfd8dc; }
