@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-51ec3dc
+ * v0.6.0-master-8a1718d
  */
 (function() {
 'use strict';
@@ -1224,7 +1224,7 @@ function InkRippleService($window, $timeout) {
           elemIsHeld   = ripples.length > 1 ? false : isHeld;
       if (elemIsActive || state.animating || elemIsHeld) {
         elem.addClass('md-ripple-visible');
-      } else {
+      } else if (elem) {
         elem.removeClass('md-ripple-visible');
         if (options.outline) {
           elem.css({
