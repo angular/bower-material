@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc3-master-141ede7
+ * v0.6.0-rc3-master-9406981
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -2811,19 +2811,20 @@ angular.module('material.components.list', [
  * @usage
  * <hljs lang="html">
  * <md-list>
- *  <md-item ng-repeat="item in todos">
- *    <div class="md-tile-left">
- *      <img ng-src="{{item.face}}" class="face" alt="{{item.who}}">
- *    </div>
- *    <div class="md-tile-content">
- *      <h3>{{item.what}}</h3>
- *      <h4>{{item.who}}</h4>
- *      <p>
- *        {{item.notes}}
- *      </p>
- *    </div>
- *
- *  </md-item>
+ *   <md-item ng-repeat="item in todos">
+ *     <md-item-content>
+ *       <div class="md-tile-left">
+ *         <img ng-src="{{item.face}}" class="face" alt="{{item.who}}">
+ *       </div>
+ *       <div class="md-tile-content">
+ *         <h3>{{item.what}}</h3>
+ *         <h4>{{item.who}}</h4>
+ *         <p>
+ *           {{item.notes}}
+ *         </p>
+ *       </div>
+ *     </md-item-content>
+ *   </md-item>
  * </md-list>
  * </hljs>
  *
