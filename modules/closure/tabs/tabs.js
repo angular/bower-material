@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-8a1718d
+ * v0.6.0-master-d0e2916
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.core');
