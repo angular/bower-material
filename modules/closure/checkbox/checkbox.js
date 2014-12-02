@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-cbec4a2
+ * v0.6.0-master-aa690e8
  */
 goog.provide('ng.material.components.checkbox');
 goog.require('ng.material.core');
