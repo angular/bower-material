@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-206f29f
+ * v0.6.0-master-e40b46d
  */
 (function() {
 'use strict';
@@ -1247,6 +1247,8 @@ function InkRippleService($window, $timeout) {
      * @returns {angular.element} the generated ripple element
      */
     function createRipple(left, top) {
+
+      color = parseColor(element.attr('md-ink-ripple')) || parseColor($window.getComputedStyle(options.colorElement[0]).color || 'rgb(0, 0, 0)');
 
       var container = getRippleContainer(),
           size = getRippleSize(left, top),
