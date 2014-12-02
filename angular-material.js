@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-3fbb9e8
+ * v0.6.0-master-30311e6
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -4867,8 +4867,8 @@ angular.module('material.components.textField', [
  * @description
  * Use the `<md-text-float>` directive to quickly construct `Floating Label` text fields
  *
- * @param {string} ng-model Optional value to assign as existing input text string
- * @param {string} label Attribute to specify the input text field label/hint.
+ * @param {string} ng-model Model expression used for two-way data binding with the input value.
+ * @param {string} label String value or expression that specifies the input text field label/hint.
  * @param {string=} type Optional value to define the type of input field. Defaults to string.
  * @param {string=} md-fid Optional attribute used for accessibility link pairing between the Label and Input elements
  *
