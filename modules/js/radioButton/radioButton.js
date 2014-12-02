@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-847ed5b
+ * v0.6.0-master-206f29f
  */
 (function() {
 'use strict';
@@ -167,7 +167,7 @@ mdRadioGroupDirective.$inject = ["$mdUtil", "$mdConstant", "$mdTheming"];
  * @restrict E
  *
  * @description
- * The `<md-radio-button>`directive is the child directive required to be used within `<md-radioo-group>` elements.
+ * The `<md-radio-button>`directive is the child directive required to be used within `<md-radio-group>` elements.
  *
  * While similar to the `<input type="radio" ng-model="" value="">` directive,
  * the `<md-radio-button>` directive provides ink effects, ARIA support, and
