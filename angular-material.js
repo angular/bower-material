@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-30311e6
+ * v0.6.0-master-c8892bb
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -931,9 +931,22 @@ function InterimElementProvider() {
       return service = {
         show: show,
         hide: hide,
-        cancel: cancel,
+        cancel: cancel
       };
 
+      /*
+       * @ngdoc method
+       * @name $$interimElement.$service#show
+       * @kind function
+       *
+       * @description
+       * Adds the `$interimElement` to the DOM and returns a promise that will be resolved or rejected
+       * with hide or cancel, respectively.
+       *
+       * @param {*} options is hashMap of settings
+       * @returns a Promise
+       *
+       */
       function show(options) {
         if (stack.length) {
           service.cancel();
@@ -956,8 +969,7 @@ function InterimElementProvider() {
        * Removes the `$interimElement` from the DOM and resolves the promise returned from `show`
        *
        * @param {*} resolveParam Data to resolve the promise with
-       *
-       * @returns undefined data that resolves after the element has been removed.
+       * @returns a Promise that will be resolved after the element has been removed.
        *
        */
       function hide(response) {
@@ -965,6 +977,8 @@ function InterimElementProvider() {
         interimElement && interimElement.remove().then(function() {
           interimElement.deferred.resolve(response);
         });
+
+        return interimElement ? interimElement.deferred.promise : $q.when(response);
       }
 
       /*
@@ -976,8 +990,7 @@ function InterimElementProvider() {
        * Removes the `$interimElement` from the DOM and rejects the promise returned from `show`
        *
        * @param {*} reason Data to reject the promise with
-       *
-       * @returns undefined
+       * @returns Promise that will be rejected after the element has been removed.
        *
        */
       function cancel(reason) {
@@ -985,6 +998,8 @@ function InterimElementProvider() {
         interimElement && interimElement.remove().then(function() {
           interimElement.deferred.reject(reason);
         });
+
+        return interimElement ? interimElement.deferred.promise : $q.reject(reason);
       }
 
 
