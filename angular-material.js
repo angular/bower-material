@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-554beff
+ * v0.6.0-master-3be3a52
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -698,7 +698,7 @@ function mdCompilerService($q, $http, $injector, $compile, $controller, $templat
     return $q.all(resolve).then(function(locals) {
 
       var template = transformTemplate(locals.$template);
-      var element = angular.element('<div>').html(template).contents();
+      var element = angular.element('<div>').html(template.trim()).contents();
       var linkFn = $compile(element);
 
       //Return a linking function that can be used later when the element is ready
@@ -774,7 +774,7 @@ function InterimElementProvider() {
    * as well as configuration of 'preset' methods (eg dialog.basic(): basic is a preset method)
    */
   function createInterimElementProvider(interimFactoryName) {
-    var EXPOSED_METHODS = ['onHide', 'onShow'];
+    var EXPOSED_METHODS = ['onHide', 'onShow', 'onRemove'];
     var providerConfig = {
       presets: {}
     };
@@ -800,7 +800,7 @@ function InterimElementProvider() {
      */
     function setDefaults(definition) {
       providerConfig.optionsFactory = definition.options;
-      providerConfig.methods = definition.methods;
+      providerConfig.methods = (definition.methods || []).concat(EXPOSED_METHODS);
       return provider;
     }
 
