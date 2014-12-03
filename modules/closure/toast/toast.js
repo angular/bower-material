@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-c0bbad2
+ * v0.6.0-master-554beff
  */
 goog.provide('ng.material.components.toast');
 goog.require('ng.material.components.button');
@@ -156,6 +156,7 @@ function MdToastProvider($$interimElementProvider) {
       options: toastDefaultOptions
     })
     .addPreset('simple', {
+      argOption: 'content',
       methods: ['content', 'action', 'highlightAction'],
       options: /* @ngInject */ ["$mdToast", function($mdToast) {
         return {

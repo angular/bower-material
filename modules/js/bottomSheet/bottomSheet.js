@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-c0bbad2
+ * v0.6.0-master-554beff
  */
 (function() {
 'use strict';
@@ -123,8 +123,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
     });
 
   /* @ngInject */
-  function bottomSheetDefaults($animate, $mdConstant, $timeout, $$rAF, $compile, $mdTheming,
-                               $mdBottomSheet, $rootElement) {
+  function bottomSheetDefaults($animate, $mdConstant, $timeout, $$rAF, $compile, $mdTheming, $mdBottomSheet, $rootElement) {
     var backdrop;
 
     return {
@@ -155,12 +154,12 @@ function MdBottomSheetProvider($$interimElementProvider) {
 
       return $animate.enter(bottomSheet.element, options.parent)
         .then(function() {
-          var focusableItems = angular.element(
+          var focusable = angular.element(
             element[0].querySelector('button') ||
             element[0].querySelector('a') ||
             element[0].querySelector('[ng-click]')
           );
-          focusableItems.eq(0).focus();
+          focusable.focus();
 
           if (options.escapeToClose) {
             options.rootElementKeyupCallback = function(e) {
