@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-5caa22b
+ * v0.6.0-master-b28ffff
  */
 md-toast {
   display: -webkit-flex;
@@ -23,7 +23,7 @@ md-toast {
   max-width: 879px;
   max-height: 40px;
   height: 24px;
-  z-index: 8;
+  z-index: 80;
   opacity: 1;
   -webkit-transform: translate3d(0, 0, 0) rotateZ(0deg);
           transform: translate3d(0, 0, 0) rotateZ(0deg);

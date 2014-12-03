@@ -2,10 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-5caa22b
+ * v0.6.0-master-b28ffff
  */
 md-backdrop {
-  z-index: 5;
+  z-index: 50;
   background-color: rgba(0, 0, 0, 0);
   position: fixed;
   left: 0;

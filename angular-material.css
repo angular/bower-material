@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-5caa22b
+ * v0.6.0-master-b28ffff
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -1373,7 +1373,7 @@ md-tab > .md-ripple-container .md-ripple {
           align-items: flex-end; }
 
 md-backdrop {
-  z-index: 5;
+  z-index: 50;
   background-color: rgba(0, 0, 0, 0);
   position: fixed;
   left: 0;
@@ -1396,7 +1396,7 @@ md-bottom-sheet {
   right: 0;
   bottom: 0;
   padding: 8px 16px 88px 16px;
-  z-index: 8;
+  z-index: 70;
   border-top: 1px solid;
   -webkit-transform: translate3d(0, 80px, 0);
           transform: translate3d(0, 80px, 0);
@@ -1585,7 +1585,7 @@ md-bottom-sheet {
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }
   .md-button.md-fab {
-    z-index: 2;
+    z-index: 20;
     width: 56px;
     height: 56px;
     border-radius: 50%;
@@ -1785,7 +1785,7 @@ md-content {
   top: 0;
   right: 0;
   bottom: 0;
-  z-index: 10; }
+  z-index: 100; }
   .md-dialog-container.md-active {
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     -webkit-transform: translate3d(0, 0, 0) scale(1);
@@ -3725,7 +3725,7 @@ md-sidenav {
   position: absolute;
   width: 304px;
   bottom: 0;
-  z-index: 6;
+  z-index: 60;
   background-color: white;
   overflow: auto;
   -webkit-flex-direction: column;
@@ -4305,7 +4305,7 @@ md-toast {
   max-width: 879px;
   max-height: 40px;
   height: 24px;
-  z-index: 8;
+  z-index: 80;
   opacity: 1;
   -webkit-transform: translate3d(0, 0, 0) rotateZ(0deg);
           transform: translate3d(0, 0, 0) rotateZ(0deg);
@@ -4492,7 +4492,7 @@ md-toolbar {
 md-tooltip {
   position: absolute;
   font-size: 14px;
-  z-index: 9;
+  z-index: 90;
   overflow: hidden;
   pointer-events: none;
   border-radius: 4px;
