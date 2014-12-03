@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-07a6313
+ * v0.6.0-master-764a723
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -5733,7 +5733,7 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout) {
 
     // Make sure we don't focus an element on the next page
     // before it's in view
-    function onTabFocus(tab) {
+    function onTabFocus(tab, oldTab) {
       if (!tab) return;
 
       var pageIndex = getPageForTab(tab);
@@ -5741,6 +5741,7 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout) {
         tab.element.focus();
       } else {
         // Go to the new page, wait for the page transition to end, then focus.
+        oldTab && oldTab.element.blur();
         setPage(pageIndex).then(function() {
           tab.element.focus();
         });
