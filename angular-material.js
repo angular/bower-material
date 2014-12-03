@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-57a7b57
+ * v0.6.0-master-bb9bc82
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -5695,7 +5695,7 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout) {
 
   // TODO allow configuration of TAB_MIN_WIDTH
   // Must match tab min-width rule in _tabs.scss
-  var TAB_MIN_WIDTH = 8 * 12; 
+  var TAB_MIN_WIDTH = 8 * 12;
   // Must match (2 * width of paginators) in scss
   var PAGINATORS_WIDTH = (8 * 4) * 2;
 
@@ -5721,25 +5721,25 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout) {
     scope.$on('$mdTabsChanged', debouncedUpdatePagination);
     angular.element($window).on('resize', debouncedUpdatePagination);
 
-    // Listen to focus events bubbling up from md-tab elements
-    tabsParent.on('focusin', onTabsFocusIn);
-
     scope.$on('$destroy', function() {
       angular.element($window).off('resize', debouncedUpdatePagination);
       tabsParent.off('focusin', onTabsFocusIn);
     });
 
     scope.$watch(tabsCtrl.selected, onSelectedTabChange);
+    scope.$watch(function() {
+      return tabsCtrl.tabToFocus;
+    }, onTabFocus);
 
-    // Allows pagination through focus change.
-    function onTabsFocusIn(ev) {
-      if (!state.active) return;
+    // Make sure we don't focus an element on the next page
+    // before it's in view
+    function onTabFocus(tab) {
+      if (!tab) return;
 
-      var tab = angular.element(ev.target).controller('mdTab');
       var pageIndex = getPageForTab(tab);
-      if (pageIndex !== state.page) {
-        // If the focused element is on a new page, don't focus yet.
-        tab.element.blur();
+      if (!state.active || pageIndex === state.page) {
+        tab.element.focus();
+      } else {
         // Go to the new page, wait for the page transition to end, then focus.
         setPage(pageIndex).then(function() {
           tab.element.focus();
@@ -5802,7 +5802,7 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout) {
         state.pagesCount = Math.ceil((TAB_MIN_WIDTH * tabsCtrl.count()) / tabsWidth);
         state.itemsPerPage = Math.max(1, Math.floor(tabsCtrl.count() / state.pagesCount));
         state.tabWidth = tabsWidth / state.itemsPerPage;
-        
+
         tabsParent.css('width', state.tabWidth * tabsCtrl.count() + 'px');
         tabs.css('width', state.tabWidth + 'px');
 
@@ -6094,7 +6094,7 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
       function defaultClickListener() {
         scope.$apply(function() {
           tabsCtrl.select(tabItemCtrl);
-          tabItemCtrl.element.focus();
+          tabsCtrl.focus(tabItemCtrl);
         });
       }
       function keydownListener(ev) {
@@ -6102,14 +6102,15 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
           // Fire the click handler to do normal selection if space is pressed
           element.triggerHandler('click');
           ev.preventDefault();
-
         } else if (ev.keyCode === $mdConstant.KEY_CODE.LEFT_ARROW) {
-          var previous = tabsCtrl.previous(tabItemCtrl);
-          previous && previous.element.focus();
-
+          scope.$evalAsync(function() {
+            tabsCtrl.focus(tabsCtrl.previous(tabItemCtrl));
+            console.log('pressing back');
+          });
         } else if (ev.keyCode === $mdConstant.KEY_CODE.RIGHT_ARROW) {
-          var next = tabsCtrl.next(tabItemCtrl);
-          next && next.element.focus();
+          scope.$evalAsync(function() {
+            tabsCtrl.focus(tabsCtrl.next(tabItemCtrl));
+          });
         }
       }
 
@@ -6208,6 +6209,7 @@ function MdTabsController($scope, $element, $mdUtil) {
 
   // Properties
   self.$element = $element;
+  self.scope = $scope;
   // The section containing the tab content $elements
   self.contentArea = angular.element($element[0].querySelector('.md-tabs-content'));
 
@@ -6222,6 +6224,7 @@ function MdTabsController($scope, $element, $mdUtil) {
   self.remove = remove;
   self.move = move;
   self.select = select;
+  self.focus = focus;
   self.deselect = deselect;
 
   self.next = next;
@@ -6294,6 +6297,11 @@ function MdTabsController($scope, $element, $mdUtil) {
     $scope.selectedIndex = self.indexOf(tab);
     tab.isSelected = true;
     tab.onSelect();
+  }
+
+  function focus(tab) {
+    // this variable is $watch'd by pagination
+    self.tabToFocus = tab;
   }
 
   function deselect(tab) {
