@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-bb9bc82
+ * v0.6.0-master-07a6313
  */
 (function() {
 'use strict';
@@ -515,7 +515,6 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
         } else if (ev.keyCode === $mdConstant.KEY_CODE.LEFT_ARROW) {
           scope.$evalAsync(function() {
             tabsCtrl.focus(tabsCtrl.previous(tabItemCtrl));
-            console.log('pressing back');
           });
         } else if (ev.keyCode === $mdConstant.KEY_CODE.RIGHT_ARROW) {
           scope.$evalAsync(function() {
