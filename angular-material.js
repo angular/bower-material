@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-a348e19
+ * v0.6.0-master-5559ac6
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -5721,8 +5721,8 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout) {
     scope.$on('$mdTabsChanged', debouncedUpdatePagination);
     angular.element($window).on('resize', debouncedUpdatePagination);
 
-    // Listen to focus events bubbling up from md-tab elements
-    tabsParent.on('focusin', onTabsFocusIn);
+    // Listen to focus events from md-tab elements
+    tabsCtrl.scope.$on('$materialTab.focus', onTabFocus);
 
     scope.$on('$destroy', function() {
       angular.element($window).off('resize', debouncedUpdatePagination);
@@ -5732,14 +5732,18 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout) {
     scope.$watch(tabsCtrl.selected, onSelectedTabChange);
 
     // Allows pagination through focus change.
-    function onTabsFocusIn(ev) {
+    function onTabFocus(ev, tab) {
       if (!state.active) return;
 
-      var tab = angular.element(ev.target).controller('mdTab');
       var pageIndex = getPageForTab(tab);
       if (pageIndex !== state.page) {
         // If the focused element is on a new page, don't focus yet.
         tab.element.blur();
+        // Firefox doesn't support synchronously stopping focus, so we have
+        // to do it asynchronously there...
+        setTimeout(function() {
+          tab.element.blur();
+        });
         // Go to the new page, wait for the page transition to end, then focus.
         setPage(pageIndex).then(function() {
           tab.element.focus();
@@ -6065,6 +6069,12 @@ function MdTabDirective($mdInkRipple, $compile, $mdAria, $mdUtil, $mdConstant) {
         tabsCtrl.remove(tabItemCtrl);
       });
 
+      // We have to listen to each individual tab's focus event for pagination's sake,
+      // because `focusin` (the bubbled pre-focus event) is not supported in Firefox.
+      element.on('focus', function() {
+        tabsCtrl.scope.$broadcast('$materialTab.focus', tabItemCtrl);
+      });
+
       if (!angular.isDefined(attr.ngClick)) {
         element.on('click', defaultClickListener);
       }
@@ -6208,6 +6218,7 @@ function MdTabsController($scope, $element, $mdUtil) {
 
   // Properties
   self.$element = $element;
+  self.scope = $scope;
   // The section containing the tab content $elements
   self.contentArea = angular.element($element[0].querySelector('.md-tabs-content'));
 
