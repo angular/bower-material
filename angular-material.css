@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-a3ce7d8
+ * v0.6.0-master-c0bbad2
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -336,11 +336,11 @@ md-tab > .md-ripple-container .md-ripple {
           flex: 0 0 66.66%;
   max-width: 66.66%; }
 
-[hide]:not([show]):not([show-sm]):not([show-md]):not([show-lg]):not([show-gt-sm]):not([show-gt-md]):not([show-gt-lg]) {
+[hide]:not([show]) {
   display: none; }
 
 @media (max-width: 600px) {
-  [hide-sm]:not([show-sm]) {
+  [hide-sm]:not([show-sm]), [hide]:not([show-sm]) {
     display: none; }
 
   [layout-sm] {
@@ -498,7 +498,7 @@ md-tab > .md-ripple-container .md-ripple {
  }
 
 @media (min-width: 600px) {
-  [hide-gt-sm]:not([show-gt-sm]):not([show-md]):not([show-gt-md]):not([show-lg]):not([show-gt-lg]) {
+  [hide-gt-sm]:not([show-gt-sm]):not([show-md]):not([show-gt-md]):not([show-lg]):not([show-gt-lg]), [hide]:not([show-gt-sm]):not([show-md]):not([show-gt-md]):not([show-lg]):not([show-gt-lg]) {
     display: none; }
 
   [layout-gt-sm] {
@@ -656,7 +656,7 @@ md-tab > .md-ripple-container .md-ripple {
  }
 
 @media (min-width: 600px) and (max-width: 960px) {
-  [hide-md]:not([show-md]) {
+  [hide-md]:not([show-md]), [hide]:not([show-md]) {
     display: none; }
 
   [layout-md] {
@@ -814,7 +814,7 @@ md-tab > .md-ripple-container .md-ripple {
  }
 
 @media (min-width: 960px) {
-  [hide-gt-md]:not([show-gt-md]):not([show-lg]):not([show-gt-lg]) {
+  [hide-gt-md]:not([show-gt-md]):not([show-lg]):not([show-gt-lg]), [hide]:not([show-gt-md]):not([show-lg]):not([show-gt-lg]) {
     display: none; }
 
   [layout-gt-md] {
@@ -972,7 +972,7 @@ md-tab > .md-ripple-container .md-ripple {
  }
 
 @media (min-width: 960px) and (max-width: 1200px) {
-  [hide-lg]:not([show-lg]) {
+  [hide-lg]:not([show-lg]), [hide]:not([show-lg]) {
     display: none; }
 
   [layout-lg] {
@@ -1130,7 +1130,7 @@ md-tab > .md-ripple-container .md-ripple {
  }
 
 @media (min-width: 1200px) {
-  [hide-gt-lg]:not([show-gt-lg]) {
+  [hide-gt-lg]:not([show-gt-lg]), [hide]:not([show-gt-lg]) {
     display: none; }
 
   [layout-gt-lg] {
