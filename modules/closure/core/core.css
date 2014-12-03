@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-c8892bb
+ * v0.6.0-master-5caa22b
  */
 /* Sizes:
   0    <= size <= 600  Phone
@@ -26,7 +26,10 @@
       -ms-flex-direction: row;
           flex-direction: row; }
 
-[layout-padding], [layout-padding] > [flex], [layout-margin], [layout-margin] > [flex] {
+[layout-padding] [layout-padding] > [flex] {
+  padding: 8px; }
+
+[layout-margin], [layout-margin] > [flex] {
   margin: 8px; }
 
 [layout-padding] + [layout-padding], [layout-margin] + [layout-margin] {
