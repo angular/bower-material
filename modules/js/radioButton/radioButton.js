@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-6791a85
+ * v0.6.0-master-fbdf013
  */
 (function() {
 'use strict';
@@ -36,8 +36,8 @@ angular.module('material.components.radioButton', [
  * force the user to tab through all the radio buttons, `<md-radio-group>`
  * is focusable, and by default the `<md-radio-button>`s are not.
  *
- * @param {string} ngModel Assignable angular expression to data-bind to.
- * @param {boolean=} mdNoInk Use of attribute indicates flag to disable ink ripple effects.
+ * @param {string} ng-model Assignable angular expression to data-bind to.
+ * @param {boolean=} md-no-ink Use of attribute indicates flag to disable ink ripple effects.
  *
  * @usage
  * <hljs lang="html">

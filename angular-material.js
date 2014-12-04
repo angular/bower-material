@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-6791a85
+ * v0.6.0-master-fbdf013
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -1963,9 +1963,9 @@ angular.module('material.components.button', [
  * If you supply a `href` or `ng-href` attribute, it will become an `<a>` element. Otherwise, it will
  * become a `<button>` element.
  *
- * @param {boolean=} mdNoInk If present, disable ripple ink effects.
- * @param {expression=} ngDisabled En/Disable based on the expression
- * @param {string=} ariaLabel Adds alternative text to button for accessibility, useful for icon buttons.
+ * @param {boolean=} md-no-ink If present, disable ripple ink effects.
+ * @param {expression=} ng-disabled En/Disable based on the expression
+ * @param {string=} aria-label Adds alternative text to button for accessibility, useful for icon buttons.
  * If no default text is found, a warning will be logged.
  *
  * @usage
@@ -2101,13 +2101,13 @@ angular.module('material.components.checkbox', [
  * @description
  * The checkbox directive is used like the normal [angular checkbox](https://docs.angularjs.org/api/ng/input/input%5Bcheckbox%5D).
  *
- * @param {string} ngModel Assignable angular expression to data-bind to.
+ * @param {string} ng-model Assignable angular expression to data-bind to.
  * @param {string=} name Property name of the form under which the control is published.
- * @param {expression=} ngTrueValue The value to which the expression should be set when selected.
- * @param {expression=} ngFalseValue The value to which the expression should be set when not selected.
- * @param {string=} ngChange Angular expression to be executed when input changes due to user interaction with the input element.
- * @param {boolean=} mdNoInk Use of attribute indicates use of ripple ink effects
- * @param {string=} ariaLabel Adds label to checkbox for accessibility.
+ * @param {expression=} ng-true-value The value to which the expression should be set when selected.
+ * @param {expression=} ng-false-value The value to which the expression should be set when not selected.
+ * @param {string=} ng-change Angular expression to be executed when input changes due to user interaction with the input element.
+ * @param {boolean=} md-no-ink Use of attribute indicates use of ripple ink effects
+ * @param {string=} aria-label Adds label to checkbox for accessibility.
  * Defaults to checkbox's text. If no default text is found, a warning will be logged.
  *
  * @usage
@@ -2751,7 +2751,7 @@ function MdDividerController(){}
  * @description
  * Dividers group and separate content within lists and page layouts using strong visual and spatial distinctions. This divider is a thin rule, lightweight enough to not distract the user from content.
  *
- * @param {boolean=} mdInset Add this attribute to activate the inset divider style.
+ * @param {boolean=} md-inset Add this attribute to activate the inset divider style.
  * @usage
  * <hljs lang="html">
  * <md-divider></md-divider>
@@ -2930,9 +2930,9 @@ angular.module('material.components.progressCircular', [
  *
  * For operations where the user is asked to wait a moment while something finishes up, and it’s not necessary to expose what's happening behind the scenes and how long it will take, use an indeterminate indicator.
  *
- * @param {string} mdMode Select from one of two modes: determinate and indeterminate.
+ * @param {string} md-mode Select from one of two modes: determinate and indeterminate.
  * @param {number=} value In determinate mode, this number represents the percentage of the circular progress. Default: 0
- * @param {number=} mdDiameter This specifies the diamter of the circular progress. Default: 48
+ * @param {number=} md-diameter This specifies the diamter of the circular progress. Default: 48
  *
  * @usage
  * <hljs lang="html">
@@ -3053,9 +3053,9 @@ angular.module('material.components.progressLinear', [
  *
  * For operations where the user is asked to wait a moment while something finishes up, and it’s not necessary to expose what's happening behind the scenes and how long it will take, use an indeterminate indicator.
  *
- * @param {string} mdMode Select from one of four modes: determinate, indeterminate, buffer or query.
+ * @param {string} md-mode Select from one of four modes: determinate, indeterminate, buffer or query.
  * @param {number=} value In determinate and buffer modes, this number represents the percentage of the primary progress bar. Default: 0
- * @param {number=} mdBufferValue In the buffer mode, this number represents the precentage of the secondary progress bar. Default: 0
+ * @param {number=} md-buffer-value In the buffer mode, this number represents the precentage of the secondary progress bar. Default: 0
  *
  * @usage
  * <hljs lang="html">
@@ -3181,8 +3181,8 @@ angular.module('material.components.radioButton', [
  * force the user to tab through all the radio buttons, `<md-radio-group>`
  * is focusable, and by default the `<md-radio-button>`s are not.
  *
- * @param {string} ngModel Assignable angular expression to data-bind to.
- * @param {boolean=} mdNoInk Use of attribute indicates flag to disable ink ripple effects.
+ * @param {string} ng-model Assignable angular expression to data-bind to.
+ * @param {boolean=} md-no-ink Use of attribute indicates flag to disable ink ripple effects.
  *
  * @usage
  * <hljs lang="html">
@@ -3564,9 +3564,9 @@ mdSidenavService.$inject = ["$mdComponentRegistry"];
  * });
  * </hljs>
  *
- * @param {expression=} mdIsOpen A model bound to whether the sidenav is opened.
- * @param {string=} mdComponentId componentId to use with $mdSidenav service.
- * @param {expression=} mdIsLockedOpen When this expression evalutes to true,
+ * @param {expression=} md-is-open A model bound to whether the sidenav is opened.
+ * @param {string=} md-component-id componentId to use with $mdSidenav service.
+ * @param {expression=} md-is-locked-open When this expression evalutes to true,
  * the sidenav 'locks open': it falls into the content's flow instead
  * of appearing over it. This overrides the `is-open` attribute.
  *
@@ -3802,7 +3802,7 @@ angular.module('material.components.slider', [
  * </md-slider>
  * </hljs>
  *
- * @param {boolean=} mdDiscrete Whether to enable discrete mode.
+ * @param {boolean=} md-discrete Whether to enable discrete mode.
  * @param {number=} step The distance between values the user is allowed to pick. Default 1.
  * @param {number=} min The minimum value the user is allowed to pick. Default 0.
  * @param {number=} max The maximum value the user is allowed to pick. Default 100.
@@ -4783,13 +4783,13 @@ angular.module('material.components.switch', [
  *
  * The switch directive is used very much like the normal [angular checkbox](https://docs.angularjs.org/api/ng/input/input%5Bcheckbox%5D).
  *
- * @param {string} ngModel Assignable angular expression to data-bind to.
+ * @param {string} ng-model Assignable angular expression to data-bind to.
  * @param {string=} name Property name of the form under which the control is published.
- * @param {expression=} ngTrueValue The value to which the expression should be set when selected.
- * @param {expression=} ngFalseValue The value to which the expression should be set when not selected.
- * @param {string=} ngChange Angular expression to be executed when input changes due to user interaction with the input element.
- * @param {boolean=} mdNoInk Use of attribute indicates use of ripple ink effects.
- * @param {string=} ariaLabel Publish the button label used by screen-readers for accessibility. Defaults to the switch's text.
+ * @param {expression=} ng-true-value The value to which the expression should be set when selected.
+ * @param {expression=} ng-false-value The value to which the expression should be set when not selected.
+ * @param {string=} ng-change Angular expression to be executed when input changes due to user interaction with the input element.
+ * @param {boolean=} md-no-ink Use of attribute indicates use of ripple ink effects.
+ * @param {string=} aria-label Publish the button label used by screen-readers for accessibility. Defaults to the switch's text.
  *
  * @usage
  * <hljs lang="html">
@@ -5325,13 +5325,13 @@ angular.module('material.components.toolbar', [
  * </div>
  * </hljs>
  *
- * @param {boolean=} mdScrollShrink Whether the header should shrink away as
+ * @param {boolean=} md-scroll-shrink Whether the header should shrink away as
  * the user scrolls down, and reveal itself as the user scrolls up.
  * Note: for scrollShrink to work, the toolbar must be a sibling of a
  * `md-content` element, placed before it. See the scroll shrink demo.
  *
  *
- * @param {number=} mdShrinkSpeedFactor How much to change the speed of the toolbar's
+ * @param {number=} md-shrink-speed-factor How much to change the speed of the toolbar's
  * shrinking by. For example, if 0.25 is given then the toolbar will shrink
  * at one fourth the rate at which the user scrolls down. Default 0.5.
  */
@@ -5460,7 +5460,7 @@ angular.module('material.components.tooltip', [
  * </md-icon>
  * </hljs>
  *
- * @param {expression=} mdVisible Boolean bound to whether the tooltip is
+ * @param {expression=} md-visible Boolean bound to whether the tooltip is
  * currently visible.
  */
 function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdTheming) {
@@ -5989,10 +5989,10 @@ angular.module('material.components.tabs')
  * be initiated via data binding changes, programmatic invocation, or user gestures.
  *
  * @param {string=} label Optional attribute to specify a simple string as the tab label
- * @param {boolean=} mdActive When evaluteing to true, selects the tab.
+ * @param {boolean=} md-active When evaluteing to true, selects the tab.
  * @param {boolean=} disabled If present, disabled tab selection.
- * @param {expression=} mdOnDeselect Expression to be evaluated after the tab has been de-selected.
- * @param {expression=} mdOnSelect Expression to be evaluated after the tab has been selected.
+ * @param {expression=} md-on-deselect Expression to be evaluated after the tab has been de-selected.
+ * @param {expression=} md-on-select Expression to be evaluated after the tab has been selected.
  *
  *
  * @usage
@@ -6375,10 +6375,10 @@ angular.module('material.components.tabs')
  * *  If the currently active tab is the last tab, then next() action will select the first tab.
  * *  Any markup (other than **`<md-tab>`** tags) will be transcluded into the tab header area BEFORE the tab buttons.
  *
- * @param {integer=} mdSelected Index of the active/selected tab
- * @param {boolean=} mdNoInk If present, disables ink ripple effects.
- * @param {boolean=} mdNoBar If present, disables the selection ink bar.
- * @param {string=}  mdAlignTabs Attribute to indicate position of tab buttons: bottom or top; default is `top`
+ * @param {integer=} md-selected Index of the active/selected tab
+ * @param {boolean=} md-no-ink If present, disables ink ripple effects.
+ * @param {boolean=} md-no-bar If present, disables the selection ink bar.
+ * @param {string=}  md-align-tabs Attribute to indicate position of tab buttons: bottom or top; default is `top`
  *
  * @usage
  * <hljs lang="html">

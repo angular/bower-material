@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-6791a85
+ * v0.6.0-master-fbdf013
  */
 (function() {
 'use strict';
@@ -36,7 +36,7 @@ angular.module('material.components.tooltip', [
  * </md-icon>
  * </hljs>
  *
- * @param {expression=} mdVisible Boolean bound to whether the tooltip is
+ * @param {expression=} md-visible Boolean bound to whether the tooltip is
  * currently visible.
  */
 function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdTheming) {

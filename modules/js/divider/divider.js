@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-6791a85
+ * v0.6.0-master-fbdf013
  */
 (function() {
 'use strict';
@@ -28,7 +28,7 @@ function MdDividerController(){}
  * @description
  * Dividers group and separate content within lists and page layouts using strong visual and spatial distinctions. This divider is a thin rule, lightweight enough to not distract the user from content.
  *
- * @param {boolean=} mdInset Add this attribute to activate the inset divider style.
+ * @param {boolean=} md-inset Add this attribute to activate the inset divider style.
  * @usage
  * <hljs lang="html">
  * <md-divider></md-divider>

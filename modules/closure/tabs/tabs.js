@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-6791a85
+ * v0.6.0-master-fbdf013
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.core');
@@ -401,10 +401,10 @@ angular.module('material.components.tabs')
  * be initiated via data binding changes, programmatic invocation, or user gestures.
  *
  * @param {string=} label Optional attribute to specify a simple string as the tab label
- * @param {boolean=} mdActive When evaluteing to true, selects the tab.
+ * @param {boolean=} md-active When evaluteing to true, selects the tab.
  * @param {boolean=} disabled If present, disabled tab selection.
- * @param {expression=} mdOnDeselect Expression to be evaluated after the tab has been de-selected.
- * @param {expression=} mdOnSelect Expression to be evaluated after the tab has been selected.
+ * @param {expression=} md-on-deselect Expression to be evaluated after the tab has been de-selected.
+ * @param {expression=} md-on-select Expression to be evaluated after the tab has been selected.
  *
  *
  * @usage
@@ -787,10 +787,10 @@ angular.module('material.components.tabs')
  * *  If the currently active tab is the last tab, then next() action will select the first tab.
  * *  Any markup (other than **`<md-tab>`** tags) will be transcluded into the tab header area BEFORE the tab buttons.
  *
- * @param {integer=} mdSelected Index of the active/selected tab
- * @param {boolean=} mdNoInk If present, disables ink ripple effects.
- * @param {boolean=} mdNoBar If present, disables the selection ink bar.
- * @param {string=}  mdAlignTabs Attribute to indicate position of tab buttons: bottom or top; default is `top`
+ * @param {integer=} md-selected Index of the active/selected tab
+ * @param {boolean=} md-no-ink If present, disables ink ripple effects.
+ * @param {boolean=} md-no-bar If present, disables the selection ink bar.
+ * @param {string=}  md-align-tabs Attribute to indicate position of tab buttons: bottom or top; default is `top`
  *
  * @usage
  * <hljs lang="html">
