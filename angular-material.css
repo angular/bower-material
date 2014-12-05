@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-fbdf013
+ * v0.6.0-master-1f5029d
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -1380,15 +1380,46 @@ md-backdrop {
   top: 0;
   right: 0;
   bottom: 0; }
+  md-backdrop.md-dialog-backdrop {
+    z-index: 89; }
+  md-backdrop.md-bottom-sheet-backdrop {
+    z-index: 69; }
+  md-backdrop.md-bottom-sidenav-backdrop {
+    z-index: 59; }
   md-backdrop.ng-enter {
-    transition-delay: 0.1s;
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    -webkit-animation: cubic-bezier(0.25, 0.8, 0.25, 1) mdBackdropFadeIn 0.5s both;
+            animation: cubic-bezier(0.25, 0.8, 0.25, 1) mdBackdropFadeIn 0.5s both; }
   md-backdrop.ng-leave {
-    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
-  md-backdrop.ng-enter, md-backdrop.ng-leave.ng-leave-active {
+    -webkit-animation: cubic-bezier(0.55, 0, 0.55, 0.2) mdBackdropFadeOut 0.2s both;
+            animation: cubic-bezier(0.55, 0, 0.55, 0.2) mdBackdropFadeOut 0.2s both; }
+
+@-webkit-keyframes mdBackdropFadeIn {
+  from {
     opacity: 0; }
-  md-backdrop.ng-leave, md-backdrop.ng-enter.ng-enter-active {
+
+  to {
+    opacity: 1; } }
+
+@keyframes mdBackdropFadeIn {
+  from {
+    opacity: 0; }
+
+  to {
+    opacity: 1; } }
+
+@-webkit-keyframes mdBackdropFadeOut {
+  from {
     opacity: 1; }
+
+  to {
+    opacity: 0; } }
+
+@keyframes mdBackdropFadeOut {
+  from {
+    opacity: 1; }
+
+  to {
+    opacity: 0; } }
 
 md-bottom-sheet {
   position: absolute;
@@ -1786,18 +1817,9 @@ md-content {
   right: 0;
   bottom: 0;
   z-index: 90; }
-  .md-dialog-container.md-active {
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    -webkit-transform: translate3d(0, 0, 0) scale(1);
-            transform: translate3d(0, 0, 0) scale(1);
-    opacity: 1; }
-  .md-dialog-container.ng-leave.ng-leave-active {
-    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-    -webkit-transform: translate3d(0, 100%, 0) scale(0.5);
-            transform: translate3d(0, 100%, 0) scale(0.5);
-    opacity: 0; }
 
 md-dialog {
+  opacity: 0.05;
   min-width: 240px;
   max-width: 80%;
   max-height: 80%;
@@ -1810,6 +1832,15 @@ md-dialog {
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column; }
+  md-dialog.transition-in {
+    opacity: 1;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    -webkit-transform: translate3d(0, 0, 0) scale(1);
+            transform: translate3d(0, 0, 0) scale(1); }
+  md-dialog.transition-out {
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    -webkit-transform: translate3d(0, 100%, 0) scale(0.2);
+            transform: translate3d(0, 100%, 0) scale(0.2); }
   md-dialog md-content {
     -webkit-order: 1;
         -ms-flex-order: 1;

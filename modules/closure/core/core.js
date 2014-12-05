@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-fbdf013
+ * v0.6.0-master-1f5029d
  */
 goog.provide('ng.material.core');
 
@@ -907,8 +907,9 @@ function InterimElementProvider() {
       function showInterimElement(opts) {
         // opts is either a preset which stores its options on an _options field,
         // or just an object made up of options
+        if (opts && opts._options) opts = opts._options;
         return interimElementService.show(
-          angular.extend({}, defaultOptions, (opts || {})._options || opts)
+          angular.extend({}, defaultOptions, opts)
         );
       }
 

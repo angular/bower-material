@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-fbdf013
+ * v0.6.0-master-1f5029d
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -906,8 +906,9 @@ function InterimElementProvider() {
       function showInterimElement(opts) {
         // opts is either a preset which stores its options on an _options field,
         // or just an object made up of options
+        if (opts && opts._options) opts = opts._options;
         return interimElementService.show(
-          angular.extend({}, defaultOptions, (opts || {})._options || opts)
+          angular.extend({}, defaultOptions, opts)
         );
       }
 
@@ -1781,7 +1782,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
 
     function onShow(scope, element, options) {
       // Add a backdrop that will close on click
-      backdrop = $compile('<md-backdrop class="md-opaque ng-enter">')(scope);
+      backdrop = $compile('<md-backdrop class="md-opaque md-bottom-sheet-backrop">')(scope);
       backdrop.on('click touchstart', function() {
         $timeout($mdBottomSheet.cancel);
       });
@@ -2523,7 +2524,7 @@ function MdDialogProvider($$interimElementProvider) {
   var alertDialogMethods = ['title', 'content', 'ariaLabel', 'ok'];
 
   advancedDialogOptions.$inject = ["$mdDialog"];
-  dialogDefaultOptions.$inject = ["$timeout", "$rootElement", "$compile", "$animate", "$mdAria", "$mdUtil", "$mdConstant", "$mdTheming", "$$rAF", "$q", "$mdDialog"];
+  dialogDefaultOptions.$inject = ["$timeout", "$rootElement", "$compile", "$animate", "$mdAria", "$document", "$mdUtil", "$mdConstant", "$mdTheming", "$$rAF", "$q", "$mdDialog"];
   return $$interimElementProvider('$mdDialog')
     .setDefaults({
       methods: ['hasBackdrop', 'clickOutsideToClose', 'escapeToClose', 'targetEvent'],
@@ -2571,7 +2572,7 @@ function MdDialogProvider($$interimElementProvider) {
   }
 
   /* @ngInject */
-  function dialogDefaultOptions($timeout, $rootElement, $compile, $animate, $mdAria,
+  function dialogDefaultOptions($timeout, $rootElement, $compile, $animate, $mdAria, $document,
                                 $mdUtil, $mdConstant, $mdTheming, $$rAF, $q, $mdDialog) {
     return {
       hasBackdrop: true,
@@ -2597,9 +2598,9 @@ function MdDialogProvider($$interimElementProvider) {
       configureAria(element.find('md-dialog'));
 
       if (options.hasBackdrop) {
-        options.backdrop = $compile('<md-backdrop class="md-opaque ng-enter">')(scope);
+        options.backdrop = angular.element('<md-backdrop class="md-dialog-backdrop md-opaque">');
         $mdTheming.inherit(options.backdrop, options.parent);
-        $animate.enter(options.backdrop, options.parent, null);
+        $animate.enter(options.backdrop, options.parent);
       }
 
       return dialogPopIn(
@@ -2648,7 +2649,6 @@ function MdDialogProvider($$interimElementProvider) {
 
       if (options.backdrop) {
         $animate.leave(options.backdrop);
-        element.data('backdrop', undefined);
       }
       if (options.escapeToClose) {
         $rootElement.off('keyup', options.rootElementKeyupCallback);
@@ -2656,7 +2656,12 @@ function MdDialogProvider($$interimElementProvider) {
       if (options.clickOutsideToClose) {
         element.off('click', options.dialogClickOutsideCallback);
       }
-      return $animate.leave(element).then(function() {
+      return dialogPopOut(
+        element,
+        options.parent,
+        options.popInTarget.length && options.popInTarget
+      ).then(function() {
+        options.scope.$destroy();
         element.remove();
         options.popInTarget && options.popInTarget.focus();
       });
@@ -2682,45 +2687,58 @@ function MdDialogProvider($$interimElementProvider) {
       });
     }
 
-    function dialogPopIn(element, parentElement, clickElement) {
-      var deferred = $q.defer();
-      parentElement.append(element);
+    function dialogPopIn(container, parentElement, clickElement) {
+      var dialogEl = container.find('md-dialog');
 
-      var startPos;
-      if (clickElement) {
-        var clickRect = clickElement[0].getBoundingClientRect();
-        startPos = 'translate3d(' +
-          (clickRect.left - element[0].offsetWidth / 2) + 'px,' +
-          (clickRect.top - element[0].offsetHeight / 2) + 'px,' +
-          '0) scale(0.2)';
-      } else {
-        startPos = 'translate3d(0,100%,0) scale(0.5)';
-      }
-
-      element
-        .css($mdConstant.CSS.TRANSFORM, startPos)
-        .css('opacity', 0);
+      parentElement.append(container);
+      transformToClickElement(dialogEl, clickElement);
 
       $$rAF(function() {
-        $$rAF(function() {
-          element
-          .addClass('md-active')
-          .css($mdConstant.CSS.TRANSFORM, '')
-          .css('opacity', '')
-          .on($mdConstant.CSS.TRANSITIONEND, finished);
-        });
+        dialogEl.addClass('transition-in')
+          .css($mdConstant.CSS.TRANSFORM, '');
       });
 
+      return dialogTransitionEnd(dialogEl);
+    }
+    
+    function dialogPopOut(container, parentElement, clickElement) {
+      var dialogEl = container.find('md-dialog');
+
+      dialogEl.addClass('transition-out').removeClass('transition-in');
+      transformToClickElement(dialogEl, clickElement);
+
+      return dialogTransitionEnd(dialogEl);
+    }
+
+    function transformToClickElement(dialogEl, clickElement) {
+      if (clickElement) {
+        var clickRect = clickElement[0].getBoundingClientRect();
+        var dialogRect = dialogEl[0].getBoundingClientRect();
+
+        var scaleX = Math.min(0.5, clickRect.width / dialogRect.width);
+        var scaleY = Math.min(0.5, clickRect.height / dialogRect.height);
+
+        dialogEl.css($mdConstant.CSS.TRANSFORM, 'translate3d(' +
+          (-dialogRect.left + clickRect.left + clickRect.width/2 - dialogRect.width/2) + 'px,' +
+          (-dialogRect.top + clickRect.top + clickRect.height/2 - dialogRect.height/2) + 'px,' +
+          '0) scale(' + scaleX + ',' + scaleY + ')'
+        );
+      }
+    }
+
+    function dialogTransitionEnd(dialogEl) {
+      var deferred = $q.defer();
+      dialogEl.on($mdConstant.CSS.TRANSITIONEND, finished);
       function finished(ev) {
         //Make sure this transitionend didn't bubble up from a child
-        if (ev.target === element[0]) {
-          element.off($mdConstant.CSS.TRANSITIONEND, finished);
+        if (ev.target === dialogEl[0]) {
+          dialogEl.off($mdConstant.CSS.TRANSITIONEND, finished);
           deferred.resolve();
         }
       }
-
       return deferred.promise;
     }
+
   }
 }
 MdDialogProvider.$inject = ["$$interimElementProvider"];
@@ -3595,7 +3613,7 @@ function mdSidenavDirective($timeout, $animate, $parse, $mdMedia, $mdConstant, $
   function postLink(scope, element, attr, sidenavCtrl) {
     var isLockedOpenParsed = $parse(attr.mdIsLockedOpen);
     var backdrop = $compile(
-      '<md-backdrop class="md-sidenav-backdrop md-opaque">'
+      '<md-backdrop class="md-sidenav-backdrop md-opaque ng-enter">'
     )(scope);
 
     $mdTheming.inherit(backdrop, element);

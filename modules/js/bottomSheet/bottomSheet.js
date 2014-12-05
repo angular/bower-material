@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-fbdf013
+ * v0.6.0-master-1f5029d
  */
 (function() {
 'use strict';
@@ -136,7 +136,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
 
     function onShow(scope, element, options) {
       // Add a backdrop that will close on click
-      backdrop = $compile('<md-backdrop class="md-opaque ng-enter">')(scope);
+      backdrop = $compile('<md-backdrop class="md-opaque md-bottom-sheet-backrop">')(scope);
       backdrop.on('click touchstart', function() {
         $timeout($mdBottomSheet.cancel);
       });
