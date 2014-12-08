@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-bf1bccb
+ * v0.6.0-master-bd82a48
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -1782,7 +1782,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
 
     function onShow(scope, element, options) {
       // Add a backdrop that will close on click
-      backdrop = $compile('<md-backdrop class="md-opaque md-bottom-sheet-backrop">')(scope);
+      backdrop = $compile('<md-backdrop class="md-opaque md-bottom-sheet-backdrop">')(scope);
       backdrop.on('click touchstart', function() {
         $timeout($mdBottomSheet.cancel);
       });
@@ -5741,7 +5741,6 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout) {
 
     scope.$on('$destroy', function() {
       angular.element($window).off('resize', debouncedUpdatePagination);
-      tabsParent.off('focusin', onTabsFocusIn);
     });
 
     scope.$watch(tabsCtrl.selected, onSelectedTabChange);

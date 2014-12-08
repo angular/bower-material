@@ -1,9 +1,9 @@
 {
   "name": "angular-material-switch",
-  "version": "0.6.0-master-bf1bccb",
+  "version": "0.6.0-master-bd82a48",
   "dependencies": {
-    "angular-material-core": "0.6.0-master-bf1bccb",
-    "angular-material-checkbox": "0.6.0-master-bf1bccb",
-    "angular-material-radioButton": "0.6.0-master-bf1bccb"
+    "angular-material-core": "0.6.0-master-bd82a48",
+    "angular-material-checkbox": "0.6.0-master-bd82a48",
+    "angular-material-radioButton": "0.6.0-master-bd82a48"
   }
 }

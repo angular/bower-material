@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-bf1bccb
+ * v0.6.0-master-bd82a48
  */
 goog.provide('ng.material.components.bottomSheet');
 goog.require('ng.material.components.backdrop');
@@ -139,7 +139,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
 
     function onShow(scope, element, options) {
       // Add a backdrop that will close on click
-      backdrop = $compile('<md-backdrop class="md-opaque md-bottom-sheet-backrop">')(scope);
+      backdrop = $compile('<md-backdrop class="md-opaque md-bottom-sheet-backdrop">')(scope);
       backdrop.on('click touchstart', function() {
         $timeout($mdBottomSheet.cancel);
       });
