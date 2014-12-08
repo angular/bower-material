@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-bd82a48
+ * v0.6.0-master-2ca21f8
  */
 goog.provide('ng.material.components.slider');
 goog.require('ng.material.core');
@@ -266,6 +266,7 @@ function SliderController($scope, $element, $attrs, $$rAF, $window, $mdAria, $md
       $scope.modelValue = ngModelCtrl.$viewValue;
       $element.attr('aria-valuenow', ngModelCtrl.$viewValue);
       setSliderPercent(percent);
+      thumbText.text( ngModelCtrl.$viewValue );
     }
 
     function minMaxValidator(value) {
