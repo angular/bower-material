@@ -83,7 +83,7 @@ With the Google CDN, you will not need to download local copies of the distribut
   </body>
 ```
 
-Developers seeking the latest, most-current build versions can use [RawGit.com](rawgit.com) to pull directly from the our distribution GitHub [Bower-Material](https://github.com/angular/bower-material) repository:
+Developers seeking the latest, most-current build versions can use [RawGit.com](rawgit.com) to pull directly from the distribution GitHub [Bower-Material](https://github.com/angular/bower-material) repository:
 
 ```html
   <head>
@@ -104,4 +104,4 @@ Developers seeking the latest, most-current build versions can use [RawGit.com](
   </body>
 ```
 
-> Please note that the above RawGit usage is only for development purposes and is intended **ONLY** or sharing low-traffic, temporary examples or demos with small numbers of people.
+> Please note that the above RawGit access is intended **ONLY**  for development purposes or sharing low-traffic, temporary examples or demos with small numbers of people.
