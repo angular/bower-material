@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1
+ * v0.6.1-master-44a3322
  */
 /**
  * Position a FAB button.
@@ -30,11 +30,10 @@
   text-decoration: none;
   cursor: pointer;
   overflow: hidden;
-  -webkit-transition: box-shadow 0.5s cubic-bezier(0.35, 0, 0.25, 1), background-color 0.5s cubic-bezier(0.35, 0, 0.25, 1), -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
-          transition: box-shadow 0.5s cubic-bezier(0.35, 0, 0.25, 1), background-color 0.5s cubic-bezier(0.35, 0, 0.25, 1), transform 0.5s cubic-bezier(0.35, 0, 0.25, 1); }
+  transition: box-shadow 0.5s cubic-bezier(0.35, 0, 0.25, 1), background-color 0.5s cubic-bezier(0.35, 0, 0.25, 1), -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+  transition: box-shadow 0.5s cubic-bezier(0.35, 0, 0.25, 1), background-color 0.5s cubic-bezier(0.35, 0, 0.25, 1), transform 0.5s cubic-bezier(0.35, 0, 0.25, 1); }
   .md-button.ng-hide {
-    -webkit-transition: none;
-            transition: none; }
+    transition: none; }
   .md-button.md-cornered {
     border-radius: 0; }
   .md-button.md-icon {
@@ -52,10 +51,9 @@
     overflow: hidden;
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0);
-    -webkit-transition: 0.2s linear;
-            transition: 0.2s linear;
-    -webkit-transition-property: -webkit-transform, box-shadow;
-            transition-property: transform, box-shadow; }
+    transition: 0.2s linear;
+    transition-property: -webkit-transform, box-shadow;
+    transition-property: transform, box-shadow; }
     .md-button.md-fab.md-fab-bottom-right {
       top: auto;
       right: 28px;
@@ -102,18 +100,15 @@
             transform: translate3d(0, -33px, 0); }
 
 .md-button-group {
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-flex: 1;
   -webkit-flex: 1;
       -ms-flex: 1;
           flex: 1;
   width: 100%; }
 
 .md-button-group > .md-button {
-  -webkit-box-flex: 1;
   -webkit-flex: 1;
       -ms-flex: 1;
           flex: 1;
