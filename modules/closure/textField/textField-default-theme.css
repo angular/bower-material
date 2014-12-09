@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-master-650c18b
+ * v0.6.1
  */
 md-input-group.md-default-theme input, md-input-group.md-default-theme textarea {
   text-shadow: none; }
@@ -25,4 +25,5 @@ md-input-group.md-default-theme.md-input-has-value:not(.md-input-focused) label 
 md-input-group.md-default-theme[disabled] input, md-input-group.md-default-theme[disabled] textarea {
   border-bottom-color: rgba(0, 0, 0, 0.12);
   color: rgba(0, 0, 0, 0.26);
+  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.19) 0%, rgba(0, 0, 0, 0.19) 50%, rgba(0, 0, 0, 0) 0%);
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0.19) 0%, rgba(0, 0, 0, 0.19) 50%, rgba(0, 0, 0, 0) 0%); }
