@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-d5aa68d
+ * v0.6.1-master-d9c13d9
  */
 goog.provide('ng.material.components.progressLinear');
 goog.require('ng.material.core');
