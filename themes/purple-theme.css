@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-4d39d7d
+ * v0.6.1-master-8bc9461
  */
 md-backdrop.md-opaque.md-purple-theme {
   background-color: rgba(0, 0, 0, 0.3);
@@ -149,10 +149,21 @@ md-slider.md-purple-theme[disabled]:not(.md-min) .md-thumb:after {
   .md-subheader.md-purple-theme.md-primary {
     color: #9c27b0; }
 
-md-switch.md-purple-theme .md-switch-bar {
-  background-color: rgba(0, 0, 0, 0.54); }
-md-switch.md-purple-theme .md-switch-thumb:focus .md-label {
-  border: 1px dotted black; }
+md-switch.md-purple-theme .md-thumb {
+  background-color: #fafafa; }
+md-switch.md-purple-theme .md-bar {
+  background-color: #9e9e9e; }
+md-switch.md-purple-theme.md-checked .md-thumb {
+  background-color: #9c27b0; }
+md-switch.md-purple-theme.md-checked .md-bar {
+  background-color: rgba(156, 39, 176, 0.5); }
+md-switch.md-purple-theme[disabled] .md-thumb {
+  background-color: #bdbdbd; }
+md-switch.md-purple-theme[disabled] .md-bar {
+  background-color: rgba(0, 0, 0, 0.12); }
+md-switch.md-purple-theme:focus .md-text {
+  border-color: black;
+  border-style: dotted; }
 
 md-tabs.md-purple-theme .md-header {
   background-color: #9c27b0; }

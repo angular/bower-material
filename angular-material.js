@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-4d39d7d
+ * v0.6.1-master-8bc9461
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -118,25 +118,39 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
 (function() {
 'use strict';
 
-/* 
+/*
  * This var has to be outside the angular factory, otherwise when
  * there are multiple material apps on the same page, each app
- * will create its own instance of this array and the app's IDs 
+ * will create its own instance of this array and the app's IDs
  * will not be unique.
  */
 var nextUniqueId = ['0','0','0'];
 
 angular.module('material.core')
-.factory('$mdUtil', ['$cacheFactory', function($cacheFactory) {
+.factory('$mdUtil', ["$cacheFactory", "$document", function($cacheFactory, $document) {
   var Util;
   return Util = {
     now: window.performance ? angular.bind(window.performance, window.performance.now) : Date.now,
+
+    attachDragBehavior: attachDragBehavior,
 
     /**
      * Publish the iterator facade to easily support iteration and accessors
      * @see iterator below
      */
     iterator: iterator,
+
+    fakeNgModel: function() {
+      return {
+        $setViewValue: function(value) {
+          this.$viewValue = value;
+          this.$render(value);
+        },
+        $parsers: [],
+        $formatters: [],
+        $render: angular.noop
+      };
+    },
 
     /**
      * @see cacheFactory below
@@ -408,7 +422,7 @@ angular.module('material.core')
     }
 
     /*
-     * Find the next item. If reloop is true and at the end of the list, it will 
+     * Find the next item. If reloop is true and at the end of the list, it will
      * go back to the first item. If given ,the `validate` callback will be used
      * determine whether the next item is valid. If not valid, it will try to find the
      * next item again.
@@ -430,7 +444,7 @@ angular.module('material.core')
     }
 
     /*
-     * Find the previous item. If reloop is true and at the beginning of the list, it will 
+     * Find the previous item. If reloop is true and at the beginning of the list, it will
      * go back to the last item. If given ,the `validate` callback will be used
      * determine whether the previous item is valid. If not valid, it will try to find the
      * previous item again.
@@ -468,6 +482,84 @@ angular.module('material.core')
     }
   }
 
+  function attachDragBehavior(scope, element, options) {
+    // The state of the current drag
+    var drag;
+    // Whether the pointer is currently down on this element.
+    var pointerIsDown;
+    var START_EVENTS = 'mousedown touchstart pointerdown';
+    var MOVE_EVENTS = 'mousemove touchmove pointermove';
+    var END_EVENTS = 'mouseup mouseleave touchend touchcancel pointerup pointercancel';
+
+    // Listen to move and end events on document. End events especially could have bubbled up
+    // from the child.
+    element.on(START_EVENTS, startDrag);
+    $document.on(MOVE_EVENTS, doDrag)
+      .on(END_EVENTS, endDrag);
+
+    scope.$on('$destroy', cleanup);
+
+    return cleanup;
+
+    function cleanup() {
+      if (cleanup.called) return;
+      cleanup.called = true;
+
+      element.off(START_EVENTS, startDrag);
+      $document.off(MOVE_EVENTS, doDrag)
+        .off(END_EVENTS, endDrag);
+      drag = pointerIsDown = false;
+    }
+
+    function startDrag(ev) {
+      if (pointerIsDown) return;
+      pointerIsDown = true;
+
+      drag = {
+        // Restrict this drag to whatever started it: if a mousedown started the drag,
+        // don't let anything but mouse events continue it.
+        pointerType: ev.type.charAt(0),
+        startX: getPosition(ev),
+        startTime: Util.now()
+      };
+
+      element.one('$md.dragstart', function(ev) {
+        // Allow user to cancel by preventing default
+        if (ev.defaultPrevented) drag = null;
+      });
+      element.triggerHandler('$md.dragstart', drag);
+    }
+    function doDrag(ev) {
+      if (!drag || !isProperEventType(ev)) return;
+
+      updateDragState(ev);
+      element.triggerHandler('$md.drag', drag);
+    }
+    function endDrag(ev) {
+      pointerIsDown = false;
+      if (!drag || !isProperEventType(ev)) return;
+
+      updateDragState(ev);
+      element.triggerHandler('$md.dragend', drag);
+      drag = null;
+    }
+
+    function updateDragState(ev) {
+      var x = getPosition(ev);
+      drag.distance = drag.startX - x;
+      drag.direction = drag.distance > 0 ? 'left' : (drag.distance < 0 ? 'right' : '');
+      drag.time = drag.startTime - Util.now();
+      drag.velocity = Math.abs(drag.distance) / drag.time;
+    }
+    function getPosition(ev) {
+      ev = ev.originalEvent || ev; //support jQuery events
+      return (ev.touches ? ev.touches[0] : ev).pageX;
+    }
+    function isProperEventType(ev) {
+      return drag && ev && (ev.type || '').charAt(0) === drag.pointerType;
+    }
+  }
+
   /*
    * Angular's $cacheFactory doesn't have a keys() method,
    * so we add one ourself.
@@ -493,9 +585,10 @@ angular.module('material.core')
 
     return cache;
   }
+
 }]);
 
-/* 
+/*
  * Since removing jQuery from the demos, some code that uses `element.focus()` is broken.
  *
  * We need to add `element.focus()`, because it's testable unlike `element[0].focus`.
@@ -1443,7 +1536,12 @@ function InkRippleService($window, $timeout) {
        */
       function isRippleAllowed() {
         var parent = node.parentNode;
-        return !node.hasAttribute('disabled') && !(parent && parent.hasAttribute('disabled'));
+        var grandparent = parent && parent.parentNode;
+        var ancestor = grandparent && grandparent.parentNode;
+        return !node.hasAttribute('disabled') &&
+          !(parent && parent.hasAttribute('disabled')) &&
+          !(grandparent && grandparent.hasAttribute('disabled')) &&
+          !(ancestor && ancestor.hasAttribute('disabled'));
       }
     }
   }
@@ -1452,7 +1550,7 @@ InkRippleService.$inject = ["$window", "$timeout"];
 
 /**
  * noink/nobar/nostretch directive: make any element that has one of
- * these attributes be given a controller, so that other directives can 
+ * these attributes be given a controller, so that other directives can
  * `require:` these and see if there is a `no<xxx>` parent attribute.
  *
  * @usage
@@ -2128,9 +2226,8 @@ angular.module('material.components.checkbox', [
  * </hljs>
  *
  */
-function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant, $mdTheming) {
+function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant, $mdTheming, $mdUtil) {
   inputDirective = inputDirective[0];
-
   var CHECKED_CSS = 'md-checked';
 
   return {
@@ -2156,17 +2253,9 @@ function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant,
     tElement.attr('role', tAttrs.type);
 
     return function postLink(scope, element, attr, ngModelCtrl) {
+      ngModelCtrl = ngModelCtrl || $mdUtil.fakeNgModel();
       var checked = false;
       $mdTheming(element);
-
-      // Create a mock ngModel if the user doesn't provide one
-      ngModelCtrl = ngModelCtrl || {
-        $setViewValue: function(value) {
-          this.$viewValue = value;
-        },
-        $parsers: [],
-        $formatters: []
-      };
 
       $mdAria.expectWithText(tElement, 'aria-label');
 
@@ -2178,7 +2267,11 @@ function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant,
         0: {}
       }, attr, [ngModelCtrl]);
 
-      element.on('click', listener);
+      // Used by switch. in Switch, we don't want click listeners; we have more granular
+      // touchup/touchdown listening.
+      if (!attr.mdNoClick) {
+        element.on('click', listener);
+      }
       element.on('keypress', keypressHandler);
       ngModelCtrl.$render = render;
 
@@ -2209,7 +2302,7 @@ function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant,
     };
   }
 }
-MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$mdConstant", "$mdTheming"];
+MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$mdConstant", "$mdTheming", "$mdUtil"];
 
 })();
 
@@ -3230,10 +3323,8 @@ function mdRadioGroupDirective($mdUtil, $mdConstant, $mdTheming) {
 
   function linkRadioGroup(scope, element, attr, ctrls) {
     $mdTheming(element);
-    var rgCtrl = ctrls[0],
-      ngModelCtrl = ctrls[1] || {
-        $setViewValue: angular.noop
-      };
+    var rgCtrl = ctrls[0];
+    var ngModelCtrl = ctrls[1] || $mdUtil.fakeNgModel();
 
     function keydownListener(ev) {
       if (ev.keyCode === $mdConstant.KEY_CODE.LEFT_ARROW || ev.keyCode === $mdConstant.KEY_CODE.UP_ARROW) {
@@ -4788,8 +4879,7 @@ function swipePostLink($parse, $mdSwipe, name ) {
 
 angular.module('material.components.switch', [
   'material.core',
-  'material.components.checkbox',
-  'material.components.radioButton'
+  'material.components.checkbox'
 ])
   .directive('mdSwitch', MdSwitch);
 
@@ -4826,33 +4916,93 @@ angular.module('material.components.switch', [
  *
  * </hljs>
  */
-function MdSwitch(mdCheckboxDirective, mdRadioButtonDirective, $mdTheming) {
+function MdSwitch(mdCheckboxDirective, $mdTheming, $mdUtil, $document, $mdConstant, $parse, $$rAF) {
   var checkboxDirective = mdCheckboxDirective[0];
-  var radioButtonDirective = mdRadioButtonDirective[0];
 
   return {
     restrict: 'E',
     transclude: true,
     template:
-      '<div class="md-switch-bar"></div>' +
-      '<div class="md-switch-thumb">' +
-        radioButtonDirective.template +
+      '<div class="md-container">' +
+        '<div class="md-bar"></div>' +
+        '<div class="md-thumb-container">' +
+          '<div class="md-thumb" md-ink-ripple md-ink-ripple-checkbox></div>' +
+        '</div>'+
+      '</div>' +
+      '<div ng-transclude class="md-text">' +
       '</div>',
     require: '?ngModel',
     compile: compile
   };
 
   function compile(element, attr) {
-    var thumb = angular.element(element[0].querySelector('.md-switch-thumb'));
-    var checkboxLink = checkboxDirective.compile(thumb, attr);
+    var checkboxLink = checkboxDirective.compile(element, attr);
 
-    return function (scope, element, attr, ngModelCtrl) {
-      $mdTheming(element);
-      return checkboxLink(scope, thumb, attr, ngModelCtrl);
+    return function (scope, element, attr, ngModel) {
+      ngModel = ngModel || $mdUtil.fakeNgModel();
+      var disabledGetter = $parse(attr.ngDisabled);
+      var thumbContainer = angular.element(element[0].querySelector('.md-thumb-container'));
+      var switchContainer = angular.element(element[0].querySelector('.md-container'));
+
+      // no transition on initial load
+      $$rAF(function() {
+        element.addClass('transition');
+      });
+
+      // Tell the checkbox we don't want a click listener.
+      // Our drag listener tells us everything, using more granular events.
+      attr.mdNoClick = true;
+      checkboxLink(scope, element, attr, ngModel);
+
+      $mdUtil.attachDragBehavior(scope, switchContainer);
+
+      // These events are triggered by setup drag
+      switchContainer.on('$md.dragstart', onDragStart)
+        .on('$md.drag', onDrag)
+        .on('$md.dragend', onDragEnd);
+
+      function onDragStart(ev, drag) {
+        // Don't go if ng-disabled===true
+        if (disabledGetter(scope)) return ev.preventDefault();
+
+        drag.width = thumbContainer.prop('offsetWidth');
+        element.removeClass('transition');
+      }
+      function onDrag(ev, drag) {
+        var percent = drag.distance / drag.width;
+
+        //if checked, start from right. else, start from left
+        var translate = ngModel.$viewValue ?  1 - percent : -percent;
+        // Make sure the switch stays inside its bounds, 0-1%
+        translate = Math.max(0, Math.min(1, translate));
+
+        thumbContainer.css($mdConstant.CSS.TRANSFORM, 'translate3d(' + (100*translate) + '%,0,0)');
+        drag.translate = translate;
+      }
+      function onDragEnd(ev, drag) {
+        if (disabledGetter(scope)) return false;
+
+        element.addClass('transition');
+        thumbContainer.css($mdConstant.CSS.TRANSFORM, '');
+
+        // We changed if there is no distance (this is a click a click),
+        // or if the drag distance is >50% of the total.
+        var isChanged = Math.abs(drag.distance || 0) < 5 ||
+          (ngModel.$viewValue ? drag.translate < 0.5 : drag.translate > 0.5);
+        if (isChanged) {
+          scope.$apply(function() {
+            ngModel.$setViewValue(!ngModel.$viewValue);
+            ngModel.$render();
+          });
+        }
+      }
     };
   }
+
+
 }
-MdSwitch.$inject = ["mdCheckboxDirective", "mdRadioButtonDirective", "$mdTheming"];
+MdSwitch.$inject = ["mdCheckboxDirective", "$mdTheming", "$mdUtil", "$document", "$mdConstant", "$parse", "$$rAF"];
+
 })();
 
 (function() {

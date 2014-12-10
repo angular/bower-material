@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-4d39d7d
+ * v0.6.1-master-8bc9461
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -3752,6 +3752,56 @@ md-radio-group {
   display: block;
   outline: none; }
 
+md-sidenav {
+  position: absolute;
+  width: 304px;
+  bottom: 0;
+  z-index: 60;
+  background-color: white;
+  overflow: auto;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column; }
+  md-sidenav.md-closed {
+    display: none; }
+  md-sidenav.md-closed-add, md-sidenav.md-closed-remove {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    /* this is required as of 1.3x to properly
+       apply all styling in a show/hide animation */
+    transition: 0s all; }
+  md-sidenav.md-closed-add.md-closed-add-active, md-sidenav.md-closed-remove.md-closed-remove-active {
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-left, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-right {
+    position: static;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0); }
+
+.md-sidenav-backdrop.md-locked-open {
+  display: none; }
+
+.md-sidenav-left, md-sidenav {
+  left: 0;
+  top: 0;
+  -webkit-transform: translate3d(0%, 0, 0);
+          transform: translate3d(0%, 0, 0); }
+  .md-sidenav-left.md-closed, md-sidenav.md-closed {
+    -webkit-transform: translate3d(-100%, 0, 0);
+            transform: translate3d(-100%, 0, 0); }
+
+.md-sidenav-right {
+  left: 100%;
+  top: 0;
+  -webkit-transform: translate3d(-100%, 0, 0);
+          transform: translate3d(-100%, 0, 0); }
+  .md-sidenav-right.md-closed {
+    -webkit-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0); }
+
 @-webkit-keyframes sliderFocusThumb {
   0% {
     opacity: 0;
@@ -3956,56 +4006,6 @@ md-slider {
   md-slider[disabled] .md-disabled-thumb {
     display: block; }
 
-md-sidenav {
-  position: absolute;
-  width: 304px;
-  bottom: 0;
-  z-index: 60;
-  background-color: white;
-  overflow: auto;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column; }
-  md-sidenav.md-closed {
-    display: none; }
-  md-sidenav.md-closed-add, md-sidenav.md-closed-remove {
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    /* this is required as of 1.3x to properly
-       apply all styling in a show/hide animation */
-    transition: 0s all; }
-  md-sidenav.md-closed-add.md-closed-add-active, md-sidenav.md-closed-remove.md-closed-remove-active {
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
-  md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-left, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-right {
-    position: static;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0); }
-
-.md-sidenav-backdrop.md-locked-open {
-  display: none; }
-
-.md-sidenav-left, md-sidenav {
-  left: 0;
-  top: 0;
-  -webkit-transform: translate3d(0%, 0, 0);
-          transform: translate3d(0%, 0, 0); }
-  .md-sidenav-left.md-closed, md-sidenav.md-closed {
-    -webkit-transform: translate3d(-100%, 0, 0);
-            transform: translate3d(-100%, 0, 0); }
-
-.md-sidenav-right {
-  left: 100%;
-  top: 0;
-  -webkit-transform: translate3d(-100%, 0, 0);
-          transform: translate3d(-100%, 0, 0); }
-  .md-sidenav-right.md-closed {
-    -webkit-transform: translate3d(0%, 0, 0);
-            transform: translate3d(0%, 0, 0); }
-
 .md-sticky-clone {
   z-index: 1;
   top: 0;
@@ -4074,41 +4074,66 @@ md-sidenav {
               animation: subheaderStickyHoverOut 0.3s ease-out both; }
 
 md-switch {
-  display: block;
-  position: relative;
-  height: 24px;
-  margin: 8px;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-align-items: center;
       -ms-flex-align: center;
-          align-items: center;
-  /* used also in _radio-button.scss */ }
-  md-switch .md-switch-bar {
+          align-items: center; }
+  md-switch .md-container {
+    width: 36px;
+    height: 24px;
+    position: relative;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    margin-right: 8px; }
+  md-switch .md-text {
+    border: 1px solid transparent; }
+  md-switch .md-bar {
+    left: 1px;
+    width: 34px;
+    top: 5px;
+    height: 14px;
+    border-radius: 8px;
+    position: absolute; }
+  md-switch .md-thumb-container {
+    top: 2px;
+    left: 0;
+    width: 16px;
     position: absolute;
-    left: 16px;
-    top: 12px;
-    width: 32px;
-    height: 1px;
-    pointer-events: none; }
-  md-switch .md-switch-thumb {
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+    z-index: 1; }
+  md-switch.md-checked .md-thumb-container {
+    -webkit-transform: translate3d(100%, 0, 0);
+            transform: translate3d(100%, 0, 0); }
+  md-switch .md-thumb {
     position: absolute;
     margin: 0;
     left: 0;
     top: 0;
-    outline: none; }
-    md-switch .md-switch-thumb .md-container {
+    outline: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26); }
+    md-switch .md-thumb .md-ripple-container {
       position: absolute;
-      transition: -webkit-transform 0.2s linear;
-      transition: transform 0.2s linear;
-      -webkit-transform: translate3d(0, 0, 0);
-              transform: translate3d(0, 0, 0); }
-    md-switch .md-switch-thumb.md-checked .md-container {
-      -webkit-transform: translate3d(48px, 0, 0);
-              transform: translate3d(48px, 0, 0); }
-    md-switch .md-switch-thumb .md-label {
-      margin-left: 72px; }
+      display: block;
+      width: auto;
+      height: auto;
+      left: -20px;
+      top: -20px;
+      right: -20px;
+      bottom: -20px; }
+  md-switch.transition .md-bar, md-switch.transition .md-thumb-container, md-switch.transition .md-thumb {
+    transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+    transition-property: -webkit-transform, background-color;
+    transition-property: transform, background-color; }
+  md-switch.transition .md-bar, md-switch.transition .md-thumb {
+    transition-delay: 0.05s; }
 
 md-tabs {
   display: block;
@@ -4766,10 +4791,21 @@ md-slider.md-default-theme[disabled]:not(.md-min) .md-thumb:after {
   .md-subheader.md-default-theme.md-primary {
     color: #03a9f4; }
 
-md-switch.md-default-theme .md-switch-bar {
-  background-color: rgba(0, 0, 0, 0.54); }
-md-switch.md-default-theme .md-switch-thumb:focus .md-label {
-  border: 1px dotted black; }
+md-switch.md-default-theme .md-thumb {
+  background-color: #fafafa; }
+md-switch.md-default-theme .md-bar {
+  background-color: #9e9e9e; }
+md-switch.md-default-theme.md-checked .md-thumb {
+  background-color: #03a9f4; }
+md-switch.md-default-theme.md-checked .md-bar {
+  background-color: rgba(3, 169, 244, 0.5); }
+md-switch.md-default-theme[disabled] .md-thumb {
+  background-color: #bdbdbd; }
+md-switch.md-default-theme[disabled] .md-bar {
+  background-color: rgba(0, 0, 0, 0.12); }
+md-switch.md-default-theme:focus .md-text {
+  border-color: black;
+  border-style: dotted; }
 
 md-tabs.md-default-theme .md-header {
   background-color: #03a9f4; }

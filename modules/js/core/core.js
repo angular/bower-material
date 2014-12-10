@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-4d39d7d
+ * v0.6.1-master-8bc9461
  */
 (function() {
 'use strict';
@@ -117,25 +117,39 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
 (function() {
 'use strict';
 
-/* 
+/*
  * This var has to be outside the angular factory, otherwise when
  * there are multiple material apps on the same page, each app
- * will create its own instance of this array and the app's IDs 
+ * will create its own instance of this array and the app's IDs
  * will not be unique.
  */
 var nextUniqueId = ['0','0','0'];
 
 angular.module('material.core')
-.factory('$mdUtil', ['$cacheFactory', function($cacheFactory) {
+.factory('$mdUtil', ["$cacheFactory", "$document", function($cacheFactory, $document) {
   var Util;
   return Util = {
     now: window.performance ? angular.bind(window.performance, window.performance.now) : Date.now,
+
+    attachDragBehavior: attachDragBehavior,
 
     /**
      * Publish the iterator facade to easily support iteration and accessors
      * @see iterator below
      */
     iterator: iterator,
+
+    fakeNgModel: function() {
+      return {
+        $setViewValue: function(value) {
+          this.$viewValue = value;
+          this.$render(value);
+        },
+        $parsers: [],
+        $formatters: [],
+        $render: angular.noop
+      };
+    },
 
     /**
      * @see cacheFactory below
@@ -407,7 +421,7 @@ angular.module('material.core')
     }
 
     /*
-     * Find the next item. If reloop is true and at the end of the list, it will 
+     * Find the next item. If reloop is true and at the end of the list, it will
      * go back to the first item. If given ,the `validate` callback will be used
      * determine whether the next item is valid. If not valid, it will try to find the
      * next item again.
@@ -429,7 +443,7 @@ angular.module('material.core')
     }
 
     /*
-     * Find the previous item. If reloop is true and at the beginning of the list, it will 
+     * Find the previous item. If reloop is true and at the beginning of the list, it will
      * go back to the last item. If given ,the `validate` callback will be used
      * determine whether the previous item is valid. If not valid, it will try to find the
      * previous item again.
@@ -467,6 +481,84 @@ angular.module('material.core')
     }
   }
 
+  function attachDragBehavior(scope, element, options) {
+    // The state of the current drag
+    var drag;
+    // Whether the pointer is currently down on this element.
+    var pointerIsDown;
+    var START_EVENTS = 'mousedown touchstart pointerdown';
+    var MOVE_EVENTS = 'mousemove touchmove pointermove';
+    var END_EVENTS = 'mouseup mouseleave touchend touchcancel pointerup pointercancel';
+
+    // Listen to move and end events on document. End events especially could have bubbled up
+    // from the child.
+    element.on(START_EVENTS, startDrag);
+    $document.on(MOVE_EVENTS, doDrag)
+      .on(END_EVENTS, endDrag);
+
+    scope.$on('$destroy', cleanup);
+
+    return cleanup;
+
+    function cleanup() {
+      if (cleanup.called) return;
+      cleanup.called = true;
+
+      element.off(START_EVENTS, startDrag);
+      $document.off(MOVE_EVENTS, doDrag)
+        .off(END_EVENTS, endDrag);
+      drag = pointerIsDown = false;
+    }
+
+    function startDrag(ev) {
+      if (pointerIsDown) return;
+      pointerIsDown = true;
+
+      drag = {
+        // Restrict this drag to whatever started it: if a mousedown started the drag,
+        // don't let anything but mouse events continue it.
+        pointerType: ev.type.charAt(0),
+        startX: getPosition(ev),
+        startTime: Util.now()
+      };
+
+      element.one('$md.dragstart', function(ev) {
+        // Allow user to cancel by preventing default
+        if (ev.defaultPrevented) drag = null;
+      });
+      element.triggerHandler('$md.dragstart', drag);
+    }
+    function doDrag(ev) {
+      if (!drag || !isProperEventType(ev)) return;
+
+      updateDragState(ev);
+      element.triggerHandler('$md.drag', drag);
+    }
+    function endDrag(ev) {
+      pointerIsDown = false;
+      if (!drag || !isProperEventType(ev)) return;
+
+      updateDragState(ev);
+      element.triggerHandler('$md.dragend', drag);
+      drag = null;
+    }
+
+    function updateDragState(ev) {
+      var x = getPosition(ev);
+      drag.distance = drag.startX - x;
+      drag.direction = drag.distance > 0 ? 'left' : (drag.distance < 0 ? 'right' : '');
+      drag.time = drag.startTime - Util.now();
+      drag.velocity = Math.abs(drag.distance) / drag.time;
+    }
+    function getPosition(ev) {
+      ev = ev.originalEvent || ev; //support jQuery events
+      return (ev.touches ? ev.touches[0] : ev).pageX;
+    }
+    function isProperEventType(ev) {
+      return drag && ev && (ev.type || '').charAt(0) === drag.pointerType;
+    }
+  }
+
   /*
    * Angular's $cacheFactory doesn't have a keys() method,
    * so we add one ourself.
@@ -492,9 +584,10 @@ angular.module('material.core')
 
     return cache;
   }
+
 }]);
 
-/* 
+/*
  * Since removing jQuery from the demos, some code that uses `element.focus()` is broken.
  *
  * We need to add `element.focus()`, because it's testable unlike `element[0].focus`.
@@ -1442,7 +1535,12 @@ function InkRippleService($window, $timeout) {
        */
       function isRippleAllowed() {
         var parent = node.parentNode;
-        return !node.hasAttribute('disabled') && !(parent && parent.hasAttribute('disabled'));
+        var grandparent = parent && parent.parentNode;
+        var ancestor = grandparent && grandparent.parentNode;
+        return !node.hasAttribute('disabled') &&
+          !(parent && parent.hasAttribute('disabled')) &&
+          !(grandparent && grandparent.hasAttribute('disabled')) &&
+          !(ancestor && ancestor.hasAttribute('disabled'));
       }
     }
   }
@@ -1451,7 +1549,7 @@ InkRippleService.$inject = ["$window", "$timeout"];
 
 /**
  * noink/nobar/nostretch directive: make any element that has one of
- * these attributes be given a controller, so that other directives can 
+ * these attributes be given a controller, so that other directives can
  * `require:` these and see if there is a `no<xxx>` parent attribute.
  *
  * @usage

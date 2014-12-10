@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-4d39d7d
+ * v0.6.1-master-8bc9461
  */
 md-backdrop.md-opaque.md-deep-orange-theme {
   background-color: rgba(0, 0, 0, 0.3);
@@ -149,10 +149,21 @@ md-slider.md-deep-orange-theme[disabled]:not(.md-min) .md-thumb:after {
   .md-subheader.md-deep-orange-theme.md-primary {
     color: #ff5722; }
 
-md-switch.md-deep-orange-theme .md-switch-bar {
-  background-color: rgba(0, 0, 0, 0.54); }
-md-switch.md-deep-orange-theme .md-switch-thumb:focus .md-label {
-  border: 1px dotted black; }
+md-switch.md-deep-orange-theme .md-thumb {
+  background-color: #fafafa; }
+md-switch.md-deep-orange-theme .md-bar {
+  background-color: #9e9e9e; }
+md-switch.md-deep-orange-theme.md-checked .md-thumb {
+  background-color: #ff5722; }
+md-switch.md-deep-orange-theme.md-checked .md-bar {
+  background-color: rgba(255, 87, 34, 0.5); }
+md-switch.md-deep-orange-theme[disabled] .md-thumb {
+  background-color: #bdbdbd; }
+md-switch.md-deep-orange-theme[disabled] .md-bar {
+  background-color: rgba(0, 0, 0, 0.12); }
+md-switch.md-deep-orange-theme:focus .md-text {
+  border-color: black;
+  border-style: dotted; }
 
 md-tabs.md-deep-orange-theme .md-header {
   background-color: #ff5722; }
