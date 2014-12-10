@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-7201058
+ * v0.6.1-master-fc723d4
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -5010,7 +5010,7 @@ function MdSwitch(mdCheckboxDirective, $mdTheming, $mdUtil, $document, $mdConsta
 
         // We changed if there is no distance (this is a click a click),
         // or if the drag distance is >50% of the total.
-        var isChanged = Math.abs(drag.distance || 0) < 5 ||
+        var isChanged = Math.abs(drag.distance || 0) < 2 ||
           (ngModel.$viewValue ? drag.translate < 0.5 : drag.translate > 0.5);
         if (isChanged) {
           scope.$apply(function() {
