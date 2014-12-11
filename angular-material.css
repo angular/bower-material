@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-da77970
+ * v0.6.1-master-d192083
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -4745,8 +4745,6 @@ md-progress-linear.md-default-theme[md-mode=buffer] .md-dashed:before {
 md-progress-linear.md-default-theme[md-mode=buffer] .md-bar1 {
   background-color: #b3e5fc; }
 
-md-radio-button.md-default-theme .md-container .md-ripple, md-switch.md-default-theme .md-switch-thumb .md-container .md-ripple {
-  color: #43a047; }
 md-radio-button.md-default-theme .md-off, md-switch.md-default-theme .md-switch-thumb .md-off {
   border-color: rgba(0, 0, 0, 0.54); }
 md-radio-button.md-default-theme .md-on, md-switch.md-default-theme .md-switch-thumb .md-on {
@@ -4755,6 +4753,12 @@ md-radio-button.md-default-theme.md-checked .md-off, md-switch.md-default-theme 
   border-color: rgba(102, 187, 106, 0.87); }
 md-radio-button.md-default-theme.md-checked .md-ink-ripple, md-switch.md-default-theme .md-switch-thumb.md-checked .md-ink-ripple {
   color: rgba(102, 187, 106, 0.87); }
+md-radio-button.md-default-theme .md-container .md-ripple, md-switch.md-default-theme .md-switch-thumb .md-container .md-ripple {
+  color: #43a047; }
+md-radio-button.md-default-theme[disabled] .md-container .md-off, md-switch.md-default-theme .md-switch-thumb[disabled] .md-container .md-off {
+  border-color: rgba(0, 0, 0, 0.26); }
+md-radio-button.md-default-theme[disabled] .md-container .md-on, md-switch.md-default-theme .md-switch-thumb[disabled] .md-container .md-on {
+  border-color: rgba(0, 0, 0, 0.26); }
 
 md-radio-group.md-default-theme:focus {
   border-color: rgba(0, 0, 0, 0.73); }

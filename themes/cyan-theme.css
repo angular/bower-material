@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-da77970
+ * v0.6.1-master-d192083
  */
 md-backdrop.md-opaque.md-cyan-theme {
   background-color: rgba(0, 0, 0, 0.3);
@@ -103,8 +103,6 @@ md-progress-linear.md-cyan-theme[md-mode=buffer] .md-dashed:before {
 md-progress-linear.md-cyan-theme[md-mode=buffer] .md-bar1 {
   background-color: #b2ebf2; }
 
-md-radio-button.md-cyan-theme .md-container .md-ripple, md-switch.md-cyan-theme .md-switch-thumb .md-container .md-ripple {
-  color: #43a047; }
 md-radio-button.md-cyan-theme .md-off, md-switch.md-cyan-theme .md-switch-thumb .md-off {
   border-color: rgba(0, 0, 0, 0.54); }
 md-radio-button.md-cyan-theme .md-on, md-switch.md-cyan-theme .md-switch-thumb .md-on {
@@ -113,6 +111,12 @@ md-radio-button.md-cyan-theme.md-checked .md-off, md-switch.md-cyan-theme .md-sw
   border-color: rgba(102, 187, 106, 0.87); }
 md-radio-button.md-cyan-theme.md-checked .md-ink-ripple, md-switch.md-cyan-theme .md-switch-thumb.md-checked .md-ink-ripple {
   color: rgba(102, 187, 106, 0.87); }
+md-radio-button.md-cyan-theme .md-container .md-ripple, md-switch.md-cyan-theme .md-switch-thumb .md-container .md-ripple {
+  color: #43a047; }
+md-radio-button.md-cyan-theme[disabled] .md-container .md-off, md-switch.md-cyan-theme .md-switch-thumb[disabled] .md-container .md-off {
+  border-color: rgba(0, 0, 0, 0.26); }
+md-radio-button.md-cyan-theme[disabled] .md-container .md-on, md-switch.md-cyan-theme .md-switch-thumb[disabled] .md-container .md-on {
+  border-color: rgba(0, 0, 0, 0.26); }
 
 md-radio-group.md-cyan-theme:focus {
   border-color: rgba(0, 0, 0, 0.73); }
