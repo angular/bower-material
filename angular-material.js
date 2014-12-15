@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-d33e659
+ * v0.6.1-master-fcb9b2c
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -2603,7 +2603,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  * @description
  * Show a dialog with the specified options.
  *
- * @param {object} optionsOrPreset Either provide an `$mdToastPreset` returned from `alert()`,
+ * @param {object} optionsOrPreset Either provide an `$mdDialogPreset` returned from `alert()`,
  * `confirm()`, and `build()`, or an options object with the following properties:
  *   - `templateUrl` - `{string=}`: The url of a template that will be used as the content
  *   of the dialog.
@@ -2625,7 +2625,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  *     coppied to the controller instead.
  *   - `bindToController` - `bool`: bind the locals to the controller, instead of passing them in
  *   - `resolve` - `{object=}`: Similar to locals, except it takes promises as values, and the
- *     toast will not open until all of the promises resolve.
+ *     dialog will not open until all of the promises resolve.
  *   - `controllerAs` - `{string=}`: An alias to assign the controller to on the scope.
  *   - `parent` - `{element=}`: The element to append the dialog to. Defaults to appending
  *     to the root element of the application.

@@ -1,1 +1,1 @@
-{ "name": "angular-material", "version": "0.6.1-master-d33e659", "dependencies": { "angular": "1.3.x", "angular-animate": "1.3.x", "angular-aria": "1.3.x", "hammerjs": "~2.0.2" }, "main": [ "angular-material.js", "angular-material.css" ] }
+{ "name": "angular-material", "version": "0.6.1-master-fcb9b2c", "dependencies": { "angular": "1.3.x", "angular-animate": "1.3.x", "angular-aria": "1.3.x", "hammerjs": "~2.0.2" }, "main": [ "angular-material.js", "angular-material.css" ] }
