@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-fcb9b2c
+ * v0.6.1-master-7497348
  */
 goog.provide('ng.material.components.switch');
 goog.require('ng.material.components.checkbox');
@@ -68,7 +68,7 @@ function MdSwitch(mdCheckboxDirective, $mdTheming, $mdUtil, $document, $mdConsta
           '<div class="md-thumb" md-ink-ripple md-ink-ripple-checkbox></div>' +
         '</div>'+
       '</div>' +
-      '<div ng-transclude class="md-text">' +
+      '<div ng-transclude class="md-label">' +
       '</div>',
     require: '?ngModel',
     compile: compile

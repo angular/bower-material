@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-fcb9b2c
+ * v0.6.1-master-7497348
  */
 md-radio-button.md-default-theme .md-off, md-switch.md-default-theme .md-switch-thumb .md-off {
   border-color: rgba(0, 0, 0, 0.54); }
@@ -19,5 +19,5 @@ md-radio-button.md-default-theme[disabled] .md-container .md-off, md-switch.md-d
 md-radio-button.md-default-theme[disabled] .md-container .md-on, md-switch.md-default-theme .md-switch-thumb[disabled] .md-container .md-on {
   border-color: rgba(0, 0, 0, 0.26); }
 
-md-radio-group.md-default-theme:focus {
+md-radio-group.md-default-theme:focus:not(:empty) {
   border-color: rgba(0, 0, 0, 0.73); }

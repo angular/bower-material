@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-fcb9b2c
+ * v0.6.1-master-7497348
  */
 md-backdrop.md-opaque.md-cyan-theme {
   background-color: rgba(0, 0, 0, 0.3);
@@ -118,7 +118,7 @@ md-radio-button.md-cyan-theme[disabled] .md-container .md-off, md-switch.md-cyan
 md-radio-button.md-cyan-theme[disabled] .md-container .md-on, md-switch.md-cyan-theme .md-switch-thumb[disabled] .md-container .md-on {
   border-color: rgba(0, 0, 0, 0.26); }
 
-md-radio-group.md-cyan-theme:focus {
+md-radio-group.md-cyan-theme:focus:not(:empty) {
   border-color: rgba(0, 0, 0, 0.73); }
 
 md-slider.md-cyan-theme .md-track {
@@ -165,7 +165,7 @@ md-switch.md-cyan-theme[disabled] .md-thumb {
   background-color: #bdbdbd; }
 md-switch.md-cyan-theme[disabled] .md-bar {
   background-color: rgba(0, 0, 0, 0.12); }
-md-switch.md-cyan-theme:focus .md-text {
+md-switch.md-cyan-theme:focus .md-label:not(:empty) {
   border-color: black;
   border-style: dotted; }
 
