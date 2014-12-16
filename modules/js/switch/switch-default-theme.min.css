@@ -2,5 +2,5 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-d357779
+ * v0.6.1-master-c62b970
  */md-switch.md-default-theme .md-thumb{background-color:#fafafa}md-switch.md-default-theme .md-bar{background-color:#9e9e9e}md-switch.md-default-theme.md-checked .md-thumb{background-color:#03a9f4}md-switch.md-default-theme.md-checked .md-bar{background-color:rgba(3,169,244,.5)}md-switch.md-default-theme[disabled] .md-thumb{background-color:#bdbdbd}md-switch.md-default-theme[disabled] .md-bar{background-color:rgba(0,0,0,.12)}md-switch.md-default-theme:focus .md-label:not(:empty){border-color:#000;border-style:dotted}
