@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-c62b970
+ * v0.6.1-master-47f0d09
  */
 (function() {
 'use strict';
@@ -74,7 +74,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     });
     parent.on('blur mouseleave touchend touchcancel', function() {
       // Don't hide the tooltip if the parent is still focused.
-      if ($document.activeElement === parent[0]) return;
+      if ($document[0].activeElement === parent[0]) return;
       setVisible(false);
     });
 

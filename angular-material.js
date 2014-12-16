@@ -2,9 +2,15 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-c62b970
+ * v0.6.1-master-47f0d09
  */
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.theming","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -12,7 +18,7 @@ angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","materia
  * Initialization function that validates environment
  * requirements.
  */
-angular.module('material.core', [])
+angular.module('material.core', ['material.core.theming'])
   .run(MdCoreInitialize)
   .config(MdCoreConfigure);
 
@@ -24,8 +30,15 @@ function MdCoreInitialize() {
   }
 }
 
-function MdCoreConfigure($provide) {
+function MdCoreConfigure($provide, $mdThemingProvider) {
   $provide.decorator('$$rAF', ['$delegate', '$rootScope', rAFDecorator]);
+
+  // Define a default theme with our newly loaded colors
+  $mdThemingProvider.theme('default')
+    .primaryColor('blue')
+    .accentColor('green')
+    .warnColor('red')
+    .backgroundColor('grey');
 
   function rAFDecorator($$rAF, $rootScope) {
     /**
@@ -60,10 +73,16 @@ function MdCoreConfigure($provide) {
   }
 
 }
-MdCoreConfigure.$inject = ["$provide"];
+MdCoreConfigure.$inject = ["$provide", "$mdThemingProvider"];
 
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -115,6 +134,12 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
 
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -633,6 +658,12 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
 
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -709,6 +740,12 @@ function AriaService($$rAF, $log, $window) {
 AriaService.$inject = ["$$rAF", "$log", "$window"];
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -848,6 +885,12 @@ function mdCompilerService($q, $http, $injector, $compile, $controller, $templat
 mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controller", "$templateCache"];
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -1230,6 +1273,12 @@ function InterimElementProvider() {
 
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -1339,7 +1388,7 @@ function InkRippleService($window, $timeout) {
 
     function parseColor(color) {
       if (!color) return;
-      if (color.indexOf('rgba') === 0) return color;
+      if (color.indexOf('rgba') === 0) return color.replace(/\d?\.?\d*\s*\)\s*$/, '0.1)');
       if (color.indexOf('rgb')  === 0) return rgbToRGBA(color);
       if (color.indexOf('#')    === 0) return hexToRGBA(color);
 
@@ -1632,14 +1681,21 @@ function attrNoDirective() {
 }
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
-
-angular.module('material.core')
+angular.module('material.core.theming', [])
+  .constant('$MD_THEME_CSS', '{}') // This is overwritten when angular-material is built
   .directive('mdTheme', ThemingDirective)
   .directive('mdThemable', ThemableDirective)
-  .provider('$mdTheming', ThemingProvider);
+  .provider('$mdTheming', ThemingProvider)
+  .run(generateThemes);
 
 /**
  * @ngdoc provider
@@ -1662,18 +1718,246 @@ angular.module('material.core')
  * classes when they change. Default is `false`. Enabling can reduce performance.
  */
 
+// In memory storage of defined themes and color palettes (both loaded by CSS, and user specified)
+var PALETTES;
+var THEMES;
+var themingProvider;
+var generationIsDone;
+
+var DARK_FOREGROUND = {
+  name: 'dark',
+  '1': 'rgba(0,0,0,0.87)',
+  '2': 'rgba(0,0,0,0.54)',
+  '3': 'rgba(0,0,0,0.26)',
+  '4': 'rgba(0,0,0,0.12)'
+};
+var LIGHT_FOREGROUND = {
+  name: 'light',
+  '1': 'rgba(255,255,255,1.0)',
+  '2': 'rgba(255,255,255,0.7)',
+  '3': 'rgba(255,255,255,0.3)',
+  '4': 'rgba(255,255,255,0.12)'
+};
+
+var DARK_SHADOW = '1px 1px 0px rgba(black, 0.4), -1px -1px 0px rgba(black, 0.4)';
+var LIGHT_SHADOW = '';
+
+var DARK_CONTRAST_COLOR = colorToRgbaArray('rgba(0,0,0,0.87)');
+var LIGHT_CONTRAST_COLOR = colorToRgbaArray('rgb(255,255,255)');
+
+var THEME_COLOR_TYPES = ['primary', 'accent', 'warn', 'background'];
+var DEFAULT_COLOR_TYPE = 'primary';
+
+// A color in a theme will use these hues by default, if not specified by user.
+var LIGHT_DEFAULT_HUES = {
+  'accent': {
+    'default': '400',
+    'hue-1': '300',
+    'hue-2': '800',
+    'hue-3': 'A100',
+  }
+};
+var DARK_DEFAULT_HUES = {
+  'background': {
+    'default': '500',
+    'hue-1': '300',
+    'hue-2': '600',
+    'hue-3': '800'
+  }
+};
+THEME_COLOR_TYPES.forEach(function(colorType) {
+  // Color types with unspecified default hues will use these default hue values
+  var defaultDefaultHues = {
+    'default': '500',
+    'hue-1': '300',
+    'hue-2': '800',
+    'hue-3': 'A100'
+  };
+  if (!LIGHT_DEFAULT_HUES[colorType]) LIGHT_DEFAULT_HUES[colorType] = defaultDefaultHues;
+  if (!DARK_DEFAULT_HUES[colorType]) DARK_DEFAULT_HUES[colorType] = defaultDefaultHues;
+});
+
+var VALID_HUE_VALUES = [
+  '50', '100', '200', '300', '400', '500', '600',
+  '700', '800', '900', 'A100', 'A200', 'A400', 'A700'
+];
+
 function ThemingProvider() {
+  PALETTES = {};
+  THEMES = {};
   var defaultTheme = 'default';
   var alwaysWatchTheme = false;
-  return {
+
+  // Load CSS defined palettes (generated from scss)
+  readPaletteCss();
+
+  // Default theme defined in core.js
+
+  ThemingService.$inject = ["$rootScope"];
+  return themingProvider = {
+    definePalette: definePalette,
+    extendPalette: extendPalette,
+    theme: registerTheme,
+
     setDefaultTheme: function(theme) {
       defaultTheme = theme;
     },
     alwaysWatchTheme: function(alwaysWatch) {
       alwaysWatchTheme = alwaysWatch;
     },
-    $get: ['$rootScope', ThemingService]
+    $get: ThemingService,
+    _LIGHT_DEFAULT_HUES: LIGHT_DEFAULT_HUES,
+    _DARK_DEFAULT_HUES: DARK_DEFAULT_HUES,
+    _PALETTES: PALETTES,
+    _THEMES: THEMES,
+    _parseRules: parseRules,
+    _rgba: rgba
   };
+
+  // Use a temporary element to read the palettes from the content of a decided selector as JSON
+  function readPaletteCss() {
+    var element = document.createElement('div');
+    element.classList.add('md-color-palette-definition');
+    document.body.appendChild(element);
+
+    var content = getComputedStyle(element).content;
+    // Get rid of leading and trailing quote
+    content = content ? content.substring(1,content.length-1) : '{}';
+
+    var parsed = JSON.parse(content);
+    angular.extend(PALETTES, parsed);
+    document.body.removeChild(element);
+  }
+
+  // Example: $mdThemingProvider.definePalette('neonRed', { 50: '#f5fafa', ... });
+  function definePalette(name, map) {
+    map = map || {};
+    PALETTES[name] = checkPaletteValid(name, map);
+  }
+
+  // Returns an new object which is a copy of a given palette `name` with variables from
+  // `map` overwritten
+  // Example: var neonRedMap = $mdThemingProvider.extendPalette('red', { 50: '#f5fafafa' });
+  function extendPalette(name, map) {
+    return checkPaletteValid(name,  angular.extend({}, PALETTES[name] || {}, map) );
+  }
+
+  // Make sure that palette has all required hues
+  function checkPaletteValid(name, map) {
+    var missingColors = VALID_HUE_VALUES.filter(function(field) {
+      return !map[field];
+    });
+    if (missingColors.length) {
+      throw new Error("Missing colors %1 in palette %2!"
+                      .replace('%1', missingColors.join(', '))
+                      .replace('%2', name));
+    }
+
+    return map;
+  }
+
+  // Register a theme (which is a collection of color palettes to use with various states
+  // ie. warn, accent, primary )
+  // Optionally inherit from an existing theme
+  // $mdThemingProvider.theme('custom-theme').primaryColor('red');
+  function registerTheme(name, inheritFrom) {
+    inheritFrom = inheritFrom || 'default';
+    if (THEMES[name]) return THEMES[name];
+
+    var parentTheme = typeof inheritFrom === 'string' ? THEMES[inheritFrom] : inheritFrom;
+    var theme = new Theme(name);
+
+    if (parentTheme) {
+      angular.forEach(parentTheme.colors, function(color, colorType) {
+        theme.colors[colorType] = {
+          name: color.name,
+          // Make sure a COPY of the hues is given to the child color,
+          // not the same reference.
+          hues: angular.extend({}, color.hues)
+        };
+      });
+    }
+    THEMES[name] = theme;
+
+    return theme;
+  }
+
+  function Theme(name) {
+    var self = this;
+    self.name = name;
+    self.colors = {};
+
+    self.dark = setDark;
+    setDark(false);
+
+    function setDark(isDark) {
+      isDark = arguments.length === 0 ? true : !!isDark;
+
+      // If no change, abort
+      if (isDark === self.isDark) return;
+
+      self.isDark = isDark;
+
+      self.foregroundPalette = self.isDark ? LIGHT_FOREGROUND : DARK_FOREGROUND;
+      self.foregroundShadow = self.isDark ? DARK_SHADOW : LIGHT_SHADOW;
+      
+      // Light and dark themes have different default hues.
+      // Go through each existing color type for this theme, and for every
+      // hue value that is still the default hue value from the previous light/dark setting,
+      // set it to the default hue value from the new light/dark setting.
+      var newDefaultHues = self.isDark ? DARK_DEFAULT_HUES : LIGHT_DEFAULT_HUES;
+      var oldDefaultHues = self.isDark ? LIGHT_DEFAULT_HUES : DARK_DEFAULT_HUES;
+      angular.forEach(newDefaultHues, function(newDefaults, colorType) {
+        var color = self.colors[colorType];
+        var oldDefaults = oldDefaultHues[colorType];
+        if (color) {
+          for (var hueName in color.hues) {
+            if (color.hues[hueName] === oldDefaults[hueName]) {
+              color.hues[hueName] = newDefaults[hueName];
+            }
+          }
+        }
+      });
+
+      return self;
+    }
+
+    THEME_COLOR_TYPES.forEach(function(colorType) {
+      var defaultHues = (self.isDark ? DARK_DEFAULT_HUES : LIGHT_DEFAULT_HUES)[colorType];
+      self[colorType + 'Color'] = function setColorType(paletteName, hues) {
+        var color = self.colors[colorType] = {
+          name: paletteName,
+          hues: angular.extend({}, defaultHues, hues)
+        };
+
+        Object.keys(color.hues).forEach(function(name) {
+          if (!defaultHues[name]) {
+            throw new Error("Invalid hue name '%1' in theme %2's %3 color %4. Available hue names: %4"
+              .replace('%1', name)
+              .replace('%2', self.name)
+              .replace('%3', paletteName)
+              .replace('%4', Object.keys(defaultHues).join(', '))
+            );
+          }
+        });
+        Object.keys(color.hues).map(function(key) {
+          return color.hues[key];
+        }).forEach(function(hueValue) {
+          if (VALID_HUE_VALUES.indexOf(hueValue) == -1) {
+            throw new Error("Invalid hue value '%1' in theme %2's %3 color %4. Available hue values: %5"
+              .replace('%1', hueValue)
+              .replace('%2', self.name)
+              .replace('%3', colorType)
+              .replace('%4', paletteName)
+              .replace('%5', VALID_HUE_VALUES.join(', '))
+            );
+          }
+        });
+
+        return self;
+      };
+    });
+  }
 
   /**
    * @ngdoc service
@@ -1695,6 +1979,7 @@ function ThemingProvider() {
    * ```
    * @param {el=} element to apply theming to
    */
+  /* @ngInject */
   function ThemingService($rootScope) {
     applyTheme.inherit = function(el, parent) {
       var ctrl = parent.controller('mdTheme');
@@ -1757,8 +2042,205 @@ function ThemableDirective($mdTheming) {
   return $mdTheming;
 }
 ThemableDirective.$inject = ["$mdTheming"];
+
+function parseRules(theme, colorType, rules) {
+  checkValidPalette(theme, colorType);
+
+  rules = rules.replace(/THEME_NAME/g, theme.name);
+  var generatedRules = [];
+  var color = theme.colors[colorType];
+
+  var themeNameRegex = new RegExp('.md-' + theme.name + '-theme', 'g');
+  // Matches '{{ primary-color }}', etc
+  var hueRegex = new RegExp('(\'|\")?{{\\s*\(' + colorType + '\)-\(color|contrast\)\-\?\(\\d\\.\?\\d\*\)\?\\s*}}(\"|\')?','g');
+  var simpleVariableRegex = /'?"?\{\{\s*([a-zA-Z]+)-(A?\d+|hue\-[0-3]|shadow)-?(\d\.?\d*)?\s*\}\}'?"?/g;
+  var palette = PALETTES[color.name];
+
+  // find and replace simple variables where we use a specific hue, not angentire palette
+  // eg. "{{primary-100}}"
+  //\(' + THEME_COLOR_TYPES.join('\|') + '\)'
+  rules = rules.replace(simpleVariableRegex, function(match, colorType, hue, opacity) {
+    if (colorType === 'foreground') {
+      if (hue == 'shadow') {
+        return theme.foregroundShadow;
+      } else {
+        return theme.foregroundPalette[hue] || theme.foregroundPalette['1'];
+      }
+    }
+    if (hue.indexOf('hue') === 0) {
+      hue = theme.colors[colorType].hues[hue];
+    }
+    return rgba( (PALETTES[ theme.colors[colorType].name ][hue] || '').value, opacity );
+  });
+
+  // For each type, generate rules for each hue (ie. default, md-hue-1, md-hue-2, md-hue-3)
+  angular.forEach(color.hues, function(hueValue, hueName) {
+    var newRule = rules
+      .replace(hueRegex, function(match, _, colorType, hueType, opacity) {
+        return rgba(palette[hueValue][hueType === 'color' ? 'value' : 'contrast'], opacity);
+      });
+    if (hueName !== 'default') {
+      newRule = newRule.replace(themeNameRegex, '.md-' + theme.name + '-theme.md-' + hueName);
+    }
+    generatedRules.push(newRule);
+  });
+
+  return generatedRules.join('');
+}
+
+// Generate our themes at run time given the state of THEMES and PALETTES
+function generateThemes($MD_THEME_CSS) {
+  // MD_THEME_CSS is a string generated by the build process that includes all the themable
+  // components as templates
+
+  // Expose contrast colors for palettes to ensure that text is always readable
+  angular.forEach(PALETTES, sanitizePalette);
+
+  // Break the CSS into individual rules
+  var rules = $MD_THEME_CSS.split(/\}(?!(\}|'|"|;))/)
+    .filter(function(rule) { return rule && rule.length; })
+    .map(function(rule) { return rule.trim() + '}'; });
+
+  var rulesByType = {};
+  THEME_COLOR_TYPES.forEach(function(type) {
+    rulesByType[type] = '';
+  });
+  var ruleMatchRegex = new RegExp('md-\(' + THEME_COLOR_TYPES.join('\|') + '\)', 'g');
+
+  // Sort the rules based on type, allowing us to do color substitution on a per-type basis
+  rules.forEach(function(rule) {
+    var match = rule.match(ruleMatchRegex);
+    // First: test that if the rule has '.md-accent', it goes into the accent set of rules
+    for (var i = 0, type; type = THEME_COLOR_TYPES[i]; i++) {
+      if (rule.indexOf('.md-' + type) > -1) {
+        return rulesByType[type] += rule;
+      }
+    }
+
+    // If no eg 'md-accent' class is found, try to just find 'accent' in the rule and guess from
+    // there
+    for (i = 0; type = THEME_COLOR_TYPES[i]; i++) {
+      if (rule.indexOf(type) > -1) {
+        return rulesByType[type] += rule;
+      }
+    }
+
+    // Default to the primary array
+    return rulesByType[DEFAULT_COLOR_TYPE] += rule;
+  });
+
+  var styleString = '';
+
+  // For each theme, use the color palettes specified for `primary`, `warn` and `accent`
+  // to generate CSS rules.
+  angular.forEach(THEMES, function(theme) {
+    THEME_COLOR_TYPES.forEach(function(colorType) {
+      styleString += parseRules(theme, colorType, rulesByType[colorType] + '');
+    });
+  });
+
+  // Insert our newly minted styles into the DOM
+  if (!generationIsDone) {
+    var style = document.createElement('style');
+    style.innerHTML = styleString;
+    var head = document.getElementsByTagName('head')[0];
+    head.insertBefore(style, head.firstElementChild);
+    generationIsDone = true;
+  }
+
+  // The user specifies a 'default' contrast color as either light or dark,
+  // then explicitly lists which hues are the opposite contrast (eg. A100 has dark, A200 has light)
+  function sanitizePalette(palette) {
+    var defaultContrast = palette.contrastDefaultColor;
+    var lightColors = palette.contrastLightColors || [];
+    var darkColors = palette.contrastDarkColors || [];
+
+    // Sass provides these colors as space-separated lists
+    if (typeof lightColors === 'string') lightColors = lightColors.split(' ');
+    if (typeof darkColors === 'string') darkColors = darkColors.split(' ');
+
+    // Cleanup after ourselves
+    delete palette.contrastDefaultColor;
+    delete palette.contrastLightColors;
+    delete palette.contrastDarkColors;
+
+    // Change { 'A100': '#fffeee' } to { 'A100': { value: '#fffeee', contrast:DARK_CONTRAST_COLOR }
+    angular.forEach(palette, function(hueValue, hueName) {
+      // Map everything to rgb colors
+      var rgbValue = colorToRgbaArray(hueValue);
+      if (!rgbValue) {
+        throw new Error("Color %1, in palette %2's hue %3, is invalid. Hex or rgb(a) color expected."
+                        .replace('%1', hueValue)
+                        .replace('%2', palette.name)
+                        .replace('%3', hueName));
+      }
+
+      palette[hueName] = {
+        value: rgbValue,
+        contrast: getContrastColor()
+      };
+      function getContrastColor() {
+        if (defaultContrast === 'light') {
+          return darkColors.indexOf(hueName) > -1 ? DARK_CONTRAST_COLOR : LIGHT_CONTRAST_COLOR;
+        } else {
+          return lightColors.indexOf(hueName) > -1 ? LIGHT_CONTRAST_COLOR : DARK_CONTRAST_COLOR;
+        }
+      }
+    });
+  }
+
+}
+generateThemes.$inject = ["$MD_THEME_CSS"];
+
+function checkValidPalette(theme, colorType) {
+  // If theme attempts to use a palette that doesnt exist, throw error
+  if (!PALETTES[ (theme.colors[colorType] || {}).name ]) {
+    throw new Error(
+      "You supplied an invalid color palette for theme %1's %2 palette. Available palettes: %3"
+                    .replace('%1', theme.name)
+                    .replace('%2', colorType)
+                    .replace('%3', Object.keys(PALETTES).join(', '))
+    );
+  }
+}
+
+function colorToRgbaArray(clr) {
+  if (angular.isArray(clr) && clr.length == 3) return clr;
+  if (/^rgb/.test(clr)) {
+    return clr.replace(/(^\s*rgba?\(|\)\s*$)/g, '').split(',').map(function(value) {
+      return parseInt(value, 10);
+    });
+  }
+  if (clr.charAt(0) == '#') clr = clr.substring(1);
+  if (!/^([a-f0-9]{3}){1,2}$/g.test(clr)) return;
+
+  var dig = clr.length / 3;
+  var red = clr.substr(0, dig);
+  var grn = clr.substr(dig, dig);
+  var blu = clr.substr(dig * 2);
+  if (dig === 1) {
+    red += red;
+    grn += grn;
+    blu += blu;
+  }
+  return [parseInt(red, 16), parseInt(grn, 16), parseInt(blu, 16)];
+}
+
+function rgba(rgbArray, opacity) {
+  if (rgbArray.length == 4) opacity = rgbArray.pop();
+  return opacity && opacity.length ?
+    'rgba(' + rgbArray.join(',') + ',' + opacity + ')' :
+    'rgb(' + rgbArray.join(',') + ')';
+}
+
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -1792,6 +2274,12 @@ function BackdropDirective($mdTheming) {
 BackdropDirective.$inject = ["$mdTheming"];
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -2078,6 +2566,12 @@ MdBottomSheetProvider.$inject = ["$$interimElementProvider"];
 
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -2169,6 +2663,12 @@ function MdButtonDirective($mdInkRipple, $mdTheming, $mdAria) {
 MdButtonDirective.$inject = ["$mdInkRipple", "$mdTheming", "$mdAria"];
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -2222,6 +2722,12 @@ function mdCardDirective($mdTheming) {
 mdCardDirective.$inject = ["$mdTheming"];
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -2350,6 +2856,12 @@ MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$md
 
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -2405,6 +2917,12 @@ function mdContentDirective($mdTheming) {
 mdContentDirective.$inject = ["$mdTheming"];
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -2882,6 +3400,12 @@ MdDialogProvider.$inject = ["$$interimElementProvider"];
 
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -2925,6 +3449,12 @@ function MdDividerDirective($mdTheming) {
 MdDividerDirective.$inject = ["$mdTheming"];
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -2970,6 +3500,12 @@ function mdIconDirective() {
 }
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -3059,6 +3595,12 @@ function mdItemDirective() {
 }
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -3181,6 +3723,12 @@ function MdProgressCircularDirective($$rAF, $mdConstant, $mdTheming) {
 MdProgressCircularDirective.$inject = ["$$rAF", "$mdConstant", "$mdTheming"];
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -3304,6 +3852,12 @@ var transforms = (function() {
 
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -3577,6 +4131,12 @@ mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
 
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -3914,6 +4474,12 @@ function mdComponentRegistry($log) {
 mdComponentRegistry.$inject = ["$log"];
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -4319,6 +4885,12 @@ function SliderController($scope, $element, $attrs, $$rAF, $window, $mdAria, $md
 SliderController.$inject = ["$scope", "$element", "$attrs", "$$rAF", "$window", "$mdAria", "$mdUtil", "$mdConstant"];
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -4623,6 +5195,12 @@ function MdSticky($document, $mdConstant, $compile, $$rAF, $mdUtil) {
 MdSticky.$inject = ["$document", "$mdConstant", "$compile", "$$rAF", "$mdUtil"];
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -4704,6 +5282,12 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming) {
 MdSubheaderDirective.$inject = ["$mdSticky", "$compile", "$mdTheming"];
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -4912,6 +5496,12 @@ function swipePostLink($parse, $mdSwipe, name ) {
 
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -5049,6 +5639,12 @@ MdSwitch.$inject = ["mdCheckboxDirective", "$mdTheming", "$mdUtil", "$document",
 
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -5080,6 +5676,12 @@ angular.module('material.components.tabs', [
 ]);
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -5273,6 +5875,12 @@ mdInputDirective.$inject = ["$mdUtil"];
 
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -5488,6 +6096,12 @@ MdToastProvider.$inject = ["$$interimElementProvider"];
 
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -5641,6 +6255,12 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming) {
 mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming"];
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -5711,7 +6331,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     });
     parent.on('blur mouseleave touchend touchcancel', function() {
       // Don't hide the tooltip if the parent is still focused.
-      if ($document.activeElement === parent[0]) return;
+      if ($document[0].activeElement === parent[0]) return;
       setVisible(false);
     });
 
@@ -5828,6 +6448,12 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
 MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdUtil", "$mdTheming"];
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -5838,6 +6464,12 @@ MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdU
 angular.module('material.components.whiteframe', []);
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -5897,6 +6529,12 @@ function MdTabInkDirective($mdConstant, $window, $$rAF, $timeout) {
 MdTabInkDirective.$inject = ["$mdConstant", "$window", "$$rAF", "$timeout"];
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -6091,6 +6729,12 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout) {
 TabPaginationDirective.$inject = ["$mdConstant", "$window", "$$rAF", "$$q", "$timeout"];
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -6173,6 +6817,12 @@ TabItemController.$inject = ["$scope", "$element", "$attrs", "$compile", "$anima
 
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -6408,6 +7058,12 @@ MdTabDirective.$inject = ["$mdInkRipple", "$compile", "$mdAria", "$mdUtil", "$md
 
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -6540,6 +7196,12 @@ function MdTabsController($scope, $element, $mdUtil) {
 MdTabsController.$inject = ["$scope", "$element", "$mdUtil"];
 })();
 
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.6.1-master-47f0d09
+ */
 (function() {
 'use strict';
 
@@ -6697,3 +7359,5 @@ function TabsDirective($parse, $mdTheming) {
 }
 TabsDirective.$inject = ["$parse", "$mdTheming"];
 })();
+
+angular.module("material.core").constant("$MD_THEME_CSS", "md-backdrop.md-opaque.md-THEME_NAME-theme {  background-color: '{{foreground-4-0.5}}';  position: absolute; }md-bottom-sheet.md-THEME_NAME-theme {  background-color: '{{background-50}}';  border-top-color: '{{background-300}}'; }  md-bottom-sheet.md-THEME_NAME-theme.md-list md-item {    color: '{{foreground-1}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    background-color: '{{background-50}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    color: '{{foreground-1}}'; }.md-button.md-THEME_NAME-theme {  border-radius: 3px; }  .md-button.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }    .md-button.md-THEME_NAME-theme.md-primary:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-primary:not([disabled]):focus {      background-color: '{{background-500-0.2}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised, .md-button.md-THEME_NAME-theme.md-primary.md-fab {      color: '{{primary-contrast}}';      background-color: '{{primary-color}}'; }      .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):focus, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):focus {        background-color: '{{primary-600}}'; }  .md-button.md-THEME_NAME-theme.md-fab {    border-radius: 50%; }  .md-button.md-THEME_NAME-theme.md-raised, .md-button.md-THEME_NAME-theme.md-fab {    color: '{{background-contrast}}';    background-color: '{{background-500-0.185}}'; }    .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):focus, .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):focus {      background-color: '{{background-500-0.3}}'; }  .md-button.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised, .md-button.md-THEME_NAME-theme.md-warn.md-fab {      color: '{{warn-contrast}}';      background-color: '{{warn-color}}'; }      .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):focus, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):focus {        background-color: '{{warn-700}}'; }  .md-button.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised, .md-button.md-THEME_NAME-theme.md-accent.md-fab {      color: '{{accent-contrast}}';      background-color: '{{accent-color}}'; }      .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):focus, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):focus {        background-color: '{{accent-700}}'; }  .md-button.md-THEME_NAME-theme[disabled], .md-button.md-THEME_NAME-theme.md-raised[disabled], .md-button.md-THEME_NAME-theme.md-fab[disabled] {    color: '{{foreground-3}}';    background-color: transparent;    cursor: not-allowed; }md-card.md-THEME_NAME-theme {  border-radius: 2px; }  md-card.md-THEME_NAME-theme .md-card-image {    border-radius: 2px 2px 0 0; }md-checkbox.md-THEME_NAME-theme .md-ripple {  color: '{{accent-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon {  background-color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ripple {  color: '{{primary-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon {  background-color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ripple {  color: '{{warn-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon {  background-color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] .md-icon {  border-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon {  background-color: '{{foreground-3}}'; }md-content.md-THEME_NAME-theme {  background-color: '{{background-hue-3}}'; }md-dialog.md-THEME_NAME-theme {  border-radius: 4px;  background-color: '{{background-hue-3}}'; }  md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions {    border-top-color: '{{foreground-4}}'; }md-divider.md-THEME_NAME-theme {  border-top-color: '{{foreground-4}}'; }md-progress-circular.md-THEME_NAME-theme {  background-color: transparent; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-gap {    border-top-color: '{{primary-color}}';    border-bottom-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-top-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-right-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle {    border-left-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-gap {    border-top-color: '{{warn-color}}';    border-bottom-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-top-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-right-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle {    border-left-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-gap {    border-top-color: '{{accent-color}}';    border-bottom-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-top-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-right-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle {    border-left-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme .md-container {  background-color: '{{primary-100}}'; }md-progress-linear.md-THEME_NAME-theme .md-bar {  background-color: '{{primary-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-container {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-bar {  background-color: '{{warn-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-container {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-bar {  background-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-bar1 {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-dashed:before {  background: radial-gradient('{{warn-100}}' 0%, '{{warn-100}}' 16%, transparent 42%); }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-bar1 {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-dashed:before {  background: radial-gradient('{{accent-100}}' 0%, '{{accent-100}}' 16%, transparent 42%); }md-radio-button.md-THEME_NAME-theme .md-off {  border-color: '{{foreground-2}}'; }md-radio-button.md-THEME_NAME-theme .md-on {  background-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-off {  border-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme .md-container .md-ripple {  color: '{{accent-600}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-on {  background-color: '{{warn-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off {  border-color: '{{warn-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple {  color: '{{warn-600}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-on {  background-color: '{{primary-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off {  border-color: '{{primary-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple {  color: '{{primary-600}}'; }md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-off {  border-color: '{{foreground-3}}'; }md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-on {  border-color: '{{foreground-3}}'; }md-radio-group.md-THEME_NAME-theme:focus:not(:empty) {  border-color: '{{foreground-1}}'; }md-sidenav.md-THEME_NAME-theme {  background-color: '{{background-hue-3}}'; }md-slider.md-THEME_NAME-theme .md-track {  background-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme .md-focus-thumb {  background-color: '{{foreground-2}}'; }md-slider.md-THEME_NAME-theme .md-focus-ring {  border-color: '{{foreground-4}}'; }md-slider.md-THEME_NAME-theme .md-disabled-thumb {  border-color: '{{background-hue-3}}'; }md-slider.md-THEME_NAME-theme.md-min .md-thumb:after {  background-color: '{{background-hue-3}}'; }md-slider.md-THEME_NAME-theme .md-track.md-track-fill {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb:after {  border-color: '{{primary-color}}';  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme .md-sign {  background-color: '{{primary-color}}'; }  md-slider.md-THEME_NAME-theme .md-sign:after {    border-top-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb-text {  color: '{{primary-contrast}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-track-fill {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb:after {  border-color: '{{warn-color}}';  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-sign {  background-color: '{{warn-color}}'; }  md-slider.md-THEME_NAME-theme.md-warn .md-sign:after {    border-top-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb-text {  color: '{{warn-contrast}}'; }md-slider.md-THEME_NAME-theme.md-accent .md-track-fill {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme.md-accent .md-thumb:after {  border-color: '{{accent-color}}';  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme.md-accent .md-sign {  background-color: '{{accent-color}}'; }  md-slider.md-THEME_NAME-theme.md-accent .md-sign:after {    border-top-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme.md-accent .md-thumb-text {  color: '{{accent-contrast}}'; }md-slider.md-THEME_NAME-theme[disabled] .md-thumb:after {  border-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme[disabled]:not(.md-min) .md-thumb:after {  background-color: '{{foreground-3}}'; }.md-subheader.md-THEME_NAME-theme {  color: '{{ foreground-2-0.23 }}';  background-color: '{{background-hue-3}}'; }  .md-subheader.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme .md-thumb {  background-color: '{{background-50}}'; }md-switch.md-THEME_NAME-theme .md-bar {  background-color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-thumb {  background-color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-bar {  background-color: '{{accent-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-thumb {  background-color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-bar {  background-color: '{{primary-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-thumb {  background-color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-bar {  background-color: '{{warn-color-0.5}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-thumb {  background-color: '{{background-400}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-bar {  background-color: '{{foreground-4}}'; }md-switch.md-THEME_NAME-theme:focus .md-label:not(:empty) {  border-color: '{{foreground-1}}';  border-style: dotted; }md-tabs.md-THEME_NAME-theme .md-header {  background-color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme.md-accent .md-header {  background-color: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]) {  color: '{{accent-100}}'; }  md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]).active {    color: '{{accent-contrast}}'; }md-tabs.md-THEME_NAME-theme.md-warn .md-header {  background-color: '{{warn-color}}'; }md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]) {  color: '{{warn-100}}'; }  md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]).active {    color: '{{warn-contrast}}'; }md-tabs.md-THEME_NAME-theme md-tabs-ink-bar {  color: #ffff85;  background: #ffff85; }md-tabs.md-THEME_NAME-theme md-tab {  color: '{{primary-100}}'; }  md-tabs.md-THEME_NAME-theme md-tab.active {    color: '{{primary-contrast}}'; }  md-tabs.md-THEME_NAME-theme md-tab[disabled] {    color: '{{foreground-4}}'; }  md-tabs.md-THEME_NAME-theme md-tab:focus {    border-color: '{{foreground-1}}'; }  md-tabs.md-THEME_NAME-theme md-tab .md-ripple-container {    color: #ffff85; }md-input-group.md-THEME_NAME-theme input, md-input-group.md-THEME_NAME-theme textarea {  text-shadow: '{{foreground-shadow}}'; }  md-input-group.md-THEME_NAME-theme input:-ms-input-placeholder, md-input-group.md-THEME_NAME-theme textarea:-ms-input-placeholder {    color: '{{foreground-3}}'; }  md-input-group.md-THEME_NAME-theme input::-webkit-input-placeholder, md-input-group.md-THEME_NAME-theme textarea::-webkit-input-placeholder {    color: '{{foreground-3}}'; }md-input-group.md-THEME_NAME-theme label {  text-shadow: '{{foreground-shadow}}';  color: '{{foreground-3}}'; }md-input-group.md-THEME_NAME-theme input, md-input-group.md-THEME_NAME-theme textarea {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused input, md-input-group.md-THEME_NAME-theme.md-input-focused textarea {  border-color: '{{primary-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused label {  color: '{{primary-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused.md-accent input, md-input-group.md-THEME_NAME-theme.md-input-focused.md-accent textarea {  border-color: '{{accent-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused.md-accent label {  color: '{{accent-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-has-value:not(.md-input-focused) label {  color: '{{foreground-2}}'; }md-input-group.md-THEME_NAME-theme[disabled] input, md-input-group.md-THEME_NAME-theme[disabled] textarea {  border-bottom-color: '{{foreground-4}}';  color: '{{foreground-3}}'; }md-toast.md-THEME_NAME-theme {  background-color: '{{foreground-1}}';  color: '{{background-50}}'; }  md-toast.md-THEME_NAME-theme .md-button {    color: '{{background-50}}'; }  md-toast.md-THEME_NAME-theme .md-action {    color: '{{primary-A200}}'; }    md-toast.md-THEME_NAME-theme .md-action.md-accent {      color: '{{accent-A200}}'; }    md-toast.md-THEME_NAME-theme .md-action.md-warn {      color: '{{warn-A200}}'; }md-toolbar.md-THEME_NAME-theme {  background-color: '{{primary-color}}';  color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme .md-button {    color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme.md-accent {    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }  md-toolbar.md-THEME_NAME-theme.md-warn {    background-color: '{{warn-color}}';    color: '{{warn-contrast}}'; }md-tooltip.md-THEME_NAME-theme {  color: '{{background-A100}}'; }  md-tooltip.md-THEME_NAME-theme .md-background {    background-color: '{{foreground-2}}'; }")
