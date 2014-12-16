@@ -14,10 +14,10 @@ md-bottom-sheet.md-THEME_NAME-theme {
 
 .md-button.md-THEME_NAME-theme {
   border-radius: 3px; }
+  .md-button.md-THEME_NAME-theme:not([disabled]):hover, .md-button.md-THEME_NAME-theme:not([disabled]):focus {
+    background-color: '{{background-500-0.2}}'; }
   .md-button.md-THEME_NAME-theme.md-primary {
     color: '{{primary-color}}'; }
-    .md-button.md-THEME_NAME-theme.md-primary:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-primary:not([disabled]):focus {
-      background-color: '{{background-500-0.2}}'; }
     .md-button.md-THEME_NAME-theme.md-primary.md-raised, .md-button.md-THEME_NAME-theme.md-primary.md-fab {
       color: '{{primary-contrast}}';
       background-color: '{{primary-color}}'; }
