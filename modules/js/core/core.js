@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-0d26529
+ * v0.6.1-master-58a67f0
  */
 (function() {
 'use strict';
@@ -192,9 +192,6 @@ angular.module('material.core')
 
     attachDragBehavior: attachDragBehavior,
 
-    // Firefox doesn't let us set values on the object returned from getBoundingClientRect(),
-    // but we need that. So we just return a new object which uses the values returned
-    // from getBoundingClientRect()
     elementRect: function(element, offsetParent) {
       var node = element[0];
       offsetParent = offsetParent || node.offsetParent || document.body;
