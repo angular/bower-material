@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-3271d36
+ * v0.6.1-master-0d26529
  */
 (function() {
 'use strict';
@@ -191,6 +191,28 @@ angular.module('material.core')
     now: window.performance ? angular.bind(window.performance, window.performance.now) : Date.now,
 
     attachDragBehavior: attachDragBehavior,
+
+    // Firefox doesn't let us set values on the object returned from getBoundingClientRect(),
+    // but we need that. So we just return a new object which uses the values returned
+    // from getBoundingClientRect()
+    elementRect: function(element, offsetParent) {
+      var node = element[0];
+      offsetParent = offsetParent || node.offsetParent || document.body;
+      offsetParent = offsetParent[0] || offsetParent;
+      var rect = {
+        left: 0,
+        top: 0,
+        width: node.offsetWidth, 
+        height: node.offsetHeight,
+      };
+      var current = node;
+      while (current && current !== offsetParent) {
+        rect.left += current.offsetLeft;
+        rect.top += current.offsetTop;
+        current = current.parentNode;
+      }
+      return rect;
+    },
 
     /**
      * Publish the iterator facade to easily support iteration and accessors
