@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-4ae4e07
+ * v0.6.1-master-6397040
  */
 md-tabs {
   display: block;
@@ -72,11 +72,12 @@ md-tabs[center] .md-header:not(.md-paginating) .md-header-items {
     display: -ms-flexbox;
     display: flex;
     box-sizing: border-box;
-    transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+    transition: -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+    transition: transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0);
-    width: 100%;
-    height: 100%; }
+    height: 100%;
+    width: 99999px; }
 
 .md-tabs-content {
   overflow: hidden;
@@ -90,42 +91,37 @@ md-tabs-ink-bar {
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 100%;
   box-sizing: border-box;
   height: 2px;
   margin-top: -2px;
   -webkit-transform: scaleX(1);
           transform: scaleX(1);
-  transition: -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
-  transition: transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
   -webkit-transform-origin: 0 0;
           transform-origin: 0 0; }
-  md-tabs-ink-bar.md-ink-bar-delayed {
-    transition: -webkit-transform 0.5s cubic-bezier(0.45, 0, 0.15, 1);
-    transition: transform 0.5s cubic-bezier(0.45, 0, 0.15, 1); }
+  md-tabs-ink-bar.md-transition-right {
+    transition: right 0.25s cubic-bezier(0.35, 0, 0.25, 1), left 0.25s cubic-bezier(0.35, 0, 0.25, 1) 0.075s; }
+  md-tabs-ink-bar.md-transition-left {
+    transition: right 0.25s cubic-bezier(0.35, 0, 0.25, 1) 0.075s, left 0.25s cubic-bezier(0.35, 0, 0.25, 1); }
 
 md-tab {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
-  box-sizing: border-box;
   position: relative;
   z-index: 0;
   overflow: hidden;
   height: 100%;
   text-align: center;
   cursor: pointer;
-  min-width: 96px;
   border: 1px dotted transparent;
+  padding: 20px 24px;
+  box-sizing: border-box;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -141,5 +137,4 @@ md-tab {
             flex: 1;
     z-index: 100;
     opacity: 1;
-    overflow: hidden;
-    text-overflow: ellipsis; }
+    overflow: hidden; }
