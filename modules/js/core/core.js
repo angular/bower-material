@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-3c4044d
+ * v0.6.1-master-6ebb316
  */
 (function() {
 'use strict';
@@ -1848,7 +1848,7 @@ function ThemingProvider() {
       .replace(/_/g, '"'); // we output underscores as placeholders for quotes
 
     // Remove backslashes that firefox gives
-    var parsed = JSON.parse(backgroundImage);
+    var parsed = JSON.parse(decodeURI(backgroundImage));
     angular.extend(PALETTES, parsed);
     document.body.removeChild(element);
   }
