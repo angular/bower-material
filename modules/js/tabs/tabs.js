@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-8abebce
+ * v0.6.1-master-d1d58bc
  */
 (function() {
 'use strict';
@@ -763,9 +763,6 @@ function MdTabsController($scope, $element, $mdUtil, $$rAF) {
     if (!tab || tab.isSelected || tab.isDisabled()) return;
     if (!tabsList.contains(tab)) return;
 
-    if (!angular.isDefined(self.tabToFocus)) {
-      tab.element.focus();
-    }
     self.deselect(self.getSelectedItem());
 
     $scope.selectedIndex = self.indexOf(tab);
