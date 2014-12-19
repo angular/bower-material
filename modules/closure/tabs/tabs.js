@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.1-master-3955980
+ * v0.6.1-master-8abebce
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.core');
@@ -132,7 +132,6 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout, $mdM
       angular.element($window).off('resize', debouncedUpdatePagination);
     });
 
-    scope.$watch(tabsCtrl.getSelectedItem, onSelectedTabChange);
     scope.$watch(function() { return tabsCtrl.tabToFocus; }, onTabFocus);
 
     // Make sure we don't focus an element on the next page
@@ -150,24 +149,13 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout, $mdM
       }
     }
 
-    function onSelectedTabChange(selectedTab) {
-      if (!selectedTab) return;
-
-      if (state.active) {
-        var selectedTabPage = getPageForTab(selectedTab);
-        setPage(selectedTabPage);
-      }
-    }
-
     // Called when page is changed by a user action (click)
     function userChangePage(increment) {
       var sizeData = state.tabData;
       var newPage = Math.max(0, Math.min(sizeData.pages.length - 1, state.page + increment));
       var newTabIndex = sizeData.pages[newPage][ increment > 0 ? 'firstTabIndex' : 'lastTabIndex' ];
       var newTab = tabsCtrl.itemAt(newTabIndex);
-
-      setPage(newPage).then(function() { newTab.element.focus(); });
-      tabsCtrl.select(newTab);
+      onTabFocus(newTab);
     }
 
     function updatePagination() {
@@ -247,13 +235,13 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout, $mdM
 
     function shouldStretchTabs() {
       switch (scope.stretchTabs) {
-        case 'no':  return false;
-        case 'yes': return true;
-        default:    return $mdMedia('sm');
+        case 'never':  return false;
+        case 'always': return true;
+        default:       return $mdMedia('sm');
       }
     }
 
-    function calculateTabData() {
+    function calculateTabData(noAdjust) {
       var clientWidth = element.parent().prop('offsetWidth');
       var tabsWidth = clientWidth - PAGINATORS_WIDTH - 1;
       var $tabs = angular.element(tabs);
@@ -287,12 +275,12 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout, $mdM
             left: data.left,
             firstTabIndex: index,
             lastTabIndex: index,
-            tabs: [ tab ]
+            tabs: [ data ]
           };
           pages.push(currentPage);
         } else {
           currentPage.lastTabIndex = index;
-          currentPage.tabs.push(tab);
+          currentPage.tabs.push(data);
         }
         totalWidth = data.right;
         max = Math.max(max, tabWidth);
@@ -300,28 +288,25 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout, $mdM
       });
       $tabs.css('max-width', tabsWidth + 'px');
 
-      if (pages.length === 1 && shouldStretchTabs()) { adjustForStretchedTabs(); }
+      if (!noAdjust && shouldStretchTabs()) {
+        return adjustForStretchedTabs();
+      } else {
+        return {
+          width: totalWidth,
+          max: max,
+          tabs: tabData,
+          pages: pages,
+          tabElements: tabs
+        };
+      }
 
-      return {
-        width: totalWidth,
-        max: max,
-        tabs: tabData,
-        pages: pages,
-        tabElements: tabs
-      };
 
       function adjustForStretchedTabs() {
-        var tabWidth = Math.ceil(clientWidth / tabData.length);
-        if (tabWidth >= max) {
-          $tabs.css('width', tabWidth + 'px');
-          angular.forEach(tabData, function (tab, index) {
-            tab.width = tabWidth;
-            tab.left = tabWidth * index;
-            tab.right = tab.left + tab.width;
-            tab.filler = 0;
-          });
-          totalWidth = tabsWidth;
-        }
+        var canvasWidth = pages.length === 1 ? clientWidth : tabsWidth;
+        var tabsPerPage = Math.min(Math.floor(canvasWidth / max), tabs.length);
+        var tabWidth    = Math.floor(canvasWidth / tabsPerPage);
+        $tabs.css('width', tabWidth + 'px');
+        return calculateTabData(true);
       }
     }
 
@@ -494,7 +479,7 @@ angular.module('material.components.tabs')
  * </hljs>
  *
  */
-function MdTabDirective($mdInkRipple, $compile, $mdUtil, $mdConstant) {
+function MdTabDirective($mdInkRipple, $compile, $mdUtil, $mdConstant, $timeout) {
   return {
     restrict: 'E',
     require: ['mdTab', '^mdTabs'],
@@ -533,8 +518,8 @@ function MdTabDirective($mdInkRipple, $compile, $mdUtil, $mdConstant) {
       var tabsCtrl = ctrls[1]; // Controller for ALL tabs
 
       scope.$watch(
-          function () { return element.text(); },
-          function () { tabsCtrl.scope.$broadcast('$mdTabsChanged'); }
+          function () { return attr.label; },
+          function () { $timeout(function () { tabsCtrl.scope.$broadcast('$mdTabsChanged'); }, 0, false); }
       );
 
       transcludeTabContent();
@@ -675,7 +660,7 @@ function MdTabDirective($mdInkRipple, $compile, $mdUtil, $mdConstant) {
   }
 
 }
-MdTabDirective.$inject = ["$mdInkRipple", "$compile", "$mdUtil", "$mdConstant"];
+MdTabDirective.$inject = ["$mdInkRipple", "$compile", "$mdUtil", "$mdConstant", "$timeout"];
 
 })();
 
@@ -868,11 +853,27 @@ angular.module('material.components.tabs')
  * *  If the currently active tab is the last tab, then next() action will select the first tab.
  * *  Any markup (other than **`<md-tab>`** tags) will be transcluded into the tab header area BEFORE the tab buttons.
  *
+ * ### Explanation of tab stretching
+ *
+ * Initially, tabs will have an inherent size.  This size will either be defined by how much space is needed to accommodate their text or set by the user through CSS.  Calculations will be based on this size.
+ *
+ * On mobile devices, tabs will be expanded to fill the available horizontal space.  When this happens, all tabs will become the same size.
+ *
+ * On desktops, by default, stretching will never occur.
+ *
+ * This default behavior can be overridden through the `md-stretch-tabs` attribute.  Here is a table showing when stretching will occur:
+ *
+ * `md-stretch-tabs` | mobile    | desktop
+ * ------------------|-----------|--------
+ * `auto`            | stretched | ---
+ * `always`          | stretched | stretched
+ * `never`           | ---       | ---
+ *
  * @param {integer=} md-selected Index of the active/selected tab
  * @param {boolean=} md-no-ink If present, disables ink ripple effects.
  * @param {boolean=} md-no-bar If present, disables the selection ink bar.
  * @param {string=}  md-align-tabs Attribute to indicate position of tab buttons: `bottom` or `top`; default is `top`
- * @param {boolean=} md-stretch-tabs Attribute to indicate whether or not to stretch tabs: `auto`, `yes`, or `no`; default is `auto`
+ * @param {boolean=} md-stretch-tabs Attribute to indicate whether or not to stretch tabs: `auto`, `always`, or `never`; default is `auto`
  *
  * @usage
  * <hljs lang="html">
@@ -940,7 +941,7 @@ function TabsDirective($mdTheming) {
 
   function postLink(scope, element, attr, tabsCtrl, transclude) {
 
-    scope.stretchTabs = attr.hasOwnProperty('mdStretchTabs') ? attr.mdStretchTabs : 'auto';
+    scope.stretchTabs = attr.hasOwnProperty('mdStretchTabs') ? attr.mdStretchTabs || 'always' : 'auto';
 
     $mdTheming(element);
     configureAria();
