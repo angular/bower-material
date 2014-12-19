@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-206dc5b
+ * v0.7.0-rc1-master-0ec0e60
  */
 (function() {
 'use strict';
@@ -196,19 +196,14 @@ angular.module('material.core')
       var node = element[0];
       offsetParent = offsetParent || node.offsetParent || document.body;
       offsetParent = offsetParent[0] || offsetParent;
-      var rect = {
-        left: 0,
-        top: 0,
-        width: node.offsetWidth, 
-        height: node.offsetHeight,
+      var nodeRect = node.getBoundingClientRect();
+      var parentRect = offsetParent.getBoundingClientRect();
+      return {
+        left: nodeRect.left - parentRect.left + offsetParent.scrollLeft,
+        top: nodeRect.top - parentRect.top + offsetParent.scrollTop,
+        width: nodeRect.width,
+        height: nodeRect.height
       };
-      var current = node;
-      while (current && current !== offsetParent) {
-        rect.left += current.offsetLeft;
-        rect.top += current.offsetTop;
-        current = current.parentNode;
-      }
-      return rect;
     },
 
     /**
