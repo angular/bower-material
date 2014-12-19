@@ -296,7 +296,7 @@ md-tabs.md-THEME_NAME-theme md-tab {
     color: '{{foreground-4}}'; }
   md-tabs.md-THEME_NAME-theme md-tab:focus {
     color: '{{primary-contrast}}';
-    background-color: rgba(255, 255, 255, 0.1); }
+    background-color: '{{primary-contrast-0.1}}'; }
   md-tabs.md-THEME_NAME-theme md-tab .md-ripple-container {
     color: white; }
 

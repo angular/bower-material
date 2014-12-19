@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-0ec0e60
+ * v0.7.0-rc1-master-38c08bd
  */
 md-tabs {
   display: block;
@@ -119,7 +119,6 @@ md-tab {
   height: 100%;
   text-align: center;
   cursor: pointer;
-  border: 1px dotted transparent;
   padding: 20px 24px;
   box-sizing: border-box;
   transition: background 0.35s cubic-bezier(0.35, 0, 0.25, 1), color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
