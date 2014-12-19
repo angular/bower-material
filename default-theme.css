@@ -54,6 +54,9 @@ md-card.md-THEME_NAME-theme {
   md-card.md-THEME_NAME-theme .md-card-image {
     border-radius: 2px 2px 0 0; }
 
+md-content.md-THEME_NAME-theme {
+  background-color: '{{background-hue-3}}'; }
+
 md-checkbox.md-THEME_NAME-theme .md-ripple {
   color: '{{accent-600}}'; }
 md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple {
@@ -88,9 +91,6 @@ md-checkbox.md-THEME_NAME-theme[disabled] .md-icon {
   border-color: '{{foreground-3}}'; }
 md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon {
   background-color: '{{foreground-3}}'; }
-
-md-content.md-THEME_NAME-theme {
-  background-color: '{{background-hue-3}}'; }
 
 md-dialog.md-THEME_NAME-theme {
   border-radius: 4px;
