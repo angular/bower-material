@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-bf2266f
+ * v0.7.0-rc1-master-c0e2b0f
  */
 (function() {
 'use strict';
@@ -20,8 +20,7 @@ angular.module('material.components.sidenav', [
   ])
   .factory('$mdSidenav', SidenavService )
   .directive('mdSidenav', SidenavDirective)
-  .controller('$mdSidenavController', SidenavController)
-  .factory('$mdComponentRegistry', ComponentRegistry);
+  .controller('$mdSidenavController', SidenavController);
 
 
 /**
@@ -49,7 +48,7 @@ angular.module('material.components.sidenav', [
  */
 function SidenavService($mdComponentRegistry, $q) {
   return function(handle) {
-    var errorMsg = "SideNav '" + handle + "' is not availabe!";
+    var errorMsg = "SideNav '" + handle + "' is not available!";
 
     // Lookup the controller instance for the specified sidNav instance
     var instance = $mdComponentRegistry.get(handle);
@@ -284,7 +283,7 @@ function SidenavController($scope, $element, $attrs, $mdComponentRegistry, $q) {
 
   // Use Default internal method until overridden by directive postLink
 
-  self.$toggleOpen = function() { return $q.when($scope.isOpen) };
+  self.$toggleOpen = function() { return $q.when($scope.isOpen); };
   self.isOpen = function() { return !!$scope.isOpen; };
   self.open   = function() { return self.$toggleOpen( true );  };
   self.close  = function() { return self.$toggleOpen( false ); };
@@ -294,106 +293,6 @@ function SidenavController($scope, $element, $attrs, $mdComponentRegistry, $q) {
 }
 SidenavController.$inject = ["$scope", "$element", "$attrs", "$mdComponentRegistry", "$q"];
 
-/*
- * @private
- * @ngdoc factory
- * @name ComponentRegistry
- * @module material.components.sidenav
- *
- */
-function ComponentRegistry($log, $q) {
-
-  var self;
-  var instances = [ ];
-  var pendings = { };
-
-  return self = {
-    /**
-     * Used to print an error when an instance for a handle isn't found.
-     */
-    notFoundError: function(handle) {
-      $log.error('No instance found for handle', handle);
-    },
-    /**
-     * Return all registered instances as an array.
-     */
-    getInstances: function() {
-      return instances;
-    },
-
-    /**
-     * Get a registered instance.
-     * @param handle the String handle to look up for a registered instance.
-     */
-    get: function(handle) {
-      var i, j, instance;
-      for(i = 0, j = instances.length; i < j; i++) {
-        instance = instances[i];
-        if(instance.$$mdHandle === handle) {
-          return instance;
-        }
-      }
-      return null;
-    },
-
-    /**
-     * Register an instance.
-     * @param instance the instance to register
-     * @param handle the handle to identify the instance under.
-     */
-    register: function(instance, handle) {
-      if ( !handle ) return angular.noop;
-
-      instance.$$mdHandle = handle;
-      instances.push(instance);
-
-      resolveWhen();
-
-      return deregister;
-
-      /**
-       * Remove registration for an instance
-       */
-      function deregister() {
-        var index = instances.indexOf(instance);
-        if (index !== -1) {
-          instances.splice(index, 1);
-        }
-      }
-
-      /**
-       * Resolve any pending promises for this instance
-       */
-      function resolveWhen() {
-        var dfd = pendings[handle];
-        if ( dfd ) {
-          dfd.resolve( instance );
-          delete pendings[handle];
-        }
-      }
-    },
-
-    /**
-     * Async accessor to registered component instance
-     * If not available then a promise is created to notify
-     * all listeners when the instance is registered.
-     */
-    when : function(handle) {
-      var deferred = $q.defer();
-      var instance = self.get(handle);
-
-      if ( instance )  {
-        deferred.resolve( instance );
-      } else {
-        pendings[handle] = deferred;
-      }
-
-      return deferred.promise;
-    }
-  };
-
-}
-ComponentRegistry.$inject = ["$log", "$q"];
 
 
 })();
