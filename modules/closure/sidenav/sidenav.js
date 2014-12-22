@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-bb283f8
+ * v0.7.0-rc1-master-bf2266f
  */
 goog.provide('ng.material.components.sidenav');
 goog.require('ng.material.components.backdrop');
@@ -345,6 +345,8 @@ function ComponentRegistry($log, $q) {
      * @param handle the handle to identify the instance under.
      */
     register: function(instance, handle) {
+      if ( !handle ) return angular.noop;
+
       instance.$$mdHandle = handle;
       instances.push(instance);
 
