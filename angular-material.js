@@ -2,14 +2,14 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.theming","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 /*!
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -80,7 +80,7 @@ MdCoreConfigure.$inject = ["$provide", "$mdThemingProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -137,7 +137,256 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
+ */
+(function(){
+
+  angular
+    .module('material.core')
+    .config( ["$provide", function($provide){
+       $provide.decorator('$mdUtil', ['$delegate', function ($mdUtil){
+           /**
+            * Inject the iterator facade to easily support iteration and accessors
+            * @see iterator below
+            */
+           $mdUtil.iterator = Iterator;
+
+           return $mdUtil;
+         }
+       ])
+     }]);
+
+  /**
+   * iterator is a list facade to easily support iteration and accessors
+   *
+   * @param items Array list which this iterator will enumerate
+   * @param reloop Boolean enables iterator to consider the list as an endless reloop
+   */
+  function Iterator(items, reloop) {
+    var trueFn = function() { return true; };
+
+    reloop = !!reloop;
+    var _items = items || [ ];
+
+    // Published API
+    return {
+      items: getItems,
+      count: count,
+
+      inRange: inRange,
+      contains: contains,
+      indexOf: indexOf,
+      itemAt: itemAt,
+
+      findBy: findBy,
+
+      add: add,
+      remove: remove,
+
+      first: first,
+      last: last,
+      next: next,
+      previous: previous,
+
+      hasPrevious: hasPrevious,
+      hasNext: hasNext
+
+    };
+
+    /**
+     * Publish copy of the enumerable set
+     * @returns {Array|*}
+     */
+    function getItems() {
+      return [].concat(_items);
+    }
+
+    /**
+     * Determine length of the list
+     * @returns {Array.length|*|number}
+     */
+    function count() {
+      return _items.length;
+    }
+
+    /**
+     * Is the index specified valid
+     * @param index
+     * @returns {Array.length|*|number|boolean}
+     */
+    function inRange(index) {
+      return _items.length && ( index > -1 ) && (index < _items.length );
+    }
+
+    /**
+     * Can the iterator proceed to the next item in the list; relative to
+     * the specified item.
+     *
+     * @param item
+     * @returns {Array.length|*|number|boolean}
+     */
+    function hasNext(item) {
+      return item ? inRange(indexOf(item) + 1) : false;
+    }
+
+    /**
+     * Can the iterator proceed to the previous item in the list; relative to
+     * the specified item.
+     *
+     * @param item
+     * @returns {Array.length|*|number|boolean}
+     */
+    function hasPrevious(item) {
+      return item ? inRange(indexOf(item) - 1) : false;
+    }
+
+    /**
+     * Get item at specified index/position
+     * @param index
+     * @returns {*}
+     */
+    function itemAt(index) {
+      return inRange(index) ? _items[index] : null;
+    }
+
+    /**
+     * Find all elements matching the key/value pair
+     * otherwise return null
+     *
+     * @param val
+     * @param key
+     *
+     * @return array
+     */
+    function findBy(key, val) {
+      return _items.filter(function(item) {
+        return item[key] === val;
+      });
+    }
+
+    /**
+     * Add item to list
+     * @param item
+     * @param index
+     * @returns {*}
+     */
+    function add(item, index) {
+      if ( !item ) return -1;
+
+      if (!angular.isNumber(index)) {
+        index = _items.length;
+      }
+
+      _items.splice(index, 0, item);
+
+      return indexOf(item);
+    }
+
+    /**
+     * Remove item from list...
+     * @param item
+     */
+    function remove(item) {
+      if ( contains(item) ){
+        _items.splice(indexOf(item), 1);
+      }
+    }
+
+    /**
+     * Get the zero-based index of the target item
+     * @param item
+     * @returns {*}
+     */
+    function indexOf(item) {
+      return _items.indexOf(item);
+    }
+
+    /**
+     * Boolean existence check
+     * @param item
+     * @returns {boolean}
+     */
+    function contains(item) {
+      return item && (indexOf(item) > -1);
+    }
+
+    /**
+     * Find the next item. If reloop is true and at the end of the list, it will
+     * go back to the first item. If given ,the `validate` callback will be used
+     * determine whether the next item is valid. If not valid, it will try to find the
+     * next item again.
+     * @param item
+     * @param {optional} validate function
+     * @param {optional} recursion limit
+     * @returns {*}
+     */
+    function next(item, validate, limit) {
+      validate = validate || trueFn;
+
+      var index = indexOf(item) + 1;
+      var found = inRange(index) ? _items[ index ] : (reloop ? first() : null);
+
+          found = hasCheckedAll(found, limit) ? null : found;
+
+      return !found || validate(found) ? found : next(found, validate, limit || index);
+    }
+
+    /**
+     * Find the previous item. If reloop is true and at the beginning of the list, it will
+     * go back to the last item. If given ,the `validate` callback will be used
+     * determine whether the previous item is valid. If not valid, it will try to find the
+     * previous item again.
+     * @param item
+     * @param {optional} validation function
+     * @param {optional} recursion limit
+     * @returns {*}
+     */
+    function previous(item, validate, limit) {
+      validate = validate || trueFn;
+
+        var index = indexOf(item) - 1;
+        var found = inRange(index) ? _items[ index ] : (reloop ? last() : null);
+
+            found = hasCheckedAll(found, limit) ? null : found;
+
+        return !found || validate(found) ? found : previous(found, validate, limit || index);
+    }
+
+    /**
+     * Return first item in the list
+     * @returns {*}
+     */
+    function first() {
+      return _items.length ? _items[0] : null;
+    }
+
+    /**
+     * Return last item in the list...
+     * @returns {*}
+     */
+    function last() {
+      return _items.length ? _items[_items.length - 1] : null;
+    }
+
+    /**
+     * Has the iteration checked all items in the list
+     * @param item current found item in th list
+     * @param {optional} stopAt index
+     * @returns {*|boolean}
+     */
+    function hasCheckedAll(item, stopAt) {
+      return stopAt && item && (indexOf(item) == stopAt);
+    }
+
+  }
+
+})();
+
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.7.0-rc1-master-ff79c91
  */
 angular.module('material.core')
     .factory('$mdMedia', mdMediaFactory);
@@ -196,7 +445,7 @@ mdMediaFactory.$inject = ["$window", "$mdUtil", "$timeout", "$mdConstant"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -230,12 +479,6 @@ angular.module('material.core')
         height: nodeRect.height
       };
     },
-
-    /**
-     * Publish the iterator facade to easily support iteration and accessors
-     * @see iterator below
-     */
-    iterator: iterator,
 
     fakeNgModel: function() {
       return {
@@ -366,223 +609,6 @@ angular.module('material.core')
     }
   };
 
-  /*
-   * iterator is a list facade to easily support iteration and accessors
-   *
-   * @param items Array list which this iterator will enumerate
-   * @param reloop Boolean enables iterator to consider the list as an endless reloop
-   */
-  function iterator(items, reloop) {
-    var trueFn = function() { return true; };
-
-    reloop = !!reloop;
-    var _items = items || [ ];
-
-    // Published API
-    return {
-      items: getItems,
-      count: count,
-
-      inRange: inRange,
-      contains: contains,
-      indexOf: indexOf,
-      itemAt: itemAt,
-
-      findBy: findBy,
-
-      add: add,
-      remove: remove,
-
-      first: first,
-      last: last,
-      next: next,
-      previous: previous,
-
-      hasPrevious: hasPrevious,
-      hasNext: hasNext
-
-    };
-
-    /*
-     * Publish copy of the enumerable set
-     * @returns {Array|*}
-     */
-    function getItems() {
-      return [].concat(_items);
-    }
-
-    /*
-     * Determine length of the list
-     * @returns {Array.length|*|number}
-     */
-    function count() {
-      return _items.length;
-    }
-
-    /*
-     * Is the index specified valid
-     * @param index
-     * @returns {Array.length|*|number|boolean}
-     */
-    function inRange(index) {
-      return _items.length && ( index > -1 ) && (index < _items.length );
-    }
-
-    /*
-     * Can the iterator proceed to the next item in the list; relative to
-     * the specified item.
-     *
-     * @param item
-     * @returns {Array.length|*|number|boolean}
-     */
-    function hasNext(item) {
-      return item ? inRange(indexOf(item) + 1) : false;
-    }
-
-    /*
-     * Can the iterator proceed to the previous item in the list; relative to
-     * the specified item.
-     *
-     * @param item
-     * @returns {Array.length|*|number|boolean}
-     */
-    function hasPrevious(item) {
-      return item ? inRange(indexOf(item) - 1) : false;
-    }
-
-    /*
-     * Get item at specified index/position
-     * @param index
-     * @returns {*}
-     */
-    function itemAt(index) {
-      return inRange(index) ? _items[index] : null;
-    }
-
-    /*
-     * Find all elements matching the key/value pair
-     * otherwise return null
-     *
-     * @param val
-     * @param key
-     *
-     * @return array
-     */
-    function findBy(key, val) {
-      return _items.filter(function(item) {
-        return item[key] === val;
-      });
-    }
-
-    /*
-     * Add item to list
-     * @param item
-     * @param index
-     * @returns {*}
-     */
-    function add(item, index) {
-      if ( !item ) return -1;
-
-      if (!angular.isNumber(index)) {
-        index = _items.length;
-      }
-
-      _items.splice(index, 0, item);
-
-      return indexOf(item);
-    }
-
-    /*
-     * Remove item from list...
-     * @param item
-     */
-    function remove(item) {
-      if ( contains(item) ){
-        _items.splice(indexOf(item), 1);
-      }
-    }
-
-    /*
-     * Get the zero-based index of the target item
-     * @param item
-     * @returns {*}
-     */
-    function indexOf(item) {
-      return _items.indexOf(item);
-    }
-
-    /*
-     * Boolean existence check
-     * @param item
-     * @returns {boolean}
-     */
-    function contains(item) {
-      return item && (indexOf(item) > -1);
-    }
-
-    /*
-     * Find the next item. If reloop is true and at the end of the list, it will
-     * go back to the first item. If given ,the `validate` callback will be used
-     * determine whether the next item is valid. If not valid, it will try to find the
-     * next item again.
-     * @param item
-     * @param {optional} validate
-     * @returns {*}
-     */
-    function next(item, validate, limit) {
-      validate = validate || trueFn;
-
-      if (contains(item)) {
-        var index = indexOf(item) + 1,
-            found = inRange(index) ? _items[ index ] : (reloop ? first() : null);
-
-        // Infinite loop check...
-        if ( reloop && (indexOf(found) === limit) ) return null;
-
-        return validate(found) ? found : next(found, validate, limit || index);
-      }
-
-      return null;
-    }
-
-    /*
-     * Find the previous item. If reloop is true and at the beginning of the list, it will
-     * go back to the last item. If given ,the `validate` callback will be used
-     * determine whether the previous item is valid. If not valid, it will try to find the
-     * previous item again.
-     * @param item
-     * @param {optional} validate
-     * @returns {*}
-     */
-    function previous(item, validate) {
-      validate = validate || trueFn;
-
-      if (contains(item)) {
-        var index = indexOf(item) - 1,
-        found = inRange(index) ? _items[ index ] : (reloop ? last() : null);
-
-        return validate(found) ? found : previous(found, validate);
-      }
-
-      return null;
-    }
-
-    /*
-     * Return first item in the list
-     * @returns {*}
-     */
-    function first() {
-      return _items.length ? _items[0] : null;
-    }
-
-    /*
-     * Return last item in the list...
-     * @returns {*}
-     */
-    function last() {
-      return _items.length ? _items[_items.length - 1] : null;
-    }
-  }
 
   function attachDragBehavior(scope, element, options) {
     // The state of the current drag & previous drag
@@ -737,7 +763,7 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -819,7 +845,7 @@ AriaService.$inject = ["$$rAF", "$log", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -964,7 +990,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -1352,7 +1378,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
   'use strict';
@@ -1485,7 +1511,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -1889,7 +1915,7 @@ function attrNoDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -2452,7 +2478,7 @@ function rgba(rgbArray, opacity) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -2491,7 +2517,7 @@ BackdropDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -2783,7 +2809,7 @@ MdBottomSheetProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -2880,7 +2906,7 @@ MdButtonDirective.$inject = ["$mdInkRipple", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -2939,7 +2965,7 @@ mdCardDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -3073,7 +3099,7 @@ MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$md
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -3134,7 +3160,7 @@ mdContentDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -3617,7 +3643,7 @@ MdDialogProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -3666,7 +3692,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -3717,7 +3743,7 @@ function mdIconDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -3812,7 +3838,7 @@ function mdItemDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -3940,7 +3966,7 @@ MdProgressCircularDirective.$inject = ["$$rAF", "$mdConstant", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -4069,7 +4095,7 @@ var transforms = (function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -4354,7 +4380,7 @@ mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -4657,7 +4683,7 @@ SidenavController.$inject = ["$scope", "$element", "$attrs", "$mdComponentRegist
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -5068,7 +5094,7 @@ SliderController.$inject = ["$scope", "$element", "$attrs", "$$rAF", "$window", 
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -5378,7 +5404,7 @@ MdSticky.$inject = ["$document", "$mdConstant", "$compile", "$$rAF", "$mdUtil"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -5465,7 +5491,7 @@ MdSubheaderDirective.$inject = ["$mdSticky", "$compile", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -5679,7 +5705,7 @@ function swipePostLink($parse, $mdSwipe, name ) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -5822,7 +5848,7 @@ MdSwitch.$inject = ["mdCheckboxDirective", "$mdTheming", "$mdUtil", "$document",
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -5859,7 +5885,7 @@ angular.module('material.components.tabs', [
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -6058,7 +6084,7 @@ mdInputDirective.$inject = ["$mdUtil"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -6279,7 +6305,7 @@ MdToastProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -6438,7 +6464,7 @@ mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -6630,7 +6656,7 @@ MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdU
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -6646,7 +6672,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -6711,7 +6737,7 @@ MdTabInkDirective.$inject = ["$$rAF"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -6963,7 +6989,7 @@ TabPaginationDirective.$inject = ["$mdConstant", "$window", "$$rAF", "$$q", "$ti
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -7051,7 +7077,7 @@ TabItemController.$inject = ["$scope", "$element", "$attrs", "$compile", "$anima
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -7297,7 +7323,7 @@ MdTabDirective.$inject = ["$mdInkRipple", "$compile", "$mdUtil", "$mdConstant", 
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
@@ -7442,7 +7468,7 @@ MdTabsController.$inject = ["$scope", "$element", "$mdUtil", "$$rAF"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-94da147
+ * v0.7.0-rc1-master-ff79c91
  */
 (function() {
 'use strict';
