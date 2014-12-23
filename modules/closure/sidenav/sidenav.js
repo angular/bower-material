@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-c0e2b0f
+ * v0.7.0-rc1-master-4d3da53
  */
 goog.provide('ng.material.components.sidenav');
 goog.require('ng.material.components.backdrop');
@@ -179,8 +179,12 @@ function SidenavDirective($timeout, $animate, $parse, $mdMedia, $mdConstant, $co
      * Toggle the DOM classes to indicate `locked`
      * @param isLocked
      */
-    function updateIsLocked(isLocked) {
-      element.toggleClass('md-locked-open', !!isLocked);
+    function updateIsLocked(isLocked, oldValue) {
+      if (isLocked === oldValue) {
+        element.toggleClass('md-locked-open', !!isLocked);
+      } else {
+        $animate[isLocked ? 'addClass' : 'removeClass'](element, 'md-locked-open');
+      }
       backdrop.toggleClass('md-locked-open', !!isLocked);
     }
 
