@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-504c946
+ * v0.7.0-rc1-master-94da147
  */
 (function() {
 'use strict';
@@ -504,14 +504,17 @@ angular.module('material.core')
      * @param {optional} validate
      * @returns {*}
      */
-    function next(item, validate) {
+    function next(item, validate, limit) {
       validate = validate || trueFn;
 
       if (contains(item)) {
         var index = indexOf(item) + 1,
-        found = inRange(index) ? _items[ index ] : (reloop ? first() : null);
+            found = inRange(index) ? _items[ index ] : (reloop ? first() : null);
 
-        return validate(found) ? found : next(found, validate);
+        // Infinite loop check...
+        if ( reloop && (indexOf(found) === limit) ) return null;
+
+        return validate(found) ? found : next(found, validate, limit || index);
       }
 
       return null;

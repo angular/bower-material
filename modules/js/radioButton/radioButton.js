@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-504c946
+ * v0.7.0-rc1-master-94da147
  */
 (function() {
 'use strict';
@@ -147,10 +147,16 @@ function mdRadioGroupDirective($mdUtil, $mdConstant, $mdTheming) {
     );
 
     if (buttons.count()) {
+      var validate = function (button) {
+        // If disabled, then NOT valid
+        return !angular.element(button).attr("disabled");
+      };
       var selected = parent[0].querySelector('md-radio-button.md-checked');
-      var target = buttons[increment < 0 ? 'previous' : 'next'](selected) || buttons.first();
+      var target = buttons[increment < 0 ? 'previous' : 'next'](selected, validate) || buttons.first();
       // Activate radioButton's click listener (triggerHandler won't create a real click event)
       angular.element(target).triggerHandler('click');
+
+
     }
   }
 
