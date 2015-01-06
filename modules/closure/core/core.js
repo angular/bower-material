@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-5e489e9
+ * v0.7.0-rc1-master-d6bd69a
  */
 goog.provide('ng.material.core');
 goog.require('ng.material.core.theming');
@@ -1559,6 +1559,9 @@ function InkRippleService($window, $timeout) {
         hammertime = new Hammer(node),
         color = parseColor(element.attr('md-ink-ripple')) || parseColor($window.getComputedStyle(options.colorElement[0]).color || 'rgb(0, 0, 0)');
 
+    // expose onInput for ripple testing
+    scope._onInput = onInput;
+
     options.mousedown && hammertime.on('hammer.input', onInput);
 
     controller.createRipple = createRipple;
@@ -1790,7 +1793,7 @@ function InkRippleService($window, $timeout) {
        */
       function getRippleContainer() {
         if (rippleContainer) return rippleContainer;
-        var container = rippleContainer = angular.element('<div class="md-ripple-container">');
+        var container = rippleContainer = angular.element('<div class="md-ripple-container"></div>');
         element.append(container);
         return container;
       }
@@ -1823,7 +1826,7 @@ function InkRippleService($window, $timeout) {
         var grandparent = parent && parent.parentNode;
         var ancestor = grandparent && grandparent.parentNode;
         return !node.hasAttribute('disabled') &&
-          !(parent && parent.hasAttribute('disabled')) &&
+          !(parent && parent.hasAttribute && parent.hasAttribute('disabled')) &&
           !(grandparent && grandparent.hasAttribute('disabled')) &&
           !(ancestor && ancestor.hasAttribute('disabled'));
       }
