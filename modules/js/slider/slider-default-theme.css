@@ -2,10 +2,12 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-9a12239
+ * v0.7.0-rc1-master-91bc598
  */
 md-slider.md-THEME_NAME-theme .md-track {
   background-color: '{{foreground-3}}'; }
+md-slider.md-THEME_NAME-theme .md-track-ticks {
+  background-color: '{{foreground-4}}'; }
 md-slider.md-THEME_NAME-theme .md-focus-thumb {
   background-color: '{{foreground-2}}'; }
 md-slider.md-THEME_NAME-theme .md-focus-ring {
