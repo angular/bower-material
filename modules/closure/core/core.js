@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-002d8bf
+ * v0.7.0-rc1-master-dd960c6
  */
 goog.provide('ng.material.core');
 goog.require('ng.material.core.theming');
@@ -1055,6 +1055,8 @@ function InterimElementProvider() {
         optionsFactory: definition.options,
         argOption: definition.argOption
       };
+      if (definition.argOption) {
+      }
       return provider;
     }
 
@@ -1115,6 +1117,15 @@ function InterimElementProvider() {
             return this;
           };
         });
+
+        // Create shortcut method for one-linear methods
+        if (definition.argOption) {
+          var methodName = 'show' + name.charAt(0).toUpperCase() + name.slice(1);
+          publicService[methodName] = function(arg) {
+            var config = publicService[name](arg);
+            return publicService.show(config);
+          };
+        }
 
         // eg $mdDialog.alert() will return a new alert preset
         publicService[name] = function(arg) {
