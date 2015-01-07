@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-91bc598
+ * v0.7.0-rc1-master-0b87911
  */
 goog.provide('ng.material.core');
 goog.require('ng.material.core.theming');
