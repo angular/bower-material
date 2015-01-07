@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-dd960c6
+ * v0.7.0-rc1-master-31d3c12
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -199,6 +199,13 @@ md-tab > .md-ripple-container .md-ripple {
   margin: 0;
   min-height: 100%;
   width: 100%; }
+
+@-moz-document url-prefix() {
+  [layout-fill] {
+    margin: 0;
+    width: 100%;
+    min-height: auto;
+    height: inherit; } }
 
 [flex] {
   -webkit-flex: 1;
