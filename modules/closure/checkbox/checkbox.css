@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc2
+ * v0.7.0-rc2-master-0285779
  */
 md-checkbox {
   display: block;
@@ -37,8 +37,7 @@ md-checkbox {
       right: -15px;
       bottom: -15px; }
   md-checkbox .md-icon {
-    -webkit-transition: 240ms;
-            transition: 240ms;
+    transition: 240ms;
     position: absolute;
     top: 0;
     left: 0;
