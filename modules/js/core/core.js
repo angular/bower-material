@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-b85ad62
+ * v0.7.0-rc1-master-9b45af5
  */
 (function() {
 'use strict';
@@ -2418,7 +2418,7 @@ function colorToRgbaArray(clr) {
     });
   }
   if (clr.charAt(0) == '#') clr = clr.substring(1);
-  if (!/^([a-f0-9]{3}){1,2}$/g.test(clr)) return;
+  if (!/^([a-fA-F0-9]{3}){1,2}$/g.test(clr)) return;
 
   var dig = clr.length / 3;
   var red = clr.substr(0, dig);
