@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc2-master-9a0b3c3
+ * v0.7.0-rc2-master-24094b3
  */
 goog.provide('ng.material.core');
 goog.require('ng.material.core.theming');
@@ -1060,8 +1060,6 @@ function InterimElementProvider() {
         optionsFactory: definition.options,
         argOption: definition.argOption
       };
-      if (definition.argOption) {
-      }
       return provider;
     }
 
