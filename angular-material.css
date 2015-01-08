@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-9b16220
+ * v0.7.0-rc1-master-c60640b
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -5237,6 +5237,8 @@ md-switch {
       -ms-flex-align: center;
           align-items: center; }
   md-switch .md-container {
+    cursor: -webkit-grab;
+    cursor: grab;
     width: 36px;
     height: 24px;
     position: relative;
@@ -5245,6 +5247,9 @@ md-switch {
         -ms-user-select: none;
             user-select: none;
     margin-right: 8px; }
+  md-switch:not([disabled]) .md-dragging, md-switch:not([disabled]).md-dragging .md-container {
+    cursor: -webkit-grabbing;
+    cursor: grabbing; }
   md-switch .md-label {
     border-color: transparent;
     border-width: 1px; }
@@ -5285,11 +5290,11 @@ md-switch {
       top: -20px;
       right: -20px;
       bottom: -20px; }
-  md-switch.transition .md-bar, md-switch.transition .md-thumb-container, md-switch.transition .md-thumb {
+  md-switch:not(.md-dragging) .md-bar, md-switch:not(.md-dragging) .md-thumb-container, md-switch:not(.md-dragging) .md-thumb {
     transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
     transition-property: -webkit-transform, background-color;
     transition-property: transform, background-color; }
-  md-switch.transition .md-bar, md-switch.transition .md-thumb {
+  md-switch:not(.md-dragging) .md-bar, md-switch:not(.md-dragging) .md-thumb {
     transition-delay: 0.05s; }
 
 md-tabs {
