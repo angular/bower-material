@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-01bbc4c
+ * v0.7.0-rc1-master-fdb923e
  */
 (function() {
 'use strict';
@@ -501,7 +501,7 @@ angular.module('material.core')
         var args = arguments;
         var now = Util.now();
 
-        if (!recent || recent - now > delay) {
+        if (!recent || (now - recent > delay)) {
           func.apply(context, args);
           recent = now;
         }
