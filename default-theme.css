@@ -118,6 +118,10 @@ md-input-container.md-THEME_NAME-theme.md-input-focused.md-accent .md-input {
   border-color: '{{accent-500}}'; }
 md-input-container.md-THEME_NAME-theme.md-input-focused.md-accent label {
   color: '{{accent-500}}'; }
+md-input-container.md-THEME_NAME-theme.md-input-focused.md-warn .md-input {
+  border-color: '{{warn-500}}'; }
+md-input-container.md-THEME_NAME-theme.md-input-focused.md-warn label {
+  color: '{{warn-500}}'; }
 md-input-container.md-THEME_NAME-theme.md-input-has-value:not(.md-input-focused) label {
   color: '{{foreground-2}}'; }
 md-input-container.md-THEME_NAME-theme .md-input[disabled] {
