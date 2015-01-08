@@ -1,7 +1,7 @@
 {
   "name": "angular-material-core",
-  "version": "0.7.0-rc1-master-8550bd6",
+  "version": "0.7.0-rc1-master-bc581e0",
   "dependencies": {
-    "angular-material-theming": "0.7.0-rc1-master-8550bd6"
+    "angular-material-theming": "0.7.0-rc1-master-bc581e0"
   }
 }
