@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-7bd6859
+ * v0.7.0-rc1-master-ca3e4c3
  */
 (function() {
 'use strict';
@@ -253,7 +253,7 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
     }
 
     function render() {
-      var checked = (rgCtrl.getViewValue() === attr.value);
+      var checked = (rgCtrl.getViewValue() == attr.value);
       if (checked === lastChecked) {
         return;
       }
