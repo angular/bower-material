@@ -101,6 +101,30 @@ md-dialog.md-THEME_NAME-theme {
 md-divider.md-THEME_NAME-theme {
   border-top-color: '{{foreground-4}}'; }
 
+md-input-container.md-THEME_NAME-theme .md-input {
+  color: '{{foreground-1}}';
+  border-color: '{{foreground-4}}';
+  text-shadow: '{{foreground-shadow}}'; }
+  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder, md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder {
+    color: '{{foreground-3}}'; }
+md-input-container.md-THEME_NAME-theme label {
+  text-shadow: '{{foreground-shadow}}';
+  color: '{{foreground-3}}'; }
+md-input-container.md-THEME_NAME-theme.md-input-focused .md-input {
+  border-color: '{{primary-500}}'; }
+md-input-container.md-THEME_NAME-theme.md-input-focused label {
+  color: '{{primary-500}}'; }
+md-input-container.md-THEME_NAME-theme.md-input-focused.md-accent .md-input {
+  border-color: '{{accent-500}}'; }
+md-input-container.md-THEME_NAME-theme.md-input-focused.md-accent label {
+  color: '{{accent-500}}'; }
+md-input-container.md-THEME_NAME-theme.md-input-has-value:not(.md-input-focused) label {
+  color: '{{foreground-2}}'; }
+md-input-container.md-THEME_NAME-theme .md-input[disabled] {
+  border-bottom-color: transparent;
+  color: '{{foreground-3}}';
+  background-image: linear-gradient(to right, '{{foreground-4}}' 0%, '{{foreground-4}}' 33%, transparent 0%); }
+
 md-progress-circular.md-THEME_NAME-theme {
   background-color: transparent; }
   md-progress-circular.md-THEME_NAME-theme .md-inner .md-gap {
@@ -304,9 +328,7 @@ md-tabs.md-THEME_NAME-theme md-tab {
 
 md-input-group.md-THEME_NAME-theme input, md-input-group.md-THEME_NAME-theme textarea {
   text-shadow: '{{foreground-shadow}}'; }
-  md-input-group.md-THEME_NAME-theme input:-ms-input-placeholder, md-input-group.md-THEME_NAME-theme textarea:-ms-input-placeholder {
-    color: '{{foreground-3}}'; }
-  md-input-group.md-THEME_NAME-theme input::-webkit-input-placeholder, md-input-group.md-THEME_NAME-theme textarea::-webkit-input-placeholder {
+  md-input-group.md-THEME_NAME-theme input::-webkit-input-placeholder, md-input-group.md-THEME_NAME-theme input::-moz-placeholder, md-input-group.md-THEME_NAME-theme input:-moz-placeholder, md-input-group.md-THEME_NAME-theme input:-ms-input-placeholder, md-input-group.md-THEME_NAME-theme textarea::-webkit-input-placeholder, md-input-group.md-THEME_NAME-theme textarea::-moz-placeholder, md-input-group.md-THEME_NAME-theme textarea:-moz-placeholder, md-input-group.md-THEME_NAME-theme textarea:-ms-input-placeholder {
     color: '{{foreground-3}}'; }
 md-input-group.md-THEME_NAME-theme label {
   text-shadow: '{{foreground-shadow}}';
@@ -324,7 +346,7 @@ md-input-group.md-THEME_NAME-theme.md-input-focused.md-accent label {
   color: '{{accent-500}}'; }
 md-input-group.md-THEME_NAME-theme.md-input-has-value:not(.md-input-focused) label {
   color: '{{foreground-2}}'; }
-md-input-group.md-THEME_NAME-theme[disabled] input, md-input-group.md-THEME_NAME-theme[disabled] textarea {
+md-input-group.md-THEME_NAME-theme .md-input[disabled] {
   border-bottom-color: '{{foreground-4}}';
   color: '{{foreground-3}}'; }
 
