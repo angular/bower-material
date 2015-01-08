@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-6acacc5
+ * v0.7.0-rc1-master-8550bd6
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -465,12 +465,82 @@ md-tab > .md-ripple-container .md-ripple {
           flex: 0 0 66.66%;
   max-height: 66.66%; }
 
+[layout-align="center"], [layout-align="center center"], [layout-align="center start"], [layout-align="center end"] {
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+
+[layout-align="end"], [layout-align="end center"], [layout-align="end start"], [layout-align="end end"] {
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+
+[layout-align="space-around"], [layout-align="space-around center"], [layout-align="space-around start"], [layout-align="space-around end"] {
+  -webkit-justify-content: space-around;
+      -ms-flex-pack: distribute;
+          justify-content: space-around; }
+
+[layout-align="space-between"], [layout-align="space-between center"], [layout-align="space-between start"], [layout-align="space-between end"] {
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+[layout-align="center center"], [layout-align="start center"], [layout-align="end center"], [layout-align="space-between center"], [layout-align="space-around center"] {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+[layout-align="center start"], [layout-align="start start"], [layout-align="end start"], [layout-align="space-between start"], [layout-align="space-around start"] {
+  -webkit-align-items: flex-start;
+      -ms-flex-align: start;
+          align-items: flex-start; }
+
+[layout-align="center end"], [layout-align="start end"], [layout-align="end end"], [layout-align="space-between end"], [layout-align="space-around end"] {
+  -webkit-align-items: flex-end;
+      -ms-flex-align: end;
+          align-items: flex-end; }
+
 [hide]:not([show]) {
   display: none; }
 
 @media (max-width: 600px) {
   [hide-sm]:not([show-sm]), [hide]:not([show-sm]) {
     display: none; }
+
+  [layout-align-sm="center"], [layout-align-sm="center center"], [layout-align-sm="center start"], [layout-align-sm="center end"] {
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center; }
+
+  [layout-align-sm="end"], [layout-align-sm="end center"], [layout-align-sm="end start"], [layout-align-sm="end end"] {
+    -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+
+  [layout-align-sm="space-around"], [layout-align-sm="space-around center"], [layout-align-sm="space-around start"], [layout-align-sm="space-around end"] {
+    -webkit-justify-content: space-around;
+        -ms-flex-pack: distribute;
+            justify-content: space-around; }
+
+  [layout-align-sm="space-between"], [layout-align-sm="space-between center"], [layout-align-sm="space-between start"], [layout-align-sm="space-between end"] {
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+
+  [layout-align-sm="center center"], [layout-align-sm="start center"], [layout-align-sm="end center"], [layout-align-sm="space-between center"], [layout-align-sm="space-around center"] {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+
+  [layout-align-sm="center start"], [layout-align-sm="start start"], [layout-align-sm="end start"], [layout-align-sm="space-between start"], [layout-align-sm="space-around start"] {
+    -webkit-align-items: flex-start;
+        -ms-flex-align: start;
+            align-items: flex-start; }
+
+  [layout-align-sm="center end"], [layout-align-sm="start end"], [layout-align-sm="end end"], [layout-align-sm="space-between end"], [layout-align-sm="space-around end"] {
+    -webkit-align-items: flex-end;
+        -ms-flex-align: end;
+            align-items: flex-end; }
 
   [layout-sm] {
     box-sizing: border-box;
@@ -751,6 +821,41 @@ md-tab > .md-ripple-container .md-ripple {
   [hide-gt-sm]:not([show-gt-sm]):not([show-md]):not([show-gt-md]):not([show-lg]):not([show-gt-lg]), [hide]:not([show-gt-sm]):not([show-md]):not([show-gt-md]):not([show-lg]):not([show-gt-lg]) {
     display: none; }
 
+  [layout-align-gt-sm="center"], [layout-align-gt-sm="center center"], [layout-align-gt-sm="center start"], [layout-align-gt-sm="center end"] {
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center; }
+
+  [layout-align-gt-sm="end"], [layout-align-gt-sm="end center"], [layout-align-gt-sm="end start"], [layout-align-gt-sm="end end"] {
+    -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+
+  [layout-align-gt-sm="space-around"], [layout-align-gt-sm="space-around center"], [layout-align-gt-sm="space-around start"], [layout-align-gt-sm="space-around end"] {
+    -webkit-justify-content: space-around;
+        -ms-flex-pack: distribute;
+            justify-content: space-around; }
+
+  [layout-align-gt-sm="space-between"], [layout-align-gt-sm="space-between center"], [layout-align-gt-sm="space-between start"], [layout-align-gt-sm="space-between end"] {
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+
+  [layout-align-gt-sm="center center"], [layout-align-gt-sm="start center"], [layout-align-gt-sm="end center"], [layout-align-gt-sm="space-between center"], [layout-align-gt-sm="space-around center"] {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+
+  [layout-align-gt-sm="center start"], [layout-align-gt-sm="start start"], [layout-align-gt-sm="end start"], [layout-align-gt-sm="space-between start"], [layout-align-gt-sm="space-around start"] {
+    -webkit-align-items: flex-start;
+        -ms-flex-align: start;
+            align-items: flex-start; }
+
+  [layout-align-gt-sm="center end"], [layout-align-gt-sm="start end"], [layout-align-gt-sm="end end"], [layout-align-gt-sm="space-between end"], [layout-align-gt-sm="space-around end"] {
+    -webkit-align-items: flex-end;
+        -ms-flex-align: end;
+            align-items: flex-end; }
+
   [layout-gt-sm] {
     box-sizing: border-box;
     display: -webkit-flex;
@@ -1029,6 +1134,41 @@ md-tab > .md-ripple-container .md-ripple {
 @media (min-width: 600px) and (max-width: 960px) {
   [hide-md]:not([show-md]), [hide]:not([show-md]) {
     display: none; }
+
+  [layout-align-md="center"], [layout-align-md="center center"], [layout-align-md="center start"], [layout-align-md="center end"] {
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center; }
+
+  [layout-align-md="end"], [layout-align-md="end center"], [layout-align-md="end start"], [layout-align-md="end end"] {
+    -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+
+  [layout-align-md="space-around"], [layout-align-md="space-around center"], [layout-align-md="space-around start"], [layout-align-md="space-around end"] {
+    -webkit-justify-content: space-around;
+        -ms-flex-pack: distribute;
+            justify-content: space-around; }
+
+  [layout-align-md="space-between"], [layout-align-md="space-between center"], [layout-align-md="space-between start"], [layout-align-md="space-between end"] {
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+
+  [layout-align-md="center center"], [layout-align-md="start center"], [layout-align-md="end center"], [layout-align-md="space-between center"], [layout-align-md="space-around center"] {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+
+  [layout-align-md="center start"], [layout-align-md="start start"], [layout-align-md="end start"], [layout-align-md="space-between start"], [layout-align-md="space-around start"] {
+    -webkit-align-items: flex-start;
+        -ms-flex-align: start;
+            align-items: flex-start; }
+
+  [layout-align-md="center end"], [layout-align-md="start end"], [layout-align-md="end end"], [layout-align-md="space-between end"], [layout-align-md="space-around end"] {
+    -webkit-align-items: flex-end;
+        -ms-flex-align: end;
+            align-items: flex-end; }
 
   [layout-md] {
     box-sizing: border-box;
@@ -1309,6 +1449,41 @@ md-tab > .md-ripple-container .md-ripple {
   [hide-gt-md]:not([show-gt-md]):not([show-lg]):not([show-gt-lg]), [hide]:not([show-gt-md]):not([show-lg]):not([show-gt-lg]) {
     display: none; }
 
+  [layout-align-gt-md="center"], [layout-align-gt-md="center center"], [layout-align-gt-md="center start"], [layout-align-gt-md="center end"] {
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center; }
+
+  [layout-align-gt-md="end"], [layout-align-gt-md="end center"], [layout-align-gt-md="end start"], [layout-align-gt-md="end end"] {
+    -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+
+  [layout-align-gt-md="space-around"], [layout-align-gt-md="space-around center"], [layout-align-gt-md="space-around start"], [layout-align-gt-md="space-around end"] {
+    -webkit-justify-content: space-around;
+        -ms-flex-pack: distribute;
+            justify-content: space-around; }
+
+  [layout-align-gt-md="space-between"], [layout-align-gt-md="space-between center"], [layout-align-gt-md="space-between start"], [layout-align-gt-md="space-between end"] {
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+
+  [layout-align-gt-md="center center"], [layout-align-gt-md="start center"], [layout-align-gt-md="end center"], [layout-align-gt-md="space-between center"], [layout-align-gt-md="space-around center"] {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+
+  [layout-align-gt-md="center start"], [layout-align-gt-md="start start"], [layout-align-gt-md="end start"], [layout-align-gt-md="space-between start"], [layout-align-gt-md="space-around start"] {
+    -webkit-align-items: flex-start;
+        -ms-flex-align: start;
+            align-items: flex-start; }
+
+  [layout-align-gt-md="center end"], [layout-align-gt-md="start end"], [layout-align-gt-md="end end"], [layout-align-gt-md="space-between end"], [layout-align-gt-md="space-around end"] {
+    -webkit-align-items: flex-end;
+        -ms-flex-align: end;
+            align-items: flex-end; }
+
   [layout-gt-md] {
     box-sizing: border-box;
     display: -webkit-flex;
@@ -1588,6 +1763,41 @@ md-tab > .md-ripple-container .md-ripple {
   [hide-lg]:not([show-lg]), [hide]:not([show-lg]) {
     display: none; }
 
+  [layout-align-lg="center"], [layout-align-lg="center center"], [layout-align-lg="center start"], [layout-align-lg="center end"] {
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center; }
+
+  [layout-align-lg="end"], [layout-align-lg="end center"], [layout-align-lg="end start"], [layout-align-lg="end end"] {
+    -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+
+  [layout-align-lg="space-around"], [layout-align-lg="space-around center"], [layout-align-lg="space-around start"], [layout-align-lg="space-around end"] {
+    -webkit-justify-content: space-around;
+        -ms-flex-pack: distribute;
+            justify-content: space-around; }
+
+  [layout-align-lg="space-between"], [layout-align-lg="space-between center"], [layout-align-lg="space-between start"], [layout-align-lg="space-between end"] {
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+
+  [layout-align-lg="center center"], [layout-align-lg="start center"], [layout-align-lg="end center"], [layout-align-lg="space-between center"], [layout-align-lg="space-around center"] {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+
+  [layout-align-lg="center start"], [layout-align-lg="start start"], [layout-align-lg="end start"], [layout-align-lg="space-between start"], [layout-align-lg="space-around start"] {
+    -webkit-align-items: flex-start;
+        -ms-flex-align: start;
+            align-items: flex-start; }
+
+  [layout-align-lg="center end"], [layout-align-lg="start end"], [layout-align-lg="end end"], [layout-align-lg="space-between end"], [layout-align-lg="space-around end"] {
+    -webkit-align-items: flex-end;
+        -ms-flex-align: end;
+            align-items: flex-end; }
+
   [layout-lg] {
     box-sizing: border-box;
     display: -webkit-flex;
@@ -1866,6 +2076,41 @@ md-tab > .md-ripple-container .md-ripple {
 @media (min-width: 1200px) {
   [hide-gt-lg]:not([show-gt-lg]), [hide]:not([show-gt-lg]) {
     display: none; }
+
+  [layout-align-gt-lg="center"], [layout-align-gt-lg="center center"], [layout-align-gt-lg="center start"], [layout-align-gt-lg="center end"] {
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center; }
+
+  [layout-align-gt-lg="end"], [layout-align-gt-lg="end center"], [layout-align-gt-lg="end start"], [layout-align-gt-lg="end end"] {
+    -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+
+  [layout-align-gt-lg="space-around"], [layout-align-gt-lg="space-around center"], [layout-align-gt-lg="space-around start"], [layout-align-gt-lg="space-around end"] {
+    -webkit-justify-content: space-around;
+        -ms-flex-pack: distribute;
+            justify-content: space-around; }
+
+  [layout-align-gt-lg="space-between"], [layout-align-gt-lg="space-between center"], [layout-align-gt-lg="space-between start"], [layout-align-gt-lg="space-between end"] {
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+
+  [layout-align-gt-lg="center center"], [layout-align-gt-lg="start center"], [layout-align-gt-lg="end center"], [layout-align-gt-lg="space-between center"], [layout-align-gt-lg="space-around center"] {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+
+  [layout-align-gt-lg="center start"], [layout-align-gt-lg="start start"], [layout-align-gt-lg="end start"], [layout-align-gt-lg="space-between start"], [layout-align-gt-lg="space-around start"] {
+    -webkit-align-items: flex-start;
+        -ms-flex-align: start;
+            align-items: flex-start; }
+
+  [layout-align-gt-lg="center end"], [layout-align-gt-lg="start end"], [layout-align-gt-lg="end end"], [layout-align-gt-lg="space-between end"], [layout-align-gt-lg="space-around end"] {
+    -webkit-align-items: flex-end;
+        -ms-flex-align: end;
+            align-items: flex-end; }
 
   [layout-gt-lg] {
     box-sizing: border-box;
@@ -2191,41 +2436,6 @@ md-tab > .md-ripple-container .md-ripple {
   -webkit-order: 9;
       -ms-flex-order: 9;
           order: 9; }
-
-[layout-align="center"], [layout-align="center center"], [layout-align="center start"], [layout-align="center end"] {
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center; }
-
-[layout-align="end"], [layout-align="end center"], [layout-align="end start"], [layout-align="end end"] {
-  -webkit-justify-content: flex-end;
-      -ms-flex-pack: end;
-          justify-content: flex-end; }
-
-[layout-align="space-around"], [layout-align="space-around center"], [layout-align="space-around start"], [layout-align="space-around end"] {
-  -webkit-justify-content: space-around;
-      -ms-flex-pack: distribute;
-          justify-content: space-around; }
-
-[layout-align="space-between"], [layout-align="space-between center"], [layout-align="space-between start"], [layout-align="space-between end"] {
-  -webkit-justify-content: space-between;
-      -ms-flex-pack: justify;
-          justify-content: space-between; }
-
-[layout-align="center center"], [layout-align="start center"], [layout-align="end center"], [layout-align="space-between center"], [layout-align="space-around center"] {
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center; }
-
-[layout-align="center start"], [layout-align="start start"], [layout-align="end start"], [layout-align="space-between start"], [layout-align="space-around start"] {
-  -webkit-align-items: flex-start;
-      -ms-flex-align: start;
-          align-items: flex-start; }
-
-[layout-align="center end"], [layout-align="start end"], [layout-align="end end"], [layout-align="space-between end"], [layout-align="space-around end"] {
-  -webkit-align-items: flex-end;
-      -ms-flex-align: end;
-          align-items: flex-end; }
 
 md-backdrop {
   z-index: 50;
