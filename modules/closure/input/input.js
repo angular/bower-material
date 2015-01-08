@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-1c65369
+ * v0.7.0-rc1-master-e576bbc
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -167,7 +167,7 @@ function inputTextareaDirective($mdUtil, $window) {
         element.on('input', growTextarea);
         growTextarea();
       }
-      element.on('keydown', growTextarea);
+      element.on('keyup', growTextarea);
       element.on('scroll', onScroll);
       angular.element($window).on('resize', growTextarea);
 
