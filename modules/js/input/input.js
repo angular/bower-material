@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc2-master-24094b3
+ * v0.7.0-rc2-master-95ab29a
  */
 (function() {
 
@@ -177,17 +177,17 @@ function inputTextareaDirective($mdUtil, $window) {
         node.style.height = "auto";
         var line = node.scrollHeight - node.offsetHeight;
         node.scrollTop = 0;
-        height = node.offsetHeight + (line > 0 ? line : 0);
+        var height = node.offsetHeight + (line > 0 ? line : 0);
         node.style.height = height + 'px';
 
         return value; // for $formatter/$parser
       }
-      
+
       function onScroll(e) {
         node.scrollTop = 0;
         // for smooth new line adding
         var line = node.scrollHeight - node.offsetHeight;
-        height = node.offsetHeight + line;
+        var height = node.offsetHeight + line;
         node.style.height = height + 'px';
       }
     }

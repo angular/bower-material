@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc2-master-24094b3
+ * v0.7.0-rc2-master-95ab29a
  */
 (function() {
 'use strict';
@@ -2019,7 +2019,7 @@ function ThemingProvider() {
     element.classList.add('md-color-palette-definition');
     document.body.appendChild(element);
 
-    var backgroundImage = getComputedStyle(element).backgroundImage;
+    var backgroundImage = window.getComputedStyle(element).backgroundImage;
     if (backgroundImage === 'none' || !backgroundImage) {
       backgroundImage = '{}';
     }
