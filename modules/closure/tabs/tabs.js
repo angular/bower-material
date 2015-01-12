@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc2-master-9091741
+ * v0.7.0-rc2-master-6a087a0
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.core');
@@ -740,8 +740,8 @@ function MdTabsController($scope, $element, $mdUtil, $timeout) {
 
     // Select the new tab if we don't have a selectedIndex, or if the
     // selectedIndex we've been waiting for is this tab
-    if ($scope.selectedIndex === -1 || !angular.isNumber($scope.selectedIndex) || 
-        $scope.selectedIndex === self.indexOf(tab)) {
+    if (!angular.isDefined(tab.element.attr('md-active')) && ($scope.selectedIndex === -1 || !angular.isNumber($scope.selectedIndex) ||
+        $scope.selectedIndex === self.indexOf(tab))) {
       tab.onAdd(self.contentArea, false);
       self.select(tab);
     } else {
