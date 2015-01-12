@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc2-master-416079b
+ * v0.7.0-rc2-master-3e45307
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -500,12 +500,112 @@ md-tab > .md-ripple-container .md-ripple {
       -ms-flex-align: end;
           align-items: flex-end; }
 
+[flex-order="0"] {
+  -webkit-order: 0;
+      -ms-flex-order: 0;
+          order: 0; }
+
+[flex-order="1"] {
+  -webkit-order: 1;
+      -ms-flex-order: 1;
+          order: 1; }
+
+[flex-order="2"] {
+  -webkit-order: 2;
+      -ms-flex-order: 2;
+          order: 2; }
+
+[flex-order="3"] {
+  -webkit-order: 3;
+      -ms-flex-order: 3;
+          order: 3; }
+
+[flex-order="4"] {
+  -webkit-order: 4;
+      -ms-flex-order: 4;
+          order: 4; }
+
+[flex-order="5"] {
+  -webkit-order: 5;
+      -ms-flex-order: 5;
+          order: 5; }
+
+[flex-order="6"] {
+  -webkit-order: 6;
+      -ms-flex-order: 6;
+          order: 6; }
+
+[flex-order="7"] {
+  -webkit-order: 7;
+      -ms-flex-order: 7;
+          order: 7; }
+
+[flex-order="8"] {
+  -webkit-order: 8;
+      -ms-flex-order: 8;
+          order: 8; }
+
+[flex-order="9"] {
+  -webkit-order: 9;
+      -ms-flex-order: 9;
+          order: 9; }
+
 [hide]:not([show]) {
   display: none; }
 
 @media (max-width: 600px) {
   [hide-sm]:not([show-sm]), [hide]:not([show-sm]) {
     display: none; }
+
+  [flex-order-sm="0"] {
+    -webkit-order: 0;
+        -ms-flex-order: 0;
+            order: 0; }
+
+  [flex-order-sm="1"] {
+    -webkit-order: 1;
+        -ms-flex-order: 1;
+            order: 1; }
+
+  [flex-order-sm="2"] {
+    -webkit-order: 2;
+        -ms-flex-order: 2;
+            order: 2; }
+
+  [flex-order-sm="3"] {
+    -webkit-order: 3;
+        -ms-flex-order: 3;
+            order: 3; }
+
+  [flex-order-sm="4"] {
+    -webkit-order: 4;
+        -ms-flex-order: 4;
+            order: 4; }
+
+  [flex-order-sm="5"] {
+    -webkit-order: 5;
+        -ms-flex-order: 5;
+            order: 5; }
+
+  [flex-order-sm="6"] {
+    -webkit-order: 6;
+        -ms-flex-order: 6;
+            order: 6; }
+
+  [flex-order-sm="7"] {
+    -webkit-order: 7;
+        -ms-flex-order: 7;
+            order: 7; }
+
+  [flex-order-sm="8"] {
+    -webkit-order: 8;
+        -ms-flex-order: 8;
+            order: 8; }
+
+  [flex-order-sm="9"] {
+    -webkit-order: 9;
+        -ms-flex-order: 9;
+            order: 9; }
 
   [layout-align-sm="center"], [layout-align-sm="center center"], [layout-align-sm="center start"], [layout-align-sm="center end"] {
     -webkit-justify-content: center;
@@ -821,6 +921,56 @@ md-tab > .md-ripple-container .md-ripple {
   [hide-gt-sm]:not([show-gt-sm]):not([show-md]):not([show-gt-md]):not([show-lg]):not([show-gt-lg]), [hide]:not([show-gt-sm]):not([show-md]):not([show-gt-md]):not([show-lg]):not([show-gt-lg]) {
     display: none; }
 
+  [flex-order-gt-sm="0"] {
+    -webkit-order: 0;
+        -ms-flex-order: 0;
+            order: 0; }
+
+  [flex-order-gt-sm="1"] {
+    -webkit-order: 1;
+        -ms-flex-order: 1;
+            order: 1; }
+
+  [flex-order-gt-sm="2"] {
+    -webkit-order: 2;
+        -ms-flex-order: 2;
+            order: 2; }
+
+  [flex-order-gt-sm="3"] {
+    -webkit-order: 3;
+        -ms-flex-order: 3;
+            order: 3; }
+
+  [flex-order-gt-sm="4"] {
+    -webkit-order: 4;
+        -ms-flex-order: 4;
+            order: 4; }
+
+  [flex-order-gt-sm="5"] {
+    -webkit-order: 5;
+        -ms-flex-order: 5;
+            order: 5; }
+
+  [flex-order-gt-sm="6"] {
+    -webkit-order: 6;
+        -ms-flex-order: 6;
+            order: 6; }
+
+  [flex-order-gt-sm="7"] {
+    -webkit-order: 7;
+        -ms-flex-order: 7;
+            order: 7; }
+
+  [flex-order-gt-sm="8"] {
+    -webkit-order: 8;
+        -ms-flex-order: 8;
+            order: 8; }
+
+  [flex-order-gt-sm="9"] {
+    -webkit-order: 9;
+        -ms-flex-order: 9;
+            order: 9; }
+
   [layout-align-gt-sm="center"], [layout-align-gt-sm="center center"], [layout-align-gt-sm="center start"], [layout-align-gt-sm="center end"] {
     -webkit-justify-content: center;
         -ms-flex-pack: center;
@@ -1134,6 +1284,56 @@ md-tab > .md-ripple-container .md-ripple {
 @media (min-width: 600px) and (max-width: 960px) {
   [hide-md]:not([show-md]), [hide]:not([show-md]) {
     display: none; }
+
+  [flex-order-md="0"] {
+    -webkit-order: 0;
+        -ms-flex-order: 0;
+            order: 0; }
+
+  [flex-order-md="1"] {
+    -webkit-order: 1;
+        -ms-flex-order: 1;
+            order: 1; }
+
+  [flex-order-md="2"] {
+    -webkit-order: 2;
+        -ms-flex-order: 2;
+            order: 2; }
+
+  [flex-order-md="3"] {
+    -webkit-order: 3;
+        -ms-flex-order: 3;
+            order: 3; }
+
+  [flex-order-md="4"] {
+    -webkit-order: 4;
+        -ms-flex-order: 4;
+            order: 4; }
+
+  [flex-order-md="5"] {
+    -webkit-order: 5;
+        -ms-flex-order: 5;
+            order: 5; }
+
+  [flex-order-md="6"] {
+    -webkit-order: 6;
+        -ms-flex-order: 6;
+            order: 6; }
+
+  [flex-order-md="7"] {
+    -webkit-order: 7;
+        -ms-flex-order: 7;
+            order: 7; }
+
+  [flex-order-md="8"] {
+    -webkit-order: 8;
+        -ms-flex-order: 8;
+            order: 8; }
+
+  [flex-order-md="9"] {
+    -webkit-order: 9;
+        -ms-flex-order: 9;
+            order: 9; }
 
   [layout-align-md="center"], [layout-align-md="center center"], [layout-align-md="center start"], [layout-align-md="center end"] {
     -webkit-justify-content: center;
@@ -1449,6 +1649,56 @@ md-tab > .md-ripple-container .md-ripple {
   [hide-gt-md]:not([show-gt-md]):not([show-lg]):not([show-gt-lg]), [hide]:not([show-gt-md]):not([show-lg]):not([show-gt-lg]) {
     display: none; }
 
+  [flex-order-gt-md="0"] {
+    -webkit-order: 0;
+        -ms-flex-order: 0;
+            order: 0; }
+
+  [flex-order-gt-md="1"] {
+    -webkit-order: 1;
+        -ms-flex-order: 1;
+            order: 1; }
+
+  [flex-order-gt-md="2"] {
+    -webkit-order: 2;
+        -ms-flex-order: 2;
+            order: 2; }
+
+  [flex-order-gt-md="3"] {
+    -webkit-order: 3;
+        -ms-flex-order: 3;
+            order: 3; }
+
+  [flex-order-gt-md="4"] {
+    -webkit-order: 4;
+        -ms-flex-order: 4;
+            order: 4; }
+
+  [flex-order-gt-md="5"] {
+    -webkit-order: 5;
+        -ms-flex-order: 5;
+            order: 5; }
+
+  [flex-order-gt-md="6"] {
+    -webkit-order: 6;
+        -ms-flex-order: 6;
+            order: 6; }
+
+  [flex-order-gt-md="7"] {
+    -webkit-order: 7;
+        -ms-flex-order: 7;
+            order: 7; }
+
+  [flex-order-gt-md="8"] {
+    -webkit-order: 8;
+        -ms-flex-order: 8;
+            order: 8; }
+
+  [flex-order-gt-md="9"] {
+    -webkit-order: 9;
+        -ms-flex-order: 9;
+            order: 9; }
+
   [layout-align-gt-md="center"], [layout-align-gt-md="center center"], [layout-align-gt-md="center start"], [layout-align-gt-md="center end"] {
     -webkit-justify-content: center;
         -ms-flex-pack: center;
@@ -1762,6 +2012,56 @@ md-tab > .md-ripple-container .md-ripple {
 @media (min-width: 960px) and (max-width: 1200px) {
   [hide-lg]:not([show-lg]), [hide]:not([show-lg]) {
     display: none; }
+
+  [flex-order-lg="0"] {
+    -webkit-order: 0;
+        -ms-flex-order: 0;
+            order: 0; }
+
+  [flex-order-lg="1"] {
+    -webkit-order: 1;
+        -ms-flex-order: 1;
+            order: 1; }
+
+  [flex-order-lg="2"] {
+    -webkit-order: 2;
+        -ms-flex-order: 2;
+            order: 2; }
+
+  [flex-order-lg="3"] {
+    -webkit-order: 3;
+        -ms-flex-order: 3;
+            order: 3; }
+
+  [flex-order-lg="4"] {
+    -webkit-order: 4;
+        -ms-flex-order: 4;
+            order: 4; }
+
+  [flex-order-lg="5"] {
+    -webkit-order: 5;
+        -ms-flex-order: 5;
+            order: 5; }
+
+  [flex-order-lg="6"] {
+    -webkit-order: 6;
+        -ms-flex-order: 6;
+            order: 6; }
+
+  [flex-order-lg="7"] {
+    -webkit-order: 7;
+        -ms-flex-order: 7;
+            order: 7; }
+
+  [flex-order-lg="8"] {
+    -webkit-order: 8;
+        -ms-flex-order: 8;
+            order: 8; }
+
+  [flex-order-lg="9"] {
+    -webkit-order: 9;
+        -ms-flex-order: 9;
+            order: 9; }
 
   [layout-align-lg="center"], [layout-align-lg="center center"], [layout-align-lg="center start"], [layout-align-lg="center end"] {
     -webkit-justify-content: center;
@@ -2077,6 +2377,56 @@ md-tab > .md-ripple-container .md-ripple {
   [hide-gt-lg]:not([show-gt-lg]), [hide]:not([show-gt-lg]) {
     display: none; }
 
+  [flex-order-gt-lg="0"] {
+    -webkit-order: 0;
+        -ms-flex-order: 0;
+            order: 0; }
+
+  [flex-order-gt-lg="1"] {
+    -webkit-order: 1;
+        -ms-flex-order: 1;
+            order: 1; }
+
+  [flex-order-gt-lg="2"] {
+    -webkit-order: 2;
+        -ms-flex-order: 2;
+            order: 2; }
+
+  [flex-order-gt-lg="3"] {
+    -webkit-order: 3;
+        -ms-flex-order: 3;
+            order: 3; }
+
+  [flex-order-gt-lg="4"] {
+    -webkit-order: 4;
+        -ms-flex-order: 4;
+            order: 4; }
+
+  [flex-order-gt-lg="5"] {
+    -webkit-order: 5;
+        -ms-flex-order: 5;
+            order: 5; }
+
+  [flex-order-gt-lg="6"] {
+    -webkit-order: 6;
+        -ms-flex-order: 6;
+            order: 6; }
+
+  [flex-order-gt-lg="7"] {
+    -webkit-order: 7;
+        -ms-flex-order: 7;
+            order: 7; }
+
+  [flex-order-gt-lg="8"] {
+    -webkit-order: 8;
+        -ms-flex-order: 8;
+            order: 8; }
+
+  [flex-order-gt-lg="9"] {
+    -webkit-order: 9;
+        -ms-flex-order: 9;
+            order: 9; }
+
   [layout-align-gt-lg="center"], [layout-align-gt-lg="center center"], [layout-align-gt-lg="center start"], [layout-align-gt-lg="center end"] {
     -webkit-justify-content: center;
         -ms-flex-pack: center;
@@ -2386,56 +2736,6 @@ md-tab > .md-ripple-container .md-ripple {
             flex: 0 0 66.66%;
     max-height: 66.66%; }
  }
-
-[flex-order="0"] {
-  -webkit-order: 0;
-      -ms-flex-order: 0;
-          order: 0; }
-
-[flex-order="1"] {
-  -webkit-order: 1;
-      -ms-flex-order: 1;
-          order: 1; }
-
-[flex-order="2"] {
-  -webkit-order: 2;
-      -ms-flex-order: 2;
-          order: 2; }
-
-[flex-order="3"] {
-  -webkit-order: 3;
-      -ms-flex-order: 3;
-          order: 3; }
-
-[flex-order="4"] {
-  -webkit-order: 4;
-      -ms-flex-order: 4;
-          order: 4; }
-
-[flex-order="5"] {
-  -webkit-order: 5;
-      -ms-flex-order: 5;
-          order: 5; }
-
-[flex-order="6"] {
-  -webkit-order: 6;
-      -ms-flex-order: 6;
-          order: 6; }
-
-[flex-order="7"] {
-  -webkit-order: 7;
-      -ms-flex-order: 7;
-          order: 7; }
-
-[flex-order="8"] {
-  -webkit-order: 8;
-      -ms-flex-order: 8;
-          order: 8; }
-
-[flex-order="9"] {
-  -webkit-order: 9;
-      -ms-flex-order: 9;
-          order: 9; }
 
 md-backdrop {
   z-index: 50;
@@ -2772,6 +3072,7 @@ md-card {
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column;
+  margin: 8px;
   box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26); }
   md-card > img {
     -webkit-order: 0;
@@ -2782,7 +3083,7 @@ md-card {
     -webkit-order: 1;
         -ms-flex-order: 1;
             order: 1;
-    margin: 8px; }
+    padding: 16px; }
 
 md-checkbox {
   display: block;
@@ -2975,6 +3276,7 @@ md-input-container {
       -ms-flex-direction: column;
           flex-direction: column;
   padding: 2px;
+  padding-bottom: 26px;
   /* 
    * The .md-input class is added to the input/textarea 
    */ }
@@ -2991,12 +3293,13 @@ md-input-container {
             order: 1;
     pointer-events: none;
     -webkit-font-smoothing: antialiased;
+    padding-left: 2px;
     z-index: 1;
     -webkit-transform: translate3d(0, 24px, 0) scale(1);
             transform: translate3d(0, 24px, 0) scale(1);
     -webkit-transform-origin: left top;
             transform-origin: left top;
-    transition: all cubic-bezier(0.25, 0.8, 0.25, 1) 0.2s; }
+    transition: all cubic-bezier(0.25, 0.8, 0.25, 1) 0.25s; }
   md-input-container .md-input {
     -webkit-flex: 1;
         -ms-flex: 1;
@@ -3013,10 +3316,36 @@ md-input-container {
     -ms-flex-preferred-size: 26px; }
     md-input-container .md-input:focus {
       outline: none; }
+  md-input-container ng-messages, md-input-container [ng-messages] {
+    -webkit-order: 3;
+        -ms-flex-order: 3;
+            order: 3;
+    position: relative; }
+  md-input-container ng-message, md-input-container [ng-message], md-input-container .md-char-counter {
+    -webkit-font-smoothing: antialiased;
+    position: absolute;
+    font-size: 12px;
+    line-height: 24px; }
+    md-input-container ng-message.ng-enter, md-input-container [ng-message].ng-enter, md-input-container .md-char-counter.ng-enter {
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      transition-delay: 0.2s; }
+    md-input-container ng-message.ng-leave, md-input-container [ng-message].ng-leave, md-input-container .md-char-counter.ng-leave {
+      transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
+    md-input-container ng-message.ng-enter, md-input-container ng-message.ng-leave.ng-leave-active, md-input-container [ng-message].ng-enter, md-input-container [ng-message].ng-leave.ng-leave-active, md-input-container .md-char-counter.ng-enter, md-input-container .md-char-counter.ng-leave.ng-leave-active {
+      opacity: 0;
+      -webkit-transform: translate3d(0, -20%, 0);
+              transform: translate3d(0, -20%, 0); }
+    md-input-container ng-message.ng-leave, md-input-container ng-message.ng-enter.ng-enter-active, md-input-container [ng-message].ng-leave, md-input-container [ng-message].ng-enter.ng-enter-active, md-input-container .md-char-counter.ng-leave, md-input-container .md-char-counter.ng-enter.ng-enter-active {
+      opacity: 1;
+      -webkit-transform: translate3d(0, 0, 0);
+              transform: translate3d(0, 0, 0); }
+  md-input-container .md-char-counter {
+    bottom: 2px;
+    right: 2px; }
   md-input-container.md-input-focused label, md-input-container.md-input-has-value label {
     -webkit-transform: translate3d(0, 4px, 0) scale(0.75);
             transform: translate3d(0, 4px, 0) scale(0.75); }
-  md-input-container.md-input-focused .md-input {
+  md-input-container.md-input-focused .md-input, md-input-container .md-input.ng-invalid.ng-dirty {
     padding-bottom: 0px;
     border-width: 0 0 2px 0; }
   md-input-container .md-input[disabled] {
