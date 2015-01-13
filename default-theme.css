@@ -320,8 +320,8 @@ md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]) {
   md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]).active {
     color: '{{warn-contrast}}'; }
 md-tabs.md-THEME_NAME-theme md-tabs-ink-bar {
-  color: white;
-  background: white; }
+  color: '{{primary-contrast}}';
+  background: '{{primary-contrast}}'; }
 md-tabs.md-THEME_NAME-theme md-tab {
   color: '{{primary-100}}'; }
   md-tabs.md-THEME_NAME-theme md-tab.active {
@@ -332,7 +332,7 @@ md-tabs.md-THEME_NAME-theme md-tab {
     color: '{{primary-contrast}}';
     background-color: '{{primary-contrast-0.1}}'; }
   md-tabs.md-THEME_NAME-theme md-tab .md-ripple-container {
-    color: white; }
+    color: '{{primary-contrast}}'; }
 
 md-input-group.md-THEME_NAME-theme input, md-input-group.md-THEME_NAME-theme textarea {
   text-shadow: '{{foreground-shadow}}'; }
