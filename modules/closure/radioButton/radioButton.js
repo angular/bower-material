@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc2-master-e472348
+ * v0.7.0-rc2-master-dec2ac4
  */
 goog.provide('ng.material.components.radioButton');
 goog.require('ng.material.core');
@@ -64,7 +64,7 @@ function mdRadioGroupDirective($mdUtil, $mdConstant, $mdTheming) {
     restrict: 'E',
     controller: ['$element', RadioGroupController],
     require: ['mdRadioGroup', '?ngModel'],
-    link: linkRadioGroup
+    link: { pre: linkRadioGroup }
   };
 
   function linkRadioGroup(scope, element, attr, ctrls) {

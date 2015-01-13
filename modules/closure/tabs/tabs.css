@@ -2,12 +2,13 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc2-master-e472348
+ * v0.7.0-rc2-master-dec2ac4
  */
 md-tabs {
   display: block;
   width: 100%;
-  font-weight: 500; }
+  font-weight: 500;
+  overflow: auto; }
 
 .md-header {
   width: 100%;
