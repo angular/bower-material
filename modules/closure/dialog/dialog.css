@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc2-master-e4ed530
+ * v0.7.0-rc2-master-240c03a
  */
 .md-dialog-container {
   display: -webkit-flex;
@@ -26,7 +26,6 @@ md-dialog {
   min-width: 240px;
   max-width: 80%;
   max-height: 80%;
-  margin: auto;
   position: relative;
   overflow: hidden;
   box-shadow: 0px 27px 24px 0 rgba(0, 0, 0, 0.2);
