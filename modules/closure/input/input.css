@@ -2,16 +2,13 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3
+ * v0.7.0-rc3-master-1cabb62
  */
 md-input-container {
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   position: relative;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column;
@@ -28,7 +25,6 @@ md-input-container {
     resize: none;
     overflow: hidden; }
   md-input-container label {
-    -webkit-box-ordinal-group: 2;
     -webkit-order: 1;
         -ms-flex-order: 1;
             order: 1;
@@ -40,14 +36,12 @@ md-input-container {
             transform: translate3d(0, 24px, 0) scale(1);
     -webkit-transform-origin: left top;
             transform-origin: left top;
-    -webkit-transition: -webkit-transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.25s;
-            transition: transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.25s; }
+    transition: -webkit-transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.25s;
+    transition: transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.25s; }
   md-input-container .md-input {
-    -webkit-box-flex: 1;
     -webkit-flex: 1;
         -ms-flex: 1;
             flex: 1;
-    -webkit-box-ordinal-group: 3;
     -webkit-order: 2;
         -ms-flex-order: 2;
             order: 2;
@@ -61,7 +55,6 @@ md-input-container {
     md-input-container .md-input:focus {
       outline: none; }
   md-input-container ng-messages, md-input-container data-ng-messages, md-input-container x-ng-messages, md-input-container [ng-messages], md-input-container [data-ng-messages], md-input-container [x-ng-messages] {
-    -webkit-box-ordinal-group: 4;
     -webkit-order: 3;
         -ms-flex-order: 3;
             order: 3;
@@ -72,13 +65,10 @@ md-input-container {
     font-size: 12px;
     line-height: 24px; }
     md-input-container ng-message.ng-enter, md-input-container data-ng-message.ng-enter, md-input-container x-ng-message.ng-enter, md-input-container [ng-message].ng-enter, md-input-container [data-ng-message].ng-enter, md-input-container [x-ng-message].ng-enter, md-input-container .md-char-counter.ng-enter {
-      -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-              transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      -webkit-transition-delay: 0.2s;
-              transition-delay: 0.2s; }
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      transition-delay: 0.2s; }
     md-input-container ng-message.ng-leave, md-input-container data-ng-message.ng-leave, md-input-container x-ng-message.ng-leave, md-input-container [ng-message].ng-leave, md-input-container [data-ng-message].ng-leave, md-input-container [x-ng-message].ng-leave, md-input-container .md-char-counter.ng-leave {
-      -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-              transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
+      transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
     md-input-container ng-message.ng-enter, md-input-container ng-message.ng-leave.ng-leave-active, md-input-container data-ng-message.ng-enter, md-input-container data-ng-message.ng-leave.ng-leave-active, md-input-container x-ng-message.ng-enter, md-input-container x-ng-message.ng-leave.ng-leave-active, md-input-container [ng-message].ng-enter, md-input-container [ng-message].ng-leave.ng-leave-active, md-input-container [data-ng-message].ng-enter, md-input-container [data-ng-message].ng-leave.ng-leave-active, md-input-container [x-ng-message].ng-enter, md-input-container [x-ng-message].ng-leave.ng-leave-active, md-input-container .md-char-counter.ng-enter, md-input-container .md-char-counter.ng-leave.ng-leave-active {
       opacity: 0;
       -webkit-transform: translate3d(0, -20%, 0);
