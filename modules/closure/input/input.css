@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc2-master-408e3ab
+ * v0.7.0-rc2-master-b0a0e25
  */
 md-input-container {
   display: -webkit-flex;
@@ -36,7 +36,8 @@ md-input-container {
             transform: translate3d(0, 24px, 0) scale(1);
     -webkit-transform-origin: left top;
             transform-origin: left top;
-    transition: all cubic-bezier(0.25, 0.8, 0.25, 1) 0.25s; }
+    transition: -webkit-transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.25s;
+    transition: transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.25s; }
   md-input-container .md-input {
     -webkit-flex: 1;
         -ms-flex: 1;
