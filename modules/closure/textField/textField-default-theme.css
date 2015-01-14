@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc2-master-520faa7
+ * v0.7.0-rc2-master-d68c0c0
  */
 md-input-group.md-THEME_NAME-theme input, md-input-group.md-THEME_NAME-theme textarea {
   text-shadow: '{{foreground-shadow}}'; }
