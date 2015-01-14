@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc2-master-b0a0e25
+ * v0.7.0-rc3
  */
 @-webkit-keyframes tooltipBackgroundShow {
   0% {
@@ -85,11 +85,14 @@ md-tooltip {
     padding: 8px;
     background: transparent;
     opacity: 0.3;
-    transition: inherit; }
+    -webkit-transition: inherit;
+            transition: inherit; }
   md-tooltip.md-hide {
-    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
+    -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+            transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-tooltip.md-show {
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     pointer-events: auto;
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }

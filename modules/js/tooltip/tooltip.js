@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc2-master-416079b
+ * v0.7.0-rc3
  */
 (function() {
 'use strict';
@@ -38,6 +38,7 @@ angular.module('material.components.tooltip', [
  *
  * @param {expression=} md-visible Boolean bound to whether the tooltip is
  * currently visible.
+ * @param {number=} md-delay How many milliseconds to wait to show the tooltip after the user focuses, hovers, or touches the parent. Defaults to 400ms.
  */
 function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdTheming, $rootElement) {
 
@@ -51,7 +52,8 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       '<div class="md-background"></div>' +
       '<div class="md-content" ng-transclude></div>',
     scope: {
-      visible: '=?mdVisible'
+      visible: '=?mdVisible',
+      delay: '=?mdDelay'
     },
     link: postLink
   };
@@ -67,6 +69,10 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       current = current.parentNode;
     }
     var tooltipParent = angular.element(current || document.body);
+
+    if (!angular.isDefined(attr.mdDelay)) {
+      scope.delay = TOOLTIP_SHOW_DELAY;
+    }
 
     // We will re-attach tooltip when visible
     element.detach();
@@ -104,7 +110,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     // Methods
     // *******
 
-    // If setting visible to true, debounce to TOOLTIP_SHOW_DELAY ms
+    // If setting visible to true, debounce to scope.delay ms
     // If setting visible to false and no timeout is active, instantly hide the tooltip.
     function setVisible(value) {
       setVisible.value = !!value;
@@ -115,7 +121,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
           $timeout(function() {
             scope.visible = setVisible.value;
             setVisible.queued = false;
-          }, TOOLTIP_SHOW_DELAY);
+          }, scope.delay);
 
         } else {
           $timeout(function() { scope.visible = false; });

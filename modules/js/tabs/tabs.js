@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc2-master-416079b
+ * v0.7.0-rc3
  */
 (function() {
 'use strict';
@@ -543,6 +543,12 @@ function MdTabDirective($mdInkRipple, $compile, $mdUtil, $mdConstant, $timeout) 
         detachRippleFn();
         tabsCtrl.remove(tabItemCtrl);
       });
+      element.on('$destroy', function () {
+        //-- wait for item to be removed from the dom
+        $timeout(function () {
+          tabsCtrl.scope.$broadcast('$mdTabsChanged');
+        }, 0, false);
+      });
 
       if (!angular.isDefined(attr.ngClick)) {
         element.on('click', defaultClickListener);
@@ -680,7 +686,7 @@ MdTabDirective.$inject = ["$mdInkRipple", "$compile", "$mdUtil", "$mdConstant", 
 angular.module('material.components.tabs')
   .controller('$mdTabs', MdTabsController);
 
-function MdTabsController($scope, $element, $mdUtil, $$rAF) {
+function MdTabsController($scope, $element, $mdUtil, $timeout) {
 
   var tabsList = $mdUtil.iterator([], false);
   var self = this;
@@ -732,8 +738,8 @@ function MdTabsController($scope, $element, $mdUtil, $$rAF) {
 
     // Select the new tab if we don't have a selectedIndex, or if the
     // selectedIndex we've been waiting for is this tab
-    if ($scope.selectedIndex === -1 || !angular.isNumber($scope.selectedIndex) || 
-        $scope.selectedIndex === self.indexOf(tab)) {
+    if (!angular.isDefined(tab.element.attr('md-active')) && ($scope.selectedIndex === -1 || !angular.isNumber($scope.selectedIndex) ||
+        $scope.selectedIndex === self.indexOf(tab))) {
       tab.onAdd(self.contentArea, false);
       self.select(tab);
     } else {
@@ -745,21 +751,17 @@ function MdTabsController($scope, $element, $mdUtil, $$rAF) {
 
   function remove(tab, noReselect) {
     if (!tabsList.contains(tab)) return;
+    if (noReselect) return;
+    var isSelectedItem = getSelectedItem() === tab,
+        newTab = previous() || next();
 
-    if (noReselect) {
-      // do nothing
-    } else if (getSelectedItem() === tab) {
-      if (tabsList.count() > 1) {
-        select(previous() || next());
-      } else {
-        deselect(tab);
-      }
-    }
-
+    deselect(tab);
     tabsList.remove(tab);
     tab.onRemove();
 
     $scope.$broadcast('$mdTabsChanged');
+
+    if (isSelectedItem) { select(newTab); }
   }
 
   // Move a tab (used when ng-repeat order changes)
@@ -815,7 +817,7 @@ function MdTabsController($scope, $element, $mdUtil, $$rAF) {
   }
 
 }
-MdTabsController.$inject = ["$scope", "$element", "$mdUtil", "$$rAF"];
+MdTabsController.$inject = ["$scope", "$element", "$mdUtil", "$timeout"];
 })();
 
 (function() {
@@ -976,7 +978,7 @@ function TabsDirective($mdTheming) {
         if (tabsCtrl.inRange(newIndex)) {
           var newTab = tabsCtrl.itemAt(newIndex);
           while (newTab && newTab.isDisabled()) {
-            newTab = newIndex > oldIndex
+            newTab = newIndex > oldIndex 
                 ? tabsCtrl.next(newTab)
                 : tabsCtrl.previous(newTab);
           }
