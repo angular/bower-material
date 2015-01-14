@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc2-master-d68c0c0
+ * v0.7.0-rc2-master-287b97f
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -546,11 +546,13 @@ md-tab > .md-ripple-container .md-ripple {
       -ms-flex-order: 9;
           order: 9; }
 
-[hide]:not([show]) {
-  display: none; }
-
+/**
+ * `hide-gt-sm show-gt-lg` should hide from 0px to 1200px
+ * `show-md hide-gt-sm` should show from 0px to 600px and >960px
+ * `hide-gt-md show-gt-sm` should show everywhere (show overrides hide)`
+ */
 @media (max-width: 600px) {
-  [hide-sm]:not([show-sm]), [hide]:not([show-sm]) {
+  [hide-sm]:not([show-sm]):not([show]), [hide]:not([show-sm]):not([show]) {
     display: none; }
 
   [flex-order-sm="0"] {
@@ -914,9 +916,6 @@ md-tab > .md-ripple-container .md-ripple {
  }
 
 @media (min-width: 600px) {
-  [hide-gt-sm]:not([show-gt-sm]):not([show-md]):not([show-gt-md]):not([show-lg]):not([show-gt-lg]), [hide]:not([show-gt-sm]):not([show-md]):not([show-gt-md]):not([show-lg]):not([show-gt-lg]) {
-    display: none; }
-
   [flex-order-gt-sm="0"] {
     -webkit-order: 0;
         -ms-flex-order: 0;
@@ -1278,7 +1277,10 @@ md-tab > .md-ripple-container .md-ripple {
  }
 
 @media (min-width: 600px) and (max-width: 960px) {
-  [hide-md]:not([show-md]), [hide]:not([show-md]) {
+  [hide]:not([show-gt-sm]):not([show-md]):not([show]), [hide-gt-sm]:not([show-gt-sm]):not([show-md]):not([show]) {
+    display: none; }
+
+  [hide-md]:not([show-md]):not([show]) {
     display: none; }
 
   [flex-order-md="0"] {
@@ -1642,9 +1644,6 @@ md-tab > .md-ripple-container .md-ripple {
  }
 
 @media (min-width: 960px) {
-  [hide-gt-md]:not([show-gt-md]):not([show-lg]):not([show-gt-lg]), [hide]:not([show-gt-md]):not([show-lg]):not([show-gt-lg]) {
-    display: none; }
-
   [flex-order-gt-md="0"] {
     -webkit-order: 0;
         -ms-flex-order: 0;
@@ -2006,7 +2005,10 @@ md-tab > .md-ripple-container .md-ripple {
  }
 
 @media (min-width: 960px) and (max-width: 1200px) {
-  [hide-lg]:not([show-lg]), [hide]:not([show-lg]) {
+  [hide]:not([show-gt-sm]):not([show-gt-md]):not([show-lg]):not([show]), [hide-gt-sm]:not([show-gt-sm]):not([show-gt-md]):not([show-lg]):not([show]), [hide-gt-md]:not([show-gt-sm]):not([show-gt-md]):not([show-lg]):not([show]) {
+    display: none; }
+
+  [hide-lg]:not([show-lg]):not([show]) {
     display: none; }
 
   [flex-order-lg="0"] {
@@ -2370,7 +2372,7 @@ md-tab > .md-ripple-container .md-ripple {
  }
 
 @media (min-width: 1200px) {
-  [hide-gt-lg]:not([show-gt-lg]), [hide]:not([show-gt-lg]) {
+  [hide-gt-sm]:not([show-gt-sm]):not([show-gt-md]):not([show-gt-lg]):not([show]), [hide-gt-md]:not([show-gt-sm]):not([show-gt-md]):not([show-gt-lg]):not([show]), [hide-gt-lg]:not([show-gt-sm]):not([show-gt-md]):not([show-gt-lg]):not([show]), [hide]:not([show-gt-sm]):not([show-gt-md]):not([show-gt-lg]):not([show]) {
     display: none; }
 
   [flex-order-gt-lg="0"] {
