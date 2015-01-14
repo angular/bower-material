@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc2-master-747c6ac
+ * v0.7.0-rc2-master-8e40b35
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -226,8 +226,8 @@ function inputTextareaDirective($mdUtil, $window, $compile, $animate) {
         containerCtrl.setFocused(true);
       })
       .on('blur', function(e) {
-        if (e.target && e.target.validity) {
-          containerCtrl.setHasValue(e.target.validity.badInput);
+        if (e.target && e.target.validity && e.target.validity.badInput) {
+          containerCtrl.setHasValue(false);
         }
         containerCtrl.setFocused(false);
       });
