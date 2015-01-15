@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 goog.provide('ng.material.core');
 
@@ -447,10 +447,14 @@ angular.module('material.core')
 
     fakeNgModel: function() {
       return {
+        $fake: true,
         $setViewValue: function(value) {
           this.$viewValue = value;
           this.$render(value);
           this.$viewChangeListeners.forEach(function(cb) { cb(); });
+        },
+        $isEmpty: function(value) {
+          return (''+value).length === 0;
         },
         $parsers: [],
         $formatters: [],

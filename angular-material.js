@@ -2,14 +2,14 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.theming.palette","material.core.theming","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.input","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 /*!
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -83,7 +83,7 @@ MdCoreConfigure.$inject = ["$provide", "$mdThemingProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -140,7 +140,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function(){
 
@@ -374,7 +374,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 angular.module('material.core')
 .factory('$mdMedia', mdMediaFactory);
@@ -439,7 +439,7 @@ mdMediaFactory.$inject = ["$mdConstant", "$mdUtil", "$rootScope", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -476,10 +476,14 @@ angular.module('material.core')
 
     fakeNgModel: function() {
       return {
+        $fake: true,
         $setViewValue: function(value) {
           this.$viewValue = value;
           this.$render(value);
           this.$viewChangeListeners.forEach(function(cb) { cb(); });
+        },
+        $isEmpty: function(value) {
+          return (''+value).length === 0;
         },
         $parsers: [],
         $formatters: [],
@@ -791,7 +795,7 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -873,7 +877,7 @@ AriaService.$inject = ["$$rAF", "$log", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -1019,7 +1023,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -1416,7 +1420,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
   'use strict';
@@ -1549,7 +1553,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -1957,7 +1961,7 @@ function attrNoDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -2313,7 +2317,7 @@ angular.module('material.core.theming.palette', [])
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -2856,7 +2860,7 @@ function rgba(rgbArray, opacity) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -2895,7 +2899,7 @@ BackdropDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -3189,7 +3193,7 @@ MdBottomSheetProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -3284,7 +3288,7 @@ MdButtonDirective.$inject = ["$mdInkRipple", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -3343,7 +3347,7 @@ mdCardDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -3477,7 +3481,7 @@ MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$md
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -3538,7 +3542,7 @@ mdContentDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -4034,7 +4038,7 @@ MdDialogProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -4083,7 +4087,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -4134,7 +4138,7 @@ function mdIconDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 
@@ -4310,7 +4314,7 @@ function inputTextareaDirective($mdUtil, $window, $compile, $animate) {
   function postLink(scope, element, attr, ctrls) {
 
     var containerCtrl = ctrls[0];
-    var ngModelCtrl = ctrls[1];
+    var ngModelCtrl = ctrls[1] || $mdUtil.fakeNgModel();
 
     if ( !containerCtrl ) return;
     if (containerCtrl.input) {
@@ -4327,38 +4331,31 @@ function inputTextareaDirective($mdUtil, $window, $compile, $animate) {
       setupTextarea();
     }
 
-    var isEmpty = ngModelCtrl ? 
-      ngModelCtrl.$isEmpty : 
-      function() { return ('' + element.val()).length === 0; };
+    function ngModelPipelineCheckValue(arg) {
+      containerCtrl.setHasValue(!ngModelCtrl.$isEmpty(arg));
+      return arg;
+    }
+    function inputCheckValue() {
+      // An input's value counts if its length > 0,
+      // or if the input's validity state says it has bad input (eg string in a number input)
+      containerCtrl.setHasValue(element.val().length > 0 || (element[0].validity||{}).badInput);
+    }
 
-    // When the input value changes, check if it "has" a value, and
-    // set the appropriate class on the input group
-    if (ngModelCtrl) {
-      scope.$watch(function() {
-        return ngModelCtrl.$dirty && ngModelCtrl.$invalid;
-      }, containerCtrl.setInvalid);
+    scope.$watch(function() {
+      return ngModelCtrl.$dirty && ngModelCtrl.$invalid;
+    }, containerCtrl.setInvalid);
       
-      ngModelCtrl.$formatters.push(checkHasValue);
-      ngModelCtrl.$parsers.push(checkHasValue);
-    } else {
-      checkHasValue();
-    }
-    element.on('input', checkHasValue);
-
-    function checkHasValue(value) {
-      containerCtrl.setHasValue(
-        !isEmpty(value) ||
-        (element[0].validity || {}).badInput // allow badInput to count as having a value.
-      );
-      return value;
-    }
+    ngModelCtrl.$parsers.push(ngModelPipelineCheckValue);
+    ngModelCtrl.$formatters.push(ngModelPipelineCheckValue);
 
     element
+      .on('input', inputCheckValue)
       .on('focus', function(ev) {
         containerCtrl.setFocused(true);
       })
       .on('blur', function(ev) {
         containerCtrl.setFocused(false);
+        inputCheckValue();
       });
 
     scope.$on('$destroy', function() {
@@ -4468,7 +4465,7 @@ mdMaxlengthDirective.$inject = ["$animate"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -4563,7 +4560,7 @@ function mdItemDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -4691,7 +4688,7 @@ MdProgressCircularDirective.$inject = ["$$rAF", "$mdConstant", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -4820,7 +4817,7 @@ var transforms = (function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -5117,7 +5114,7 @@ mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -5420,7 +5417,7 @@ SidenavController.$inject = ["$scope", "$element", "$attrs", "$mdComponentRegist
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -5832,7 +5829,7 @@ SliderController.$inject = ["$scope", "$element", "$attrs", "$$rAF", "$window", 
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -6142,7 +6139,7 @@ MdSticky.$inject = ["$document", "$mdConstant", "$compile", "$$rAF", "$mdUtil"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -6229,7 +6226,7 @@ MdSubheaderDirective.$inject = ["$mdSticky", "$compile", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -6443,7 +6440,7 @@ function swipePostLink($parse, $mdSwipe, name ) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -6588,7 +6585,7 @@ MdSwitch.$inject = ["mdCheckboxDirective", "$mdTheming", "$mdUtil", "$document",
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -6625,7 +6622,7 @@ angular.module('material.components.tabs', [
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -6769,7 +6766,7 @@ mdInputDirective.$inject = ["$mdUtil", "$log"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -7005,7 +7002,7 @@ MdToastProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -7164,7 +7161,7 @@ mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -7362,7 +7359,7 @@ MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdU
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -7378,7 +7375,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -7443,7 +7440,7 @@ MdTabInkDirective.$inject = ["$$rAF"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -7697,7 +7694,7 @@ TabPaginationDirective.$inject = ["$mdConstant", "$window", "$$rAF", "$$q", "$ti
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -7795,7 +7792,7 @@ TabItemController.$inject = ["$scope", "$element", "$attrs", "$compile", "$anima
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -8047,7 +8044,7 @@ MdTabDirective.$inject = ["$mdInkRipple", "$compile", "$mdUtil", "$mdConstant", 
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
@@ -8193,7 +8190,7 @@ MdTabsController.$inject = ["$scope", "$element", "$mdUtil", "$timeout"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-b432277
+ * v0.7.0-rc3-master-ec53d1a
  */
 (function() {
 'use strict';
