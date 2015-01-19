@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-581baba
+ * v0.7.0-rc3-master-74fe3eb
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -204,9 +204,9 @@ md-tab > .md-ripple-container .md-ripple {
     height: inherit; } }
 
 [flex] {
-  -webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1; }
+  -webkit-flex: 1 1 0%;
+      -ms-flex: 1 1 0%;
+          flex: 1 1 0%; }
 
 [flex="0"] {
   -webkit-flex: 0 0 0%;
@@ -657,9 +657,9 @@ md-tab > .md-ripple-container .md-ripple {
             flex-direction: row; }
 
   [flex-sm] {
-    -webkit-flex: 1;
-        -ms-flex: 1;
-            flex: 1; }
+    -webkit-flex: 1 1 0%;
+        -ms-flex: 1 1 0%;
+            flex: 1 1 0%; }
 
   [flex-sm="0"] {
     -webkit-flex: 0 0 0%;
@@ -1018,9 +1018,9 @@ md-tab > .md-ripple-container .md-ripple {
             flex-direction: row; }
 
   [flex-gt-sm] {
-    -webkit-flex: 1;
-        -ms-flex: 1;
-            flex: 1; }
+    -webkit-flex: 1 1 0%;
+        -ms-flex: 1 1 0%;
+            flex: 1 1 0%; }
 
   [flex-gt-sm="0"] {
     -webkit-flex: 0 0 0%;
@@ -1385,9 +1385,9 @@ md-tab > .md-ripple-container .md-ripple {
             flex-direction: row; }
 
   [flex-md] {
-    -webkit-flex: 1;
-        -ms-flex: 1;
-            flex: 1; }
+    -webkit-flex: 1 1 0%;
+        -ms-flex: 1 1 0%;
+            flex: 1 1 0%; }
 
   [flex-md="0"] {
     -webkit-flex: 0 0 0%;
@@ -1746,9 +1746,9 @@ md-tab > .md-ripple-container .md-ripple {
             flex-direction: row; }
 
   [flex-gt-md] {
-    -webkit-flex: 1;
-        -ms-flex: 1;
-            flex: 1; }
+    -webkit-flex: 1 1 0%;
+        -ms-flex: 1 1 0%;
+            flex: 1 1 0%; }
 
   [flex-gt-md="0"] {
     -webkit-flex: 0 0 0%;
@@ -2113,9 +2113,9 @@ md-tab > .md-ripple-container .md-ripple {
             flex-direction: row; }
 
   [flex-lg] {
-    -webkit-flex: 1;
-        -ms-flex: 1;
-            flex: 1; }
+    -webkit-flex: 1 1 0%;
+        -ms-flex: 1 1 0%;
+            flex: 1 1 0%; }
 
   [flex-lg="0"] {
     -webkit-flex: 0 0 0%;
@@ -2477,9 +2477,9 @@ md-tab > .md-ripple-container .md-ripple {
             flex-direction: row; }
 
   [flex-gt-lg] {
-    -webkit-flex: 1;
-        -ms-flex: 1;
-            flex: 1; }
+    -webkit-flex: 1 1 0%;
+        -ms-flex: 1 1 0%;
+            flex: 1 1 0%; }
 
   [flex-gt-lg="0"] {
     -webkit-flex: 0 0 0%;
@@ -3261,7 +3261,8 @@ md-icon {
   pointer-events: none;
   display: -webkit-flex;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  z-index: 0; }
   md-icon object.md-icon {
     display: inline-block; }
 
