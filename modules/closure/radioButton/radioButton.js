@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-279d3b9
+ * v0.7.0-rc3-master-f2996b7
  */
 goog.provide('ng.material.components.radioButton');
 goog.require('ng.material.core');
@@ -32,6 +32,10 @@ angular.module('material.components.radioButton', [
  * The `<md-radio-group>` directive identifies a grouping
  * container for the 1..n grouped radio buttons; specified using nested
  * `<md-radio-button>` tags.
+ *
+ * As per the [material design spec](http://www.google.com/design/spec/style/color.html#color-ui-color-application)
+ * the radio button is in the accent color by default. The primary color palette may be used with
+ * the `md-primary` class.
  *
  * Note: `<md-radio-group>` and `<md-radio-button>` handle tabindex differently
  * than the native `<input type='radio'>` controls. Whereas the native controls
