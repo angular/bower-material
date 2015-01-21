@@ -12,6 +12,9 @@ md-bottom-sheet.md-THEME_NAME-theme {
   md-bottom-sheet.md-THEME_NAME-theme .md-subheader {
     color: '{{foreground-1}}'; }
 
+md-toolbar .md-button.md-THEME_NAME-theme.md-fab {
+  background-color: white; }
+
 .md-button.md-THEME_NAME-theme {
   border-radius: 3px; }
   .md-button.md-THEME_NAME-theme:not([disabled]):hover, .md-button.md-THEME_NAME-theme:not([disabled]):focus {
@@ -363,12 +366,12 @@ md-toast.md-THEME_NAME-theme {
   color: '{{background-50}}'; }
   md-toast.md-THEME_NAME-theme .md-button {
     color: '{{background-50}}'; }
-  md-toast.md-THEME_NAME-theme .md-action {
-    color: '{{primary-A200}}'; }
-    md-toast.md-THEME_NAME-theme .md-action.md-accent {
-      color: '{{accent-A200}}'; }
-    md-toast.md-THEME_NAME-theme .md-action.md-warn {
-      color: '{{warn-A200}}'; }
+    md-toast.md-THEME_NAME-theme .md-button.md-highlight {
+      color: '{{primary-A200}}'; }
+      md-toast.md-THEME_NAME-theme .md-button.md-highlight.md-accent {
+        color: '{{accent-A200}}'; }
+      md-toast.md-THEME_NAME-theme .md-button.md-highlight.md-warn {
+        color: '{{warn-A200}}'; }
 
 md-toolbar.md-THEME_NAME-theme {
   background-color: '{{primary-color}}';
