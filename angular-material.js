@@ -2,14 +2,14 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.theming.palette","material.core.theming","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.icon","material.components.input","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 /*!
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -83,7 +83,7 @@ MdCoreConfigure.$inject = ["$provide", "$mdThemingProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -140,7 +140,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function(){
 
@@ -374,7 +374,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 angular.module('material.core')
 .factory('$mdMedia', mdMediaFactory);
@@ -439,7 +439,7 @@ mdMediaFactory.$inject = ["$mdConstant", "$mdUtil", "$rootScope", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -795,7 +795,7 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -877,7 +877,7 @@ AriaService.$inject = ["$$rAF", "$log", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -1023,7 +1023,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -1420,7 +1420,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
   'use strict';
@@ -1553,7 +1553,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -1961,7 +1961,7 @@ function attrNoDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -1984,7 +1984,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#ff1744',
     'A700': '#d50000',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 300 400 A100'
+    'contrastDarkColors': '50 100 200 300 400 A100',
+    'contrastStrongLightColors': '500 600 700 A200 A400 A700'
   },
   'pink': {
     '50': '#fce4ec',
@@ -2002,7 +2003,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#f50057',
     'A700': '#c51162',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 300 400 A100'
+    'contrastDarkColors': '50 100 200 300 400 A100',
+    'contrastStrongLightColors': '500 600 A200 A400 A700'
   },
   'purple': {
     '50': '#f3e5f5',
@@ -2020,7 +2022,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#d500f9',
     'A700': '#aa00ff',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 A100'
+    'contrastDarkColors': '50 100 200 A100',
+    'contrastStrongLightColors': '300 400 A200 A400 A700'
   },
   'deep-purple': {
     '50': '#ede7f6',
@@ -2038,7 +2041,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#651fff',
     'A700': '#6200ea',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 A100'
+    'contrastDarkColors': '50 100 200 A100',
+    'contrastStrongLightColors': '300 400 A200'
   },
   'indigo': {
     '50': '#e8eaf6',
@@ -2056,7 +2060,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#3d5afe',
     'A700': '#304ffe',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 A100'
+    'contrastDarkColors': '50 100 200 A100',
+    'contrastStrongLightColors': '300 400 A200 A400'
   },
   'blue': {
     '50': '#e3f2fd',
@@ -2074,7 +2079,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#2979ff',
     'A700': '#2962ff',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '100 200 300 400 A100'
+    'contrastDarkColors': '100 200 300 400 A100',
+    'contrastStrongLightColors': '500 600 700 A200 A400 A700'
   },
   'light-blue': {
     '50': '#e1f5fe',
@@ -2092,7 +2098,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#00b0ff',
     'A700': '#0091ea',
     'contrastDefaultColor': 'dark',
-    'contrastLightColors': '500 600 700 800 900 A700'
+    'contrastLightColors': '500 600 700 800 900 A700',
+    'contrastStrongLightColors': '500 600 700 800 A700'
   },
   'cyan': {
     '50': '#e0f7fa',
@@ -2110,7 +2117,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#00e5ff',
     'A700': '#00b8d4',
     'contrastDefaultColor': 'dark',
-    'contrastLightColors': '500 600 700 800 900'
+    'contrastLightColors': '500 600 700 800 900',
+    'contrastStrongLightColors': '500 600 700 800'
   },
   'teal': {
     '50': '#e0f2f1',
@@ -2128,7 +2136,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#1de9b6',
     'A700': '#00bfa5',
     'contrastDefaultColor': 'dark',
-    'contrastLightColors': '500 600 700 800 900'
+    'contrastLightColors': '500 600 700 800 900',
+    'contrastStrongLightColors': '500 600 700'
   },
   'green': {
     '50': '#e8f5e9',
@@ -2146,7 +2155,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#00e676',
     'A700': '#00c853',
     'contrastDefaultColor': 'dark',
-    'contrastLightColors': '500 600 700 800 900'
+    'contrastLightColors': '500 600 700 800 900',
+    'contrastStrongLightColors': '500 600 700'
   },
   'light-green': {
     '50': '#f1f8e9',
@@ -2164,7 +2174,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#76ff03',
     'A700': '#64dd17',
     'contrastDefaultColor': 'dark',
-    'contrastLightColors': '800 900'
+    'contrastLightColors': '800 900',
+    'contrastStrongLightColors': '800 900'
   },
   'lime': {
     '50': '#f9fbe7',
@@ -2182,7 +2193,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#c6ff00',
     'A700': '#aeea00',
     'contrastDefaultColor': 'dark',
-    'contrastLightColors': '900'
+    'contrastLightColors': '900',
+    'contrastStrongLightColors': '900'
   },
   'yellow': {
     '50': '#fffde7',
@@ -2234,7 +2246,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#ff9100',
     'A700': '#ff6d00',
     'contrastDefaultColor': 'dark',
-    'contrastLightColors': '800 900'
+    'contrastLightColors': '800 900',
+    'contrastStrongLightColors': '800 900'
   },
   'deep-orange': {
     '50': '#fbe9e7',
@@ -2252,7 +2265,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#ff3d00',
     'A700': '#dd2c00',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 300 400 A100 A200'
+    'contrastDarkColors': '50 100 200 300 400 A100 A200',
+    'contrastStrongLightColors': '500 600 700 800 900 A400 A700'
   },
   'brown': {
     '50': '#efebe9',
@@ -2270,7 +2284,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#8d6e63',
     'A700': '#5d4037',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200'
+    'contrastDarkColors': '50 100 200',
+    'contrastStrongLightColors': '300 400'
   },
   'grey': {
     '0': '#ffffff',
@@ -2308,7 +2323,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#78909c',
     'A700': '#455a64',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 300'
+    'contrastDarkColors': '50 100 200 300',
+    'contrastStrongLightColors': '400 500'
   }
 });
 })();
@@ -2317,7 +2333,7 @@ angular.module('material.core.theming.palette', [])
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -2374,7 +2390,8 @@ var DARK_SHADOW = '1px 1px 0px rgba(0,0,0,0.4), -1px -1px 0px rgba(0,0,0,0.4)';
 var LIGHT_SHADOW = '';
 
 var DARK_CONTRAST_COLOR = colorToRgbaArray('rgba(0,0,0,0.87)');
-var LIGHT_CONTRAST_COLOR = colorToRgbaArray('rgb(255,255,255)');
+var LIGHT_CONTRAST_COLOR = colorToRgbaArray('rgba(255,255,255,0.87');
+var STRONG_LIGHT_CONTRAST_COLOR = colorToRgbaArray('rgb(255,255,255)');
 
 var THEME_COLOR_TYPES = ['primary', 'accent', 'warn', 'background'];
 var DEFAULT_COLOR_TYPE = 'primary';
@@ -2779,15 +2796,18 @@ function generateThemes($injector) {
   function sanitizePalette(palette) {
     var defaultContrast = palette.contrastDefaultColor;
     var lightColors = palette.contrastLightColors || [];
+    var strongLightColors = palette.contrastStrongLightColors || [];
     var darkColors = palette.contrastDarkColors || [];
 
     // These colors are provided as space-separated lists
     if (typeof lightColors === 'string') lightColors = lightColors.split(' ');
+    if (typeof strongLongColors === 'string') strongLightColors = strongLightColors.split(' ');
     if (typeof darkColors === 'string') darkColors = darkColors.split(' ');
 
     // Cleanup after ourselves
     delete palette.contrastDefaultColor;
     delete palette.contrastLightColors;
+    delete palette.contrastStrongLightColors;
     delete palette.contrastDarkColors;
 
     // Change { 'A100': '#fffeee' } to { 'A100': { value: '#fffeee', contrast:DARK_CONTRAST_COLOR }
@@ -2808,9 +2828,19 @@ function generateThemes($injector) {
       };
       function getContrastColor() {
         if (defaultContrast === 'light') {
-          return darkColors.indexOf(hueName) > -1 ? DARK_CONTRAST_COLOR : LIGHT_CONTRAST_COLOR;
+          if (darkColors.indexOf(hueName) > -1) {
+            return DARK_CONTRAST_COLOR;
+          } else {
+            return strongLightColors.indexOf(hueName) > -1 ? STRONG_LIGHT_CONTRAST_COLOR 
+              : LIGHT_CONTRAST_COLOR;
+          }
         } else {
-          return lightColors.indexOf(hueName) > -1 ? LIGHT_CONTRAST_COLOR : DARK_CONTRAST_COLOR;
+          if (lightColors.indexOf(hueName) > -1) {
+            return strongLightColors.indexOf(hueName) > -1 ? STRONG_LIGHT_CONTRAST_COLOR 
+              : LIGHT_CONTRAST_COLOR;
+          } else {
+            return DARK_CONTRAST_COLOR;
+          }
         }
       }
     });
@@ -2834,8 +2864,8 @@ function checkValidPalette(theme, colorType) {
 function colorToRgbaArray(clr) {
   if (angular.isArray(clr) && clr.length == 3) return clr;
   if (/^rgb/.test(clr)) {
-    return clr.replace(/(^\s*rgba?\(|\)\s*$)/g, '').split(',').map(function(value) {
-      return parseInt(value, 10);
+    return clr.replace(/(^\s*rgba?\(|\)\s*$)/g, '').split(',').map(function(value, i) {
+      return i == 3 ? parseFloat(value, 10) : parseInt(value, 10);
     });
   }
   if (clr.charAt(0) == '#') clr = clr.substring(1);
@@ -2854,8 +2884,11 @@ function colorToRgbaArray(clr) {
 }
 
 function rgba(rgbArray, opacity) {
-  if (rgbArray.length == 4) opacity = rgbArray.pop();
-  return opacity && opacity.length ?
+  if (rgbArray.length == 4) {
+    rgbArray = angular.copy(rgbArray);
+    opacity = rgbArray.pop();
+  }
+  return opacity && (typeof opacity == 'number' || (typeof opacity == 'string' && opacity.length)) ?
     'rgba(' + rgbArray.join(',') + ',' + opacity + ')' :
     'rgb(' + rgbArray.join(',') + ')';
 }
@@ -2866,7 +2899,7 @@ function rgba(rgbArray, opacity) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -2905,7 +2938,7 @@ BackdropDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -3199,7 +3232,7 @@ MdBottomSheetProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -3298,7 +3331,7 @@ MdButtonDirective.$inject = ["$mdInkRipple", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -3357,7 +3390,7 @@ mdCardDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -3495,7 +3528,7 @@ MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$md
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -3556,7 +3589,7 @@ mdContentDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -4052,7 +4085,7 @@ MdDialogProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -4101,7 +4134,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -4152,7 +4185,7 @@ function mdIconDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 
@@ -4479,7 +4512,7 @@ mdMaxlengthDirective.$inject = ["$animate"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -4574,7 +4607,7 @@ function mdItemDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -4702,7 +4735,7 @@ MdProgressCircularDirective.$inject = ["$$rAF", "$mdConstant", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -4831,7 +4864,7 @@ var transforms = (function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -5132,7 +5165,7 @@ mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -5447,7 +5480,7 @@ SidenavController.$inject = ["$scope", "$element", "$attrs", "$mdComponentRegist
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -5863,7 +5896,7 @@ SliderController.$inject = ["$scope", "$element", "$attrs", "$$rAF", "$window", 
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -6175,7 +6208,7 @@ MdSticky.$inject = ["$document", "$mdConstant", "$compile", "$$rAF", "$mdUtil"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -6262,7 +6295,7 @@ MdSubheaderDirective.$inject = ["$mdSticky", "$compile", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -6476,7 +6509,7 @@ function swipePostLink($parse, $mdSwipe, name ) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -6625,7 +6658,7 @@ MdSwitch.$inject = ["mdCheckboxDirective", "$mdTheming", "$mdUtil", "$document",
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -6662,7 +6695,7 @@ angular.module('material.components.tabs', [
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -6806,7 +6839,7 @@ mdInputDirective.$inject = ["$mdUtil", "$log"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -7042,7 +7075,7 @@ MdToastProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -7201,7 +7234,7 @@ mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -7399,7 +7432,7 @@ MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdU
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -7415,7 +7448,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -7480,7 +7513,7 @@ MdTabInkDirective.$inject = ["$$rAF"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -7734,7 +7767,7 @@ TabPaginationDirective.$inject = ["$mdConstant", "$window", "$$rAF", "$$q", "$ti
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -7832,7 +7865,7 @@ TabItemController.$inject = ["$scope", "$element", "$attrs", "$compile", "$anima
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -8084,7 +8117,7 @@ MdTabDirective.$inject = ["$mdInkRipple", "$compile", "$mdUtil", "$mdConstant", 
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
@@ -8230,7 +8263,7 @@ MdTabsController.$inject = ["$scope", "$element", "$mdUtil", "$timeout"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-0e0846f
+ * v0.7.0-rc3-master-dd5b954
  */
 (function() {
 'use strict';
