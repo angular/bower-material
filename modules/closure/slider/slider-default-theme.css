@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-299e155
+ * v0.7.0
  */
 md-slider.md-THEME_NAME-theme .md-track {
   background-color: '{{foreground-3}}'; }
@@ -38,17 +38,17 @@ md-slider.md-THEME_NAME-theme.md-warn .md-sign {
     border-top-color: '{{warn-color}}'; }
 md-slider.md-THEME_NAME-theme.md-warn .md-thumb-text {
   color: '{{warn-contrast}}'; }
-md-slider.md-THEME_NAME-theme.md-primary .md-track-fill {
-  background-color: '{{primary-color}}'; }
-md-slider.md-THEME_NAME-theme.md-primary .md-thumb:after {
-  border-color: '{{primary-color}}';
-  background-color: '{{primary-color}}'; }
-md-slider.md-THEME_NAME-theme.md-primary .md-sign {
-  background-color: '{{primary-color}}'; }
-  md-slider.md-THEME_NAME-theme.md-primary .md-sign:after {
-    border-top-color: '{{primary-color}}'; }
-md-slider.md-THEME_NAME-theme.md-primary .md-thumb-text {
-  color: '{{primary-contrast}}'; }
+md-slider.md-THEME_NAME-theme.md-accent .md-track-fill {
+  background-color: '{{accent-color}}'; }
+md-slider.md-THEME_NAME-theme.md-accent .md-thumb:after {
+  border-color: '{{accent-color}}';
+  background-color: '{{accent-color}}'; }
+md-slider.md-THEME_NAME-theme.md-accent .md-sign {
+  background-color: '{{accent-color}}'; }
+  md-slider.md-THEME_NAME-theme.md-accent .md-sign:after {
+    border-top-color: '{{accent-color}}'; }
+md-slider.md-THEME_NAME-theme.md-accent .md-thumb-text {
+  color: '{{accent-contrast}}'; }
 md-slider.md-THEME_NAME-theme[disabled] .md-thumb:after {
   border-color: '{{foreground-3}}'; }
 md-slider.md-THEME_NAME-theme[disabled]:not(.md-min) .md-thumb:after {

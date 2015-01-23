@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-299e155
+ * v0.7.0
  */
 goog.provide('ng.material.components.sidenav');
 goog.require('ng.material.components.backdrop');
@@ -47,13 +47,6 @@ angular.module('material.components.sidenav', [
  *
  * // Close the given sidenav
  * $mdSidenav(componentId).close();
- *
- * // Exposes whether given sidenav is set to be open
- * $mdSidenav(componentId).isOpen();
- *
- * // Exposes whether given sidenav is locked open
- * // If this is true, the sidenav will be open regardless of isOpen()
- * $mdSidenav(componentId).isLockedOpen();
  * ```
  */
 function SidenavService($mdComponentRegistry, $q) {
@@ -69,9 +62,6 @@ function SidenavService($mdComponentRegistry, $q) {
     return {
       isOpen: function() {
         return instance && instance.isOpen();
-      },
-      isLockedOpen: function() {
-        return instance && instance.isLockedOpen();
       },
       toggle: function() {
         return instance ? instance.toggle() : $q.reject(errorMsg);
@@ -190,7 +180,6 @@ function SidenavDirective($timeout, $animate, $parse, $mdMedia, $mdConstant, $co
      * @param isLocked
      */
     function updateIsLocked(isLocked, oldValue) {
-      scope.isLockedOpen = isLocked;
       if (isLocked === oldValue) {
         element.toggleClass('md-locked-open', !!isLocked);
       } else {
@@ -303,7 +292,6 @@ function SidenavController($scope, $element, $attrs, $mdComponentRegistry, $q) {
 
   self.$toggleOpen = function() { return $q.when($scope.isOpen); };
   self.isOpen = function() { return !!$scope.isOpen; };
-  self.isLockedOpen = function() { return !!$scope.isLockedOpen; };
   self.open   = function() { return self.$toggleOpen( true );  };
   self.close  = function() { return self.$toggleOpen( false ); };
   self.toggle = function() { return self.$toggleOpen( !$scope.isOpen );  };

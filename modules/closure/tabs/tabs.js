@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-299e155
+ * v0.7.0
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.core');
@@ -118,12 +118,11 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout, $mdM
     var tabs = element[0].getElementsByTagName('md-tab');
     var debouncedUpdatePagination = $$rAF.debounce(updatePagination);
     var tabsParent = element.children();
-    var locked = false;
     var state = scope.pagination = {
       page: -1,
       active: false,
-      clickNext: function() { locked || userChangePage(+1); },
-      clickPrevious: function() { locked || userChangePage(-1); }
+      clickNext: function() { userChangePage(+1); },
+      clickPrevious: function() { userChangePage(-1); }
     };
 
     scope.$on('$mdTabsChanged', debouncedUpdatePagination);
@@ -146,10 +145,7 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout, $mdM
       } else {
         // Go to the new page, wait for the page transition to end, then focus.
         oldTab && oldTab.element.blur();
-        setPage(pageIndex).then(function() {
-          locked = false;
-          tab.element.focus();
-        });
+        setPage(pageIndex).then(function() { tab.element.focus(); });
       }
     }
 
@@ -159,7 +155,6 @@ function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout, $mdM
       var newPage = Math.max(0, Math.min(sizeData.pages.length - 1, state.page + increment));
       var newTabIndex = sizeData.pages[newPage][ increment > 0 ? 'firstTabIndex' : 'lastTabIndex' ];
       var newTab = tabsCtrl.itemAt(newTabIndex);
-      locked = true;
       onTabFocus(newTab);
     }
 

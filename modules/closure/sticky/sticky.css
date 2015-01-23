@@ -2,10 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-299e155
+ * v0.7.0
  */
 .md-sticky-clone {
-  z-index: 2;
+  z-index: 1;
   top: 0;
   left: 0;
   right: 0;

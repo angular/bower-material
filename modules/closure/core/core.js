@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-299e155
+ * v0.7.0
  */
 goog.provide('ng.material.core');
 
@@ -32,10 +32,10 @@ function MdCoreConfigure($provide, $mdThemingProvider) {
   $provide.decorator('$$rAF', ['$delegate', '$rootScope', rAFDecorator]);
 
   $mdThemingProvider.theme('default')
-    .primaryPalette('indigo')
-    .accentPalette('pink')
-    .warnPalette('red')
-    .backgroundPalette('grey');
+    .primaryColor('blue')
+    .accentColor('green')
+    .warnColor('red')
+    .backgroundColor('grey');
 
   function rAFDecorator($$rAF, $rootScope) {
     /**
@@ -447,14 +447,10 @@ angular.module('material.core')
 
     fakeNgModel: function() {
       return {
-        $fake: true,
         $setViewValue: function(value) {
           this.$viewValue = value;
           this.$render(value);
           this.$viewChangeListeners.forEach(function(cb) { cb(); });
-        },
-        $isEmpty: function(value) {
-          return (''+value).length === 0;
         },
         $parsers: [],
         $formatters: [],
@@ -1919,8 +1915,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#ff1744',
     'A700': '#d50000',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 300 400 A100',
-    'contrastStrongLightColors': '500 600 700 A200 A400 A700'
+    'contrastDarkColors': '50 100 200 300 400 A100'
   },
   'pink': {
     '50': '#fce4ec',
@@ -1938,8 +1933,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#f50057',
     'A700': '#c51162',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 300 400 A100',
-    'contrastStrongLightColors': '500 600 A200 A400 A700'
+    'contrastDarkColors': '50 100 200 300 400 A100'
   },
   'purple': {
     '50': '#f3e5f5',
@@ -1957,8 +1951,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#d500f9',
     'A700': '#aa00ff',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 A100',
-    'contrastStrongLightColors': '300 400 A200 A400 A700'
+    'contrastDarkColors': '50 100 200 A100'
   },
   'deep-purple': {
     '50': '#ede7f6',
@@ -1976,8 +1969,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#651fff',
     'A700': '#6200ea',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 A100',
-    'contrastStrongLightColors': '300 400 A200'
+    'contrastDarkColors': '50 100 200 A100'
   },
   'indigo': {
     '50': '#e8eaf6',
@@ -1995,8 +1987,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#3d5afe',
     'A700': '#304ffe',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 A100',
-    'contrastStrongLightColors': '300 400 A200 A400'
+    'contrastDarkColors': '50 100 200 A100'
   },
   'blue': {
     '50': '#e3f2fd',
@@ -2014,8 +2005,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#2979ff',
     'A700': '#2962ff',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '100 200 300 400 A100',
-    'contrastStrongLightColors': '500 600 700 A200 A400 A700'
+    'contrastDarkColors': '100 200 300 400 A100'
   },
   'light-blue': {
     '50': '#e1f5fe',
@@ -2033,8 +2023,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#00b0ff',
     'A700': '#0091ea',
     'contrastDefaultColor': 'dark',
-    'contrastLightColors': '500 600 700 800 900 A700',
-    'contrastStrongLightColors': '500 600 700 800 A700'
+    'contrastLightColors': '500 600 700 800 900 A700'
   },
   'cyan': {
     '50': '#e0f7fa',
@@ -2052,8 +2041,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#00e5ff',
     'A700': '#00b8d4',
     'contrastDefaultColor': 'dark',
-    'contrastLightColors': '500 600 700 800 900',
-    'contrastStrongLightColors': '500 600 700 800'
+    'contrastLightColors': '500 600 700 800 900'
   },
   'teal': {
     '50': '#e0f2f1',
@@ -2071,8 +2059,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#1de9b6',
     'A700': '#00bfa5',
     'contrastDefaultColor': 'dark',
-    'contrastLightColors': '500 600 700 800 900',
-    'contrastStrongLightColors': '500 600 700'
+    'contrastLightColors': '500 600 700 800 900'
   },
   'green': {
     '50': '#e8f5e9',
@@ -2090,8 +2077,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#00e676',
     'A700': '#00c853',
     'contrastDefaultColor': 'dark',
-    'contrastLightColors': '500 600 700 800 900',
-    'contrastStrongLightColors': '500 600 700'
+    'contrastLightColors': '500 600 700 800 900'
   },
   'light-green': {
     '50': '#f1f8e9',
@@ -2109,8 +2095,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#76ff03',
     'A700': '#64dd17',
     'contrastDefaultColor': 'dark',
-    'contrastLightColors': '800 900',
-    'contrastStrongLightColors': '800 900'
+    'contrastLightColors': '800 900'
   },
   'lime': {
     '50': '#f9fbe7',
@@ -2128,8 +2113,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#c6ff00',
     'A700': '#aeea00',
     'contrastDefaultColor': 'dark',
-    'contrastLightColors': '900',
-    'contrastStrongLightColors': '900'
+    'contrastLightColors': '900'
   },
   'yellow': {
     '50': '#fffde7',
@@ -2181,8 +2165,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#ff9100',
     'A700': '#ff6d00',
     'contrastDefaultColor': 'dark',
-    'contrastLightColors': '800 900',
-    'contrastStrongLightColors': '800 900'
+    'contrastLightColors': '800 900'
   },
   'deep-orange': {
     '50': '#fbe9e7',
@@ -2200,8 +2183,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#ff3d00',
     'A700': '#dd2c00',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 300 400 A100 A200',
-    'contrastStrongLightColors': '500 600 700 800 900 A400 A700'
+    'contrastDarkColors': '50 100 200 300 400 A100 A200'
   },
   'brown': {
     '50': '#efebe9',
@@ -2219,8 +2201,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#8d6e63',
     'A700': '#5d4037',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200',
-    'contrastStrongLightColors': '300 400'
+    'contrastDarkColors': '50 100 200'
   },
   'grey': {
     '0': '#ffffff',
@@ -2258,8 +2239,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#78909c',
     'A700': '#455a64',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 300',
-    'contrastStrongLightColors': '400 500'
+    'contrastDarkColors': '50 100 200 300'
   }
 });
 })();
@@ -2319,8 +2299,7 @@ var DARK_SHADOW = '1px 1px 0px rgba(0,0,0,0.4), -1px -1px 0px rgba(0,0,0,0.4)';
 var LIGHT_SHADOW = '';
 
 var DARK_CONTRAST_COLOR = colorToRgbaArray('rgba(0,0,0,0.87)');
-var LIGHT_CONTRAST_COLOR = colorToRgbaArray('rgba(255,255,255,0.87');
-var STRONG_LIGHT_CONTRAST_COLOR = colorToRgbaArray('rgb(255,255,255)');
+var LIGHT_CONTRAST_COLOR = colorToRgbaArray('rgb(255,255,255)');
 
 var THEME_COLOR_TYPES = ['primary', 'accent', 'warn', 'background'];
 var DEFAULT_COLOR_TYPE = 'primary';
@@ -2328,10 +2307,10 @@ var DEFAULT_COLOR_TYPE = 'primary';
 // A color in a theme will use these hues by default, if not specified by user.
 var LIGHT_DEFAULT_HUES = {
   'accent': {
-    'default': 'A200',
-    'hue-1': 'A100',
+    'default': 'A700',
+    'hue-1': 'A200',
     'hue-2': 'A400',
-    'hue-3': 'A700'
+    'hue-3': 'A100'
   }
 };
 var DARK_DEFAULT_HUES = {
@@ -2422,7 +2401,7 @@ function ThemingProvider($mdColorPalette) {
   // Register a theme (which is a collection of color palettes to use with various states
   // ie. warn, accent, primary )
   // Optionally inherit from an existing theme
-  // $mdThemingProvider.theme('custom-theme').primaryPalette('red');
+  // $mdThemingProvider.theme('custom-theme').primaryColor('red');
   function registerTheme(name, inheritFrom) {
     inheritFrom = inheritFrom || 'default';
     if (THEMES[name]) return THEMES[name];
@@ -2487,7 +2466,7 @@ function ThemingProvider($mdColorPalette) {
 
     THEME_COLOR_TYPES.forEach(function(colorType) {
       var defaultHues = (self.isDark ? DARK_DEFAULT_HUES : LIGHT_DEFAULT_HUES)[colorType];
-      self[colorType + 'Palette'] = function setPaletteType(paletteName, hues) {
+      self[colorType + 'Color'] = function setColorType(paletteName, hues) {
         var color = self.colors[colorType] = {
           name: paletteName,
           hues: angular.extend({}, defaultHues, hues)
@@ -2516,14 +2495,8 @@ function ThemingProvider($mdColorPalette) {
             );
           }
         });
-        return self;
-      };
 
-      self[colorType + 'Color'] = function() {
-        var args = Array.prototype.slice.call(arguments);
-        console.warn('$mdThemingProviderTheme.' + colorType + 'Color() has been depricated. ' +
-                     'Use $mdThemingProviderTheme.' + colorType + 'Palette() instead.');
-        return self[colorType + 'Palette'].apply(self, args);
+        return self;
       };
     });
   }
@@ -2709,10 +2682,6 @@ function generateThemes($injector) {
     THEME_COLOR_TYPES.forEach(function(colorType) {
       styleString += parseRules(theme, colorType, rulesByType[colorType] + '');
     });
-    if (theme.colors.primary.name == theme.colors.accent.name) {
-      console.warn("$mdThemingProvider: Using the same palette for primary and" +
-                   "accent. This violates the material design spec.");
-    }
   });
 
   // Insert our newly minted styles into the DOM
@@ -2729,18 +2698,15 @@ function generateThemes($injector) {
   function sanitizePalette(palette) {
     var defaultContrast = palette.contrastDefaultColor;
     var lightColors = palette.contrastLightColors || [];
-    var strongLightColors = palette.contrastStrongLightColors || [];
     var darkColors = palette.contrastDarkColors || [];
 
-    // These colors are provided as space-separated lists
+    // Sass provides these colors as space-separated lists
     if (typeof lightColors === 'string') lightColors = lightColors.split(' ');
-    if (typeof strongLongColors === 'string') strongLightColors = strongLightColors.split(' ');
     if (typeof darkColors === 'string') darkColors = darkColors.split(' ');
 
     // Cleanup after ourselves
     delete palette.contrastDefaultColor;
     delete palette.contrastLightColors;
-    delete palette.contrastStrongLightColors;
     delete palette.contrastDarkColors;
 
     // Change { 'A100': '#fffeee' } to { 'A100': { value: '#fffeee', contrast:DARK_CONTRAST_COLOR }
@@ -2761,19 +2727,9 @@ function generateThemes($injector) {
       };
       function getContrastColor() {
         if (defaultContrast === 'light') {
-          if (darkColors.indexOf(hueName) > -1) {
-            return DARK_CONTRAST_COLOR;
-          } else {
-            return strongLightColors.indexOf(hueName) > -1 ? STRONG_LIGHT_CONTRAST_COLOR 
-              : LIGHT_CONTRAST_COLOR;
-          }
+          return darkColors.indexOf(hueName) > -1 ? DARK_CONTRAST_COLOR : LIGHT_CONTRAST_COLOR;
         } else {
-          if (lightColors.indexOf(hueName) > -1) {
-            return strongLightColors.indexOf(hueName) > -1 ? STRONG_LIGHT_CONTRAST_COLOR 
-              : LIGHT_CONTRAST_COLOR;
-          } else {
-            return DARK_CONTRAST_COLOR;
-          }
+          return lightColors.indexOf(hueName) > -1 ? LIGHT_CONTRAST_COLOR : DARK_CONTRAST_COLOR;
         }
       }
     });
@@ -2797,8 +2753,8 @@ function checkValidPalette(theme, colorType) {
 function colorToRgbaArray(clr) {
   if (angular.isArray(clr) && clr.length == 3) return clr;
   if (/^rgb/.test(clr)) {
-    return clr.replace(/(^\s*rgba?\(|\)\s*$)/g, '').split(',').map(function(value, i) {
-      return i == 3 ? parseFloat(value, 10) : parseInt(value, 10);
+    return clr.replace(/(^\s*rgba?\(|\)\s*$)/g, '').split(',').map(function(value) {
+      return parseInt(value, 10);
     });
   }
   if (clr.charAt(0) == '#') clr = clr.substring(1);
@@ -2817,11 +2773,8 @@ function colorToRgbaArray(clr) {
 }
 
 function rgba(rgbArray, opacity) {
-  if (rgbArray.length == 4) {
-    rgbArray = angular.copy(rgbArray);
-    opacity = rgbArray.pop();
-  }
-  return opacity && (typeof opacity == 'number' || (typeof opacity == 'string' && opacity.length)) ?
+  if (rgbArray.length == 4) opacity = rgbArray.pop();
+  return opacity && opacity.length ?
     'rgba(' + rgbArray.join(',') + ',' + opacity + ')' :
     'rgb(' + rgbArray.join(',') + ')';
 }

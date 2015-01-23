@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-299e155
+ * v0.7.0
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -180,7 +180,7 @@ function inputTextareaDirective($mdUtil, $window, $compile, $animate) {
   function postLink(scope, element, attr, ctrls) {
 
     var containerCtrl = ctrls[0];
-    var ngModelCtrl = ctrls[1] || $mdUtil.fakeNgModel();
+    var ngModelCtrl = ctrls[1];
 
     if ( !containerCtrl ) return;
     if (containerCtrl.input) {
@@ -197,31 +197,38 @@ function inputTextareaDirective($mdUtil, $window, $compile, $animate) {
       setupTextarea();
     }
 
-    function ngModelPipelineCheckValue(arg) {
-      containerCtrl.setHasValue(!ngModelCtrl.$isEmpty(arg));
-      return arg;
-    }
-    function inputCheckValue() {
-      // An input's value counts if its length > 0,
-      // or if the input's validity state says it has bad input (eg string in a number input)
-      containerCtrl.setHasValue(element.val().length > 0 || (element[0].validity||{}).badInput);
-    }
+    var isEmpty = ngModelCtrl ? 
+      ngModelCtrl.$isEmpty : 
+      function() { return ('' + element.val()).length === 0; };
 
-    scope.$watch(function() {
-      return ngModelCtrl.$dirty && ngModelCtrl.$invalid;
-    }, containerCtrl.setInvalid);
+    // When the input value changes, check if it "has" a value, and
+    // set the appropriate class on the input group
+    if (ngModelCtrl) {
+      scope.$watch(function() {
+        return ngModelCtrl.$dirty && ngModelCtrl.$invalid;
+      }, containerCtrl.setInvalid);
       
-    ngModelCtrl.$parsers.push(ngModelPipelineCheckValue);
-    ngModelCtrl.$formatters.push(ngModelPipelineCheckValue);
+      ngModelCtrl.$formatters.push(checkHasValue);
+      ngModelCtrl.$parsers.push(checkHasValue);
+    } else {
+      checkHasValue();
+    }
+    element.on('input', checkHasValue);
+
+    function checkHasValue(value) {
+      containerCtrl.setHasValue(
+        !isEmpty(value) ||
+        (element[0].validity || {}).badInput // allow badInput to count as having a value.
+      );
+      return value;
+    }
 
     element
-      .on('input', inputCheckValue)
       .on('focus', function(ev) {
         containerCtrl.setFocused(true);
       })
       .on('blur', function(ev) {
         containerCtrl.setFocused(false);
-        inputCheckValue();
       });
 
     scope.$on('$destroy', function() {

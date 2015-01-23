@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3-master-299e155
+ * v0.7.0
  */
 goog.provide('ng.material.components.button');
 goog.require('ng.material.core');
@@ -33,10 +33,6 @@ angular.module('material.components.button', [
  *
  * If you supply a `href` or `ng-href` attribute, it will become an `<a>` element. Otherwise, it will
  * become a `<button>` element.
- *
- * As per the [material design spec](http://www.google.com/design/spec/style/color.html#color-ui-color-application)
- * the FAB button is in the accent color by default. The primary color palette may be used with
- * the `md-primary` class.
  *
  * @param {boolean=} md-no-ink If present, disable ripple ink effects.
  * @param {expression=} ng-disabled En/Disable based on the expression
