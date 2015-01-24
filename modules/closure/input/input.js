@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-f1d7f83
+ * v0.7.0-master-7355e8b
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -51,8 +51,8 @@ angular.module('material.components.input', [
  *
  * </hljs>
  */
-function mdInputContainerDirective($mdTheming, $animate, $mdUtil) {
-  ContainerCtrl.$inject = ["$scope", "$element"];
+function mdInputContainerDirective($mdTheming) {
+  ContainerCtrl.$inject = ["$scope", "$element", "$mdUtil"];
   return {
     restrict: 'E',
     link: postLink,
@@ -62,18 +62,18 @@ function mdInputContainerDirective($mdTheming, $animate, $mdUtil) {
   function postLink(scope, element, attr) {
     $mdTheming(element);
   }
-  function ContainerCtrl($scope, $element) {
+  function ContainerCtrl($scope, $element, $mdUtil) {
     var self = this;
 
     self.element = $element;
     self.setFocused = function(isFocused) {
-      $animate[isFocused ? 'addClass' : 'removeClass']($element, 'md-input-focused');
+      $element.toggleClass('md-input-focused', !!isFocused);
     };
     self.setHasValue = function(hasValue) {
-      $animate[hasValue ? 'addClass' : 'removeClass']($element, 'md-input-has-value');
+      $element.toggleClass('md-input-has-value', !!hasValue);
     };
     self.setInvalid = function(isInvalid) {
-      $animate[isInvalid ? 'addClass' : 'removeClass']($element, 'md-input-invalid');
+      $element.toggleClass('md-input-invalid', !!isInvalid);
     };
 
     $scope.$watch(function() {
@@ -85,7 +85,7 @@ function mdInputContainerDirective($mdTheming, $animate, $mdUtil) {
     });
   }
 }
-mdInputContainerDirective.$inject = ["$mdTheming", "$animate", "$mdUtil"];
+mdInputContainerDirective.$inject = ["$mdTheming"];
 
 function labelDirective() {
   return {
@@ -218,15 +218,11 @@ function inputTextareaDirective($mdUtil, $window, $compile, $animate) {
     element
       .on('input', inputCheckValue)
       .on('focus', function(ev) {
-        scope.$evalAsync(function() {
-          containerCtrl.setFocused(true);
-        });
+        containerCtrl.setFocused(true);
       })
       .on('blur', function(ev) {
-        scope.$evalAsync(function() {
-          containerCtrl.setFocused(false);
-          inputCheckValue();
-        });
+        containerCtrl.setFocused(false);
+        inputCheckValue();
       });
 
     scope.$on('$destroy', function() {
