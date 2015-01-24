@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0
+ * v0.7.0-master-956632d
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -3261,7 +3261,8 @@ md-icon {
   pointer-events: none;
   display: -webkit-flex;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  z-index: 0; }
   md-icon object.md-icon {
     display: inline-block; }
 
@@ -5500,7 +5501,7 @@ md-slider {
     display: block; }
 
 .md-sticky-clone {
-  z-index: 1;
+  z-index: 2;
   top: 0;
   left: 0;
   right: 0;
@@ -5925,7 +5926,7 @@ md-toast {
               transform: translate3d(100%, 0%, 0); }
   md-toast .md-action {
     line-height: 19px;
-    padding-left: 24px;
+    margin-left: 24px;
     cursor: pointer;
     text-transform: uppercase;
     float: right; }
