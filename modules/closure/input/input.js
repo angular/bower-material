@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-12febb1
+ * v0.7.0-master-f1d7f83
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -20,7 +20,8 @@ angular.module('material.components.input', [
   .directive('label', labelDirective)
   .directive('input', inputTextareaDirective)
   .directive('textarea', inputTextareaDirective)
-  .directive('mdMaxlength', mdMaxlengthDirective);
+  .directive('mdMaxlength', mdMaxlengthDirective)
+  .directive('placeholder', placeholderDirective);
 
 /**
  * @ngdoc directive
@@ -50,8 +51,8 @@ angular.module('material.components.input', [
  *
  * </hljs>
  */
-function mdInputContainerDirective($mdTheming) {
-  ContainerCtrl.$inject = ["$scope", "$element", "$mdUtil"];
+function mdInputContainerDirective($mdTheming, $animate, $mdUtil) {
+  ContainerCtrl.$inject = ["$scope", "$element"];
   return {
     restrict: 'E',
     link: postLink,
@@ -61,18 +62,18 @@ function mdInputContainerDirective($mdTheming) {
   function postLink(scope, element, attr) {
     $mdTheming(element);
   }
-  function ContainerCtrl($scope, $element, $mdUtil) {
+  function ContainerCtrl($scope, $element) {
     var self = this;
 
     self.element = $element;
     self.setFocused = function(isFocused) {
-      $element.toggleClass('md-input-focused', !!isFocused);
+      $animate[isFocused ? 'addClass' : 'removeClass']($element, 'md-input-focused');
     };
     self.setHasValue = function(hasValue) {
-      $element.toggleClass('md-input-has-value', !!hasValue);
+      $animate[hasValue ? 'addClass' : 'removeClass']($element, 'md-input-has-value');
     };
     self.setInvalid = function(isInvalid) {
-      $element.toggleClass('md-input-invalid', !!isInvalid);
+      $animate[isInvalid ? 'addClass' : 'removeClass']($element, 'md-input-invalid');
     };
 
     $scope.$watch(function() {
@@ -84,7 +85,7 @@ function mdInputContainerDirective($mdTheming) {
     });
   }
 }
-mdInputContainerDirective.$inject = ["$mdTheming"];
+mdInputContainerDirective.$inject = ["$mdTheming", "$animate", "$mdUtil"];
 
 function labelDirective() {
   return {
@@ -217,11 +218,15 @@ function inputTextareaDirective($mdUtil, $window, $compile, $animate) {
     element
       .on('input', inputCheckValue)
       .on('focus', function(ev) {
-        containerCtrl.setFocused(true);
+        scope.$evalAsync(function() {
+          containerCtrl.setFocused(true);
+        });
       })
       .on('blur', function(ev) {
-        containerCtrl.setFocused(false);
-        inputCheckValue();
+        scope.$evalAsync(function() {
+          containerCtrl.setFocused(false);
+          inputCheckValue();
+        });
       });
 
     scope.$on('$destroy', function() {
@@ -324,5 +329,20 @@ function mdMaxlengthDirective($animate) {
   }
 }
 mdMaxlengthDirective.$inject = ["$animate"];
+
+function placeholderDirective() {
+  return {
+    restrict: 'A',
+    require: '^mdInputContainer',
+    link: postLink
+  };
+
+  function postLink(scope, element, attr, inputContainer) {
+    var placeholderText = attr.placeholder;
+    element.removeAttr('placeholder');
+
+    inputContainer.element.append('<div class="md-placeholder">' + placeholderText + '</div>');
+  }
+}
 
 })();
