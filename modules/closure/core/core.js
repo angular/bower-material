@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-8364fb5
+ * v0.7.0-master-f592f21
  */
 goog.provide('ng.material.core');
 
@@ -1034,7 +1034,7 @@ angular.module('material.core')
       // Because we prevent scroll events, this is necessary.
       if (!this.state.registeredParent) return this.cancel();
 
-      this.state.pos = {x: pointer.x, y: pointer.x};
+      this.state.pos = {x: pointer.x, y: pointer.y};
       this.state.timeout = $timeout(angular.bind(this, function holdDelayFn() {
         this.dispatchEvent(ev, '$md.hold');
         this.cancel(); //we're done!
