@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-1d5ef95
+ * v0.7.0-master-8364fb5
  */
 goog.provide('ng.material.components.sticky');
 goog.require('ng.material.components.content');
@@ -74,7 +74,7 @@ function MdSticky($document, $mdConstant, $compile, $$rAF, $mdUtil) {
 
     // Refresh elements is very expensive, so we use the debounced
     // version when possible.
-    var debouncedRefreshElements = $$rAF.debounce(refreshElements);
+    var debouncedRefreshElements = $$rAF.throttle(refreshElements);
 
     // setupAugmentedScrollEvents gives us `$scrollstart` and `$scroll`,
     // more reliable than `scroll` on android.

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-1d5ef95
+ * v0.7.0-master-8364fb5
  */
 goog.provide('ng.material.components.checkbox');
 goog.require('ng.material.core');
@@ -99,12 +99,8 @@ function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant,
         0: {}
       }, attr, [ngModelCtrl]);
 
-      // Used by switch. in Switch, we don't want click listeners; we have more granular
-      // touchup/touchdown listening.
-      if (!attr.mdNoClick) {
-        element.on('click', listener);
-      }
-      element.on('keypress', keypressHandler);
+      element.on('click', listener)
+        .on('keypress', keypressHandler);
       ngModelCtrl.$render = render;
 
       function keypressHandler(ev) {
