@@ -1,6 +1,5 @@
 md-backdrop.md-opaque.md-THEME_NAME-theme {
-  background-color: '{{foreground-4-0.5}}';
-  position: absolute; }
+  background-color: '{{foreground-4-0.5}}'; }
 
 md-bottom-sheet.md-THEME_NAME-theme {
   background-color: '{{background-50}}';
