@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-f592f21
+ * v0.7.0-master-19f47b5
  */
 goog.provide('ng.material.components.switch');
 goog.require('ng.material.components.checkbox');
@@ -95,6 +95,12 @@ function MdSwitch(mdCheckboxDirective, $mdTheming, $mdUtil, $document, $mdConsta
       });
 
       checkboxLink(scope, element, attr, ngModel);
+
+      if (angular.isDefined(attr.ngDisabled)) {
+        scope.$watch(disabledGetter, function(isDisabled) {
+          element.attr('tabindex', isDisabled ? -1 : 0);
+        });
+      }
 
       // These events are triggered by setup drag
       $mdGesture.register(switchContainer, 'drag');
