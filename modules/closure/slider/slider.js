@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-19f47b5
+ * v0.7.0-master-41c2d65
  */
 goog.provide('ng.material.components.slider');
 goog.require('ng.material.core');
@@ -276,7 +276,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       activeTrack.css('width', (percent * 100) + '%');
       thumbContainer.css(
         $mdConstant.CSS.TRANSFORM,
-        'translate3d(' + getSliderDimensions().width * percent + 'px,0,0)'
+        'translate3d(' + (percent * 100) + '%,0,0)'
       );
       element.toggleClass('md-min', percent === 0);
     }
