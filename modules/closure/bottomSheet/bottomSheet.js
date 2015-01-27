@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-f13dd87
+ * v0.7.0-master-8273126
  */
 goog.provide('ng.material.components.bottomSheet');
 goog.require('ng.material.components.backdrop');
@@ -90,6 +90,8 @@ function MdBottomSheetDirective() {
  *   - `controllerAs` - `{string=}`: An alias to assign the controller to on the scope.
  *   - `parent` - `{element=}`: The element to append the bottom sheet to. Defaults to appending
  *     to the root element of the application.
+ *   - `disableParentScroll` - `{boolean=}`: Whether to disable scrolling while the bottom sheet is open.
+ *     Default true.
  *
  * @returns {promise} A promise that can be resolved with `$mdBottomSheet.hide()` or
  * rejected with `$mdBottomSheet.cancel()`.
@@ -127,6 +129,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
   bottomSheetDefaults.$inject = ["$animate", "$mdConstant", "$timeout", "$$rAF", "$compile", "$mdTheming", "$mdBottomSheet", "$rootElement", "$rootScope", "$mdGesture"];
   return $$interimElementProvider('$mdBottomSheet')
     .setDefaults({
+      methods: ['disableParentScroll', 'escapeToClose', 'targetEvent'],
       options: bottomSheetDefaults
     });
 
@@ -139,7 +142,8 @@ function MdBottomSheetProvider($$interimElementProvider) {
       targetEvent: null,
       onShow: onShow,
       onRemove: onRemove,
-      escapeToClose: true
+      escapeToClose: true,
+      disableParentScroll: true
     };
 
     function onShow(scope, element, options) {
@@ -159,6 +163,11 @@ function MdBottomSheetProvider($$interimElementProvider) {
       // Give up focus on calling item
       options.targetEvent && angular.element(options.targetEvent.target).blur();
       $mdTheming.inherit(bottomSheet.element, options.parent);
+
+      if (options.disableParentScroll) {
+        options.lastOverflow = options.parent.css('overflow');
+        options.parent.css('overflow', 'hidden');
+      }
 
       return $animate.enter(bottomSheet.element, options.parent)
         .then(function() {
@@ -183,6 +192,12 @@ function MdBottomSheetProvider($$interimElementProvider) {
 
     function onRemove(scope, element, options) {
       var bottomSheet = options.bottomSheet;
+
+      if (options.disableParentScroll) {
+        options.parent.css('overflow', options.lastOverflow);
+        delete options.lastOverflow;
+      }
+
       $animate.leave(backdrop);
       return $animate.leave(bottomSheet.element).then(function() {
         bottomSheet.cleanup();

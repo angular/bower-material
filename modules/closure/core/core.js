@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-f13dd87
+ * v0.7.0-master-8273126
  */
 goog.provide('ng.material.core');
 
@@ -2528,7 +2528,7 @@ var LIGHT_FOREGROUND = {
   name: 'light',
   '1': 'rgba(255,255,255,1.0)',
   '2': 'rgba(255,255,255,0.7)',
-  '3': 'rgba(255,255,255,0.35)',
+  '3': 'rgba(255,255,255,0.3)',
   '4': 'rgba(255,255,255,0.12)'
 };
 
