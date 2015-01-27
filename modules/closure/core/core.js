@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-dde9ab7
+ * v0.7.0-master-e190abe
  */
 goog.provide('ng.material.core');
 
@@ -831,8 +831,11 @@ var END_EVENTS = 'mouseup mouseleave touchend touchcancel pointerup pointercance
 var HANDLERS;
 
 document.addEventListener('click', function(ev) {
+  // Space/enter on a button, and submit events, can send clicks
+  var isKeyClick = ev.clientX === 0 && ev.clientY === 0 && 
+    ev.x === 0 && ev.y === 0;
   // Prevent clicks unless they're sent by material
-  if (!ev.$material) {
+  if (!isKeyClick && !ev.$material) {
     ev.preventDefault();
     ev.stopPropagation();
   }
