@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-2a7f346
+ * v0.7.0-master-65ea166
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -333,11 +333,13 @@ mdMaxlengthDirective.$inject = ["$animate"];
 function placeholderDirective() {
   return {
     restrict: 'A',
-    require: '^mdInputContainer',
+    require: '^^?mdInputContainer',
     link: postLink
   };
 
   function postLink(scope, element, attr, inputContainer) {
+    if (!inputContainer) return;
+
     var placeholderText = attr.placeholder;
     element.removeAttr('placeholder');
 
