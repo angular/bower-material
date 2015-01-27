@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-f6f56c9
+ * v0.7.0-master-f3af15a
  */
 goog.provide('ng.material.core');
 
@@ -2834,7 +2834,6 @@ function ThemingProvider($mdColorPalette) {
 
       function changeTheme(theme) {
         if (!registered(name)) {
-          debugger;
           $log.warn('attempted to use unregistered theme \'' + theme + '\'');
         }
         var oldTheme = el.data('$mdThemeName');
