@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-41c2d65
+ * v0.7.0-master-72ced4b
  */
 goog.provide('ng.material.core');
 
@@ -3087,7 +3087,7 @@ function colorToRgbaArray(clr) {
 function rgba(rgbArray, opacity) {
   if (rgbArray.length == 4) {
     rgbArray = angular.copy(rgbArray);
-    opacity = rgbArray.pop();
+    opacity ? rgbArray.pop() : opacity = rgbArray.pop();
   }
   return opacity && (typeof opacity == 'number' || (typeof opacity == 'string' && opacity.length)) ?
     'rgba(' + rgbArray.join(',') + ',' + opacity + ')' :

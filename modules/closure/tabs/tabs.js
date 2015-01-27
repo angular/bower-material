@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-41c2d65
+ * v0.7.0-master-72ced4b
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.core');
@@ -86,7 +86,7 @@ function MdTabInkDirective($$rAF) {
         element
             .removeClass(classNames.join(' '))
             .addClass(classNames[classIndex])
-            .css({ left: (data.left + 1) + 'px', right: right + 'px' });
+            .css({ left: data.left + 'px', right: right + 'px' });
 
         lastIndex = index;
       }
