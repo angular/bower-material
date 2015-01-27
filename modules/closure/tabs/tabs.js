@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-572da37
+ * v0.7.0-master-312dcc6
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.core');
@@ -552,6 +552,8 @@ function MdTabDirective($mdInkRipple, $compile, $mdUtil, $mdConstant, $timeout) 
 
       var tabItemCtrl = ctrls[0]; // Controller for THIS tabItemCtrl
       var tabsCtrl = ctrls[1]; // Controller for ALL tabs
+
+      $timeout(element.addClass.bind(element, 'md-tab-themed'), 0, false);
 
       scope.$watch(
           function () { return attr.label; },
