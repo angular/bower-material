@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-06c52b6
+ * v0.7.0-master-f6f56c9
  */
 goog.provide('ng.material.core');
 
@@ -2638,7 +2638,7 @@ function ThemingProvider($mdColorPalette) {
 
   // Default theme defined in core.js
 
-  ThemingService.$inject = ["$rootScope"];
+  ThemingService.$inject = ["$rootScope", "$log"];
   return themingProvider = {
     definePalette: definePalette,
     extendPalette: extendPalette,
@@ -2817,7 +2817,7 @@ function ThemingProvider($mdColorPalette) {
    * @param {el=} element to apply theming to
    */
   /* @ngInject */
-  function ThemingService($rootScope) {
+  function ThemingService($rootScope, $log) {
     applyTheme.inherit = function(el, parent) {
       var ctrl = parent.controller('mdTheme');
 
@@ -2833,6 +2833,10 @@ function ThemingProvider($mdColorPalette) {
       }
 
       function changeTheme(theme) {
+        if (!registered(name)) {
+          debugger;
+          $log.warn('attempted to use unregistered theme \'' + theme + '\'');
+        }
         var oldTheme = el.data('$mdThemeName');
         if (oldTheme) el.removeClass('md-' + oldTheme +'-theme');
         el.addClass('md-' + theme + '-theme');
@@ -2840,7 +2844,14 @@ function ThemingProvider($mdColorPalette) {
       }
     };
 
+    applyTheme.registered = registered;
+
     return applyTheme;
+
+    function registered(theme) {
+      if (theme === undefined || theme === '') return true;
+      return THEMES[theme] !== undefined;
+    }
 
     function applyTheme(scope, el) {
       // Allow us to be invoked via a linking function signature.
@@ -2857,13 +2868,16 @@ function ThemingProvider($mdColorPalette) {
 }
 ThemingProvider.$inject = ["$mdColorPalette"];
 
-function ThemingDirective($interpolate) {
+function ThemingDirective($mdTheming, $interpolate, $log) {
   return {
     priority: 100,
     link: {
       pre: function(scope, el, attrs) {
         var ctrl = {
           $setTheme: function(theme) {
+            if (!$mdTheming.registered(theme)) {
+              $log.warn('attempted to use unregistered theme \'' + theme + '\'');
+            }
             ctrl.$mdTheme = theme;
           }
         };
@@ -2874,7 +2888,7 @@ function ThemingDirective($interpolate) {
     }
   };
 }
-ThemingDirective.$inject = ["$interpolate"];
+ThemingDirective.$inject = ["$mdTheming", "$interpolate", "$log"];
 
 function ThemableDirective($mdTheming) {
   return $mdTheming;
