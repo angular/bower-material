@@ -33,9 +33,9 @@ md-toolbar .md-button.md-THEME_NAME-theme.md-fab {
       background-color: '{{accent-A700}}'; }
   .md-button.md-THEME_NAME-theme.md-raised {
     color: '{{background-contrast}}';
-    background-color: '{{background-500-0.185}}'; }
+    background-color: '{{background-50}}'; }
     .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):focus {
-      background-color: '{{background-500-0.3}}'; }
+      background-color: '{{background-200}}'; }
   .md-button.md-THEME_NAME-theme.md-warn {
     color: '{{warn-color}}'; }
     .md-button.md-THEME_NAME-theme.md-warn.md-raised, .md-button.md-THEME_NAME-theme.md-warn.md-fab {
