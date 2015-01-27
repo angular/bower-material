@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-b7c43a1
+ * v0.7.0-master-dde9ab7
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -3017,6 +3017,11 @@ md-bottom-sheet {
     .md-button.md-fab md-icon {
       line-height: 56px;
       margin-top: 0; }
+    .md-button.md-fab.md-mini {
+      width: 40px;
+      height: 40px; }
+      .md-button.md-fab.md-mini md-icon {
+        line-height: 40px; }
   .md-button:not([disabled]).md-raised:focus, .md-button:not([disabled]).md-raised:hover, .md-button:not([disabled]).md-fab:focus, .md-button:not([disabled]).md-fab:hover {
     -webkit-transform: translate3d(0, -1px, 0);
             transform: translate3d(0, -1px, 0); }
@@ -3222,7 +3227,7 @@ md-dialog {
     padding: 24px;
     overflow: auto;
     -webkit-overflow-scrolling: touch; }
-    md-dialog md-content:not([layout=row]) *:first-child {
+    md-dialog md-content:not([layout=row]) > *:first-child {
       margin-top: 0px; }
   md-dialog .md-actions {
     display: -webkit-flex;
@@ -5583,6 +5588,8 @@ md-slider {
       top: 0;
       right: -16px;
       content: ''; }
+    .md-subheader:not(.md-sticky-no-effect).md-sticky-clone {
+      z-index: 2; }
     .md-subheader:not(.md-sticky-no-effect)[sticky-state="active"] {
       margin-top: -2px; }
     .md-subheader:not(.md-sticky-no-effect):not(.md-sticky-clone)[sticky-prev-state="active"]:after {
