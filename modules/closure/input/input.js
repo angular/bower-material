@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-54338d7
+ * v0.7.0-master-572da37
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -36,6 +36,8 @@ angular.module('material.components.input', [
  * Input and textarea elements will not behave properly unless the md-input-container 
  * parent is provided.
  *
+ * @param md-is-error {expression=} When the given expression evaluates to true, the input container will go into error state. Defaults to erroring if the input has been touched and is invalid.
+ *
  * @usage
  * <hljs lang="html">
  *
@@ -51,8 +53,8 @@ angular.module('material.components.input', [
  *
  * </hljs>
  */
-function mdInputContainerDirective($mdTheming) {
-  ContainerCtrl.$inject = ["$scope", "$element", "$mdUtil"];
+function mdInputContainerDirective($mdTheming, $parse) {
+  ContainerCtrl.$inject = ["$scope", "$element", "$attrs"];
   return {
     restrict: 'E',
     link: postLink,
@@ -62,8 +64,10 @@ function mdInputContainerDirective($mdTheming) {
   function postLink(scope, element, attr) {
     $mdTheming(element);
   }
-  function ContainerCtrl($scope, $element, $mdUtil) {
+  function ContainerCtrl($scope, $element, $attrs) {
     var self = this;
+
+    self.isErrorGetter = $attrs.mdIsError && $parse($attrs.mdIsError);
 
     self.element = $element;
     self.setFocused = function(isFocused) {
@@ -75,7 +79,6 @@ function mdInputContainerDirective($mdTheming) {
     self.setInvalid = function(isInvalid) {
       $element.toggleClass('md-input-invalid', !!isInvalid);
     };
-
     $scope.$watch(function() {
       return self.label && self.input;
     }, function(hasLabelAndInput) {
@@ -85,7 +88,7 @@ function mdInputContainerDirective($mdTheming) {
     });
   }
 }
-mdInputContainerDirective.$inject = ["$mdTheming"];
+mdInputContainerDirective.$inject = ["$mdTheming", "$parse"];
 
 function labelDirective() {
   return {
@@ -209,9 +212,11 @@ function inputTextareaDirective($mdUtil, $window, $compile, $animate) {
       containerCtrl.setHasValue(element.val().length > 0 || (element[0].validity||{}).badInput);
     }
 
-    scope.$watch(function() {
-      return ngModelCtrl.$dirty && ngModelCtrl.$invalid;
-    }, containerCtrl.setInvalid);
+
+    var isErrorGetter = containerCtrl.isErrorGetter || function() {
+      return ngModelCtrl.$invalid && ngModelCtrl.$touched;
+    };
+    scope.$watch(isErrorGetter, containerCtrl.setInvalid);
       
     ngModelCtrl.$parsers.push(ngModelPipelineCheckValue);
     ngModelCtrl.$formatters.push(ngModelPipelineCheckValue);

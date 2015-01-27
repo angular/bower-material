@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-54338d7
+ * v0.7.0-master-572da37
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -53,7 +53,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  *   an element with class `md-actions` for the dialog's actions.
  *
  * @usage
- * ##### HTML
+ * #### HTML
  *
  * <hljs lang="html">
  * <div  ng-app="demoApp" ng-controller="EmployeeController">
@@ -69,7 +69,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  * </div>
  * </hljs>
  *
- * ##### JavaScript
+ * #### JavaScript
  *
  * <hljs lang="js">
  * (function(angular, undefined){

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-54338d7
+ * v0.7.0-master-572da37
  */
 goog.provide('ng.material.components.slider');
 goog.require('ng.material.core');
@@ -92,7 +92,10 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       $viewChangeListeners: []
     };
 
-    var isDisabledGetter = $parse(attr.ngDisabled);
+    var isDisabledParsed = attr.ngDisabled && $parse(attr.ngDisabled);
+    var isDisabledGetter = isDisabledParsed ? 
+      function() { return isDisabledParsed(scope.$parent); } :
+      angular.noop;
     var thumb = angular.element(element[0].querySelector('.md-thumb'));
     var thumbText = angular.element(element[0].querySelector('.md-thumb-text'));
     var thumbContainer = thumb.parent();
@@ -289,7 +292,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     var isDiscrete = angular.isDefined(attr.mdDiscrete);
 
     function onPressDown(ev) {
-      if (isDisabledGetter(scope)) return;
+      if (isDisabledGetter()) return;
 
       element.addClass('active');
       element[0].focus();
@@ -303,6 +306,8 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       });
     }
     function onPressUp(ev) {
+      if (isDisabledGetter()) return;
+
       element.removeClass('dragging active');
 
       var exactVal = percentToValue( positionToPercent( ev.pointer.x ));
@@ -312,7 +317,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       });
     }
     function onDragStart(ev) {
-      if (isDisabledGetter(scope)) return;
+      if (isDisabledGetter()) return;
       isDragging = true;
       ev.stopPropagation();
 

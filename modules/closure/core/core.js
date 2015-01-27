@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-54338d7
+ * v0.7.0-master-572da37
  */
 goog.provide('ng.material.core');
 
@@ -309,8 +309,8 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
      * determine whether the next item is valid. If not valid, it will try to find the
      * next item again.
      * @param item
-     * @param {optional} validate function
-     * @param {optional} recursion limit
+     * @param {optional} validate Validate function
+     * @param {optional} limit Recursion limit
      * @returns {*}
      */
     function findSubsequentItem(backwards, item, validate, limit) {
