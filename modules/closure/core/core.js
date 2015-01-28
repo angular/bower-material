@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-bb82c6e
+ * v0.7.0-master-c6d24eb
  */
 goog.provide('ng.material.core');
 
@@ -961,7 +961,7 @@ angular.module('material.core')
     },
     onEnd: function(ev, pointer) {
       if (pointer.distance < this.state.options.maxDistance) {
-        this.dispatchEvent(ev, 'click');
+        this.dispatchEvent(ev, 'click', null, ev);
       }
     }
   });
@@ -1175,16 +1175,25 @@ angular.module('material.core')
   /*
    * NOTE: dispatchEvent is very performance sensitive. 
    */
-  function dispatchEvent(srcEvent, eventType, eventPointer) {
+  function dispatchEvent(srcEvent, eventType, eventPointer, /*original DOMEvent */ev) {
     eventPointer = eventPointer || pointer;
     var eventObj;
 
     if (eventType === 'click') {
       eventObj = document.createEvent('MouseEvents');
-      eventObj.initMouseEvent('click', true, true, window, {},
-                              eventPointer.x, eventPointer.y,
-                              eventPointer.x, eventPointer.y,
-                              false, false, false, false, 0, null);
+      eventObj.initMouseEvent(
+        'click', true, true, window, ev.detail,
+        ev.screenX, ev.screenY, ev.clientX, ev.clientY, 
+        ev.ctrlKey, ev.altKey, ev.shiftKey, ev.metaKey,
+        ev.button, ev.relatedTarget || null
+      );
+      angular.extend(eventObj, {
+        which: ev.which,
+        x: ev.x, y: ev.y,
+        offsetX: ev.offsetX, offsetY: ev.offsetY,
+        layerX: ev.layerX, layerY: ev.layerY
+      });
+
     } else {
       eventObj = document.createEvent('CustomEvent');
       eventObj.initCustomEvent(eventType, true, true, {});
