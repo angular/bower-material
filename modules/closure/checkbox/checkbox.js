@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-8832f74
+ * v0.7.0-master-3346532
  */
 goog.provide('ng.material.components.checkbox');
 goog.require('ng.material.core');
@@ -89,7 +89,7 @@ function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant,
       var checked = false;
       $mdTheming(element);
 
-      $mdAria.expectWithText(tElement, 'aria-label');
+      $mdAria.expectWithText(element, 'aria-label');
 
       // Reuse the original input[type=checkbox] directive from Angular core.
       // This is a bit hacky as we need our own event listener and own render
