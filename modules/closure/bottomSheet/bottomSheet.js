@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-08eb68f
+ * v0.7.0-master-c164952
  */
 goog.provide('ng.material.components.bottomSheet');
 goog.require('ng.material.components.backdrop');
@@ -193,13 +193,14 @@ function MdBottomSheetProvider($$interimElementProvider) {
     function onRemove(scope, element, options) {
       var bottomSheet = options.bottomSheet;
 
-      if (options.disableParentScroll) {
-        options.parent.css('overflow', options.lastOverflow);
-        delete options.lastOverflow;
-      }
 
       $animate.leave(backdrop);
       return $animate.leave(bottomSheet.element).then(function() {
+        if (options.disableParentScroll) {
+          options.parent.css('overflow', options.lastOverflow);
+          delete options.lastOverflow;
+        }
+
         bottomSheet.cleanup();
 
         // Restore focus
