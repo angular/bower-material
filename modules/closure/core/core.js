@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-daa0131
+ * v0.7.0-master-f44bf60
  */
 goog.provide('ng.material.core');
 
@@ -2988,7 +2988,7 @@ function generateThemes($injector) {
 
     // These colors are provided as space-separated lists
     if (typeof lightColors === 'string') lightColors = lightColors.split(' ');
-    if (typeof strongLongColors === 'string') strongLightColors = strongLightColors.split(' ');
+    if (typeof strongLightColors === 'string') strongLightColors = strongLightColors.split(' ');
     if (typeof darkColors === 'string') darkColors = darkColors.split(' ');
 
     // Cleanup after ourselves
