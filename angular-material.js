@@ -6604,7 +6604,7 @@ var module = angular.module('material.components.swipe',[]);
   var directiveName = 'md' + name;
   var eventName = '$md.' + name.toLowerCase();
 
-  module.directive(directiveName, ['$parse',function($parse) {
+  module.directive(directiveName, /*@ngInject*/ function($parse) {
     return {
       restrict: 'A',
       link: postLink
@@ -6622,7 +6622,7 @@ var module = angular.module('material.components.swipe',[]);
       });
 
     }
-  }]);
+  });
 });
 
 })();
