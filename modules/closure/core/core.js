@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-22040c7
+ * v0.7.0-master-c4927f9
  */
 goog.provide('ng.material.core');
 
@@ -13,15 +13,13 @@ goog.provide('ng.material.core');
  * Initialization function that validates environment
  * requirements.
  */
-angular.module('material.core', ['material.core.theming'])
-  .run(MdCoreInitialize)
+angular
+  .module('material.core', ['material.core.theming'])
   .config(MdCoreConfigure);
 
-function MdCoreInitialize() {
-}
 
 function MdCoreConfigure($provide, $mdThemingProvider) {
-  $provide.decorator('$$rAF', rAFDecorator);
+  $provide.decorator('$$rAF', ["$delegate", rAFDecorator]);
 
   $mdThemingProvider.theme('default')
     .primaryPalette('indigo')
@@ -31,7 +29,7 @@ function MdCoreConfigure($provide, $mdThemingProvider) {
 }
 MdCoreConfigure.$inject = ["$provide", "$mdThemingProvider"];
 
-function rAFDecorator($delegate, $rootScope) {
+function rAFDecorator( $delegate ) {
   /**
    * Use this to throttle events that come in often.
    * The throttled function will always use the *last* invocation before the
@@ -61,7 +59,6 @@ function rAFDecorator($delegate, $rootScope) {
   };
   return $delegate;
 }
-rAFDecorator.$inject = ["$delegate", "$rootScope"];
 
 })();
 
@@ -356,7 +353,7 @@ angular.module('material.core')
  * @example $mdMedia('(min-width: 1200px)') == true if device-width >= 1200px
  * @example $mdMedia('max-width: 300px') == true if device-width <= 300px (sanitizes input, adding parens)
  */
-function mdMediaFactory($mdConstant, $rootScope, $window, $cacheFactory) {
+function mdMediaFactory($mdConstant, $rootScope, $window) {
   var queries = {};
   var results = {};
 
@@ -395,7 +392,7 @@ function mdMediaFactory($mdConstant, $rootScope, $window, $cacheFactory) {
   }
 
 }
-mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window", "$cacheFactory"];
+mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];
 
 (function() {
 'use strict';
