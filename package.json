@@ -1,0 +1,26 @@
+{
+  "name": "angular-material",
+  "version": "0.7.1",
+  "main":"",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/angular/material.git"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/angular/material/blob/master/LICENSE"
+    }
+  ],
+  "keywords": [
+    "angular",
+    "material",
+    "browser",
+    "client-side"
+  ],
+  "bugs": {
+    "url": "https://github.com/angular/material/issues"
+  },
+  "homepage": "https://material.angularjs.org",
+  "main": "angular-material.js"
+}
