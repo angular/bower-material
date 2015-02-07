@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-3ea349f
+ * v0.7.1-master-0dfcaf5
  */
 goog.provide('ng.material.core');
 
@@ -384,8 +384,7 @@ function mdMediaFactory($mdConstant, $rootScope, $window) {
     return (results[result.media] = !!result.matches);
   }
 
-  function onQueryChange() {
-    var query = this;
+  function onQueryChange(query) {
     $rootScope.$evalAsync(function() {
       results[query.media] = !!query.matches;
     });
