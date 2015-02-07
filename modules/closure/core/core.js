@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-d62c08e
+ * v0.7.1-master-74fe870
  */
 goog.provide('ng.material.core');
 
@@ -1492,15 +1492,16 @@ function InterimElementProvider() {
        */
       function show(options) {
         if (stack.length) {
-          service.cancel();
+          return service.cancel().then(function() {
+            return show(options);
+          });
+        } else {
+          var interimElement = new InterimElement(options);
+          stack.push(interimElement);
+          return interimElement.show().then(function() {
+            return interimElement.deferred.promise;
+          });
         }
-
-        var interimElement = new InterimElement(options);
-
-        stack.push(interimElement);
-        return interimElement.show().then(function() {
-          return interimElement.deferred.promise;
-        });
       }
 
       /*
@@ -1517,11 +1518,9 @@ function InterimElementProvider() {
        */
       function hide(response) {
         var interimElement = stack.shift();
-        interimElement && interimElement.remove().then(function() {
+        return interimElement && interimElement.remove().then(function() {
           interimElement.deferred.resolve(response);
         });
-
-        return interimElement ? interimElement.deferred.promise : $q.when(response);
       }
 
       /*
@@ -1533,16 +1532,14 @@ function InterimElementProvider() {
        * Removes the `$interimElement` from the DOM and rejects the promise returned from `show`
        *
        * @param {*} reason Data to reject the promise with
-       * @returns Promise that will be rejected after the element has been removed.
+       * @returns Promise that will be resolved after the element has been removed.
        *
        */
       function cancel(reason) {
         var interimElement = stack.shift();
-        interimElement && interimElement.remove().then(function() {
+        return interimElement && interimElement.remove().then(function() {
           interimElement.deferred.reject(reason);
         });
-
-        return interimElement ? interimElement.deferred.promise : $q.reject(reason);
       }
 
 

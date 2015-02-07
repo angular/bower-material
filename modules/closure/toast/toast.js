@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-d62c08e
+ * v0.7.1-master-74fe870
  */
 goog.provide('ng.material.components.toast');
 goog.require('ng.material.components.button');
@@ -155,6 +155,8 @@ function MdToastDirective() {
  *
  * @param {*=} response An argument for the resolved promise.
  *
+ * @returns {promise} a promise that is called when the existing element is removed from the DOM
+ *
  */
 
 /**
@@ -166,6 +168,8 @@ function MdToastDirective() {
  * `$mdToast.show()`.
  *
  * @param {*=} response An argument for the rejected promise.
+ *
+ * @returns {promise} a promise that is called when the existing element is removed from the DOM
  *
  */
 
