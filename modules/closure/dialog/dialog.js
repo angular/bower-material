@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-8daaaa2
+ * v0.7.1-master-9442631
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -237,7 +237,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  *     finished.
  *
  * @returns {promise} A promise that can be resolved with `$mdDialog.hide()` or
- * rejected with `mdDialog.cancel()`.
+ * rejected with `$mdDialog.cancel()`.
  */
 
 /**
