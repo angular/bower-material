@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-2fef220
+ * v0.7.1-master-818ec41
  */
 goog.provide('ng.material.core');
 
@@ -1568,10 +1568,12 @@ function InterimElementProvider() {
           options.template = processTemplate(options.template);
         }
 
+        var showFailed;
         return self = {
           options: options,
           deferred: $q.defer(),
           show: function() {
+            showFailed = false;
             return $mdCompiler.compile(options).then(function(compileData) {
               angular.extend(compileData.locals, self.options);
 
@@ -1598,7 +1600,7 @@ function InterimElementProvider() {
                   hideTimeout = $timeout(service.cancel, options.hideDelay) ;
                 }
               }
-            });
+            }, function(reason) { showFailed = true; self.deferred.reject(reason); });
           },
           cancelTimeout: function() {
             if (hideTimeout) {
@@ -1608,7 +1610,12 @@ function InterimElementProvider() {
           },
           remove: function() {
             self.cancelTimeout();
-            var ret = options.onRemove(options.scope, element, options);
+            var ret;
+            if (showFailed) {
+              ret = true;
+            } else {
+              ret = options.onRemove(options.scope, element, options);
+            }
             return $q.when(ret).then(function() {
               options.scope.$destroy();
             });
