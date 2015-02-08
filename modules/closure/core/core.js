@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-89e7cb0
+ * v0.7.1-master-2fef220
  */
 goog.provide('ng.material.core');
 
@@ -2859,6 +2859,9 @@ function ThemingProvider($mdColorPalette) {
     };
 
     applyTheme.registered = registered;
+    applyTheme.defaultTheme = function() {
+      return defaultTheme;
+    };
 
     return applyTheme;
 
