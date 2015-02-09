@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-8a6eb7e
+ * v0.7.1-master-5c5106e
  */
 goog.provide('ng.material.components.toast');
 goog.require('ng.material.components.button');
@@ -185,7 +185,7 @@ function MdToastProvider($$interimElementProvider) {
       argOption: 'content',
       methods: ['content', 'action', 'highlightAction', 'theme'],
       options: /* @ngInject */ ["$mdToast", "$mdTheming", function($mdToast, $mdTheming) {
-        return {
+        var opts = {
           template: [
             '<md-toast md-theme="{{ toast.theme }}" ng-class="{\'md-capsule\': toast.capsule}">',
               '<span flex>{{ toast.content }}</span>',
@@ -194,7 +194,7 @@ function MdToastProvider($$interimElementProvider) {
               '</md-button>',
             '</md-toast>'
           ].join(''),
-          controller: /* @ngInject */ function mdToastCtrl($scope) {
+          controller: /* @ngInject */ ["$scope", function mdToastCtrl($scope) {
             var self = this;
             $scope.$watch(function() { return activeToastContent; }, function() {
               self.content = activeToastContent;
@@ -202,11 +202,12 @@ function MdToastProvider($$interimElementProvider) {
             this.resolve = function() {
               $mdToast.hide();
             };
-          },
+          }],
           theme: $mdTheming.defaultTheme(),
           controllerAs: 'toast',
           bindToController: true
         };
+        return opts;
       }]
     })
     .addMethod('updateContent', function(newContent) {
