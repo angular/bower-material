@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-1c2884d
+ * v0.7.1-master-e0f53dd
  */
 goog.provide('ng.material.core');
 
@@ -492,6 +492,7 @@ angular.module('material.core')
     fakeNgModel: function() {
       return {
         $fake: true,
+        $setTouched : angular.noop,
         $setViewValue: function(value) {
           this.$viewValue = value;
           this.$render(value);

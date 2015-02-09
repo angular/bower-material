@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-1c2884d
+ * v0.7.1-master-e0f53dd
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.core');
@@ -474,7 +474,7 @@ angular.module('material.components.tabs')
  * @restrict E
  *
  * @description
- * `<md-tab>` is the nested directive used [within `<md-tabs>`] to specify each tab with a **label** and optional *view content*.
+ * Use the `<md-tab>` a nested directive used within `<md-tabs>` to specify a tab with a **label** and optional *view content*.
  *
  * If the `label` attribute is not specified, then an optional `<md-tab-label>` tag can be used to specify more
  * complex tab header markup. If neither the **label** nor the **md-tab-label** are specified, then the nested

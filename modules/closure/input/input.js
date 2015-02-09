@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-1c2884d
+ * v0.7.1-master-e0f53dd
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -202,17 +202,6 @@ function inputTextareaDirective($mdUtil, $window, $compile, $animate) {
       setupTextarea();
     }
 
-    function ngModelPipelineCheckValue(arg) {
-      containerCtrl.setHasValue(!ngModelCtrl.$isEmpty(arg));
-      return arg;
-    }
-    function inputCheckValue() {
-      // An input's value counts if its length > 0,
-      // or if the input's validity state says it has bad input (eg string in a number input)
-      containerCtrl.setHasValue(element.val().length > 0 || (element[0].validity||{}).badInput);
-    }
-
-
     var isErrorGetter = containerCtrl.isErrorGetter || function() {
       return ngModelCtrl.$invalid && ngModelCtrl.$touched;
     };
@@ -232,6 +221,9 @@ function inputTextareaDirective($mdUtil, $window, $compile, $animate) {
           containerCtrl.setFocused(false);
           inputCheckValue();
         });
+
+      ngModelCtrl.$setTouched();
+      if( ngModelCtrl.$invalid ) containerCtrl.setInvalid();
     }
 
     scope.$on('$destroy', function() {
@@ -239,6 +231,19 @@ function inputTextareaDirective($mdUtil, $window, $compile, $animate) {
       containerCtrl.setHasValue(false);
       containerCtrl.input = null;
     });
+
+    /**
+     *
+     */
+    function ngModelPipelineCheckValue(arg) {
+      containerCtrl.setHasValue(!ngModelCtrl.$isEmpty(arg));
+      return arg;
+    }
+    function inputCheckValue() {
+      // An input's value counts if its length > 0,
+      // or if the input's validity state says it has bad input (eg string in a number input)
+      containerCtrl.setHasValue(element.val().length > 0 || (element[0].validity||{}).badInput);
+    }
 
     function setupTextarea() {
       var node = element[0];
