@@ -1,7 +1,7 @@
 {
   "name": "angular-material-backdrop",
-  "version": "0.7.1-master-b7d09d7",
+  "version": "0.7.1-master-008ebf1",
   "dependencies": {
-    "angular-material-core": "0.7.1-master-b7d09d7"
+    "angular-material-core": "0.7.1-master-008ebf1"
   }
 }
