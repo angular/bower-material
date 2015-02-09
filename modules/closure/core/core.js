@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-a833843
+ * v0.7.1-master-8a6eb7e
  */
 goog.provide('ng.material.core');
 
@@ -3017,7 +3017,7 @@ function generateThemes($injector) {
     });
     if (theme.colors.primary.name == theme.colors.accent.name) {
       console.warn("$mdThemingProvider: Using the same palette for primary and" +
-                   "accent. This violates the material design spec.");
+                   " accent. This violates the material design spec.");
     }
   });
 
