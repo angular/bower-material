@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e1af636
+ * v0.7.1-master-1c2884d
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -107,12 +107,12 @@ function labelDirective() {
 
 /**
  * @ngdoc directive
- * @name input
+ * @name mdInput
  * @restrict E
  * @module material.components.input
  *
  * @description
- * Must be placed as a child of an `<md-input-container>`. 
+ * Use the `<input>` as a child of an `<md-input-container>`.
  *
  * Behaves like the [AngularJS input directive](https://docs.angularjs.org/api/ng/directive/input).
  *
@@ -142,12 +142,12 @@ function labelDirective() {
  */
 /**
  * @ngdoc directive
- * @name textarea
+ * @name mdTextarea
  * @restrict E
  * @module material.components.input
  *
  * @description
- * Must be placed as a child of an `<md-input-container>`. 
+ * Use the `<textarea>` as a child of an `<md-input-container>`
  *
  * Behaves like the [AngularJS input directive](https://docs.angularjs.org/api/ng/directive/textarea).
  *
