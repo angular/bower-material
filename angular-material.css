@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-ed86334
+ * v0.7.1-master-d0fdd9f
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -3261,12 +3261,21 @@ md-divider {
 
 md-icon {
   margin: auto;
-  background-repeat: no-repeat no-repeat;
+  padding: 0;
   display: inline-block;
-  vertical-align: middle;
-  fill: currentcolor;
-  height: 24px;
-  width: 24px; }
+  margin-top: 5px;
+  background-repeat: no-repeat no-repeat;
+  pointer-events: none;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  z-index: 0; }
+  md-icon object.md-icon {
+    display: inline-block; }
+
+svg, object {
+  fill: currentColor;
+  color: currentColor; }
 
 md-input-container {
   display: -webkit-flex;
