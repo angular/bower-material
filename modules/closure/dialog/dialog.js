@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-fb3623a
+ * v0.7.1-master-ca60beb
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -86,11 +86,12 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  *   function AppController($scope, $mdDialog) {
  *     var alert;
  *     $scope.showAlert = showAlert;
+ *     $scope.showDialog = showDialog;
  *     $scope.items = [1, 2, 3];
  *
  *     // Internal method
  *     function showAlert() {
- *       var alert = $mdDialog.alert({
+ *       alert = $mdDialog.alert({
  *         title: 'Attention',
  *         content: 'This is an example of how easy dialogs can be!',
  *         ok: 'Close'
@@ -293,7 +294,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  *   - `escapeToClose` - `{boolean=}`: Whether the user can press escape to close the dialog.
  *     Default true.
  *   - `controller` - `{string=}`: The controller to associate with the dialog. The controller
- *     will be injected with the local `$hideDialog`, which is a function used to hide the dialog.
+ *     will be injected with the local `$mdDialog`, which passes along a scope for the dialog.
  *   - `locals` - `{object=}`: An object containing key/value pairs. The keys will be used as names
  *     of values to inject into the controller. For example, `locals: {three: 3}` would inject
  *     `three` into the controller, with the value 3. If `bindToController` is true, they will be
