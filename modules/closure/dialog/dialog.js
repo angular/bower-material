@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-0a822f2
+ * v0.7.1-master-4e2eb74
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
