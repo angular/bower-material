@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-66fa1e3
+ * v0.7.1-master-c6d99a8
  */
 goog.provide('ng.material.components.toast');
 goog.require('ng.material.components.button');
@@ -39,7 +39,7 @@ function MdToastDirective() {
  * on the screen with an optional duration, and provides a simple promise API.
  *
  *
- * ### Restrictions on custom toasts
+ * ## Restrictions on custom toasts
  * - The toast's template must have an outer `<md-toast>` element.
  * - For a toast action, use element with class `md-action`.
  * - Add the class `md-capsule` for curved corners.
