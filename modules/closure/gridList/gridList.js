@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-1307b94
+ * v0.7.1-master-517623e
  */
 goog.provide('ng.material.components.gridList');
 goog.require('ng.material.core');

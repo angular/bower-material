@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-1307b94
+ * v0.7.1-master-517623e
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.core');
@@ -948,6 +948,7 @@ function TabsDirective($mdTheming) {
           'ng-if="pagination.active && pagination.hasPrev" ' +
           'ng-click="pagination.clickPrevious()" ' +
           'aria-hidden="true">' +
+          '<md-icon md-svg-icon="tabs-arrow"></md-icon>' +
         '</button>' +
 
         // overflow: hidden container when paginating
@@ -962,6 +963,7 @@ function TabsDirective($mdTheming) {
           'ng-if="pagination.active && pagination.hasNext" ' +
           'ng-click="pagination.clickNext()" ' +
           'aria-hidden="true">' +
+          '<md-icon md-svg-icon="tabs-arrow"></md-icon>' +
         '</button>' +
 
       '</section>' +

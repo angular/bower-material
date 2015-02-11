@@ -328,6 +328,8 @@ md-switch.md-THEME_NAME-theme:focus .md-label:not(:empty) {
 
 md-tabs.md-THEME_NAME-theme .md-header {
   background-color: transparent; }
+md-tabs.md-THEME_NAME-theme .md-paginator md-icon {
+  color: '{{primary-color}}'; }
 md-tabs.md-THEME_NAME-theme.md-accent .md-header {
   background-color: '{{accent-color}}'; }
 md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]) {
