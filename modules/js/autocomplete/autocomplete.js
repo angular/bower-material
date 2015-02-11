@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-a9c16e0
+ * v0.7.1-master-1307b94
  */
 (function () {
   'use strict';
@@ -144,7 +144,8 @@
     }
 
     function select (index) {
-      $scope.searchText = getDisplayValue(self.matches[index]) || $scope.searchText;
+      $scope.selectedItem = self.matches[index];
+      $scope.searchText = getDisplayValue($scope.selectedItem) || $scope.searchText;
       self.hidden  = true;
       self.index   = -1;
       self.matches = [];
