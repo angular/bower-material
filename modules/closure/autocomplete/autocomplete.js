@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1
+ * v0.8.0-rc1-master-6ffc533
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.core');
@@ -185,7 +185,7 @@ goog.require('ng.material.core');
    *
    * @param {string=} md-search-text A model to bind the search query text to
    * @param {object=} md-selected-item A model to bind the selected item to
-   * @param {expression=} md-items An expression in the format of `item in items` to iterate over matches for your search.
+   * @param {expression} md-items An expression in the format of `item in items` to iterate over matches for your search.
    * @param {string=} md-item-text A property on your object used to convert your object to a string
    * @param {placeholder=} Placeholder text that will be forwarded to the input.
    *
