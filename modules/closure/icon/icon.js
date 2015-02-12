@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-a410421
+ * v0.8.0-rc1-master-cdea9a2
  */
 goog.provide('ng.material.components.icon');
 goog.require('ng.material.core');
@@ -50,7 +50,7 @@ angular.module('material.components.icon', [
  *  <md-icon md-svg-src="{{ getAndroid() }}" alt="android " ></md-icon>
  * </hljs>
  */
-function mdIconDirective($mdIcon, $mdAria ) {
+function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
   return {
     scope: {
       fontIcon: '@mdFontIcon',
@@ -71,6 +71,8 @@ function mdIconDirective($mdIcon, $mdAria ) {
    * Supports embedded SVGs, font-icons, & external SVGs
    */
   function postLink(scope, element, attr) {
+    $mdTheming(element);
+
     var ariaLabel = attr.alt || scope.fontIcon || scope.svgIcon;
     var attrName = attr.$normalize(attr.$attr.mdSvgIcon || attr.$attr.mdSvgSrc || '');
 
@@ -107,7 +109,7 @@ function mdIconDirective($mdIcon, $mdAria ) {
     }
   }
 }
-mdIconDirective.$inject = ["$mdIcon", "$mdAria"];
+mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
 
 })();
 
