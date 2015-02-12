@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-6ffc533
+ * v0.8.0-rc1-master-a410421
  */
 goog.provide('ng.material.components.gridList');
 goog.require('ng.material.core');
@@ -123,7 +123,7 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia, $
 
     var invalidateLayout = angular.bind(ctrl, ctrl.invalidateLayout),
         unwatchAttrs = watchMedia();
-    scope.$on('$destroy', unwatchMedia());
+    scope.$on('$destroy', unwatchMedia);
 
     /**
      * Watches for changes in media, invalidating layout as necessary.
