@@ -2,14 +2,14 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.theming.palette","material.core.theming","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 /*!
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -99,7 +99,7 @@ function rAFDecorator( $delegate ) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -165,7 +165,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function(){
 
@@ -403,7 +403,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 angular.module('material.core')
 .factory('$mdMedia', mdMediaFactory);
@@ -517,7 +517,7 @@ mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -786,7 +786,7 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -872,7 +872,7 @@ AriaService.$inject = ["$$rAF", "$log", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -1018,7 +1018,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -1439,7 +1439,7 @@ angular.module('material.core')
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -1866,7 +1866,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
   'use strict';
@@ -1999,7 +1999,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -2423,7 +2423,7 @@ function attrNoDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -2795,7 +2795,7 @@ angular.module('material.core.theming.palette', [])
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -3382,7 +3382,7 @@ function rgba(rgbArray, opacity) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function () {
   'use strict';
@@ -3400,7 +3400,7 @@ function rgba(rgbArray, opacity) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -3439,7 +3439,7 @@ BackdropDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -3700,7 +3700,7 @@ MdBottomSheetProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -3800,7 +3800,7 @@ MdButtonDirective.$inject = ["$mdInkRipple", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -3859,7 +3859,7 @@ mdCardDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -4000,7 +4000,7 @@ MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$md
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -4086,7 +4086,7 @@ function iosScrollFix(node) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -4657,7 +4657,7 @@ MdDialogProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -4706,7 +4706,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -5318,7 +5318,7 @@ function GridTileCaptionDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -5429,7 +5429,7 @@ mdIconDirective.$inject = ["$mdIcon", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
   'use strict';
@@ -5448,8 +5448,10 @@ mdIconDirective.$inject = ["$mdIcon", "$mdAria"];
     * icons and icon sets to be pre-registered and associated with source URLs **before** the `<md-icon />`
     * directives are compiled.
     *
-    * When an SVG is requested by name/ID, the `$mdIcon` service searches its registry for the associated source
-    * URL; that URL is used to on-demand load and parse the SVG dynamically.
+    * Loading of the actual svg files are deferred to on-demand requests and are loaded
+    * internally by the `$mdIcon` service using the `$http` service. When an SVG is requested by name/ID,
+    * the `$mdIcon` service searches its registry for the associated source URL;
+    * that URL is used to on-demand load and parse the SVG dynamically.
     *
     * <hljs lang="js">
     *   app.config(function($mdIconProvider) {
@@ -5498,9 +5500,18 @@ mdIconDirective.$inject = ["$mdIcon", "$mdAria"];
     * @name $mdIconProvider#icon
     *
     * @description
-    * Register a source URL for a specific icon name; name may include optional 'icon set' name prefix.
-    * These icons can be retrieved from the cache using `$mdIcon( <icon name> )`
+    * Register a source URL for a specific icon name; the name may include optional 'icon set' name prefix.
+    * These icons  will later be retrieved from the cache using `$mdIcon( <icon name> )`
     *
+    * @param {string} id Icon name/id used to register the icon
+    * @param {string} url specifies the external location for the data file. Used internally by `$http` to load the
+    * data or as part of the lookup in `$templateCache` if pre-loading was configured.
+    * @param {string=} iconSize Number indicating the width and height of the icons in the set. All icons
+    * in the icon set must be the same size. Default size is 24.
+    *
+    * @returns {obj} an `$mdIconProvider` reference; used to support method call chains for the API
+    *
+    * @usage
     * <hljs lang="js">
     *   app.config(function($mdIconProvider) {
     *
@@ -5512,17 +5523,26 @@ mdIconDirective.$inject = ["$mdIcon", "$mdAria"];
     *   });
     * </hljs>
     *
-    * @returns {obj} an `$mdIconProvider` reference with the chainable configuration API:
-    *
     */
    /**
     * @ngdoc method
     * @name $mdIconProvider#iconSet
     *
     * @description
-    * Register a source URL for a 'named' set of icons. Individual icons
-    * can be retrieved from this cached set using `$mdIcon( <icon set name>:<icon name> )`
+    * Register a source URL for a 'named' set of icons; group of SVG definitions where each definition
+    * has an icon id. Individual icons can be subsequently retrieved from this cached set using
+    * `$mdIcon( <icon set name>:<icon name> )`
     *
+    * @param {string} id Icon name/id used to register the iconset
+    * @param {string} url specifies the external location for the data file. Used internally by `$http` to load the
+    * data or as part of the lookup in `$templateCache` if pre-loading was configured.
+    * @param {string=} iconSize Number indicating the width and height of the icons in the set. All icons
+    * in the icon set must be the same size. Default size is 24.
+    *
+    * @returns {obj} an `$mdIconProvider` reference; used to support method call chains for the API
+    *
+    *
+    * @usage
     * <hljs lang="js">
     *   app.config(function($mdIconProvider) {
     *
@@ -5533,29 +5553,33 @@ mdIconDirective.$inject = ["$mdIcon", "$mdAria"];
     *   });
     * </hljs>
     *
-    * @returns {obj} an `$mdIconProvider` reference with the chainable configuration API:
-    *
     */
    /**
     * @ngdoc method
     * @name $mdIconProvider#defaultIconSet
     *
     * @description
-    * Register a source URL for the default 'named' set of icons. Unless explicitly registered
-    * subsequent lookups of icons will fall back to search this 'default' icon set.
+    * Register a source URL for the default 'named' set of icons. Unless explicitly registered,
+    * subsequent lookups of icons will failover to search this 'default' icon set.
     * Icon can be retrieved from this cached, default set using `$mdIcon( <icon name> )`
     *
+    * @param {string} url specifies the external location for the data file. Used internally by `$http` to load the
+    * data or as part of the lookup in `$templateCache` if pre-loading was configured.
+    * @param {string=} iconSize Number indicating the width and height of the icons in the set. All icons
+    * in the icon set must be the same size. Default size is 24.
+    *
+    * @returns {obj} an `$mdIconProvider` reference; used to support method call chains for the API
+    *
+    * @usage
     * <hljs lang="js">
     *   app.config(function($mdIconProvider) {
     *
     *     // Configure URLs for icons specified by [set:]id.
     *
     *     $mdIconProvider
-    *          .defaultIconSet('social', 'my/app/social.svg')   // Register a default icon set
+    *          .defaultIconSet( 'my/app/social.svg' )   // Register a default icon set
     *   });
     * </hljs>
-    *
-    * @returns {obj} an `$mdIconProvider` reference with the chainable configuration API:
     *
     */
    /**
@@ -5564,9 +5588,15 @@ mdIconDirective.$inject = ["$mdIcon", "$mdAria"];
     *
     * @description
     * While `<md-icon />` markup can also be style with sizing CSS, this method configures
-    * the default icon size used for all icons; unless overridden by specific CSS.
-    * NOTE: the default sizing is (24px, 24px).
+    * the default width **and** height used for all icons; unless overridden by specific CSS.
+    * The default sizing is (24px, 24px).
     *
+    * @param {string} iconSize Number indicating the width and height of the icons in the set. All icons
+    * in the icon set must be the same size. Default size is 24.
+    *
+    * @returns {obj} an `$mdIconProvider` reference; used to support method call chains for the API
+    *
+    * @usage
     * <hljs lang="js">
     *   app.config(function($mdIconProvider) {
     *
@@ -5576,8 +5606,6 @@ mdIconDirective.$inject = ["$mdIcon", "$mdAria"];
     *          .defaultIconSize(36)   // Register a default icon size (width == height)
     *   });
     * </hljs>
-    *
-    * @returns {obj} an `$mdIconProvider` reference with the chainable configuration API:
     *
     */
 
@@ -5634,11 +5662,16 @@ mdIconDirective.$inject = ["$mdIcon", "$mdAria"];
   * @module material.components.icon
   *
   * @description
-  * `$mdIcon` is a service used to lookup SVG icons configured via `$mdIconProvider` using
-  *  and ID or uses a URL used to load and cache a currently external SVG (that is not currently cached).
+  * The `$mdIcon` service is a function used to lookup SVG icons.
   *
-  * @param {string} ID or URL value
-  * @returns {obj} Clone of the SVG DOM element
+  * @param {string} id Query value for a unique Id or URL. If the argument is a URL, then the service will retrieve the icon element
+  * from its internal cache or load the icon and cache it first. If the value is not a URL-type string, then an ID lookup is
+  * performed. The Id may be a unique icon ID or may include an iconSet ID prefix.
+  *
+  * For the **id** query to work properly, this means that all id-to-URL mappings must have been previously configured
+  * using the `$mdIconProvider`.
+  *
+  * @returns {obj} Clone of the initial SVG DOM element; which was created from the SVG markup in the SVG data file.
   *
   * @usage
   * <hljs lang="js">
@@ -5647,14 +5680,15 @@ mdIconDirective.$inject = ["$mdIcon", "$mdAria"];
   *   // See if the icon has already been loaded, if not
   *   // then lookup the icon from the registry cache, load and cache
   *   // it for future requests.
+  *   // NOTE: ID queries require configuration with $mdIconProvider
   *
-  *   $mdIcon('android').then(function(icon) { element.append(icon); });
-  *   $mdIcon('work:chair').then(function(icon) { element.append(icon); });
+  *   $mdIcon('android').then(function(iconEl)    { element.append(iconEl); });
+  *   $mdIcon('work:chair').then(function(iconEl) { element.append(iconEl); });
   *
   *   // Load and cache the external SVG using a URL
   *
-  *   $mdIcon('img/icons/android.svg').then(function(icon) {
-  *     element.append(icon);
+  *   $mdIcon('img/icons/android.svg').then(function(iconEl) {
+  *     element.append(iconEl);
   *   });
   * };
   * </hljs>
@@ -5811,7 +5845,7 @@ mdIconDirective.$inject = ["$mdIcon", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 
@@ -6170,7 +6204,7 @@ function placeholderDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -6265,7 +6299,7 @@ function mdItemDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -6393,7 +6427,7 @@ MdProgressCircularDirective.$inject = ["$$rAF", "$mdConstant", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -6522,7 +6556,7 @@ var transforms = (function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -6820,7 +6854,7 @@ mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -7138,7 +7172,7 @@ SidenavController.$inject = ["$scope", "$element", "$attrs", "$mdComponentRegist
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
   'use strict';
@@ -7541,7 +7575,7 @@ SliderDirective.$inject = ["$$rAF", "$window", "$mdAria", "$mdUtil", "$mdConstan
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -7853,7 +7887,7 @@ MdSticky.$inject = ["$document", "$mdConstant", "$compile", "$$rAF", "$mdUtil"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -7940,7 +7974,7 @@ MdSubheaderDirective.$inject = ["$mdSticky", "$compile", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -8018,7 +8052,7 @@ var module = angular.module('material.components.swipe',[]);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -8187,7 +8221,7 @@ MdSwitch.$inject = ["mdCheckboxDirective", "$mdTheming", "$mdUtil", "$document",
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -8224,7 +8258,7 @@ angular.module('material.components.tabs', [
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -8368,7 +8402,7 @@ mdInputDirective.$inject = ["$mdUtil", "$log"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -8628,7 +8662,7 @@ MdToastProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -8787,7 +8821,7 @@ mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -9012,7 +9046,7 @@ MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdU
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -9028,7 +9062,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function () {
   'use strict';
@@ -9184,7 +9218,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function () {
   'use strict';
@@ -9275,7 +9309,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function () {
   'use strict';
@@ -9305,7 +9339,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function () {
   'use strict';
@@ -9349,7 +9383,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function () {
   'use strict';
@@ -9379,7 +9413,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -9444,7 +9478,7 @@ MdTabInkDirective.$inject = ["$$rAF"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -9703,7 +9737,7 @@ TabPaginationDirective.$inject = ["$mdConstant", "$window", "$$rAF", "$$q", "$ti
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -9820,7 +9854,7 @@ TabItemController.$inject = ["$scope", "$element", "$attrs", "$compile", "$anima
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -10062,7 +10096,7 @@ MdTabDirective.$inject = ["$mdInkRipple", "$compile", "$mdUtil", "$mdConstant", 
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
@@ -10208,7 +10242,7 @@ MdTabsController.$inject = ["$scope", "$element", "$mdUtil", "$timeout"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-e979401
+ * v0.7.1-master-b48be15
  */
 (function() {
 'use strict';
