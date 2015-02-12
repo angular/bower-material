@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-b48be15
+ * v0.8.0-rc1
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -130,8 +130,8 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  *          controller: DialogController
  *       });
  *       function DialogController(scope, $mdDialog, items) {
- *         scope.items = items;
- *         scope.closeDialog = function() {
+ *         $scope.items = items;
+ *         $scope.closeDialog = function() {
  *           $mdDialog.hide();
  *         }
  *       }
