@@ -119,6 +119,15 @@ md-dialog.md-THEME_NAME-theme {
 md-divider.md-THEME_NAME-theme {
   border-top-color: '{{foreground-4}}'; }
 
+md-icon.md-THEME_NAME-theme.md-primary {
+  color: '{{primary-color}}'; }
+md-icon.md-THEME_NAME-theme.md-accent {
+  color: '{{accent-color}}'; }
+md-icon.md-THEME_NAME-theme.md-warn {
+  color: '{{warn-color}}'; }
+md-icon.md-THEME_NAME-theme.md-danger {
+  color: '{{danger-color}}'; }
+
 md-input-container.md-THEME_NAME-theme .md-input {
   color: '{{foreground-1}}';
   border-color: '{{foreground-4}}';
