@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-c1d59ab
+ * v0.8.0-rc1-master-39f4f26
  */
 goog.provide('ng.material.components.gridList');
 goog.require('ng.material.core');
@@ -172,15 +172,20 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia, $
           gutter = getGutter(),
           performance =
               $mdGridLayout(colCount, getTileSpans(), getTileElements())
-                  .map(function(ps, rowCount, i) {
-                    var element = angular.element(tiles[i]);
-                    element.scope().$mdGridPosition = ps; // for debugging
-
+                  .map(function(tilePositions, rowCount) {
                     return {
-                      element: element,
-                      styles: getStyles(ps.position, ps.spans,
-                          colCount, rowCount,
-                          gutter, rowMode, rowHeight)
+                      grid: {
+                        element: element,
+                        style: getGridStyle(colCount, rowCount, gutter, rowMode, rowHeight)
+                      },
+                      tiles: tilePositions.map(function(ps, i) {
+                        return {
+                          element: angular.element(tiles[i]),
+                          styles: getTileStyle(ps.position, ps.spans,
+                              colCount, rowCount,
+                              gutter, rowMode, rowHeight)
+                        }
+                      })
                     }
                   })
                   .reflow()
@@ -202,7 +207,7 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia, $
         "calc(({{ unit }}) * {{ span }} + ({{ span }} - 1) * {{ gutter }})");
 
     // TODO(shyndman): Replace args with a ctx object.
-    function getStyles(position, spans, colCount, rowCount, gutter, rowMode, rowHeight) {
+    function getTileStyle(position, spans, colCount, rowCount, gutter, rowMode, rowHeight) {
       // TODO(shyndman): There are style caching opportunities here.
       var hShare = (1 / colCount) * 100,
           hGutterShare = colCount === 1 ? 0 : (colCount - 1) / colCount,
@@ -221,7 +226,7 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia, $
       switch (rowMode) {
         case 'fixed':
           style.top = POSITION({ unit: rowHeight, offset: position.row, gutter: gutter });
-          style.height = DIMENSION({ unit: rowHeight, span: spans.row, gutter: '0px' });
+          style.height = DIMENSION({ unit: rowHeight, span: spans.row, gutter: gutter });
           break;
 
         case 'ratio':
@@ -240,6 +245,35 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia, $
 
           style.top = POSITION({ unit: vUnit, offset: position.row, gutter: gutter });
           style.height = DIMENSION({ unit: vUnit, span: spans.row, gutter: gutter });
+          break;
+      }
+
+      return style;
+    }
+
+    function getGridStyle(colCount, rowCount, gutter, rowMode, rowHeight) {
+      var style = {
+        height: '',
+        paddingBottom: ''
+      };
+
+      switch(rowMode) {
+        case 'fixed':
+          style.height = DIMENSION({ unit: rowHeight, span: rowCount, gutter: gutter });
+          break;
+
+        case 'ratio':
+          // rowHeight is width / height
+          var hGutterShare = colCount === 1 ? 0 : (colCount - 1) / colCount,
+              hShare = (1 / colCount) * 100,
+              vShare = hShare * (1 / rowHeight),
+              vUnit = UNIT({ share: vShare, gutterShare: hGutterShare, gutter: gutter });
+
+          style.paddingBottom = DIMENSION({ unit: vUnit, span: rowCount, gutter: gutter});
+          break;
+
+        case 'fit':
+          // noop, as the height is user set
           break;
       }
 
@@ -267,7 +301,11 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia, $
     }
 
     function getColumnCount() {
-      return parseInt($mdMedia.getResponsiveAttribute(attrs, 'md-cols'), 10);
+      var colCount = parseInt($mdMedia.getResponsiveAttribute(attrs, 'md-cols'), 10);
+      if (isNaN(colCount)) {
+        throw 'md-grid-list: md-cols attribute was not found, or contained a non-numeric value';
+      }
+      return colCount;
     }
 
     function getGutter() {
@@ -332,7 +370,7 @@ GridListController.prototype = {
     this.invalidateLayout();
   },
 
-  invalidateLayout: function(tile) {
+  invalidateLayout: function() {
     if (this.invalidated) {
       return;
     }
@@ -351,7 +389,7 @@ GridListController.prototype = {
 
 function GridLayoutFactory($mdUtil) {
   return function(colCount, tileSpans) {
-    var self, layoutInfo, tiles, layoutTime, mapTime, reflowTime, layoutInfo;
+    var self, layoutInfo, gridStyles, layoutTime, mapTime, reflowTime, layoutInfo;
     layoutTime = $mdUtil.time(function() {
       layoutInfo = calculateGridFor(colCount, tileSpans);
     });
@@ -370,9 +408,8 @@ function GridLayoutFactory($mdUtil) {
        */
       map: function(updateFn) {
         mapTime = $mdUtil.time(function() {
-          tiles = layoutInfo.positioning.map(function(ps, i) {
-            return updateFn(ps, self.layoutInfo().rowCount, i);
-          });
+          var info = self.layoutInfo();
+          gridStyles = updateFn(info.positioning, info.rowCount);
         });
         return self;
       },
@@ -385,7 +422,8 @@ function GridLayoutFactory($mdUtil) {
       reflow: function(customAnimatorFn) {
         reflowTime = $mdUtil.time(function() {
           var animator = customAnimatorFn || defaultAnimator;
-          tiles.forEach(function(it) {
+          animator(gridStyles.grid.element, gridStyles.grid.style);
+          gridStyles.tiles.forEach(function(it) {
             animator(it.element, it.styles);
           });
         });
