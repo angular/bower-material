@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-70234b6
+ * v0.8.0-rc1-master-223c3da
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.core');
@@ -126,7 +126,7 @@ goog.require('ng.material.core');
           break;
         default:
           self.index = -1;
-          self.hidden = false;
+          self.hidden = isHidden();
           //-- after value updates, check if list should be hidden
           $timeout(function () { self.hidden = isHidden(); });
       }
@@ -218,7 +218,7 @@ goog.require('ng.material.core');
               type="button"\
               ng-if="searchText"\
               ng-click="$mdAutocompleteCtrl.clear()">\
-              <span aria-hidden="true">X</span>\
+              <md-icon md-svg-icon="close"></md-icon>\
               <span class="visually-hidden">Clear</span>\
               </button>\
           <md-progress-linear ng-if="$mdAutocompleteCtrl.loading" md-mode="indeterminate"></md-progress-linear>\
