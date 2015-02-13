@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-39f4f26
+ * v0.8.0-rc1-master-a787e22
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.core');
@@ -49,6 +49,7 @@ goog.require('ng.material.core');
     self.keydown  = keydown;
     self.clear    = clearValue;
     self.select   = select;
+    self.getCurrentDisplayValue = getCurrentDisplayValue;
     self.fetch    = $mdUtil.debounce(fetchResults);
 
     //-- return init
@@ -135,10 +136,15 @@ goog.require('ng.material.core');
     function clearValue () {
       $scope.searchText = '';
       select(-1);
+      elements.input.focus();
     }
 
     function isHidden () {
       return self.matches.length === 1 && $scope.searchText === getDisplayValue(self.matches[0]);
+    }
+
+    function getCurrentDisplayValue () {
+      return getDisplayValue(self.matches[self.index]);
     }
 
     function getDisplayValue (item) {
@@ -234,10 +240,11 @@ goog.require('ng.material.core');
         </ul>\
         <aria-status\
             class="visually-hidden"\
-            aria-atomic="true"\
             role="status"\
-            aria-live="polite">\
-          <p ng-repeat="item in $mdAutocompleteCtrl.matches">{{item.display}}</p>\
+            aria-live="assertive">\
+          <p ng-if="$mdAutocompleteCtrl.index === -1 && $mdAutocompleteCtrl.matches.length === 1">There is 1 match available.</p>\
+          <p ng-if="$mdAutocompleteCtrl.index === -1 && $mdAutocompleteCtrl.matches.length > 1">There are {{$mdAutocompleteCtrl.matches.length}} matches available.</p>\
+          <p ng-if="$mdAutocompleteCtrl.index >= 0">{{ $mdAutocompleteCtrl.getCurrentDisplayValue() }}</p>\
         </aria-status>',
       transclude: true,
       controller: 'MdAutocompleteCtrl',

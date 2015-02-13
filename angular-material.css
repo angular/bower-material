@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-39f4f26
+ * v0.8.0-rc1-master-a787e22
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -2855,6 +2855,8 @@ md-autocomplete {
     outline: none;
     z-index: 2;
     background: transparent; }
+    md-autocomplete input::-ms-clear {
+      display: none; }
   md-autocomplete button {
     position: absolute;
     top: 10px;
