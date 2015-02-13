@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-603e5d6
+ * v0.8.0-rc1-master-6ac0ca4
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.core');
@@ -218,7 +218,7 @@ goog.require('ng.material.core');
               type="button"\
               ng-if="searchText"\
               ng-click="$mdAutocompleteCtrl.clear()">\
-              <md-icon md-svg-icon="close"></md-icon>\
+              <md-icon md-svg-icon="cancel"></md-icon>\
               <span class="visually-hidden">Clear</span>\
               </button>\
           <md-progress-linear ng-if="$mdAutocompleteCtrl.loading" md-mode="indeterminate"></md-progress-linear>\

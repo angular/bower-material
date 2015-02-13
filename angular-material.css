@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-603e5d6
+ * v0.8.0-rc1-master-6ac0ca4
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -2868,13 +2868,31 @@ md-autocomplete {
     border: none;
     border-radius: 50%;
     padding: 0;
-    font-size: 12px; }
+    font-size: 12px;
+    background: transparent; }
+    md-autocomplete button:after {
+      content: '';
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      bottom: -6px;
+      left: -6px;
+      border-radius: 50%;
+      -webkit-transform: scale(0);
+              transform: scale(0);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      z-index: -1; }
+    md-autocomplete button:focus:after {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+      opacity: 1; }
     md-autocomplete button md-icon {
       position: absolute;
       top: 50%;
       left: 50%;
-      -webkit-transform: translate3d(-50%, -50%, 0) scale(0.6);
-              transform: translate3d(-50%, -50%, 0) scale(0.6); }
+      -webkit-transform: translate3d(-50%, -50%, 0) scale(0.9);
+              transform: translate3d(-50%, -50%, 0) scale(0.9); }
       md-autocomplete button md-icon path {
         stroke-width: 0; }
     md-autocomplete button.ng-enter {
