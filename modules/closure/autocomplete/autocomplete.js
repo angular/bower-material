@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-c045f54
+ * v0.8.0-rc1-master-6c5fdba
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.core');
@@ -83,7 +83,6 @@ goog.require('ng.material.core');
         if (cache[term]) {
           self.matches = cache[term];
         } else if (!self.hidden) {
-          self.loading = true;
           self.fetch(searchText);
         }
       });
@@ -92,14 +91,19 @@ goog.require('ng.material.core');
     function fetchResults (searchText) {
       var items = $scope.$parent.$eval(itemExpr),
           term = searchText.toLowerCase();
-      promise = $q.when(items).then(function (matches) {
+      if (angular.isArray(items)) {
+        handleResults(items);
+      } else {
+        self.loading = true;
+        promise = $q.when(items).then(handleResults);
+      }
+      function handleResults (matches) {
         cache[term] = matches;
         if (searchText !== $scope.searchText) return; //-- just cache the results if old request
         promise = null;
         self.loading = false;
         self.matches = matches;
-      });
-    }
+      }    }
 
     function keydown (event) {
       switch (event.keyCode) {

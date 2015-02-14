@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-c045f54
+ * v0.8.0-rc1-master-6c5fdba
  */
 @-webkit-keyframes md-autocomplete-list-out {
   0% {
@@ -179,7 +179,8 @@ md-autocomplete {
     list-style: none;
     padding: 0;
     overflow: auto;
-    max-height: 225.5px; }
+    max-height: 225.5px;
+    z-index: 49; }
     md-autocomplete ul li {
       border-top: 1px solid #ddd;
       padding: 0 15px;
