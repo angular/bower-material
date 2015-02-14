@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-587ea60
+ * v0.8.0-rc1-master-c045f54
  */
 goog.provide('ng.material.components.gridList');
 goog.require('ng.material.core');
@@ -384,6 +384,8 @@ GridListController.prototype = {
   }
 }
 
+
+/* @ngInject */
 function GridLayoutFactory($mdUtil) {
 
   return function(colCount, tileSpans) {
