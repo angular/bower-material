@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-257bf49
+ * v0.8.0-rc1-master-91053dc
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.core');
@@ -47,6 +47,7 @@ goog.require('ng.material.core');
     self.hidden   = true;
     self.index    = 0;
     self.keydown  = keydown;
+    self.blur     = blur;
     self.clear    = clearValue;
     self.select   = select;
     self.getCurrentDisplayValue = getCurrentDisplayValue;
@@ -103,7 +104,12 @@ goog.require('ng.material.core');
         promise = null;
         self.loading = false;
         self.matches = matches;
-      }    }
+      }
+    }
+
+    function blur (event) {
+      self.hidden = true;
+    }
 
     function keydown (event) {
       switch (event.keyCode) {
@@ -128,6 +134,8 @@ goog.require('ng.material.core');
           self.matches = [];
           self.hidden = true;
           self.index = -1;
+          break;
+        case $mdConstant.KEY_CODE.TAB:
           break;
         default:
           self.index = -1;
@@ -218,6 +226,7 @@ goog.require('ng.material.core');
           <input type="text"\
               ng-model="searchText"\
               ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
+              ng-blur="$mdAutocompleteCtrl.blur($event)"\
               placeholder="{{placeholder}}"\
               aria-label="{{placeholder}}"\
               aria-autocomplete="list"\

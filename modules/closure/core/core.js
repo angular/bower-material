@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-257bf49
+ * v0.8.0-rc1-master-91053dc
  */
 goog.provide('ng.material.core');
 goog.require('ng.material.components.icon');
@@ -124,7 +124,8 @@ function MdConstantFactory($$rAF, $sniffer) {
       LEFT_ARROW : 37,
       UP_ARROW : 38,
       RIGHT_ARROW : 39,
-      DOWN_ARROW : 40
+      DOWN_ARROW : 40,
+      TAB : 9
     },
     CSS: {
       /* Constants */
