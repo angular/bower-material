@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-42c2608
+ * v0.8.0-rc1-master-f704dda
  */
 goog.provide('ng.material.components.icon');
 goog.require('ng.material.core');
@@ -430,7 +430,8 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
    }
 
    /**
-    *
+    *    Loads the file as XML and uses querySelector( <id> ) to find
+    *    the desired node...
     */
    function loadFromIconSet(id) {
      var setName = id.substring(0, id.lastIndexOf(':')) || '$default';
