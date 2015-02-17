@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-f704dda
+ * v0.8.0-rc1-master-e088f6a
  */
 @-webkit-keyframes md-autocomplete-list-out {
   0% {
@@ -191,9 +191,11 @@ md-autocomplete {
       transition: background 0.15s linear;
       cursor: pointer;
       margin: 0; }
-      md-autocomplete ul li.ng-enter {
+      md-autocomplete ul li.ng-enter, md-autocomplete ul li.ng-hide-remove-active {
+        transition: none;
         -webkit-animation: md-autocomplete-list-in 0.2s;
                 animation: md-autocomplete-list-in 0.2s; }
-      md-autocomplete ul li.ng-leave {
+      md-autocomplete ul li.ng-leave, md-autocomplete ul li.ng-hide-add-active {
+        transition: none;
         -webkit-animation: md-autocomplete-list-out 0.2s;
                 animation: md-autocomplete-list-out 0.2s; }

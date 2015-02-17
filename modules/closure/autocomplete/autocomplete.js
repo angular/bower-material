@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-f704dda
+ * v0.8.0-rc1-master-e088f6a
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.core');
@@ -245,7 +245,7 @@ goog.require('ng.material.core');
         <ul role="presentation">\
           <li ng-repeat="(index, item) in $mdAutocompleteCtrl.matches"\
               ng-class="{ selected: index === $mdAutocompleteCtrl.index }"\
-              ng-if="searchText && !$mdAutocompleteCtrl.hidden"\
+              ng-show="searchText && !$mdAutocompleteCtrl.hidden"\
               ng-click="$mdAutocompleteCtrl.select(index)"\
               ng-transclude\
               md-autocomplete-list-item="$mdAutocompleteCtrl.itemName">\
