@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-c9dd626
+ * v0.8.0-rc1-master-36895a7
  */
 (function () {
   'use strict';
@@ -79,7 +79,7 @@
           promise.cancel();
           promise = null;
         }
-        if (cache[term]) {
+        if (!$scope.noCache && cache[term]) {
           self.matches = cache[term];
         } else if (!self.hidden) {
           self.fetch(searchText);
@@ -112,36 +112,36 @@
     function keydown (event) {
       switch (event.keyCode) {
         case $mdConstant.KEY_CODE.DOWN_ARROW:
-          if (self.loading) return;
-          event.preventDefault();
-          self.index = Math.min(self.index + 1, self.matches.length - 1);
-          updateScroll();
-          break;
+            if (self.loading) return;
+            event.preventDefault();
+            self.index = Math.min(self.index + 1, self.matches.length - 1);
+            updateScroll();
+            break;
         case $mdConstant.KEY_CODE.UP_ARROW:
-          if (self.loading) return;
-          event.preventDefault();
-          self.index = Math.max(0, self.index - 1);
-          updateScroll();
-          break;
+            if (self.loading) return;
+            event.preventDefault();
+            self.index = Math.max(0, self.index - 1);
+            updateScroll();
+            break;
         case $mdConstant.KEY_CODE.ENTER:
-          if (self.loading) return;
-          event.preventDefault();
-          select(self.index);
-          break;
+            if (self.loading || self.index < 0) return;
+            event.preventDefault();
+            select(self.index);
+            break;
         case $mdConstant.KEY_CODE.ESCAPE:
-          self.matches = [];
-          self.hidden = true;
-          self.index = -1;
-          break;
+            self.matches = [];
+            self.hidden = true;
+            self.index = -1;
+            break;
         case $mdConstant.KEY_CODE.TAB:
-          break;
+            break;
         default:
-          self.index = -1;
-          self.hidden = isHidden();
-          //-- after value updates, check if list should be hidden
-          $timeout(function () {
+            self.index = -1;
             self.hidden = isHidden();
-          });
+            //-- after value updates, check if list should be hidden
+            $timeout(function () {
+              self.hidden = isHidden();
+            });
       }
     }
 
@@ -207,7 +207,8 @@
    * @param {object=} md-selected-item A model to bind the selected item to
    * @param {expression} md-items An expression in the format of `item in items` to iterate over matches for your search.
    * @param {string=} md-item-text An expression that will convert your object to a single string.
-   * @param {placeholder=} Placeholder text that will be forwarded to the input.
+   * @param {string=} placeholder Placeholder text that will be forwarded to the input.
+   * @param {boolean=} md-no-cache Disables the internal caching that happens in autocomplete
    *
    * @usage
    * <hljs lang="html">
@@ -269,7 +270,8 @@
         selectedItem: '=mdSelectedItem',
         itemsExpr:    '@mdItems',
         itemText:     '&mdItemText',
-        placeholder:  '@placeholder'
+        placeholder:  '@placeholder',
+        noCache:      '=mdNoCache'
       }
     };
   }
