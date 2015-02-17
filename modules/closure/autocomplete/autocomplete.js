@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-7391cad
+ * v0.8.0-rc1-master-012a134
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.core');
@@ -70,6 +70,13 @@ goog.require('ng.material.core');
       input.attr('aria-owns', id);
     }
 
+    function getItemScope (item) {
+      if (!item) return;
+      var locals = {};
+      if (self.itemName) locals[self.itemName] = $scope.selectedItem;
+      return locals;
+    }
+
     function configureWatchers () {
       $scope.$watch('searchText', function (searchText) {
         if (!searchText) {
@@ -86,6 +93,10 @@ goog.require('ng.material.core');
         } else if (!self.hidden) {
           self.fetch(searchText);
         }
+        if ($scope.textChange) $scope.textChange(getItemScope($scope.selectedItem));
+      });
+      $scope.$watch('selectedItem', function (selectedItem) {
+        if ($scope.itemChange) $scope.itemChange(getItemScope(selectedItem));
       });
     }
 
@@ -162,9 +173,7 @@ goog.require('ng.material.core');
     }
 
     function getDisplayValue (item) {
-      var locals = {};
-      locals[self.itemName] = item;
-      return (item && $scope.itemText) ? $scope.itemText(locals) : item;
+      return (item && $scope.itemText) ? $scope.itemText(getItemScope(item)) : item;
     }
 
     function select (index) {
@@ -211,6 +220,8 @@ goog.require('ng.material.core');
    * @param {string=} md-item-text An expression that will convert your object to a single string.
    * @param {string=} placeholder Placeholder text that will be forwarded to the input.
    * @param {boolean=} md-no-cache Disables the internal caching that happens in autocomplete
+   * @param {expression} md-selected-item-change An expression to be run each time a new item is selected
+   * @param {expression} md-search-text-change An expression to be run each time the search text updates
    *
    * @usage
    * <hljs lang="html">
@@ -273,7 +284,9 @@ goog.require('ng.material.core');
         itemsExpr:    '@mdItems',
         itemText:     '&mdItemText',
         placeholder:  '@placeholder',
-        noCache:      '=mdNoCache'
+        noCache:      '=mdNoCache',
+        itemChange:   '&mdSelectedItemChange',
+        textChange:   '&mdSearchTextChange'
       }
     };
   }
