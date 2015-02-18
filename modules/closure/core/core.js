@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-012a134
+ * v0.8.0-rc1-master-fcc1e63
  */
 goog.provide('ng.material.core');
 goog.require('ng.material.components.icon');
@@ -976,7 +976,6 @@ function mdCompilerService($q, $http, $injector, $compile, $controller, $templat
               scope[controllerAs] = ctrl;
             }
           }
-
           return linkFn(scope);
         }
       };
@@ -1710,9 +1709,9 @@ function InterimElementProvider() {
        */
       function cancel(reason) {
         var interimElement = stack.shift();
-        return interimElement && interimElement.remove().then(function() {
+        return $q.when(interimElement && interimElement.remove().then(function() {
           interimElement.deferred.reject(reason);
-        });
+        }));
       }
 
 
@@ -1722,7 +1721,7 @@ function InterimElementProvider() {
        */
       function InterimElement(options) {
         var self;
-        var hideTimeout, element;
+        var hideTimeout, element, showDone, removeDone;
 
         options = options || {};
         options = angular.extend({
@@ -1742,13 +1741,11 @@ function InterimElementProvider() {
           options.template = processTemplate(options.template);
         }
 
-        var showFailed;
         return self = {
           options: options,
           deferred: $q.defer(),
           show: function() {
-            showFailed = false;
-            return $mdCompiler.compile(options).then(function(compileData) {
+            return showDone = $mdCompiler.compile(options).then(function(compileData) {
               angular.extend(compileData.locals, self.options);
 
               element = compileData.link(options.scope);
@@ -1781,7 +1778,7 @@ function InterimElementProvider() {
                   hideTimeout = $timeout(service.cancel, options.hideDelay) ;
                 }
               }
-            }, function(reason) { showFailed = true; self.deferred.reject(reason); });
+            }, function(reason) { showDone = true; self.deferred.reject(reason); });
           },
           cancelTimeout: function() {
             if (hideTimeout) {
@@ -1791,14 +1788,12 @@ function InterimElementProvider() {
           },
           remove: function() {
             self.cancelTimeout();
-            var ret;
-            if (showFailed) {
-              ret = true;
-            } else {
-              ret = options.onRemove(options.scope, element, options);
-            }
-            return $q.when(ret).then(function() {
-              if (!options.preserveScope) options.scope.$destroy();
+            return removeDone = $q.when(showDone).then(function() {
+              var ret = element ? options.onRemove(options.scope, element, options) : true;
+              return $q.when(ret).then(function() {
+                if (!options.preserveScope) options.scope.$destroy();
+                removeDone = true;
+              });
             });
           }
         };
