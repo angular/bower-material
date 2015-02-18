@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-5414bc4
+ * v0.8.0-rc1-master-af407b9
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.core');
@@ -53,7 +53,6 @@ goog.require('ng.material.core');
     self.getCurrentDisplayValue = getCurrentDisplayValue;
     self.fetch = $mdUtil.debounce(fetchResults);
 
-    //-- return init
     return init();
 
     //-- start method definitions
@@ -79,9 +78,12 @@ goog.require('ng.material.core');
 
     function configureWatchers () {
       $scope.$watch('searchText', function (searchText) {
+        self.index = -1;
         if (!searchText) {
           self.loading = false;
-          return self.matches = [];
+          self.matches = [];
+          self.hidden = shouldHide();
+          return;
         }
         var term = searchText.toLowerCase();
         if (promise && promise.cancel) {
@@ -90,9 +92,10 @@ goog.require('ng.material.core');
         }
         if (!$scope.noCache && cache[term]) {
           self.matches = cache[term];
-        } else if (!self.hidden) {
+        } else {
           self.fetch(searchText);
         }
+        self.hidden = shouldHide();
         if ($scope.textChange) $scope.textChange(getItemScope($scope.selectedItem));
       });
       $scope.$watch('selectedItem', function (selectedItem) {
@@ -115,6 +118,7 @@ goog.require('ng.material.core');
         promise = null;
         self.loading = false;
         self.matches = matches;
+        self.hidden = shouldHide();
       }
     }
 
@@ -149,12 +153,6 @@ goog.require('ng.material.core');
         case $mdConstant.KEY_CODE.TAB:
             break;
         default:
-            self.index = -1;
-            self.hidden = isHidden();
-            //-- after value updates, check if list should be hidden
-            $timeout(function () {
-              self.hidden = isHidden();
-            });
       }
     }
 
@@ -164,7 +162,7 @@ goog.require('ng.material.core');
       elements.input.focus();
     }
 
-    function isHidden () {
+    function shouldHide () {
       return self.matches.length === 1 && $scope.searchText === getDisplayValue(self.matches[0]);
     }
 
