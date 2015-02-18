@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-dfeedb4
+ * v0.8.0-rc1-master-5414bc4
  */
 goog.provide('ng.material.core');
 goog.require('ng.material.components.icon');
@@ -913,7 +913,7 @@ function mdCompilerService($q, $http, $injector, $compile, $controller, $templat
     *     the element and instantiate the provided controller (if given).
     *   - `locals` - `{object}`: The locals which will be passed into the controller once `link` is
     *     called. If `bindToController` is true, they will be coppied to the ctrl instead
-    *   - `bindToController` - `bool`: bind the locals to the controller, instead of passing them in
+    *   - `bindToController` - `bool`: bind the locals to the controller, instead of passing them in. These values will not be available until after initialization.
     */
   this.compile = function(options) {
     var templateUrl = options.templateUrl;

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-dfeedb4
+ * v0.8.0-rc1-master-5414bc4
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
