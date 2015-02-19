@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-42cff13
+ * v0.8.0-rc1-master-5d7b63b
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -44,7 +44,6 @@ goog.require('ng.material.core');
 ***************************************************/
 
 var SELECT_EDGE_MARGIN = 8;
-var SELECT_PADDING = 8;
 var selectNextId = 0;
 
 angular.module('material.components.select', [
@@ -68,7 +67,7 @@ angular.module('material.components.select', [
  * @param {expression} ng-model The model!
  * @param {boolean=} multiple Whether it's multiple.
  */
-function SelectDirective($mdSelect, $mdUtil, $q, $mdTheming) {
+function SelectDirective($mdSelect, $mdUtil, $mdTheming) {
   return {
     restrict: 'E',
     compile: compile
@@ -142,7 +141,7 @@ function SelectDirective($mdSelect, $mdUtil, $q, $mdTheming) {
         }
       }
 
-      function openSelect(ev) {
+      function openSelect() {
         scope.$evalAsync(function() {
           $mdSelect.show({
             scope: scope.$new(),
@@ -159,11 +158,11 @@ function SelectDirective($mdSelect, $mdUtil, $q, $mdTheming) {
 
   }
 }
-SelectDirective.$inject = ["$mdSelect", "$mdUtil", "$q", "$mdTheming"];
+SelectDirective.$inject = ["$mdSelect", "$mdUtil", "$mdTheming"];
 
-function SelectMenuDirective($parse, $mdSelect, $mdUtil, $mdTheming) {
+function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
 
-  SelectMenuController.$inject = ["$scope", "$element", "$attrs"];
+  SelectMenuController.$inject = ["$scope", "$attrs"];
   return {
     restrict: 'E',
     require: ['mdSelectMenu', 'ngModel'],
@@ -225,7 +224,7 @@ function SelectMenuDirective($parse, $mdSelect, $mdUtil, $mdTheming) {
     }
   }
 
-  function SelectMenuController($scope, $element, $attrs) {
+  function SelectMenuController($scope, $attrs) {
     var self = this;
     self.isMultiple = angular.isDefined($attrs.multiple);
     // selected is an object with keys matching all of the selected options' hashed values
@@ -302,7 +301,7 @@ function SelectMenuDirective($parse, $mdSelect, $mdUtil, $mdTheming) {
         self.refreshViewValue();
       }
     };
-    self.removeOption = function(hashKey, optionCtrl) {
+    self.removeOption = function(hashKey) {
       delete self.options[hashKey];
       // Don't deselect an option when it's removed - the user's ngModel should be allowed
       // to have values that do not match a currently available option.
@@ -351,11 +350,11 @@ function SelectMenuDirective($parse, $mdSelect, $mdUtil, $mdTheming) {
   }
 
 }
-SelectMenuDirective.$inject = ["$parse", "$mdSelect", "$mdUtil", "$mdTheming"];
+SelectMenuDirective.$inject = ["$parse", "$mdUtil", "$mdTheming"];
 
 function OptionDirective($mdInkRipple, $mdUtil) {
 
-  OptionController.$inject = ["$scope", "$element"];
+  OptionController.$inject = ["$element"];
   return {
     restrict: 'E',
     require: ['mdOption', '^^mdSelectMenu'],
@@ -409,7 +408,7 @@ function OptionDirective($mdInkRipple, $mdUtil) {
     }
   }
 
-  function OptionController($scope, $element) {
+  function OptionController($element) {
     this.selected = false;
     this.setSelected = function(isSelected) {
       if (isSelected && !this.selected) {
@@ -444,7 +443,7 @@ function OptgroupDirective() {
 }
 
 function SelectProvider($$interimElementProvider) {
-  selectDefaultOptions.$inject = ["$animate", "$mdSelect", "$mdConstant", "$$rAF", "$mdUtil", "$mdTheming", "$timeout"];
+  selectDefaultOptions.$inject = ["$mdSelect", "$mdConstant", "$$rAF", "$mdUtil", "$mdTheming", "$timeout"];
   return $$interimElementProvider('$mdSelect')
     .setDefaults({
       methods: ['target'],
@@ -452,7 +451,7 @@ function SelectProvider($$interimElementProvider) {
     });
 
   /* @ngInject */
-  function selectDefaultOptions($animate, $mdSelect, $mdConstant, $$rAF, $mdUtil, $mdTheming, $timeout) {
+  function selectDefaultOptions($mdSelect, $mdConstant, $$rAF, $mdUtil, $mdTheming, $timeout) {
     return {
       parent: 'body',
       onShow: onShow,
@@ -494,7 +493,6 @@ function SelectProvider($$interimElementProvider) {
         opts.disableTarget = opts.parent.find('md-content');
         if (!opts.disableTarget.length) opts.disableTarget = opts.parent;
         opts.lastOverflow = opts.disableTarget.css('overflow');
-        opts.disableTarget.css('overflow', 'hidden');
       }
 
       // Only activate click listeners after a short time to stop accidental double taps/clicks
@@ -536,16 +534,19 @@ function SelectProvider($$interimElementProvider) {
 
         // Escape to close
         opts.selectEl.on('keydown', function(e) {
-          if (e.keyCode == 27) {
-            opts.restoreFocus = true;
-            scope.$apply($mdSelect.cancel);
+          switch (e.keyCode) {
+            case $mdConstant.KEY_CODE.ESCAPE:
+              opts.restoreFocus = true;
+              scope.$apply($mdSelect.cancel);
           }
         });
 
         // Cycling of options, and closing on enter
         opts.selectEl.on('keydown', function(e) {
-          if (e.keyCode == 38) return focusPrevOption();
-          if (e.keyCode == 40) return focusNextOption();
+          switch (e.keyCode) {
+            case $mdConstant.KEY_CODE.UP_ARROW: return focusPrevOption();
+            case $mdConstant.KEY_CODE.DOWN_ARROW: return focusNextOption();
+          }
         });
 
         function focusNextOption() {
@@ -623,7 +624,7 @@ function SelectProvider($$interimElementProvider) {
             left: parentNode.scrollLeft + SELECT_EDGE_MARGIN,
             top: parentNode.scrollTop + SELECT_EDGE_MARGIN,
             bottom: parentRect.height + parentNode.scrollTop - SELECT_EDGE_MARGIN,
-            right: parentRect.width - parentNode.scrollLeft - SELECT_EDGE_MARGIN,
+            right: parentRect.width - parentNode.scrollLeft - SELECT_EDGE_MARGIN
           },
           spaceAvailable = {
             top: targetRect.top - bounds.top,
@@ -705,12 +706,11 @@ function SelectProvider($$interimElementProvider) {
           transformOrigin = '50% 100%';
         }
       } else {
-        left = targetRect.left + centeredRect.left - centeredRect.paddingLeft,
+        left = targetRect.left + centeredRect.left - centeredRect.paddingLeft;
         top = targetRect.top + targetRect.height / 2 - centeredRect.height / 2 -
           centeredRect.top + contentNode.scrollTop;
         transformOrigin = (centeredRect.left + targetRect.width / 2) + 'px ' +
         (centeredRect.top + centeredRect.height / 2 - contentNode.scrollTop) + 'px 0px';
-        containerNode.style.width = targetRect.width + centeredRect.paddingLeft + centeredRect.paddingRight + 'px';
       }
 
       // Keep left and top within the window
