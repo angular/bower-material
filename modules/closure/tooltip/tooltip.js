@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-ffbea7d
+ * v0.8.0-rc1-master-42cff13
  */
 goog.provide('ng.material.components.tooltip');
 goog.require('ng.material.core');
@@ -65,6 +65,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     $mdTheming(element);
     var parent = element.parent();
     var background = angular.element(element[0].getElementsByClassName('md-background')[0]);
+    var content = angular.element(element[0].getElementsByClassName('md-content')[0]);
     var direction = attr.mdDirection;
 
     // Keep looking for a higher parent if our current one has no pointer events
@@ -139,11 +140,13 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       positionTooltip();
       $animate.addClass(element, 'md-show');
       $animate.addClass(background, 'md-show');
+      $animate.addClass(content, 'md-show');
     }
 
     function hideTooltip() {
       parent.removeAttr('aria-describedby');
       $q.all([
+        $animate.removeClass(content, 'md-show'),
         $animate.removeClass(background, 'md-show'),
         $animate.removeClass(element, 'md-show')
       ]).then(function () {
