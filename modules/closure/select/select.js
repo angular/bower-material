@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-dbe632a
+ * v0.8.0-rc1-master-eda14e9
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -466,7 +466,7 @@ function SelectProvider($$interimElementProvider) {
       onShow: onShow,
       onRemove: onRemove,
       hasBackdrop: true,
-      disableParentScroll: true,
+      disableParentScroll: $mdUtil.floatingScrollbars(),
       themable: true
     };
 
@@ -502,6 +502,7 @@ function SelectProvider($$interimElementProvider) {
         opts.disableTarget = opts.parent.find('md-content');
         if (!opts.disableTarget.length) opts.disableTarget = opts.parent;
         opts.lastOverflow = opts.disableTarget.css('overflow');
+        opts.disableTarget.css('overflow', 'hidden');
       }
 
       // Only activate click listeners after a short time to stop accidental double taps/clicks
@@ -544,7 +545,9 @@ function SelectProvider($$interimElementProvider) {
         // Escape to close
         opts.selectEl.on('keydown', function(e) {
           switch (e.keyCode) {
+            case $mdConstant.KEY_CODE.TAB:
             case $mdConstant.KEY_CODE.ESCAPE:
+              e.preventDefault();
               opts.restoreFocus = true;
               scope.$apply($mdSelect.cancel);
           }
@@ -607,7 +610,7 @@ function SelectProvider($$interimElementProvider) {
       element.addClass('md-leave').removeClass('md-clickable');
       opts.target.attr('aria-expanded', 'false');
 
-      if (opts.disableParentScroll) {
+      if (opts.disableParentScroll && $mdUtil.floatingScrollbars()) {
         opts.disableTarget.css('overflow', opts.lastOverflow);
         delete opts.lastOverflow;
         delete opts.disableTarget;
@@ -720,6 +723,7 @@ function SelectProvider($$interimElementProvider) {
           centeredRect.top + contentNode.scrollTop;
         transformOrigin = (centeredRect.left + targetRect.width / 2) + 'px ' +
         (centeredRect.top + centeredRect.height / 2 - contentNode.scrollTop) + 'px 0px';
+        containerNode.style['min-width'] = targetRect.width + centeredRect.paddingLeft + centeredRect.paddingRight + 'px';
       }
 
       // Keep left and top within the window
