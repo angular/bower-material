@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-efbd414
+ * v0.8.0-rc1-master-150efe6
  */
 goog.provide('ng.material.components.bottomSheet');
 goog.require('ng.material.components.backdrop');
@@ -77,6 +77,7 @@ function MdBottomSheetDirective() {
  *   have an outer `md-bottom-sheet` element.
  *   - `template` - `{string=}`: Same as templateUrl, except this is an actual
  *   template string.
+ *   - `scope` - `{object=}`: the scope to link the template / controller to. If none is specified, it will create a new child scope.
  *   - `controller` - `{string=}`: The controller to associate with this bottom sheet.
  *   - `locals` - `{string=}`: An object containing key/value pairs. The keys will
  *   be used as names of values to inject into the controller. For example,

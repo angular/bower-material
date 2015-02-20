@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-efbd414
+ * v0.8.0-rc1-master-150efe6
  */
 goog.provide('ng.material.components.swipe');
 

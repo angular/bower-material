@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-efbd414
+ * v0.8.0-rc1-master-150efe6
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -285,6 +285,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  *   - `targetEvent` - `{DOMClickEvent=}`: A click's event object. When passed in as an option,
  *     the location of the click will be used as the starting point for the opening animation
  *     of the the dialog.
+ *   - `scope` - `{object=}`: the scope to link the template / controller to. If none is specified, it will create a new isolate scope.
  *   - `disableParentScroll` - `{boolean=}`: Whether to disable scrolling while the dialog is open.
  *     Default true.
  *   - `hasBackdrop` - `{boolean=}`: Whether there should be an opaque backdrop behind the dialog.
@@ -414,7 +415,10 @@ function MdDialogProvider($$interimElementProvider) {
       configureAria(element.find('md-dialog'));
 
       if (options.hasBackdrop) {
-        var parentOffset = options.parent.prop('scrollTop');
+        // Fix for IE 10
+        var computeFrom = (options.parent[0] == $document[0].body && $document[0].documentElement 
+                           && $document[0].scrollTop) ? angular.element($document[0].documentElement) : options.parent;
+        var parentOffset = computeFrom.prop('scrollTop');
         options.backdrop = angular.element('<md-backdrop class="md-dialog-backdrop md-opaque">');
         $mdTheming.inherit(options.backdrop, options.parent);
         $animate.enter(options.backdrop, options.parent);
