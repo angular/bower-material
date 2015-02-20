@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-a6a3764
+ * v0.8.0-rc1-master-76d7fd1
  */
 (function () {
   'use strict';
@@ -13,7 +13,10 @@
   /*
    * @see js folder for autocomplete implementation
    */
-  angular.module('material.components.autocomplete', [ 'material.core' ]);
+  angular.module('material.components.autocomplete', [
+    'material.core',
+    'material.components.icon'
+  ]);
 })();
 
 (function () {
