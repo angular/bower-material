@@ -12,12 +12,6 @@ You can install this package locally either with `npm` or with `bower`.
 npm install angular-material
 ```
 
-Note that this package is not in CommonJS format, so doing `require('angular-material')`
-will return `undefined`. If you're using 
-[Browserify](https://github.com/substack/node-browserify), you can use
-[exposify](https://github.com/thlorenz/exposify) to have `require('angular-material')`
-return the `angular-material` global.
-
 ### bower
 
 ```shell
@@ -42,7 +36,7 @@ bower update
 Now that you have installed the Angular libraries, simply include the scripts and 
 stylesheet in your main HTML file, in the order shown in the example below. Note that npm 
 will install the files under `/node_modules/angular-material/` and bower will install them 
-under `/bower_components/angular-material/`.
+under `/bower_components/angular-material/`. You can also `require('angular-material')` when installing with npm and using Browserify or Webpack.
 
 ### npm
 

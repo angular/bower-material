@@ -27,5 +27,5 @@
     "url": "https://github.com/angular/material/issues"
   },
   "homepage": "https://material.angularjs.org",
-  "main": "angular-material.js"
+  "main": "index.js"
 }
