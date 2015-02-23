@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-master-6239b29
+ * v0.8.0-master-0c0f25c
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -130,9 +130,22 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming) {
     $mdTheming(element);
 
     return function postLink(scope, element, attr, ngModel) {
-      element.on('click', openSelect);
+      attr.$observe('disabled', function(disabled) {
+        if (disabled !== undefined) {
+          element.attr('tabindex', -1);
+          element.off('click', openSelect);
+          element.off('keydown', openOnKeypress);
+        } else {
+          element.attr('tabindex', 0);
+          element.on('click', openSelect);
+          element.on('keydown', openOnKeypress);
+        }
+      });
 
-      element.on('keydown', openOnKeypress);
+      if (attr.disabled === undefined) {
+        element.on('click', openSelect);
+        element.on('keydown', openOnKeypress);
+      }
 
       element.attr({
         'role': 'combobox',
@@ -243,7 +256,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
     self.options = {};
 
 
-    self.init = function(ngModel) {
+    self.init = function(ngModel, rerender) {
       self.ngModel = ngModel;
 
       // Allow users to provide `ng-model="foo" ng-model-options="{trackBy: 'foo.id'}"` so
@@ -278,6 +291,8 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
       } else {
         ngModel.$render = renderSingular;
       }
+
+      if (rerender) ngModel.$render();
 
       function validateArray(modelValue, viewValue) {
         // If a value is truthy but not an array, reject it.
@@ -490,7 +505,7 @@ function SelectProvider($$interimElementProvider) {
       configureAria();
 
       if (opts.ngModel) {
-        opts.selectEl.controller('mdSelectMenu').init(opts.ngModel);
+        opts.selectEl.controller('mdSelectMenu').init(opts.ngModel, true);
       }
 
       if (opts.loadingAsync && opts.loadingAsync.then) {
