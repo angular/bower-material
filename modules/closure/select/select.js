@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-rc1-master-71b17ba
+ * v0.8.0
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -77,7 +77,6 @@ angular.module('material.components.select', [
 function SelectDirective($mdSelect, $mdUtil, $mdTheming) {
   return {
     restrict: 'E',
-    require: '?ngModel',
     compile: compile
   };
 
@@ -120,7 +119,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming) {
     // Use everything that's left inside element.contents() as the contents of the menu
     var selectTemplate = '' +
       '<div class="md-select-menu-container">' +
-        '<md-select-menu ' +
+        '<md-select-menu ng-model="$parent.' + attr.ngModel + '" ' +
         (angular.isDefined(attr.multiple) ? 'multiple' : '') + '>' +
           element.html() +
         '</md-select-menu></div>';
@@ -129,7 +128,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming) {
 
     $mdTheming(element);
 
-    return function postLink(scope, element, attr, ngModel) {
+    return function postLink(scope, element, attr) {
       element.on('click', openSelect);
 
       element.on('keydown', openOnKeypress);
@@ -157,9 +156,10 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming) {
             scope: scope.$new(),
             template: selectTemplate,
             target: element[0],
-            ngModel: ngModel,
             hasBackdrop: true,
             loadingAsync: attr.mdOnOpen ? scope.$eval(attr.mdOnOpen) : false
+          }).then(function() {
+            element.attr('aria-expanded', false);
           });
         });
       }
@@ -174,7 +174,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
   SelectMenuController.$inject = ["$scope", "$attrs"];
   return {
     restrict: 'E',
-    require: ['mdSelectMenu', '?ngModel'],
+    require: ['mdSelectMenu', 'ngModel'],
     controller: SelectMenuController,
     link: {
       pre: preLink
@@ -190,7 +190,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
     $mdTheming(element);
     element.on('click', clickListener);
     element.on('keypress', keyListener);
-    if (ngModel) selectCtrl.init(ngModel);
+    selectCtrl.init(ngModel);
     configureAria();
 
     function configureAria() {
@@ -488,10 +488,6 @@ function SelectProvider($$interimElementProvider) {
       var arrayIndexOf = [].indexOf;
 
       configureAria();
-
-      if (opts.ngModel) {
-        opts.selectEl.controller('mdSelectMenu').init(opts.ngModel);
-      }
 
       if (opts.loadingAsync && opts.loadingAsync.then) {
         opts.loadingAsync.then(function() {
