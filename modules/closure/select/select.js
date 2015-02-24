@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-master-20b6611
+ * v0.8.0-master-5a82426
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -688,7 +688,7 @@ function SelectProvider($$interimElementProvider) {
         centeredNode = optionNodes[Math.floor(optionNodes.length / 2 )];
       // In case there are no options, center on whatevers in there... (such as a progress indicator)
       } else {
-        centeredNode = contentNode.firstElementChild;
+        centeredNode = contentNode.firstElementChild || contentNode;
       }
 
       if (contentNode.offsetWidth > maxWidth) {
