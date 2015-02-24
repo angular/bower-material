@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-master-69053a3
+ * v0.8.0-master-872c448
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -83,7 +83,7 @@ goog.require('ng.material.core');
     function configureWatchers () {
       $scope.$watch('searchText', function (searchText) {
         self.index = -1;
-        if (searchText.length < Math.max(parseInt($scope.minLength, 10), 1)) {
+        if (!searchText || searchText.length < Math.max(parseInt($scope.minLength, 10), 1)) {
           self.loading = false;
           self.matches = [];
           self.hidden = shouldHide();
