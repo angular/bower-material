@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-master-5a2b014
+ * v0.8.0-master-805ed1b
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -668,7 +668,9 @@ function SelectProvider($$interimElementProvider) {
           },
           spaceAvailable = {
             top: targetRect.top - bounds.top,
-            left: targetRect.left - bounds.bottom
+            left: targetRect.left - bounds.left,
+            right: bounds.right - (targetRect.left + targetRect.width),
+            bottom: bounds.bottom - (targetRect.top + targetRect.height)
           },
           maxWidth = parentRect.width - SELECT_EDGE_MARGIN * 2,
           isScrollable = contentNode.scrollHeight > contentNode.offsetHeight,
