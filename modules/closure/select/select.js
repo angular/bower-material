@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-master-805ed1b
+ * v0.8.0-master-c573c8c
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -502,7 +502,7 @@ function SelectProvider($$interimElementProvider) {
         parent: angular.element(opts.parent),
         selectEl: element.find('md-select-menu'),
         contentEl: element.find('md-content'),
-        backdrop: opts.hasBackdrop && angular.element('<md-backdrop>')
+        backdrop: opts.hasBackdrop && angular.element('<md-backdrop class="md-select-backdrop">')
       });
     
       var optionNodes = opts.selectEl[0].getElementsByTagName('md-option');
@@ -567,7 +567,9 @@ function SelectProvider($$interimElementProvider) {
         var selectCtrl = opts.selectEl.controller('mdSelectMenu') || {};
         element.addClass('md-clickable');
 
-        opts.backdrop && opts.backdrop.on('click', function() {
+        opts.backdrop && opts.backdrop.on('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
           opts.restoreFocus = false;
           scope.$apply($mdSelect.cancel);
         });
