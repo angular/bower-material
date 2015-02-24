@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-master-9497f06
+ * v0.8.0-master-20b6611
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -74,7 +74,10 @@ angular.module('material.components.select', [
  *   </md-select>
  * </hljs>
  */
-function SelectDirective($mdSelect, $mdUtil, $mdTheming) {
+function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate) {
+  var intStart = $interpolate.startSymbol();
+  var intEnd = $interpolate.endSymbol();
+
   return {
     restrict: 'E',
     require: '?ngModel',
@@ -87,11 +90,11 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming) {
 
     // If not provided, we automatically make one
     if (!labelEl.length) {
-      labelEl = angular.element('<md-select-label>').html('<span>{{' + attr.ngModel + ' !== undefined ? ' + attr.ngModel + ': \'' + attr.placeholder + '\'}}</span>');
+      labelEl = angular.element('<md-select-label>').html('<span>' + intStart + attr.ngModel + ' !== undefined ? ' + attr.ngModel + ': \'' + attr.placeholder + '\''+ intEnd + '</span>');
     }
     labelEl.append('<span class="md-select-icon" aria-hidden="true"></span>');
     labelEl.addClass('md-select-label');
-    labelEl.addClass('{{ ' + attr.ngModel + ' ? \'\' : \'md-placeholder\'}}');
+    labelEl.addClass(intStart + attr.ngModel + ' ? \'\' : \'md-placeholder\'' + intEnd);
     labelEl.attr('id', 'select_label_' + $mdUtil.nextUid());
 
     // There's got to be an md-content inside. If there's not one, let's add it.
@@ -183,7 +186,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming) {
 
   }
 }
-SelectDirective.$inject = ["$mdSelect", "$mdUtil", "$mdTheming"];
+SelectDirective.$inject = ["$mdSelect", "$mdUtil", "$mdTheming", "$interpolate"];
 
 function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
 
