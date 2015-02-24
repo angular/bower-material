@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-master-5e02ad9
+ * v0.8.0-master-9497f06
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -87,14 +87,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming) {
 
     // If not provided, we automatically make one
     if (!labelEl.length) {
-      // Use the input as a label if there's an input inside.
-      if ( (labelEl = element.find('input')).length ) {
-        // Remove the input, we won't keep it in the select menu that will be popping up
-        labelEl.remove();
-      } else {
-        // Otherwise, create a label for the user
-        labelEl = angular.element('<md-select-label>').html('<span>{{' + attr.ngModel + ' ? ' + attr.ngModel + ': \'' + attr.placeholder + '\'}}</span>');
-      }
+      labelEl = angular.element('<md-select-label>').html('<span>{{' + attr.ngModel + ' !== undefined ? ' + attr.ngModel + ': \'' + attr.placeholder + '\'}}</span>');
     }
     labelEl.append('<span class="md-select-icon" aria-hidden="true"></span>');
     labelEl.addClass('md-select-label');
