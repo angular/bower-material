@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-master-d988774
+ * v0.8.0-master-ee4c7c1
  */
 goog.provide('ng.material.core');
 
@@ -921,7 +921,7 @@ function mdCompilerService($q, $http, $injector, $compile, $controller, $templat
     return $q.all(resolve).then(function(locals) {
 
       var template = transformTemplate(locals.$template);
-      var element = angular.element('<div>').html(template.trim()).contents();
+      var element = options.element || angular.element('<div>').html(template.trim()).contents();
       var linkFn = $compile(element);
 
       //Return a linking function that can be used later when the element is ready
