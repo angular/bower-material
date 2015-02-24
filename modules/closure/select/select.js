@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-master-d9938b1
+ * v0.8.0-master-5e02ad9
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -130,6 +130,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming) {
     $mdTheming(element);
 
     return function postLink(scope, element, attr, ngModel) {
+      var isOpen;
       attr.$observe('disabled', function(disabled) {
         if (disabled !== undefined) {
           element.attr('tabindex', -1);
@@ -155,6 +156,12 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming) {
         'aria-labelledby': labelEl.attr('id')
       });
 
+      scope.$on('$destroy', function() {
+        if (isOpen) {
+          $mdSelect.cancel();
+        }
+      });
+
       function openOnKeypress(e) {
         var allowedCodes = [32, 13, 38, 40];
         if (allowedCodes.indexOf(e.keyCode) != -1 ) {
@@ -166,6 +173,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming) {
 
       function openSelect() {
         scope.$evalAsync(function() {
+          isOpen = true;
           $mdSelect.show({
             scope: scope.$new(),
             template: selectTemplate,
@@ -173,6 +181,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming) {
             ngModel: ngModel,
             hasBackdrop: true,
             loadingAsync: attr.mdOnOpen ? scope.$eval(attr.mdOnOpen) : false
+          }).then(function() {
+            isOpen = false;
           });
         });
       }
