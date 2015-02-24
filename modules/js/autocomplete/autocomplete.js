@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-master-c573c8c
+ * v0.8.0-master-c71ac59
  */
 (function () {
   'use strict';
@@ -239,6 +239,7 @@
       template:     '\
         <md-autocomplete-wrap role="listbox">\
           <input type="text"\
+              ng-disabled="isDisabled"\
               ng-model="searchText"\
               ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
               ng-blur="$mdAutocompleteCtrl.blur()"\
@@ -285,7 +286,8 @@
         placeholder:  '@placeholder',
         noCache:      '=mdNoCache',
         itemChange:   '&mdSelectedItemChange',
-        textChange:   '&mdSearchTextChange'
+        textChange:   '&mdSearchTextChange',
+        isDisabled:   '=ngDisabled'
       }
     };
   }
