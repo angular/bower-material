@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.0-master-ee4c7c1
+ * v0.8.0-master-69053a3
  */
 .md-select-menu-container {
   position: absolute;
@@ -86,7 +86,8 @@ md-select-menu {
           transform-origin: 0 0;
   -webkit-transform: scale(1);
           transform: scale(1);
-  max-height: 256px; }
+  max-height: 256px;
+  overflow-y: scroll; }
   md-select-menu.md-reverse {
     -webkit-flex-direction: column-reverse;
         -ms-flex-direction: column-reverse;
