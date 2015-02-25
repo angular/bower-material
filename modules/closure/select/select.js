@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-9e0ca44
+ * v0.8.1-master-b4c0a86
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -81,8 +81,9 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
 
   return {
     restrict: 'E',
-    require: '?ngModel',
-    compile: compile
+    require: ['mdSelect', '?ngModel'],
+    compile: compile,
+    controller: function() { } // empty placeholder controller to be initialized in link
   };
 
   function compile(element, attr) {
@@ -95,7 +96,6 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
     }
     labelEl.append('<span class="md-select-icon" aria-hidden="true"></span>');
     labelEl.addClass('md-select-label');
-    labelEl.addClass(intStart + attr.ngModel + ' !== undefined ? \'\' : \'md-placeholder\'' + intEnd);
     labelEl.attr('id', 'select_label_' + $mdUtil.nextUid());
 
     // There's got to be an md-content inside. If there's not one, let's add it.
@@ -126,11 +126,26 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
 
     $mdTheming(element);
 
-    return function postLink(scope, element, attr, ngModel) {
+    return function postLink(scope, element, attr, ctrls) {
       var isOpen;
+
+      var mdSelectCtrl = ctrls[0];
+      var ngModel = ctrls[1];
       var labelEl = element.find('md-select-label');
       var customLabel = labelEl.text().length !== 0;
-      if (!customLabel) labelEl = labelEl.children().eq(0);
+
+      mdSelectCtrl.setLabelText = function(text) {
+        if (customLabel) return; // Assume that user is handling it on their own
+        mdSelectCtrl.setIsPlaceholder(!text);
+        var newText = text || attr.placeholder;
+        var target = customLabel ? labelEl : labelEl.children().eq(0);
+        target.html(newText);
+      };
+
+      mdSelectCtrl.setIsPlaceholder = function(val) {
+        val ? labelEl.addClass('md-placeholder') : labelEl.removeClass('md-placeholder');
+      };
+
       setInitialLabelValue();
 
       attr.$observe('disabled', function(disabled) {
@@ -164,28 +179,23 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
         }
       });
 
+
       // Create a fake select to find out the label value
       function setInitialLabelValue() {
         if ($parse(attr.ngModel)(scope)) {
           var fakeSelectEl = angular.element(selectTemplate.clone()).find('md-select-menu');
           fakeSelectEl.data('$ngModelController', ngModel);
+          fakeSelectEl.data('$mdSelectController', mdSelectCtrl);
           var fakeSelectScope = scope.$new();
           fakeSelectEl = $compile(fakeSelectEl)(fakeSelectScope);
           var fakeSelectCtrl = fakeSelectEl.controller('mdSelectMenu');
           fakeSelectScope.$$postDigest(function() {
             ngModel.$render();
-            setLabelText(fakeSelectCtrl.selectedLabels());
             fakeSelectEl.scope().$destroy();
           });
         } else {
-          setLabelText();
+          mdSelectCtrl.setLabelText();
         }
-      }
-
-      function setLabelText(text) {
-        if (customLabel) return; // Assume that user is handling it on their own
-        var newText = text || attr.placeholder;
-        labelEl.html(newText);
       }
 
       function openOnKeypress(e) {
@@ -201,6 +211,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
         scope.$evalAsync(function() {
           var selectEl = selectTemplate.clone();
           selectEl.find('md-select-menu').data('$ngModelController', ngModel);
+          selectEl.find('md-select-menu').data('$mdSelectController', mdSelectCtrl);
           isOpen = true;
           $mdSelect.show({
             scope: scope.$new(),
@@ -208,14 +219,12 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
             target: element[0],
             hasBackdrop: true,
             loadingAsync: attr.mdOnOpen ? scope.$eval(attr.mdOnOpen) : false,
-            setLabelText: setLabelText
           }).then(function(selectedText) {
             isOpen = false;
           });
         });
       }
     };
-
   }
 }
 SelectDirective.$inject = ["$mdSelect", "$mdUtil", "$mdTheming", "$interpolate", "$compile", "$parse"];
@@ -225,7 +234,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
   SelectMenuController.$inject = ["$scope", "$attrs", "$element"];
   return {
     restrict: 'E',
-    require: ['mdSelectMenu', '?ngModel'],
+    require: ['mdSelectMenu', '?mdSelect', '?ngModel'],
     controller: SelectMenuController,
     link: { pre: preLink }
   };
@@ -234,12 +243,13 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
   // its child options run postLink.
   function preLink(scope, element, attr, ctrls) {
     var selectCtrl = ctrls[0];
-    var ngModel = ctrls[1];
+    var mdSelect = ctrls[1];
+    var ngModel = ctrls[2];
 
     $mdTheming(element);
     element.on('click', clickListener);
     element.on('keypress', keyListener);
-    if (ngModel) selectCtrl.init(ngModel);
+    if (ngModel) selectCtrl.init(ngModel, mdSelect);
     configureAria();
 
     function configureAria() {
@@ -294,8 +304,9 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
     self.options = {};
 
 
-    self.init = function(ngModel) {
+    self.init = function(ngModel, mdSelect) {
       self.ngModel = ngModel;
+      self.mdSelect = mdSelect;
 
       // Allow users to provide `ng-model="foo" ng-model-options="{trackBy: 'foo.id'}"` so
       // that we can properly compare objects set on the model to the available options
@@ -410,11 +421,13 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
       newSelectedHashes.forEach(function(hashKey, i) {
         self.select(hashKey, newSelectedValues[i]);
       });
+      self.mdSelect && self.mdSelect.setLabelText(self.selectedLabels());
     }
     function renderSingular() {
       var value = self.ngModel.$viewValue || self.ngModel.$modelValue;
       Object.keys(self.selected).forEach(self.deselect);
       self.select( self.hashGetter(value), value );
+      self.mdSelect && self.mdSelect.setLabelText(self.selectedLabels());
     }
   }
 
@@ -680,8 +693,6 @@ function SelectProvider($$interimElementProvider) {
         delete opts.lastOverflow;
         delete opts.disableTarget;
       }
-
-      opts.setLabelText && opts.setLabelText(opts.selectEl.controller('mdSelectMenu').selectedLabels());
 
       return $mdUtil.transitionEndPromise(element).then(function() {
         element.remove();
