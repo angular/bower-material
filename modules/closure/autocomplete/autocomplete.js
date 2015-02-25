@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-b4c0a86
+ * v0.8.1-master-c58d930
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -81,7 +81,7 @@ goog.require('ng.material.core');
     }
 
     function configureWatchers () {
-      $scope.$watch('searchText', function (searchText) {
+      $scope.$watch('searchText', function (searchText, previousSearchText) {
         self.index = -1;
         if (!searchText || searchText.length < Math.max(parseInt($scope.minLength, 10), 1)) {
           self.loading = false;
@@ -100,10 +100,10 @@ goog.require('ng.material.core');
           self.fetch(searchText);
         }
         self.hidden = shouldHide();
-        if ($scope.textChange) $scope.textChange(getItemScope($scope.selectedItem));
+        if ($scope.textChange && searchText !== previousSearchText) $scope.textChange(getItemScope($scope.selectedItem));
       });
-      $scope.$watch('selectedItem', function (selectedItem) {
-        if ($scope.itemChange) $scope.itemChange(getItemScope(selectedItem));
+      $scope.$watch('selectedItem', function (selectedItem, previousSelectedItem) {
+        if ($scope.itemChange && selectedItem !== previousSelectedItem) $scope.itemChange(getItemScope(selectedItem));
       });
     }
 
