@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-0bd7afb
+ * v0.8.1-master-e2148f1
  */
 (function () {
   'use strict';
@@ -131,6 +131,7 @@
     }
 
     function updateMessages () {
+      if (self.hidden) return;
       switch (self.matches.length) {
         case 0:  return self.messages.splice(0);
         case 1:  return self.messages.push({ display: 'There is 1 match available.' });
