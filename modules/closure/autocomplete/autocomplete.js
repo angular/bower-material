@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-c58d930
+ * v0.8.1-master-70a884a
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -81,7 +81,8 @@ goog.require('ng.material.core');
     }
 
     function configureWatchers () {
-      $scope.$watch('searchText', function (searchText, previousSearchText) {
+      var wait = parseInt($scope.delay, 10) || 0;
+      $scope.$watch('searchText', $mdUtil.debounce(function (searchText, previousSearchText) {
         self.index = -1;
         if (!searchText || searchText.length < Math.max(parseInt($scope.minLength, 10), 1)) {
           self.loading = false;
@@ -101,7 +102,7 @@ goog.require('ng.material.core');
         }
         self.hidden = shouldHide();
         if ($scope.textChange && searchText !== previousSearchText) $scope.textChange(getItemScope($scope.selectedItem));
-      });
+      }, wait));
       $scope.$watch('selectedItem', function (selectedItem, previousSelectedItem) {
         if ($scope.itemChange && selectedItem !== previousSelectedItem) $scope.itemChange(getItemScope(selectedItem));
       });
@@ -226,6 +227,7 @@ goog.require('ng.material.core');
    * @param {expression} md-search-text-change An expression to be run each time the search text updates
    * @param {boolean=} ng-disabled Determines whether or not to disable the input field
    * @param {number=} md-min-length Specifies the minimum length of text before autocomplete will make suggestions
+   * @param {number=} md-delay Specifies the amount of time (in milliseconds) to wait before looking for results
    *
    * @usage
    * <hljs lang="html">
@@ -293,7 +295,8 @@ goog.require('ng.material.core');
         itemChange:   '&mdSelectedItemChange',
         textChange:   '&mdSearchTextChange',
         isDisabled:   '=ngDisabled',
-        minLength:    '=mdMinLength'
+        minLength:    '=mdMinLength',
+        delay:        '=mdDelay'
       }
     };
   }
