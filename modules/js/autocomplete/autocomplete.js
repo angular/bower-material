@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-70a884a
+ * v0.8.1-master-8488d36
  */
 (function () {
   'use strict';
@@ -79,30 +79,31 @@
 
     function configureWatchers () {
       var wait = parseInt($scope.delay, 10) || 0;
-      $scope.$watch('searchText', $mdUtil.debounce(function (searchText, previousSearchText) {
-        self.index = -1;
-        if (!searchText || searchText.length < Math.max(parseInt($scope.minLength, 10), 1)) {
-          self.loading = false;
-          self.matches = [];
-          self.hidden = shouldHide();
-          return;
-        }
-        var term = searchText.toLowerCase();
-        if (promise && promise.cancel) {
-          promise.cancel();
-          promise = null;
-        }
-        if (!$scope.noCache && cache[term]) {
-          self.matches = cache[term];
-        } else {
-          self.fetch(searchText);
-        }
-        self.hidden = shouldHide();
-        if ($scope.textChange && searchText !== previousSearchText) $scope.textChange(getItemScope($scope.selectedItem));
-      }, wait));
+      $scope.$watch('searchText', wait ? $mdUtil.debounce(handleSearchText, wait) : handleSearchText);
       $scope.$watch('selectedItem', function (selectedItem, previousSelectedItem) {
         if ($scope.itemChange && selectedItem !== previousSelectedItem) $scope.itemChange(getItemScope(selectedItem));
       });
+    }
+    function handleSearchText (searchText, previousSearchText) {
+      self.index = -1;
+      if (!searchText || searchText.length < Math.max(parseInt($scope.minLength, 10), 1)) {
+        self.loading = false;
+        self.matches = [];
+        self.hidden = shouldHide();
+        return;
+      }
+      var term = searchText.toLowerCase();
+      if (promise && promise.cancel) {
+        promise.cancel();
+        promise = null;
+      }
+      if (!$scope.noCache && cache[term]) {
+        self.matches = cache[term];
+      } else {
+        self.fetch(searchText);
+      }
+      self.hidden = shouldHide();
+      if ($scope.textChange && searchText !== previousSearchText) $scope.textChange(getItemScope($scope.selectedItem));
     }
 
     function fetchResults (searchText) {
