@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-fc223b0
+ * v0.8.1-master-0bd7afb
  */
 (function () {
   'use strict';
@@ -25,7 +25,7 @@
       .module('material.components.autocomplete')
       .controller('MdAutocompleteCtrl', MdAutocompleteCtrl);
 
-  function MdAutocompleteCtrl ($scope, $element, $timeout, $q, $mdUtil, $mdConstant) {
+  function MdAutocompleteCtrl ($scope, $element, $q, $mdUtil, $mdConstant) {
 
     //-- private variables
     var self = this,
@@ -53,6 +53,7 @@
     self.select = select;
     self.getCurrentDisplayValue = getCurrentDisplayValue;
     self.fetch = $mdUtil.debounce(fetchResults);
+    self.messages = [];
 
     return init();
 
@@ -73,7 +74,7 @@
     function getItemScope (item) {
       if (!item) return;
       var locals = {};
-      if (self.itemName) locals[self.itemName] = $scope.selectedItem;
+      if (self.itemName) locals[self.itemName] = item;
       return locals;
     }
 
@@ -84,12 +85,14 @@
         if ($scope.itemChange && selectedItem !== previousSelectedItem) $scope.itemChange(getItemScope(selectedItem));
       });
     }
+
     function handleSearchText (searchText, previousSearchText) {
       self.index = -1;
       if (!searchText || searchText.length < Math.max(parseInt($scope.minLength, 10), 1)) {
         self.loading = false;
         self.matches = [];
         self.hidden = shouldHide();
+        updateMessages();
         return;
       }
       var term = searchText.toLowerCase();
@@ -99,6 +102,7 @@
       }
       if (!$scope.noCache && cache[term]) {
         self.matches = cache[term];
+        updateMessages();
       } else {
         self.fetch(searchText);
       }
@@ -122,7 +126,20 @@
         self.loading = false;
         self.matches = matches;
         self.hidden = shouldHide();
+        updateMessages();
       }
+    }
+
+    function updateMessages () {
+      switch (self.matches.length) {
+        case 0:  return self.messages.splice(0);
+        case 1:  return self.messages.push({ display: 'There is 1 match available.' });
+        default: return self.messages.push({ display: 'There are ' + self.matches.length + ' matches available.' });
+      }
+    }
+
+    function updateSelectionMessage () {
+      self.messages.push({ display: getCurrentDisplayValue() });
     }
 
     function blur () {
@@ -136,12 +153,14 @@
             event.preventDefault();
             self.index = Math.min(self.index + 1, self.matches.length - 1);
             updateScroll();
+            updateSelectionMessage();
             break;
         case $mdConstant.KEY_CODE.UP_ARROW:
             if (self.loading) return;
             event.preventDefault();
             self.index = Math.max(0, self.index - 1);
             updateScroll();
+            updateSelectionMessage();
             break;
         case $mdConstant.KEY_CODE.ENTER:
             if (self.loading || self.index < 0) return;
@@ -197,7 +216,7 @@
     }
 
   }
-  MdAutocompleteCtrl.$inject = ["$scope", "$element", "$timeout", "$q", "$mdUtil", "$mdConstant"];
+  MdAutocompleteCtrl.$inject = ["$scope", "$element", "$q", "$mdUtil", "$mdConstant"];
 })();
 
 (function () {
@@ -258,10 +277,12 @@
               type="button"\
               ng-if="searchText"\
               ng-click="$mdAutocompleteCtrl.clear()">\
-              <md-icon md-svg-icon="cancel"></md-icon>\
-              <span class="visually-hidden">Clear</span>\
-              </button>\
-          <md-progress-linear ng-if="$mdAutocompleteCtrl.loading" md-mode="indeterminate"></md-progress-linear>\
+            <md-icon md-svg-icon="cancel"></md-icon>\
+            <span class="visually-hidden">Clear</span>\
+          </button>\
+          <md-progress-linear\
+              ng-if="$mdAutocompleteCtrl.loading"\
+              md-mode="indeterminate"></md-progress-linear>\
         </md-autocomplete-wrap>\
         <ul role="presentation">\
           <li ng-repeat="(index, item) in $mdAutocompleteCtrl.matches"\
@@ -276,9 +297,7 @@
             class="visually-hidden"\
             role="status"\
             aria-live="assertive">\
-          <p ng-if="$mdAutocompleteCtrl.index === -1 && $mdAutocompleteCtrl.matches.length === 1">There is 1 match available.</p>\
-          <p ng-if="$mdAutocompleteCtrl.index === -1 && $mdAutocompleteCtrl.matches.length > 1">There are {{$mdAutocompleteCtrl.matches.length}} matches available.</p>\
-          <p ng-if="$mdAutocompleteCtrl.index >= 0">{{ $mdAutocompleteCtrl.getCurrentDisplayValue() }}</p>\
+          <p ng-repeat="message in $mdAutocompleteCtrl.messages">{{message.display}}</p>\
         </aria-status>',
       transclude:   true,
       controller:   'MdAutocompleteCtrl',
