@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-4d722ec
+ * v0.8.1-master-9e0ca44
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -167,7 +167,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
       // Create a fake select to find out the label value
       function setInitialLabelValue() {
         if ($parse(attr.ngModel)(scope)) {
-          var fakeSelectEl = angular.element(selectTemplate).find('md-select-menu');
+          var fakeSelectEl = angular.element(selectTemplate.clone()).find('md-select-menu');
           fakeSelectEl.data('$ngModelController', ngModel);
           var fakeSelectScope = scope.$new();
           fakeSelectEl = $compile(fakeSelectEl)(fakeSelectScope);
