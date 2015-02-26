@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-50b5d92
+ * v0.8.1-master-747eb9c
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -196,8 +196,9 @@ function inputTextareaDirective($mdUtil, $window) {
 
           // Error text should not appear before user interaction with the field.
           // So we need to check on focus also
-          ngModelCtrl.$setTouched();
-          if ( isErrorGetter() ) containerCtrl.setInvalid(true);
+          //ngModelCtrl.$setTouched();
+          //if ( isErrorGetter() ) containerCtrl.setInvalid(true);
+          scope.$digest();
 
         })
         .on('blur', function(ev) {
