@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-7fc0d02
+ * v0.8.1-master-3454db3
  */
 goog.provide('ng.material.core');
 
@@ -441,7 +441,7 @@ function mdMediaFactory($mdConstant, $rootScope, $window) {
       }
 
       for (var mediaName in $mdConstant.MEDIA) {
-        var normalizedName = getNormalizedName(attrs, attrName + '-' + mediaName);
+        normalizedName = getNormalizedName(attrs, attrName + '-' + mediaName);
         if (!attrs[normalizedName]) {
           return;
         }
