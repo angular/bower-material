@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2b7358
+ * v0.8.1-master-50b5d92
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -561,9 +561,8 @@ function SelectProvider($$interimElementProvider) {
       configureAria();
 
       element.removeClass('md-leave');
-    
-      var optionNodes = [];
 
+      var optionNodes = opts.selectEl[0].getElementsByTagName('md-option');
 
       if (opts.loadingAsync && opts.loadingAsync.then) {
         opts.loadingAsync.then(function() {
@@ -574,7 +573,6 @@ function SelectProvider($$interimElementProvider) {
               // Don't go forward if the select has been removed in this time...
               if (opts.isRemoved) return;
               animateSelect(scope, element, opts);
-              optionNodes = nodesToArray(opts.selectEl[0].getElementsByTagName('md-option'));
             });
           });
         });
@@ -602,7 +600,6 @@ function SelectProvider($$interimElementProvider) {
         $$rAF(function() {
           if (opts.isRemoved) return;
           animateSelect(scope, element, opts);
-          optionNodes = nodesToArray(element[0].querySelectorAll('md-option'));
         });
       });
 
@@ -627,45 +624,54 @@ function SelectProvider($$interimElementProvider) {
         });
 
         // Escape to close
-        opts.selectEl.on('keydown', function(e) {
-          switch (e.keyCode) {
+        opts.selectEl.on('keydown', function(ev) {
+          switch (ev.keyCode) {
+            case $mdConstant.KEY_CODE.SPACE:
+            case $mdConstant.KEY_CODE.ENTER:
+              var option = $mdUtil.getClosest(ev.target, 'md-option');
+              if (option) {
+                opts.selectEl.triggerHandler({
+                  type: 'click',
+                  target: option
+                });
+                ev.preventDefault();
+              }
+              break;
             case $mdConstant.KEY_CODE.TAB:
             case $mdConstant.KEY_CODE.ESCAPE:
-              e.preventDefault();
+              ev.preventDefault();
               opts.restoreFocus = true;
               scope.$apply($mdSelect.cancel);
           }
         });
 
         // Cycling of options, and closing on enter
-        opts.selectEl.on('keydown', function(e) {
-          switch (e.keyCode) {
+        opts.selectEl.on('keydown', function(ev) {
+          switch (ev.keyCode) {
             case $mdConstant.KEY_CODE.UP_ARROW: return focusPrevOption();
             case $mdConstant.KEY_CODE.DOWN_ARROW: return focusNextOption();
           }
         });
 
-        function focusNextOption() {
-          var index;
-          if ((index = optionNodes.indexOf(opts.focusedNode)) == -1) {
-            // We lost the previously focused element, reset to middle
-            index = Math.floor( (optionNodes.length - 1) / 2 );
-          } else {
-            if (index < optionNodes.length - 1) ++index;
+        function focusOption(direction) {
+          var optionsArray = nodesToArray(optionNodes);
+          var index = optionsArray.indexOf(opts.focusedNode);
+          if (index === -1) {
+            // We lost the previously focused element, reset to first option
+            index = 0;
+          } else if (direction === 'next' && index < optionsArray.length - 1) {
+            index++;
+          } else if (direction === 'prev' && index > 0) {
+            index--;
           }
-          opts.focusedNode = optionNodes[index];
-          optionNodes[index].focus();
+          var newOption = opts.focusedNode = optionsArray[index];
+          newOption && newOption.focus();
+        }
+        function focusNextOption() {
+          focusOption('next');
         }
         function focusPrevOption() {
-          var index;
-          if ((index = optionNodes.indexOf(opts.focusedNode)) == -1) {
-            // We lost the previously focused element, reset to middle
-            index = Math.floor( (optionNodes.length - 1) / 2 );
-          } else {
-            if (index > 0) --index;
-          }
-          opts.focusedNode = optionNodes[index];
-          optionNodes[index].focus();
+          focusOption('prev');
         }
 
         if (!selectCtrl.isMultiple) {
@@ -735,20 +741,20 @@ function SelectProvider($$interimElementProvider) {
           maxWidth = parentRect.width - SELECT_EDGE_MARGIN * 2,
           isScrollable = contentNode.scrollHeight > contentNode.offsetHeight,
           selectedNode = selectNode.querySelector('md-option[selected]'),
-          optionNodes = nodesToArray(selectNode.getElementsByTagName('md-option')),
+          optionNodes = selectNode.getElementsByTagName('md-option'),
           optgroupNodes = selectNode.getElementsByTagName('md-optgroup');
 
       var centeredNode;
       // If a selected node, center around that
       if (selectedNode) {
         centeredNode = selectedNode;
-      // If there are option groups, center around the first option
+      // If there are option groups, center around the first option group
       } else if (optgroupNodes.length) {
-        centeredNode = optionNodes[0];
-      // Otherwise, lets center on the middle optionNode
+        centeredNode = optgroupNodes[0];
+      // Otherwise, center around the first optionNode
       } else if (optionNodes.length){
-        centeredNode = optionNodes[Math.floor(optionNodes.length / 2 )];
-      // In case there are no options, center on whatevers in there... (such as a progress indicator)
+        centeredNode = optionNodes[0];
+      // In case there are no options, center on whatever's in there... (eg progress indicator)
       } else {
         centeredNode = contentNode.firstElementChild || contentNode;
       }
@@ -775,7 +781,10 @@ function SelectProvider($$interimElementProvider) {
         centeredRect.paddingRight = parseInt(centeredStyle['padding-right'], 10);
       }
 
-      var focusedNode = centeredNode || optionNodes[0];
+      var focusedNode = centeredNode;
+      if ((focusedNode.tagName || '').toUpperCase() === 'MD-OPTGROUP') {
+        focusedNode = optionNodes[0] || contentNode.firstElementChild || contentNode;
+      }
       if (focusedNode) {
         opts.focusedNode = focusedNode;
         focusedNode.focus();
@@ -811,9 +820,12 @@ function SelectProvider($$interimElementProvider) {
         left = targetRect.left + centeredRect.left - centeredRect.paddingLeft;
         top = targetRect.top + targetRect.height / 2 - centeredRect.height / 2 -
           centeredRect.top + contentNode.scrollTop;
+
         transformOrigin = (centeredRect.left + targetRect.width / 2) + 'px ' +
         (centeredRect.top + centeredRect.height / 2 - contentNode.scrollTop) + 'px 0px';
-        containerNode.style['min-width'] = targetRect.width + centeredRect.paddingLeft + centeredRect.paddingRight + 'px';
+
+        containerNode.style['min-width'] = targetRect.width + centeredRect.paddingLeft +
+          centeredRect.paddingRight + 'px';
       }
 
       // Keep left and top within the window
