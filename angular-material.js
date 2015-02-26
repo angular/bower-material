@@ -2,14 +2,14 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.theming.palette","material.core.theming","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 /*!
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -72,7 +72,7 @@ function rAFDecorator( $delegate ) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -139,7 +139,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function(){
 
@@ -376,7 +376,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 angular.module('material.core')
 .factory('$mdMedia', mdMediaFactory);
@@ -490,7 +490,7 @@ mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -769,7 +769,7 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -855,7 +855,7 @@ AriaService.$inject = ["$$rAF", "$log", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -1000,7 +1000,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -1421,7 +1421,7 @@ angular.module('material.core')
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -1844,7 +1844,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
   'use strict';
@@ -1977,7 +1977,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -2401,7 +2401,7 @@ function attrNoDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -2773,7 +2773,7 @@ angular.module('material.core.theming.palette', [])
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -3360,7 +3360,7 @@ function rgba(rgbArray, opacity) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function () {
   'use strict';
@@ -3381,7 +3381,7 @@ function rgba(rgbArray, opacity) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -3420,7 +3420,7 @@ BackdropDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -3684,7 +3684,7 @@ MdBottomSheetProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -3784,7 +3784,7 @@ MdButtonDirective.$inject = ["$mdInkRipple", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -3843,7 +3843,7 @@ mdCardDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -3984,7 +3984,7 @@ MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$md
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -4070,7 +4070,7 @@ function iosScrollFix(node) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -4647,7 +4647,7 @@ MdDialogProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -4696,7 +4696,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -5381,7 +5381,7 @@ function GridTileCaptionDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -5494,7 +5494,7 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
   'use strict';
@@ -5963,7 +5963,7 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 
@@ -6307,7 +6307,7 @@ function placeholderDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -6402,7 +6402,7 @@ function mdItemDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -6530,7 +6530,7 @@ MdProgressCircularDirective.$inject = ["$$rAF", "$mdConstant", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -6659,7 +6659,7 @@ var transforms = (function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -6957,7 +6957,7 @@ mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -7815,7 +7815,7 @@ function nodesToArray(nodes) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -8133,7 +8133,7 @@ SidenavController.$inject = ["$scope", "$element", "$attrs", "$mdComponentRegist
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
   'use strict';
@@ -8536,7 +8536,7 @@ SliderDirective.$inject = ["$$rAF", "$window", "$mdAria", "$mdUtil", "$mdConstan
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -8848,7 +8848,7 @@ MdSticky.$inject = ["$document", "$mdConstant", "$compile", "$$rAF", "$mdUtil"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -8935,7 +8935,7 @@ MdSubheaderDirective.$inject = ["$mdSticky", "$compile", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -9013,7 +9013,7 @@ var module = angular.module('material.components.swipe',[]);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -9182,7 +9182,7 @@ MdSwitch.$inject = ["mdCheckboxDirective", "$mdTheming", "$mdUtil", "$document",
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -9221,7 +9221,7 @@ angular.module('material.components.tabs', [
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -9365,7 +9365,7 @@ mdInputDirective.$inject = ["$mdUtil", "$log"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -9629,7 +9629,7 @@ MdToastProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -9788,7 +9788,7 @@ mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -9941,25 +9941,14 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     function positionTooltip() {
       var tipRect = $mdUtil.offsetRect(element, tooltipParent);
       var parentRect = $mdUtil.offsetRect(parent, tooltipParent);
+      var newPosition = getPosition(direction);
 
-      // Default to bottom position if possible
-      var tipDirection = 'bottom';
-      var newPosition = {
-        left: parentRect.left + parentRect.width / 2 - tipRect.width / 2,
-        top: parentRect.top + parentRect.height
-      };
-
-      // If element bleeds over left/right of the window, place it on the edge of the window.
-      newPosition.left = Math.min(
-        newPosition.left,
-        tooltipParent.prop('scrollWidth') - tipRect.width - TOOLTIP_WINDOW_EDGE_SPACE
-      );
-      newPosition.left = Math.max(newPosition.left, TOOLTIP_WINDOW_EDGE_SPACE);
-
-      // If element bleeds over the bottom of the window, place it above the parent.
-      if (newPosition.top + tipRect.height > tooltipParent.prop('scrollHeight')) {
-        newPosition.top = parentRect.top - tipRect.height;
-        tipDirection = 'top';
+      // If the user provided a direction, just nudge the tooltip onto the screen
+      // Otherwise, recalculate based on 'top' since default is 'bottom'
+      if (direction) {
+        newPosition = fitInParent(newPosition);
+      } else if (newPosition.top > tooltipParent.prop('scrollHeight') - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE) {
+        newPosition = fitInParent(getPosition('top'));
       }
 
       element.css({top: newPosition.top + 'px', left: newPosition.left + 'px'});
@@ -9982,12 +9971,12 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
         });
       }
 
-      function fitOnScreen (pos) {
-        var newPosition = {};
-        newPosition.left = Math.min( pos.left, tooltipParent.prop('scrollWidth') - tipRect.width - TOOLTIP_WINDOW_EDGE_SPACE );
-        newPosition.left = Math.max( pos.left, TOOLTIP_WINDOW_EDGE_SPACE );
-        newPosition.top  = Math.min( pos.top,  tooltipParent.prop('scrollHeight') - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE );
-        newPosition.top  = Math.max( pos.top,  TOOLTIP_WINDOW_EDGE_SPACE );
+      function fitInParent (pos) {
+        var newPosition = { left: pos.left, top: pos.top };
+        newPosition.left = Math.min( newPosition.left, tooltipParent.prop('scrollWidth') - tipRect.width - TOOLTIP_WINDOW_EDGE_SPACE );
+        newPosition.left = Math.max( newPosition.left, TOOLTIP_WINDOW_EDGE_SPACE );
+        newPosition.top  = Math.min( newPosition.top,  tooltipParent.prop('scrollHeight') - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE );
+        newPosition.top  = Math.max( newPosition.top,  TOOLTIP_WINDOW_EDGE_SPACE );
         return newPosition;
       }
 
@@ -10016,7 +10005,7 @@ MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdU
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -10032,7 +10021,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function () {
   'use strict';
@@ -10239,7 +10228,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function () {
   'use strict';
@@ -10345,7 +10334,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function () {
   'use strict';
@@ -10375,7 +10364,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function () {
   'use strict';
@@ -10419,7 +10408,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function () {
   'use strict';
@@ -10449,7 +10438,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -10514,7 +10503,7 @@ MdTabInkDirective.$inject = ["$$rAF"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -10773,7 +10762,7 @@ TabPaginationDirective.$inject = ["$mdConstant", "$window", "$$rAF", "$$q", "$ti
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -10890,7 +10879,7 @@ TabItemController.$inject = ["$scope", "$element", "$attrs", "$compile", "$anima
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -11132,7 +11121,7 @@ MdTabDirective.$inject = ["$mdInkRipple", "$compile", "$mdUtil", "$mdConstant", 
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
@@ -11278,7 +11267,7 @@ MdTabsController.$inject = ["$scope", "$element", "$mdUtil", "$timeout"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e2148f1
+ * v0.8.1-master-93080ca
  */
 (function() {
 'use strict';
