@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-93080ca
+ * v0.8.1-master-6baed64
  */
 goog.provide('ng.material.core');
 
@@ -1714,7 +1714,19 @@ function InterimElementProvider() {
           options: options,
           deferred: $q.defer(),
           show: function() {
-            return showDone = $mdCompiler.compile(options).then(function(compileData) {
+            var compilePromise;
+            if (options.skipCompile) {
+              compilePromise = $q(function(resolve) { 
+                resolve({
+                  locals: {},
+                  link: function() { return options.element; }
+                });
+              });
+            } else {
+              compilePromise = $mdCompiler.compile(options);
+            }
+
+            return showDone = compilePromise.then(function(compileData) {
               angular.extend(compileData.locals, self.options);
 
               element = compileData.link(options.scope);
