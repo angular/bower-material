@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-4bdf2e9
+ * v0.8.1-master-e2b7358
  */
 goog.provide('ng.material.components.radioButton');
 goog.require('ng.material.core');
@@ -199,7 +199,7 @@ mdRadioGroupDirective.$inject = ["$mdUtil", "$mdConstant", "$mdTheming"];
  *    be set when selected.*
  * @param {string} value The value to which the expression should be set when selected.
  * @param {string=} name Property name of the form under which the control is published.
- * @param {string=} ariaLabel Adds label to radio button for accessibility.
+ * @param {string=} aria-label Adds label to radio button for accessibility.
  * Defaults to radio button's text. If no text content is available, a warning will be logged.
  *
  * @usage
