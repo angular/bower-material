@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-cecba61
+ * v0.8.1-master-7fc0d02
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -82,10 +82,18 @@ goog.require('ng.material.core');
     }
 
     function configureWatchers () {
-      var wait = parseInt($scope.delay, 10) || 0;
-      $scope.$watch('searchText', wait ? $mdUtil.debounce(handleSearchText, wait) : handleSearchText);
-      $scope.$watch('selectedItem', function (selectedItem, previousSelectedItem) {
-        if ($scope.itemChange && selectedItem !== previousSelectedItem) $scope.itemChange(getItemScope(selectedItem));
+      var watchers = [],
+          wait = parseInt($scope.delay, 10) || 0;
+      watchers.push($scope.$watch('searchText', wait
+          ? $mdUtil.debounce(handleSearchText, wait)
+          : handleSearchText));
+      watchers.push($scope.$watch('selectedItem', function (selectedItem, previousSelectedItem) {
+        if ($scope.itemChange && selectedItem !== previousSelectedItem)
+          $scope.itemChange(getItemScope(selectedItem));
+      }));
+      //-- remove watchers when element is destroyed
+      $element.on('$destroy', function () {
+        watchers.forEach(function (watcher) { watcher(); });
       });
     }
 
@@ -110,7 +118,8 @@ goog.require('ng.material.core');
         self.fetch(searchText);
       }
       self.hidden = shouldHide();
-      if ($scope.textChange && searchText !== previousSearchText) $scope.textChange(getItemScope($scope.selectedItem));
+      if ($scope.textChange && searchText !== previousSearchText)
+        $scope.textChange(getItemScope($scope.selectedItem));
     }
 
     function fetchResults (searchText) {
@@ -138,7 +147,9 @@ goog.require('ng.material.core');
       switch (self.matches.length) {
         case 0:  return self.messages.splice(0);
         case 1:  return self.messages.push({ display: 'There is 1 match available.' });
-        default: return self.messages.push({ display: 'There are ' + self.matches.length + ' matches available.' });
+        default: return self.messages.push({ display: 'There are '
+            + self.matches.length
+            + ' matches available.' });
       }
     }
 
@@ -331,12 +342,13 @@ goog.require('ng.material.core');
 
   function MdHighlightCtrl ($scope, $element, $interpolate) {
     var term = $element.attr('md-highlight-text'),
-        text = $interpolate($element.text())($scope);
-    $scope.$watch(term, function (term) {
-      var regex = new RegExp('^' + sanitize(term), 'i'),
-          html = text.replace(regex, '<span class="highlight">$&</span>');
-      $element.html(html);
-    });
+        text = $interpolate($element.text())($scope),
+        watcher = $scope.$watch(term, function (term) {
+          var regex = new RegExp('^' + sanitize(term), 'i'),
+              html = text.replace(regex, '<span class="highlight">$&</span>');
+          $element.html(html);
+        });
+    $element.on('$destroy', function () { watcher(); });
 
     function sanitize (term) {
       if (!term) return term;
