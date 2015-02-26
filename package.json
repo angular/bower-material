@@ -1,7 +1,8 @@
 {
   "name": "angular-material",
+  "homepage": "https://material.angularjs.org",
   "version": "0.8.1",
-  "main":"",
+  "main": "angular-material.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/angular/material.git"
@@ -25,7 +26,5 @@
   },
   "bugs": {
     "url": "https://github.com/angular/material/issues"
-  },
-  "homepage": "https://material.angularjs.org",
-  "main": "angular-material.js"
+  }
 }

@@ -4,7 +4,7 @@ Please file issues and pull requests against that repo.
 
 ## Installing Angular Material
 
-You can install this package locally either with `npm` or with `bower`.
+You can install this package locally either with `npm`, `bower`, or `jspm`.
 
 ### npm
 
