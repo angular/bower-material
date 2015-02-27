@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.2-master-0523f83
+ * v0.8.2-master-7950588
  */
 goog.provide('ng.material.core');
 
@@ -981,7 +981,7 @@ if (shouldHijackClicks) {
   document.addEventListener('click', function(ev) {
     // Space/enter on a button, and submit events, can send clicks
     var isKeyClick = ev.clientX === 0 && ev.clientY === 0;
-    if (isKeyClick || ev.$material) return;
+    if (window.jQuery || isKeyClick || ev.$material) return;
 
     // Prevent clicks unless they're sent by material
     ev.preventDefault();
@@ -1127,7 +1127,7 @@ angular.module('material.core')
       // If the user keeps his finger within the same <maxDistance> area for
       // <delay> ms, dispatch a hold event.
       maxDistance: 6,
-      delay: 500,
+      delay: 500
     },
     onCancel: function() {
       $timeout.cancel(this.state.timeout);
@@ -1152,15 +1152,13 @@ angular.module('material.core')
         this.cancel();
       }
     },
-    onEnd: function(ev, pointer) {
-      this.onCancel();
-    },
+    onEnd: function() { this.onCancel(); }
   });
 
   addHandler('drag', {
     options: {
       minDistance: 6,
-      horizontal: true,
+      horizontal: true
     },
     onStart: function(ev) {
       // For drag, require a parent to be registered with $mdGesture.register()
@@ -1213,7 +1211,7 @@ angular.module('material.core')
   addHandler('swipe', {
     options: {
       minVelocity: 0.65,
-      minDistance: 10,
+      minDistance: 10
     },
     onEnd: function(ev, pointer) {
       if (Math.abs(pointer.velocityX) > this.state.options.minVelocity &&
@@ -1313,12 +1311,12 @@ angular.module('material.core')
         delete element[0].$mdGesture[self.name];
         element.off('$destroy', onDestroy);
       }
-    },
+    }
   };
 
   function jQueryDispatchEvent(srcEvent, eventType, eventPointer) {
     eventPointer = eventPointer || pointer;
-    var eventObj = new angular.element.Event(eventType)
+    var eventObj = new angular.element.Event(eventType);
 
     eventObj.$material = true;
     eventObj.pointer = eventPointer;
