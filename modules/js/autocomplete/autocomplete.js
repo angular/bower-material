@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.1-master-e090d97
+ * v0.8.1-master-2f17c8f
  */
 (function () {
   'use strict';
@@ -79,18 +79,13 @@
     }
 
     function configureWatchers () {
-      var watchers = [],
-          wait = parseInt($scope.delay, 10) || 0;
-      watchers.push($scope.$watch('searchText', wait
+      var wait = parseInt($scope.delay, 10) || 0;
+      $scope.$watch('searchText', wait
           ? $mdUtil.debounce(handleSearchText, wait)
-          : handleSearchText));
-      watchers.push($scope.$watch('selectedItem', function (selectedItem, previousSelectedItem) {
+          : handleSearchText);
+      $scope.$watch('selectedItem', function (selectedItem, previousSelectedItem) {
         if ($scope.itemChange && selectedItem !== previousSelectedItem)
           $scope.itemChange(getItemScope(selectedItem));
-      }));
-      //-- remove watchers when element is destroyed
-      $element.on('$destroy', function () {
-        watchers.forEach(function (watcher) { watcher(); });
       });
     }
 
