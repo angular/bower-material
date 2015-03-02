@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.2-master-31c8992
+ * v0.8.2-master-2a0ea16
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -147,7 +147,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
       mdSelectCtrl.setLabelText = function(text) {
         if (customLabel) return; // Assume that user is handling it on their own
         mdSelectCtrl.setIsPlaceholder(!text);
-        var newText = text || attr.placeholder;
+        var newText = text || attr.placeholder || '';
         var target = customLabel ? labelEl : labelEl.children().eq(0);
         target.text(newText);
       };
