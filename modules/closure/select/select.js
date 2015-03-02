@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.2-master-8afc08d
+ * v0.8.2-master-cf78ba9
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -730,7 +730,7 @@ function SelectProvider($$interimElementProvider) {
             left: parentNode.scrollLeft + SELECT_EDGE_MARGIN,
             top: parentNode.scrollTop + SELECT_EDGE_MARGIN,
             bottom: parentRect.height + parentNode.scrollTop - SELECT_EDGE_MARGIN,
-            right: parentRect.width - parentNode.scrollLeft - SELECT_EDGE_MARGIN
+            right: parentRect.width - SELECT_EDGE_MARGIN
           },
           spaceAvailable = {
             top: targetRect.top - bounds.top,
@@ -743,6 +743,7 @@ function SelectProvider($$interimElementProvider) {
           selectedNode = selectNode.querySelector('md-option[selected]'),
           optionNodes = selectNode.getElementsByTagName('md-option'),
           optgroupNodes = selectNode.getElementsByTagName('md-optgroup');
+
 
       var centeredNode;
       // If a selected node, center around that
@@ -829,8 +830,9 @@ function SelectProvider($$interimElementProvider) {
       }
 
       // Keep left and top within the window
-      containerNode.style.left = clamp(bounds.left, left, bounds.right) + 'px';
-      containerNode.style.top = clamp(bounds.top, top, bounds.bottom) + 'px';
+      var containerRect = containerNode.getBoundingClientRect();
+      containerNode.style.left = clamp(bounds.left, left, bounds.right - containerRect.width) + 'px';
+      containerNode.style.top = clamp(bounds.top, top, bounds.bottom - containerRect.height) + 'px';
       selectNode.style[$mdConstant.CSS.TRANSFORM_ORIGIN] = transformOrigin;
 
       selectNode.style[$mdConstant.CSS.TRANSFORM] = 'scale(' +
