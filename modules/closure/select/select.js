@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.2-master-6e7b36c
+ * v0.8.2-master-31c8992
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -115,12 +115,11 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
     }
 
     // Use everything that's left inside element.contents() as the contents of the menu
-    var selectTemplate = angular.element(
-      '<div class="md-select-menu-container">' +
+    var selectTemplate = '<div class="md-select-menu-container">' +
         '<md-select-menu ' +
         (angular.isDefined(attr.multiple) ? 'multiple' : '') + '>' +
           element.html() +
-        '</md-select-menu></div>');
+        '</md-select-menu></div>';
 
     element.empty().append(labelEl);
 
@@ -195,7 +194,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
 
       // Create a fake select to find out the label value
       function createSelect() {
-        selectContainer = angular.element(selectTemplate.clone());
+        selectContainer = angular.element(selectTemplate);
         var selectEl = selectContainer.find('md-select-menu');
         selectEl.data('$ngModelController', ngModel);
         selectEl.data('$mdSelectController', mdSelectCtrl);
