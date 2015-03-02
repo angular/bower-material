@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.2-master-2a0ea16
+ * v0.8.2-master-67618dc
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -777,8 +777,8 @@ function SelectProvider($$interimElementProvider) {
 
       if (centeredNode) {
         var centeredStyle = window.getComputedStyle(centeredNode);
-        centeredRect.paddingLeft = parseInt(centeredStyle['padding-left'], 10);
-        centeredRect.paddingRight = parseInt(centeredStyle['padding-right'], 10);
+        centeredRect.paddingLeft = parseInt(centeredStyle.paddingLeft, 10) || 0;
+        centeredRect.paddingRight = parseInt(centeredStyle.paddingRight, 10) || 0;
       }
 
       var focusedNode = centeredNode;
@@ -824,7 +824,7 @@ function SelectProvider($$interimElementProvider) {
         transformOrigin = (centeredRect.left + targetRect.width / 2) + 'px ' +
         (centeredRect.top + centeredRect.height / 2 - contentNode.scrollTop) + 'px 0px';
 
-        containerNode.style['min-width'] = targetRect.width + centeredRect.paddingLeft +
+        containerNode.style.minWidth = targetRect.width + centeredRect.paddingLeft +
           centeredRect.paddingRight + 'px';
       }
 
