@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.2-master-6dc46d5
+ * v0.8.2-master-6051405
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -164,7 +164,10 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
       }
 
       attr.$observe('disabled', function(disabled) {
-        if (disabled !== undefined) {
+        if (typeof disabled == "string") {
+          disabled = true;
+        }
+        if (disabled) {
           element.attr('tabindex', -1);
           element.off('click', openSelect);
           element.off('keydown', openOnKeypress);
@@ -174,11 +177,6 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
           element.on('keydown', openOnKeypress);
         }
       });
-
-      if (attr.disabled === undefined) {
-        element.on('click', openSelect);
-        element.on('keydown', openOnKeypress);
-      }
 
       element.attr({
         'role': 'combobox',
