@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.2-master-425a76a
+ * v0.8.2-master-5c889b7
  */
 md-input-container {
   display: -webkit-flex;
@@ -18,6 +18,12 @@ md-input-container {
   /*
    * The .md-input class is added to the input/textarea
    */ }
+  md-input-container > md-icon {
+    position: absolute;
+    top: 5px;
+    left: 2px; }
+    md-input-container > md-icon + input {
+      margin-left: 56px; }
   md-input-container textarea, md-input-container input[type="text"], md-input-container input[type="password"], md-input-container input[type="datetime"], md-input-container input[type="datetime-local"], md-input-container input[type="date"], md-input-container input[type="month"], md-input-container input[type="time"], md-input-container input[type="week"], md-input-container input[type="number"], md-input-container input[type="email"], md-input-container input[type="url"], md-input-container input[type="search"], md-input-container input[type="tel"], md-input-container input[type="color"] {
     /* remove default appearance from all input/textarea */
     -moz-appearance: none;
