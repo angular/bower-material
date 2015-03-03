@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.2-master-e49a20e
+ * v0.8.2-master-a4ec890
  */
 (function () {
   'use strict';
@@ -60,6 +60,7 @@
     //-- This is to allow the user to scroll the list without causing it to hide
     self.listEnter = function () { noBlur = true; };
     self.listLeave = function () { noBlur = false; };
+    self.mouseUp   = function () { elements.input.focus(); };
 
     return init();
 
@@ -299,7 +300,8 @@
         </md-autocomplete-wrap>\
         <ul role="presentation"\
             ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
-            ng-mouseleave="$mdAutocompleteCtrl.listLeave()">\
+            ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
+            ng-mouseup="$mdAutocompleteCtrl.mouseUp()">\
           <li ng-repeat="(index, item) in $mdAutocompleteCtrl.matches"\
               ng-class="{ selected: index === $mdAutocompleteCtrl.index }"\
               ng-show="searchText && !$mdAutocompleteCtrl.hidden"\
