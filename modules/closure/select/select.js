@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.2-master-692de44
+ * v0.8.2-master-a5d2798
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -473,6 +473,7 @@ function OptionDirective($mdInkRipple, $mdUtil) {
     }
 
     attr.$observe('selected', function(selected) {
+      if (!angular.isDefined(selected)) return;
       if (selected) {
         if (!selectCtrl.isMultiple) {
           selectCtrl.deselect( Object.keys(selectCtrl.selected)[0] );
