@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.2-master-eb07876
+ * v0.8.2-master-425a76a
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -471,6 +471,19 @@ function OptionDirective($mdInkRipple, $mdUtil) {
     } else {
       throw new Error("Expected either ngValue or value attr");
     }
+
+    attr.$observe('selected', function(selected) {
+      if (selected) {
+        selectCtrl.select(optionCtrl.hashKey, optionCtrl.value);
+        if (!selectCtrl.isMultiple) {
+          selectCtrl.deselect( Object.keys(selectCtrl.selected)[0] );
+        }
+      } else {
+        selectCtrl.deselect(optionCtrl.hashKey);
+      }
+      selectCtrl.refreshViewValue();
+      selectCtrl.ngModel.$render();
+    });
 
     $mdInkRipple.attachButtonBehavior(scope, element);
     configureAria();
