@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.2-master-23cfecc
+ * v0.8.2-master-ac47ca6
  */
 /* Sizes:
   0    <= size < 600  Phone
@@ -2713,21 +2713,30 @@ input[type="search"] {
   opacity: 0;
   border-radius: 50%; }
   .md-ripple.md-ripple-placed {
-    transition: left 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), margin 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), border 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition: left 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), margin 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), border 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    transition: left 1.8s cubic-bezier(0.25, 0.8, 0.25, 1), top 1.8s cubic-bezier(0.25, 0.8, 0.25, 1), margin 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), border 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), width 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), height 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 1.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: left 1.8s cubic-bezier(0.25, 0.8, 0.25, 1), top 1.8s cubic-bezier(0.25, 0.8, 0.25, 1), margin 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), border 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), width 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), height 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), transform 1.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
   .md-ripple.md-ripple-scaled {
     -webkit-transform: scale(1);
             transform: scale(1); }
   .md-ripple.md-ripple-active, .md-ripple.md-ripple-full, .md-ripple.md-ripple-visible {
     opacity: 0.2; }
 
-md-tab > .md-ripple-container .md-ripple {
-  box-sizing: content-box;
-  background-color: transparent !important;
-  border-width: 0;
-  border-style: solid;
-  opacity: 0.2;
-  -webkit-transform: none !important;
-          transform: none !important; }
-  md-tab > .md-ripple-container .md-ripple.md-ripple-active, md-tab > .md-ripple-container .md-ripple.md-ripple-full, md-tab > .md-ripple-container .md-ripple.md-ripple-visible {
-    opacity: 0.2; }
+/*
+md-tab {
+  > .md-ripple-container {
+    .md-ripple {
+      box-sizing: content-box;
+      background-color: transparent !important;
+      border-width: 0;
+      border-style: solid;
+      opacity: 0.20;
+      transform: none !important;
+      &.md-ripple-placed {}
+      &.md-ripple-scaled {}
+      &.md-ripple-active, &.md-ripple-full, &.md-ripple-visible {
+        opacity: 0.20;
+      }
+    }
+  }
+}
+*/
