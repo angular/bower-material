@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-c9aae9b
+ * v0.8.3-master-c313451
  */
 goog.provide('ng.material.components.bottomSheet');
 goog.require('ng.material.components.backdrop');
@@ -129,7 +129,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
   var CLOSING_VELOCITY = 0.5;
   var PADDING = 80; // same as css
 
-  bottomSheetDefaults.$inject = ["$animate", "$mdConstant", "$timeout", "$$rAF", "$compile", "$mdTheming", "$mdBottomSheet", "$rootElement", "$rootScope", "$mdGesture"];
+  bottomSheetDefaults.$inject = ["$animate", "$mdConstant", "$mdUtil", "$timeout", "$compile", "$mdTheming", "$mdBottomSheet", "$rootElement", "$mdGesture"];
   return $$interimElementProvider('$mdBottomSheet')
     .setDefaults({
       methods: ['disableParentScroll', 'escapeToClose', 'targetEvent'],
@@ -137,7 +137,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
     });
 
   /* @ngInject */
-  function bottomSheetDefaults($animate, $mdConstant, $timeout, $$rAF, $compile, $mdTheming, $mdBottomSheet, $rootElement, $rootScope, $mdGesture) {
+  function bottomSheetDefaults($animate, $mdConstant, $mdUtil, $timeout, $compile, $mdTheming, $mdBottomSheet, $rootElement, $mdGesture) {
     var backdrop;
 
     return {
@@ -149,13 +149,16 @@ function MdBottomSheetProvider($$interimElementProvider) {
       disableParentScroll: true
     };
 
+
     function onShow(scope, element, options) {
+
+      element = $mdUtil.extractElementByName(element, 'md-bottom-sheet');
+
       // Add a backdrop that will close on click
       backdrop = $compile('<md-backdrop class="md-opaque md-bottom-sheet-backdrop">')(scope);
       backdrop.on('click', function() {
         $timeout($mdBottomSheet.cancel);
       });
-
       $mdTheming.inherit(backdrop, options.parent);
 
       $animate.enter(backdrop, options.parent, null);
@@ -194,8 +197,8 @@ function MdBottomSheetProvider($$interimElementProvider) {
     }
 
     function onRemove(scope, element, options) {
-      var bottomSheet = options.bottomSheet;
 
+      var bottomSheet = options.bottomSheet;
 
       $animate.leave(backdrop);
       return $animate.leave(bottomSheet.element).then(function() {

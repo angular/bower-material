@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-c9aae9b
+ * v0.8.3-master-c313451
  */
 goog.provide('ng.material.components.toast');
 goog.require('ng.material.components.button');
@@ -218,11 +218,11 @@ function MdToastProvider($$interimElementProvider) {
       activeToastContent = newContent;
     });
 
-  toastDefaultOptions.$inject = ["$timeout", "$animate", "$mdToast"];
+  toastDefaultOptions.$inject = ["$timeout", "$animate", "$mdToast", "$mdUtil"];
     return $mdToast;
 
   /* @ngInject */
-  function toastDefaultOptions($timeout, $animate, $mdToast) {
+  function toastDefaultOptions($timeout, $animate, $mdToast, $mdUtil) {
     return {
       onShow: onShow,
       onRemove: onRemove,
@@ -232,6 +232,8 @@ function MdToastProvider($$interimElementProvider) {
     };
 
     function onShow(scope, element, options) {
+      element = $mdUtil.extractElementByName(element, 'md-toast');
+
       // 'top left' -> 'md-top md-left'
       activeToastContent = options.content;
       element.addClass(options.position.split(' ').map(function(pos) {
