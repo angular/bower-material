@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-81bcf7f
+ * v0.8.3-master-c818da7
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -180,9 +180,8 @@ function inputTextareaDirective($mdUtil, $window) {
       setupTextarea();
     }
 
-    var touched = false;
     var isErrorGetter = containerCtrl.isErrorGetter || function() {
-      return ngModelCtrl.$invalid && (touched || ngModelCtrl.$touched);
+      return ngModelCtrl.$invalid && ngModelCtrl.$touched;
     };
     scope.$watch(isErrorGetter, containerCtrl.setInvalid);
 
@@ -194,9 +193,7 @@ function inputTextareaDirective($mdUtil, $window) {
     if (!isReadonly) {
       element
         .on('focus', function(ev) {
-          touched = true;
           containerCtrl.setFocused(true);
-          scope.$evalAsync();
         })
         .on('blur', function(ev) {
           containerCtrl.setFocused(false);
@@ -204,6 +201,9 @@ function inputTextareaDirective($mdUtil, $window) {
         });
 
     }
+
+    //ngModelCtrl.$setTouched();
+    //if( ngModelCtrl.$invalid ) containerCtrl.setInvalid();
 
     scope.$on('$destroy', function() {
       containerCtrl.setFocused(false);
