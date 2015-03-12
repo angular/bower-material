@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-c818da7
+ * v0.8.3-master-a693dab
  */
 md-input-container {
   display: -webkit-flex;
@@ -31,6 +31,9 @@ md-input-container {
   md-input-container textarea {
     resize: none;
     overflow: hidden; }
+  md-input-container textarea.md-input {
+    min-height: 56px;
+    -ms-flex-preferred-size: auto; }
   md-input-container label:not(.md-no-float), md-input-container .md-placeholder {
     -webkit-order: 1;
         -ms-flex-order: 1;
@@ -63,9 +66,9 @@ md-input-container {
   md-input-container:not(.md-input-has-value) input:not(:focus) {
     color: transparent; }
   md-input-container .md-input {
-    -webkit-flex: 1;
-        -ms-flex: 1;
-            flex: 1;
+    -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
     -webkit-order: 2;
         -ms-flex-order: 2;
             order: 2;
