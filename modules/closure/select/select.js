@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3fc26a1
+ * v0.8.3-master-a15347c
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -584,7 +584,7 @@ function SelectProvider($$interimElementProvider) {
         parent: angular.element(opts.parent),
         selectEl: element.find('md-select-menu'),
         contentEl: element.find('md-content'),
-        backdrop: opts.hasBackdrop && angular.element('<md-backdrop class="md-select-backdrop">')
+        backdrop: opts.hasBackdrop && angular.element('<md-backdrop class="md-select-backdrop md-click-catcher">')
       });
 
       configureAria();
@@ -753,12 +753,12 @@ function SelectProvider($$interimElementProvider) {
           selectNode = opts.selectEl[0],
           contentNode = opts.contentEl[0],
           parentRect = parentNode.getBoundingClientRect(),
-          targetRect = $mdUtil.clientRect(targetNode, parentNode),
+          targetRect = targetNode.getBoundingClientRect(),
           shouldOpenAroundTarget = false,
           bounds = {
-            left: parentNode.scrollLeft + SELECT_EDGE_MARGIN,
-            top: parentNode.scrollTop + SELECT_EDGE_MARGIN,
-            bottom: parentRect.height + parentNode.scrollTop - SELECT_EDGE_MARGIN,
+            left: parentRect.left + SELECT_EDGE_MARGIN,
+            top: SELECT_EDGE_MARGIN,
+            bottom: parentRect.height - SELECT_EDGE_MARGIN,
             right: parentRect.width - SELECT_EDGE_MARGIN
           },
           spaceAvailable = {
@@ -815,10 +815,6 @@ function SelectProvider($$interimElementProvider) {
       if ((focusedNode.tagName || '').toUpperCase() === 'MD-OPTGROUP') {
         focusedNode = optionNodes[0] || contentNode.firstElementChild || contentNode;
       }
-      if (focusedNode) {
-        opts.focusedNode = focusedNode;
-        focusedNode.focus();
-      }
 
       if (isScrollable) {
         var scrollBuffer = contentNode.offsetHeight / 2;
@@ -869,9 +865,14 @@ function SelectProvider($$interimElementProvider) {
         Math.min(targetRect.height / selectMenuRect.height, 1.0) +
       ')';
 
+
       $$rAF(function() {
         element.addClass('md-active');
         selectNode.style[$mdConstant.CSS.TRANSFORM] = '';
+        if (focusedNode) {
+          opts.focusedNode = focusedNode;
+          focusedNode.focus();
+        }
       });
     }
 

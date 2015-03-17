@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3fc26a1
+ * v0.8.3-master-a15347c
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -2952,6 +2952,8 @@ md-backdrop {
     z-index: 69; }
   md-backdrop.md-sidenav-backdrop {
     z-index: 59; }
+  md-backdrop.md-click-catcher {
+    position: fixed; }
   md-backdrop.ng-enter {
     -webkit-animation: cubic-bezier(0.25, 0.8, 0.25, 1) mdBackdropFadeIn 0.5s both;
             animation: cubic-bezier(0.25, 0.8, 0.25, 1) mdBackdropFadeIn 0.5s both; }
@@ -5409,7 +5411,7 @@ md-radio-group {
   border: none; }
 
 .md-select-menu-container {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   z-index: 99;
