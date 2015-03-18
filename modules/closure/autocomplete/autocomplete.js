@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-4c2b086
+ * v0.8.3-master-1a8b565
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -289,6 +289,7 @@ goog.require('ng.material.core');
       template:     '\
         <md-autocomplete-wrap role="listbox">\
           <input type="text"\
+              autocomplete="off"\
               ng-disabled="isDisabled"\
               ng-model="searchText"\
               ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
