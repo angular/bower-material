@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-00f4cc6
+ * v0.8.3-master-6e576c0
  */
 goog.provide('ng.material.components.tooltip');
 goog.require('ng.material.core');
@@ -173,7 +173,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       // Otherwise, recalculate based on 'top' since default is 'bottom'
       if (direction) {
         newPosition = fitInParent(newPosition);
-      } else if (newPosition.top > tooltipParent.prop('scrollHeight') - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE) {
+      } else if (newPosition.top > element.prop('offsetParent').scrollHeight - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE) {
         newPosition = fitInParent(getPosition('top'));
       }
 
