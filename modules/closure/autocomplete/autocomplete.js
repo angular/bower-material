@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-5f14126
+ * v0.8.3-master-c3fcd0d
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -94,6 +94,9 @@ goog.require('ng.material.core');
           ? $mdUtil.debounce(handleSearchText, wait)
           : handleSearchText);
       $scope.$watch('selectedItem', function (selectedItem, previousSelectedItem) {
+        if (selectedItem) {
+          $scope.searchText = getDisplayValue(selectedItem);
+        }
         if ($scope.itemChange && selectedItem !== previousSelectedItem)
           $scope.itemChange(getItemScope(selectedItem));
       });
@@ -101,6 +104,8 @@ goog.require('ng.material.core');
 
     function handleSearchText (searchText, previousSearchText) {
       self.index = 0;
+      //-- do nothing on init if there is no initial value
+      if (!searchText && searchText === previousSearchText) return;
       //-- clear selected item if search text no longer matches it
       if (searchText !== getDisplayValue($scope.selectedItem)) $scope.selectedItem = null;
       else return;
