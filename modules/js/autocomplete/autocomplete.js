@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-019a8d6
+ * v0.8.3-master-f487248
  */
 (function () {
   'use strict';
@@ -25,17 +25,13 @@
       .module('material.components.autocomplete')
       .controller('MdAutocompleteCtrl', MdAutocompleteCtrl);
 
-  function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant) {
+  function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout) {
 
     //-- private variables
     var self = this,
         itemParts = $scope.itemsExpr.split(/ in /i),
         itemExpr = itemParts[1],
-        elements = {
-          main:  $element[0],
-          ul:    $element[0].getElementsByTagName('ul')[0],
-          input: $element[0].getElementsByTagName('input')[0]
-        },
+        elements = null,
         promise = null,
         cache = {},
         noBlur = false;
@@ -55,6 +51,7 @@
     self.getCurrentDisplayValue = getCurrentDisplayValue;
     self.fetch = $mdUtil.debounce(fetchResults);
     self.messages = [];
+    self.id = $mdUtil.nextUid();
 
     //-- While the mouse is inside of the dropdown, we don't want to handle input blur
     //-- This is to allow the user to scroll the list without causing it to hide
@@ -68,15 +65,15 @@
     function init () {
       if ($scope.autofocus) elements.input.focus();
       configureWatchers();
-      configureAria();
+      $timeout(gatherElements);
     }
 
-    function configureAria () {
-      var ul = angular.element(elements.ul),
-          input = angular.element(elements.input),
-          id = ul.attr('id') || 'ul_' + $mdUtil.nextUid();
-      ul.attr('id', id);
-      input.attr('aria-owns', id);
+    function gatherElements () {
+      elements = {
+        main:  $element[0],
+        ul:    $element[0].getElementsByTagName('ul')[0],
+        input: $element[0].getElementsByTagName('input')[0]
+      };
     }
 
     function getItemScope (item) {
@@ -246,7 +243,7 @@
     }
 
   }
-  MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant"];
+  MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$timeout"];
 })();
 
 (function () {
@@ -291,15 +288,37 @@
 
   function MdAutocomplete () {
     return {
-      template:     '\
+      template: '\
         <md-autocomplete-wrap role="listbox">\
+          <md-input-container ng-if="floatingLabel">\
+            <label>{{floatingLabel}}</label>\
+            <input type="text"\
+                id="fl-input-{{$mdAutocompleteCtrl.id}}"\
+                name="fl-input-{{$mdAutocompleteCtrl.id}}"\
+                autocomplete="off"\
+                ng-disabled="isDisabled"\
+                ng-model="$mdAutocompleteCtrl.scope.searchText"\
+                ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
+                ng-blur="$mdAutocompleteCtrl.blur()"\
+                aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
+                aria-label="{{floatingLabel}}"\
+                aria-autocomplete="list"\
+                aria-haspopup="true"\
+                aria-activedescendant=""\
+                aria-expanded="{{!$mdAutocompleteCtrl.hidden}}"/>\
+              \
+          </md-input-container>\
           <input type="text"\
+              id="input-{{$mdAutocompleteCtrl.id}}"\
+              name="input-{{$mdAutocompleteCtrl.id}}"\
+              ng-if="!floatingLabel"\
               autocomplete="off"\
               ng-disabled="isDisabled"\
-              ng-model="searchText"\
+              ng-model="$mdAutocompleteCtrl.scope.searchText"\
               ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
               ng-blur="$mdAutocompleteCtrl.blur()"\
               placeholder="{{placeholder}}"\
+              aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
               aria-label="{{placeholder}}"\
               aria-autocomplete="list"\
               aria-haspopup="true"\
@@ -307,7 +326,7 @@
               aria-expanded="{{!$mdAutocompleteCtrl.hidden}}"/>\
           <button\
               type="button"\
-              ng-if="searchText && !isDisabled"\
+              ng-if="$mdAutocompleteCtrl.scope.searchText && !isDisabled"\
               ng-click="$mdAutocompleteCtrl.clear()">\
             <md-icon md-svg-icon="cancel"></md-icon>\
             <span class="visually-hidden">Clear</span>\
@@ -315,19 +334,20 @@
           <md-progress-linear\
               ng-if="$mdAutocompleteCtrl.loading"\
               md-mode="indeterminate"></md-progress-linear>\
+          <ul role="presentation"\
+              id="ul-{{$mdAutocompleteCtrl.id}}"\
+              ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
+              ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
+              ng-mouseup="$mdAutocompleteCtrl.mouseUp()">\
+            <li ng-repeat="(index, item) in $mdAutocompleteCtrl.matches"\
+                ng-class="{ selected: index === $mdAutocompleteCtrl.index }"\
+                ng-show="$mdAutocompleteCtrl.scope.searchText && !$mdAutocompleteCtrl.hidden"\
+                ng-click="$mdAutocompleteCtrl.select(index)"\
+                ng-transclude\
+                md-autocomplete-list-item="$mdAutocompleteCtrl.itemName">\
+            </li>\
+          </ul>\
         </md-autocomplete-wrap>\
-        <ul role="presentation"\
-            ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
-            ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
-            ng-mouseup="$mdAutocompleteCtrl.mouseUp()">\
-          <li ng-repeat="(index, item) in $mdAutocompleteCtrl.matches"\
-              ng-class="{ selected: index === $mdAutocompleteCtrl.index }"\
-              ng-show="searchText && !$mdAutocompleteCtrl.hidden"\
-              ng-click="$mdAutocompleteCtrl.select(index)"\
-              ng-transclude\
-              md-autocomplete-list-item="$mdAutocompleteCtrl.itemName">\
-          </li>\
-        </ul>\
         <aria-status\
             class="visually-hidden"\
             role="status"\
@@ -338,18 +358,19 @@
       controller:   'MdAutocompleteCtrl',
       controllerAs: '$mdAutocompleteCtrl',
       scope:        {
-        searchText:   '=?mdSearchText',
-        selectedItem: '=?mdSelectedItem',
-        itemsExpr:    '@mdItems',
-        itemText:     '&mdItemText',
-        placeholder:  '@placeholder',
-        noCache:      '=?mdNoCache',
-        itemChange:   '&mdSelectedItemChange',
-        textChange:   '&mdSearchTextChange',
-        isDisabled:   '=?ngDisabled',
-        minLength:    '=?mdMinLength',
-        delay:        '=?mdDelay',
-        autofocus:    '=?mdAutofocus'
+        searchText:    '=mdSearchText',
+        selectedItem:  '=mdSelectedItem',
+        itemsExpr:     '@mdItems',
+        itemText:      '&mdItemText',
+        placeholder:   '@placeholder',
+        noCache:       '=mdNoCache',
+        itemChange:    '&mdSelectedItemChange',
+        textChange:    '&mdSearchTextChange',
+        isDisabled:    '=ngDisabled',
+        minLength:     '=mdMinLength',
+        delay:         '=mdDelay',
+        autofocus:     '=mdAutofocus',
+        floatingLabel: '@mdFloatingLabel'
       }
     };
   }

@@ -1,7 +1,7 @@
 {
   "name": "angular-material",
   "homepage": "https://material.angularjs.org",
-  "version": "0.8.3-master-019a8d6",
+  "version": "0.8.3-master-f487248",
   "main": "index.js",
   "repository": {
     "type": "git",
