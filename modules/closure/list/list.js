@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-38f0423
  */
 goog.provide('ng.material.components.list');
 goog.require('ng.material.core');
@@ -56,10 +56,8 @@ angular.module('material.components.list', [
 function mdListDirective() {
   return {
     restrict: 'E',
-    link: function($scope, $element, $attr) {
-      $element.attr({
-        'role' : 'list'
-      });
+    compile: function(element) {
+      element[0].setAttribute('role', 'list');
     }
   };
 }
@@ -87,10 +85,8 @@ function mdListDirective() {
 function mdItemDirective() {
   return {
     restrict: 'E',
-    link: function($scope, $element, $attr) {
-      $element.attr({
-        'role' : 'listitem'
-      });
+    compile: function(element) {
+      element[0].setAttribute('role', 'listitem');
     }
   };
 }

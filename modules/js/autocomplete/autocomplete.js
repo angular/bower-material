@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-38f0423
  */
 (function () {
   'use strict';
@@ -380,6 +380,31 @@
   'use strict';
   angular
       .module('material.components.autocomplete')
+      .controller('MdHighlightCtrl', MdHighlightCtrl);
+
+  function MdHighlightCtrl ($scope, $element, $interpolate) {
+    var term = $element.attr('md-highlight-text'),
+        text = $interpolate($element.text())($scope),
+        watcher = $scope.$watch(term, function (term) {
+          var regex = new RegExp('^' + sanitize(term), 'i'),
+              html = text.replace(regex, '<span class="highlight">$&</span>');
+          $element.html(html);
+        });
+    $element.on('$destroy', function () { watcher(); });
+
+    function sanitize (term) {
+      if (!term) return term;
+      return term.replace(/[\*\[\]\(\)\{\}\\\^\$]/g, '\\$&');
+    }
+  }
+  MdHighlightCtrl.$inject = ["$scope", "$element", "$interpolate"];
+
+})();
+
+(function () {
+  'use strict';
+  angular
+      .module('material.components.autocomplete')
       .directive('mdHighlightText', MdHighlight);
 
   /**
@@ -412,31 +437,6 @@
       controller: 'MdHighlightCtrl'
     };
   }
-})();
-
-(function () {
-  'use strict';
-  angular
-      .module('material.components.autocomplete')
-      .controller('MdHighlightCtrl', MdHighlightCtrl);
-
-  function MdHighlightCtrl ($scope, $element, $interpolate) {
-    var term = $element.attr('md-highlight-text'),
-        text = $interpolate($element.text())($scope),
-        watcher = $scope.$watch(term, function (term) {
-          var regex = new RegExp('^' + sanitize(term), 'i'),
-              html = text.replace(regex, '<span class="highlight">$&</span>');
-          $element.html(html);
-        });
-    $element.on('$destroy', function () { watcher(); });
-
-    function sanitize (term) {
-      if (!term) return term;
-      return term.replace(/[\*\[\]\(\)\{\}\\\^\$]/g, '\\$&');
-    }
-  }
-  MdHighlightCtrl.$inject = ["$scope", "$element", "$interpolate"];
-
 })();
 
 (function () {
