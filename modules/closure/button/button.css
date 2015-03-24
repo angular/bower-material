@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-38f0423
+ * v0.8.3-master-9aedd74
  */
 /**
  * Position a FAB button.
@@ -37,7 +37,7 @@
     outline: none; }
   .md-button:hover {
     text-decoration: none; }
-  .md-button.ng-hide {
+  .md-button.ng-hide, .md-button.ng-leave {
     transition: none; }
   .md-button.md-cornered {
     border-radius: 0; }
