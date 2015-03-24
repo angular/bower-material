@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-f62fd48
+ * v0.8.3-master-5c853e6
  */
 goog.provide('ng.material.components.tooltip');
 goog.require('ng.material.core');

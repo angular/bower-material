@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-f62fd48
+ * v0.8.3-master-5c853e6
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -93,6 +93,12 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
     // If not provided, we automatically make one
     if (!labelEl.length) {
       labelEl = angular.element('<md-select-label><span></span></md-select-label>');
+    } else {
+      if (!labelEl[0].firstElementChild) {
+        var spanWrapper = angular.element('<span>');
+        spanWrapper.append(labelEl.contents());
+        labelEl.append(spanWrapper);
+      }
     }
     labelEl.append('<span class="md-select-icon" aria-hidden="true"></span>');
     labelEl.addClass('md-select-label');

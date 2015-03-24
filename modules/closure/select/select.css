@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-f62fd48
+ * v0.8.3-master-5c853e6
  */
 .md-select-menu-container {
   position: fixed;
@@ -57,6 +57,10 @@ md-select {
   position: relative;
   box-sizing: border-box;
   min-width: 64px; }
+  .md-select-label *:first-child {
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
   .md-select-label .md-select-icon {
     -webkit-align-items: flex-end;
         -ms-flex-align: end;
