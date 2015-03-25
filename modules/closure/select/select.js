@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-ddf1198
+ * v0.8.3-master-9956f62
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -23,7 +23,6 @@ goog.require('ng.material.core');
 - [ ] ng-model="foo" ng-model-options="{ trackBy: '$value.id' }" for objects
 - [ ] mdOption with value
 - [ ] Usage with input inside
-- [ ] Usage with md-multiple
 
 ### TODO - POST RC1 ###
 - [ ] Abstract placement logic in $mdSelect service to $mdMenu service
@@ -143,7 +142,6 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
       createSelect();
 
       var originalRender = ngModel.$render;
-
       ngModel.$render = function() {
         originalRender();
         syncLabelText();
@@ -169,6 +167,31 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
           mdSelectCtrl.setLabelText(selectMenuCtrl.selectedLabels());
         }
       }
+
+      var deregisterWatcher;
+      attr.$observe('ngMultiple', function(val) {
+        if (deregisterWatcher) deregisterWatcher();
+        var parser = $parse(val);
+        deregisterWatcher = scope.$watch(function() { return parser(scope); }, function(multiple, prevVal) {
+          if (multiple === undefined && prevVal === undefined) return; // assume compiler did a good job
+          if (multiple) {
+            element.attr('multiple', 'multiple');
+          } else {
+            element.removeAttr('multiple');
+          }
+          if (selectContainer) {
+            var selectMenuCtrl = selectContainer.find('md-select-menu').controller('mdSelectMenu');
+            selectMenuCtrl.setMultiple(multiple);
+            originalRender = ngModel.$render;
+            ngModel.$render = function() {
+              originalRender();
+              syncLabelText();
+            };
+            selectMenuCtrl.refreshViewValue();
+            ngModel.$render();
+          }
+        });
+      });
 
       attr.$observe('disabled', function(disabled) {
         if (typeof disabled == "string") {
@@ -327,6 +350,33 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
     // and values matching every option's controller.
     self.options = {};
 
+    var deregisterCollectionWatch;
+    self.setMultiple = function(isMultiple) {
+      var ngModel = self.ngModel;
+      self.isMultiple = isMultiple;
+      if (deregisterCollectionWatch) deregisterCollectionWatch();
+
+      if (self.isMultiple) {
+        ngModel.$validators['md-multiple'] = validateArray;
+        ngModel.$render = renderMultiple;
+
+        // watchCollection on the model because by default ngModel only watches the model's
+        // reference. This allowed the developer to also push and pop from their array.
+        $scope.$watchCollection($attrs.ngModel, function(value) {
+          if (validateArray(value)) renderMultiple(value);
+        });
+      } else {
+        delete ngModel.$validators['md-multiple'];
+        ngModel.$render = renderSingular;
+      }
+
+      function validateArray(modelValue, viewValue) {
+        // If a value is truthy but not an array, reject it.
+        // If value is undefined/falsy, accept that it's an empty array.
+        return angular.isArray(modelValue || viewValue || []);
+      }
+    };
+
 
     self.init = function(ngModel) {
       self.ngModel = ngModel;
@@ -350,25 +400,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
           return value;
         };
       }
-
-      if (self.isMultiple) {
-        ngModel.$validators['md-multiple'] = validateArray;
-        ngModel.$render = renderMultiple;
-
-        // watchCollection on the model because by default ngModel only watches the model's
-        // reference. This allowed the developer to also push and pop from their array.
-        $scope.$watchCollection($attrs.ngModel, function(value) {
-          if (validateArray(value)) renderMultiple(value);
-        });
-      } else {
-        ngModel.$render = renderSingular;
-      }
-
-      function validateArray(modelValue, viewValue) {
-        // If a value is truthy but not an array, reject it.
-        // If value is undefined/falsy, accept that it's an empty array.
-        return angular.isArray(modelValue || viewValue || []);
-      }
+      self.setMultiple(self.isMultiple);
     };
 
     self.selectedLabels = function() {
@@ -709,19 +741,20 @@ function SelectProvider($$interimElementProvider) {
           focusOption('prev');
         }
 
-        if (!selectCtrl.isMultiple) {
-          opts.selectEl.on('click', closeMenu);
-          opts.selectEl.on('keydown', function(e) {
-            if (e.keyCode == 32 || e.keyCode == 13) {
-              closeMenu();
-            }
-          });
-        }
-        function closeMenu() {
-          opts.restoreFocus = true;
-          scope.$evalAsync(function() {
-            $mdSelect.hide(selectCtrl.ngModel.$viewValue);
-          });
+        opts.selectEl.on('click', checkCloseMenu);
+        opts.selectEl.on('keydown', function(e) {
+          if (e.keyCode == 32 || e.keyCode == 13) {
+            checkCloseMenu();
+          }
+        });
+
+        function checkCloseMenu() {
+          if (!selectCtrl.isMultiple) {
+            opts.restoreFocus = true;
+            scope.$evalAsync(function() {
+              $mdSelect.hide(selectCtrl.ngModel.$viewValue);
+            });
+          }
         }
       }
 
