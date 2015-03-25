@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-e0f9fe9
+ * v0.8.3-master-ddf1198
  */
 .md-select-menu-container {
   position: fixed;
@@ -38,6 +38,9 @@ md-select {
     cursor: default; }
   md-select:not([disabled]):hover {
     cursor: pointer; }
+  md-select:not([disabled]).ng-invalid.ng-dirty .md-select-label {
+    padding-bottom: 7px;
+    border-bottom: 2px solid; }
   md-select:not([disabled]):focus .md-select-label {
     border-bottom: 2px solid;
     padding-bottom: 7px; }
