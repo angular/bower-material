@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-b682e36
+ * v0.8.3-master-e0f9fe9
  */
 goog.provide('ng.material.core');
 
@@ -2277,8 +2277,7 @@ function InkRippleService($window, $timeout) {
        * @returns {{backgroundColor: string, borderColor: string, width: string, height: string}}
        */
       function getRippleCss(size, left, top) {
-        var rect,
-            css = {
+        var css = {
               backgroundColor: rgbaToRGB(color),
               borderColor: rgbaToRGB(color),
               width: size + 'px',
@@ -2295,9 +2294,8 @@ function InkRippleService($window, $timeout) {
         if (options.center) {
           css.left = css.top = '50%';
         } else {
-          rect = node.getBoundingClientRect();
-          css.left = Math.round((left - rect.left) / container.prop('offsetWidth') * 100) + '%';
-          css.top = Math.round((top - rect.top) / container.prop('offsetHeight') * 100) + '%';
+          css.left = Math.round((left - node.offsetLeft) / container.prop('offsetWidth') * 100) + '%';
+          css.top = Math.round((top - node.offsetTop) / container.prop('offsetHeight') * 100) + '%';
         }
 
         return css;
