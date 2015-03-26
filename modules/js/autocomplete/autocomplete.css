@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-9956f62
+ * v0.8.3-master-6af1546
  */
 @-webkit-keyframes md-autocomplete-list-out {
   0% {
@@ -156,10 +156,12 @@ md-autocomplete {
       opacity: 0;
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       z-index: -1; }
-    md-autocomplete button:focus:after {
-      -webkit-transform: scale(1);
-              transform: scale(1);
-      opacity: 1; }
+    md-autocomplete button:focus {
+      outline: none; }
+      md-autocomplete button:focus:after {
+        -webkit-transform: scale(1);
+                transform: scale(1);
+        opacity: 1; }
     md-autocomplete button md-icon {
       position: absolute;
       top: 50%;
@@ -212,3 +214,10 @@ md-autocomplete {
         transition: none;
         -webkit-animation: md-autocomplete-list-out 0.2s;
                 animation: md-autocomplete-list-out 0.2s; }
+  @media screen and (-ms-high-contrast: active) {
+    md-autocomplete input {
+      border: 1px solid #fff; }
+
+    md-autocomplete li:focus {
+      color: #fff; }
+ }

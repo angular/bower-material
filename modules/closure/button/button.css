@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-9956f62
+ * v0.8.3-master-6af1546
  */
 /**
  * Position a FAB button.
@@ -23,9 +23,9 @@
   text-align: center;
   text-transform: uppercase;
   font-weight: 500;
+  font-size: 0.875rem;
   font-style: inherit;
   font-variant: inherit;
-  font-size: inherit;
   font-family: inherit;
   line-height: inherit;
   text-decoration: none;
@@ -137,3 +137,8 @@
   .md-button-group > .md-button:last-child {
     border-right-width: 1px;
     border-radius: 0px 2px 2px 0px; }
+
+@media screen and (-ms-high-contrast: active) {
+  .md-button.md-raised, .md-button.md-fab {
+    border: 1px solid #fff; }
+ }

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-9956f62
+ * v0.8.3-master-6af1546
  */
 /* Sizes:
   0    <= size < 600  Phone
@@ -13,6 +13,7 @@
 [layout] {
   box-sizing: border-box;
   display: -webkit-flex;
+  display: -moz-flex;
   display: -ms-flexbox;
   display: flex; }
 
@@ -50,6 +51,7 @@
     height: inherit; } }
 
 [flex] {
+  box-sizing: border-box;
   -webkit-flex: 1;
       -ms-flex: 1;
           flex: 1; }
@@ -487,6 +489,7 @@
   [layout-sm] {
     box-sizing: border-box;
     display: -webkit-flex;
+    display: -moz-flex;
     display: -ms-flexbox;
     display: flex; }
 
@@ -501,6 +504,7 @@
             flex-direction: row; }
 
   [flex-sm] {
+    box-sizing: border-box;
     -webkit-flex: 1;
         -ms-flex: 1;
             flex: 1; }
@@ -846,6 +850,7 @@
   [layout-gt-sm] {
     box-sizing: border-box;
     display: -webkit-flex;
+    display: -moz-flex;
     display: -ms-flexbox;
     display: flex; }
 
@@ -860,6 +865,7 @@
             flex-direction: row; }
 
   [flex-gt-sm] {
+    box-sizing: border-box;
     -webkit-flex: 1;
         -ms-flex: 1;
             flex: 1; }
@@ -1211,6 +1217,7 @@
   [layout-md] {
     box-sizing: border-box;
     display: -webkit-flex;
+    display: -moz-flex;
     display: -ms-flexbox;
     display: flex; }
 
@@ -1225,6 +1232,7 @@
             flex-direction: row; }
 
   [flex-md] {
+    box-sizing: border-box;
     -webkit-flex: 1;
         -ms-flex: 1;
             flex: 1; }
@@ -1570,6 +1578,7 @@
   [layout-gt-md] {
     box-sizing: border-box;
     display: -webkit-flex;
+    display: -moz-flex;
     display: -ms-flexbox;
     display: flex; }
 
@@ -1584,6 +1593,7 @@
             flex-direction: row; }
 
   [flex-gt-md] {
+    box-sizing: border-box;
     -webkit-flex: 1;
         -ms-flex: 1;
             flex: 1; }
@@ -1935,6 +1945,7 @@
   [layout-lg] {
     box-sizing: border-box;
     display: -webkit-flex;
+    display: -moz-flex;
     display: -ms-flexbox;
     display: flex; }
 
@@ -1949,6 +1960,7 @@
             flex-direction: row; }
 
   [flex-lg] {
+    box-sizing: border-box;
     -webkit-flex: 1;
         -ms-flex: 1;
             flex: 1; }
@@ -2297,6 +2309,7 @@
   [layout-gt-lg] {
     box-sizing: border-box;
     display: -webkit-flex;
+    display: -moz-flex;
     display: -ms-flexbox;
     display: flex; }
 
@@ -2311,6 +2324,7 @@
             flex-direction: row; }
 
   [flex-gt-lg] {
+    box-sizing: border-box;
     -webkit-flex: 1;
         -ms-flex: 1;
             flex: 1; }

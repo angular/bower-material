@@ -2,9 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-9956f62
+ * v0.8.3-master-6af1546
  */
 md-checkbox {
+  box-sizing: border-box;
   display: block;
   margin: 15px;
   white-space: nowrap;
@@ -14,6 +15,8 @@ md-checkbox {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none; }
+  md-checkbox *, md-checkbox *:before, md-checkbox *:after {
+    box-sizing: border-box; }
   md-checkbox .md-container {
     position: relative;
     top: 4px;

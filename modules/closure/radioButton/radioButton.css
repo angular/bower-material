@@ -2,13 +2,16 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-9956f62
+ * v0.8.3-master-6af1546
  */
 md-radio-button, .md-switch-thumb {
+  box-sizing: border-box;
   display: block;
   margin: 15px;
   white-space: nowrap;
   cursor: pointer; }
+  md-radio-button *, md-radio-button *:before, md-radio-button *:after, .md-switch-thumb *, .md-switch-thumb *:before, .md-switch-thumb *:after {
+    box-sizing: border-box; }
   md-radio-button input, .md-switch-thumb input {
     display: none; }
   md-radio-button .md-container, .md-switch-thumb .md-container {
@@ -67,3 +70,8 @@ md-radio-group {
 
 .radioButtondemoBasicUsage md-radio-group {
   border: none; }
+
+@media screen and (-ms-high-contrast: active) {
+  md-radio-button.md-default-theme .md-on {
+    background-color: #fff; }
+ }

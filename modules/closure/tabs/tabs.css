@@ -2,13 +2,16 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-9956f62
+ * v0.8.3-master-6af1546
  */
 md-tabs {
+  box-sizing: border-box;
   display: block;
   width: 100%;
   font-weight: 500;
   overflow: auto; }
+  md-tabs *, md-tabs *:before, md-tabs *:after {
+    box-sizing: border-box; }
 
 .md-header {
   width: 100%;
@@ -36,6 +39,8 @@ md-tabs {
   background-repeat: no-repeat;
   background-position: center center;
   position: absolute; }
+  .md-paginator:focus {
+    outline: none; }
   .md-paginator.md-prev {
     left: 0; }
   .md-paginator.md-next {
