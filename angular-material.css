@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-6af1546
+ * v0.8.3-master-a412911
  */
 html, body {
   height: 100%;
@@ -3223,6 +3223,32 @@ md-bottom-sheet {
         text-align: center;
         padding-top: 8px; }
 
+md-card {
+  box-sizing: border-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: 8px;
+  box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26); }
+  md-card > img, md-card > :not(md-card-content) img {
+    -webkit-order: 0;
+        -ms-flex-order: 0;
+            order: 0;
+    width: 100%; }
+  md-card md-card-content {
+    -webkit-order: 1;
+        -ms-flex-order: 1;
+            order: 1;
+    padding: 16px; }
+
+@media screen and (-ms-high-contrast: active) {
+  md-card {
+    border: 1px solid #fff; }
+ }
+
 /**
  * Position a FAB button.
  */
@@ -3362,32 +3388,6 @@ md-bottom-sheet {
     border: 1px solid #fff; }
  }
 
-md-card {
-  box-sizing: border-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  margin: 8px;
-  box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26); }
-  md-card > img, md-card > :not(md-card-content) img {
-    -webkit-order: 0;
-        -ms-flex-order: 0;
-            order: 0;
-    width: 100%; }
-  md-card md-card-content {
-    -webkit-order: 1;
-        -ms-flex-order: 1;
-            order: 1;
-    padding: 16px; }
-
-@media screen and (-ms-high-contrast: active) {
-  md-card {
-    border: 1px solid #fff; }
- }
-
 md-checkbox {
   box-sizing: border-box;
   display: block;
@@ -3464,6 +3464,25 @@ md-checkbox {
         -ms-user-select: text;
             user-select: text; }
 
+md-content {
+  display: block;
+  position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; }
+  md-content[md-scroll-y] {
+    overflow-y: auto;
+    overflow-x: hidden; }
+  md-content[md-scroll-x] {
+    overflow-x: auto;
+    overflow-y: hidden; }
+  md-content.md-padding {
+    padding: 8px; }
+
+@media (min-width: 600px) {
+  md-content.md-padding {
+    padding: 16px; }
+ }
+
 .md-dialog-container {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3539,25 +3558,6 @@ md-dialog {
 @media screen and (-ms-high-contrast: active) {
   md-dialog {
     border: 1px solid #fff; }
- }
-
-md-content {
-  display: block;
-  position: relative;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch; }
-  md-content[md-scroll-y] {
-    overflow-y: auto;
-    overflow-x: hidden; }
-  md-content[md-scroll-x] {
-    overflow-x: auto;
-    overflow-y: hidden; }
-  md-content.md-padding {
-    padding: 8px; }
-
-@media (min-width: 600px) {
-  md-content.md-padding {
-    padding: 16px; }
  }
 
 md-divider {
