@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-1f8e2bd
+ * v0.8.3-master-d0958a7
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -416,7 +416,6 @@ angular.module('material.components.tabs', [
       //-- if the element is not visible, we will not be able to calculate sizes until it is
       //-- we should treat that as a resize event rather than just updating the ink bar
       if (!$element.prop('offsetParent')) return handleResizeWhenVisible();
-      else console.log($element.prop('offsetParent'));
       var index = $scope.selectedIndex,
           totalWidth = elements.wrapper.offsetWidth,
           tab = elements.tabs[index],
