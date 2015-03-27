@@ -2,14 +2,14 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.theming.palette","material.core.theming","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.theming.palette","material.core.theming","material.components.backdrop","material.components.autocomplete","material.components.bottomSheet","material.components.card","material.components.button","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.sticky","material.components.slider","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 /*!
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -72,7 +72,7 @@ function rAFDecorator( $delegate ) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -141,7 +141,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function(){
 
@@ -378,7 +378,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function(){
 
@@ -517,7 +517,7 @@ mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -812,97 +812,7 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
- */
-(function() {
-'use strict';
-
-angular.module('material.core')
-  .service('$mdAria', AriaService);
-
-function AriaService($$rAF, $log, $window) {
-
-  return {
-    expect: expect,
-    expectAsync: expectAsync,
-    expectWithText: expectWithText
-  };
-
-  /**
-   * Check if expected attribute has been specified on the target element or child
-   * @param element
-   * @param attrName
-   * @param {optional} defaultValue What to set the attr to if no value is found
-   */
-  function expect(element, attrName, defaultValue) {
-    var node = element[0];
-
-    // if node exists and neither it nor its children have the attribute
-    if (node &&
-       ((!node.hasAttribute(attrName) ||
-        node.getAttribute(attrName).length === 0) &&
-        !childHasAttribute(node, attrName))) {
-
-      defaultValue = angular.isString(defaultValue) ? defaultValue.trim() : '';
-      if (defaultValue.length) {
-        element.attr(attrName, defaultValue);
-      } else {
-        $log.warn('ARIA: Attribute "', attrName, '", required for accessibility, is missing on node:', node);
-      }
-
-    }
-  }
-
-  function expectAsync(element, attrName, defaultValueGetter) {
-    // Problem: when retrieving the element's contents synchronously to find the label,
-    // the text may not be defined yet in the case of a binding.
-    // There is a higher chance that a binding will be defined if we wait one frame.
-    $$rAF(function() {
-      expect(element, attrName, defaultValueGetter());
-    });
-  }
-
-  function expectWithText(element, attrName) {
-    expectAsync(element, attrName, function() {
-      return getText(element);
-    });
-  }
-
-  function getText(element) {
-    return element.text().trim();
-  }
-
-  function childHasAttribute(node, attrName) {
-    var hasChildren = node.hasChildNodes(),
-        hasAttr = false;
-
-    function isHidden(el) {
-      var style = el.currentStyle ? el.currentStyle : $window.getComputedStyle(el);
-      return (style.display === 'none');
-    }
-
-    if(hasChildren) {
-      var children = node.childNodes;
-      for(var i=0; i<children.length; i++){
-        var child = children[i];
-        if(child.nodeType === 1 && child.hasAttribute(attrName)) {
-          if(!isHidden(child)){
-            hasAttr = true;
-          }
-        }
-      }
-    }
-    return hasAttr;
-  }
-}
-AriaService.$inject = ["$$rAF", "$log", "$window"];
-})();
-
-/*!
- * Angular Material Design
- * https://github.com/angular/material
- * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -1047,426 +957,97 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
 
-/*
- * TODO: Add support for multiple fingers on the `pointer` object (enables pinch gesture)
- */
-
-var START_EVENTS = 'mousedown touchstart pointerdown';
-var MOVE_EVENTS = 'mousemove touchmove pointermove';
-var END_EVENTS = 'mouseup mouseleave touchend touchcancel pointerup pointercancel';
-var HANDLERS;
-
-document.contains || (document.contains = function(node) {
-  return document.body.contains(node);
-});
-
-// TODO add windows phone to this
-var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-var isIos = userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/iPod/i);
-var isAndroid = userAgent.match(/Android/i);
-var shouldHijackClicks = isIos || isAndroid;
-
-if (shouldHijackClicks) {
-  document.addEventListener('click', function(ev) {
-    // Space/enter on a button, and submit events, can send clicks
-    var isKeyClick = ev.clientX === 0 && ev.clientY === 0;
-    if (isKeyClick || ev.$material) return;
-
-    // Prevent clicks unless they're sent by material
-    ev.preventDefault();
-    ev.stopPropagation();
-  }, true);
-}
-
-angular.element(document)
-  .on(START_EVENTS, gestureStart)
-  .on(MOVE_EVENTS, gestureMove)
-  .on(END_EVENTS, gestureEnd)
-  // For testing
-  .on('$$mdGestureReset', function() {
-    lastPointer = pointer = null;
-  });
-
-// The state of the current and previous 'pointer' (user's hand)
-var pointer, lastPointer;
-
-function runHandlers(handlerEvent, event) {
-  var handler;
-  for (var handlerName in HANDLERS) {
-    handler = HANDLERS[handlerName];
-    if (handlerEvent === 'start') {
-      // Run cancel to reset any handlers' state
-      handler.cancel();
-    }
-    handler[handlerEvent](event, pointer);
-  }
-}
-
-function gestureStart(ev) {
-  // If we're already touched down, abort
-  if (pointer) return;
-
-  var now = +Date.now();
-
-  // iOS & old android bug: after a touch event, a click event is sent 350 ms later.
-  // If <400ms have passed, don't allow an event of a different type than the previous event
-  if (lastPointer && !typesMatch(ev, lastPointer) && (now - lastPointer.endTime < 1500)) {
-    return;
-  }
-
-  pointer = makeStartPointer(ev);
-
-  runHandlers('start', ev);
-}
-
-function gestureMove(ev) {
-  if (!pointer || !typesMatch(ev, pointer)) return;
-
-  updatePointerState(ev, pointer);
-  runHandlers('move', ev);
-}
-
-function gestureEnd(ev) {
-  if (!pointer || !typesMatch(ev, pointer)) return;
-
-  updatePointerState(ev, pointer);
-  pointer.endTime = +Date.now();
-
-  runHandlers('end', ev);
-
-  lastPointer = pointer;
-  pointer = null;
-}
-
-/******** Helpers *********/
-function typesMatch(ev, pointer) {
-  return ev && pointer && ev.type.charAt(0) === pointer.type;
-}
-
-function getEventPoint(ev) {
-  ev = ev.originalEvent || ev; // support jQuery events
-  return (ev.touches && ev.touches[0]) ||
-    (ev.changedTouches && ev.changedTouches[0]) ||
-    ev;
-}
-
-function updatePointerState(ev, pointer) {
-  var point = getEventPoint(ev);
-  var x = pointer.x = point.pageX;
-  var y = pointer.y = point.pageY;
-
-  pointer.distanceX = x - pointer.startX;
-  pointer.distanceY = y - pointer.startY;
-  pointer.distance = Math.sqrt(
-    pointer.distanceX * pointer.distanceX + pointer.distanceY * pointer.distanceY
-  );
-
-  pointer.directionX = pointer.distanceX > 0 ? 'right' : pointer.distanceX < 0 ? 'left' : '';
-  pointer.directionY = pointer.distanceY > 0 ? 'up' : pointer.distanceY < 0 ? 'down' : '';
-
-  pointer.duration = +Date.now() - pointer.startTime;
-  pointer.velocityX = pointer.distanceX / pointer.duration;
-  pointer.velocityY = pointer.distanceY / pointer.duration;
-}
-
-
-function makeStartPointer(ev) {
-  var point = getEventPoint(ev);
-  var startPointer = {
-    startTime: +Date.now(),
-    target: ev.target,
-    // 'p' for pointer, 'm' for mouse, 't' for touch
-    type: ev.type.charAt(0)
-  };
-  startPointer.startX = startPointer.x = point.pageX;
-  startPointer.startY = startPointer.y = point.pageY;
-  return startPointer;
-}
-
 angular.module('material.core')
-.run(["$mdGesture", function($mdGesture) {}]) // make sure $mdGesture is always instantiated
-.factory('$mdGesture', ["$$MdGestureHandler", "$$rAF", "$timeout", function($$MdGestureHandler, $$rAF, $timeout) {
-  HANDLERS = {};
+  .service('$mdAria', AriaService);
 
-  if (shouldHijackClicks) {
-    addHandler('click', {
-      options: {
-        maxDistance: 6
-      },
-      onEnd: function(ev, pointer) {
-        if (pointer.distance < this.state.options.maxDistance) {
-          this.dispatchEvent(ev, 'click');
-        }
-      }
-    });
-  }
+function AriaService($$rAF, $log, $window) {
 
-  addHandler('press', {
-    onStart: function(ev, pointer) {
-      this.dispatchEvent(ev, '$md.pressdown');
-    },
-    onEnd: function(ev, pointer) {
-      this.dispatchEvent(ev, '$md.pressup');
-    }
-  });
-
-
-  addHandler('hold', {
-    options: {
-      // If the user keeps his finger within the same <maxDistance> area for
-      // <delay> ms, dispatch a hold event.
-      maxDistance: 6,
-      delay: 500
-    },
-    onCancel: function() {
-      $timeout.cancel(this.state.timeout);
-    },
-    onStart: function(ev, pointer) {
-      // For hold, require a parent to be registered with $mdGesture.register()
-      // Because we prevent scroll events, this is necessary.
-      if (!this.state.registeredParent) return this.cancel();
-
-      this.state.pos = {x: pointer.x, y: pointer.y};
-      this.state.timeout = $timeout(angular.bind(this, function holdDelayFn() {
-        this.dispatchEvent(ev, '$md.hold');
-        this.cancel(); //we're done!
-      }), this.state.options.delay, false);
-    },
-    onMove: function(ev, pointer) {
-      // Don't scroll while waiting for hold
-      ev.preventDefault();
-      var dx = this.state.pos.x - pointer.x;
-      var dy = this.state.pos.y - pointer.y;
-      if (Math.sqrt(dx*dx + dy*dy) > this.options.maxDistance) {
-        this.cancel();
-      }
-    },
-    onEnd: function() { this.onCancel(); }
-  });
-
-  addHandler('drag', {
-    options: {
-      minDistance: 6,
-      horizontal: true
-    },
-    onStart: function(ev) {
-      // For drag, require a parent to be registered with $mdGesture.register()
-      if (!this.state.registeredParent) this.cancel();
-    },
-    onMove: function(ev, pointer) {
-      var shouldStartDrag, shouldCancel;
-      // Don't allow touch events to scroll while we're dragging or
-      // deciding if this touchmove is a proper drag
-      ev.preventDefault();
-
-      if (!this.state.dragPointer) {
-        if (this.state.options.horizontal) {
-          shouldStartDrag = Math.abs(pointer.distanceX) > this.state.options.minDistance;
-          shouldCancel = Math.abs(pointer.distanceY) > this.state.options.minDistance * 1.5;
-        } else {
-          shouldStartDrag = Math.abs(pointer.distanceY) > this.state.options.minDistance;
-          shouldCancel = Math.abs(pointer.distanceX) > this.state.options.minDistance * 1.5;
-        }
-
-        if (shouldStartDrag) {
-          // Create a new pointer, starting at this point where the drag started.
-          this.state.dragPointer = makeStartPointer(ev);
-          updatePointerState(ev, this.state.dragPointer);
-          this.dispatchEvent(ev, '$md.dragstart', this.state.dragPointer);
-
-        } else if (shouldCancel) {
-          this.cancel();
-        }
-      } else {
-        this.dispatchDragMove(ev);
-      }
-    },
-    // Only dispatch these every frame; any more is unnecessray
-    dispatchDragMove: $$rAF.throttle(function(ev) {
-      // Make sure the drag didn't stop while waiting for the next frame
-      if (this.state.isRunning) {
-        updatePointerState(ev, this.state.dragPointer);
-        this.dispatchEvent(ev, '$md.drag', this.state.dragPointer);
-      }
-    }),
-    onEnd: function(ev, pointer) {
-      if (this.state.dragPointer) {
-        updatePointerState(ev, this.state.dragPointer);
-        this.dispatchEvent(ev, '$md.dragend', this.state.dragPointer);
-      }
-    }
-  });
-
-  addHandler('swipe', {
-    options: {
-      minVelocity: 0.65,
-      minDistance: 10
-    },
-    onEnd: function(ev, pointer) {
-      if (Math.abs(pointer.velocityX) > this.state.options.minVelocity &&
-          Math.abs(pointer.distanceX) > this.state.options.minDistance) {
-        var eventType = pointer.directionX == 'left' ? '$md.swipeleft' : '$md.swiperight';
-        this.dispatchEvent(ev, eventType);
-      }
-    }
-  });
-
-  var self;
-  return self = {
-    handler: addHandler,
-    register: register
+  return {
+    expect: expect,
+    expectAsync: expectAsync,
+    expectWithText: expectWithText
   };
 
-  function addHandler(name, definition) {
-    var handler = new $$MdGestureHandler(name);
-    angular.extend(handler, definition);
-    HANDLERS[name] = handler;
-    return self;
-  }
-
-  function register(element, handlerName, options) {
-    var handler = HANDLERS[ handlerName.replace(/^\$md./, '') ];
-    if (!handler) {
-      throw new Error('Failed to register element with handler ' + handlerName + '. ' +
-                      'Available handlers: ' + Object.keys(HANDLERS).join(', '));
-    }
-    return handler.registerElement(element, options);
-  }
-}])
-.factory('$$MdGestureHandler', ["$$rAF", function($$rAF) {
-
-  function GestureHandler(name) {
-    this.name = name;
-    this.state = {};
-  }
-  GestureHandler.prototype = {
-    onStart: angular.noop,
-    onMove: angular.noop,
-    onEnd: angular.noop,
-    onCancel: angular.noop,
-    options: {},
-
-    dispatchEvent: typeof window.jQuery !== 'undefined' && angular.element === window.jQuery ?
-      jQueryDispatchEvent :
-      nativeDispatchEvent,
-
-    start: function(ev, pointer) {
-      if (this.state.isRunning) return;
-      var parentTarget = this.getNearestParent(ev.target);
-      var parentTargetOptions = parentTarget && parentTarget.$mdGesture[this.name] || {};
-
-      this.state = {
-        isRunning: true,
-        options: angular.extend({}, this.options, parentTargetOptions),
-        registeredParent: parentTarget
-      };
-      this.onStart(ev, pointer);
-    },
-    move: function(ev, pointer) {
-      if (!this.state.isRunning) return;
-      this.onMove(ev, pointer);
-    },
-    end: function(ev, pointer) {
-      if (!this.state.isRunning) return;
-      this.onEnd(ev, pointer);
-      this.state.isRunning = false;
-    },
-    cancel: function(ev, pointer) {
-      this.onCancel(ev, pointer);
-      this.state = {};
-    },
-
-    // Find and return the nearest parent element that has been registered via
-    // $mdGesture.register(element, 'handlerName').
-    getNearestParent: function(node) {
-      var current = node;
-      while (current) {
-        if ( (current.$mdGesture || {})[this.name] ) {
-          return current;
-        }
-        current = current.parentNode;
-      }
-    },
-
-    registerElement: function(element, options) {
-      var self = this;
-      element[0].$mdGesture = element[0].$mdGesture || {};
-      element[0].$mdGesture[this.name] = options || {};
-      element.on('$destroy', onDestroy);
-
-      return onDestroy;
-
-      function onDestroy() {
-        delete element[0].$mdGesture[self.name];
-        element.off('$destroy', onDestroy);
-      }
-    }
-  };
-
-  function jQueryDispatchEvent(srcEvent, eventType, eventPointer) {
-    eventPointer = eventPointer || pointer;
-    var eventObj = new angular.element.Event(eventType);
-
-    eventObj.$material = true;
-    eventObj.pointer = eventPointer;
-    eventObj.srcEvent = srcEvent;
-
-    angular.extend(eventObj, {
-      clientX: eventPointer.x,
-      clientY: eventPointer.y,
-      screenX: eventPointer.x,
-      screenY: eventPointer.y,
-      pageX: eventPointer.x,
-      pageY: eventPointer.y,
-      ctrlKey: srcEvent.ctrlKey,
-      altKey: srcEvent.altKey,
-      shiftKey: srcEvent.shiftKey,
-      metaKey: srcEvent.metaKey
-    });
-    angular.element(eventPointer.target).trigger(eventObj);
-  }
-
-  /*
-   * NOTE: nativeDispatchEvent is very performance sensitive.
+  /**
+   * Check if expected attribute has been specified on the target element or child
+   * @param element
+   * @param attrName
+   * @param {optional} defaultValue What to set the attr to if no value is found
    */
-  function nativeDispatchEvent(srcEvent, eventType, eventPointer) {
-    eventPointer = eventPointer || pointer;
-    var eventObj;
+  function expect(element, attrName, defaultValue) {
+    var node = element[0];
 
-    if (eventType === 'click') {
-      eventObj = document.createEvent('MouseEvents');
-      eventObj.initMouseEvent(
-        'click', true, true, window, srcEvent.detail,
-        eventPointer.x, eventPointer.y, eventPointer.x, eventPointer.y,
-        srcEvent.ctrlKey, srcEvent.altKey, srcEvent.shiftKey, srcEvent.metaKey,
-        srcEvent.button, srcEvent.relatedTarget || null
-      );
+    // if node exists and neither it nor its children have the attribute
+    if (node &&
+       ((!node.hasAttribute(attrName) ||
+        node.getAttribute(attrName).length === 0) &&
+        !childHasAttribute(node, attrName))) {
 
-    } else {
-      eventObj = document.createEvent('CustomEvent');
-      eventObj.initCustomEvent(eventType, true, true, {});
+      defaultValue = angular.isString(defaultValue) ? defaultValue.trim() : '';
+      if (defaultValue.length) {
+        element.attr(attrName, defaultValue);
+      } else {
+        $log.warn('ARIA: Attribute "', attrName, '", required for accessibility, is missing on node:', node);
+      }
+
     }
-    eventObj.$material = true;
-    eventObj.pointer = eventPointer;
-    eventObj.srcEvent = srcEvent;
-    eventPointer.target.dispatchEvent(eventObj);
   }
 
-  return GestureHandler;
-}]);
+  function expectAsync(element, attrName, defaultValueGetter) {
+    // Problem: when retrieving the element's contents synchronously to find the label,
+    // the text may not be defined yet in the case of a binding.
+    // There is a higher chance that a binding will be defined if we wait one frame.
+    $$rAF(function() {
+      expect(element, attrName, defaultValueGetter());
+    });
+  }
 
+  function expectWithText(element, attrName) {
+    expectAsync(element, attrName, function() {
+      return getText(element);
+    });
+  }
+
+  function getText(element) {
+    return element.text().trim();
+  }
+
+  function childHasAttribute(node, attrName) {
+    var hasChildren = node.hasChildNodes(),
+        hasAttr = false;
+
+    function isHidden(el) {
+      var style = el.currentStyle ? el.currentStyle : $window.getComputedStyle(el);
+      return (style.display === 'none');
+    }
+
+    if(hasChildren) {
+      var children = node.childNodes;
+      for(var i=0; i<children.length; i++){
+        var child = children[i];
+        if(child.nodeType === 1 && child.hasAttribute(attrName)) {
+          if(!isHidden(child)){
+            hasAttr = true;
+          }
+        }
+      }
+    }
+    return hasAttr;
+  }
+}
+AriaService.$inject = ["$$rAF", "$log", "$window"];
 })();
 
 /*!
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -1901,7 +1482,426 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
+ */
+(function() {
+'use strict';
+
+/*
+ * TODO: Add support for multiple fingers on the `pointer` object (enables pinch gesture)
+ */
+
+var START_EVENTS = 'mousedown touchstart pointerdown';
+var MOVE_EVENTS = 'mousemove touchmove pointermove';
+var END_EVENTS = 'mouseup mouseleave touchend touchcancel pointerup pointercancel';
+var HANDLERS;
+
+document.contains || (document.contains = function(node) {
+  return document.body.contains(node);
+});
+
+// TODO add windows phone to this
+var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+var isIos = userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/iPod/i);
+var isAndroid = userAgent.match(/Android/i);
+var shouldHijackClicks = isIos || isAndroid;
+
+if (shouldHijackClicks) {
+  document.addEventListener('click', function(ev) {
+    // Space/enter on a button, and submit events, can send clicks
+    var isKeyClick = ev.clientX === 0 && ev.clientY === 0;
+    if (isKeyClick || ev.$material) return;
+
+    // Prevent clicks unless they're sent by material
+    ev.preventDefault();
+    ev.stopPropagation();
+  }, true);
+}
+
+angular.element(document)
+  .on(START_EVENTS, gestureStart)
+  .on(MOVE_EVENTS, gestureMove)
+  .on(END_EVENTS, gestureEnd)
+  // For testing
+  .on('$$mdGestureReset', function() {
+    lastPointer = pointer = null;
+  });
+
+// The state of the current and previous 'pointer' (user's hand)
+var pointer, lastPointer;
+
+function runHandlers(handlerEvent, event) {
+  var handler;
+  for (var handlerName in HANDLERS) {
+    handler = HANDLERS[handlerName];
+    if (handlerEvent === 'start') {
+      // Run cancel to reset any handlers' state
+      handler.cancel();
+    }
+    handler[handlerEvent](event, pointer);
+  }
+}
+
+function gestureStart(ev) {
+  // If we're already touched down, abort
+  if (pointer) return;
+
+  var now = +Date.now();
+
+  // iOS & old android bug: after a touch event, a click event is sent 350 ms later.
+  // If <400ms have passed, don't allow an event of a different type than the previous event
+  if (lastPointer && !typesMatch(ev, lastPointer) && (now - lastPointer.endTime < 1500)) {
+    return;
+  }
+
+  pointer = makeStartPointer(ev);
+
+  runHandlers('start', ev);
+}
+
+function gestureMove(ev) {
+  if (!pointer || !typesMatch(ev, pointer)) return;
+
+  updatePointerState(ev, pointer);
+  runHandlers('move', ev);
+}
+
+function gestureEnd(ev) {
+  if (!pointer || !typesMatch(ev, pointer)) return;
+
+  updatePointerState(ev, pointer);
+  pointer.endTime = +Date.now();
+
+  runHandlers('end', ev);
+
+  lastPointer = pointer;
+  pointer = null;
+}
+
+/******** Helpers *********/
+function typesMatch(ev, pointer) {
+  return ev && pointer && ev.type.charAt(0) === pointer.type;
+}
+
+function getEventPoint(ev) {
+  ev = ev.originalEvent || ev; // support jQuery events
+  return (ev.touches && ev.touches[0]) ||
+    (ev.changedTouches && ev.changedTouches[0]) ||
+    ev;
+}
+
+function updatePointerState(ev, pointer) {
+  var point = getEventPoint(ev);
+  var x = pointer.x = point.pageX;
+  var y = pointer.y = point.pageY;
+
+  pointer.distanceX = x - pointer.startX;
+  pointer.distanceY = y - pointer.startY;
+  pointer.distance = Math.sqrt(
+    pointer.distanceX * pointer.distanceX + pointer.distanceY * pointer.distanceY
+  );
+
+  pointer.directionX = pointer.distanceX > 0 ? 'right' : pointer.distanceX < 0 ? 'left' : '';
+  pointer.directionY = pointer.distanceY > 0 ? 'up' : pointer.distanceY < 0 ? 'down' : '';
+
+  pointer.duration = +Date.now() - pointer.startTime;
+  pointer.velocityX = pointer.distanceX / pointer.duration;
+  pointer.velocityY = pointer.distanceY / pointer.duration;
+}
+
+
+function makeStartPointer(ev) {
+  var point = getEventPoint(ev);
+  var startPointer = {
+    startTime: +Date.now(),
+    target: ev.target,
+    // 'p' for pointer, 'm' for mouse, 't' for touch
+    type: ev.type.charAt(0)
+  };
+  startPointer.startX = startPointer.x = point.pageX;
+  startPointer.startY = startPointer.y = point.pageY;
+  return startPointer;
+}
+
+angular.module('material.core')
+.run(["$mdGesture", function($mdGesture) {}]) // make sure $mdGesture is always instantiated
+.factory('$mdGesture', ["$$MdGestureHandler", "$$rAF", "$timeout", function($$MdGestureHandler, $$rAF, $timeout) {
+  HANDLERS = {};
+
+  if (shouldHijackClicks) {
+    addHandler('click', {
+      options: {
+        maxDistance: 6
+      },
+      onEnd: function(ev, pointer) {
+        if (pointer.distance < this.state.options.maxDistance) {
+          this.dispatchEvent(ev, 'click');
+        }
+      }
+    });
+  }
+
+  addHandler('press', {
+    onStart: function(ev, pointer) {
+      this.dispatchEvent(ev, '$md.pressdown');
+    },
+    onEnd: function(ev, pointer) {
+      this.dispatchEvent(ev, '$md.pressup');
+    }
+  });
+
+
+  addHandler('hold', {
+    options: {
+      // If the user keeps his finger within the same <maxDistance> area for
+      // <delay> ms, dispatch a hold event.
+      maxDistance: 6,
+      delay: 500
+    },
+    onCancel: function() {
+      $timeout.cancel(this.state.timeout);
+    },
+    onStart: function(ev, pointer) {
+      // For hold, require a parent to be registered with $mdGesture.register()
+      // Because we prevent scroll events, this is necessary.
+      if (!this.state.registeredParent) return this.cancel();
+
+      this.state.pos = {x: pointer.x, y: pointer.y};
+      this.state.timeout = $timeout(angular.bind(this, function holdDelayFn() {
+        this.dispatchEvent(ev, '$md.hold');
+        this.cancel(); //we're done!
+      }), this.state.options.delay, false);
+    },
+    onMove: function(ev, pointer) {
+      // Don't scroll while waiting for hold
+      ev.preventDefault();
+      var dx = this.state.pos.x - pointer.x;
+      var dy = this.state.pos.y - pointer.y;
+      if (Math.sqrt(dx*dx + dy*dy) > this.options.maxDistance) {
+        this.cancel();
+      }
+    },
+    onEnd: function() { this.onCancel(); }
+  });
+
+  addHandler('drag', {
+    options: {
+      minDistance: 6,
+      horizontal: true
+    },
+    onStart: function(ev) {
+      // For drag, require a parent to be registered with $mdGesture.register()
+      if (!this.state.registeredParent) this.cancel();
+    },
+    onMove: function(ev, pointer) {
+      var shouldStartDrag, shouldCancel;
+      // Don't allow touch events to scroll while we're dragging or
+      // deciding if this touchmove is a proper drag
+      ev.preventDefault();
+
+      if (!this.state.dragPointer) {
+        if (this.state.options.horizontal) {
+          shouldStartDrag = Math.abs(pointer.distanceX) > this.state.options.minDistance;
+          shouldCancel = Math.abs(pointer.distanceY) > this.state.options.minDistance * 1.5;
+        } else {
+          shouldStartDrag = Math.abs(pointer.distanceY) > this.state.options.minDistance;
+          shouldCancel = Math.abs(pointer.distanceX) > this.state.options.minDistance * 1.5;
+        }
+
+        if (shouldStartDrag) {
+          // Create a new pointer, starting at this point where the drag started.
+          this.state.dragPointer = makeStartPointer(ev);
+          updatePointerState(ev, this.state.dragPointer);
+          this.dispatchEvent(ev, '$md.dragstart', this.state.dragPointer);
+
+        } else if (shouldCancel) {
+          this.cancel();
+        }
+      } else {
+        this.dispatchDragMove(ev);
+      }
+    },
+    // Only dispatch these every frame; any more is unnecessray
+    dispatchDragMove: $$rAF.throttle(function(ev) {
+      // Make sure the drag didn't stop while waiting for the next frame
+      if (this.state.isRunning) {
+        updatePointerState(ev, this.state.dragPointer);
+        this.dispatchEvent(ev, '$md.drag', this.state.dragPointer);
+      }
+    }),
+    onEnd: function(ev, pointer) {
+      if (this.state.dragPointer) {
+        updatePointerState(ev, this.state.dragPointer);
+        this.dispatchEvent(ev, '$md.dragend', this.state.dragPointer);
+      }
+    }
+  });
+
+  addHandler('swipe', {
+    options: {
+      minVelocity: 0.65,
+      minDistance: 10
+    },
+    onEnd: function(ev, pointer) {
+      if (Math.abs(pointer.velocityX) > this.state.options.minVelocity &&
+          Math.abs(pointer.distanceX) > this.state.options.minDistance) {
+        var eventType = pointer.directionX == 'left' ? '$md.swipeleft' : '$md.swiperight';
+        this.dispatchEvent(ev, eventType);
+      }
+    }
+  });
+
+  var self;
+  return self = {
+    handler: addHandler,
+    register: register
+  };
+
+  function addHandler(name, definition) {
+    var handler = new $$MdGestureHandler(name);
+    angular.extend(handler, definition);
+    HANDLERS[name] = handler;
+    return self;
+  }
+
+  function register(element, handlerName, options) {
+    var handler = HANDLERS[ handlerName.replace(/^\$md./, '') ];
+    if (!handler) {
+      throw new Error('Failed to register element with handler ' + handlerName + '. ' +
+                      'Available handlers: ' + Object.keys(HANDLERS).join(', '));
+    }
+    return handler.registerElement(element, options);
+  }
+}])
+.factory('$$MdGestureHandler', ["$$rAF", function($$rAF) {
+
+  function GestureHandler(name) {
+    this.name = name;
+    this.state = {};
+  }
+  GestureHandler.prototype = {
+    onStart: angular.noop,
+    onMove: angular.noop,
+    onEnd: angular.noop,
+    onCancel: angular.noop,
+    options: {},
+
+    dispatchEvent: typeof window.jQuery !== 'undefined' && angular.element === window.jQuery ?
+      jQueryDispatchEvent :
+      nativeDispatchEvent,
+
+    start: function(ev, pointer) {
+      if (this.state.isRunning) return;
+      var parentTarget = this.getNearestParent(ev.target);
+      var parentTargetOptions = parentTarget && parentTarget.$mdGesture[this.name] || {};
+
+      this.state = {
+        isRunning: true,
+        options: angular.extend({}, this.options, parentTargetOptions),
+        registeredParent: parentTarget
+      };
+      this.onStart(ev, pointer);
+    },
+    move: function(ev, pointer) {
+      if (!this.state.isRunning) return;
+      this.onMove(ev, pointer);
+    },
+    end: function(ev, pointer) {
+      if (!this.state.isRunning) return;
+      this.onEnd(ev, pointer);
+      this.state.isRunning = false;
+    },
+    cancel: function(ev, pointer) {
+      this.onCancel(ev, pointer);
+      this.state = {};
+    },
+
+    // Find and return the nearest parent element that has been registered via
+    // $mdGesture.register(element, 'handlerName').
+    getNearestParent: function(node) {
+      var current = node;
+      while (current) {
+        if ( (current.$mdGesture || {})[this.name] ) {
+          return current;
+        }
+        current = current.parentNode;
+      }
+    },
+
+    registerElement: function(element, options) {
+      var self = this;
+      element[0].$mdGesture = element[0].$mdGesture || {};
+      element[0].$mdGesture[this.name] = options || {};
+      element.on('$destroy', onDestroy);
+
+      return onDestroy;
+
+      function onDestroy() {
+        delete element[0].$mdGesture[self.name];
+        element.off('$destroy', onDestroy);
+      }
+    }
+  };
+
+  function jQueryDispatchEvent(srcEvent, eventType, eventPointer) {
+    eventPointer = eventPointer || pointer;
+    var eventObj = new angular.element.Event(eventType);
+
+    eventObj.$material = true;
+    eventObj.pointer = eventPointer;
+    eventObj.srcEvent = srcEvent;
+
+    angular.extend(eventObj, {
+      clientX: eventPointer.x,
+      clientY: eventPointer.y,
+      screenX: eventPointer.x,
+      screenY: eventPointer.y,
+      pageX: eventPointer.x,
+      pageY: eventPointer.y,
+      ctrlKey: srcEvent.ctrlKey,
+      altKey: srcEvent.altKey,
+      shiftKey: srcEvent.shiftKey,
+      metaKey: srcEvent.metaKey
+    });
+    angular.element(eventPointer.target).trigger(eventObj);
+  }
+
+  /*
+   * NOTE: nativeDispatchEvent is very performance sensitive.
+   */
+  function nativeDispatchEvent(srcEvent, eventType, eventPointer) {
+    eventPointer = eventPointer || pointer;
+    var eventObj;
+
+    if (eventType === 'click') {
+      eventObj = document.createEvent('MouseEvents');
+      eventObj.initMouseEvent(
+        'click', true, true, window, srcEvent.detail,
+        eventPointer.x, eventPointer.y, eventPointer.x, eventPointer.y,
+        srcEvent.ctrlKey, srcEvent.altKey, srcEvent.shiftKey, srcEvent.metaKey,
+        srcEvent.button, srcEvent.relatedTarget || null
+      );
+
+    } else {
+      eventObj = document.createEvent('CustomEvent');
+      eventObj.initCustomEvent(eventType, true, true, {});
+    }
+    eventObj.$material = true;
+    eventObj.pointer = eventPointer;
+    eventObj.srcEvent = srcEvent;
+    eventPointer.target.dispatchEvent(eventObj);
+  }
+
+  return GestureHandler;
+}]);
+
+})();
+
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.8.3-master-0e1820c
  */
 (function() {
   'use strict';
@@ -2034,431 +2034,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
- */
-(function() {
-'use strict';
-
-angular.module('material.core')
-  .factory('$mdInkRipple', InkRippleService)
-  .directive('mdInkRipple', InkRippleDirective)
-  .directive('mdNoInk', attrNoDirective())
-  .directive('mdNoBar', attrNoDirective())
-  .directive('mdNoStretch', attrNoDirective());
-
-function InkRippleDirective($mdInkRipple) {
-  return {
-    controller: angular.noop,
-    link: function (scope, element, attr) {
-      if (attr.hasOwnProperty('mdInkRippleCheckbox')) {
-        $mdInkRipple.attachCheckboxBehavior(scope, element);
-      } else {
-        $mdInkRipple.attachButtonBehavior(scope, element);
-      }
-    }
-  };
-}
-InkRippleDirective.$inject = ["$mdInkRipple"];
-
-function InkRippleService($window, $timeout) {
-
-  return {
-    attachButtonBehavior: attachButtonBehavior,
-    attachCheckboxBehavior: attachCheckboxBehavior,
-    attachTabBehavior: attachTabBehavior,
-    attach: attach
-  };
-
-  function attachButtonBehavior(scope, element, options) {
-    return attach(scope, element, angular.extend({
-      fullRipple: true,
-      isMenuItem: element.hasClass('md-menu-item'),
-      center: false,
-      dimBackground: true
-    }, options));
-  }
-
-  function attachCheckboxBehavior(scope, element, options) {
-    return attach(scope, element, angular.extend({
-      center: true,
-      dimBackground: false,
-      fitRipple: true
-    }, options));
-  }
-
-  function attachTabBehavior(scope, element, options) {
-    return attach(scope, element, angular.extend({
-      center: false,
-      dimBackground: true,
-      outline: false,
-      rippleSize: 'full'
-    }, options));
-  }
-
-  function attach(scope, element, options) {
-    if (element.controller('mdNoInk')) return angular.noop;
-
-    options = angular.extend({
-      colorElement: element,
-      mousedown: true,
-      hover: true,
-      focus: true,
-      center: false,
-      mousedownPauseTime: 150,
-      dimBackground: false,
-      outline: false,
-      fullRipple: true,
-      isMenuItem: false,
-      fitRipple: false
-    }, options);
-
-    var rippleSize,
-        controller = element.controller('mdInkRipple') || {},
-        counter = 0,
-        ripples = [],
-        states = [],
-        isActiveExpr = element.attr('md-highlight'),
-        isActive = false,
-        isHeld = false,
-        node = element[0],
-        rippleSizeSetting = element.attr('md-ripple-size'),
-        color = parseColor(element.attr('md-ink-ripple')) || parseColor(options.colorElement.length && $window.getComputedStyle(options.colorElement[0]).color || 'rgb(0, 0, 0)');
-
-    switch (rippleSizeSetting) {
-      case 'full':
-        options.fullRipple = true;
-        break;
-      case 'partial':
-        options.fullRipple = false;
-        break;
-    }
-
-    // expose onInput for ripple testing
-    if (options.mousedown) {
-      element.on('$md.pressdown', onPressDown)
-        .on('$md.pressup', onPressUp);
-    }
-
-    controller.createRipple = createRipple;
-
-    if (isActiveExpr) {
-      scope.$watch(isActiveExpr, function watchActive(newValue) {
-        isActive = newValue;
-        if (isActive && !ripples.length) {
-          $timeout(function () { createRipple(0, 0); }, 0, false);
-        }
-        angular.forEach(ripples, updateElement);
-      });
-    }
-
-    // Publish self-detach method if desired...
-    return function detach() {
-      element.off('$md.pressdown', onPressDown)
-        .off('$md.pressup', onPressUp);
-      getRippleContainer().remove();
-    };
-
-    /**
-     * Gets the current ripple container
-     * If there is no ripple container, it creates one and returns it
-     *
-     * @returns {angular.element} ripple container element
-     */
-    function getRippleContainer() {
-      var container = element.data('$mdRippleContainer');
-      if (container) return container;
-      container = angular.element('<div class="md-ripple-container">');
-      element.append(container);
-      element.data('$mdRippleContainer', container);
-      return container;
-    }
-
-    function parseColor(color) {
-      if (!color) return;
-      if (color.indexOf('rgba') === 0) return color.replace(/\d?\.?\d*\s*\)\s*$/, '0.1)');
-      if (color.indexOf('rgb')  === 0) return rgbToRGBA(color);
-      if (color.indexOf('#')    === 0) return hexToRGBA(color);
-
-      /**
-       * Converts a hex value to an rgba string
-       *
-       * @param {string} hex value (3 or 6 digits) to be converted
-       *
-       * @returns {string} rgba color with 0.1 alpha
-       */
-      function hexToRGBA(color) {
-        var hex = color.charAt(0) === '#' ? color.substr(1) : color,
-          dig = hex.length / 3,
-          red = hex.substr(0, dig),
-          grn = hex.substr(dig, dig),
-          blu = hex.substr(dig * 2);
-        if (dig === 1) {
-          red += red;
-          grn += grn;
-          blu += blu;
-        }
-        return 'rgba(' + parseInt(red, 16) + ',' + parseInt(grn, 16) + ',' + parseInt(blu, 16) + ',0.1)';
-      }
-
-      /**
-       * Converts rgb value to rgba string
-       *
-       * @param {string} rgb color string
-       *
-       * @returns {string} rgba color with 0.1 alpha
-       */
-      function rgbToRGBA(color) {
-        return color.replace(')', ', 0.1)').replace('(', 'a(');
-      }
-
-    }
-
-    function removeElement(elem, wait) {
-      ripples.splice(ripples.indexOf(elem), 1);
-      if (ripples.length === 0) {
-        getRippleContainer().css({ backgroundColor: '' });
-      }
-      $timeout(function () { elem.remove(); }, wait, false);
-    }
-
-    function updateElement(elem) {
-      var index = ripples.indexOf(elem),
-          state = states[index] || {},
-          elemIsActive = ripples.length > 1 ? false : isActive,
-          elemIsHeld   = ripples.length > 1 ? false : isHeld;
-      if (elemIsActive || state.animating || elemIsHeld) {
-        elem.addClass('md-ripple-visible');
-      } else if (elem) {
-        elem.removeClass('md-ripple-visible');
-        if (options.outline) {
-          elem.css({
-            width: rippleSize + 'px',
-            height: rippleSize + 'px',
-            marginLeft: (rippleSize * -1) + 'px',
-            marginTop: (rippleSize * -1) + 'px'
-          });
-        }
-        removeElement(elem, options.outline ? 450 : 650);
-      }
-    }
-
-    /**
-     * Creates a ripple at the provided coordinates
-     *
-     * @param {number} left cursor position
-     * @param {number} top cursor position
-     *
-     * @returns {angular.element} the generated ripple element
-     */
-    function createRipple(left, top) {
-
-      color = parseColor(element.attr('md-ink-ripple')) || parseColor($window.getComputedStyle(options.colorElement[0]).color || 'rgb(0, 0, 0)');
-
-      var container = getRippleContainer(),
-          size = getRippleSize(left, top),
-          css = getRippleCss(size, left, top),
-          elem = getRippleElement(css),
-          index = ripples.indexOf(elem),
-          state = states[index] || {};
-
-      rippleSize = size;
-
-      state.animating = true;
-
-      $timeout(function () {
-        if (options.dimBackground) {
-          container.css({ backgroundColor: color });
-        }
-        elem.addClass('md-ripple-placed md-ripple-scaled');
-        if (options.outline) {
-          elem.css({
-            borderWidth: (size * 0.5) + 'px',
-            marginLeft: (size * -0.5) + 'px',
-            marginTop: (size * -0.5) + 'px'
-          });
-        } else {
-          elem.css({ left: '50%', top: '50%' });
-        }
-        updateElement(elem);
-        $timeout(function () {
-          state.animating = false;
-          updateElement(elem);
-        }, (options.outline ? 450 : 225), false);
-      }, 0, false);
-
-      return elem;
-
-      /**
-       * Creates the ripple element with the provided css
-       *
-       * @param {object} css properties to be applied
-       *
-       * @returns {angular.element} the generated ripple element
-       */
-      function getRippleElement(css) {
-        var elem = angular.element('<div class="md-ripple" data-counter="' + counter++ + '">');
-        ripples.unshift(elem);
-        states.unshift({ animating: true });
-        container.append(elem);
-        css && elem.css(css);
-        return elem;
-      }
-
-      /**
-       * Calculate the ripple size
-       *
-       * @returns {number} calculated ripple diameter
-       */
-      function getRippleSize(left, top) {
-        var width = container.prop('offsetWidth'),
-            height = container.prop('offsetHeight'),
-            multiplier, size, rect;
-        if (options.isMenuItem) {
-          size = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
-        } else if (options.outline) {
-          rect = node.getBoundingClientRect();
-          left -= rect.left;
-          top -= rect.top;
-          width = Math.max(left, width - left);
-          height = Math.max(top, height - top);
-          size = 2 * Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
-        } else {
-          multiplier = options.fullRipple ? 1.1 : 0.8;
-          size = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) * multiplier;
-          if (options.fitRipple) {
-            size = Math.min(height, width, size);
-          }
-        }
-        return size;
-      }
-
-      /**
-       * Generates the ripple css
-       *
-       * @param {number} the diameter of the ripple
-       * @param {number} the left cursor offset
-       * @param {number} the top cursor offset
-       *
-       * @returns {{backgroundColor: string, borderColor: string, width: string, height: string}}
-       */
-      function getRippleCss(size, left, top) {
-        var rect = node.getBoundingClientRect(),
-            css  = {
-              backgroundColor: rgbaToRGB(color),
-              borderColor: rgbaToRGB(color),
-              width: size + 'px',
-              height: size + 'px'
-            };
-
-        if (options.outline) {
-          css.width = 0;
-          css.height = 0;
-        } else {
-          css.marginLeft = css.marginTop = (size * -0.5) + 'px';
-        }
-
-        if (options.center) {
-          css.left = css.top = '50%';
-        } else {
-          css.left = Math.round((left - rect.left) / container.prop('offsetWidth') * 100) + '%';
-          css.top = Math.round((top - rect.top) / container.prop('offsetHeight') * 100) + '%';
-        }
-
-        return css;
-
-        /**
-         * Converts rgba string to rgb, removing the alpha value
-         *
-         * @param {string} rgba color
-         *
-         * @returns {string} rgb color
-         */
-        function rgbaToRGB(color) {
-          return color.replace('rgba', 'rgb').replace(/,[^\),]+\)/, ')');
-        }
-      }
-    }
-
-    /**
-     * Handles user input start and stop events
-     *
-     */
-    function onPressDown(ev) {
-      if (!isRippleAllowed()) return;
-
-      createRipple(ev.pointer.x, ev.pointer.y);
-      isHeld = true;
-    }
-    function onPressUp() {
-      isHeld = false;
-      var ripple = ripples[ ripples.length - 1 ];
-      $timeout(function () { updateElement(ripple); }, 0, false);
-    }
-
-    /**
-     * Determines if the ripple is allowed
-     *
-     * @returns {boolean} true if the ripple is allowed, false if not
-     */
-    function isRippleAllowed() {
-      var parent = node.parentNode;
-      var grandparent = parent && parent.parentNode;
-      var ancestor = grandparent && grandparent.parentNode;
-      return !isDisabled(node) && !isDisabled(parent) && !isDisabled(grandparent) && !isDisabled(ancestor);
-      function isDisabled (elem) {
-        return elem && elem.hasAttribute && elem.hasAttribute('disabled');
-      }
-    }
-
-  }
-}
-InkRippleService.$inject = ["$window", "$timeout"];
-
-/**
- * noink/nobar/nostretch directive: make any element that has one of
- * these attributes be given a controller, so that other directives can
- * `require:` these and see if there is a `no<xxx>` parent attribute.
- *
- * @usage
- * <hljs lang="html">
- * <parent md-no-ink>
- *   <child detect-no>
- *   </child>
- * </parent>
- * </hljs>
- *
- * <hljs lang="js">
- * myApp.directive('detectNo', function() {
- *   return {
- *     require: ['^?mdNoInk', ^?mdNoBar'],
- *     link: function(scope, element, attr, ctrls) {
- *       var noinkCtrl = ctrls[0];
- *       var nobarCtrl = ctrls[1];
- *       if (noInkCtrl) {
- *         alert("the md-no-ink flag has been specified on an ancestor!");
- *       }
- *       if (nobarCtrl) {
- *         alert("the md-no-bar flag has been specified on an ancestor!");
- *       }
- *     }
- *   };
- * });
- * </hljs>
- */
-function attrNoDirective() {
-  return function() {
-    return {
-      controller: angular.noop
-    };
-  };
-}
-})();
-
-/*!
- * Angular Material Design
- * https://github.com/angular/material
- * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -2830,7 +2406,7 @@ angular.module('material.core.theming.palette', [])
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -3417,28 +2993,431 @@ function rgba(rgbArray, opacity) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
-(function () {
-  'use strict';
-  /**
-   * @ngdoc module
-   * @name material.components.autocomplete
-   */
-  /*
-   * @see js folder for autocomplete implementation
-   */
-  angular.module('material.components.autocomplete', [
-    'material.core',
-    'material.components.icon'
-  ]);
+(function() {
+'use strict';
+
+angular.module('material.core')
+  .factory('$mdInkRipple', InkRippleService)
+  .directive('mdInkRipple', InkRippleDirective)
+  .directive('mdNoInk', attrNoDirective())
+  .directive('mdNoBar', attrNoDirective())
+  .directive('mdNoStretch', attrNoDirective());
+
+function InkRippleDirective($mdInkRipple) {
+  return {
+    controller: angular.noop,
+    link: function (scope, element, attr) {
+      if (attr.hasOwnProperty('mdInkRippleCheckbox')) {
+        $mdInkRipple.attachCheckboxBehavior(scope, element);
+      } else {
+        $mdInkRipple.attachButtonBehavior(scope, element);
+      }
+    }
+  };
+}
+InkRippleDirective.$inject = ["$mdInkRipple"];
+
+function InkRippleService($window, $timeout) {
+
+  return {
+    attachButtonBehavior: attachButtonBehavior,
+    attachCheckboxBehavior: attachCheckboxBehavior,
+    attachTabBehavior: attachTabBehavior,
+    attach: attach
+  };
+
+  function attachButtonBehavior(scope, element, options) {
+    return attach(scope, element, angular.extend({
+      fullRipple: true,
+      isMenuItem: element.hasClass('md-menu-item'),
+      center: false,
+      dimBackground: true
+    }, options));
+  }
+
+  function attachCheckboxBehavior(scope, element, options) {
+    return attach(scope, element, angular.extend({
+      center: true,
+      dimBackground: false,
+      fitRipple: true
+    }, options));
+  }
+
+  function attachTabBehavior(scope, element, options) {
+    return attach(scope, element, angular.extend({
+      center: false,
+      dimBackground: true,
+      outline: false,
+      rippleSize: 'full'
+    }, options));
+  }
+
+  function attach(scope, element, options) {
+    if (element.controller('mdNoInk')) return angular.noop;
+
+    options = angular.extend({
+      colorElement: element,
+      mousedown: true,
+      hover: true,
+      focus: true,
+      center: false,
+      mousedownPauseTime: 150,
+      dimBackground: false,
+      outline: false,
+      fullRipple: true,
+      isMenuItem: false,
+      fitRipple: false
+    }, options);
+
+    var rippleSize,
+        controller = element.controller('mdInkRipple') || {},
+        counter = 0,
+        ripples = [],
+        states = [],
+        isActiveExpr = element.attr('md-highlight'),
+        isActive = false,
+        isHeld = false,
+        node = element[0],
+        rippleSizeSetting = element.attr('md-ripple-size'),
+        color = parseColor(element.attr('md-ink-ripple')) || parseColor(options.colorElement.length && $window.getComputedStyle(options.colorElement[0]).color || 'rgb(0, 0, 0)');
+
+    switch (rippleSizeSetting) {
+      case 'full':
+        options.fullRipple = true;
+        break;
+      case 'partial':
+        options.fullRipple = false;
+        break;
+    }
+
+    // expose onInput for ripple testing
+    if (options.mousedown) {
+      element.on('$md.pressdown', onPressDown)
+        .on('$md.pressup', onPressUp);
+    }
+
+    controller.createRipple = createRipple;
+
+    if (isActiveExpr) {
+      scope.$watch(isActiveExpr, function watchActive(newValue) {
+        isActive = newValue;
+        if (isActive && !ripples.length) {
+          $timeout(function () { createRipple(0, 0); }, 0, false);
+        }
+        angular.forEach(ripples, updateElement);
+      });
+    }
+
+    // Publish self-detach method if desired...
+    return function detach() {
+      element.off('$md.pressdown', onPressDown)
+        .off('$md.pressup', onPressUp);
+      getRippleContainer().remove();
+    };
+
+    /**
+     * Gets the current ripple container
+     * If there is no ripple container, it creates one and returns it
+     *
+     * @returns {angular.element} ripple container element
+     */
+    function getRippleContainer() {
+      var container = element.data('$mdRippleContainer');
+      if (container) return container;
+      container = angular.element('<div class="md-ripple-container">');
+      element.append(container);
+      element.data('$mdRippleContainer', container);
+      return container;
+    }
+
+    function parseColor(color) {
+      if (!color) return;
+      if (color.indexOf('rgba') === 0) return color.replace(/\d?\.?\d*\s*\)\s*$/, '0.1)');
+      if (color.indexOf('rgb')  === 0) return rgbToRGBA(color);
+      if (color.indexOf('#')    === 0) return hexToRGBA(color);
+
+      /**
+       * Converts a hex value to an rgba string
+       *
+       * @param {string} hex value (3 or 6 digits) to be converted
+       *
+       * @returns {string} rgba color with 0.1 alpha
+       */
+      function hexToRGBA(color) {
+        var hex = color.charAt(0) === '#' ? color.substr(1) : color,
+          dig = hex.length / 3,
+          red = hex.substr(0, dig),
+          grn = hex.substr(dig, dig),
+          blu = hex.substr(dig * 2);
+        if (dig === 1) {
+          red += red;
+          grn += grn;
+          blu += blu;
+        }
+        return 'rgba(' + parseInt(red, 16) + ',' + parseInt(grn, 16) + ',' + parseInt(blu, 16) + ',0.1)';
+      }
+
+      /**
+       * Converts rgb value to rgba string
+       *
+       * @param {string} rgb color string
+       *
+       * @returns {string} rgba color with 0.1 alpha
+       */
+      function rgbToRGBA(color) {
+        return color.replace(')', ', 0.1)').replace('(', 'a(');
+      }
+
+    }
+
+    function removeElement(elem, wait) {
+      ripples.splice(ripples.indexOf(elem), 1);
+      if (ripples.length === 0) {
+        getRippleContainer().css({ backgroundColor: '' });
+      }
+      $timeout(function () { elem.remove(); }, wait, false);
+    }
+
+    function updateElement(elem) {
+      var index = ripples.indexOf(elem),
+          state = states[index] || {},
+          elemIsActive = ripples.length > 1 ? false : isActive,
+          elemIsHeld   = ripples.length > 1 ? false : isHeld;
+      if (elemIsActive || state.animating || elemIsHeld) {
+        elem.addClass('md-ripple-visible');
+      } else if (elem) {
+        elem.removeClass('md-ripple-visible');
+        if (options.outline) {
+          elem.css({
+            width: rippleSize + 'px',
+            height: rippleSize + 'px',
+            marginLeft: (rippleSize * -1) + 'px',
+            marginTop: (rippleSize * -1) + 'px'
+          });
+        }
+        removeElement(elem, options.outline ? 450 : 650);
+      }
+    }
+
+    /**
+     * Creates a ripple at the provided coordinates
+     *
+     * @param {number} left cursor position
+     * @param {number} top cursor position
+     *
+     * @returns {angular.element} the generated ripple element
+     */
+    function createRipple(left, top) {
+
+      color = parseColor(element.attr('md-ink-ripple')) || parseColor($window.getComputedStyle(options.colorElement[0]).color || 'rgb(0, 0, 0)');
+
+      var container = getRippleContainer(),
+          size = getRippleSize(left, top),
+          css = getRippleCss(size, left, top),
+          elem = getRippleElement(css),
+          index = ripples.indexOf(elem),
+          state = states[index] || {};
+
+      rippleSize = size;
+
+      state.animating = true;
+
+      $timeout(function () {
+        if (options.dimBackground) {
+          container.css({ backgroundColor: color });
+        }
+        elem.addClass('md-ripple-placed md-ripple-scaled');
+        if (options.outline) {
+          elem.css({
+            borderWidth: (size * 0.5) + 'px',
+            marginLeft: (size * -0.5) + 'px',
+            marginTop: (size * -0.5) + 'px'
+          });
+        } else {
+          elem.css({ left: '50%', top: '50%' });
+        }
+        updateElement(elem);
+        $timeout(function () {
+          state.animating = false;
+          updateElement(elem);
+        }, (options.outline ? 450 : 225), false);
+      }, 0, false);
+
+      return elem;
+
+      /**
+       * Creates the ripple element with the provided css
+       *
+       * @param {object} css properties to be applied
+       *
+       * @returns {angular.element} the generated ripple element
+       */
+      function getRippleElement(css) {
+        var elem = angular.element('<div class="md-ripple" data-counter="' + counter++ + '">');
+        ripples.unshift(elem);
+        states.unshift({ animating: true });
+        container.append(elem);
+        css && elem.css(css);
+        return elem;
+      }
+
+      /**
+       * Calculate the ripple size
+       *
+       * @returns {number} calculated ripple diameter
+       */
+      function getRippleSize(left, top) {
+        var width = container.prop('offsetWidth'),
+            height = container.prop('offsetHeight'),
+            multiplier, size, rect;
+        if (options.isMenuItem) {
+          size = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
+        } else if (options.outline) {
+          rect = node.getBoundingClientRect();
+          left -= rect.left;
+          top -= rect.top;
+          width = Math.max(left, width - left);
+          height = Math.max(top, height - top);
+          size = 2 * Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
+        } else {
+          multiplier = options.fullRipple ? 1.1 : 0.8;
+          size = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) * multiplier;
+          if (options.fitRipple) {
+            size = Math.min(height, width, size);
+          }
+        }
+        return size;
+      }
+
+      /**
+       * Generates the ripple css
+       *
+       * @param {number} the diameter of the ripple
+       * @param {number} the left cursor offset
+       * @param {number} the top cursor offset
+       *
+       * @returns {{backgroundColor: string, borderColor: string, width: string, height: string}}
+       */
+      function getRippleCss(size, left, top) {
+        var rect = node.getBoundingClientRect(),
+            css  = {
+              backgroundColor: rgbaToRGB(color),
+              borderColor: rgbaToRGB(color),
+              width: size + 'px',
+              height: size + 'px'
+            };
+
+        if (options.outline) {
+          css.width = 0;
+          css.height = 0;
+        } else {
+          css.marginLeft = css.marginTop = (size * -0.5) + 'px';
+        }
+
+        if (options.center) {
+          css.left = css.top = '50%';
+        } else {
+          css.left = Math.round((left - rect.left) / container.prop('offsetWidth') * 100) + '%';
+          css.top = Math.round((top - rect.top) / container.prop('offsetHeight') * 100) + '%';
+        }
+
+        return css;
+
+        /**
+         * Converts rgba string to rgb, removing the alpha value
+         *
+         * @param {string} rgba color
+         *
+         * @returns {string} rgb color
+         */
+        function rgbaToRGB(color) {
+          return color.replace('rgba', 'rgb').replace(/,[^\),]+\)/, ')');
+        }
+      }
+    }
+
+    /**
+     * Handles user input start and stop events
+     *
+     */
+    function onPressDown(ev) {
+      if (!isRippleAllowed()) return;
+
+      createRipple(ev.pointer.x, ev.pointer.y);
+      isHeld = true;
+    }
+    function onPressUp() {
+      isHeld = false;
+      var ripple = ripples[ ripples.length - 1 ];
+      $timeout(function () { updateElement(ripple); }, 0, false);
+    }
+
+    /**
+     * Determines if the ripple is allowed
+     *
+     * @returns {boolean} true if the ripple is allowed, false if not
+     */
+    function isRippleAllowed() {
+      var parent = node.parentNode;
+      var grandparent = parent && parent.parentNode;
+      var ancestor = grandparent && grandparent.parentNode;
+      return !isDisabled(node) && !isDisabled(parent) && !isDisabled(grandparent) && !isDisabled(ancestor);
+      function isDisabled (elem) {
+        return elem && elem.hasAttribute && elem.hasAttribute('disabled');
+      }
+    }
+
+  }
+}
+InkRippleService.$inject = ["$window", "$timeout"];
+
+/**
+ * noink/nobar/nostretch directive: make any element that has one of
+ * these attributes be given a controller, so that other directives can
+ * `require:` these and see if there is a `no<xxx>` parent attribute.
+ *
+ * @usage
+ * <hljs lang="html">
+ * <parent md-no-ink>
+ *   <child detect-no>
+ *   </child>
+ * </parent>
+ * </hljs>
+ *
+ * <hljs lang="js">
+ * myApp.directive('detectNo', function() {
+ *   return {
+ *     require: ['^?mdNoInk', ^?mdNoBar'],
+ *     link: function(scope, element, attr, ctrls) {
+ *       var noinkCtrl = ctrls[0];
+ *       var nobarCtrl = ctrls[1];
+ *       if (noInkCtrl) {
+ *         alert("the md-no-ink flag has been specified on an ancestor!");
+ *       }
+ *       if (nobarCtrl) {
+ *         alert("the md-no-bar flag has been specified on an ancestor!");
+ *       }
+ *     }
+ *   };
+ * });
+ * </hljs>
+ */
+function attrNoDirective() {
+  return function() {
+    return {
+      controller: angular.noop
+    };
+  };
+}
 })();
 
 /*!
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -3477,7 +3456,28 @@ BackdropDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
+ */
+(function () {
+  'use strict';
+  /**
+   * @ngdoc module
+   * @name material.components.autocomplete
+   */
+  /*
+   * @see js folder for autocomplete implementation
+   */
+  angular.module('material.components.autocomplete', [
+    'material.core',
+    'material.components.icon'
+  ]);
+})();
+
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -3745,7 +3745,66 @@ MdBottomSheetProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
+ */
+(function() {
+'use strict';
+
+/**
+ * @ngdoc module
+ * @name material.components.card
+ *
+ * @description
+ * Card components.
+ */
+angular.module('material.components.card', [
+  'material.core'
+])
+  .directive('mdCard', mdCardDirective);
+
+
+
+/**
+ * @ngdoc directive
+ * @name mdCard
+ * @module material.components.card
+ *
+ * @restrict E
+ *
+ * @description
+ * The `<md-card>` directive is a container element used within `<md-content>` containers.
+ *
+ * Cards have constant width and variable heights; where the maximum height is limited to what can
+ * fit within a single view on a platform, but it can temporarily expand as needed
+ *
+ * @usage
+ * <hljs lang="html">
+ * <md-card>
+ *  <img src="img/washedout.png" class="md-card-image">
+ *  <h2>Paracosm</h2>
+ *  <p>
+ *    The titles of Washed Out's breakthrough song and the first single from Paracosm share the * two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
+ *  </p>
+ * </md-card>
+ * </hljs>
+ *
+ */
+function mdCardDirective($mdTheming) {
+  return {
+    restrict: 'E',
+    link: function($scope, $element, $attr) {
+      $mdTheming($element);
+    }
+  };
+}
+mdCardDirective.$inject = ["$mdTheming"];
+})();
+
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -3845,66 +3904,7 @@ MdButtonDirective.$inject = ["$mdInkRipple", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
- */
-(function() {
-'use strict';
-
-/**
- * @ngdoc module
- * @name material.components.card
- *
- * @description
- * Card components.
- */
-angular.module('material.components.card', [
-  'material.core'
-])
-  .directive('mdCard', mdCardDirective);
-
-
-
-/**
- * @ngdoc directive
- * @name mdCard
- * @module material.components.card
- *
- * @restrict E
- *
- * @description
- * The `<md-card>` directive is a container element used within `<md-content>` containers.
- *
- * Cards have constant width and variable heights; where the maximum height is limited to what can
- * fit within a single view on a platform, but it can temporarily expand as needed
- *
- * @usage
- * <hljs lang="html">
- * <md-card>
- *  <img src="img/washedout.png" class="md-card-image">
- *  <h2>Paracosm</h2>
- *  <p>
- *    The titles of Washed Out's breakthrough song and the first single from Paracosm share the * two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
- *  </p>
- * </md-card>
- * </hljs>
- *
- */
-function mdCardDirective($mdTheming) {
-  return {
-    restrict: 'E',
-    link: function($scope, $element, $attr) {
-      $mdTheming($element);
-    }
-  };
-}
-mdCardDirective.$inject = ["$mdTheming"];
-})();
-
-/*!
- * Angular Material Design
- * https://github.com/angular/material
- * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -4045,7 +4045,7 @@ MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$md
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -4131,7 +4131,7 @@ function iosScrollFix(node) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -4796,7 +4796,7 @@ MdDialogProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -4845,7 +4845,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -5589,7 +5589,7 @@ function GridTileCaptionDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -5702,7 +5702,7 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
   'use strict';
@@ -6176,7 +6176,7 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 
@@ -6519,7 +6519,7 @@ function placeholderDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -6611,7 +6611,7 @@ function mdItemDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -6721,7 +6721,7 @@ MdProgressCircularDirective.$inject = ["$mdConstant", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -6850,7 +6850,7 @@ var transforms = (function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -7148,7 +7148,7 @@ mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -8090,7 +8090,7 @@ function nodesToArray(nodes) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -8426,7 +8426,319 @@ SidenavController.$inject = ["$scope", "$element", "$attrs", "$mdComponentRegist
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
+ */
+(function() {
+'use strict';
+
+/*
+ * @ngdoc module
+ * @name material.components.sticky
+ * @description
+ *
+ * Sticky effects for md
+ */
+
+angular.module('material.components.sticky', [
+  'material.core',
+  'material.components.content'
+])
+  .factory('$mdSticky', MdSticky);
+
+/*
+ * @ngdoc service
+ * @name $mdSticky
+ * @module material.components.sticky
+ *
+ * @description
+ * The `$mdSticky`service provides a mixin to make elements sticky.
+ *
+ * @returns A `$mdSticky` function that takes three arguments:
+ *   - `scope`
+ *   - `element`: The element that will be 'sticky'
+ *   - `elementClone`: A clone of the element, that will be shown
+ *     when the user starts scrolling past the original element.
+ *     If not provided, it will use the result of `element.clone()`.
+ */
+
+function MdSticky($document, $mdConstant, $compile, $$rAF, $mdUtil) {
+
+  var browserStickySupport = checkStickySupport();
+
+  /**
+   * Registers an element as sticky, used internally by directives to register themselves
+   */
+  return function registerStickyElement(scope, element, stickyClone) {
+    var contentCtrl = element.controller('mdContent');
+    if (!contentCtrl) return;
+
+    if (browserStickySupport) {
+      element.css({
+        position: browserStickySupport,
+        top: 0,
+        'z-index': 2
+      });
+    } else {
+      var $$sticky = contentCtrl.$element.data('$$sticky');
+      if (!$$sticky) {
+        $$sticky = setupSticky(contentCtrl);
+        contentCtrl.$element.data('$$sticky', $$sticky);
+      }
+
+      var deregister = $$sticky.add(element, stickyClone || element.clone());
+      scope.$on('$destroy', deregister);
+    }
+  };
+
+  function setupSticky(contentCtrl) {
+    var contentEl = contentCtrl.$element;
+
+    // Refresh elements is very expensive, so we use the debounced
+    // version when possible.
+    var debouncedRefreshElements = $$rAF.throttle(refreshElements);
+
+    // setupAugmentedScrollEvents gives us `$scrollstart` and `$scroll`,
+    // more reliable than `scroll` on android.
+    setupAugmentedScrollEvents(contentEl);
+    contentEl.on('$scrollstart', debouncedRefreshElements);
+    contentEl.on('$scroll', onScroll);
+
+    var self;
+    var stickyBaseoffset = contentEl.prop('offsetTop');
+    return self = {
+      prev: null,
+      current: null, //the currently stickied item
+      next: null,
+      items: [],
+      add: add,
+      refreshElements: refreshElements
+    };
+
+    /***************
+     * Public
+     ***************/
+    // Add an element and its sticky clone to this content's sticky collection
+    function add(element, stickyClone) {
+      stickyClone.addClass('md-sticky-clone');
+      stickyClone.css('top', stickyBaseoffset + 'px');
+
+      var item = {
+        element: element,
+        clone: stickyClone
+      };
+      self.items.push(item);
+
+      contentEl.parent().prepend(item.clone);
+
+      debouncedRefreshElements();
+
+      return function remove() {
+        self.items.forEach(function(item, index) {
+          if (item.element[0] === element[0]) {
+            self.items.splice(index, 1);
+            item.clone.remove();
+          }
+        });
+        debouncedRefreshElements();
+      };
+    }
+
+    function refreshElements() {
+      // Sort our collection of elements by their current position in the DOM.
+      // We need to do this because our elements' order of being added may not
+      // be the same as their order of display.
+      self.items.forEach(refreshPosition);
+      self.items = self.items.sort(function(a, b) {
+        return a.top < b.top ? -1 : 1;
+      });
+
+      // Find which item in the list should be active, 
+      // based upon the content's current scroll position
+      var item;
+      var currentScrollTop = contentEl.prop('scrollTop');
+      for (var i = self.items.length - 1; i >= 0; i--) {
+        if (currentScrollTop > self.items[i].top) {
+          item = self.items[i];
+          break;
+        }
+      }
+      setCurrentItem(item);
+    }
+
+
+    /***************
+     * Private
+     ***************/
+
+    // Find the `top` of an item relative to the content element,
+    // and also the height.
+    function refreshPosition(item) {
+      // Find the top of an item by adding to the offsetHeight until we reach the 
+      // content element.
+      var current = item.element[0];
+      item.top = 0;
+      item.left = 0;
+      while (current && current !== contentEl[0]) {
+        item.top += current.offsetTop;
+        item.left += current.offsetLeft;
+        current = current.offsetParent;
+      }
+      item.height = item.element.prop('offsetHeight');
+      item.clone.css('margin-left', item.left + 'px');
+    }
+
+
+    // As we scroll, push in and select the correct sticky element.
+    function onScroll() {
+      var scrollTop = contentEl.prop('scrollTop');
+      var isScrollingDown = scrollTop > (onScroll.prevScrollTop || 0);
+      onScroll.prevScrollTop = scrollTop;
+
+      // At the top?
+      if (scrollTop === 0) {
+        setCurrentItem(null);
+
+      // Going to next item?
+      } else if (isScrollingDown && self.next) {
+        if (self.next.top - scrollTop <= 0) {
+          // Sticky the next item if we've scrolled past its position.
+          setCurrentItem(self.next);
+        } else if (self.current) {
+          // Push the current item up when we're almost at the next item.
+          if (self.next.top - scrollTop <= self.next.height) {
+            translate(self.current, self.next.top - self.next.height - scrollTop);
+          } else {
+            translate(self.current, null);
+          }
+        }
+        
+      // Scrolling up with a current sticky item?
+      } else if (!isScrollingDown && self.current) {
+        if (scrollTop < self.current.top) {
+          // Sticky the previous item if we've scrolled up past
+          // the original position of the currently stickied item.
+          setCurrentItem(self.prev);
+        }
+        // Scrolling up, and just bumping into the item above (just set to current)?
+        // If we have a next item bumping into the current item, translate
+        // the current item up from the top as it scrolls into view.
+        if (self.current && self.next) {
+          if (scrollTop >= self.next.top - self.current.height) {
+            translate(self.current, self.next.top - scrollTop - self.current.height);
+          } else {
+            translate(self.current, null);
+          }
+        }
+      }
+    }
+     
+   function setCurrentItem(item) {
+     if (self.current === item) return;
+     // Deactivate currently active item
+     if (self.current) {
+       translate(self.current, null);
+       setStickyState(self.current, null);
+     }
+
+     // Activate new item if given
+     if (item) {
+       setStickyState(item, 'active');
+     }
+
+     self.current = item;
+     var index = self.items.indexOf(item);
+     // If index === -1, index + 1 = 0. It works out.
+     self.next = self.items[index + 1];
+     self.prev = self.items[index - 1];
+     setStickyState(self.next, 'next');
+     setStickyState(self.prev, 'prev');
+   }
+
+   function setStickyState(item, state) {
+     if (!item || item.state === state) return;
+     if (item.state) {
+       item.clone.attr('sticky-prev-state', item.state);
+       item.element.attr('sticky-prev-state', item.state);
+     }
+     item.clone.attr('sticky-state', state);
+     item.element.attr('sticky-state', state);
+     item.state = state;
+   }
+
+   function translate(item, amount) {
+     if (!item) return;
+     if (amount === null || amount === undefined) {
+       if (item.translateY) {
+         item.translateY = null;
+         item.clone.css($mdConstant.CSS.TRANSFORM, '');
+       }
+     } else {
+       item.translateY = amount;
+       item.clone.css(
+         $mdConstant.CSS.TRANSFORM, 
+         'translate3d(' + item.left + 'px,' + amount + 'px,0)'
+       );
+     }
+   }
+  }
+
+  // Function to check for browser sticky support
+  function checkStickySupport($el) {
+    var stickyProp;
+    var testEl = angular.element('<div>');
+    $document[0].body.appendChild(testEl[0]);
+
+    var stickyProps = ['sticky', '-webkit-sticky'];
+    for (var i = 0; i < stickyProps.length; ++i) {
+      testEl.css({position: stickyProps[i], top: 0, 'z-index': 2});
+      if (testEl.css('position') == stickyProps[i]) {
+        stickyProp = stickyProps[i];
+        break;
+      }
+    }
+    testEl.remove();
+    return stickyProp;
+  }
+
+  // Android 4.4 don't accurately give scroll events.
+  // To fix this problem, we setup a fake scroll event. We say:
+  // > If a scroll or touchmove event has happened in the last DELAY milliseconds, 
+  //   then send a `$scroll` event every animationFrame.
+  // Additionally, we add $scrollstart and $scrollend events.
+  function setupAugmentedScrollEvents(element) {
+    var SCROLL_END_DELAY = 200;
+    var isScrolling;
+    var lastScrollTime;
+    element.on('scroll touchmove', function() {
+      if (!isScrolling) {
+        isScrolling = true;
+        $$rAF(loopScrollEvent);
+        element.triggerHandler('$scrollstart');
+      }
+      element.triggerHandler('$scroll');
+      lastScrollTime = +$mdUtil.now();
+    });
+
+    function loopScrollEvent() {
+      if (+$mdUtil.now() - lastScrollTime > SCROLL_END_DELAY) {
+        isScrolling = false;
+        element.triggerHandler('$scrollend');
+      } else {
+        element.triggerHandler('$scroll');
+        $$rAF(loopScrollEvent);
+      }
+    }
+  }
+
+}
+MdSticky.$inject = ["$document", "$mdConstant", "$compile", "$$rAF", "$mdUtil"];
+})();
+
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.8.3-master-0e1820c
  */
 (function() {
   'use strict';
@@ -8829,319 +9141,7 @@ SliderDirective.$inject = ["$$rAF", "$window", "$mdAria", "$mdUtil", "$mdConstan
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
- */
-(function() {
-'use strict';
-
-/*
- * @ngdoc module
- * @name material.components.sticky
- * @description
- *
- * Sticky effects for md
- */
-
-angular.module('material.components.sticky', [
-  'material.core',
-  'material.components.content'
-])
-  .factory('$mdSticky', MdSticky);
-
-/*
- * @ngdoc service
- * @name $mdSticky
- * @module material.components.sticky
- *
- * @description
- * The `$mdSticky`service provides a mixin to make elements sticky.
- *
- * @returns A `$mdSticky` function that takes three arguments:
- *   - `scope`
- *   - `element`: The element that will be 'sticky'
- *   - `elementClone`: A clone of the element, that will be shown
- *     when the user starts scrolling past the original element.
- *     If not provided, it will use the result of `element.clone()`.
- */
-
-function MdSticky($document, $mdConstant, $compile, $$rAF, $mdUtil) {
-
-  var browserStickySupport = checkStickySupport();
-
-  /**
-   * Registers an element as sticky, used internally by directives to register themselves
-   */
-  return function registerStickyElement(scope, element, stickyClone) {
-    var contentCtrl = element.controller('mdContent');
-    if (!contentCtrl) return;
-
-    if (browserStickySupport) {
-      element.css({
-        position: browserStickySupport,
-        top: 0,
-        'z-index': 2
-      });
-    } else {
-      var $$sticky = contentCtrl.$element.data('$$sticky');
-      if (!$$sticky) {
-        $$sticky = setupSticky(contentCtrl);
-        contentCtrl.$element.data('$$sticky', $$sticky);
-      }
-
-      var deregister = $$sticky.add(element, stickyClone || element.clone());
-      scope.$on('$destroy', deregister);
-    }
-  };
-
-  function setupSticky(contentCtrl) {
-    var contentEl = contentCtrl.$element;
-
-    // Refresh elements is very expensive, so we use the debounced
-    // version when possible.
-    var debouncedRefreshElements = $$rAF.throttle(refreshElements);
-
-    // setupAugmentedScrollEvents gives us `$scrollstart` and `$scroll`,
-    // more reliable than `scroll` on android.
-    setupAugmentedScrollEvents(contentEl);
-    contentEl.on('$scrollstart', debouncedRefreshElements);
-    contentEl.on('$scroll', onScroll);
-
-    var self;
-    var stickyBaseoffset = contentEl.prop('offsetTop');
-    return self = {
-      prev: null,
-      current: null, //the currently stickied item
-      next: null,
-      items: [],
-      add: add,
-      refreshElements: refreshElements
-    };
-
-    /***************
-     * Public
-     ***************/
-    // Add an element and its sticky clone to this content's sticky collection
-    function add(element, stickyClone) {
-      stickyClone.addClass('md-sticky-clone');
-      stickyClone.css('top', stickyBaseoffset + 'px');
-
-      var item = {
-        element: element,
-        clone: stickyClone
-      };
-      self.items.push(item);
-
-      contentEl.parent().prepend(item.clone);
-
-      debouncedRefreshElements();
-
-      return function remove() {
-        self.items.forEach(function(item, index) {
-          if (item.element[0] === element[0]) {
-            self.items.splice(index, 1);
-            item.clone.remove();
-          }
-        });
-        debouncedRefreshElements();
-      };
-    }
-
-    function refreshElements() {
-      // Sort our collection of elements by their current position in the DOM.
-      // We need to do this because our elements' order of being added may not
-      // be the same as their order of display.
-      self.items.forEach(refreshPosition);
-      self.items = self.items.sort(function(a, b) {
-        return a.top < b.top ? -1 : 1;
-      });
-
-      // Find which item in the list should be active, 
-      // based upon the content's current scroll position
-      var item;
-      var currentScrollTop = contentEl.prop('scrollTop');
-      for (var i = self.items.length - 1; i >= 0; i--) {
-        if (currentScrollTop > self.items[i].top) {
-          item = self.items[i];
-          break;
-        }
-      }
-      setCurrentItem(item);
-    }
-
-
-    /***************
-     * Private
-     ***************/
-
-    // Find the `top` of an item relative to the content element,
-    // and also the height.
-    function refreshPosition(item) {
-      // Find the top of an item by adding to the offsetHeight until we reach the 
-      // content element.
-      var current = item.element[0];
-      item.top = 0;
-      item.left = 0;
-      while (current && current !== contentEl[0]) {
-        item.top += current.offsetTop;
-        item.left += current.offsetLeft;
-        current = current.offsetParent;
-      }
-      item.height = item.element.prop('offsetHeight');
-      item.clone.css('margin-left', item.left + 'px');
-    }
-
-
-    // As we scroll, push in and select the correct sticky element.
-    function onScroll() {
-      var scrollTop = contentEl.prop('scrollTop');
-      var isScrollingDown = scrollTop > (onScroll.prevScrollTop || 0);
-      onScroll.prevScrollTop = scrollTop;
-
-      // At the top?
-      if (scrollTop === 0) {
-        setCurrentItem(null);
-
-      // Going to next item?
-      } else if (isScrollingDown && self.next) {
-        if (self.next.top - scrollTop <= 0) {
-          // Sticky the next item if we've scrolled past its position.
-          setCurrentItem(self.next);
-        } else if (self.current) {
-          // Push the current item up when we're almost at the next item.
-          if (self.next.top - scrollTop <= self.next.height) {
-            translate(self.current, self.next.top - self.next.height - scrollTop);
-          } else {
-            translate(self.current, null);
-          }
-        }
-        
-      // Scrolling up with a current sticky item?
-      } else if (!isScrollingDown && self.current) {
-        if (scrollTop < self.current.top) {
-          // Sticky the previous item if we've scrolled up past
-          // the original position of the currently stickied item.
-          setCurrentItem(self.prev);
-        }
-        // Scrolling up, and just bumping into the item above (just set to current)?
-        // If we have a next item bumping into the current item, translate
-        // the current item up from the top as it scrolls into view.
-        if (self.current && self.next) {
-          if (scrollTop >= self.next.top - self.current.height) {
-            translate(self.current, self.next.top - scrollTop - self.current.height);
-          } else {
-            translate(self.current, null);
-          }
-        }
-      }
-    }
-     
-   function setCurrentItem(item) {
-     if (self.current === item) return;
-     // Deactivate currently active item
-     if (self.current) {
-       translate(self.current, null);
-       setStickyState(self.current, null);
-     }
-
-     // Activate new item if given
-     if (item) {
-       setStickyState(item, 'active');
-     }
-
-     self.current = item;
-     var index = self.items.indexOf(item);
-     // If index === -1, index + 1 = 0. It works out.
-     self.next = self.items[index + 1];
-     self.prev = self.items[index - 1];
-     setStickyState(self.next, 'next');
-     setStickyState(self.prev, 'prev');
-   }
-
-   function setStickyState(item, state) {
-     if (!item || item.state === state) return;
-     if (item.state) {
-       item.clone.attr('sticky-prev-state', item.state);
-       item.element.attr('sticky-prev-state', item.state);
-     }
-     item.clone.attr('sticky-state', state);
-     item.element.attr('sticky-state', state);
-     item.state = state;
-   }
-
-   function translate(item, amount) {
-     if (!item) return;
-     if (amount === null || amount === undefined) {
-       if (item.translateY) {
-         item.translateY = null;
-         item.clone.css($mdConstant.CSS.TRANSFORM, '');
-       }
-     } else {
-       item.translateY = amount;
-       item.clone.css(
-         $mdConstant.CSS.TRANSFORM, 
-         'translate3d(' + item.left + 'px,' + amount + 'px,0)'
-       );
-     }
-   }
-  }
-
-  // Function to check for browser sticky support
-  function checkStickySupport($el) {
-    var stickyProp;
-    var testEl = angular.element('<div>');
-    $document[0].body.appendChild(testEl[0]);
-
-    var stickyProps = ['sticky', '-webkit-sticky'];
-    for (var i = 0; i < stickyProps.length; ++i) {
-      testEl.css({position: stickyProps[i], top: 0, 'z-index': 2});
-      if (testEl.css('position') == stickyProps[i]) {
-        stickyProp = stickyProps[i];
-        break;
-      }
-    }
-    testEl.remove();
-    return stickyProp;
-  }
-
-  // Android 4.4 don't accurately give scroll events.
-  // To fix this problem, we setup a fake scroll event. We say:
-  // > If a scroll or touchmove event has happened in the last DELAY milliseconds, 
-  //   then send a `$scroll` event every animationFrame.
-  // Additionally, we add $scrollstart and $scrollend events.
-  function setupAugmentedScrollEvents(element) {
-    var SCROLL_END_DELAY = 200;
-    var isScrolling;
-    var lastScrollTime;
-    element.on('scroll touchmove', function() {
-      if (!isScrolling) {
-        isScrolling = true;
-        $$rAF(loopScrollEvent);
-        element.triggerHandler('$scrollstart');
-      }
-      element.triggerHandler('$scroll');
-      lastScrollTime = +$mdUtil.now();
-    });
-
-    function loopScrollEvent() {
-      if (+$mdUtil.now() - lastScrollTime > SCROLL_END_DELAY) {
-        isScrolling = false;
-        element.triggerHandler('$scrollend');
-      } else {
-        element.triggerHandler('$scroll');
-        $$rAF(loopScrollEvent);
-      }
-    }
-  }
-
-}
-MdSticky.$inject = ["$document", "$mdConstant", "$compile", "$$rAF", "$mdUtil"];
-})();
-
-/*!
- * Angular Material Design
- * https://github.com/angular/material
- * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -9228,7 +9228,7 @@ MdSubheaderDirective.$inject = ["$mdSticky", "$compile", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -9306,7 +9306,7 @@ var module = angular.module('material.components.swipe',[]);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -9475,7 +9475,7 @@ MdSwitch.$inject = ["mdCheckboxDirective", "$mdTheming", "$mdUtil", "$document",
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -9514,7 +9514,7 @@ angular.module('material.components.tabs', [
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -9658,7 +9658,7 @@ mdInputDirective.$inject = ["$mdUtil", "$log"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -9924,7 +9924,7 @@ MdToastProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -10083,7 +10083,7 @@ mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -10313,7 +10313,7 @@ MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdU
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function() {
 'use strict';
@@ -10329,7 +10329,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function () {
   'use strict';
@@ -10562,7 +10562,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function () {
   'use strict';
@@ -10698,7 +10698,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function () {
   'use strict';
@@ -10729,7 +10729,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function () {
   'use strict';
@@ -10773,7 +10773,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function () {
   'use strict';
@@ -10803,7 +10803,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function () {
   'use strict';
@@ -10832,7 +10832,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function () {
   'use strict';
@@ -10861,7 +10861,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 /**
  * @ngdoc directive
@@ -10957,13 +10957,7 @@ angular.module('material.components.whiteframe', []);
       scope.$on('$destroy', function () { ctrl.removeTab(data); });
 
       function getLabel () {
-        //-- if label provided, then send label
-        if (attr.label) return attr.label;
-        //-- otherwise, we have to search for the `md-tab-label` element
-        var label = element.find('md-tab-label');
-        if (label.length) return label.html();
-        //-- otherwise, we have no label.
-        return element.html();
+        return attr.label || (element.find('md-tab-label')[0] || element[0]).innerHTML;
       }
 
       function getTemplate () {
@@ -10978,7 +10972,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function () {
   'use strict';
@@ -10998,7 +10992,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function () {
   'use strict';
@@ -11026,7 +11020,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 (function () {
   'use strict';
@@ -11326,7 +11320,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-76f627c
+ * v0.8.3-master-0e1820c
  */
 /**
  * @ngdoc directive
@@ -11521,5 +11515,5 @@ angular.module('material.components.whiteframe', []);
   MdTabs.$inject = ["$mdTheming"];
 })();
 (function(){ 
- angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete {  background: '{{background-50}}'; }  md-autocomplete button md-icon path {    fill: '{{background-600}}'; }  md-autocomplete button:after {    background: '{{background-600-0.3}}'; }  md-autocomplete ul {    background: '{{background-50}}'; }    md-autocomplete ul li {      border-top: 1px solid '{{background-400}}';      color: '{{background-900}}'; }      md-autocomplete ul li .highlight {        color: '{{background-600}}'; }      md-autocomplete ul li:hover, md-autocomplete ul li.selected {        background: '{{background-200}}'; }md-backdrop.md-opaque.md-THEME_NAME-theme {  background-color: '{{foreground-4-0.5}}'; }md-bottom-sheet.md-THEME_NAME-theme {  background-color: '{{background-50}}';  border-top-color: '{{background-300}}'; }  md-bottom-sheet.md-THEME_NAME-theme.md-list md-item {    color: '{{foreground-1}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    background-color: '{{background-50}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    color: '{{foreground-1}}'; }md-toolbar .md-button.md-THEME_NAME-theme.md-fab {  background-color: white; }.md-button.md-THEME_NAME-theme {  border-radius: 3px; }  .md-button.md-THEME_NAME-theme:not([disabled]):hover, .md-button.md-THEME_NAME-theme:not([disabled]):focus {    background-color: '{{background-500-0.2}}'; }  .md-button.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised, .md-button.md-THEME_NAME-theme.md-primary.md-fab {      color: '{{primary-contrast}}';      background-color: '{{primary-color}}'; }      .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):focus, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):focus {        background-color: '{{primary-600}}'; }  .md-button.md-THEME_NAME-theme.md-fab {    border-radius: 50%;    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):focus {      background-color: '{{accent-A700}}'; }  .md-button.md-THEME_NAME-theme.md-raised {    color: '{{background-contrast}}';    background-color: '{{background-50}}'; }    .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):focus {      background-color: '{{background-200}}'; }  .md-button.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised, .md-button.md-THEME_NAME-theme.md-warn.md-fab {      color: '{{warn-contrast}}';      background-color: '{{warn-color}}'; }      .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):focus, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):focus {        background-color: '{{warn-700}}'; }  .md-button.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised, .md-button.md-THEME_NAME-theme.md-accent.md-fab {      color: '{{accent-contrast}}';      background-color: '{{accent-color}}'; }      .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):focus, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):focus {        background-color: '{{accent-700}}'; }  .md-button.md-THEME_NAME-theme[disabled], .md-button.md-THEME_NAME-theme.md-raised[disabled], .md-button.md-THEME_NAME-theme.md-fab[disabled] {    color: '{{foreground-3}}';    background-color: transparent;    cursor: not-allowed; }md-card.md-THEME_NAME-theme {  border-radius: 2px; }  md-card.md-THEME_NAME-theme .md-card-image {    border-radius: 2px 2px 0 0; }md-checkbox.md-THEME_NAME-theme .md-ripple {  color: '{{accent-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon {  background-color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ripple {  color: '{{primary-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon {  background-color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ripple {  color: '{{warn-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon {  background-color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] .md-icon {  border-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon {  background-color: '{{foreground-3}}'; }md-content.md-THEME_NAME-theme {  background-color: '{{background-hue-3}}'; }md-dialog.md-THEME_NAME-theme {  border-radius: 4px;  background-color: '{{background-hue-3}}'; }  md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions {    border-top-color: '{{foreground-4}}'; }md-divider.md-THEME_NAME-theme {  border-top-color: '{{foreground-4}}'; }md-icon.md-THEME_NAME-theme.md-primary {  color: '{{primary-color}}'; }md-icon.md-THEME_NAME-theme.md-accent {  color: '{{accent-color}}'; }md-icon.md-THEME_NAME-theme.md-warn {  color: '{{warn-color}}'; }md-icon.md-THEME_NAME-theme.md-danger {  color: '{{danger-color}}'; }md-input-container.md-THEME_NAME-theme .md-input {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}';  text-shadow: '{{foreground-shadow}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder, md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder {    color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme > md-icon {  color: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme label, md-input-container.md-THEME_NAME-theme .md-placeholder {  text-shadow: '{{foreground-shadow}}';  color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme div[ng-messages] {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-has-value label {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused .md-input {  border-color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused label {  color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused md-icon {  color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent .md-input {  border-color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent label {  color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn .md-input {  border-color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn label {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input {  border-color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid label {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid data-ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid x-ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid [ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [data-ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [x-ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid .md-char-counter {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme .md-input[disabled], [disabled] md-input-container.md-THEME_NAME-theme .md-input {  border-bottom-color: transparent;  color: '{{foreground-3}}';  background-image: linear-gradient(to right, '{{foreground-4}}' 0%, '{{foreground-4}}' 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, '{{foreground-4}}' 100%); }md-progress-circular.md-THEME_NAME-theme {  background-color: transparent; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-gap {    border-top-color: '{{primary-color}}';    border-bottom-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-top-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-right-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle {    border-left-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-gap {    border-top-color: '{{warn-color}}';    border-bottom-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-top-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-right-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle {    border-left-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-gap {    border-top-color: '{{accent-color}}';    border-bottom-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-top-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-right-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle {    border-left-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme .md-container {  background-color: '{{primary-100}}'; }md-progress-linear.md-THEME_NAME-theme .md-bar {  background-color: '{{primary-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-container {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-bar {  background-color: '{{warn-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-container {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-bar {  background-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-bar1 {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-dashed:before {  background: radial-gradient('{{warn-100}}' 0%, '{{warn-100}}' 16%, transparent 42%); }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-bar1 {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-dashed:before {  background: radial-gradient('{{accent-100}}' 0%, '{{accent-100}}' 16%, transparent 42%); }md-radio-button.md-THEME_NAME-theme .md-off {  border-color: '{{foreground-2}}'; }md-radio-button.md-THEME_NAME-theme .md-on {  background-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-off {  border-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme .md-container .md-ripple {  color: '{{accent-600}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-on {  background-color: '{{primary-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off {  border-color: '{{primary-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple {  color: '{{primary-600}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-on {  background-color: '{{warn-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off {  border-color: '{{warn-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple {  color: '{{warn-600}}'; }md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-off {  border-color: '{{foreground-3}}'; }md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-on {  border-color: '{{foreground-3}}'; }md-radio-group.md-THEME_NAME-theme:focus:not(:empty) {  border-color: '{{foreground-1}}'; }md-select.md-THEME_NAME-theme.ng-invalid.ng-dirty .md-select-label {  color: '{{warn-500}}' !important;  border-bottom-color: '{{warn-500}}' !important; }md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-label {  border-bottom-color: '{{primary-color}}';  color: '{{ foreground-1 }}'; }  md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-label.md-placeholder {    color: '{{ foreground-1 }}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-accent .md-select-label {  border-bottom-color: '{{accent-color}}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-warn .md-select-label {  border-bottom-color: '{{warn-color}}'; }md-select.md-THEME_NAME-theme[disabled] .md-select-label {  color: '{{foreground-3}}'; }  md-select.md-THEME_NAME-theme[disabled] .md-select-label.md-placeholder {    color: '{{foreground-3}}'; }md-select.md-THEME_NAME-theme .md-select-label {  border-bottom-color: '{{foreground-4}}'; }  md-select.md-THEME_NAME-theme .md-select-label.md-placeholder {    color: '{{foreground-2}}'; }md-select-menu.md-THEME_NAME-theme md-optgroup {  color: '{{foreground-2}}'; }  md-select-menu.md-THEME_NAME-theme md-optgroup md-option {    color: '{{foreground-1}}'; }md-select-menu.md-THEME_NAME-theme md-option[selected] {  background-color: '{{primary-50}}'; }  md-select-menu.md-THEME_NAME-theme md-option[selected]:focus {    background-color: '{{primary-100}}'; }  md-select-menu.md-THEME_NAME-theme md-option[selected].md-accent {    background-color: '{{accent-50}}'; }    md-select-menu.md-THEME_NAME-theme md-option[selected].md-accent:focus {      background-color: '{{accent-100}}'; }md-select-menu.md-THEME_NAME-theme md-option:focus:not([selected]) {  background: '{{background-200}}'; }md-sidenav.md-THEME_NAME-theme {  background-color: '{{background-hue-3}}'; }md-slider.md-THEME_NAME-theme .md-track {  background-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme .md-track-ticks {  background-color: '{{foreground-4}}'; }md-slider.md-THEME_NAME-theme .md-focus-thumb {  background-color: '{{foreground-2}}'; }md-slider.md-THEME_NAME-theme .md-focus-ring {  border-color: '{{foreground-4}}'; }md-slider.md-THEME_NAME-theme .md-disabled-thumb {  border-color: '{{background-hue-3}}'; }md-slider.md-THEME_NAME-theme.md-min .md-thumb:after {  background-color: '{{background-hue-3}}'; }md-slider.md-THEME_NAME-theme .md-track.md-track-fill {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb:after {  border-color: '{{accent-color}}';  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-sign {  background-color: '{{accent-color}}'; }  md-slider.md-THEME_NAME-theme .md-sign:after {    border-top-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb-text {  color: '{{accent-contrast}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-track.md-track-fill {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb:after {  border-color: '{{warn-color}}';  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-sign {  background-color: '{{warn-color}}'; }  md-slider.md-THEME_NAME-theme.md-warn .md-sign:after {    border-top-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb-text {  color: '{{warn-contrast}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-track.md-track-fill {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb:after {  border-color: '{{primary-color}}';  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-sign {  background-color: '{{primary-color}}'; }  md-slider.md-THEME_NAME-theme.md-primary .md-sign:after {    border-top-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb-text {  color: '{{primary-contrast}}'; }md-slider.md-THEME_NAME-theme[disabled] .md-thumb:after {  border-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme[disabled]:not(.md-min) .md-thumb:after {  background-color: '{{foreground-3}}'; }.md-subheader.md-THEME_NAME-theme {  color: '{{ foreground-2-0.23 }}';  background-color: '{{background-hue-3}}'; }  .md-subheader.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme .md-thumb {  background-color: '{{background-50}}'; }md-switch.md-THEME_NAME-theme .md-bar {  background-color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-thumb {  background-color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-bar {  background-color: '{{accent-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-thumb {  background-color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-bar {  background-color: '{{primary-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-thumb {  background-color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-bar {  background-color: '{{warn-color-0.5}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-thumb {  background-color: '{{background-400}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-bar {  background-color: '{{foreground-4}}'; }md-switch.md-THEME_NAME-theme:focus .md-label:not(:empty) {  border-color: '{{foreground-1}}';  border-style: dotted; }md-tabs.md-THEME_NAME-theme md-tabs-wrapper {  background-color: transparent;  border-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme .md-paginator md-icon {  color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme md-ink-bar {  color: '{{accent-color}}';  background: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme .md-tab {  color: '{{foreground-2}}'; }  md-tabs.md-THEME_NAME-theme .md-tab[disabled] {    color: '{{foreground-3}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-active, md-tabs.md-THEME_NAME-theme .md-tab.md-focus {    color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-focus {    background: '{{primary-color-0.1}}'; }  md-tabs.md-THEME_NAME-theme .md-tab .md-ripple-container {    color: '{{accent-100}}'; }md-tabs.md-THEME_NAME-theme.md-accent md-tabs-wrapper {  background-color: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]) {  color: '{{accent-100}}'; }  md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]).md-focus {    color: '{{accent-contrast}}'; }  md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]).md-focus {    background: '{{accent-contrast-0.1}}'; }md-tabs.md-THEME_NAME-theme.md-accent md-ink-bar {  color: '{{primary-600-1}}';  background: '{{primary-600-1}}'; }md-tabs.md-THEME_NAME-theme.md-primary md-tabs-wrapper {  background-color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme.md-primary md-tab:not([disabled]) {  color: '{{primary-100}}'; }  md-tabs.md-THEME_NAME-theme.md-primary md-tab:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-primary md-tab:not([disabled]).md-focus {    color: '{{primary-contrast}}'; }  md-tabs.md-THEME_NAME-theme.md-primary md-tab:not([disabled]).md-focus {    background: '{{primary-contrast-0.1}}'; }md-tabs.md-THEME_NAME-theme.md-warn md-tabs-wrapper {  background-color: '{{warn-color}}'; }md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]) {  color: '{{warn-100}}'; }  md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]).md-focus {    color: '{{warn-contrast}}'; }  md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]).md-focus {    background: '{{warn-contrast-0.1}}'; }md-input-group.md-THEME_NAME-theme input, md-input-group.md-THEME_NAME-theme textarea {  text-shadow: '{{foreground-shadow}}'; }  md-input-group.md-THEME_NAME-theme input::-webkit-input-placeholder, md-input-group.md-THEME_NAME-theme input::-moz-placeholder, md-input-group.md-THEME_NAME-theme input:-moz-placeholder, md-input-group.md-THEME_NAME-theme input:-ms-input-placeholder, md-input-group.md-THEME_NAME-theme textarea::-webkit-input-placeholder, md-input-group.md-THEME_NAME-theme textarea::-moz-placeholder, md-input-group.md-THEME_NAME-theme textarea:-moz-placeholder, md-input-group.md-THEME_NAME-theme textarea:-ms-input-placeholder {    color: '{{foreground-3}}'; }md-input-group.md-THEME_NAME-theme label {  text-shadow: '{{foreground-shadow}}';  color: '{{foreground-3}}'; }md-input-group.md-THEME_NAME-theme input, md-input-group.md-THEME_NAME-theme textarea {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused input, md-input-group.md-THEME_NAME-theme.md-input-focused textarea {  border-color: '{{primary-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused label {  color: '{{primary-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused.md-accent input, md-input-group.md-THEME_NAME-theme.md-input-focused.md-accent textarea {  border-color: '{{accent-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused.md-accent label {  color: '{{accent-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-has-value:not(.md-input-focused) label {  color: '{{foreground-2}}'; }md-input-group.md-THEME_NAME-theme .md-input[disabled] {  border-bottom-color: '{{foreground-4}}';  color: '{{foreground-3}}'; }md-toast.md-THEME_NAME-theme {  background-color: '{{foreground-1}}';  color: '{{background-50}}'; }  md-toast.md-THEME_NAME-theme .md-button {    color: '{{background-50}}'; }    md-toast.md-THEME_NAME-theme .md-button.md-highlight {      color: '{{primary-A200}}'; }      md-toast.md-THEME_NAME-theme .md-button.md-highlight.md-accent {        color: '{{accent-A200}}'; }      md-toast.md-THEME_NAME-theme .md-button.md-highlight.md-warn {        color: '{{warn-A200}}'; }md-toolbar.md-THEME_NAME-theme {  background-color: '{{primary-color}}';  color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme .md-button {    color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme.md-accent {    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }  md-toolbar.md-THEME_NAME-theme.md-warn {    background-color: '{{warn-color}}';    color: '{{warn-contrast}}'; }md-tooltip.md-THEME_NAME-theme {  color: '{{background-A100}}'; }  md-tooltip.md-THEME_NAME-theme .md-background {    background-color: '{{foreground-2}}'; }"); 
+ angular.module("material.core").constant("$MD_THEME_CSS", "md-backdrop.md-opaque.md-THEME_NAME-theme {  background-color: '{{foreground-4-0.5}}'; }md-autocomplete {  background: '{{background-50}}'; }  md-autocomplete button md-icon path {    fill: '{{background-600}}'; }  md-autocomplete button:after {    background: '{{background-600-0.3}}'; }  md-autocomplete ul {    background: '{{background-50}}'; }    md-autocomplete ul li {      border-top: 1px solid '{{background-400}}';      color: '{{background-900}}'; }      md-autocomplete ul li .highlight {        color: '{{background-600}}'; }      md-autocomplete ul li:hover, md-autocomplete ul li.selected {        background: '{{background-200}}'; }md-bottom-sheet.md-THEME_NAME-theme {  background-color: '{{background-50}}';  border-top-color: '{{background-300}}'; }  md-bottom-sheet.md-THEME_NAME-theme.md-list md-item {    color: '{{foreground-1}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    background-color: '{{background-50}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    color: '{{foreground-1}}'; }md-card.md-THEME_NAME-theme {  border-radius: 2px; }  md-card.md-THEME_NAME-theme .md-card-image {    border-radius: 2px 2px 0 0; }md-toolbar .md-button.md-THEME_NAME-theme.md-fab {  background-color: white; }.md-button.md-THEME_NAME-theme {  border-radius: 3px; }  .md-button.md-THEME_NAME-theme:not([disabled]):hover, .md-button.md-THEME_NAME-theme:not([disabled]):focus {    background-color: '{{background-500-0.2}}'; }  .md-button.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised, .md-button.md-THEME_NAME-theme.md-primary.md-fab {      color: '{{primary-contrast}}';      background-color: '{{primary-color}}'; }      .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):focus, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):focus {        background-color: '{{primary-600}}'; }  .md-button.md-THEME_NAME-theme.md-fab {    border-radius: 50%;    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):focus {      background-color: '{{accent-A700}}'; }  .md-button.md-THEME_NAME-theme.md-raised {    color: '{{background-contrast}}';    background-color: '{{background-50}}'; }    .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):focus {      background-color: '{{background-200}}'; }  .md-button.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised, .md-button.md-THEME_NAME-theme.md-warn.md-fab {      color: '{{warn-contrast}}';      background-color: '{{warn-color}}'; }      .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):focus, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):focus {        background-color: '{{warn-700}}'; }  .md-button.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised, .md-button.md-THEME_NAME-theme.md-accent.md-fab {      color: '{{accent-contrast}}';      background-color: '{{accent-color}}'; }      .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):focus, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):focus {        background-color: '{{accent-700}}'; }  .md-button.md-THEME_NAME-theme[disabled], .md-button.md-THEME_NAME-theme.md-raised[disabled], .md-button.md-THEME_NAME-theme.md-fab[disabled] {    color: '{{foreground-3}}';    background-color: transparent;    cursor: not-allowed; }md-checkbox.md-THEME_NAME-theme .md-ripple {  color: '{{accent-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon {  background-color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ripple {  color: '{{primary-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon {  background-color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ripple {  color: '{{warn-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon {  background-color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] .md-icon {  border-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon {  background-color: '{{foreground-3}}'; }md-content.md-THEME_NAME-theme {  background-color: '{{background-hue-3}}'; }md-dialog.md-THEME_NAME-theme {  border-radius: 4px;  background-color: '{{background-hue-3}}'; }  md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions {    border-top-color: '{{foreground-4}}'; }md-divider.md-THEME_NAME-theme {  border-top-color: '{{foreground-4}}'; }md-icon.md-THEME_NAME-theme.md-primary {  color: '{{primary-color}}'; }md-icon.md-THEME_NAME-theme.md-accent {  color: '{{accent-color}}'; }md-icon.md-THEME_NAME-theme.md-warn {  color: '{{warn-color}}'; }md-icon.md-THEME_NAME-theme.md-danger {  color: '{{danger-color}}'; }md-input-container.md-THEME_NAME-theme .md-input {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}';  text-shadow: '{{foreground-shadow}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder, md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder {    color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme > md-icon {  color: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme label, md-input-container.md-THEME_NAME-theme .md-placeholder {  text-shadow: '{{foreground-shadow}}';  color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme div[ng-messages] {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-has-value label {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused .md-input {  border-color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused label {  color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused md-icon {  color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent .md-input {  border-color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent label {  color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn .md-input {  border-color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn label {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input {  border-color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid label {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid data-ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid x-ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid [ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [data-ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [x-ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid .md-char-counter {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme .md-input[disabled], [disabled] md-input-container.md-THEME_NAME-theme .md-input {  border-bottom-color: transparent;  color: '{{foreground-3}}';  background-image: linear-gradient(to right, '{{foreground-4}}' 0%, '{{foreground-4}}' 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, '{{foreground-4}}' 100%); }md-progress-circular.md-THEME_NAME-theme {  background-color: transparent; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-gap {    border-top-color: '{{primary-color}}';    border-bottom-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-top-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-right-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle {    border-left-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-gap {    border-top-color: '{{warn-color}}';    border-bottom-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-top-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-right-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle {    border-left-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-gap {    border-top-color: '{{accent-color}}';    border-bottom-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-top-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-right-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle {    border-left-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme .md-container {  background-color: '{{primary-100}}'; }md-progress-linear.md-THEME_NAME-theme .md-bar {  background-color: '{{primary-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-container {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-bar {  background-color: '{{warn-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-container {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-bar {  background-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-bar1 {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-dashed:before {  background: radial-gradient('{{warn-100}}' 0%, '{{warn-100}}' 16%, transparent 42%); }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-bar1 {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-dashed:before {  background: radial-gradient('{{accent-100}}' 0%, '{{accent-100}}' 16%, transparent 42%); }md-radio-button.md-THEME_NAME-theme .md-off {  border-color: '{{foreground-2}}'; }md-radio-button.md-THEME_NAME-theme .md-on {  background-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-off {  border-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme .md-container .md-ripple {  color: '{{accent-600}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-on {  background-color: '{{primary-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off {  border-color: '{{primary-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple {  color: '{{primary-600}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-on {  background-color: '{{warn-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off {  border-color: '{{warn-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple {  color: '{{warn-600}}'; }md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-off {  border-color: '{{foreground-3}}'; }md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-on {  border-color: '{{foreground-3}}'; }md-radio-group.md-THEME_NAME-theme:focus:not(:empty) {  border-color: '{{foreground-1}}'; }md-select.md-THEME_NAME-theme.ng-invalid.ng-dirty .md-select-label {  color: '{{warn-500}}' !important;  border-bottom-color: '{{warn-500}}' !important; }md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-label {  border-bottom-color: '{{primary-color}}';  color: '{{ foreground-1 }}'; }  md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-label.md-placeholder {    color: '{{ foreground-1 }}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-accent .md-select-label {  border-bottom-color: '{{accent-color}}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-warn .md-select-label {  border-bottom-color: '{{warn-color}}'; }md-select.md-THEME_NAME-theme[disabled] .md-select-label {  color: '{{foreground-3}}'; }  md-select.md-THEME_NAME-theme[disabled] .md-select-label.md-placeholder {    color: '{{foreground-3}}'; }md-select.md-THEME_NAME-theme .md-select-label {  border-bottom-color: '{{foreground-4}}'; }  md-select.md-THEME_NAME-theme .md-select-label.md-placeholder {    color: '{{foreground-2}}'; }md-select-menu.md-THEME_NAME-theme md-optgroup {  color: '{{foreground-2}}'; }  md-select-menu.md-THEME_NAME-theme md-optgroup md-option {    color: '{{foreground-1}}'; }md-select-menu.md-THEME_NAME-theme md-option[selected] {  background-color: '{{primary-50}}'; }  md-select-menu.md-THEME_NAME-theme md-option[selected]:focus {    background-color: '{{primary-100}}'; }  md-select-menu.md-THEME_NAME-theme md-option[selected].md-accent {    background-color: '{{accent-50}}'; }    md-select-menu.md-THEME_NAME-theme md-option[selected].md-accent:focus {      background-color: '{{accent-100}}'; }md-select-menu.md-THEME_NAME-theme md-option:focus:not([selected]) {  background: '{{background-200}}'; }md-sidenav.md-THEME_NAME-theme {  background-color: '{{background-hue-3}}'; }md-slider.md-THEME_NAME-theme .md-track {  background-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme .md-track-ticks {  background-color: '{{foreground-4}}'; }md-slider.md-THEME_NAME-theme .md-focus-thumb {  background-color: '{{foreground-2}}'; }md-slider.md-THEME_NAME-theme .md-focus-ring {  border-color: '{{foreground-4}}'; }md-slider.md-THEME_NAME-theme .md-disabled-thumb {  border-color: '{{background-hue-3}}'; }md-slider.md-THEME_NAME-theme.md-min .md-thumb:after {  background-color: '{{background-hue-3}}'; }md-slider.md-THEME_NAME-theme .md-track.md-track-fill {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb:after {  border-color: '{{accent-color}}';  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-sign {  background-color: '{{accent-color}}'; }  md-slider.md-THEME_NAME-theme .md-sign:after {    border-top-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb-text {  color: '{{accent-contrast}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-track.md-track-fill {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb:after {  border-color: '{{warn-color}}';  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-sign {  background-color: '{{warn-color}}'; }  md-slider.md-THEME_NAME-theme.md-warn .md-sign:after {    border-top-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb-text {  color: '{{warn-contrast}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-track.md-track-fill {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb:after {  border-color: '{{primary-color}}';  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-sign {  background-color: '{{primary-color}}'; }  md-slider.md-THEME_NAME-theme.md-primary .md-sign:after {    border-top-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb-text {  color: '{{primary-contrast}}'; }md-slider.md-THEME_NAME-theme[disabled] .md-thumb:after {  border-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme[disabled]:not(.md-min) .md-thumb:after {  background-color: '{{foreground-3}}'; }.md-subheader.md-THEME_NAME-theme {  color: '{{ foreground-2-0.23 }}';  background-color: '{{background-hue-3}}'; }  .md-subheader.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme .md-thumb {  background-color: '{{background-50}}'; }md-switch.md-THEME_NAME-theme .md-bar {  background-color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-thumb {  background-color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-bar {  background-color: '{{accent-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-thumb {  background-color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-bar {  background-color: '{{primary-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-thumb {  background-color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-bar {  background-color: '{{warn-color-0.5}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-thumb {  background-color: '{{background-400}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-bar {  background-color: '{{foreground-4}}'; }md-switch.md-THEME_NAME-theme:focus .md-label:not(:empty) {  border-color: '{{foreground-1}}';  border-style: dotted; }md-tabs.md-THEME_NAME-theme md-tabs-wrapper {  background-color: transparent;  border-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme .md-paginator md-icon {  color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme md-ink-bar {  color: '{{accent-color}}';  background: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme .md-tab {  color: '{{foreground-2}}'; }  md-tabs.md-THEME_NAME-theme .md-tab[disabled] {    color: '{{foreground-3}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-active, md-tabs.md-THEME_NAME-theme .md-tab.md-focus {    color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-focus {    background: '{{primary-color-0.1}}'; }  md-tabs.md-THEME_NAME-theme .md-tab .md-ripple-container {    color: '{{accent-100}}'; }md-tabs.md-THEME_NAME-theme.md-accent md-tabs-wrapper {  background-color: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]) {  color: '{{accent-100}}'; }  md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]).md-focus {    color: '{{accent-contrast}}'; }  md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]).md-focus {    background: '{{accent-contrast-0.1}}'; }md-tabs.md-THEME_NAME-theme.md-accent md-ink-bar {  color: '{{primary-600-1}}';  background: '{{primary-600-1}}'; }md-tabs.md-THEME_NAME-theme.md-primary md-tabs-wrapper {  background-color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme.md-primary md-tab:not([disabled]) {  color: '{{primary-100}}'; }  md-tabs.md-THEME_NAME-theme.md-primary md-tab:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-primary md-tab:not([disabled]).md-focus {    color: '{{primary-contrast}}'; }  md-tabs.md-THEME_NAME-theme.md-primary md-tab:not([disabled]).md-focus {    background: '{{primary-contrast-0.1}}'; }md-tabs.md-THEME_NAME-theme.md-warn md-tabs-wrapper {  background-color: '{{warn-color}}'; }md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]) {  color: '{{warn-100}}'; }  md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]).md-focus {    color: '{{warn-contrast}}'; }  md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]).md-focus {    background: '{{warn-contrast-0.1}}'; }md-input-group.md-THEME_NAME-theme input, md-input-group.md-THEME_NAME-theme textarea {  text-shadow: '{{foreground-shadow}}'; }  md-input-group.md-THEME_NAME-theme input::-webkit-input-placeholder, md-input-group.md-THEME_NAME-theme input::-moz-placeholder, md-input-group.md-THEME_NAME-theme input:-moz-placeholder, md-input-group.md-THEME_NAME-theme input:-ms-input-placeholder, md-input-group.md-THEME_NAME-theme textarea::-webkit-input-placeholder, md-input-group.md-THEME_NAME-theme textarea::-moz-placeholder, md-input-group.md-THEME_NAME-theme textarea:-moz-placeholder, md-input-group.md-THEME_NAME-theme textarea:-ms-input-placeholder {    color: '{{foreground-3}}'; }md-input-group.md-THEME_NAME-theme label {  text-shadow: '{{foreground-shadow}}';  color: '{{foreground-3}}'; }md-input-group.md-THEME_NAME-theme input, md-input-group.md-THEME_NAME-theme textarea {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused input, md-input-group.md-THEME_NAME-theme.md-input-focused textarea {  border-color: '{{primary-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused label {  color: '{{primary-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused.md-accent input, md-input-group.md-THEME_NAME-theme.md-input-focused.md-accent textarea {  border-color: '{{accent-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused.md-accent label {  color: '{{accent-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-has-value:not(.md-input-focused) label {  color: '{{foreground-2}}'; }md-input-group.md-THEME_NAME-theme .md-input[disabled] {  border-bottom-color: '{{foreground-4}}';  color: '{{foreground-3}}'; }md-toast.md-THEME_NAME-theme {  background-color: '{{foreground-1}}';  color: '{{background-50}}'; }  md-toast.md-THEME_NAME-theme .md-button {    color: '{{background-50}}'; }    md-toast.md-THEME_NAME-theme .md-button.md-highlight {      color: '{{primary-A200}}'; }      md-toast.md-THEME_NAME-theme .md-button.md-highlight.md-accent {        color: '{{accent-A200}}'; }      md-toast.md-THEME_NAME-theme .md-button.md-highlight.md-warn {        color: '{{warn-A200}}'; }md-toolbar.md-THEME_NAME-theme {  background-color: '{{primary-color}}';  color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme .md-button {    color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme.md-accent {    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }  md-toolbar.md-THEME_NAME-theme.md-warn {    background-color: '{{warn-color}}';    color: '{{warn-contrast}}'; }md-tooltip.md-THEME_NAME-theme {  color: '{{background-A100}}'; }  md-tooltip.md-THEME_NAME-theme .md-background {    background-color: '{{foreground-2}}'; }"); 
 })();
