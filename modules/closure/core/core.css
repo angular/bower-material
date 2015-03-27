@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-0afb8b8
+ * v0.8.3-master-d34ac5b
  */
 /* Sizes:
   0    <= size < 600  Phone
@@ -2589,8 +2589,7 @@ html, body {
 
 body {
   margin: 0;
-  padding: 0;
-  outline: none; }
+  padding: 0; }
 
 [tabindex='-1']:focus {
   outline: none; }
@@ -2689,14 +2688,18 @@ ul {
   .md-ripple.md-ripple-active, .md-ripple.md-ripple-full, .md-ripple.md-ripple-visible {
     opacity: 0.2; }
 
+html {
+  font-size: 62.5%;
+  line-height: 1.4; }
+
+body {
+  font-size: 1.6rem; }
+
 html, body {
-  font-size: 16px;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-touch-callout: none;
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased; }
-  html p, body p {
-    line-height: 1.846; }
 
 md-select, md-card, md-list, md-toolbar, ul, ol, p, h1, h2, h3, h4, h5, h6 {
   text-rendering: optimizeLegibility; }
@@ -2704,58 +2707,61 @@ md-select, md-card, md-list, md-toolbar, ul, ol, p, h1, h2, h3, h4, h5, h6 {
 /************
  * Headings
  ************/
-.md-display-1, h1 {
-  font-size: 2.125rem;
-  font-weight: 400;
-  line-height: 2.5rem; }
-
-.md-display-2 {
-  font-size: 2.813rem;
-  font-weight: 400;
-  line-height: 3rem; }
+.md-display-4 {
+  font-size: 11.2rem;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 11.2rem; }
 
 .md-display-3 {
-  font-size: 3.5rem;
+  font-size: 5.6rem;
   font-weight: 400;
-  letter-spacing: -0.005em; }
+  letter-spacing: -0.005em;
+  line-height: 5.6rem; }
 
-.md-display-4 {
-  font-size: 7rem;
-  font-weight: 300;
-  letter-spacing: -0.01em; }
+.md-display-2 {
+  font-size: 4.5rem;
+  font-weight: 400;
+  line-height: 6.4rem; }
 
-.md-headline, h2 {
-  font-size: 1.5rem;
-  font-weight: 400; }
+.md-display-1 {
+  font-size: 3.4rem;
+  font-weight: 400;
+  line-height: 4rem; }
 
-.md-title, h3 {
-  font-size: 1.25rem;
+.md-headline {
+  font-size: 2.4rem;
+  font-weight: 400;
+  line-height: 3.2rem; }
+
+.md-title {
+  font-size: 2rem;
   font-weight: 500;
   letter-spacing: 0.005em; }
 
-.md-subhead, h4 {
-  font-size: 1rem;
+.md-subhead {
+  font-size: 1.6rem;
   font-weight: 400;
   letter-spacing: 0.01em;
-  line-height: 1.5rem; }
+  line-height: 2.4rem; }
 
 /************
  * Body Copy
  ************/
 .md-body-1 {
-  font-size: 0.875rem;
+  font-size: 1.4rem;
   font-weight: 400;
   letter-spacing: 0.01em;
-  line-height: 1.25rem; }
+  line-height: 2rem; }
 
 .md-body-2 {
-  font-size: 0.875rem;
+  font-size: 1.4rem;
   font-weight: 500;
   letter-spacing: 0.01em;
-  line-height: 1.5rem; }
+  line-height: 2.4rem; }
 
 .md-caption {
-  font-size: 0.75rem;
+  font-size: 1.2rem;
   letter-spacing: 0.02em; }
 
 .md-button {
@@ -2764,34 +2770,8 @@ md-select, md-card, md-list, md-toolbar, ul, ol, p, h1, h2, h3, h4, h5, h6 {
 /************
  * Defaults
  ************/
-h1 {
-  font-weight: 400;
-  margin: 0.67em 0; }
-
-h2 {
-  margin: 0.83em 0; }
-
-h3 {
-  margin: 1em 0; }
-
-h4 {
-  margin: 1.33em 0; }
-
-h5 {
-  margin: 1.67em 0; }
-
-h6 {
-  margin: 2.33em 0; }
-
 button, select, html, textarea, input {
   font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif; }
 
 select, button, textarea, input {
   font-size: 100%; }
-
-a {
-  color: #3f51b5;
-  text-decoration: none; }
-
-a:hover, a:focus {
-  text-decoration: underline; }

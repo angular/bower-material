@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-0afb8b8
+ * v0.8.3-master-d34ac5b
  */
 html, body {
   height: 100%;
@@ -12,8 +12,7 @@ html, body {
 
 body {
   margin: 0;
-  padding: 0;
-  outline: none; }
+  padding: 0; }
 
 [tabindex='-1']:focus {
   outline: none; }
@@ -112,14 +111,18 @@ ul {
   .md-ripple.md-ripple-active, .md-ripple.md-ripple-full, .md-ripple.md-ripple-visible {
     opacity: 0.2; }
 
+html {
+  font-size: 62.5%;
+  line-height: 1.4; }
+
+body {
+  font-size: 1.6rem; }
+
 html, body {
-  font-size: 16px;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-touch-callout: none;
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased; }
-  html p, body p {
-    line-height: 1.846; }
 
 md-select, md-card, md-list, md-toolbar, ul, ol, p, h1, h2, h3, h4, h5, h6 {
   text-rendering: optimizeLegibility; }
@@ -127,58 +130,61 @@ md-select, md-card, md-list, md-toolbar, ul, ol, p, h1, h2, h3, h4, h5, h6 {
 /************
  * Headings
  ************/
-.md-display-1, h1 {
-  font-size: 2.125rem;
-  font-weight: 400;
-  line-height: 2.5rem; }
-
-.md-display-2 {
-  font-size: 2.813rem;
-  font-weight: 400;
-  line-height: 3rem; }
+.md-display-4 {
+  font-size: 11.2rem;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 11.2rem; }
 
 .md-display-3 {
-  font-size: 3.5rem;
+  font-size: 5.6rem;
   font-weight: 400;
-  letter-spacing: -0.005em; }
+  letter-spacing: -0.005em;
+  line-height: 5.6rem; }
 
-.md-display-4 {
-  font-size: 7rem;
-  font-weight: 300;
-  letter-spacing: -0.01em; }
+.md-display-2 {
+  font-size: 4.5rem;
+  font-weight: 400;
+  line-height: 6.4rem; }
 
-.md-headline, h2 {
-  font-size: 1.5rem;
-  font-weight: 400; }
+.md-display-1 {
+  font-size: 3.4rem;
+  font-weight: 400;
+  line-height: 4rem; }
 
-.md-title, h3, .md-toolbar-tools {
-  font-size: 1.25rem;
+.md-headline {
+  font-size: 2.4rem;
+  font-weight: 400;
+  line-height: 3.2rem; }
+
+.md-title, .md-toolbar-tools {
+  font-size: 2rem;
   font-weight: 500;
   letter-spacing: 0.005em; }
 
-.md-subhead, h4 {
-  font-size: 1rem;
+.md-subhead {
+  font-size: 1.6rem;
   font-weight: 400;
   letter-spacing: 0.01em;
-  line-height: 1.5rem; }
+  line-height: 2.4rem; }
 
 /************
  * Body Copy
  ************/
 .md-body-1 {
-  font-size: 0.875rem;
+  font-size: 1.4rem;
   font-weight: 400;
   letter-spacing: 0.01em;
-  line-height: 1.25rem; }
+  line-height: 2rem; }
 
 .md-body-2 {
-  font-size: 0.875rem;
+  font-size: 1.4rem;
   font-weight: 500;
   letter-spacing: 0.01em;
-  line-height: 1.5rem; }
+  line-height: 2.4rem; }
 
 .md-caption {
-  font-size: 0.75rem;
+  font-size: 1.2rem;
   letter-spacing: 0.02em; }
 
 .md-button {
@@ -187,37 +193,11 @@ md-select, md-card, md-list, md-toolbar, ul, ol, p, h1, h2, h3, h4, h5, h6 {
 /************
  * Defaults
  ************/
-h1 {
-  font-weight: 400;
-  margin: 0.67em 0; }
-
-h2 {
-  margin: 0.83em 0; }
-
-h3 {
-  margin: 1em 0; }
-
-h4 {
-  margin: 1.33em 0; }
-
-h5 {
-  margin: 1.67em 0; }
-
-h6 {
-  margin: 2.33em 0; }
-
 button, select, html, textarea, input {
   font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif; }
 
 select, button, textarea, input {
   font-size: 100%; }
-
-a {
-  color: #3f51b5;
-  text-decoration: none; }
-
-a:hover, a:focus {
-  text-decoration: underline; }
 
 /* Sizes:
   0    <= size < 600  Phone
@@ -3213,14 +3193,15 @@ md-bottom-sheet {
         height: 48px;
         width: 48px;
         margin: 0 0; }
-      md-bottom-sheet.md-grid md-item p.md-grid-text {
-        font-weight: 300;
+      md-bottom-sheet.md-grid md-item .md-grid-text {
+        font-weight: 400;
         line-height: 16px;
         font-size: 13px;
         margin: 0;
         white-space: nowrap;
         width: 64px;
         text-align: center;
+        text-transform: none;
         padding-top: 8px; }
 
 /**
@@ -3242,7 +3223,7 @@ md-bottom-sheet {
   text-align: center;
   text-transform: uppercase;
   font-weight: 500;
-  font-size: 0.875rem;
+  font-size: 1.4rem;
   font-style: inherit;
   font-variant: inherit;
   font-family: inherit;
@@ -5590,7 +5571,7 @@ md-select {
   padding-top: 9px;
   padding-bottom: 8px;
   border-bottom: 1px solid;
-  font-size: 1em;
+  font-size: 1.6rem;
   line-height: 0.8em;
   position: relative;
   box-sizing: border-box;
@@ -5662,13 +5643,13 @@ md-option {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 1em; }
+    font-size: 1.6rem; }
 
 md-optgroup {
   display: block; }
   md-optgroup label {
     display: block;
-    font-size: 1em;
+    font-size: 1.6rem;
     text-transform: uppercase;
     padding: 16px 8px; }
   md-optgroup md-option {
@@ -6031,8 +6012,8 @@ md-slider {
 
 .md-subheader {
   display: block;
-  font-size: 0.9em;
-  font-weight: 400;
+  font-size: 1.4rem;
+  font-weight: 500;
   line-height: 1em;
   padding: 16px 0px 16px 16px;
   margin: 0 0 0 0;
@@ -6351,7 +6332,7 @@ md-tabs {
 
 md-input-group label, .md-input-group label {
   display: block;
-  font-size: 0.75em; }
+  font-size: 1.2rem; }
 md-input-group textarea, md-input-group input[type="text"], md-input-group input[type="password"], md-input-group input[type="datetime"], md-input-group input[type="datetime-local"], md-input-group input[type="date"], md-input-group input[type="month"], md-input-group input[type="time"], md-input-group input[type="week"], md-input-group input[type="number"], md-input-group input[type="email"], md-input-group input[type="url"], md-input-group input[type="search"], md-input-group input[type="tel"], md-input-group input[type="color"], .md-input-group textarea, .md-input-group input[type="text"], .md-input-group input[type="password"], .md-input-group input[type="datetime"], .md-input-group input[type="datetime-local"], .md-input-group input[type="date"], .md-input-group input[type="month"], .md-input-group input[type="time"], .md-input-group input[type="week"], .md-input-group input[type="number"], .md-input-group input[type="email"], .md-input-group input[type="url"], .md-input-group input[type="search"], .md-input-group input[type="tel"], .md-input-group input[type="color"] {
   display: block;
   border-width: 0 0 1px 0;
@@ -6369,7 +6350,7 @@ md-input-group, .md-input-group {
   position: relative;
   display: block; }
   md-input-group label, .md-input-group label {
-    font-size: 1em;
+    font-size: 1.6rem;
     z-index: 1;
     pointer-events: none;
     -webkit-font-smoothing: antialiased; }
@@ -6536,7 +6517,7 @@ md-toolbar {
           flex-direction: column;
   position: relative;
   z-index: 2;
-  font-size: 1.3em;
+  font-size: 2rem;
   min-height: 64px;
   width: 100%;
   box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26); }
@@ -6573,6 +6554,10 @@ md-toolbar {
   max-height: 64px;
   padding: 0 16px;
   margin: 0; }
+  .md-toolbar-tools h2, .md-toolbar-tools h3 {
+    font-size: inherit;
+    font-weight: inherit;
+    margin: inherit; }
   .md-toolbar-tools a {
     color: inherit;
     text-decoration: none; }

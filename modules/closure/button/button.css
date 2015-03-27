@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-0afb8b8
+ * v0.8.3-master-d34ac5b
  */
 /**
  * Position a FAB button.
@@ -23,7 +23,7 @@
   text-align: center;
   text-transform: uppercase;
   font-weight: 500;
-  font-size: 0.875rem;
+  font-size: 1.4rem;
   font-style: inherit;
   font-variant: inherit;
   font-family: inherit;
