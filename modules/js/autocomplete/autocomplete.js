@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-0e1820c
+ * v0.8.3-master-1f8e2bd
  */
 (function () {
   'use strict';
@@ -28,6 +28,7 @@
   function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout) {
 
     //-- private variables
+
     var self = this,
         itemParts = $scope.itemsExpr.split(/ in /i),
         itemExpr = itemParts[1],
@@ -37,50 +38,43 @@
         noBlur = false;
 
     //-- public variables
+
     self.scope = $scope;
     self.parent = $scope.$parent;
     self.itemName = itemParts[0];
     self.matches = [];
     self.loading = false;
     self.hidden = true;
-    self.index = 0;
+    self.index = null;
+    self.messages = [];
+    self.id = $mdUtil.nextUid();
+
+    //-- public methods
+
     self.keydown = keydown;
     self.blur = blur;
     self.clear = clearValue;
     self.select = select;
     self.getCurrentDisplayValue = getCurrentDisplayValue;
     self.fetch = $mdUtil.debounce(fetchResults);
-    self.messages = [];
-    self.id = $mdUtil.nextUid();
-
-    //-- While the mouse is inside of the dropdown, we don't want to handle input blur
-    //-- This is to allow the user to scroll the list without causing it to hide
     self.listEnter = function () { noBlur = true; };
     self.listLeave = function () { noBlur = false; };
     self.mouseUp   = function () { elements.input.focus(); };
 
     return init();
 
-    //-- start method definitions
+    //-- initialization methods
+
     function init () {
-      if ($scope.autofocus) elements.input.focus();
       configureWatchers();
-      $timeout(gatherElements);
+      $timeout(function () {
+        gatherElements();
+        focusElement();
+      });
     }
 
-    function gatherElements () {
-      elements = {
-        main:  $element[0],
-        ul:    $element[0].getElementsByTagName('ul')[0],
-        input: $element[0].getElementsByTagName('input')[0]
-      };
-    }
-
-    function getItemScope (item) {
-      if (!item) return;
-      var locals = {};
-      if (self.itemName) locals[self.itemName] = item;
-      return locals;
+    function focusElement () {
+      if ($scope.autofocus) elements.input.focus();
     }
 
     function configureWatchers () {
@@ -97,8 +91,18 @@
       });
     }
 
+    function gatherElements () {
+      elements = {
+        main:  $element[0],
+        ul:    $element[0].getElementsByTagName('ul')[0],
+        input: $element[0].getElementsByTagName('input')[0]
+      };
+    }
+
+    //-- event/change handlers
+
     function handleSearchText (searchText, previousSearchText) {
-      self.index = 0;
+      self.index = getDefaultIndex();
       //-- do nothing on init if there is no initial value
       if (!searchText && searchText === previousSearchText) return;
       //-- clear selected item if search text no longer matches it
@@ -128,6 +132,85 @@
       self.hidden = shouldHide();
       if ($scope.textChange && searchText !== previousSearchText)
         $scope.textChange(getItemScope($scope.selectedItem));
+    }
+
+    function blur () {
+      if (!noBlur) self.hidden = true;
+    }
+
+    function keydown (event) {
+      switch (event.keyCode) {
+        case $mdConstant.KEY_CODE.DOWN_ARROW:
+          if (self.loading) return;
+          event.preventDefault();
+          self.index = Math.min(self.index + 1, self.matches.length - 1);
+          updateScroll();
+          updateSelectionMessage();
+          break;
+        case $mdConstant.KEY_CODE.UP_ARROW:
+          if (self.loading) return;
+          event.preventDefault();
+          self.index = Math.max(0, self.index - 1);
+          updateScroll();
+          updateSelectionMessage();
+          break;
+        case $mdConstant.KEY_CODE.ENTER:
+          if (self.loading || self.index < 0) return;
+          event.preventDefault();
+          select(self.index);
+          break;
+        case $mdConstant.KEY_CODE.ESCAPE:
+          self.matches = [];
+          self.hidden = true;
+          self.index = getDefaultIndex();
+          break;
+        case $mdConstant.KEY_CODE.TAB:
+          break;
+        default:
+      }
+    }
+
+    //-- getters
+
+    function getDisplayValue (item) {
+      return (item && $scope.itemText) ? $scope.itemText(getItemScope(item)) : item;
+    }
+
+    function getItemScope (item) {
+      if (!item) return;
+      var locals = {};
+      if (self.itemName) locals[self.itemName] = item;
+      return locals;
+    }
+
+    function getDefaultIndex () {
+      return $scope.autoselect ? 0 : -1;
+    }
+
+    function shouldHide () {
+      return self.matches.length === 1
+          && $scope.searchText === getDisplayValue(self.matches[0])
+          && $scope.selectedItem === self.matches[0];
+    }
+
+    function getCurrentDisplayValue () {
+      return getDisplayValue(self.matches[self.index]);
+    }
+
+    //-- actions
+
+    function select (index) {
+      $scope.selectedItem = self.matches[index];
+      $scope.searchText = getDisplayValue($scope.selectedItem) || $scope.searchText;
+      self.hidden = true;
+      self.index = 0;
+      self.matches = [];
+    }
+
+    function clearValue () {
+      $scope.searchText = '';
+      select(-1);
+      elements.input.focus();
     }
 
     function fetchResults (searchText) {
@@ -165,70 +248,6 @@
 
     function updateSelectionMessage () {
       self.messages.push({ display: getCurrentDisplayValue() });
-    }
-
-    function blur () {
-      if (!noBlur) self.hidden = true;
-    }
-
-    function keydown (event) {
-      switch (event.keyCode) {
-        case $mdConstant.KEY_CODE.DOWN_ARROW:
-            if (self.loading) return;
-            event.preventDefault();
-            self.index = Math.min(self.index + 1, self.matches.length - 1);
-            updateScroll();
-            updateSelectionMessage();
-            break;
-        case $mdConstant.KEY_CODE.UP_ARROW:
-            if (self.loading) return;
-            event.preventDefault();
-            self.index = Math.max(0, self.index - 1);
-            updateScroll();
-            updateSelectionMessage();
-            break;
-        case $mdConstant.KEY_CODE.ENTER:
-            if (self.loading || self.index < 0) return;
-            event.preventDefault();
-            select(self.index);
-            break;
-        case $mdConstant.KEY_CODE.ESCAPE:
-            self.matches = [];
-            self.hidden = true;
-            self.index = 0;
-            break;
-        case $mdConstant.KEY_CODE.TAB:
-            break;
-        default:
-      }
-    }
-
-    function clearValue () {
-      $scope.searchText = '';
-      select(-1);
-      elements.input.focus();
-    }
-
-    function shouldHide () {
-      return self.matches.length === 1
-          && $scope.searchText === getDisplayValue(self.matches[0])
-          && $scope.selectedItem === self.matches[0];
-    }
-
-    function getCurrentDisplayValue () {
-      return getDisplayValue(self.matches[self.index]);
-    }
-
-    function getDisplayValue (item) {
-      return (item && $scope.itemText) ? $scope.itemText(getItemScope(item)) : item;
-    }
-
-    function select (index) {
-      $scope.selectedItem = self.matches[index];
-      $scope.searchText = getDisplayValue($scope.selectedItem) || $scope.searchText;
-      self.hidden = true;
-      self.index = 0;
-      self.matches = [];
     }
 
     function updateScroll () {
@@ -273,6 +292,7 @@
    * @param {number=} md-min-length Specifies the minimum length of text before autocomplete will make suggestions
    * @param {number=} md-delay Specifies the amount of time (in milliseconds) to wait before looking for results
    * @param {boolean=} md-autofocus If true, will immediately focus the input element
+   * @param {boolean=} md-autoselect If true, the first item will be selected by default
    *
    * @usage
    * <hljs lang="html">
@@ -288,6 +308,26 @@
 
   function MdAutocomplete () {
     return {
+      transclude:   true,
+      controller:   'MdAutocompleteCtrl',
+      controllerAs: '$mdAutocompleteCtrl',
+      link:         link,
+      scope:        {
+        searchText:    '=mdSearchText',
+        selectedItem:  '=mdSelectedItem',
+        itemsExpr:     '@mdItems',
+        itemText:      '&mdItemText',
+        placeholder:   '@placeholder',
+        noCache:       '=?mdNoCache',
+        itemChange:    '&mdSelectedItemChange',
+        textChange:    '&mdSearchTextChange',
+        isDisabled:    '=ngDisabled',
+        minLength:     '=mdMinLength',
+        delay:         '=mdDelay',
+        autofocus:     '=?mdAutofocus',
+        floatingLabel: '@mdFloatingLabel',
+        autoselect:    '=?mdAutoselect'
+      },
       template: '\
         <md-autocomplete-wrap role="listbox">\
           <md-input-container ng-if="floatingLabel">\
@@ -353,26 +393,16 @@
             role="status"\
             aria-live="assertive">\
           <p ng-repeat="message in $mdAutocompleteCtrl.messages">{{message.display}}</p>\
-        </aria-status>',
-      transclude:   true,
-      controller:   'MdAutocompleteCtrl',
-      controllerAs: '$mdAutocompleteCtrl',
-      scope:        {
-        searchText:    '=mdSearchText',
-        selectedItem:  '=mdSelectedItem',
-        itemsExpr:     '@mdItems',
-        itemText:      '&mdItemText',
-        placeholder:   '@placeholder',
-        noCache:       '=mdNoCache',
-        itemChange:    '&mdSelectedItemChange',
-        textChange:    '&mdSearchTextChange',
-        isDisabled:    '=ngDisabled',
-        minLength:     '=mdMinLength',
-        delay:         '=mdDelay',
-        autofocus:     '=mdAutofocus',
-        floatingLabel: '@mdFloatingLabel'
-      }
+        </aria-status>'
     };
+
+    function link (scope, element, attr) {
+      angular.forEach(scope.$$isolateBindings, function (binding, key) {
+        if (binding.optional && angular.isUndefined(scope[key])) {
+          scope[key] = attr.hasOwnProperty(attr.$normalize(binding.attrName));
+        }
+      });
+    }
   }
 })();
 
