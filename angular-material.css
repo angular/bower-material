@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-087c3dc
+ * v0.8.3-master-76f627c
  */
 html, body {
   height: 100%;
@@ -6140,8 +6140,9 @@ md-tabs {
   margin: 0;
   border-radius: 2px;
   overflow: hidden;
-  min-height: 248px;
   position: relative; }
+  md-tabs:not('.md-no-tab-content') {
+    min-height: 248px; }
   md-tabs[md-align-tabs="bottom"] {
     padding-bottom: 48px;
     position: relative; }

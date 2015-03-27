@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-087c3dc
+ * v0.8.3-master-76f627c
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -184,9 +184,9 @@ angular.module('material.components.tabs', [
         if (attr.label) return attr.label;
         //-- otherwise, we have to search for the `md-tab-label` element
         var label = element.find('md-tab-label');
-        if (label) return label.html();
+        if (label.length) return label.html();
         //-- otherwise, we have no label.
-        return 'Missing Label';
+        return element.html();
       }
 
       function getTemplate () {
@@ -364,6 +364,7 @@ angular.module('material.components.tabs', [
           tab = angular.extend(proto, tabData);
       if (!angular.isString(tabData.template)) {
         ctrl.hasContent = false;
+        $element.addClass('md-no-tab-content');
       }
       if (angular.isDefined(index)) {
         ctrl.tabs.splice(index, 0, tab);
