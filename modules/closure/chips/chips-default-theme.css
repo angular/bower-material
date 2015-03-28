@@ -1,0 +1,9 @@
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.8.3-master-713f7b6
+ */
+md-chips.md-THEME_NAME-theme .md-chip {
+  color: '{{background-contrast}}';
+  background-color: '{{background-100}}'; }

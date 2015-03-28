@@ -1,0 +1,39 @@
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.8.3-master-713f7b6
+ */
+.md-chips {
+  box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
+  display: block;
+  font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  padding: 8px;
+  vertical-align: middle; }
+  .md-chips .md-chip {
+    border-radius: 11px;
+    box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
+    display: inline-block;
+    height: 22px;
+    margin: 0 0 0 8px;
+    line-height: 22px;
+    padding: 0 8px 0 8px;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0); }
+    .md-chips .md-chip:first-child {
+      margin: 0; }
+    .md-chips .md-chip.selected {
+      -webkit-transform: translate3d(0, -1px, 0);
+              transform: translate3d(0, -1px, 0); }
+    .md-chips .md-chip .md-button {
+      padding: 2px; }
+  .md-chips .md-chip-worker {
+    display: inline-block;
+    line-height: 25px;
+    /* 3px are added to height of chip for...the shadow? */ }
+    .md-chips .md-chip-worker:not(:first-child) {
+      margin: 0 0 0 8px; }
+  .md-chips .md-chip-input {
+    background-color: transparent;
+    border-width: 0px; }
