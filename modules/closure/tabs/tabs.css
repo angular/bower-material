@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-713f7b6
+ * v0.8.3-master-a936e1e
  */
 md-tab-data {
   position: relative;
@@ -101,6 +101,8 @@ md-tabs {
       font-size: 16px;
       background: transparent no-repeat center center;
       transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1); }
+      md-tabs md-tabs-wrapper md-prev-button:focus, md-tabs md-tabs-wrapper md-next-button:focus {
+        outline: none; }
       md-tabs md-tabs-wrapper md-prev-button md-icon, md-tabs md-tabs-wrapper md-next-button md-icon {
         position: absolute;
         top: 50%;

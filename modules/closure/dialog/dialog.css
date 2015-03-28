@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-713f7b6
+ * v0.8.3-master-a936e1e
  */
 .md-dialog-container {
   display: -webkit-flex;
@@ -72,7 +72,8 @@ md-dialog {
     padding: 16px 16px;
     min-height: 40px; }
     md-dialog .md-actions > * {
-      margin-left: 8px; }
+      margin-left: 8px;
+      margin-right: 0; }
   md-dialog.md-content-overflow .md-actions {
     border-top: 1px solid; }
 

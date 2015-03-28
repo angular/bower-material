@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-713f7b6
+ * v0.8.3-master-a936e1e
  */
 md-bottom-sheet {
   position: absolute;
@@ -134,6 +134,7 @@ md-bottom-sheet {
         width: 48px;
         padding-bottom: 16px; }
       md-bottom-sheet.md-grid md-item .md-grid-item-content {
+        border: 1px solid transparent;
         display: -webkit-flex;
         display: -ms-flexbox;
         display: flex;

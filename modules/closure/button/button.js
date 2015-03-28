@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-713f7b6
+ * v0.8.3-master-a936e1e
  */
 goog.provide('ng.material.components.button');
 goog.require('ng.material.core');
@@ -47,13 +47,22 @@ angular.module('material.components.button', [
  * @usage
  * <hljs lang="html">
  *  <md-button>
- *    Button
+ *    Flat Button
  *  </md-button>
- *  <md-button href="http://google.com" class="md-button-colored">
- *    I'm a link
+ *  <md-button href="http://google.com">
+ *    Flat link
  *  </md-button>
- *  <md-button ng-disabled="true" class="md-colored">
- *    I'm a disabled button
+ *  <md-button class="md-raised">
+ *    Raised Button
+ *  </md-button>
+ *  <md-button ng-disabled="true">
+ *    Disabled Button
+ *  </md-button>
+ *  <md-button class="md-fab" aria-label="FAB">
+ *    <md-icon md-svg-src="your/icon.svg"></md-icon>
+ *  </md-button>
+ *  <md-button class="md-fab md-mini" aria-label="Mini FAB">
+ *    <md-icon md-svg-src="your/icon.svg"></md-icon>
  *  </md-button>
  * </hljs>
  */
