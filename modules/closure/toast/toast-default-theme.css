@@ -2,10 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-faac482
+ * v0.8.3-master-860a55e
  */
 md-toast.md-THEME_NAME-theme {
-  background-color: '{{foreground-1}}';
+  background-color: #323232;
   color: '{{background-50}}'; }
   md-toast.md-THEME_NAME-theme .md-button {
     color: '{{background-50}}'; }

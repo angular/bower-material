@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-faac482
+ * v0.8.3-master-860a55e
  */
 html, body {
   height: 100%;
@@ -3445,25 +3445,6 @@ md-checkbox {
         -ms-user-select: text;
             user-select: text; }
 
-md-content {
-  display: block;
-  position: relative;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch; }
-  md-content[md-scroll-y] {
-    overflow-y: auto;
-    overflow-x: hidden; }
-  md-content[md-scroll-x] {
-    overflow-x: auto;
-    overflow-y: hidden; }
-  md-content.md-padding {
-    padding: 8px; }
-
-@media (min-width: 600px) {
-  md-content.md-padding {
-    padding: 16px; }
- }
-
 .md-chips {
   box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
   display: block;
@@ -3497,6 +3478,25 @@ md-content {
   .md-chips .md-chip-input {
     background-color: transparent;
     border-width: 0px; }
+
+md-content {
+  display: block;
+  position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; }
+  md-content[md-scroll-y] {
+    overflow-y: auto;
+    overflow-x: hidden; }
+  md-content[md-scroll-x] {
+    overflow-x: auto;
+    overflow-y: hidden; }
+  md-content.md-padding {
+    padding: 8px; }
+
+@media (min-width: 600px) {
+  md-content.md-padding {
+    padding: 16px; }
+ }
 
 .md-dialog-container {
   display: -webkit-flex;
@@ -6457,7 +6457,7 @@ md-toast {
   border-radius: 2px;
   font-size: 14px;
   cursor: default;
-  max-width: 879px;
+  max-width: 100%;
   max-height: 40px;
   height: 24px;
   z-index: 90;
@@ -6544,6 +6544,11 @@ md-toast {
     md-toast.ng-leave.ng-leave-active.md-top.md-swiperight {
       -webkit-transform: translate3d(100%, 0, 0) rotateZ(15deg);
               transform: translate3d(100%, 0, 0) rotateZ(15deg); }
+ }
+
+@media (min-width: 1200px) {
+  md-toast {
+    max-width: 568px; }
  }
 
 @media screen and (-ms-high-contrast: active) {
