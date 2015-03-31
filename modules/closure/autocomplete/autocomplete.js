@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-74601d0
+ * v0.8.3-master-835b745
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -38,7 +38,8 @@ goog.require('ng.material.core');
         elements = null,
         promise = null,
         cache = {},
-        noBlur = false;
+        noBlur = false,
+        selectedItemWatchers = [];
 
     //-- public variables
 
@@ -60,6 +61,9 @@ goog.require('ng.material.core');
     self.select = select;
     self.getCurrentDisplayValue = getCurrentDisplayValue;
     self.fetch = $mdUtil.debounce(fetchResults);
+    self.registerSelectedItemWatcher = registerSelectedItemWatcher;
+    self.unregisterSelectedItemWatcher = unregisterSelectedItemWatcher;
+
     self.listEnter = function () { noBlur = true; };
     self.listLeave = function () { noBlur = false; };
     self.mouseUp   = function () { elements.input.focus(); };
@@ -85,13 +89,8 @@ goog.require('ng.material.core');
       $scope.$watch('searchText', wait
           ? $mdUtil.debounce(handleSearchText, wait)
           : handleSearchText);
-      $scope.$watch('selectedItem', function (selectedItem, previousSelectedItem) {
-        if (selectedItem) {
-          $scope.searchText = getDisplayValue(selectedItem);
-        }
-        if ($scope.itemChange && selectedItem !== previousSelectedItem)
-          $scope.itemChange(getItemScope(selectedItem));
-      });
+      registerSelectedItemWatcher(selectedItemChange);
+      $scope.$watch('selectedItem', handleSelectedItemChange);
     }
 
     function gatherElements () {
@@ -103,6 +102,41 @@ goog.require('ng.material.core');
     }
 
     //-- event/change handlers
+
+    function selectedItemChange (selectedItem, previousSelectedItem) {
+      if (selectedItem) {
+        $scope.searchText = getDisplayValue(selectedItem);
+      }
+      if ($scope.itemChange && selectedItem !== previousSelectedItem)
+        $scope.itemChange(getItemScope(selectedItem));
+    }
+
+    function handleSelectedItemChange(selectedItem, previousSelectedItem) {
+      for (var i = 0; i < selectedItemWatchers.length; ++i) {
+        selectedItemWatchers[i](selectedItem, previousSelectedItem);
+      }
+    }
+
+    /**
+     * Register a function to be called when the selected item changes.
+     * @param cb
+     */
+    function registerSelectedItemWatcher(cb) {
+      if (selectedItemWatchers.indexOf(cb) == -1) {
+        selectedItemWatchers.push(cb);
+      }
+    }
+
+    /**
+     * Unregister a function previously registered for selected item changes.
+     * @param cb
+     */
+    function unregisterSelectedItemWatcher(cb) {
+      var i = selectedItemWatchers.indexOf(cb);
+      if (i != -1) {
+        selectedItemWatchers.splice(i, 1);
+      }
+    }
 
     function handleSearchText (searchText, previousSearchText) {
       self.index = getDefaultIndex();
