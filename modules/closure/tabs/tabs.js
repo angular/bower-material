@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3bc8b27
+ * v0.8.3-master-faab888
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -363,7 +363,7 @@ angular.module('material.components.tabs', [
             id:       $mdUtil.nextUid()
           },
           tab = angular.extend(proto, tabData);
-      if (!angular.isString(tabData.template)) {
+      if (!tabData.template) {
         ctrl.hasContent = false;
         $element.addClass('md-no-tab-content');
       }
