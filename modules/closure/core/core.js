@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-63c8709
+ * v0.8.3-master-7b78071
  */
 goog.provide('ng.material.core');
 
@@ -1009,11 +1009,6 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
   var HANDLERS = {};
   var pointer, lastPointer; // The state of the current and previous 'pointer' (user's hand)
 
-  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-  var isIos = userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/iPod/i);
-  var isAndroid = userAgent.match(/Android/i);
-  var shouldHijackClicks = isIos || isAndroid;
-
   angular
     .module('material.core.gestures', [ ])
     .factory('$mdGesture', MdGesture)
@@ -1024,6 +1019,11 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
    * MdGesture factory construction function
    */
   function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
+    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    var isIos = userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/iPod/i);
+    var isAndroid = userAgent.match(/Android/i);
+    var shouldHijackClicks = isIos || isAndroid;
+
     var self = {
       handler: addHandler,
       register: register
@@ -1314,16 +1314,23 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
       return document.body.contains(node);
     });
 
-    if (shouldHijackClicks) {
+    if ( $mdGesture.$$hijackClicks ) {
+
+      /**
+       * If hijacking use capture-phase to prevent non-key clicks
+       * unless they're sent by material
+       */
       document.addEventListener('click', function (ev) {
         // Space/enter on a button, and submit events, can send clicks
+
         var isKeyClick = ev.clientX === 0 && ev.clientY === 0;
         if (isKeyClick || ev.$material) return;
 
-        // Prevent clicks unless they're sent by material
         ev.preventDefault();
         ev.stopPropagation();
+
       }, true);
+
     }
 
     angular.element(document)
