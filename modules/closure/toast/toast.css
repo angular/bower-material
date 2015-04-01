@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-f142469
+ * v0.8.3-master-6ee9a19
  */
 md-toast {
   display: -webkit-flex;
@@ -65,6 +65,8 @@ md-toast {
     cursor: pointer;
     text-transform: uppercase;
     float: right; }
+    md-toast .md-action.md-button {
+      min-width: 0; }
 
 @media (max-width: 600px) {
   md-toast {
@@ -83,7 +85,7 @@ md-toast {
 @media (min-width: 600px) {
   md-toast {
     min-width: 288px;
-    /* 
+    /*
      * When the toast doesn't take up the whole screen,
      * make it rotate when the user swipes it away
      */ }
