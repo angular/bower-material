@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a67a6a2
+ * v0.8.3-master-18b1a57
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.core');
@@ -32,35 +32,37 @@ goog.require('ng.material.core');
    * @module material.components.chips
    *
    * @description
-   * `<element md-chip-remove>`
-   * Identifies an element within an <md-chip> as the delete button. This
-   * directive binds to that element's click event and removes the chip.
+   * `<md-chip-remove>`
+   * Creates a remove button for the given chip.
    *
    * @usage
    * <hljs lang="html">
-   *   <md-chip>{{$chip}}<button md-chip-remove>x</button></md-chip>
+   *   <md-chip>{{$chip}}<md-chip-remove></md-chip-remove></md-chip>
    * </hljs>
    */
 
-  function MdChipRemove () {
+  var REMOVE_CHIP_TEMPLATE = '\
+      <md-button ng-if="!$mdChipsCtrl.readonly" ng-click="$mdChipsCtrl.removeChip($index)">\
+        <md-icon md-svg-icon="close"></md-icon>\
+         <span class="visually-hidden">Remove</span>\
+      </md-button>';
+
+  /**
+   *
+   * @param $compile
+   * @param $timeout
+   * @returns {{restrict: string, require: string[], link: Function, scope: boolean}}
+   * @constructor
+   */
+  function MdChipRemove ($compile, $timeout) {
     return {
-      restrict: 'A',
+      restrict: 'E',
+      template: REMOVE_CHIP_TEMPLATE,
       require: ['^mdChips'],
-      link: function postLink(scope, element, attrs, controllers) {
-        var mdChipsCtrl = controllers[0];
-        element.on('click', removeItemListener(mdChipsCtrl, scope));
-      },
       scope: false
     };
-
-    function removeItemListener(chipsCtrl, scope) {
-      return function() {
-        scope.$apply(function() {
-          chipsCtrl.removeChip(scope.$index);
-        });
-      };
-    }
   }
+  MdChipRemove.$inject = ["$compile", "$timeout"];
 })();
 
 (function () {
@@ -275,6 +277,12 @@ goog.require('ng.material.core');
    * `<md-chips>` is an input component for building lists of strings or objects. The list items are displayed as
    * 'chips'. This component can make use of an `<input>` element or an `<md-autocomplete>` element.
    *
+   * <strong>Custom `<md-chip>` template</strong>
+   * A custom template may be provided to render the content of each chip. This is achieved by specifying an `<md-chip>`
+   * element as a child of `<md-chips>`. Note: Any attributes on the passed `<md-chip>` will be dropped as only the
+   * innerHTML is used for the chip template. The variables `$chip` and `$index` are available in the scope of
+   * `<md-chip>`, representing the chip object and its index int he list of chips, respectively.
+   *
    * <h3> Pending Features </h3>
    * <ul style="padding-left:20px;">
    *   <ul>Expand input controls: Support md-autocomplete
@@ -338,13 +346,13 @@ goog.require('ng.material.core');
 
 
   var MD_CHIPS_TEMPLATE = '\
-      <md-chips-wrap ng-class="{readonly : $mdChipsCtrl.readonly}" class="md-chips">\
+      <md-chips-wrap ng-if="!$mdChipsCtrl.readonly || $mdChipsCtrl.items.length > 0" class="md-chips">\
         <div role="presentation">\
-          <div ng-repeat="$chip in $mdChipsCtrl.items"\
+          <md-chip ng-repeat="$chip in $mdChipsCtrl.items"\
               ng-class="{selected: $mdChipsCtrl.selectedChip == $index}"\
               ng-click="!$mdChipsCtrl.readonly && $mdChipsCtrl.selectChip($index)"\
               class="md-chip">\
-          </div>\
+          </md-chip>\
           <div ng-if="!$mdChipsCtrl.readonly" class="md-chip-worker"></div>\
         </div>\
       </md-chips-wrap>';
@@ -358,11 +366,9 @@ goog.require('ng.material.core');
             ng-keydown="$mdChipsCtrl.defaultInputKeydown($event)">';
 
   var CHIP_DEFAULT_TEMPLATE = '\
-      <md-chip>\
         <span>{{$chip}}</span>\
-        <md-button ng-if="!$mdChipsCtrl.readonly"\
-            md-chip-remove>x</md-button>\
-      </md-chip>';
+        <md-chip-remove ng-if="!$mdChipsCtrl.readonly"></md-chip-remove>';
+
 
 
   /**
@@ -397,16 +403,19 @@ goog.require('ng.material.core');
     function compile(element, attr) {
       var userTemplate = attr['$mdUserTemplate'];
       var chipEl = userTemplate.find('md-chip');
+      var chipHtml;
       if (chipEl.length === 0) {
-        chipEl = angular.element(CHIP_DEFAULT_TEMPLATE);
+        chipHtml = CHIP_DEFAULT_TEMPLATE;
       } else {
         // Warn if no remove button is included in the template.
-        if (!chipEl[0].querySelector('[md-chip-remove]')) {
+        if (chipEl.find('md-chip-remove').length == 0) {
           $log.warn('md-chip-remove attribute not found in md-chip template.');
         }
+        // Take only the chip's inner HTML as the encasing repeater is an md-chip element.
+        chipHtml = chipEl[0].innerHTML;
       }
       var listNode = angular.element(element[0].querySelector('.md-chip'));
-      listNode.append(chipEl);
+      listNode.append(chipHtml);
 
       // Input Element: Look for an autocomplete or an input.
       var inputEl = userTemplate.find('md-autocomplete');

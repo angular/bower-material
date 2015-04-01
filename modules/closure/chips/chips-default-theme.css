@@ -2,8 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a67a6a2
+ * v0.8.3-master-18b1a57
  */
 md-chips.md-THEME_NAME-theme .md-chip {
-  color: '{{background-contrast}}';
+  color: '{{background-contrast-0.6}}';
   background-color: '{{background-100}}'; }
+  md-chips.md-THEME_NAME-theme .md-chip .md-button {
+    color: '{{background-contrast}}'; }
