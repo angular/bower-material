@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-faab888
+ * v0.8.3-master-73cf7a7
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -629,7 +629,7 @@ angular.module('material.components.tabs', [
     return {
       scope: {
         dynamicHeight: '=?mdDynamicHeight',
-        selectedIndex: '=mdSelected',
+        selectedIndex: '=?mdSelected',
         stretchTabs: '@?mdStretchTabs'
       },
       transclude: true,
