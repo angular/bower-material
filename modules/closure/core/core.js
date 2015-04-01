@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-d0ddad1
+ * v0.8.3-master-0149dcf
  */
 goog.provide('ng.material.core');
 
@@ -1003,7 +1003,7 @@ function mdCompilerService($q, $http, $injector, $compile, $controller, $templat
 mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controller", "$templateCache"];
 })();
 
-(function () {
+(function (jQuery) {
   'use strict';
 
   var HANDLERS = {};
@@ -1173,23 +1173,23 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
   /**
    * MdGestureHandler factory construction function
    */
-  function GestureHandler(name) {
+  function GestureHandler (name) {
     this.name = name;
     this.state = {};
   }
 
   function MdGestureHandler($$rAF) {
+    var hasJQuery =  typeof jQuery !== 'undefined' && angular.element === jQuery;
+
 
     GestureHandler.prototype = {
+      options: {},
+      dispatchEvent: hasJQuery ?  jQueryDispatchEvent : nativeDispatchEvent,
+
       onStart: angular.noop,
       onMove: angular.noop,
       onEnd: angular.noop,
       onCancel: angular.noop,
-      options: {},
-
-      dispatchEvent: typeof window.jQuery !== 'undefined' && angular.element === window.jQuery ?
-        jQueryDispatchEvent :
-        nativeDispatchEvent,
 
       start: function (ev, pointer) {
         if (this.state.isRunning) return;
@@ -1304,11 +1304,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
   /**
    * Attach Gestures: hook document and check shouldHijack clicks
    */
-  function attachToDocument( $mdGesture ) {
-
-    var START_EVENTS = 'mousedown touchstart pointerdown';
-    var MOVE_EVENTS = 'mousemove touchmove pointermove';
-    var END_EVENTS = 'mouseup mouseleave touchend touchcancel pointerup pointercancel';
+  function attachToDocument( $mdGesture, $$MdGestureHandler ) {
 
     document.contains || (document.contains = function (node) {
       return document.body.contains(node);
@@ -1316,11 +1312,11 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
 
     if ( $mdGesture.$$hijackClicks ) {
 
-      /**
-       * If hijacking use capture-phase to prevent non-key clicks
-       * unless they're sent by material
-       */
-      document.addEventListener('click', function (ev) {
+      // If hijacking use capture-phase to prevent non-key clicks
+      // unless they're sent by material
+
+      document.addEventListener('click', function (ev)
+      {
         // Space/enter on a button, and submit events, can send clicks
 
         var isKeyClick = ev.clientX === 0 && ev.clientY === 0;
@@ -1333,20 +1329,21 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
 
     }
 
+    var START_EVENTS = 'mousedown touchstart pointerdown';
+    var MOVE_EVENTS = 'mousemove touchmove pointermove';
+    var END_EVENTS = 'mouseup mouseleave touchend touchcancel pointerup pointercancel';
+
     angular.element(document)
       .on(START_EVENTS, gestureStart)
       .on(MOVE_EVENTS, gestureMove)
       .on(END_EVENTS, gestureEnd)
-      // For testing
-      .on('$$mdGestureReset', function () {
-        lastPointer = pointer = null;
-      });
+      .on('$$mdGestureReset', gestureClearCache);  // For testing
 
     function runHandlers(handlerEvent, event) {
       var handler;
       for (var name in HANDLERS) {
         handler = HANDLERS[name];
-        if( handler instanceof GestureHandler ) {
+        if( handler instanceof $$MdGestureHandler ) {
 
           if (handlerEvent === 'start') {
             // Run cancel to reset any handlers' state
@@ -1391,9 +1388,12 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
       lastPointer = pointer;
       pointer = null;
     }
+    function gestureClearCache () {
+      lastPointer = pointer = null;
+    }
 
   }
-  attachToDocument.$inject = ["$mdGesture"];
+  attachToDocument.$inject = ["$mdGesture", "$$MdGestureHandler"];
 
   // ********************
   // Module Functions
@@ -1442,7 +1442,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
       ev;
   }
 
-})();
+})(window.jQuery);
 
 (function() {
 'use strict';
