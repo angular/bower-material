@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-07f5f85
+ * v0.8.3-master-a33a128
  */
 html, body {
   height: 100%;
@@ -3586,15 +3586,6 @@ md-divider {
   md-divider[md-inset] {
     margin-left: 80px; }
 
-md-icon {
-  margin: auto;
-  background-repeat: no-repeat no-repeat;
-  display: inline-block;
-  vertical-align: middle;
-  fill: currentcolor;
-  height: 24px;
-  width: 24px; }
-
 md-grid-list {
   box-sizing: border-box;
   display: block;
@@ -3658,6 +3649,15 @@ md-grid-list {
   md-grid-tile-footer {
     border-top: 1px solid #fff; }
  }
+
+md-icon {
+  margin: auto;
+  background-repeat: no-repeat no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+  fill: currentcolor;
+  height: 24px;
+  width: 24px; }
 
 md-input-container {
   display: -webkit-flex;
