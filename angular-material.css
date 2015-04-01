@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-73cf7a7
+ * v0.8.3-master-07f5f85
  */
 html, body {
   height: 100%;
@@ -3468,7 +3468,10 @@ md-checkbox {
       -webkit-transform: translate3d(0, -1px, 0);
               transform: translate3d(0, -1px, 0); }
     .md-chips .md-chip .md-button {
-      padding: 2px; }
+      padding: 2px;
+      line-height: 18px;
+      min-width: 0;
+      margin: 0 0 0 0.5em; }
   .md-chips .md-chip-worker {
     display: inline-block;
     line-height: 25px;
@@ -3478,6 +3481,25 @@ md-checkbox {
   .md-chips .md-chip-input {
     background-color: transparent;
     border-width: 0px; }
+
+md-content {
+  display: block;
+  position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; }
+  md-content[md-scroll-y] {
+    overflow-y: auto;
+    overflow-x: hidden; }
+  md-content[md-scroll-x] {
+    overflow-x: auto;
+    overflow-y: hidden; }
+  md-content.md-padding {
+    padding: 8px; }
+
+@media (min-width: 600px) {
+  md-content.md-padding {
+    padding: 16px; }
+ }
 
 .md-dialog-container {
   display: -webkit-flex;
@@ -3557,31 +3579,21 @@ md-dialog {
     border: 1px solid #fff; }
  }
 
-md-content {
-  display: block;
-  position: relative;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch; }
-  md-content[md-scroll-y] {
-    overflow-y: auto;
-    overflow-x: hidden; }
-  md-content[md-scroll-x] {
-    overflow-x: auto;
-    overflow-y: hidden; }
-  md-content.md-padding {
-    padding: 8px; }
-
-@media (min-width: 600px) {
-  md-content.md-padding {
-    padding: 16px; }
- }
-
 md-divider {
   display: block;
   border-top: 1px solid;
   margin: 0; }
   md-divider[md-inset] {
     margin-left: 80px; }
+
+md-icon {
+  margin: auto;
+  background-repeat: no-repeat no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+  fill: currentcolor;
+  height: 24px;
+  width: 24px; }
 
 md-grid-list {
   box-sizing: border-box;
@@ -3646,15 +3658,6 @@ md-grid-list {
   md-grid-tile-footer {
     border-top: 1px solid #fff; }
  }
-
-md-icon {
-  margin: auto;
-  background-repeat: no-repeat no-repeat;
-  display: inline-block;
-  vertical-align: middle;
-  fill: currentcolor;
-  height: 24px;
-  width: 24px; }
 
 md-input-container {
   display: -webkit-flex;
