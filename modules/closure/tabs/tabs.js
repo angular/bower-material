@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a33a128
+ * v0.8.3-master-9f0d428
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -714,7 +714,8 @@ angular.module('material.components.tabs', [
                 \'md-no-transition\': $mdTabsCtrl.lastSelectedIndex == null,\
                 \'md-active\': tab.isActive(),\
                 \'md-left\':   tab.isLeft(),\
-                \'md-right\':  tab.isRight()\
+                \'md-right\':  tab.isRight(),\
+                \'md-no-scroll\': dynamicHeight\
               }"></md-tab-content>\
         </md-tabs-content-wrapper>\
       ',
