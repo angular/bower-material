@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-7b78071
+ * v0.8.3-master-d0ddad1
  */
 html, body {
   height: 100%;
@@ -3343,6 +3343,32 @@ md-bottom-sheet {
     border: 1px solid #fff; }
  }
 
+md-card {
+  box-sizing: border-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: 8px;
+  box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26); }
+  md-card > img, md-card > :not(md-card-content) img {
+    -webkit-order: 0;
+        -ms-flex-order: 0;
+            order: 0;
+    width: 100%; }
+  md-card md-card-content {
+    -webkit-order: 1;
+        -ms-flex-order: 1;
+            order: 1;
+    padding: 16px; }
+
+@media screen and (-ms-high-contrast: active) {
+  md-card {
+    border: 1px solid #fff; }
+ }
+
 md-checkbox {
   box-sizing: border-box;
   display: block;
@@ -3418,32 +3444,6 @@ md-checkbox {
        -moz-user-select: text;
         -ms-user-select: text;
             user-select: text; }
-
-md-card {
-  box-sizing: border-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  margin: 8px;
-  box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26); }
-  md-card > img, md-card > :not(md-card-content) img {
-    -webkit-order: 0;
-        -ms-flex-order: 0;
-            order: 0;
-    width: 100%; }
-  md-card md-card-content {
-    -webkit-order: 1;
-        -ms-flex-order: 1;
-            order: 1;
-    padding: 16px; }
-
-@media screen and (-ms-high-contrast: active) {
-  md-card {
-    border: 1px solid #fff; }
- }
 
 .md-chips {
   box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
@@ -3783,6 +3783,57 @@ md-input-container {
   md-input-container.md-default-theme > md-icon {
     fill: #fff; }
  }
+
+md-list {
+  padding: 8px 0px 8px 0px; }
+
+md-item-content {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  box-sizing: border-box;
+  position: relative;
+  padding: 0px 0px 0px 0px; }
+
+/**
+ * The left tile for a list item.
+ */
+.md-tile-left {
+  min-width: 56px;
+  margin-right: -16px; }
+
+/**
+ * The center content tile for a list item.
+ */
+.md-tile-content {
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  padding: 16px;
+  text-overflow: ellipsis; }
+  .md-tile-content h3 {
+    margin: 0 0 3px 0;
+    font-weight: 400;
+    font-size: 1.1em; }
+  .md-tile-content h4 {
+    margin: 0 0 3px 0;
+    font-weight: 400;
+    font-size: 0.9em; }
+  .md-tile-content p {
+    margin: 0 0 3px 0;
+    font-size: 0.75em; }
+
+/**
+ * The right tile for a list item.
+ */
+.md-tile-right {
+  padding-right: 0px; }
 
 @-webkit-keyframes outer-rotate {
   100% {
@@ -5072,57 +5123,6 @@ md-progress-circular {
         -webkit-animation-name: right-wobble;
                 animation-name: right-wobble; }
 
-md-list {
-  padding: 8px 0px 8px 0px; }
-
-md-item-content {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  box-sizing: border-box;
-  position: relative;
-  padding: 0px 0px 0px 0px; }
-
-/**
- * The left tile for a list item.
- */
-.md-tile-left {
-  min-width: 56px;
-  margin-right: -16px; }
-
-/**
- * The center content tile for a list item.
- */
-.md-tile-content {
-  -webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  padding: 16px;
-  text-overflow: ellipsis; }
-  .md-tile-content h3 {
-    margin: 0 0 3px 0;
-    font-weight: 400;
-    font-size: 1.1em; }
-  .md-tile-content h4 {
-    margin: 0 0 3px 0;
-    font-weight: 400;
-    font-size: 0.9em; }
-  .md-tile-content p {
-    margin: 0 0 3px 0;
-    font-size: 0.75em; }
-
-/**
- * The right tile for a list item.
- */
-.md-tile-right {
-  padding-right: 0px; }
-
 md-progress-linear {
   display: block;
   width: 100%;
@@ -6298,11 +6298,20 @@ md-tabs {
       display: block;
       transition: left 0.5s cubic-bezier(0.35, 0, 0.25, 1);
       position: relative;
-      width: 999999px; }
+      width: 999999px;
+      left: 0;
+      -webkit-transform: translate3d(0, 0, 0);
+              transform: translate3d(0, 0, 0); }
       md-tabs md-tabs-wrapper md-pagination-wrapper:after {
         content: '';
         display: table;
         clear: both; }
+      md-tabs md-tabs-wrapper md-pagination-wrapper.md-center-tabs {
+        width: initial;
+        float: left;
+        left: 50%;
+        -webkit-transform: translate3d(-50%, 0, 0);
+                transform: translate3d(-50%, 0, 0); }
     md-tabs md-tabs-wrapper.md-stretch-tabs md-pagination-wrapper {
       width: 100%;
       display: -webkit-flex;

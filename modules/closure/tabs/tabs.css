@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-7b78071
+ * v0.8.3-master-d0ddad1
  */
 md-tab-data {
   position: relative;
@@ -138,11 +138,20 @@ md-tabs {
       display: block;
       transition: left 0.5s cubic-bezier(0.35, 0, 0.25, 1);
       position: relative;
-      width: 999999px; }
+      width: 999999px;
+      left: 0;
+      -webkit-transform: translate3d(0, 0, 0);
+              transform: translate3d(0, 0, 0); }
       md-tabs md-tabs-wrapper md-pagination-wrapper:after {
         content: '';
         display: table;
         clear: both; }
+      md-tabs md-tabs-wrapper md-pagination-wrapper.md-center-tabs {
+        width: initial;
+        float: left;
+        left: 50%;
+        -webkit-transform: translate3d(-50%, 0, 0);
+                transform: translate3d(-50%, 0, 0); }
     md-tabs md-tabs-wrapper.md-stretch-tabs md-pagination-wrapper {
       width: 100%;
       display: -webkit-flex;

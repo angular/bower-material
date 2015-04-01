@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-7b78071
+ * v0.8.3-master-d0ddad1
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -250,6 +250,7 @@ angular.module('material.components.tabs', [
     ctrl.attachRipple = attachRipple;
     ctrl.shouldStretchTabs = shouldStretchTabs;
     ctrl.shouldPaginate = shouldPaginate;
+    ctrl.shouldCenterTabs = shouldCenterTabs;
     ctrl.insertTab = insertTab;
     ctrl.removeTab = removeTab;
     ctrl.select = select;
@@ -324,7 +325,8 @@ angular.module('material.components.tabs', [
     }
 
     function handleOffsetChange (left) {
-      angular.element(elements.paging).css('left', '-' + left + 'px');
+      var newValue = shouldCenterTabs() ? '' : '-' + left + 'px';
+      angular.element(elements.paging).css('left', newValue);
       $scope.$broadcast('$mdTabsPaginationChanged');
     }
 
@@ -340,6 +342,7 @@ angular.module('material.components.tabs', [
     }
 
     function adjustOffset () {
+      if (shouldCenterTabs()) return;
       var tab = elements.tabs[ctrl.focusIndex],
           left = tab.offsetLeft,
           right = tab.offsetWidth + left;
@@ -476,7 +479,12 @@ angular.module('material.components.tabs', [
       }
     }
 
+    function shouldCenterTabs () {
+      return $scope.centerTabs && !shouldPaginate();
+    }
+
     function shouldPaginate () {
+      if ($scope.noPagination) return false;
       var canvasWidth = $element.prop('clientWidth');
       angular.forEach(elements.tabs, function (tab) { canvasWidth -= tab.offsetWidth; });
       return canvasWidth < 0;
@@ -596,6 +604,8 @@ angular.module('material.components.tabs', [
  * @param {string=}  md-align-tabs Attribute to indicate position of tab buttons: `bottom` or `top`; default is `top`
  * @param {string=} md-stretch-tabs Attribute to indicate whether or not to stretch tabs: `auto`, `always`, or `never`; default is `auto`
  * @param {boolean=} md-dynamic-height When enabled, the tab wrapper will resize based on the contents of the selected tab
+ * @param {boolean=} md-center-tabs When enabled, tabs will be centered provided there is no need for pagination
+ * @param {boolean=} md-no-pagination When enabled, pagination will remain off
  *
  * @usage
  * <hljs lang="html">
@@ -629,7 +639,9 @@ angular.module('material.components.tabs', [
   function MdTabs ($mdTheming) {
     return {
       scope: {
+        noPagination:  '=?mdNoPagination',
         dynamicHeight: '=?mdDynamicHeight',
+        centerTabs:    '=?mdCenterTabs',
         selectedIndex: '=?mdSelected',
         stretchTabs: '@?mdStretchTabs'
       },
@@ -665,6 +677,7 @@ angular.module('material.components.tabs', [
               ng-keydown="$mdTabsCtrl.keydown($event)"\
               role="tablist">\
             <md-pagination-wrapper\
+                ng-class="{ \'md-center-tabs\': $mdTabsCtrl.shouldCenterTabs() }"\
                 md-tab-scroll="$mdTabsCtrl.scroll($event)">\
               <md-tab-item\
                   tabindex="-1"\
