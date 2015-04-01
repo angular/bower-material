@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-9f0d428
+ * v0.8.3-master-63c8709
  */
 html, body {
   height: 100%;
@@ -3369,6 +3369,43 @@ md-card {
     border: 1px solid #fff; }
  }
 
+.md-chips {
+  box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
+  display: block;
+  font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  padding: 8px;
+  vertical-align: middle; }
+  .md-chips .md-chip {
+    border-radius: 11px;
+    box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
+    display: inline-block;
+    height: 22px;
+    margin: 0 0 0 8px;
+    line-height: 22px;
+    padding: 0 8px 0 8px;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0); }
+    .md-chips .md-chip:first-child {
+      margin: 0; }
+    .md-chips .md-chip.selected {
+      -webkit-transform: translate3d(0, -1px, 0);
+              transform: translate3d(0, -1px, 0); }
+    .md-chips .md-chip .md-button {
+      padding: 2px;
+      line-height: 18px;
+      min-width: 0;
+      margin: 0 0 0 0.5em; }
+  .md-chips .md-chip-worker {
+    display: inline-block;
+    line-height: 25px;
+    /* 3px are added to height of chip for...the shadow? */ }
+    .md-chips .md-chip-worker:not(:first-child) {
+      margin: 0 0 0 8px; }
+  .md-chips .md-chip-input {
+    background-color: transparent;
+    border-width: 0px; }
+
 md-checkbox {
   box-sizing: border-box;
   display: block;
@@ -3444,43 +3481,6 @@ md-checkbox {
        -moz-user-select: text;
         -ms-user-select: text;
             user-select: text; }
-
-.md-chips {
-  box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
-  display: block;
-  font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
-  font-size: 13px;
-  padding: 8px;
-  vertical-align: middle; }
-  .md-chips .md-chip {
-    border-radius: 11px;
-    box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
-    display: inline-block;
-    height: 22px;
-    margin: 0 0 0 8px;
-    line-height: 22px;
-    padding: 0 8px 0 8px;
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0); }
-    .md-chips .md-chip:first-child {
-      margin: 0; }
-    .md-chips .md-chip.selected {
-      -webkit-transform: translate3d(0, -1px, 0);
-              transform: translate3d(0, -1px, 0); }
-    .md-chips .md-chip .md-button {
-      padding: 2px;
-      line-height: 18px;
-      min-width: 0;
-      margin: 0 0 0 0.5em; }
-  .md-chips .md-chip-worker {
-    display: inline-block;
-    line-height: 25px;
-    /* 3px are added to height of chip for...the shadow? */ }
-    .md-chips .md-chip-worker:not(:first-child) {
-      margin: 0 0 0 8px; }
-  .md-chips .md-chip-input {
-    background-color: transparent;
-    border-width: 0px; }
 
 md-content {
   display: block;
