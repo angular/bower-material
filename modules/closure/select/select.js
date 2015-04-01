@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-38e8196
+ * v0.8.3-master-aa440ef
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -80,7 +80,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
 
   return {
     restrict: 'E',
-    require: ['mdSelect', 'ngModel'],
+    require: ['mdSelect', 'ngModel', '?^form'],
     compile: compile,
     controller: function() { } // empty placeholder controller to be initialized in link
   };
@@ -119,6 +119,20 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
       );
     }
 
+    if (attr.name) {
+      var autofillClone = angular.element('<select style="position: absolute; z-index: -1">');
+      autofillClone.attr({
+        'name': '.' + attr.name,
+        'ng-model': attr.ngModel
+      });
+      var opts = element.find('md-option');
+      angular.forEach(opts, function(el) {
+        var el = angular.element('<option value="' + el.getAttribute('value') + '">' + el.innerHTML + '</option>');
+        autofillClone.append(el);
+      });
+      element.parent().append(autofillClone);
+    }
+
     // Use everything that's left inside element.contents() as the contents of the menu
     var selectTemplate = '<div class="md-select-menu-container">' +
         '<md-select-menu ' +
@@ -136,10 +150,17 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
 
       var mdSelectCtrl = ctrls[0];
       var ngModel = ctrls[1];
+      var formCtrl = ctrls[2];
+
       var labelEl = element.find('md-select-label');
       var customLabel = labelEl.text().length !== 0;
       var selectContainer, selectScope, selectMenuCtrl;
       createSelect();
+
+      if (attr.name && formCtrl) {
+        var selectEl = element.parent()[0].querySelector('select[name=".' + attr.name + '"]')
+        formCtrl.$removeControl(angular.element(selectEl).controller());
+      }
 
       var originalRender = ngModel.$render;
       ngModel.$render = function() {
