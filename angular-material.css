@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-c63659a
+ * v0.8.3-master-f142469
  */
 html, body {
   height: 100%;
@@ -5657,11 +5657,13 @@ md-radio-group {
     transition-duration: 250ms; }
 
 md-input-container > md-select {
-  margin: 0; }
+  margin: 0;
+  margin-top: 1.4em; }
 
 md-select {
   display: inline-block;
-  margin-bottom: 1.4em;
+  margin-top: 1.5em;
+  margin-bottom: 1.625em;
   margin-left: 2px;
   margin-right: 2px; }
   md-select:focus {
