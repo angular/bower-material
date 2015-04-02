@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-d154a8e
+ * v0.8.3-master-ebcd7f0
  */
 md-bottom-sheet {
   position: absolute;
@@ -51,6 +51,7 @@ md-bottom-sheet {
     md-bottom-sheet md-item:hover {
       cursor: pointer; }
   md-bottom-sheet.md-list md-item {
+    padding: 0;
     -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;

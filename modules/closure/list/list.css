@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-d154a8e
+ * v0.8.3-master-ebcd7f0
  */
 md-list {
   display: block;
@@ -11,17 +11,27 @@ md-list {
     font-weight: 500;
     font-size: 0.875em; }
 
-md-item.md-no-style, md-item .md-no-style {
+md-item.md-no-proxy, md-item .md-no-style {
+  position: relative;
   padding: 0px 16px;
   -webkit-flex: 1;
       -ms-flex: 1;
           flex: 1; }
-  md-item.md-no-style:focus, md-item .md-no-style:focus {
+  md-item.md-no-proxy:focus, md-item .md-no-style:focus {
     outline: none; }
 md-item.md-with-secondary {
   padding-right: 16px; }
 md-item.md-clickable:hover {
   cursor: pointer; }
+md-item md-divider {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 100%; }
+  md-item md-divider[md-inset] {
+    left: 96px;
+    width: calc(100% - 96px);
+    margin: 0; }
 
 md-item, md-item .md-item-inner {
   display: -webkit-flex;

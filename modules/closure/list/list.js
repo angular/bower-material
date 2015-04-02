@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-d154a8e
+ * v0.8.3-master-ebcd7f0
  */
 goog.provide('ng.material.components.list');
 goog.require('ng.material.core');
@@ -106,7 +106,7 @@ function mdItemDirective($document, $log, $mdUtil, $mdAria) {
         if (hasProxiedElement) {
           wrapIn('div');
         } else {
-          tEl.addClass('md-no-style');
+          tEl.addClass('md-no-proxy');
         }
       } else {
         wrapIn('button');
