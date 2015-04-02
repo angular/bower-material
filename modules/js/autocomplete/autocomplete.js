@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-01e90c0
+ * v0.8.3-master-dcf9268
  */
 (function () {
   'use strict';
@@ -54,6 +54,7 @@
 
     self.keydown  = keydown;
     self.blur     = blur;
+    self.focus    = focus;
     self.clear    = clearValue;
     self.select   = select;
     self.fetch    = $mdUtil.debounce(fetchResults);
@@ -146,31 +147,25 @@
       if ($scope.textChange && searchText !== previousSearchText)
         $scope.textChange(getItemScope($scope.selectedItem));
       //-- cancel results if search text is not long enough
-      if (!searchText || searchText.length < Math.max(parseInt($scope.minLength, 10), 1)) {
+      if (!isMinLengthMet()) {
         self.loading = false;
         self.matches = [];
         self.hidden = shouldHide();
         updateMessages();
-        return;
-      }
-      var term = searchText.toLowerCase();
-      //-- cancel promise if a promise is in progress
-      if (promise && promise.cancel) {
-        promise.cancel();
-        promise = null;
-      }
-      //-- if results are cached, pull in cached results
-      if (!$scope.noCache && cache[term]) {
-        self.matches = cache[term];
-        updateMessages();
       } else {
-        fetchResults(searchText);
+        handleQuery();
       }
-      self.hidden = shouldHide();
     }
 
     function blur () {
       if (!noBlur) self.hidden = true;
+    }
+
+    function focus () {
+      //-- if searchText is null, let's force it to be a string
+      if (!angular.isString($scope.searchText)) return $scope.searchText = '';
+      self.hidden = shouldHide();
+      if (!self.hidden) handleQuery();
     }
 
     function keydown (event) {
@@ -207,6 +202,10 @@
 
     //-- getters
 
+    function getMinLength () {
+      return angular.isNumber($scope.minLength) ? $scope.minLength : 1;
+    }
+
     function getDisplayValue (item) {
       return (item && $scope.itemText) ? $scope.itemText(getItemScope(item)) : item;
     }
@@ -223,6 +222,7 @@
     }
 
     function shouldHide () {
+      if (!isMinLengthMet()) return true;
       return self.matches.length === 1
           && $scope.searchText === getDisplayValue(self.matches[0])
           && $scope.selectedItem === self.matches[0];
@@ -230,6 +230,10 @@
 
     function getCurrentDisplayValue () {
       return getDisplayValue(self.matches[self.index]);
+    }
+
+    function isMinLengthMet () {
+      return $scope.searchText.length >= getMinLength();
     }
 
     //-- actions
@@ -294,6 +298,24 @@
       } else if (bot > elements.ul.scrollTop + hgt) {
         elements.ul.scrollTop = bot - hgt;
       }
+    }
+
+    function handleQuery () {
+      var searchText = $scope.searchText,
+          term = searchText.toLowerCase();
+      //-- cancel promise if a promise is in progress
+      if (promise && promise.cancel) {
+        promise.cancel();
+        promise = null;
+      }
+      //-- if results are cached, pull in cached results
+      if (!$scope.noCache && cache[term]) {
+        self.matches = cache[term];
+        updateMessages();
+      } else {
+        fetchResults(searchText);
+      }
+      self.hidden = shouldHide();
     }
 
   }
@@ -377,6 +399,7 @@
                   ng-model="$mdAutocompleteCtrl.scope.searchText"\
                   ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
                   ng-blur="$mdAutocompleteCtrl.blur()"\
+                  ng-focus="$mdAutocompleteCtrl.focus()"\
                   aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
                   aria-label="{{floatingLabel}}"\
                   aria-autocomplete="list"\
@@ -394,6 +417,7 @@
                 ng-model="$mdAutocompleteCtrl.scope.searchText"\
                 ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
                 ng-blur="$mdAutocompleteCtrl.blur()"\
+                ng-focus="$mdAutocompleteCtrl.focus()"\
                 placeholder="{{placeholder}}"\
                 aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
                 aria-label="{{placeholder}}"\
@@ -418,7 +442,7 @@
                 ng-mouseup="$mdAutocompleteCtrl.mouseUp()">\
               <li ng-repeat="(index, item) in $mdAutocompleteCtrl.matches"\
                   ng-class="{ selected: index === $mdAutocompleteCtrl.index }"\
-                  ng-show="$mdAutocompleteCtrl.scope.searchText && !$mdAutocompleteCtrl.hidden"\
+                  ng-hide="$mdAutocompleteCtrl.hidden"\
                   ng-click="$mdAutocompleteCtrl.select(index)"\
                   md-autocomplete-list-item-template="contents"\
                   md-autocomplete-list-item="$mdAutocompleteCtrl.itemName">\
