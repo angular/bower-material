@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-4e3a25b
+ * v0.8.3-master-5bb6deb
  */
 md-list.md-THEME_NAME-theme md-item.md-double-line .md-item-text h3, md-list.md-THEME_NAME-theme md-item.md-double-line .md-item-text h4, md-list.md-THEME_NAME-theme md-item.md-triple-line .md-item-text h3, md-list.md-THEME_NAME-theme md-item.md-triple-line .md-item-text h4 {
   color: '{{foreground-1}}'; }
