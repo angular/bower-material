@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-f308779
+ * v0.8.3-master-01e90c0
  */
 goog.provide('ng.material.components.tooltip');
 goog.require('ng.material.core');
@@ -30,11 +30,12 @@ angular
  *
  * @usage
  * <hljs lang="html">
- * <md-icon icon="/img/icons/ic_play_arrow_24px.svg">
+ * <md-button class="md-fab md-accent" aria-label="Play">
  *   <md-tooltip>
  *     Play Music
  *   </md-tooltip>
- * </md-icon>
+ *   <md-icon icon="/img/icons/ic_play_arrow_24px.svg"></md-icon>
+ * </md-button>
  * </hljs>
  *
  * @param {expression=} md-visible Boolean bound to whether the tooltip is
