@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3eee060
+ * v0.8.3-master-2e157d2
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -345,95 +345,99 @@ goog.require('ng.material.core');
 
   function MdAutocomplete () {
     return {
-      transclude:   true,
       controller:   'MdAutocompleteCtrl',
       controllerAs: '$mdAutocompleteCtrl',
       link:         link,
       scope:        {
-        searchText:    '=mdSearchText',
-        selectedItem:  '=mdSelectedItem',
+        name:          '@',
+        searchText:    '=?mdSearchText',
+        selectedItem:  '=?mdSelectedItem',
         itemsExpr:     '@mdItems',
         itemText:      '&mdItemText',
         placeholder:   '@placeholder',
         noCache:       '=?mdNoCache',
-        itemChange:    '&mdSelectedItemChange',
-        textChange:    '&mdSearchTextChange',
-        isDisabled:    '=ngDisabled',
-        minLength:     '=mdMinLength',
-        delay:         '=mdDelay',
+        itemChange:    '&?mdSelectedItemChange',
+        textChange:    '&?mdSearchTextChange',
+        isDisabled:    '=?ngDisabled',
+        minLength:     '=?mdMinLength',
+        delay:         '=?mdDelay',
         autofocus:     '=?mdAutofocus',
-        floatingLabel: '@mdFloatingLabel',
+        floatingLabel: '@?mdFloatingLabel',
         autoselect:    '=?mdAutoselect'
       },
-      template: '\
-        <md-autocomplete-wrap role="listbox">\
-          <md-input-container ng-if="floatingLabel">\
-            <label>{{floatingLabel}}</label>\
+      template: function (element, attr) {
+        attr.$mdAutocompleteTemplate = element.html();
+        return '\
+          <md-autocomplete-wrap role="listbox">\
+            <md-input-container ng-if="floatingLabel">\
+              <label>{{floatingLabel}}</label>\
+              <input type="text"\
+                  id="fl-input-{{$mdAutocompleteCtrl.id}}"\
+                  name="{{name}}"\
+                  autocomplete="off"\
+                  ng-disabled="isDisabled"\
+                  ng-model="$mdAutocompleteCtrl.scope.searchText"\
+                  ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
+                  ng-blur="$mdAutocompleteCtrl.blur()"\
+                  aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
+                  aria-label="{{floatingLabel}}"\
+                  aria-autocomplete="list"\
+                  aria-haspopup="true"\
+                  aria-activedescendant=""\
+                  aria-expanded="{{!$mdAutocompleteCtrl.hidden}}"/>\
+                \
+            </md-input-container>\
             <input type="text"\
-                id="fl-input-{{$mdAutocompleteCtrl.id}}"\
-                name="fl-input-{{$mdAutocompleteCtrl.id}}"\
+                id="input-{{$mdAutocompleteCtrl.id}}"\
+                name="{{name}}"\
+                ng-if="!floatingLabel"\
                 autocomplete="off"\
                 ng-disabled="isDisabled"\
                 ng-model="$mdAutocompleteCtrl.scope.searchText"\
                 ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
                 ng-blur="$mdAutocompleteCtrl.blur()"\
+                placeholder="{{placeholder}}"\
                 aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
-                aria-label="{{floatingLabel}}"\
+                aria-label="{{placeholder}}"\
                 aria-autocomplete="list"\
                 aria-haspopup="true"\
                 aria-activedescendant=""\
                 aria-expanded="{{!$mdAutocompleteCtrl.hidden}}"/>\
-              \
-          </md-input-container>\
-          <input type="text"\
-              id="input-{{$mdAutocompleteCtrl.id}}"\
-              name="input-{{$mdAutocompleteCtrl.id}}"\
-              ng-if="!floatingLabel"\
-              autocomplete="off"\
-              ng-disabled="isDisabled"\
-              ng-model="$mdAutocompleteCtrl.scope.searchText"\
-              ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
-              ng-blur="$mdAutocompleteCtrl.blur()"\
-              placeholder="{{placeholder}}"\
-              aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
-              aria-label="{{placeholder}}"\
-              aria-autocomplete="list"\
-              aria-haspopup="true"\
-              aria-activedescendant=""\
-              aria-expanded="{{!$mdAutocompleteCtrl.hidden}}"/>\
-          <button\
-              type="button"\
-              ng-if="$mdAutocompleteCtrl.scope.searchText && !isDisabled"\
-              ng-click="$mdAutocompleteCtrl.clear()">\
-            <md-icon md-svg-icon="cancel"></md-icon>\
-            <span class="visually-hidden">Clear</span>\
-          </button>\
-          <md-progress-linear\
-              ng-if="$mdAutocompleteCtrl.loading"\
-              md-mode="indeterminate"></md-progress-linear>\
-          <ul role="presentation"\
-              id="ul-{{$mdAutocompleteCtrl.id}}"\
-              ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
-              ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
-              ng-mouseup="$mdAutocompleteCtrl.mouseUp()">\
-            <li ng-repeat="(index, item) in $mdAutocompleteCtrl.matches"\
-                ng-class="{ selected: index === $mdAutocompleteCtrl.index }"\
-                ng-show="$mdAutocompleteCtrl.scope.searchText && !$mdAutocompleteCtrl.hidden"\
-                ng-click="$mdAutocompleteCtrl.select(index)"\
-                ng-transclude\
-                md-autocomplete-list-item="$mdAutocompleteCtrl.itemName">\
-            </li>\
-          </ul>\
-        </md-autocomplete-wrap>\
-        <aria-status\
-            class="visually-hidden"\
-            role="status"\
-            aria-live="assertive">\
-          <p ng-repeat="message in $mdAutocompleteCtrl.messages">{{message.display}}</p>\
-        </aria-status>'
+            <button\
+                type="button"\
+                ng-if="$mdAutocompleteCtrl.scope.searchText && !isDisabled"\
+                ng-click="$mdAutocompleteCtrl.clear()">\
+              <md-icon md-svg-icon="cancel"></md-icon>\
+              <span class="visually-hidden">Clear</span>\
+            </button>\
+            <md-progress-linear\
+                ng-if="$mdAutocompleteCtrl.loading"\
+                md-mode="indeterminate"></md-progress-linear>\
+            <ul role="presentation"\
+                id="ul-{{$mdAutocompleteCtrl.id}}"\
+                ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
+                ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
+                ng-mouseup="$mdAutocompleteCtrl.mouseUp()">\
+              <li ng-repeat="(index, item) in $mdAutocompleteCtrl.matches"\
+                  ng-class="{ selected: index === $mdAutocompleteCtrl.index }"\
+                  ng-show="$mdAutocompleteCtrl.scope.searchText && !$mdAutocompleteCtrl.hidden"\
+                  ng-click="$mdAutocompleteCtrl.select(index)"\
+                  md-autocomplete-list-item-template="contents"\
+                  md-autocomplete-list-item="$mdAutocompleteCtrl.itemName">\
+              </li>\
+            </ul>\
+          </md-autocomplete-wrap>\
+          <aria-status\
+              class="visually-hidden"\
+              role="status"\
+              aria-live="assertive">\
+            <p ng-repeat="message in $mdAutocompleteCtrl.messages">{{message.display}}</p>\
+          </aria-status>';
+      }
     };
 
     function link (scope, element, attr) {
+      scope.contents = attr.$mdAutocompleteTemplate;
       angular.forEach(scope.$$isolateBindings, function (binding, key) {
         if (binding.optional && angular.isUndefined(scope[key])) {
           scope[key] = attr.hasOwnProperty(attr.$normalize(binding.attrName));
@@ -523,6 +527,7 @@ goog.require('ng.material.core');
       var newScope = ctrl.parent.$new(false, ctrl.parent),
           itemName = ctrl.scope.$eval(attr.mdAutocompleteListItem);
       newScope[itemName] = scope.item;
+      element.html(ctrl.scope.$eval(attr.mdAutocompleteListItemTemplate));
       $compile(element.contents())(newScope);
       element.attr({ 'role': 'option', 'id': 'item_' + $mdUtil.nextUid() });
     }
