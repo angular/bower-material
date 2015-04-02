@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-5bb6deb
+ * v0.8.3-master-d154a8e
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.core');
@@ -135,8 +135,10 @@ goog.require('ng.material.core');
   MdChipsCtrl.prototype.defaultInputKeydown = function(event) {
     switch (event.keyCode) {
       case this.$mdConstant.KEY_CODE.ENTER:
-        event.preventDefault();
-        this.appendChipBuffer();
+        if ( this.chipBuffer ) {
+          event.preventDefault();
+          this.appendChipBuffer();
+        }
         break;
       case this.$mdConstant.KEY_CODE.BACKSPACE: // backspace
         if (!this.chipBuffer) {
