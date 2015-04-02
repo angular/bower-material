@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-2e157d2
+ * v0.8.3-master-f308779
  */
 goog.provide('ng.material.components.toolbar');
 goog.require('ng.material.components.content');
