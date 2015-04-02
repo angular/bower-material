@@ -2,9 +2,9 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-de787f8
+ * v0.8.3-master-3eee060
  */
-@import url(http://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
 html, body {
   height: 100%;
   color: rgba(0, 0, 0, 0.87);
@@ -119,6 +119,17 @@ ul {
             transform: scale(1); }
   .md-ripple.md-ripple-active, .md-ripple.md-ripple-full, .md-ripple.md-ripple-visible {
     opacity: 0.2; }
+
+.md-padding {
+  padding: 8px; }
+
+.md-margin {
+  margin: 8px; }
+
+@media (min-width: 600px) {
+  .md-padding {
+    padding: 16px; }
+ }
 
 html {
   font-size: 62.5%;
