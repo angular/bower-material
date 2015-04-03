@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-d47b03a
+ * v0.8.3-master-c84899d
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -149,7 +149,9 @@ angular.module('material.components.tabs', [
       scope: {
         label:    '@',
         active:   '=?mdActive',
-        disabled: '=?ngDisabled'
+        disabled: '=?ngDisabled',
+        select:   '&?mdOnSelect',
+        deselect: '&?mdOnDeselect'
       },
       link: link
     };
@@ -158,11 +160,11 @@ angular.module('material.components.tabs', [
       var tabs = element.parent()[0].getElementsByTagName('md-tab'),
           index = Array.prototype.indexOf.call(tabs, element[0]),
           data = ctrl.insertTab({
-            scope: scope,
-            parent: scope.$parent,
-            index: index,
+            scope:    scope,
+            parent:   scope.$parent,
+            index:    index,
             template: getTemplate(),
-            label: getLabel()
+            label:    getLabel()
           }, index);
 
       scope.$watch('active', function (active) { if (active) ctrl.select(data.getIndex()); });
@@ -400,6 +402,8 @@ angular.module('material.components.tabs', [
       updateInkBarStyles();
       updateHeightFromContent();
       $scope.$broadcast('$mdTabsChanged');
+      ctrl.tabs[oldValue] && ctrl.tabs[oldValue].scope.deselect();
+      ctrl.tabs[newValue].scope.select();
     }
 
     function handleResizeWhenVisible () {
