@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-c84899d
+ * v0.8.3-master-1ac0c93
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -481,8 +481,9 @@ goog.require('ng.material.core');
   function MdHighlightCtrl ($scope, $element, $interpolate) {
     var term = $element.attr('md-highlight-text'),
         text = $interpolate($element.text())($scope),
+        flags = $element.attr('md-highlight-flags') || '',
         watcher = $scope.$watch(term, function (term) {
-          var regex = new RegExp('^' + sanitize(term), 'i'),
+          var regex = getRegExp(term, flags),
               html = text.replace(regex, '<span class="highlight">$&</span>');
           $element.html(html);
         });
@@ -491,6 +492,14 @@ goog.require('ng.material.core');
     function sanitize (term) {
       if (!term) return term;
       return term.replace(/[\*\[\]\(\)\{\}\\\^\$]/g, '\\$&');
+    }
+
+    function getRegExp (text, flags) {
+      var str = '';
+      if (flags.indexOf('^') >= 1) str += '^';
+      str += text;
+      if (flags.indexOf('$') >= 1) str += '$';
+      return new RegExp(sanitize(str), flags.replace(/[\$\^]/g, ''));
     }
   }
   MdHighlightCtrl.$inject = ["$scope", "$element", "$interpolate"];
@@ -513,7 +522,13 @@ goog.require('ng.material.core');
    * an element.  Highlighted text will be wrapped in `<span class="highlight"></span>` which can
    * be styled through CSS.  Please note that child elements may not be used with this directive.
    *
-   * @param {string=} md-highlight-text A model to be searched for
+   * @param {string} md-highlight-text A model to be searched for
+   * @param {string=} md-highlight-flags A list of flags (loosely based on JavaScript RexExp flags).
+   *    #### **Supported flags**:
+   *    - `g`: Find all matches within the provided text
+   *    - `i`: Ignore case when searching for matches
+   *    - `$`: Only match if the text ends with the search term
+   *    - `^`: Only match if the text begins with the search term
    *
    * @usage
    * <hljs lang="html">
