@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-fdaed39
+ * v0.8.3-master-ff794ec
  */
 goog.provide('ng.material.components.card');
 goog.require('ng.material.core');
@@ -34,7 +34,8 @@ angular.module('material.components.card', [
  * The `<md-card>` directive is a container element used within `<md-content>` containers.
  *
  * An image included as a direct descendant will fill the card's width, while the `<md-card-content>`
- * container will wrap text content and provide padding.
+ * container will wrap text content and provide padding. An `<md-card-footer>` element can be
+ * optionally included to put content flush against the bottom edge of the card.
  *
  * Cards have constant width and variable heights; where the maximum height is limited to what can
  * fit within a single view on a platform, but it can temporarily expand as needed.
@@ -42,13 +43,14 @@ angular.module('material.components.card', [
  * @usage
  * <hljs lang="html">
  * <md-card>
- *  <img src="img/washedout.png" class="md-card-image">
+ *  <img src="card-image.png" class="md-card-image">
  *  <md-card-content>
- *    <h2>Paracosm</h2>
- *    <p>
- *      The titles of Washed Out's breakthrough song and the first single from Paracosm share the * two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
- *    </p>
- *  <md-card-content>
+ *    <h2>Card headline</h2>
+ *    <p>Card content</p>
+ *  </md-card-content>
+ *  <md-card-footer>
+ *    Card footer
+ *  </md-card-footer>
  * </md-card>
  * </hljs>
  *
