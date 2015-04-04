@@ -1,8 +1,8 @@
 {
   "name": "angular-material-autocomplete",
-  "version": "0.8.3-master-ff794ec",
+  "version": "0.8.3-master-33049cf",
   "dependencies": {
-    "angular-material-core": "0.8.3-master-ff794ec",
-    "angular-material-icon": "0.8.3-master-ff794ec"
+    "angular-material-core": "0.8.3-master-33049cf",
+    "angular-material-icon": "0.8.3-master-33049cf"
   }
 }
