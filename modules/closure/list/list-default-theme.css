@@ -2,17 +2,17 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-036fdde
+ * v0.8.3-master-77ed2f5
  */
-md-list.md-THEME_NAME-theme md-item.md-double-line .md-item-text h3, md-list.md-THEME_NAME-theme md-item.md-double-line .md-item-text h4, md-list.md-THEME_NAME-theme md-item.md-triple-line .md-item-text h3, md-list.md-THEME_NAME-theme md-item.md-triple-line .md-item-text h4 {
+md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h3, md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h4, md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h3, md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h4 {
   color: '{{foreground-1}}'; }
-md-list.md-THEME_NAME-theme md-item.md-double-line .md-item-text p, md-list.md-THEME_NAME-theme md-item.md-triple-line .md-item-text p {
+md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text p, md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text p {
   color: '{{foreground-2}}'; }
 md-list.md-THEME_NAME-theme .md-proxy-focus.md-focused div.md-no-style, md-list.md-THEME_NAME-theme .md-secondary:focus, md-list.md-THEME_NAME-theme .md-no-style:focus {
   background-color: '{{background-100}}'; }
-md-list.md-THEME_NAME-theme md-item > md-icon {
+md-list.md-THEME_NAME-theme md-list-item > md-icon {
   color: '{{foreground-2}}'; }
-  md-list.md-THEME_NAME-theme md-item > md-icon.md-highlight {
+  md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight {
     color: '{{primary-color}}'; }
-    md-list.md-THEME_NAME-theme md-item > md-icon.md-highlight.md-accent {
+    md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight.md-accent {
       color: '{{accent-color}}'; }
