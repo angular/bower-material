@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-1a81f0c
+ * v0.8.3-master-0fe35cc
  */
 md-backdrop {
   z-index: 50;
@@ -20,6 +20,7 @@ md-backdrop {
   md-backdrop.md-sidenav-backdrop {
     z-index: 59; }
   md-backdrop.md-click-catcher {
+    top: 0px;
     position: fixed; }
   md-backdrop.ng-enter {
     -webkit-animation: cubic-bezier(0.25, 0.8, 0.25, 1) mdBackdropFadeIn 0.5s both;
