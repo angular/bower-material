@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-77ed2f5
+ * v0.8.3-master-f6f2187
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -967,6 +967,7 @@ function SelectProvider($$interimElementProvider) {
 
       // Keep left and top within the window
       var containerRect = containerNode.getBoundingClientRect();
+      debugger;
       containerNode.style.left = clamp(bounds.left, left, bounds.right - containerRect.width) + 'px';
       containerNode.style.top = clamp(bounds.top, top, bounds.bottom - containerRect.height) + 'px';
       selectNode.style[$mdConstant.CSS.TRANSFORM_ORIGIN] = transformOrigin;
@@ -990,7 +991,7 @@ function SelectProvider($$interimElementProvider) {
   }
 
   function clamp(min, n, max) {
-    return Math.min(max, Math.max(n, min));
+    return Math.max(min, Math.min(n, max));
   }
 
   function getOffsetRect(node) {
