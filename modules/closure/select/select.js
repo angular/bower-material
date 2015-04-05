@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-d88f755
+ * v0.8.3-master-036fdde
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -120,16 +120,21 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
     }
 
     if (attr.name) {
-      var autofillClone = angular.element('<select style="position: absolute; z-index: -1">');
+      var autofillClone = angular.element('<select class="visually-hidden">');
       autofillClone.attr({
         'name': '.' + attr.name,
-        'ng-model': attr.ngModel
+        'ng-model': attr.ngModel,
+        'aria-hidden': 'true',
+        'tabindex': '-1'
       });
       var opts = element.find('md-option');
       angular.forEach(opts, function(el) {
-        var el = angular.element('<option value="' + el.getAttribute('value') + '">' + el.innerHTML + '</option>');
-        autofillClone.append(el);
+        var newEl = angular.element('<option>' + el.innerHTML + '</option>');
+        if (el.hasAttribute('ng-value')) newEl.attr('ng-value', el.getAttribute('ng-value'));
+        else if (el.hasAttribute('value')) newEl.attr('value', el.getAttribute('value'));
+        autofillClone.append(newEl);
       });
+      
       element.parent().append(autofillClone);
     }
 
