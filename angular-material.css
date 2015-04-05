@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-13b9c69
+ * v0.8.3-master-342af6a
  */
 @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
 html, body {
@@ -3502,6 +3502,25 @@ md-checkbox {
     background-color: transparent;
     border-width: 0; }
 
+md-content {
+  display: block;
+  position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; }
+  md-content[md-scroll-y] {
+    overflow-y: auto;
+    overflow-x: hidden; }
+  md-content[md-scroll-x] {
+    overflow-x: auto;
+    overflow-y: hidden; }
+  md-content.md-padding {
+    padding: 8px; }
+
+@media (min-width: 600px) {
+  md-content.md-padding {
+    padding: 16px; }
+ }
+
 .md-dialog-container {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3578,25 +3597,6 @@ md-dialog {
 @media screen and (-ms-high-contrast: active) {
   md-dialog {
     border: 1px solid #fff; }
- }
-
-md-content {
-  display: block;
-  position: relative;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch; }
-  md-content[md-scroll-y] {
-    overflow-y: auto;
-    overflow-x: hidden; }
-  md-content[md-scroll-x] {
-    overflow-x: auto;
-    overflow-y: hidden; }
-  md-content.md-padding {
-    padding: 8px; }
-
-@media (min-width: 600px) {
-  md-content.md-padding {
-    padding: 16px; }
  }
 
 md-divider {

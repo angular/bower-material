@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-13b9c69
+ * v0.8.3-master-342af6a
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -579,7 +579,8 @@ function OptionDirective($mdInkRipple, $mdUtil) {
     } else if (angular.isDefined(attr.value)) {
       setOptionValue(attr.value);
     } else {
-      throw new Error("Expected either ngValue or value attr");
+      debugger;
+      scope.$watch(function() { return element.text(); }, setOptionValue)
     }
 
     attr.$observe('selected', function(selected) {
