@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-e18450f
+ * v0.8.3-master-2f33573
  */
 @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
 html, body {
@@ -6437,7 +6437,7 @@ md-slider {
   .md-sticky-clone[sticky-state="active"] {
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }
-    .md-sticky-clone[sticky-state="active"]:not(.md-sticky-no-effect):after {
+    .md-sticky-clone[sticky-state="active"]:not(.md-sticky-no-effect) .md-subheader-inner {
       -webkit-animation: subheaderStickyHoverIn 0.3s ease-out both;
               animation: subheaderStickyHoverIn 0.3s ease-out both; }
 
@@ -6474,10 +6474,11 @@ md-slider {
   font-size: 1.4rem;
   font-weight: 500;
   line-height: 1em;
-  padding: 16px 0px 16px 16px;
   margin: 0 0 0 0;
   margin-right: 16px;
   position: relative; }
+  .md-subheader .md-subheader-inner {
+    padding: 16px 0px 16px 16px; }
   .md-subheader:not(.md-sticky-no-effect) {
     transition: 0.2s ease-out margin; }
     .md-subheader:not(.md-sticky-no-effect):after {
@@ -6491,7 +6492,7 @@ md-slider {
       z-index: 2; }
     .md-subheader:not(.md-sticky-no-effect)[sticky-state="active"] {
       margin-top: -2px; }
-    .md-subheader:not(.md-sticky-no-effect):not(.md-sticky-clone)[sticky-prev-state="active"]:after {
+    .md-subheader:not(.md-sticky-no-effect):not(.md-sticky-clone)[sticky-prev-state="active"] .md-subheader-inner:after {
       -webkit-animation: subheaderStickyHoverOut 0.3s ease-out both;
               animation: subheaderStickyHoverOut 0.3s ease-out both; }
   .md-subheader .md-subheader-content {
