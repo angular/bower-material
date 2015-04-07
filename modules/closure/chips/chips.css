@@ -2,42 +2,60 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-5be98b8
+ * v0.8.3-master-06d3856
  */
 .md-chips {
   box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
   display: block;
   font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
   font-size: 1.3rem;
-  padding: 0.8rem;
+  padding: 0 0.8rem 0.8rem 0.8rem;
   vertical-align: middle; }
   .md-chips .md-chip {
-    border-radius: 1.1rem;
+    border-radius: 1.6rem;
     display: inline-block;
-    height: 2.2rem;
-    margin: 0 0 0 0.8rem;
-    line-height: 2.2rem;
-    padding: 0 0.8rem 0 0.8rem; }
-    .md-chips .md-chip:first-child {
-      margin: 0; }
-    .md-chips .md-chip.selected, .md-chips .md-chip:focus {
-      outline: none;
-      -webkit-transform: translate3d(0, -1px, 0);
-              transform: translate3d(0, -1px, 0);
+    height: 3.2rem;
+    line-height: 3.2rem;
+    margin: 0.8rem 0.8rem 0 0;
+    padding: 0 0.8rem 0 1.2rem; }
+    .md-chips .md-chip .md-chip-content {
+      display: inline-block;
+      padding-right: 0.4rem; }
+      .md-chips .md-chip .md-chip-content:focus {
+        outline: none; }
+    .md-chips .md-chip.selected {
       box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26); }
-    .md-chips .md-chip .md-button {
-      padding: 0.2rem;
-      line-height: 1.8rem;
+    .md-chips .md-chip .md-button.md-chip-remove {
+      line-height: 3.2rem;
+      margin: 0 0 0 0.4rem;
       min-width: 0;
-      margin: 0 0 0 0.5em; }
-      .md-chips .md-chip .md-button md-icon {
-        height: 1.6rem;
-        width: 1.6rem; }
-  .md-chips .md-chip-worker {
+      padding: 0; }
+      .md-chips .md-chip .md-button.md-chip-remove md-icon {
+        height: 1.8rem;
+        width: 1.8rem; }
+  .md-chips .md-chip-input-container {
     display: inline-block;
-    line-height: 2.2rem; }
-    .md-chips .md-chip-worker:not(:first-child) {
-      margin: 0 0 0 0.8rem; }
-  .md-chips .md-chip-input {
-    background-color: transparent;
-    border-width: 0; }
+    line-height: 3.2rem;
+    margin: 0.8rem 0.8rem 0 0;
+    padding: 0 0.8rem 0 1.2rem; }
+    .md-chips .md-chip-input-container input:not([type]), .md-chips .md-chip-input-container input[type="email"], .md-chips .md-chip-input-container input[type="number"], .md-chips .md-chip-input-container input[type="tel"], .md-chips .md-chip-input-container input[type="url"], .md-chips .md-chip-input-container input[type="text"] {
+      border: 0;
+      height: 3.2rem;
+      line-height: 3.2rem;
+      padding: 0; }
+      .md-chips .md-chip-input-container input:not([type]):focus, .md-chips .md-chip-input-container input[type="email"]:focus, .md-chips .md-chip-input-container input[type="number"]:focus, .md-chips .md-chip-input-container input[type="tel"]:focus, .md-chips .md-chip-input-container input[type="url"]:focus, .md-chips .md-chip-input-container input[type="text"]:focus {
+        outline: none; }
+    .md-chips .md-chip-input-container md-autocomplete, .md-chips .md-chip-input-container md-autocomplete-wrap {
+      height: 3.2rem; }
+    .md-chips .md-chip-input-container md-autocomplete {
+      box-shadow: none; }
+      .md-chips .md-chip-input-container md-autocomplete input {
+        position: relative; }
+      .md-chips .md-chip-input-container md-autocomplete button md-icon {
+        top: 1px;
+        /* Reposition the (x) button in the autocomplete */ }
+    .md-chips .md-chip-input-container:not(:first-child) {
+      margin: 0.8rem 0.8rem 0 0; }
+    .md-chips .md-chip-input-container input {
+      background: transparent;
+      border-width: 0; }
