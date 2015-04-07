@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-0b15c97
+ * v0.8.3-master-41f0203
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -32,7 +32,7 @@ goog.require('ng.material.core');
       MAX_HEIGHT = 5.5 * ITEM_HEIGHT,
       MENU_PADDING = 16;
 
-  function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $rootElement, $mdTheming, $window) {
+  function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $mdTheming, $window) {
 
     //-- private variables
 
@@ -136,7 +136,7 @@ goog.require('ng.material.core');
         ul:    $element.find('ul')[0],
         input: $element.find('input')[0],
         wrap:  $element.find('md-autocomplete-wrap')[0],
-        root:  $rootElement[0]
+        root:  document.body
       };
       elements.$ = getAngularElements(elements);
     }
@@ -321,6 +321,7 @@ goog.require('ng.material.core');
         self.matches = matches;
         self.hidden = shouldHide();
         updateMessages();
+        $timeout(positionDropdown, 0, false);
       }
     }
 
@@ -369,7 +370,7 @@ goog.require('ng.material.core');
     }
 
   }
-  MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$timeout", "$rootElement", "$mdTheming", "$window"];
+  MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$timeout", "$mdTheming", "$window"];
 })();
 
 (function () {
