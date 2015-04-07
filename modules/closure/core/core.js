@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-e106f88
+ * v0.8.3-master-5be98b8
  */
 goog.provide('ng.material.core');
 
@@ -1007,7 +1007,12 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
   'use strict';
 
   var HANDLERS = {};
-  var pointer, lastPointer; // The state of the current and previous 'pointer' (user's hand)
+  /* The state of the current 'pointer'
+   * The pointer represents the state of the current touch.
+   * It contains normalized x and y coordinates from DOM events,
+   * as well as other information abstracted from the DOM.
+   */
+  var pointer, lastPointer;
 
   angular
     .module('material.core.gestures', [ ])
@@ -1020,16 +1025,18 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
    */
   function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    var isIos = userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/iPod/i);
-    var isAndroid = userAgent.match(/Android/i);
-    var shouldHijackClicks = isIos || isAndroid;
+    var isIos = userAgent.match(/ipad|iphone|ipod/i);
+    var isAndroid = userAgent.match(/android/i);
 
     var self = {
       handler: addHandler,
-      register: register
+      register: register,
+      // TODO only hijack clicks on Android < 4.4
+      // TODO allow an override for this (through provider?)
+      isHijackingClicks: isIos || isAndroid
     };
 
-    if (self.$$hijackClicks = shouldHijackClicks) {
+    if (self.isHijackingClicks) {
       self.handler('click', {
         options: {
           maxDistance: 6
@@ -1042,7 +1049,46 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
       });
     }
 
+    /*
+     * Register an element to listen for a handler.
+     * This allows an element to override the default options for a handler.
+     * Additionally, some handlers like drag and hold only dispatch events if
+     * the domEvent happens inside an element that's registered to listen for these events.
+     *
+     * @see GestureHandler for how overriding of default options works.
+     * @example $mdGesture.register(myElement, 'drag', { minDistance: 20, horziontal: false })
+     */
+    function register(element, handlerName, options) {
+      var handler = HANDLERS[handlerName.replace(/^\$md./, '')];
+      if (!handler) {
+        throw new Error('Failed to register element with handler ' + handlerName + '. ' +
+        'Available handlers: ' + Object.keys(HANDLERS).join(', '));
+      }
+      return handler.registerElement(element, options);
+    }
+
+    /*
+     * add a handler to $mdGesture. see below.
+     */
+    function addHandler(name, definition) {
+      var handler = new $$MdGestureHandler(name);
+      angular.extend(handler, definition);
+      HANDLERS[name] = handler;
+
+      return self;
+    }
+
+    /*
+     * Register handlers. These listen to touch/start/move events, interpret them,
+     * and dispatch gesture events depending on options & conditions. These are all
+     * instances of GestureHandler.
+     * @see GestureHandler 
+     */
     return self
+      /*
+       * The press handler dispatches an event on touchdown/touchend.
+       * It's a simple abstraction of touch/mouse/pointer start and end.
+       */
       .handler('press', {
         onStart: function (ev, pointer) {
           this.dispatchEvent(ev, '$md.pressdown');
@@ -1051,10 +1097,15 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
           this.dispatchEvent(ev, '$md.pressup');
         }
       })
+
+      /*
+       * The hold handler dispatches an event if the user keeps their finger within
+       * the same <maxDistance> area for <delay> ms.
+       * The hold handler will only run if a parent of the touch target is registered
+       * to listen for hold events through $mdGesture.register()
+       */
       .handler('hold', {
         options: {
-          // If the user keeps his finger within the same <maxDistance> area for
-          // <delay> ms, dispatch a hold event.
           maxDistance: 6,
           delay: 500
         },
@@ -1073,8 +1124,14 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
           }), this.state.options.delay, false);
         },
         onMove: function (ev, pointer) {
-          // Don't scroll while waiting for hold
+          // Don't scroll while waiting for hold.
+          // If we don't preventDefault touchmove events here, Android will assume we don't
+          // want to listen to anymore touch events. It will start scrolling and stop sending
+          // touchmove events.
           ev.preventDefault();
+
+          // If the user moves greater than <maxDistance> pixels, stop the hold timer
+          // set in onStart
           var dx = this.state.pos.x - pointer.x;
           var dy = this.state.pos.y - pointer.y;
           if (Math.sqrt(dx * dx + dy * dy) > this.options.maxDistance) {
@@ -1085,10 +1142,19 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
           this.onCancel();
         }
       })
+
+      /*
+       * The drag handler dispatches a drag event if the user holds and moves his finger greater than
+       * <minDistance> px in the x or y direction, depending on options.horizontal.
+       * The drag will be cancelled if the user moves his finger greater than <minDistance>*<cancelMultiplier> in
+       * the perpindicular direction. Eg if the drag is horizontal and the user moves his finger <minDistance>*<cancelMultiplier>
+       * pixels vertically, this handler won't consider the move part of a drag.
+       */
       .handler('drag', {
         options: {
           minDistance: 6,
-          horizontal: true
+          horizontal: true,
+          cancelMultiplier: 1.5
         },
         onStart: function (ev) {
           // For drag, require a parent to be registered with $mdGesture.register()
@@ -1096,21 +1162,23 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
         },
         onMove: function (ev, pointer) {
           var shouldStartDrag, shouldCancel;
-          // Don't allow touch events to scroll while we're dragging or
-          // deciding if this touchmove is a proper drag
+          // Don't scroll while deciding if this touchmove qualifies as a drag event.
+          // If we don't preventDefault touchmove events here, Android will assume we don't
+          // want to listen to anymore touch events. It will start scrolling and stop sending
+          // touchmove events.
           ev.preventDefault();
 
           if (!this.state.dragPointer) {
             if (this.state.options.horizontal) {
               shouldStartDrag = Math.abs(pointer.distanceX) > this.state.options.minDistance;
-              shouldCancel = Math.abs(pointer.distanceY) > this.state.options.minDistance * 1.5;
+              shouldCancel = Math.abs(pointer.distanceY) > this.state.options.minDistance * this.state.options.cancelMultiplier;
             } else {
               shouldStartDrag = Math.abs(pointer.distanceY) > this.state.options.minDistance;
-              shouldCancel = Math.abs(pointer.distanceX) > this.state.options.minDistance * 1.5;
+              shouldCancel = Math.abs(pointer.distanceX) > this.state.options.minDistance * this.state.options.cancelMultiplier;
             }
 
             if (shouldStartDrag) {
-              // Create a new pointer, starting at this point where the drag started.
+              // Create a new pointer representing this drag, starting at this point where the drag started.
               this.state.dragPointer = makeStartPointer(ev);
               updatePointerState(ev, this.state.dragPointer);
               this.dispatchEvent(ev, '$md.dragstart', this.state.dragPointer);
@@ -1122,7 +1190,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
             this.dispatchDragMove(ev);
           }
         },
-        // Only dispatch these every frame; any more is unnecessray
+        // Only dispatch dragmove events every frame; any more is unnecessray
         dispatchDragMove: $$rAF.throttle(function (ev) {
           // Make sure the drag didn't stop while waiting for the next frame
           if (this.state.isRunning) {
@@ -1137,6 +1205,12 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
           }
         }
       })
+
+      /*
+       * The swipe handler will dispatch a swipe event if, on the end of a touch,
+       * the velocity and distance were high enough.
+       * TODO: add vertical swiping with a `horizontal` option similar to the drag handler.
+       */
       .handler('swipe', {
         options: {
           minVelocity: 0.65,
@@ -1149,29 +1223,21 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
             this.dispatchEvent(ev, eventType);
           }
         }
-      })
+      });
 
-    function register(element, handlerName, options) {
-      var handler = HANDLERS[handlerName.replace(/^\$md./, '')];
-      if (!handler) {
-        throw new Error('Failed to register element with handler ' + handlerName + '. ' +
-        'Available handlers: ' + Object.keys(HANDLERS).join(', '));
-      }
-      return handler.registerElement(element, options);
-    }
-
-    function addHandler(name, definition) {
-      var handler = new $$MdGestureHandler(name);
-      angular.extend(handler, definition);
-      HANDLERS[name] = handler;
-
-      return self;
-    }
   }
   MdGesture.$inject = ["$$MdGestureHandler", "$$rAF", "$timeout"];
 
   /**
-   * MdGestureHandler factory construction function
+   * MdGestureHandler
+   * A GestureHandler is an object which is able to dispatch custom dom events
+   * based on native dom {touch,pointer,mouse}{start,move,end} events.
+   *
+   * A gesture will manage its lifecycle through the start,move,end, and cancel
+   * functions, which are called by native dom events.
+   *
+   * A gesture has the concept of 'options' (eg a swipe's required velocity), which can be
+   * overridden by elements registering through $mdGesture.register()
    */
   function GestureHandler (name) {
     this.name = name;
@@ -1181,24 +1247,31 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
   function MdGestureHandler($$rAF) {
     var hasJQuery =  typeof jQuery !== 'undefined' && angular.element === jQuery;
 
-
     GestureHandler.prototype = {
       options: {},
+      // jQuery listeners don't work with custom DOMEvents, so we have to dispatch events
+      // differently when jQuery is loaded
       dispatchEvent: hasJQuery ?  jQueryDispatchEvent : nativeDispatchEvent,
 
+      // These are overridden by the registered handler
       onStart: angular.noop,
       onMove: angular.noop,
       onEnd: angular.noop,
       onCancel: angular.noop,
 
+      // onStart sets up a new state for the handler, which includes options from the
+      // nearest registered parent element of ev.target.
       start: function (ev, pointer) {
         if (this.state.isRunning) return;
         var parentTarget = this.getNearestParent(ev.target);
+        // Get the options from the nearest registered parent
         var parentTargetOptions = parentTarget && parentTarget.$mdGesture[this.name] || {};
 
         this.state = {
           isRunning: true,
+          // Override the default options with the nearest registered parent's options
           options: angular.extend({}, this.options, parentTargetOptions),
+          // Pass in the registered parent node to the state so the onStart listener can use
           registeredParent: parentTarget
         };
         this.onStart(ev, pointer);
@@ -1217,8 +1290,8 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
         this.state = {};
       },
 
-      // Find and return the nearest parent element that has been registered via
-      // $mdGesture.register(element, 'handlerName').
+      // Find and return the nearest parent element that has been registered to
+      // listen for this handler via $mdGesture.register(element, 'handlerName').
       getNearestParent: function (node) {
         var current = node;
         while (current) {
@@ -1227,8 +1300,12 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
           }
           current = current.parentNode;
         }
+        return null;
       },
 
+      // Called from $mdGesture.register when an element reigsters itself with a handler.
+      // Store the options the user gave on the DOMElement itself. These options will
+      // be retrieved with getNearestParent when the handler starts.
       registerElement: function (element, options) {
         var self = this;
         element[0].$mdGesture = element[0].$mdGesture || {};
@@ -1246,8 +1323,13 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
 
     return GestureHandler;
 
-    /**
-     * Internal methods
+    /*
+     * Dispatch an event with jQuery
+     * TODO: Make sure this sends bubbling events
+     *
+     * @param srcEvent the original DOM touch event that started this.
+     * @param eventType the name of the custom event to send (eg 'click' or '$md.drag')
+     * @param eventPointer the pointer object that matches this event.
      */
     function jQueryDispatchEvent(srcEvent, eventType, eventPointer) {
       eventPointer = eventPointer || pointer;
@@ -1274,6 +1356,9 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
 
     /*
      * NOTE: nativeDispatchEvent is very performance sensitive.
+     * @param srcEvent the original DOM touch event that started this.
+     * @param eventType the name of the custom event to send (eg 'click' or '$md.drag')
+     * @param eventPointer the pointer object that matches this event.
      */
     function nativeDispatchEvent(srcEvent, eventType, eventPointer) {
       eventPointer = eventPointer || pointer;
@@ -1306,29 +1391,33 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
    */
   function attachToDocument( $mdGesture, $$MdGestureHandler ) {
 
+    // Polyfill document.contains for IE11.
+    // TODO: move to util
     document.contains || (document.contains = function (node) {
       return document.body.contains(node);
     });
 
-    if ( $mdGesture.$$hijackClicks ) {
-
-      // If hijacking use capture-phase to prevent non-key clicks
-      // unless they're sent by material
-
-      document.addEventListener('click', function (ev)
-      {
-        // Space/enter on a button, and submit events, can send clicks
-
+    if ( $mdGesture.isHijackingClicks ) {
+      /*
+       * If hijack clicks is true, we preventDefault any click that wasn't
+       * sent by ngMaterial. This is because on older Android & iOS, a false, or 'ghost',
+       * click event will be sent ~400ms after a touchend event happens.
+       * The only way to know if this click is real is to prevent any normal
+       * click events, and add a flag to events sent by material so we know not to prevent those.
+       * 
+       * One exception to click events that should be prevented is click events sent by the
+       * keyboard (eg form submit). 
+       */
+      document.addEventListener('click', function clickHijacker(ev) {
         var isKeyClick = ev.clientX === 0 && ev.clientY === 0;
-        if (isKeyClick || ev.$material) return;
-
-        ev.preventDefault();
-        ev.stopPropagation();
-
+        if (!isKeyClick && !ev.$material) {
+          ev.preventDefault();
+          ev.stopPropagation();
+        }
       }, true);
-
     }
 
+    // Listen to all events to cover all platforms.
     var START_EVENTS = 'mousedown touchstart pointerdown';
     var MOVE_EVENTS = 'mousemove touchmove pointermove';
     var END_EVENTS = 'mouseup mouseleave touchend touchcancel pointerup pointercancel';
@@ -1337,8 +1426,17 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
       .on(START_EVENTS, gestureStart)
       .on(MOVE_EVENTS, gestureMove)
       .on(END_EVENTS, gestureEnd)
-      .on('$$mdGestureReset', gestureClearCache);  // For testing
+      // For testing
+      .on('$$mdGestureReset', function gestureClearCache () {
+        lastPointer = pointer = null;
+      });
 
+    /*
+     * When a DOM event happens, run all registered gesture handlers' lifecycle
+     * methods which match the DOM event.
+     * Eg when a 'touchstart' event happens, runHandlers('start') will call and
+     * run `handler.cancel()` and `handler.start()` on all registered handlers.
+     */
     function runHandlers(handlerEvent, event) {
       var handler;
       for (var name in HANDLERS) {
@@ -1347,7 +1445,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
 
           if (handlerEvent === 'start') {
             // Run cancel to reset any handlers' state
-            angular.isFunction(handler.cancel) && handler.cancel();
+            handler.cancel();
           }
           handler[handlerEvent](event, pointer);
 
@@ -1355,6 +1453,12 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
       }
     }
 
+    /*
+     * gestureStart vets if a start event is legitimate (and not part of a 'ghost click' from iOS/Android)
+     * If it is legitimate, we initiate the pointer state and mark the current pointer's type
+     * For example, for a touchstart event, mark the current pointer as a 'touch' pointer, so mouse events
+     * won't effect it.
+     */
     function gestureStart(ev) {
       // If we're already touched down, abort
       if (pointer) return;
@@ -1371,12 +1475,19 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
 
       runHandlers('start', ev);
     }
+    /*
+     * If a move event happens of the right type, update the pointer and run all the move handlers.
+     * "of the right type": if a mousemove happens but our pointer started with a touch event, do nothing.
+     */
     function gestureMove(ev) {
       if (!pointer || !typesMatch(ev, pointer)) return;
 
       updatePointerState(ev, pointer);
       runHandlers('move', ev);
     }
+    /*
+     * If an end event happens of the right type, update the pointer, run endHandlers, and save the pointer as 'lastPointer'
+     */
     function gestureEnd(ev) {
       if (!pointer || !typesMatch(ev, pointer)) return;
 
@@ -1388,9 +1499,6 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
       lastPointer = pointer;
       pointer = null;
     }
-    function gestureClearCache () {
-      lastPointer = pointer = null;
-    }
 
   }
   attachToDocument.$inject = ["$mdGesture", "$$MdGestureHandler"];
@@ -1399,16 +1507,15 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
   // Module Functions
   // ********************
 
-  function typesMatch(ev, pointer) {
-    return ev && pointer && ev.type.charAt(0) === pointer.type;
-  }
-
+  /*
+   * Initiate the pointer. x, y, and the pointer's type.
+   */
   function makeStartPointer(ev) {
     var point = getEventPoint(ev);
     var startPointer = {
       startTime: +Date.now(),
       target: ev.target,
-      // 'p' for pointer, 'm' for mouse, 't' for touch
+      // 'p' for pointer events, 'm' for mouse, 't' for touch
       type: ev.type.charAt(0)
     };
     startPointer.startX = startPointer.x = point.pageX;
@@ -1416,6 +1523,18 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
     return startPointer;
   }
 
+  /*
+   * return whether the pointer's type matches the event's type.
+   * Eg if a touch event happens but the pointer has a mouse type, return false.
+   */
+  function typesMatch(ev, pointer) {
+    return ev && pointer && ev.type.charAt(0) === pointer.type;
+  }
+
+  /*
+   * Update the given pointer based upon the given DOMEvent.
+   * Distance, velocity, direction, duration, etc
+   */
   function updatePointerState(ev, pointer) {
     var point = getEventPoint(ev);
     var x = pointer.x = point.pageX;
@@ -1435,6 +1554,10 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
     pointer.velocityY = pointer.distanceY / pointer.duration;
   }
 
+  /*
+   * Normalize the point where the DOM event happened whether it's touch or mouse.
+   * @returns point event obj with pageX and pageY on it.
+   */
   function getEventPoint(ev) {
     ev = ev.originalEvent || ev; // support jQuery events
     return (ev.touches && ev.touches[0]) ||
