@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-027f8d1
+ * v0.8.3-master-f15fd05
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -403,7 +403,7 @@ angular.module('material.components.tabs', [
       updateHeightFromContent();
       $scope.$broadcast('$mdTabsChanged');
       ctrl.tabs[oldValue] && ctrl.tabs[oldValue].scope.deselect();
-      ctrl.tabs[newValue].scope.select();
+      ctrl.tabs[newValue] && ctrl.tabs[newValue].scope.select();
     }
 
     function handleResizeWhenVisible () {
@@ -506,6 +506,7 @@ angular.module('material.components.tabs', [
     }
 
     function fixOffset (value) {
+      if (!elements.tabs.length) return;
       var lastTab = elements.tabs[elements.tabs.length - 1],
           totalWidth = lastTab.offsetLeft + lastTab.offsetWidth;
       value = Math.max(0, value);

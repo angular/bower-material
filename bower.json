@@ -1,1 +1,1 @@
-{ "name": "angular-material", "version": "0.8.3-master-027f8d1", "dependencies": { "angular": "^1.3.0", "angular-animate": "^1.3.0", "angular-aria": "^1.3.15" }, "main": [ "angular-material.js", "angular-material.css" ] }
+{ "name": "angular-material", "version": "0.8.3-master-f15fd05", "dependencies": { "angular": "^1.3.0", "angular-animate": "^1.3.0", "angular-aria": "^1.3.15" }, "main": [ "angular-material.js", "angular-material.css" ] }
