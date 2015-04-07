@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-c11aed0
+ * v0.8.3-master-0b15c97
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -28,7 +28,11 @@ goog.require('ng.material.core');
       .module('material.components.autocomplete')
       .controller('MdAutocompleteCtrl', MdAutocompleteCtrl);
 
-  function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $rootElement, $mdTheming) {
+  var ITEM_HEIGHT = 41,
+      MAX_HEIGHT = 5.5 * ITEM_HEIGHT,
+      MENU_PADDING = 16;
+
+  function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $rootElement, $mdTheming, $window) {
 
     //-- private variables
 
@@ -82,21 +86,24 @@ goog.require('ng.material.core');
       });
     }
 
-    function getNearestContentElement () {
-      var current = $element.parent()[0];
-      while (current && current !== $rootElement[0] && current !== document.body) {
-        if (current.tagName && current.tagName.toLowerCase() === 'md-content') break;
-        current = current.parentNode;
-      }
-      return current;
-    }
-
     function positionDropdown () {
-      elements.$.ul.css({
-        left:  $element.prop('offsetLeft') + 'px',
-        top:   ($element.prop('offsetTop') + $element.prop('offsetHeight')) + 'px',
-        width: $element.prop('offsetWidth') + 'px'
-      });
+      var rect   = elements.wrap.getBoundingClientRect(),
+          root   = elements.root.getBoundingClientRect(),
+          top    = rect.bottom - root.top,
+          bot    = root.height - rect.top,
+          left   = rect.left - root.left,
+          width  = rect.width,
+          styles = { left: left + 'px', width: width + 'px' };
+      if (top > bot && root.height - rect.bottom - MENU_PADDING < MAX_HEIGHT) {
+        styles.top = 'auto';
+        styles.bottom = bot + 'px';
+        styles.maxHeight = Math.min(MAX_HEIGHT, rect.top - root.top - MENU_PADDING) + 'px';
+      } else {
+        styles.top = top + 'px';
+        styles.bottom = 'auto';
+        styles.maxHeight = Math.min(MAX_HEIGHT, root.height - rect.bottom - MENU_PADDING) + 'px';
+      }
+      elements.$.ul.css(styles);
     }
 
     function moveDropdown () {
@@ -117,14 +124,19 @@ goog.require('ng.material.core');
           : handleSearchText);
       registerSelectedItemWatcher(selectedItemChange);
       $scope.$watch('selectedItem', handleSelectedItemChange);
+      $scope.$watch('$mdAutocompleteCtrl.hidden', function (hidden) {
+        if (hidden) $timeout(positionDropdown, null, false);
+      });
+      angular.element($window).on('resize', positionDropdown);
     }
 
     function gatherElements () {
       elements = {
         main:  $element[0],
-        ul:    $element[0].getElementsByTagName('ul')[0],
-        input: $element[0].getElementsByTagName('input')[0],
-        root:  getNearestContentElement()
+        ul:    $element.find('ul')[0],
+        input: $element.find('input')[0],
+        wrap:  $element.find('md-autocomplete-wrap')[0],
+        root:  $rootElement[0]
       };
       elements.$ = getAngularElements(elements);
     }
@@ -189,7 +201,6 @@ goog.require('ng.material.core');
         self.loading = false;
         self.matches = [];
         self.hidden = shouldHide();
-        positionDropdown();
         updateMessages();
       } else {
         handleQuery();
@@ -219,7 +230,7 @@ goog.require('ng.material.core');
         case $mdConstant.KEY_CODE.UP_ARROW:
           if (self.loading) return;
           event.preventDefault();
-          self.index = Math.max(0, self.index - 1);
+          self.index = self.index < 0 ? self.matches.length - 1 : Math.max(0, self.index - 1);
           updateScroll();
           updateSelectionMessage();
           break;
@@ -329,9 +340,9 @@ goog.require('ng.material.core');
     }
 
     function updateScroll () {
-      var top = 41 * self.index,
-          bot = top + 41,
-          hgt = 41 * 5.5;
+      var top = ITEM_HEIGHT * self.index,
+          bot = top + ITEM_HEIGHT,
+          hgt = elements.ul.clientHeight;
       if (top < elements.ul.scrollTop) {
         elements.ul.scrollTop = top;
       } else if (bot > elements.ul.scrollTop + hgt) {
@@ -358,7 +369,7 @@ goog.require('ng.material.core');
     }
 
   }
-  MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$timeout", "$rootElement", "$mdTheming"];
+  MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$timeout", "$rootElement", "$mdTheming", "$window"];
 })();
 
 (function () {
