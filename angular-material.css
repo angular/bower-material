@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-f15fd05
+ * v0.8.3-master-7f355f6
  */
 @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
 html, body {
@@ -3160,9 +3160,6 @@ select, button, textarea, input {
     opacity: 1;
     height: 40px; } }
 
-md-content {
-  overflow: visible; }
-
 md-autocomplete {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
   border-radius: 2px;
@@ -3220,7 +3217,6 @@ md-autocomplete {
     line-height: 40px;
     height: 40px;
     outline: none;
-    z-index: 2;
     background: transparent; }
     md-autocomplete input:not(.md-input)::-ms-clear {
       display: none; }
@@ -3229,7 +3225,6 @@ md-autocomplete {
     top: 10px;
     right: 10px;
     line-height: 20px;
-    z-index: 2;
     text-align: center;
     width: 20px;
     height: 20px;
@@ -3250,8 +3245,7 @@ md-autocomplete {
       -webkit-transform: scale(0);
               transform: scale(0);
       opacity: 0;
-      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      z-index: -1; }
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
     md-autocomplete button:focus {
       outline: none; }
       md-autocomplete button:focus:after {
@@ -3280,36 +3274,6 @@ md-autocomplete {
       md-autocomplete button.ng-leave.ng-leave-active {
         -webkit-transform: scale(0);
                 transform: scale(0); }
-  md-autocomplete ul {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
-    margin: 0;
-    list-style: none;
-    padding: 0;
-    overflow: auto;
-    max-height: 225.5px;
-    z-index: 49; }
-    md-autocomplete ul li {
-      border-top: 1px solid #ddd;
-      padding: 0 15px;
-      line-height: 40px;
-      font-size: 14px;
-      overflow: hidden;
-      height: 40px;
-      transition: background 0.15s linear;
-      cursor: pointer;
-      margin: 0; }
-      md-autocomplete ul li.ng-enter, md-autocomplete ul li.ng-hide-remove {
-        transition: none;
-        -webkit-animation: md-autocomplete-list-in 0.2s;
-                animation: md-autocomplete-list-in 0.2s; }
-      md-autocomplete ul li.ng-leave, md-autocomplete ul li.ng-hide-add {
-        transition: none;
-        -webkit-animation: md-autocomplete-list-out 0.2s;
-                animation: md-autocomplete-list-out 0.2s; }
   @media screen and (-ms-high-contrast: active) {
     md-autocomplete input {
       border: 1px solid #fff; }
@@ -3318,58 +3282,36 @@ md-autocomplete {
       color: #fff; }
  }
 
-md-backdrop {
-  z-index: 50;
-  background-color: rgba(0, 0, 0, 0);
+.md-autocomplete-suggestions {
   position: absolute;
-  height: 100%;
+  top: 100%;
   left: 0;
-  right: 0; }
-  md-backdrop.md-select-backdrop {
-    z-index: 81; }
-  md-backdrop.md-dialog-backdrop {
-    z-index: 79; }
-  md-backdrop.md-bottom-sheet-backdrop {
-    z-index: 69; }
-  md-backdrop.md-sidenav-backdrop {
-    z-index: 59; }
-  md-backdrop.md-click-catcher {
-    top: 0px;
-    position: fixed; }
-  md-backdrop.ng-enter {
-    -webkit-animation: cubic-bezier(0.25, 0.8, 0.25, 1) mdBackdropFadeIn 0.5s both;
-            animation: cubic-bezier(0.25, 0.8, 0.25, 1) mdBackdropFadeIn 0.5s both; }
-  md-backdrop.ng-leave {
-    -webkit-animation: cubic-bezier(0.55, 0, 0.55, 0.2) mdBackdropFadeOut 0.2s both;
-            animation: cubic-bezier(0.55, 0, 0.55, 0.2) mdBackdropFadeOut 0.2s both; }
-
-@-webkit-keyframes mdBackdropFadeIn {
-  from {
-    opacity: 0; }
-
-  to {
-    opacity: 1; } }
-
-@keyframes mdBackdropFadeIn {
-  from {
-    opacity: 0; }
-
-  to {
-    opacity: 1; } }
-
-@-webkit-keyframes mdBackdropFadeOut {
-  from {
-    opacity: 1; }
-
-  to {
-    opacity: 0; } }
-
-@keyframes mdBackdropFadeOut {
-  from {
-    opacity: 1; }
-
-  to {
-    opacity: 0; } }
+  right: 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  margin: 0;
+  list-style: none;
+  padding: 0;
+  overflow: auto;
+  max-height: 225.5px;
+  z-index: 49; }
+  .md-autocomplete-suggestions li {
+    border-top: 1px solid #ddd;
+    padding: 0 15px;
+    line-height: 40px;
+    font-size: 14px;
+    overflow: hidden;
+    height: 40px;
+    transition: background 0.15s linear;
+    cursor: pointer;
+    margin: 0; }
+    .md-autocomplete-suggestions li.ng-enter, .md-autocomplete-suggestions li.ng-hide-remove {
+      transition: none;
+      -webkit-animation: md-autocomplete-list-in 0.2s;
+              animation: md-autocomplete-list-in 0.2s; }
+    .md-autocomplete-suggestions li.ng-leave, .md-autocomplete-suggestions li.ng-hide-add {
+      transition: none;
+      -webkit-animation: md-autocomplete-list-out 0.2s;
+              animation: md-autocomplete-list-out 0.2s; }
 
 md-bottom-sheet {
   position: absolute;
@@ -3529,6 +3471,59 @@ md-bottom-sheet {
         text-align: center;
         text-transform: none;
         padding-top: 8px; }
+
+md-backdrop {
+  z-index: 50;
+  background-color: rgba(0, 0, 0, 0);
+  position: absolute;
+  height: 100%;
+  left: 0;
+  right: 0; }
+  md-backdrop.md-select-backdrop {
+    z-index: 81; }
+  md-backdrop.md-dialog-backdrop {
+    z-index: 79; }
+  md-backdrop.md-bottom-sheet-backdrop {
+    z-index: 69; }
+  md-backdrop.md-sidenav-backdrop {
+    z-index: 59; }
+  md-backdrop.md-click-catcher {
+    top: 0px;
+    position: fixed; }
+  md-backdrop.ng-enter {
+    -webkit-animation: cubic-bezier(0.25, 0.8, 0.25, 1) mdBackdropFadeIn 0.5s both;
+            animation: cubic-bezier(0.25, 0.8, 0.25, 1) mdBackdropFadeIn 0.5s both; }
+  md-backdrop.ng-leave {
+    -webkit-animation: cubic-bezier(0.55, 0, 0.55, 0.2) mdBackdropFadeOut 0.2s both;
+            animation: cubic-bezier(0.55, 0, 0.55, 0.2) mdBackdropFadeOut 0.2s both; }
+
+@-webkit-keyframes mdBackdropFadeIn {
+  from {
+    opacity: 0; }
+
+  to {
+    opacity: 1; } }
+
+@keyframes mdBackdropFadeIn {
+  from {
+    opacity: 0; }
+
+  to {
+    opacity: 1; } }
+
+@-webkit-keyframes mdBackdropFadeOut {
+  from {
+    opacity: 1; }
+
+  to {
+    opacity: 0; } }
+
+@keyframes mdBackdropFadeOut {
+  from {
+    opacity: 1; }
+
+  to {
+    opacity: 0; } }
 
 /**
  * Position a FAB button.
