@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-fcd0050
+ * v0.8.3-master-7e666ab
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -236,7 +236,7 @@ goog.require('ng.material.core');
           updateSelectionMessage();
           break;
         case $mdConstant.KEY_CODE.ENTER:
-          if (self.loading || self.index < 0) return;
+          if (self.hidden || self.loading || self.index < 0) return;
           event.preventDefault();
           select(self.index);
           break;
