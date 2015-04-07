@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-7888e4b
+ * v0.8.3-master-fcd0050
  */
 (function () {
   'use strict';
@@ -84,6 +84,7 @@
     }
 
     function positionDropdown () {
+      if (!elements) return $timeout(positionDropdown, 0, false);
       var rect   = elements.wrap.getBoundingClientRect(),
           root   = elements.root.getBoundingClientRect(),
           top    = rect.bottom - root.top,
