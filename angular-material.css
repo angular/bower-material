@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-06d3856
+ * v0.8.3-master-26209d4
  */
 @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
 html, body {
@@ -49,7 +49,7 @@ input[type="search"] {
   input[type="search"]::-webkit-search-decoration, input[type="search"]::-webkit-search-cancel-button {
     -webkit-appearance: none; }
 
-.visually-hidden {
+.md-visually-hidden {
   border: 0;
   clip: rect(0 0 0 0);
   height: 1px;

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-06d3856
+ * v0.8.3-master-26209d4
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.core');
@@ -46,7 +46,7 @@ goog.require('ng.material.core');
   // This hint text is hidden within a chip but used by screen readers to
   // inform the user how they can interact with a chip.
   var DELETE_HINT_TEMPLATE = '\
-      <span ng-if="!$mdChipsCtrl.readonly" class="visually-hidden">\
+      <span ng-if="!$mdChipsCtrl.readonly" class="md-visually-hidden">\
         {{$mdChipsCtrl.deleteHint}}\
       </span>';
 
@@ -616,7 +616,7 @@ goog.require('ng.material.core');
           ng-click="$mdChipsCtrl.removeChip($index)"\
           tabindex="-1">\
         <md-icon md-svg-icon="close"></md-icon>\
-        <span class="visually-hidden">\
+        <span class="md-visually-hidden">\
           {{$mdChipsCtrl.deleteButtonLabel}}\
         </span>\
       </md-button>';

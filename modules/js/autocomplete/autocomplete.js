@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-06d3856
+ * v0.8.3-master-26209d4
  */
 (function () {
   'use strict';
@@ -479,7 +479,7 @@
                 ng-if="$mdAutocompleteCtrl.scope.searchText && !isDisabled"\
                 ng-click="$mdAutocompleteCtrl.clear()">\
               <md-icon md-svg-icon="cancel"></md-icon>\
-              <span class="visually-hidden">Clear</span>\
+              <span class="md-visually-hidden">Clear</span>\
             </button>\
             <md-progress-linear\
                 ng-if="$mdAutocompleteCtrl.loading"\
@@ -500,7 +500,7 @@
             </ul>\
           </md-autocomplete-wrap>\
           <aria-status\
-              class="visually-hidden"\
+              class="md-visually-hidden"\
               role="status"\
               aria-live="assertive">\
             <p ng-repeat="message in $mdAutocompleteCtrl.messages">{{message.display}}</p>\

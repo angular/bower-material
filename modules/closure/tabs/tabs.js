@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-06d3856
+ * v0.8.3-master-26209d4
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -703,7 +703,7 @@ angular.module('material.components.tabs', [
                   md-label-template="tab.label"></md-tab-item>\
               <md-ink-bar ng-hide="noInkBar"></md-ink-bar>\
             </md-pagination-wrapper>\
-            <div class="visually-hidden">\
+            <div class="md-visually-hidden">\
               <md-dummy-tab\
                   tabindex="-1"\
                   id="tab-item-{{tab.id}}"\
