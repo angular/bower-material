@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-41f0203
+ * v0.8.3-master-7888e4b
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -124,8 +124,8 @@ goog.require('ng.material.core');
           : handleSearchText);
       registerSelectedItemWatcher(selectedItemChange);
       $scope.$watch('selectedItem', handleSelectedItemChange);
-      $scope.$watch('$mdAutocompleteCtrl.hidden', function (hidden) {
-        if (hidden) $timeout(positionDropdown, null, false);
+      $scope.$watch('$mdAutocompleteCtrl.hidden', function (hidden, oldHidden) {
+        if (hidden && !oldHidden) positionDropdown();
       });
       angular.element($window).on('resize', positionDropdown);
     }
@@ -321,7 +321,7 @@ goog.require('ng.material.core');
         self.matches = matches;
         self.hidden = shouldHide();
         updateMessages();
-        $timeout(positionDropdown, 0, false);
+        positionDropdown();
       }
     }
 
