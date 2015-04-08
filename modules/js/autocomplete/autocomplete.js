@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-fbed048
+ * v0.8.3-master-b134370
  */
 (function () {
   'use strict';
@@ -92,7 +92,12 @@
           bot    = root.height - vrect.top,
           left   = hrect.left - root.left,
           width  = hrect.width,
-          styles = { left: left + 'px', width: width + 'px' };
+          styles = {
+            left:     left + 'px',
+            minWidth: width + 'px',
+            maxWidth: Math.max(hrect.right - root.left, root.right - hrect.left) - MENU_PADDING + 'px',
+            opacity:  0
+          };
       if (top > bot && root.height - hrect.bottom - MENU_PADDING < MAX_HEIGHT) {
         styles.top = 'auto';
         styles.bottom = bot + 'px';
@@ -102,7 +107,17 @@
         styles.bottom = 'auto';
         styles.maxHeight = Math.min(MAX_HEIGHT, root.height - hrect.bottom - MENU_PADDING) + 'px';
       }
+      $timeout(correctHorizontalAlignment, 0, false);
       elements.$.ul.css(styles);
+
+      function correctHorizontalAlignment () {
+        var dropdown = elements.ul.getBoundingClientRect(),
+            styles   = { opacity: 1 };
+        if (dropdown.right > root.right - MENU_PADDING) {
+          styles.left = (hrect.right - dropdown.width) + 'px';
+        }
+        elements.$.ul.css(styles);
+      }
     }
 
     function moveDropdown () {
