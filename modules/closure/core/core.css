@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-f037b8c
+ * v0.8.3-master-ad0f1cf
  */
 @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
 /* Sizes:
@@ -393,43 +393,61 @@
       -ms-flex-order: 9;
           order: 9; }
 
-[offset] [offset="5"] {
+[offset="5"] {
   margin-left: 5%; }
-[offset] [offset="10"] {
+
+[offset="10"] {
   margin-left: 10%; }
-[offset] [offset="15"] {
+
+[offset="15"] {
   margin-left: 15%; }
-[offset] [offset="20"] {
+
+[offset="20"] {
   margin-left: 20%; }
-[offset] [offset="25"] {
+
+[offset="25"] {
   margin-left: 25%; }
-[offset] [offset="30"] {
+
+[offset="30"] {
   margin-left: 30%; }
-[offset] [offset="35"] {
+
+[offset="35"] {
   margin-left: 35%; }
-[offset] [offset="40"] {
+
+[offset="40"] {
   margin-left: 40%; }
-[offset] [offset="45"] {
+
+[offset="45"] {
   margin-left: 45%; }
-[offset] [offset="50"] {
+
+[offset="50"] {
   margin-left: 50%; }
-[offset] [offset="55"] {
+
+[offset="55"] {
   margin-left: 55%; }
-[offset] [offset="60"] {
+
+[offset="60"] {
   margin-left: 60%; }
-[offset] [offset="65"] {
+
+[offset="65"] {
   margin-left: 65%; }
-[offset] [offset="70"] {
+
+[offset="70"] {
   margin-left: 70%; }
-[offset] [offset="75"] {
+
+[offset="75"] {
   margin-left: 75%; }
-[offset] [offset="80"] {
+
+[offset="80"] {
   margin-left: 80%; }
-[offset] [offset="85"] {
+
+[offset="85"] {
   margin-left: 85%; }
-[offset] [offset="90"] {
+
+[offset="90"] {
   margin-left: 90%; }
-[offset] [offset="95"] {
+
+[offset="95"] {
   margin-left: 95%; }
 
 [offset="33"], [offset="34"] {
@@ -549,43 +567,61 @@
         -ms-flex-direction: row;
             flex-direction: row; }
 
-  [offset-sm] [offset-sm="5"] {
+  [offset-sm="5"] {
     margin-left: 5%; }
-  [offset-sm] [offset-sm="10"] {
+
+  [offset-sm="10"] {
     margin-left: 10%; }
-  [offset-sm] [offset-sm="15"] {
+
+  [offset-sm="15"] {
     margin-left: 15%; }
-  [offset-sm] [offset-sm="20"] {
+
+  [offset-sm="20"] {
     margin-left: 20%; }
-  [offset-sm] [offset-sm="25"] {
+
+  [offset-sm="25"] {
     margin-left: 25%; }
-  [offset-sm] [offset-sm="30"] {
+
+  [offset-sm="30"] {
     margin-left: 30%; }
-  [offset-sm] [offset-sm="35"] {
+
+  [offset-sm="35"] {
     margin-left: 35%; }
-  [offset-sm] [offset-sm="40"] {
+
+  [offset-sm="40"] {
     margin-left: 40%; }
-  [offset-sm] [offset-sm="45"] {
+
+  [offset-sm="45"] {
     margin-left: 45%; }
-  [offset-sm] [offset-sm="50"] {
+
+  [offset-sm="50"] {
     margin-left: 50%; }
-  [offset-sm] [offset-sm="55"] {
+
+  [offset-sm="55"] {
     margin-left: 55%; }
-  [offset-sm] [offset-sm="60"] {
+
+  [offset-sm="60"] {
     margin-left: 60%; }
-  [offset-sm] [offset-sm="65"] {
+
+  [offset-sm="65"] {
     margin-left: 65%; }
-  [offset-sm] [offset-sm="70"] {
+
+  [offset-sm="70"] {
     margin-left: 70%; }
-  [offset-sm] [offset-sm="75"] {
+
+  [offset-sm="75"] {
     margin-left: 75%; }
-  [offset-sm] [offset-sm="80"] {
+
+  [offset-sm="80"] {
     margin-left: 80%; }
-  [offset-sm] [offset-sm="85"] {
+
+  [offset-sm="85"] {
     margin-left: 85%; }
-  [offset-sm] [offset-sm="90"] {
+
+  [offset-sm="90"] {
     margin-left: 90%; }
-  [offset-sm] [offset-sm="95"] {
+
+  [offset-sm="95"] {
     margin-left: 95%; }
 
   [offset-sm="33"], [offset-sm="34"] {
@@ -955,43 +991,61 @@
         -ms-flex-direction: row;
             flex-direction: row; }
 
-  [offset-gt-sm] [offset-gt-sm="5"] {
+  [offset-gt-sm="5"] {
     margin-left: 5%; }
-  [offset-gt-sm] [offset-gt-sm="10"] {
+
+  [offset-gt-sm="10"] {
     margin-left: 10%; }
-  [offset-gt-sm] [offset-gt-sm="15"] {
+
+  [offset-gt-sm="15"] {
     margin-left: 15%; }
-  [offset-gt-sm] [offset-gt-sm="20"] {
+
+  [offset-gt-sm="20"] {
     margin-left: 20%; }
-  [offset-gt-sm] [offset-gt-sm="25"] {
+
+  [offset-gt-sm="25"] {
     margin-left: 25%; }
-  [offset-gt-sm] [offset-gt-sm="30"] {
+
+  [offset-gt-sm="30"] {
     margin-left: 30%; }
-  [offset-gt-sm] [offset-gt-sm="35"] {
+
+  [offset-gt-sm="35"] {
     margin-left: 35%; }
-  [offset-gt-sm] [offset-gt-sm="40"] {
+
+  [offset-gt-sm="40"] {
     margin-left: 40%; }
-  [offset-gt-sm] [offset-gt-sm="45"] {
+
+  [offset-gt-sm="45"] {
     margin-left: 45%; }
-  [offset-gt-sm] [offset-gt-sm="50"] {
+
+  [offset-gt-sm="50"] {
     margin-left: 50%; }
-  [offset-gt-sm] [offset-gt-sm="55"] {
+
+  [offset-gt-sm="55"] {
     margin-left: 55%; }
-  [offset-gt-sm] [offset-gt-sm="60"] {
+
+  [offset-gt-sm="60"] {
     margin-left: 60%; }
-  [offset-gt-sm] [offset-gt-sm="65"] {
+
+  [offset-gt-sm="65"] {
     margin-left: 65%; }
-  [offset-gt-sm] [offset-gt-sm="70"] {
+
+  [offset-gt-sm="70"] {
     margin-left: 70%; }
-  [offset-gt-sm] [offset-gt-sm="75"] {
+
+  [offset-gt-sm="75"] {
     margin-left: 75%; }
-  [offset-gt-sm] [offset-gt-sm="80"] {
+
+  [offset-gt-sm="80"] {
     margin-left: 80%; }
-  [offset-gt-sm] [offset-gt-sm="85"] {
+
+  [offset-gt-sm="85"] {
     margin-left: 85%; }
-  [offset-gt-sm] [offset-gt-sm="90"] {
+
+  [offset-gt-sm="90"] {
     margin-left: 90%; }
-  [offset-gt-sm] [offset-gt-sm="95"] {
+
+  [offset-gt-sm="95"] {
     margin-left: 95%; }
 
   [offset-gt-sm="33"], [offset-gt-sm="34"] {
@@ -1367,43 +1421,61 @@
         -ms-flex-direction: row;
             flex-direction: row; }
 
-  [offset-md] [offset-md="5"] {
+  [offset-md="5"] {
     margin-left: 5%; }
-  [offset-md] [offset-md="10"] {
+
+  [offset-md="10"] {
     margin-left: 10%; }
-  [offset-md] [offset-md="15"] {
+
+  [offset-md="15"] {
     margin-left: 15%; }
-  [offset-md] [offset-md="20"] {
+
+  [offset-md="20"] {
     margin-left: 20%; }
-  [offset-md] [offset-md="25"] {
+
+  [offset-md="25"] {
     margin-left: 25%; }
-  [offset-md] [offset-md="30"] {
+
+  [offset-md="30"] {
     margin-left: 30%; }
-  [offset-md] [offset-md="35"] {
+
+  [offset-md="35"] {
     margin-left: 35%; }
-  [offset-md] [offset-md="40"] {
+
+  [offset-md="40"] {
     margin-left: 40%; }
-  [offset-md] [offset-md="45"] {
+
+  [offset-md="45"] {
     margin-left: 45%; }
-  [offset-md] [offset-md="50"] {
+
+  [offset-md="50"] {
     margin-left: 50%; }
-  [offset-md] [offset-md="55"] {
+
+  [offset-md="55"] {
     margin-left: 55%; }
-  [offset-md] [offset-md="60"] {
+
+  [offset-md="60"] {
     margin-left: 60%; }
-  [offset-md] [offset-md="65"] {
+
+  [offset-md="65"] {
     margin-left: 65%; }
-  [offset-md] [offset-md="70"] {
+
+  [offset-md="70"] {
     margin-left: 70%; }
-  [offset-md] [offset-md="75"] {
+
+  [offset-md="75"] {
     margin-left: 75%; }
-  [offset-md] [offset-md="80"] {
+
+  [offset-md="80"] {
     margin-left: 80%; }
-  [offset-md] [offset-md="85"] {
+
+  [offset-md="85"] {
     margin-left: 85%; }
-  [offset-md] [offset-md="90"] {
+
+  [offset-md="90"] {
     margin-left: 90%; }
-  [offset-md] [offset-md="95"] {
+
+  [offset-md="95"] {
     margin-left: 95%; }
 
   [offset-md="33"], [offset-md="34"] {
@@ -1773,43 +1845,61 @@
         -ms-flex-direction: row;
             flex-direction: row; }
 
-  [offset-gt-md] [offset-gt-md="5"] {
+  [offset-gt-md="5"] {
     margin-left: 5%; }
-  [offset-gt-md] [offset-gt-md="10"] {
+
+  [offset-gt-md="10"] {
     margin-left: 10%; }
-  [offset-gt-md] [offset-gt-md="15"] {
+
+  [offset-gt-md="15"] {
     margin-left: 15%; }
-  [offset-gt-md] [offset-gt-md="20"] {
+
+  [offset-gt-md="20"] {
     margin-left: 20%; }
-  [offset-gt-md] [offset-gt-md="25"] {
+
+  [offset-gt-md="25"] {
     margin-left: 25%; }
-  [offset-gt-md] [offset-gt-md="30"] {
+
+  [offset-gt-md="30"] {
     margin-left: 30%; }
-  [offset-gt-md] [offset-gt-md="35"] {
+
+  [offset-gt-md="35"] {
     margin-left: 35%; }
-  [offset-gt-md] [offset-gt-md="40"] {
+
+  [offset-gt-md="40"] {
     margin-left: 40%; }
-  [offset-gt-md] [offset-gt-md="45"] {
+
+  [offset-gt-md="45"] {
     margin-left: 45%; }
-  [offset-gt-md] [offset-gt-md="50"] {
+
+  [offset-gt-md="50"] {
     margin-left: 50%; }
-  [offset-gt-md] [offset-gt-md="55"] {
+
+  [offset-gt-md="55"] {
     margin-left: 55%; }
-  [offset-gt-md] [offset-gt-md="60"] {
+
+  [offset-gt-md="60"] {
     margin-left: 60%; }
-  [offset-gt-md] [offset-gt-md="65"] {
+
+  [offset-gt-md="65"] {
     margin-left: 65%; }
-  [offset-gt-md] [offset-gt-md="70"] {
+
+  [offset-gt-md="70"] {
     margin-left: 70%; }
-  [offset-gt-md] [offset-gt-md="75"] {
+
+  [offset-gt-md="75"] {
     margin-left: 75%; }
-  [offset-gt-md] [offset-gt-md="80"] {
+
+  [offset-gt-md="80"] {
     margin-left: 80%; }
-  [offset-gt-md] [offset-gt-md="85"] {
+
+  [offset-gt-md="85"] {
     margin-left: 85%; }
-  [offset-gt-md] [offset-gt-md="90"] {
+
+  [offset-gt-md="90"] {
     margin-left: 90%; }
-  [offset-gt-md] [offset-gt-md="95"] {
+
+  [offset-gt-md="95"] {
     margin-left: 95%; }
 
   [offset-gt-md="33"], [offset-gt-md="34"] {
@@ -2185,43 +2275,61 @@
         -ms-flex-direction: row;
             flex-direction: row; }
 
-  [offset-lg] [offset-lg="5"] {
+  [offset-lg="5"] {
     margin-left: 5%; }
-  [offset-lg] [offset-lg="10"] {
+
+  [offset-lg="10"] {
     margin-left: 10%; }
-  [offset-lg] [offset-lg="15"] {
+
+  [offset-lg="15"] {
     margin-left: 15%; }
-  [offset-lg] [offset-lg="20"] {
+
+  [offset-lg="20"] {
     margin-left: 20%; }
-  [offset-lg] [offset-lg="25"] {
+
+  [offset-lg="25"] {
     margin-left: 25%; }
-  [offset-lg] [offset-lg="30"] {
+
+  [offset-lg="30"] {
     margin-left: 30%; }
-  [offset-lg] [offset-lg="35"] {
+
+  [offset-lg="35"] {
     margin-left: 35%; }
-  [offset-lg] [offset-lg="40"] {
+
+  [offset-lg="40"] {
     margin-left: 40%; }
-  [offset-lg] [offset-lg="45"] {
+
+  [offset-lg="45"] {
     margin-left: 45%; }
-  [offset-lg] [offset-lg="50"] {
+
+  [offset-lg="50"] {
     margin-left: 50%; }
-  [offset-lg] [offset-lg="55"] {
+
+  [offset-lg="55"] {
     margin-left: 55%; }
-  [offset-lg] [offset-lg="60"] {
+
+  [offset-lg="60"] {
     margin-left: 60%; }
-  [offset-lg] [offset-lg="65"] {
+
+  [offset-lg="65"] {
     margin-left: 65%; }
-  [offset-lg] [offset-lg="70"] {
+
+  [offset-lg="70"] {
     margin-left: 70%; }
-  [offset-lg] [offset-lg="75"] {
+
+  [offset-lg="75"] {
     margin-left: 75%; }
-  [offset-lg] [offset-lg="80"] {
+
+  [offset-lg="80"] {
     margin-left: 80%; }
-  [offset-lg] [offset-lg="85"] {
+
+  [offset-lg="85"] {
     margin-left: 85%; }
-  [offset-lg] [offset-lg="90"] {
+
+  [offset-lg="90"] {
     margin-left: 90%; }
-  [offset-lg] [offset-lg="95"] {
+
+  [offset-lg="95"] {
     margin-left: 95%; }
 
   [offset-lg="33"], [offset-lg="34"] {
@@ -2594,43 +2702,61 @@
         -ms-flex-direction: row;
             flex-direction: row; }
 
-  [offset-gt-lg] [offset-gt-lg="5"] {
+  [offset-gt-lg="5"] {
     margin-left: 5%; }
-  [offset-gt-lg] [offset-gt-lg="10"] {
+
+  [offset-gt-lg="10"] {
     margin-left: 10%; }
-  [offset-gt-lg] [offset-gt-lg="15"] {
+
+  [offset-gt-lg="15"] {
     margin-left: 15%; }
-  [offset-gt-lg] [offset-gt-lg="20"] {
+
+  [offset-gt-lg="20"] {
     margin-left: 20%; }
-  [offset-gt-lg] [offset-gt-lg="25"] {
+
+  [offset-gt-lg="25"] {
     margin-left: 25%; }
-  [offset-gt-lg] [offset-gt-lg="30"] {
+
+  [offset-gt-lg="30"] {
     margin-left: 30%; }
-  [offset-gt-lg] [offset-gt-lg="35"] {
+
+  [offset-gt-lg="35"] {
     margin-left: 35%; }
-  [offset-gt-lg] [offset-gt-lg="40"] {
+
+  [offset-gt-lg="40"] {
     margin-left: 40%; }
-  [offset-gt-lg] [offset-gt-lg="45"] {
+
+  [offset-gt-lg="45"] {
     margin-left: 45%; }
-  [offset-gt-lg] [offset-gt-lg="50"] {
+
+  [offset-gt-lg="50"] {
     margin-left: 50%; }
-  [offset-gt-lg] [offset-gt-lg="55"] {
+
+  [offset-gt-lg="55"] {
     margin-left: 55%; }
-  [offset-gt-lg] [offset-gt-lg="60"] {
+
+  [offset-gt-lg="60"] {
     margin-left: 60%; }
-  [offset-gt-lg] [offset-gt-lg="65"] {
+
+  [offset-gt-lg="65"] {
     margin-left: 65%; }
-  [offset-gt-lg] [offset-gt-lg="70"] {
+
+  [offset-gt-lg="70"] {
     margin-left: 70%; }
-  [offset-gt-lg] [offset-gt-lg="75"] {
+
+  [offset-gt-lg="75"] {
     margin-left: 75%; }
-  [offset-gt-lg] [offset-gt-lg="80"] {
+
+  [offset-gt-lg="80"] {
     margin-left: 80%; }
-  [offset-gt-lg] [offset-gt-lg="85"] {
+
+  [offset-gt-lg="85"] {
     margin-left: 85%; }
-  [offset-gt-lg] [offset-gt-lg="90"] {
+
+  [offset-gt-lg="90"] {
     margin-left: 90%; }
-  [offset-gt-lg] [offset-gt-lg="95"] {
+
+  [offset-gt-lg="95"] {
     margin-left: 95%; }
 
   [offset-gt-lg="33"], [offset-gt-lg="34"] {
