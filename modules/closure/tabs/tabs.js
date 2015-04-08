@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-9af45d3
+ * v0.8.3-master-600fa96
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -153,10 +153,10 @@ angular.module('material.components.tabs', [
         select:   '&?mdOnSelect',
         deselect: '&?mdOnDeselect'
       },
-      link: link
+      link: postLink
     };
 
-    function link (scope, element, attr, ctrl) {
+    function postLink (scope, element, attr, ctrl) {
       var tabs = element.parent()[0].getElementsByTagName('md-tab'),
           index = Array.prototype.indexOf.call(tabs, element[0]),
           data = ctrl.insertTab({

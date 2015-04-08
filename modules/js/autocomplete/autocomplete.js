@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-9af45d3
+ * v0.8.3-master-600fa96
  */
 (function () {
   'use strict';
@@ -461,7 +461,10 @@
         menuClass:     '@?mdMenuClass'
       },
       template: function (element, attr) {
+        //-- grab the original HTML for custom transclusion before Angular attempts to parse it
+        //-- the HTML is being stored on the attr object so that it is available to postLink
         attr.$mdAutocompleteTemplate = element.html();
+        //-- return the replacement template, which will wipe out the original HTML
         return '\
           <md-autocomplete-wrap role="listbox">\
             <md-input-container ng-if="floatingLabel">\
@@ -536,6 +539,7 @@
 
     function link (scope, element, attr) {
       scope.contents = attr.$mdAutocompleteTemplate;
+      delete attr.$mdAutocompleteTemplate;
       angular.forEach(scope.$$isolateBindings, function (binding, key) {
         if (binding.optional && angular.isUndefined(scope[key])) {
           scope[key] = attr.hasOwnProperty(attr.$normalize(binding.attrName));
@@ -634,17 +638,20 @@
   function MdAutocompleteListItem ($compile, $mdUtil) {
     return {
       terminal: true,
-      link: link,
+      link: postLink,
       scope: false
     };
-    function link (scope, element, attr) {
+    function postLink (scope, element, attr) {
       var ctrl     = scope.$parent.$mdAutocompleteCtrl,
           newScope = ctrl.parent.$new(false, ctrl.parent),
           itemName = ctrl.scope.$eval(attr.mdAutocompleteListItem);
       newScope[itemName] = scope.item;
       element.html(ctrl.scope.$eval(attr.mdAutocompleteListItemTemplate));
       $compile(element.contents())(newScope);
-      element.attr({ 'role': 'option', 'id': 'item_' + $mdUtil.nextUid() });
+      element.attr({
+        role: 'option',
+        id: 'item_' + $mdUtil.nextUid()
+      });
     }
   }
   MdAutocompleteListItem.$inject = ["$compile", "$mdUtil"];
