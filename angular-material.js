@@ -2,14 +2,14 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.theming.palette","material.core.theming","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.content","material.components.dialog","material.components.divider","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 /*!
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -72,7 +72,7 @@ function rAFDecorator( $delegate ) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -141,7 +141,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function(){
 
@@ -378,7 +378,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function(){
 
@@ -517,7 +517,7 @@ mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -812,7 +812,7 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -902,7 +902,7 @@ AriaService.$inject = ["$$rAF", "$log", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -1047,7 +1047,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function (jQuery) {
   'use strict';
@@ -1617,7 +1617,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -2052,7 +2052,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
   'use strict';
@@ -2185,7 +2185,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -2609,7 +2609,7 @@ function attrNoDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -2981,7 +2981,7 @@ angular.module('material.core.theming.palette', [])
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -3588,7 +3588,7 @@ function rgba(rgbArray, opacity) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function () {
   'use strict';
@@ -3609,7 +3609,7 @@ function rgba(rgbArray, opacity) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -3648,7 +3648,7 @@ BackdropDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -3916,7 +3916,7 @@ MdBottomSheetProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -4025,7 +4025,7 @@ MdButtonDirective.$inject = ["$mdInkRipple", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -4091,7 +4091,7 @@ mdCardDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -4232,7 +4232,7 @@ MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$md
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function () {
   'use strict';
@@ -4252,7 +4252,7 @@ MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$md
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -4338,7 +4338,7 @@ function iosScrollFix(node) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -5008,7 +5008,7 @@ MdDialogProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -5054,7 +5054,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -5210,36 +5210,47 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
       }
     }
 
+    var lastLayoutProps;
+
     /**
      * Invokes the layout engine, and uses its results to lay out our
      * tile elements.
      */
     function layoutDelegate() {
+      var props = {
+        tileSpans: getTileSpans(),
+        colCount: getColumnCount(),
+        rowMode: getRowMode(),
+        rowHeight: getRowHeight(),
+        gutter: getGutter()
+      };
+
+      if (angular.equals(props, lastLayoutProps)) {
+        return;
+      }
+
       var tiles = getTileElements(),
-          colCount = getColumnCount(),
-          rowMode = getRowMode(),
-          rowHeight = getRowHeight(),
-          gutter = getGutter(),
           performance =
-              $mdGridLayout(colCount, getTileSpans(), getTileElements())
-                  .map(function(tilePositions, rowCount) {
+            $mdGridLayout(props.colCount, props.tileSpans, tiles)
+              .map(function(tilePositions, rowCount) {
+                return {
+                  grid: {
+                    element: element,
+                    style: getGridStyle(props.colCount, rowCount,
+                        props.gutter, props.rowMode, props.rowHeight)
+                  },
+                  tiles: tilePositions.map(function(ps, i) {
                     return {
-                      grid: {
-                        element: element,
-                        style: getGridStyle(colCount, rowCount, gutter, rowMode, rowHeight)
-                      },
-                      tiles: tilePositions.map(function(ps, i) {
-                        return {
-                          element: angular.element(tiles[i]),
-                          style: getTileStyle(ps.position, ps.spans,
-                              colCount, rowCount,
-                              gutter, rowMode, rowHeight)
-                        }
-                      })
+                      element: angular.element(tiles[i]),
+                      style: getTileStyle(ps.position, ps.spans,
+                          props.colCount, props.rowCount,
+                          props.gutter, props.rowMode, props.rowHeight)
                     }
                   })
-                  .reflow()
-                  .performance();
+                }
+              })
+              .reflow()
+              .performance();
 
       // Report layout
       scope.mdOnLayout({
@@ -5247,9 +5258,19 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
           performance: performance
         }
       });
+
+      lastLayoutProps = props;
     }
 
     // Use $interpolate to do some simple string interpolation as a convenience.
+
+    var startSymbol = $interpolate.startSymbol();
+    var endSymbol = $interpolate.endSymbol();
+
+    // Returns an expression wrapped in the interpolator's start and end symbols.
+    function expr(exprStr) {
+      return startSymbol + exprStr + endSymbol;
+    }
 
     // The amount of space a single 1x1 tile would take up (either width or height), used as
     // a basis for other calculations. This consists of taking the base size percent (as would be
@@ -5257,20 +5278,18 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
     // However, since there are no gutters on the edges, each tile only uses a fration
     // (gutterShare = numGutters / numCells) of the gutter size. (Imagine having one gutter per
     // tile, and then breaking up the extra gutter on the edge evenly among the cells).
-    var UNIT = $interpolate('{{share}}% - ( {{gutter}} * {{gutterShare}} )');
+    var UNIT = $interpolate(expr('share') + '% - (' + expr('gutter') + ' * ' + expr('gutterShare') + ')');
 
     // The horizontal or vertical position of a tile, e.g., the 'top' or 'left' property value.
     // The position comes the size of a 1x1 tile plus gutter for each previous tile in the
     // row/column (offset).
-    var POSITION  = $interpolate('calc( ( {{unit}} + {{gutter}} ) * {{offset}} )');
+    var POSITION  = $interpolate('calc((' + expr('unit') + ' + ' + expr('gutter') + ') * ' + expr('offset') + ')');
 
     // The actual size of a tile, e.g., width or height, taking rowSpan or colSpan into account.
     // This is computed by multiplying the base unit by the rowSpan/colSpan, and then adding back
     // in the space that the gutter would normally have used (which was already accounted for in
     // the base unit calculation).
-    var DIMENSION = $interpolate('calc(({{unit}}) * {{span}} + ({{span}} - 1) * {{gutter}})');
-
-    // TODO(shyndman): Replace args with a ctx object.
+    var DIMENSION = $interpolate('calc((' + expr('unit') + ') * ' + expr('span') + ' + (' + expr('span') + ' - 1) * ' + expr('gutter') + ')');
 
     /**
      * Gets the styles applied to a tile element described by the given parameters.
@@ -5342,7 +5361,7 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
           // Percent of the available vertical space that one row takes up.
           var vShare = (1 / rowCount) * 100;
 
-          // Base veritcal size of a row.
+          // Base vertical size of a row.
           var vUnit = UNIT({share: vShare, gutterShare: vGutterShare, gutter: gutter});
 
           style.top = POSITION({unit: vUnit, offset: position.row, gutter: gutter});
@@ -5444,7 +5463,7 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
 }
 GridListDirective.$inject = ["$interpolate", "$mdConstant", "$mdGridLayout", "$mdMedia"];
 
-  /* @ngInject */
+/* @ngInject */
 function GridListController($timeout) {
   this.invalidated = false;
   this.$timeout_ = $timeout;
@@ -5781,6 +5800,14 @@ function GridTileDirective($mdMedia) {
       unwatchAttrs();
       gridCtrl.removeTile(element, attrs);
     });
+
+    if (angular.isDefined(scope.$parent.$index)) {
+      scope.$watch(function() { return scope.$parent.$index; },
+        function indexChanged(newIdx, oldIdx) {
+          gridCtrl.removeTile(element, attrs);
+          gridCtrl.addTile(element, attrs, newIdx);
+        });
+    }
   }
 }
 GridTileDirective.$inject = ["$mdMedia"];
@@ -5798,7 +5825,7 @@ function GridTileCaptionDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -5911,7 +5938,7 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
   'use strict';
@@ -6385,7 +6412,7 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 
@@ -6728,7 +6755,7 @@ function placeholderDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -6954,7 +6981,7 @@ mdItemDirective.$inject = ["$document", "$log", "$mdUtil", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -7064,7 +7091,7 @@ MdProgressCircularDirective.$inject = ["$mdConstant", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -7193,7 +7220,7 @@ var transforms = (function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -7491,7 +7518,7 @@ mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -8545,7 +8572,7 @@ function nodesToArray(nodes) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -8931,7 +8958,7 @@ SidenavController.$inject = ["$scope", "$element", "$attrs", "$mdComponentRegist
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
   'use strict';
@@ -9334,7 +9361,7 @@ SliderDirective.$inject = ["$$rAF", "$window", "$mdAria", "$mdUtil", "$mdConstan
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -9646,7 +9673,7 @@ MdSticky.$inject = ["$document", "$mdConstant", "$compile", "$$rAF", "$mdUtil"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -9739,7 +9766,7 @@ MdSubheaderDirective.$inject = ["$mdSticky", "$compile", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -9817,7 +9844,7 @@ var module = angular.module('material.components.swipe',[]);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -9986,7 +10013,7 @@ MdSwitch.$inject = ["mdCheckboxDirective", "$mdTheming", "$mdUtil", "$document",
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -10025,7 +10052,7 @@ angular.module('material.components.tabs', [
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -10169,7 +10196,7 @@ mdInputDirective.$inject = ["$mdUtil", "$log"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -10435,7 +10462,7 @@ MdToastProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -10594,7 +10621,7 @@ mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -10825,7 +10852,7 @@ MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdU
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function() {
 'use strict';
@@ -10841,7 +10868,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function () {
   'use strict';
@@ -11199,7 +11226,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function () {
   'use strict';
@@ -11355,7 +11382,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function () {
   'use strict';
@@ -11395,7 +11422,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function () {
   'use strict';
@@ -11445,7 +11472,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function () {
   'use strict';
@@ -11476,7 +11503,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function () {
   'use strict';
@@ -11538,7 +11565,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function () {
   'use strict';
@@ -11598,7 +11625,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function () {
   'use strict';
@@ -11965,7 +11992,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function () {
   'use strict';
@@ -12284,7 +12311,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function () {
   'use strict';
@@ -12313,7 +12340,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function () {
   'use strict';
@@ -12342,7 +12369,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 /**
  * @ngdoc directive
@@ -12455,7 +12482,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function () {
   'use strict';
@@ -12475,7 +12502,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function () {
   'use strict';
@@ -12501,7 +12528,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 (function () {
   'use strict';
@@ -12830,7 +12857,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3cc914d
+ * v0.8.3-master-f037b8c
  */
 /**
  * @ngdoc directive
