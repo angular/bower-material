@@ -21,7 +21,7 @@ Now you can use `require('angular-material')` when installing with npm or jsmp a
 bower install angular-material
 
 # To get the most recent, last committed-to-master version use:
-bower install 'angular-material#master'
+bower install angular-material#master
 
 # To save the bower settings for future use:
 bower install angular-material --save
