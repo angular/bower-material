@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-3ca2a63
+ * v0.8.3-master-d0b427d
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -70,6 +70,9 @@ function mdInputContainerDirective($mdTheming, $parse) {
 
     self.isErrorGetter = $attrs.mdIsError && $parse($attrs.mdIsError);
 
+    self.delegateClick = function() {
+      self.input.focus();
+    };
     self.element = $element;
     self.setFocused = function(isFocused) {
       $element.toggleClass('md-input-focused', !!isFocused);
@@ -337,7 +340,9 @@ function placeholderDirective() {
     var placeholderText = attr.placeholder;
     element.removeAttr('placeholder');
 
-    inputContainer.element.append('<div class="md-placeholder">' + placeholderText + '</div>');
+    var placeholder = '<div class="md-placeholder" ng-click="delegateClick()">' +
+                       placeholderText + '</div>';
+    inputContainer.element.append(placeholder);
   }
 }
 
