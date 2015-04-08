@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-0df4b16
+ * v0.8.3-master-860897d
  */
 (function () {
   'use strict';
@@ -423,6 +423,7 @@
    * @param {number=} md-delay Specifies the amount of time (in milliseconds) to wait before looking for results
    * @param {boolean=} md-autofocus If true, will immediately focus the input element
    * @param {boolean=} md-autoselect If true, the first item will be selected by default
+   * @param {string=} md-menu-class This will be applied to the dropdown menu for styling
    *
    * @usage
    * <hljs lang="html">
@@ -456,7 +457,8 @@
         delay:         '=?mdDelay',
         autofocus:     '=?mdAutofocus',
         floatingLabel: '@?mdFloatingLabel',
-        autoselect:    '=?mdAutoselect'
+        autoselect:    '=?mdAutoselect',
+        menuClass:     '@?mdMenuClass'
       },
       template: function (element, attr) {
         attr.$mdAutocompleteTemplate = element.html();
@@ -509,7 +511,7 @@
                 ng-if="$mdAutocompleteCtrl.loading"\
                 md-mode="indeterminate"></md-progress-linear>\
             <ul role="presentation"\
-                class="md-autocomplete-suggestions"\
+                class="md-autocomplete-suggestions {{menuClass || \'\'}}"\
                 id="ul-{{$mdAutocompleteCtrl.id}}"\
                 ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
                 ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
