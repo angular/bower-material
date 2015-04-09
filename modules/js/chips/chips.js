@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-00011bd
+ * v0.8.3-master-59d359c
  */
 (function () {
   'use strict';
@@ -115,7 +115,7 @@
     function postLink(scope, element, attr, ctrl) {
       element.on('click', function(event) {
         scope.$apply(function() {
-          ctrl.removeChip(scope.$index);
+          ctrl.removeChip(scope.$$replacedScope.$index);
         });
       });
 
@@ -145,6 +145,7 @@
     function link (scope, element, attr) {
       var ctrl = scope.$parent.$mdChipsCtrl,
           newScope = ctrl.parent.$new(false, ctrl.parent);
+      newScope.$$replacedScope = scope;
       newScope.$chip = scope.$chip;
       newScope.$mdChipsCtrl = ctrl;
       element.html(ctrl.$scope.$eval(attr.mdChipTransclude));
@@ -159,8 +160,6 @@
   angular
       .module('material.components.chips')
       .controller('MdChipsCtrl', MdChipsCtrl);
-
-
 
   /**
    * Controller for the MdChips component. Responsible for adding to and
@@ -239,7 +238,6 @@
   }
   MdChipsCtrl.$inject = ["$scope", "$mdConstant", "$log", "$element"];
 
-
   /**
    * Handles the keydown event on the input element: <enter> appends the
    * buffer to the chip list, while backspace removes the last chip in the list
@@ -279,7 +277,6 @@
     return useSecondary ? this.placeholder : this.secondaryPlaceholder;
   };
 
-
   /**
    * Removes chip at {@code index} and selects the adjacent chip.
    * @param index
@@ -290,14 +287,12 @@
     this.selectAndFocusChip(selIndex);
   };
 
-
   /**
    * Sets the selected chip index to -1.
    */
   MdChipsCtrl.prototype.resetSelectedChip = function() {
     this.selectedChip = -1;
   };
-
 
   /**
    * Gets the index of an adjacent chip to select after deletion. Adjacency is
@@ -314,19 +309,18 @@
         (index == len) ? index -1 : index;
   };
 
-
   /**
    * Append the contents of the buffer to the chip list. This method will first
    * call out to the md-on-append method, if provided
    * @param newChip
    */
   MdChipsCtrl.prototype.appendChip = function(newChip) {
+    if (this.items.indexOf(newChip) + 1) return;
     if (this.useMdOnAppend && this.mdOnAppend) {
       newChip = this.mdOnAppend({'$chip': newChip});
     }
     this.items.push(newChip);
   };
-
 
   /**
    * Sets whether to use the md-on-append expression. This expression is
@@ -338,7 +332,6 @@
   MdChipsCtrl.prototype.useMdOnAppendExpression = function() {
     this.useMdOnAppend = true;
   };
-
 
   /**
    * Gets the input buffer. The input buffer can be the model bound to the
@@ -353,7 +346,6 @@
         this.userInputNgModelCtrl ? this.userInputNgModelCtrl.$viewValue :
             this.userInputElement[0].value;
   };
-
 
   /**
    * Resets the input buffer for either the internal input or user provided input element.
@@ -371,7 +363,6 @@
     }
   };
 
-
   /**
    * Removes the chip at the given index.
    * @param index
@@ -380,26 +371,17 @@
     this.items.splice(index, 1);
   };
 
-
   /**
    * Selects the chip at `index`,
    * @param index
    */
   MdChipsCtrl.prototype.selectChipSafe = function(index) {
-    if (this.items.length == 0) {
-      this.selectChip(-1);
-      return;
-    }
-
-    if (index < 0) {
-      index = 0;
-    } else if (index > this.items.length - 1) {
-      index = this.items.length - 1;
-    }
+    if (!this.items.length) return this.selectChip(-1);
+    index = Math.max(index, 0);
+    index = Math.min(index, this.items.length - 1);
     this.selectChip(index);
     this.focusChip(index);
   };
-
 
   /**
    * Marks the chip at the given index as selected.
@@ -413,7 +395,6 @@
     }
   };
 
-
   /**
    * Selects the chip at `index` and gives it focus.
    * @param index
@@ -425,14 +406,12 @@
     }
   };
 
-
   /**
    * Call `focus()` on the chip at `index`
    */
   MdChipsCtrl.prototype.focusChip = function(index) {
     this.$element[0].querySelector('md-chip[index="' + index + '"] .md-chip-content').focus();
   };
-
 
   /**
    * Configures the required interactions with the ngModel Controller.
@@ -583,7 +562,7 @@
           <div class="md-chip-content"\
               ng-click="!$mdChipsCtrl.readonly && $mdChipsCtrl.selectChip($index)"\
               md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"></div>\
-          <div class="md-chip-remove-container" \
+          <div class="md-chip-remove-container"\
               md-chip-transclude="$mdChipsCtrl.chipRemoveTemplate"></div>\
         </md-chip>\
         <div ng-if="!$mdChipsCtrl.readonly && $mdChipsCtrl.ngModelCtrl"\
@@ -604,16 +583,16 @@
       <span>{{$chip}}</span>';
 
   var CHIP_REMOVE_TEMPLATE = '\
-      <md-button \
+      <button\
           class="md-chip-remove"\
           ng-if="!$mdChipsCtrl.readonly"\
-          ng-click="$mdChipsCtrl.removeChip($index)"\
+          ng-click="$mdChipsCtrl.removeChip($$replacedScope.$index)"\
           tabindex="-1">\
         <md-icon md-svg-icon="close"></md-icon>\
         <span class="md-visually-hidden">\
           {{$mdChipsCtrl.deleteButtonLabel}}\
         </span>\
-      </md-button>';
+      </button>';
 
   /**
    * MDChips Directive Definition
