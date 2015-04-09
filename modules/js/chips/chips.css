@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-e7b7dcb
+ * v0.8.3-master-aaae22e
  */
 .md-contact-chips .md-chips .md-chip {
   padding: 0 0.8rem 0 0; }
@@ -15,6 +15,8 @@
     display: inline-block;
     height: 3.2rem;
     margin-left: 0.8rem; }
+.md-contact-chips .md-chips md-autocomplete button {
+  display: none; }
 
 .md-contact-suggestion {
   height: 5.6rem; }
@@ -39,8 +41,10 @@
   font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
   font-size: 1.3rem;
   padding: 0 0.8rem 0.8rem 0.8rem;
-  vertical-align: middle; }
+  vertical-align: middle;
+  cursor: text; }
   .md-chips .md-chip {
+    cursor: default;
     border-radius: 1.6rem;
     display: inline-block;
     height: 3.2rem;
@@ -48,8 +52,9 @@
     margin: 0.8rem 0.8rem 0 0;
     padding: 0 0.8rem 0 1.2rem; }
     .md-chips .md-chip .md-chip-content {
-      display: inline-block;
-      padding-right: 0.4rem; }
+      display: block;
+      padding-right: 0.4rem;
+      float: left; }
       .md-chips .md-chip .md-chip-content:focus {
         outline: none; }
     .md-chips .md-chip .md-chip-remove-container {

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-e7b7dcb
+ * v0.8.3-master-aaae22e
  */
 (function () {
   'use strict';
@@ -316,6 +316,7 @@
       self.hidden = true;
       self.index = 0;
       self.matches = [];
+      self.parent.$emit('$mdAutocompleteSelected', $scope.selectedItem);
     }
 
     function clearValue () {
