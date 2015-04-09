@@ -20,9 +20,9 @@
     "client-side"
   ],
   "peerDependencies": {
-      "angular": "1.3.x",
-      "angular-animate": "1.3.x",
-      "angular-aria": "1.3.x"
+      "angular": "^1.3.x",
+      "angular-animate": "^1.3.x",
+      "angular-aria": "^1.3.x"
   },
   "bugs": {
     "url": "https://github.com/angular/material/issues"
