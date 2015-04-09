@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3
+ * v0.8.3-master-ffa46d5
  */
 (function() {
 'use strict';
@@ -32,28 +32,42 @@ angular.module('material.components.button', [
  * If you supply a `href` or `ng-href` attribute, it will become an `<a>` element. Otherwise, it will
  * become a `<button>` element.
  *
+ * As per the [material design spec](http://www.google.com/design/spec/style/color.html#color-ui-color-application)
+ * the FAB button is in the accent color by default. The primary color palette may be used with
+ * the `md-primary` class.
+ *
  * @param {boolean=} md-no-ink If present, disable ripple ink effects.
  * @param {expression=} ng-disabled En/Disable based on the expression
+ * @param {string=} md-ripple-size Overrides the default ripple size logic. Options: `full`, `partial`, `auto`
  * @param {string=} aria-label Adds alternative text to button for accessibility, useful for icon buttons.
  * If no default text is found, a warning will be logged.
  *
  * @usage
  * <hljs lang="html">
  *  <md-button>
- *    Button
+ *    Flat Button
  *  </md-button>
- *  <md-button href="http://google.com" class="md-button-colored">
- *    I'm a link
+ *  <md-button href="http://google.com">
+ *    Flat link
  *  </md-button>
- *  <md-button ng-disabled="true" class="md-colored">
- *    I'm a disabled button
+ *  <md-button class="md-raised">
+ *    Raised Button
+ *  </md-button>
+ *  <md-button ng-disabled="true">
+ *    Disabled Button
+ *  </md-button>
+ *  <md-button class="md-fab" aria-label="FAB">
+ *    <md-icon md-svg-src="your/icon.svg"></md-icon>
+ *  </md-button>
+ *  <md-button class="md-fab md-mini" aria-label="Mini FAB">
+ *    <md-icon md-svg-src="your/icon.svg"></md-icon>
  *  </md-button>
  * </hljs>
  */
 function MdButtonDirective($mdInkRipple, $mdTheming, $mdAria) {
 
   return {
-    restrict: 'E',
+    restrict: 'EA',
     replace: true,
     transclude: true,
     template: getTemplate,
@@ -61,7 +75,7 @@ function MdButtonDirective($mdInkRipple, $mdTheming, $mdAria) {
   };
 
   function isAnchor(attr) {
-    return angular.isDefined(attr.href) || angular.isDefined(attr.ngHref);
+    return angular.isDefined(attr.href) || angular.isDefined(attr.ngHref) || angular.isDefined(attr.uiSref);
   }
   
   function getTemplate(element, attr) {

@@ -2,11 +2,11 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3
+ * v0.8.3-master-ffa46d5
  */
 md-input-group label, .md-input-group label {
   display: block;
-  font-size: 0.75em; }
+  font-size: 1.2rem; }
 md-input-group textarea, md-input-group input[type="text"], md-input-group input[type="password"], md-input-group input[type="datetime"], md-input-group input[type="datetime-local"], md-input-group input[type="date"], md-input-group input[type="month"], md-input-group input[type="time"], md-input-group input[type="week"], md-input-group input[type="number"], md-input-group input[type="email"], md-input-group input[type="url"], md-input-group input[type="search"], md-input-group input[type="tel"], md-input-group input[type="color"], .md-input-group textarea, .md-input-group input[type="text"], .md-input-group input[type="password"], .md-input-group input[type="datetime"], .md-input-group input[type="datetime-local"], .md-input-group input[type="date"], .md-input-group input[type="month"], .md-input-group input[type="time"], .md-input-group input[type="week"], .md-input-group input[type="number"], .md-input-group input[type="email"], .md-input-group input[type="url"], .md-input-group input[type="search"], .md-input-group input[type="tel"], .md-input-group input[type="color"] {
   display: block;
   border-width: 0 0 1px 0;
@@ -24,7 +24,7 @@ md-input-group, .md-input-group {
   position: relative;
   display: block; }
   md-input-group label, .md-input-group label {
-    font-size: 1em;
+    font-size: 1.6rem;
     z-index: 1;
     pointer-events: none;
     -webkit-font-smoothing: antialiased; }
@@ -35,14 +35,11 @@ md-input-group, .md-input-group {
             transform: translate3d(0, 22px, 0);
     -webkit-transform-origin: left center;
             transform-origin: left center;
-    -webkit-transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1);
-            transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1);
-    -webkit-transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1);
-            transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
+    transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1);
+    transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
   md-input-group input, md-input-group textarea, .md-input-group input, .md-input-group textarea {
     border-bottom-width: 1px;
-    -webkit-transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1);
-            transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
+    transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
   md-input-group.md-input-focused label, .md-input-group.md-input-focused label {
     -webkit-transform: translate3d(0, 4px, 0) scale(0.75);
             transform: translate3d(0, 4px, 0) scale(0.75); }
@@ -72,5 +69,4 @@ md-input-group, .md-input-group {
             transform: translate3d(0, 22px, 0);
     -webkit-transform-origin: left center;
             transform-origin: left center;
-    -webkit-transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1);
-            transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
+    transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
