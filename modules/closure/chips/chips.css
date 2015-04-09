@@ -2,8 +2,37 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-6d36850
+ * v0.8.3-master-ce85039
  */
+.md-contact-chips .md-chips .md-chip {
+  padding: 0 0.8rem 0 0; }
+  .md-contact-chips .md-chips .md-chip .md-contact-avatar {
+    float: left; }
+    .md-contact-chips .md-chips .md-chip .md-contact-avatar img {
+      height: 3.2rem;
+      border-radius: 1.6rem; }
+  .md-contact-chips .md-chips .md-chip .md-contact-name {
+    display: inline-block;
+    height: 3.2rem;
+    margin-left: 0.8rem; }
+
+.md-contact-suggestion {
+  height: 5.6rem; }
+  .md-contact-suggestion img {
+    height: 4rem;
+    border-radius: 2rem;
+    margin-top: 0.8rem; }
+  .md-contact-suggestion .md-contact-name {
+    margin-left: 0.8rem;
+    width: 12rem; }
+  .md-contact-suggestion .md-contact-name, .md-contact-suggestion .md-contact-email {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+
+.md-contact-chips-suggestions li {
+  height: 100%; }
+
 .md-chips {
   box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
   display: block;
@@ -23,6 +52,8 @@
       padding-right: 0.4rem; }
       .md-chips .md-chip .md-chip-content:focus {
         outline: none; }
+    .md-chips .md-chip .md-chip-remove-container {
+      display: inline-block; }
     .md-chips .md-chip.selected {
       box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26); }
     .md-chips .md-chip .md-button.md-chip-remove {
@@ -44,6 +75,23 @@
       line-height: 3.2rem;
       padding: 0; }
       .md-chips .md-chip-input-container input:not([type]):focus, .md-chips .md-chip-input-container input[type="email"]:focus, .md-chips .md-chip-input-container input[type="number"]:focus, .md-chips .md-chip-input-container input[type="tel"]:focus, .md-chips .md-chip-input-container input[type="url"]:focus, .md-chips .md-chip-input-container input[type="text"]:focus {
+        outline: none; }
+    .md-chips .md-chip-input-container md-autocomplete, .md-chips .md-chip-input-container md-autocomplete-wrap {
+      background: transparent;
+      height: 3.2rem; }
+    .md-chips .md-chip-input-container md-autocomplete {
+      box-shadow: none; }
+      .md-chips .md-chip-input-container md-autocomplete input {
+        position: relative; }
+      .md-chips .md-chip-input-container md-autocomplete button md-icon {
+        top: 1px;
+        /* Reposition the (x) button in the autocomplete */ }
+    .md-chips .md-chip-input-container input {
+      border: 0;
+      height: 3.2rem;
+      line-height: 3.2rem;
+      padding: 0; }
+      .md-chips .md-chip-input-container input:focus {
         outline: none; }
     .md-chips .md-chip-input-container md-autocomplete, .md-chips .md-chip-input-container md-autocomplete-wrap {
       height: 3.2rem; }

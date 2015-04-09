@@ -2,9 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-6d36850
+ * v0.8.3-master-ce85039
  */
 goog.provide('ng.material.components.chips');
+goog.require('ng.material.components.autocomplete');
 goog.require('ng.material.core');
 (function () {
   'use strict';
@@ -16,7 +17,8 @@ goog.require('ng.material.core');
    * @see js folder for chips implementation
    */
   angular.module('material.components.chips', [
-    'material.core'
+    'material.core',
+    'material.components.autocomplete'
   ]);
 })();
 
@@ -134,6 +136,31 @@ goog.require('ng.material.core');
   'use strict';
   angular
       .module('material.components.chips')
+      .directive('mdChipTransclude', MdChipTransclude);
+
+  function MdChipTransclude ($compile, $mdUtil) {
+    return {
+      restrict: 'EA',
+      terminal: true,
+      link: link,
+      scope: false
+    };
+    function link (scope, element, attr) {
+      var ctrl = scope.$parent.$mdChipsCtrl,
+          newScope = ctrl.parent.$new(false, ctrl.parent);
+      newScope.$chip = scope.$chip;
+      newScope.$mdChipsCtrl = ctrl;
+      element.html(ctrl.$scope.$eval(attr.mdChipTransclude));
+      $compile(element.contents())(newScope);
+    }
+  }
+  MdChipTransclude.$inject = ["$compile", "$mdUtil"];
+})();
+
+(function () {
+  'use strict';
+  angular
+      .module('material.components.chips')
       .controller('MdChipsCtrl', MdChipsCtrl);
 
 
@@ -144,18 +171,20 @@ goog.require('ng.material.core');
    * the models of various input components.
    *
    * @param $scope
-   * @param $mdUtil
    * @param $mdConstant
    * @param $log
    * @param $element
    * @constructor
    */
-  function MdChipsCtrl ($scope, $mdUtil, $mdConstant, $log, $element) {
+  function MdChipsCtrl ($scope, $mdConstant, $log, $element) {
     /** @type {Object} */
     this.$mdConstant = $mdConstant;
 
     /** @type {angular.$scope} */
     this.$scope = $scope;
+
+    /** @type {angular.$scope} */
+    this.parent = $scope.$parent;
 
     /** @type {$log} */
     this.$log = $log;
@@ -207,7 +236,7 @@ goog.require('ng.material.core');
      */
     this.useMdOnAppend = false;
   }
-  MdChipsCtrl.$inject = ["$scope", "$mdUtil", "$mdConstant", "$log", "$element"];
+  MdChipsCtrl.$inject = ["$scope", "$mdConstant", "$log", "$element"];
 
 
   /**
@@ -432,7 +461,7 @@ goog.require('ng.material.core');
    */
   MdChipsCtrl.prototype.focusChip = function(index) {
     this.$element[0].querySelector('md-chip[index="' + index + '"] .md-chip-content').focus();
-  }
+  };
 
 
   /**
@@ -478,7 +507,11 @@ goog.require('ng.material.core');
     this.userInputElement = inputElement;
 
     // Find the NgModelCtrl for the input element
-    this.userInputNgModelCtrl = inputElement.controller('ngModel');
+    var ngModelCtrl = inputElement.controller('ngModel');
+    // `.controller` will look in the parent as well.
+    if (ngModelCtrl != this.ngModelCtrl) {
+      this.userInputNgModelCtrl = ngModelCtrl;
+    }
 
     // Bind to keydown and focus events of input
     var scope = this.$scope;
@@ -591,11 +624,15 @@ goog.require('ng.material.core');
             ng-class="{selected: $mdChipsCtrl.selectedChip == $index}">\
           <div class="md-chip-content"\
               ng-click="!$mdChipsCtrl.readonly && $mdChipsCtrl.selectChip($index)"\
-              ng-keydown="$mdChipsCtrl.chipKeydown($index, $event)"></div>\
+              ng-keydown="$mdChipsCtrl.chipKeydown($index, $event)"\
+              md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"></div>\
+          <div class="md-chip-remove-container" \
+              md-chip-transclude="$mdChipsCtrl.chipRemoveTemplate"></div>\
         </md-chip>\
-        <div\
-            ng-if="!$mdChipsCtrl.readonly && $mdChipsCtrl.ngModelCtrl" \
-            class="md-chip-input-container"></div>\
+        <div ng-if="!$mdChipsCtrl.readonly && $mdChipsCtrl.ngModelCtrl"\
+            class="md-chip-input-container"\
+            md-chip-transclude="$mdChipsCtrl.chipInputTemplate"></div>\
+        </div>\
       </md-chips-wrap>';
 
   var CHIP_INPUT_TEMPLATE = '\
@@ -621,8 +658,6 @@ goog.require('ng.material.core');
         </span>\
       </md-button>';
 
-  //ng-blur="$mdChipsCtrl.resetSelectedChip()"\
-
   /**
    * MDChips Directive Definition
    *
@@ -642,8 +677,6 @@ goog.require('ng.material.core');
         // where various contained-elements can be consumed.
         attrs['$mdUserTemplate'] = element.clone();
         attrs['tabindex'] = '-1';
-
-
         return MD_CHIPS_TEMPLATE;
       },
       require: ['mdChips'],
@@ -675,6 +708,8 @@ goog.require('ng.material.core');
      * If no user-passed `md-chip-template` exists, the default template is used. This resulting
      * template is appended to the chip content element.
      *
+     * The remove button may be overridden by passing an element with an md-chip-remove attribute.
+     *
      * If an `input` or `md-autocomplete` element is provided by the caller, it is set aside for
      * transclusion later. The transclusion happens in `postLink` as the parent scope is required.
      * If no user input is provided, a default one is appended to the input container node in the
@@ -693,69 +728,53 @@ goog.require('ng.material.core');
       var userTemplate = attr['$mdUserTemplate'];
       attr['$mdUserTemplate'] = null;
 
-
-      // Variables needed in `post-link`'s closure:
-      var hasNgModel = !!attr['ngModel'],
-          transcludeInputElement = null,
+      // Set the chip remove, chip contents and chip input templates. The link function will put
+      // them on the scope for transclusion later.
+      var chipRemoveTemplate = CHIP_REMOVE_TEMPLATE,
+          chipContentsTemplate = CHIP_DEFAULT_TEMPLATE,
+          chipInputTemplate = CHIP_INPUT_TEMPLATE,
           hasAutocomplete = false,
+          hasNgModel = !!attr['ngModel'],
           staticChips = userTemplate.find('md-chip');
 
+      // Without an ngModel, it doesn't make sense to look for templates.
       if (hasNgModel) {
-        // Extract a chip template or use the default.
-        var chipHtml,
-            chipTemplate = userTemplate.find('md-chip-template'),
-            chipRemoveHtml = CHIP_REMOVE_TEMPLATE;
-
-        if (chipTemplate.length === 0) {
-          chipHtml = CHIP_DEFAULT_TEMPLATE;
-        } else {
-          // If there is a user-provided md-chip-remove, pluck it out and us it instead of the
-          // default.
-          var chipRemoveEl = angular.element(chipTemplate[0].querySelector('[md-chip-remove]'));
-          if (chipRemoveEl.length > 0) {
-            chipRemoveHtml = chipRemoveEl[0].outerHTML;
-            chipHtml = chipTemplate[0].innerHTML.replace(chipRemoveHtml, '');
-          } else {
-            chipHtml = chipTemplate[0].innerHTML;
-          }
+        var userChipTemplate = userTemplate.find('md-chip-template');
+        if (userChipTemplate.length > 0) {
+          chipContentsTemplate = userChipTemplate[0].outerHTML;
         }
-
-        var chipContentNode = angular.element(element[0].querySelector('.md-chip-content'));
-        chipContentNode.append(chipHtml);
-
-        var chipNode = element.find('md-chip');
-        chipNode.append(chipRemoveHtml);
-
+        var userChipRemoveTemplate = userTemplate[0].querySelector('[md-chip-remove]');
+        if (userChipRemoveTemplate) {
+          chipRemoveTemplate = userChipRemoveTemplate.outerHTML;
+        }
 
         // Input Element: Look for an autocomplete or an input.
         var userInput = userTemplate.find('md-autocomplete');
         if (userInput.length > 0) {
+          chipInputTemplate = userInput[0].outerHTML;
           hasAutocomplete = true;
-          transcludeInputElement = userInput[0];
         } else {
           // Look for a plain input.
           userInput = userTemplate.find('input');
 
           if (userInput.length > 0) {
-            transcludeInputElement = userInput[0];
-          } else {
-            // No user provided input.
-            // Default element can be appended now as it is compiled with mdChips' scope.
-            getInputContainer(element).append(angular.element(CHIP_INPUT_TEMPLATE));
+            chipInputTemplate = userInput[0].outerHTML;
           }
         }
       }
 
-
       /**
-       * Configures controller and transcludes elements if necessary.
+       * Configures controller and transcludes.
        */
       return function postLink(scope, element, attrs, controllers) {
         $mdTheming(element);
         element.attr('tabindex', '-1');
+        var mdChipsCtrl = controllers[0];
+        mdChipsCtrl.chipContentsTemplate = chipContentsTemplate;
+        mdChipsCtrl.chipRemoveTemplate = chipRemoveTemplate;
+        mdChipsCtrl.chipInputTemplate = chipInputTemplate;
 
         if (hasNgModel) {
-          var mdChipsCtrl = controllers[0];
           var ngModelCtrl = element.controller('ngModel');
 
           mdChipsCtrl.configureNgModel(ngModelCtrl);
@@ -766,25 +785,19 @@ goog.require('ng.material.core');
             mdChipsCtrl.useMdOnAppendExpression();
           }
 
-          // Transclude the input element with the parent scope if it exists into the input
-          // container.
-          if (transcludeInputElement) {
-            var transcludedElement = $compile(transcludeInputElement)(scope.$parent);
-
-            if (hasAutocomplete) {
-              var mdAutocompleteCtrl = transcludedElement.controller('mdAutocomplete');
-              mdChipsCtrl.configureMdAutocomplete(mdAutocompleteCtrl);
-            } else {
-              mdChipsCtrl.configureUserInput(angular.element(transcludeInputElement));
-            }
-
-            // The `ng-if` directive removes the children from the DOM for the rest of this tick, so
-            // do the append the element via a timeout. see http://goo.gl/zIWfuw
+          // The md-autocomplete and input elements won't be compiled until after this directive
+          // is complete (due to their nested nature). Wait a tick before looking for them to
+          // configure the controller.
+          if (chipInputTemplate != CHIP_INPUT_TEMPLATE) {
             $timeout(function() {
-              var inputContainer = getInputContainer(element);
-              inputContainer.append(transcludedElement);
+              if (hasAutocomplete) {
+                var mdAutocompleteCtrl =
+                    element.find('md-autocomplete').controller('mdAutocomplete');
+                mdChipsCtrl.configureMdAutocomplete(mdAutocompleteCtrl);
+              } else {
+                mdChipsCtrl.configureUserInput(element.find('input'));
+              }
             });
-
           }
         }
 
@@ -802,4 +815,162 @@ goog.require('ng.material.core');
     }
   }
   MdChips.$inject = ["$mdTheming", "$log", "$compile", "$timeout"];
+})();
+
+(function () {
+  'use strict';
+  angular
+      .module('material.components.chips')
+      .controller('MdContactChipsCtrl', MdContactChipsCtrl);
+
+
+
+  /**
+   * Controller for the MdContactChips component
+   * @constructor
+   */
+  function MdContactChipsCtrl () {
+    /** @type {Object} */
+    this.selectedItem = null;
+
+    /** @type {string} */
+    this.searchText = '';
+  }
+
+
+  MdContactChipsCtrl.prototype.queryContact = function(searchText) {
+    var results = this.contactQuery({'$query': searchText});
+    return this.filterSelected ?
+        results.filter(this.filterSelectedContacts.bind(this)) : results;
+  };
+
+
+  MdContactChipsCtrl.prototype.filterSelectedContacts = function(contact) {
+    return this.contacts.indexOf(contact) == -1;
+  };
+})();
+
+(function () {
+  'use strict';
+  angular
+      .module('material.components.chips')
+      .directive('mdContactChips', MdContactChips);
+
+  /**
+   * @ngdoc directive
+   * @name mdContactChips
+   * @module material.components.chips
+   *
+   * @description
+   * `<md-contact-chips>` is an input component based on `md-chips` and makes use of an
+   *    `md-autocomplete` element. The component allows the caller to supply a query expression
+   *    which returns  a list of possible contacts. The user can select one of these and add it to
+   *    the list of chips.
+   *
+   * @param {string=|object=} ng-model A model to bind the list of items to
+   * @param {string=} placeholder Placeholder text that will be forwarded to the input.
+   * @param {string=} secondary-placeholder Placeholder text that will be forwarded to the input,
+   *    displayed when there is at least on item in the list
+   * @param {expression} md-contacts An expression expected to return contacts matching the search
+   *    test, `$query`.
+   * @param {string} md-contact-name The field name of the contact object representing the
+   *    contact's name.
+   * @param {string} md-contact-email The field name of the contact object representing the
+   *    contact's email address.
+   * @param {string} md-contact-image The field name of the contact object representing the
+   *    contact's image.
+   * @param {expression=} filter-selected Whether to filter selected contacts from the list of
+   *    suggestions shown in the autocomplete.
+   *
+   *
+   *
+   * @usage
+   * <hljs lang="html">
+   *   <md-contact-chips
+   *       ng-model="ctrl.contacts"
+   *       md-contacts="ctrl.querySearch($query)"
+   *       md-contact-name="name"
+   *       md-contact-image="image"
+   *       md-contact-email="email"
+   *       md-filter-selected="ctrl.filterSelected"
+   *       placeholder="To">
+   *   </md-contact-chips>
+   * </hljs>
+   *
+   */
+
+
+  var MD_CONTACT_CHIPS_TEMPLATE = '\
+      <md-chips class="md-contact-chips"\
+          ng-model="$mdContactChipsCtrl.contacts"\
+          md-autocomplete-snap>\
+          <md-autocomplete\
+              md-menu-class="md-contact-chips-suggestions"\
+              md-selected-item="$mdContactChipsCtrl.selectedItem"\
+              md-search-text="$mdContactChipsCtrl.searchText"\
+              md-items="item in $mdContactChipsCtrl.queryContact($mdContactChipsCtrl.searchText)"\
+              md-item-text="$mdContactChipsCtrl.mdContactName"\
+              md-no-cache="$mdContactChipsCtrl.filterSelected"\
+              placeholder="{{$mdContactChipsCtrl.contacts.length == 0 ?\
+                  $mdContactChipsCtrl.placeholder : $mdContactChipsCtrl.secondaryPlaceholder}}">\
+            <div class="md-contact-suggestion">\
+              <img \
+                  ng-src="{{item[$mdContactChipsCtrl.contactImage]}}"\
+                  alt="{{item[$mdContactChipsCtrl.contactName]}}" />\
+              <span class="md-contact-name" md-highlight-text="$mdContactChipsCtrl.searchText">\
+                {{item[$mdContactChipsCtrl.contactName]}}\
+              </span>\
+              <span class="md-contact-email" >{{item[$mdContactChipsCtrl.contactEmail]}}</span>\
+            </div>\
+          </md-autocomplete>\
+          <md-chip-template>\
+            <div class="md-contact-avatar">\
+              <img \
+                  ng-src="{{$chip[$mdContactChipsCtrl.contactImage]}}"\
+                  alt="{{$chip[$mdContactChipsCtrl.contactName]}}" />\
+            </div>\
+            <div class="md-contact-name">\
+              {{$chip[$mdContactChipsCtrl.contactName]}}\
+            </div>\
+          </md-chip-template>\
+      </md-chips>';
+
+
+  /**
+   * MDContactChips Directive Definition
+   *
+   * @param $mdTheming
+   * @returns {*}
+   * @ngInject
+   */
+  function MdContactChips ($mdTheming) {
+    return {
+      template: function(element, attrs) {
+        return MD_CONTACT_CHIPS_TEMPLATE;
+      },
+      restrict: 'E',
+      controller: 'MdContactChipsCtrl',
+      controllerAs: '$mdContactChipsCtrl',
+      bindToController: true,
+      compile: compile,
+      scope: {
+        contactQuery: '&mdContacts',
+        placeholder: '@',
+        secondaryPlaceholder: '@',
+        contactName: '@mdContactName',
+        contactImage: '@mdContactImage',
+        contactEmail: '@mdContactEmail',
+        filterSelected: '=',
+        contacts: '=ngModel'
+      }
+    };
+
+    function compile(element, attr) {
+      return function postLink(scope, element, attrs, controllers) {
+        $mdTheming(element);
+        element.attr('tabindex', '-1');
+      };
+    }
+  }
+  MdContactChips.$inject = ["$mdTheming"];
 })();
