@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-59d359c
+ * v0.8.3-master-576df5d
  */
 (function () {
   'use strict';
@@ -228,13 +228,6 @@
      * @type {boolean}
      */
     this.useMdOnAppend = false;
-
-    $scope.$parent.$on('$mdAutocompleteSelected', function (event, item) {
-      if (item) {
-        this.appendChip(item);
-        this.resetChipBuffer();
-      }
-    }.bind(this));
   }
   MdChipsCtrl.$inject = ["$scope", "$mdConstant", "$log", "$element"];
 
@@ -455,6 +448,15 @@
         ctrl.inputKeydown(event);
       });
     });
+  };
+
+  MdChipsCtrl.prototype.configureAutocomplete = function(ctrl) {
+    ctrl.registerSelectedItemWatcher(function (item) {
+      if (item) {
+        this.appendChip(item);
+        this.resetChipBuffer();
+      }
+    }.bind(this));
   };
 })();
 
@@ -694,7 +696,10 @@
           // is complete (due to their nested nature). Wait a tick before looking for them to
           // configure the controller.
           if (chipInputTemplate != CHIP_INPUT_TEMPLATE) {
-            $timeout(function() { mdChipsCtrl.configureUserInput(element.find('input')); });
+            $timeout(function() {
+              if (chipInputTemplate.indexOf('<md-autocomplete') === 0) mdChipsCtrl.configureAutocomplete(element.find('md-autocomplete').controller('mdAutocomplete'));
+              mdChipsCtrl.configureUserInput(element.find('input'));
+            });
           }
         }
 

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-59d359c
+ * v0.8.3-master-576df5d
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -42,7 +42,8 @@ goog.require('ng.material.core');
         elements  = null,
         promise   = null,
         cache     = {},
-        noBlur    = false;
+        noBlur    = false,
+        selectedItemWatchers = [];
 
     //-- public variables
 
@@ -64,7 +65,9 @@ goog.require('ng.material.core');
     self.clear    = clearValue;
     self.select   = select;
     self.fetch    = $mdUtil.debounce(fetchResults);
-    self.getCurrentDisplayValue = getCurrentDisplayValue;
+    self.getCurrentDisplayValue         = getCurrentDisplayValue;
+    self.registerSelectedItemWatcher    = registerSelectedItemWatcher;
+    self.unregisterSelectedItemWatcher  = unregisterSelectedItemWatcher;
 
     self.listEnter = function () { noBlur = true; };
     self.listLeave = function () { noBlur = false; };
@@ -136,7 +139,8 @@ goog.require('ng.material.core');
       $scope.$watch('searchText', wait
           ? $mdUtil.debounce(handleSearchText, wait)
           : handleSearchText);
-      $scope.$watch('selectedItem', selectedItemChange);
+      registerSelectedItemWatcher(selectedItemChange);
+      $scope.$watch('selectedItem', handleSelectedItemChange);
       $scope.$watch('$mdAutocompleteCtrl.hidden', function (hidden, oldHidden) {
         if (hidden && !oldHidden) positionDropdown();
       });
@@ -178,6 +182,33 @@ goog.require('ng.material.core');
       }
       if ($scope.itemChange && selectedItem !== previousSelectedItem)
         $scope.itemChange(getItemScope(selectedItem));
+    }
+
+    function handleSelectedItemChange(selectedItem, previousSelectedItem) {
+      for (var i = 0; i < selectedItemWatchers.length; ++i) {
+        selectedItemWatchers[i](selectedItem, previousSelectedItem);
+      }
+    }
+
+    /**
+     * Register a function to be called when the selected item changes.
+     * @param cb
+     */
+    function registerSelectedItemWatcher(cb) {
+      if (selectedItemWatchers.indexOf(cb) == -1) {
+        selectedItemWatchers.push(cb);
+      }
+    }
+
+    /**
+     * Unregister a function previously registered for selected item changes.
+     * @param cb
+     */
+    function unregisterSelectedItemWatcher(cb) {
+      var i = selectedItemWatchers.indexOf(cb);
+      if (i != -1) {
+        selectedItemWatchers.splice(i, 1);
+      }
     }
 
     function handleSearchText (searchText, previousSearchText) {
@@ -288,7 +319,6 @@ goog.require('ng.material.core');
       self.hidden = true;
       self.index = 0;
       self.matches = [];
-      self.parent.$emit('$mdAutocompleteSelected', $scope.selectedItem);
     }
 
     function clearValue () {
