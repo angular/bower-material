@@ -1,8 +1,8 @@
 {
   "name": "angular-material-toolbar",
-  "version": "0.8.3-master-51d110a",
+  "version": "0.8.3-master-e7b7dcb",
   "dependencies": {
-    "angular-material-core": "0.8.3-master-51d110a",
-    "angular-material-content": "0.8.3-master-51d110a"
+    "angular-material-core": "0.8.3-master-e7b7dcb",
+    "angular-material-content": "0.8.3-master-e7b7dcb"
   }
 }
