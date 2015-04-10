@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-61b7bb0
+ * v0.8.3-master-2c57a82
  */
 goog.provide('ng.material.core');
 
@@ -1033,7 +1033,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
       register: register,
       // TODO only hijack clicks on Android < 4.4
       // TODO allow an override for this (through provider?)
-      isHijackingClicks: isIos || isAndroid
+      isHijackingClicks: (isIos || isAndroid) && !jQuery
     };
 
     if (self.isHijackingClicks) {
