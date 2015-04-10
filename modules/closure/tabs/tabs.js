@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-e1b32e5
+ * v0.8.3-master-8595f1c
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -239,7 +239,7 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
       .controller('MdTabsController', MdTabsController);
 
   function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $mdInkRipple,
-                             $mdUtil) {
+                             $mdUtil, $animate) {
     var ctrl = this,
         elements = getElements();
 
@@ -359,7 +359,6 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
 
     function handleWindowResize () {
       ctrl.lastSelectedIndex = $scope.selectedIndex;
-      updateHeightFromContent();
       updateInkBarStyles();
       ctrl.offsetLeft = fixOffset(ctrl.offsetLeft);
     }
@@ -434,12 +433,23 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
     }
 
     function updateHeightFromContent () {
-      if (!$scope.dynamicHeight) return $element.css('min-height', '');
-      var tabContent = elements.contents[$scope.selectedIndex],
+      if (!$scope.dynamicHeight) return $element.css('height', '');
+      var tabContent    = elements.contents[$scope.selectedIndex],
           contentHeight = tabContent.offsetHeight,
           tabsHeight    = elements.wrapper.offsetHeight,
-          newHeight     = contentHeight + tabsHeight;
-      $element.css('min-height', newHeight + 'px');
+          newHeight     = contentHeight + tabsHeight,
+          currentHeight = $element.prop('clientHeight');
+      if (currentHeight === newHeight) return;
+      console.log('animateing from ' + currentHeight + ' to ' + newHeight);
+      $animate
+          .animate(
+            $element,
+            { height: currentHeight + 'px' },
+            { height: newHeight + 'px'}
+          )
+          .then(function () {
+            $timeout(function () { $element.css('height', ''); }, 0, false);
+          });
     }
 
     function updateInkBarStyles () {
@@ -554,7 +564,7 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
       $mdInkRipple.attachTabBehavior(scope, element, options);
     }
   }
-  MdTabsController.$inject = ["$scope", "$element", "$window", "$timeout", "$mdConstant", "$mdInkRipple", "$mdUtil"];
+  MdTabsController.$inject = ["$scope", "$element", "$window", "$timeout", "$mdConstant", "$mdInkRipple", "$mdUtil", "$animate"];
 })();
 
 /**

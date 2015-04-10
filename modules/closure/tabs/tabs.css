@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-e1b32e5
+ * v0.8.3-master-8595f1c
  */
 @-webkit-keyframes md-tab-content-hide {
   0% {
@@ -39,7 +39,7 @@ md-tabs {
   border-radius: 2px;
   overflow: hidden;
   position: relative;
-  transition: min-height 0.5s cubic-bezier(0.35, 0, 0.25, 1); }
+  transition: height 0.5s cubic-bezier(0.35, 0, 0.25, 1); }
   md-tabs:not(.md-no-tab-content) {
     min-height: 248px; }
   md-tabs[md-align-tabs="bottom"] {
