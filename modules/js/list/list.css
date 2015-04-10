@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-2c57a82
+ * v0.8.3-master-b47a878
  */
 md-list {
   display: block;
@@ -20,7 +20,7 @@ md-list-item.md-no-proxy, md-list-item .md-no-style {
   md-list-item.md-no-proxy:focus, md-list-item .md-no-style:focus {
     outline: none; }
 md-list-item.md-with-secondary {
-  padding-right: 16px; }
+  position: relative; }
 md-list-item.md-clickable:hover {
   cursor: pointer; }
 md-list-item md-divider {
@@ -84,14 +84,13 @@ md-list-item, md-list-item .md-list-item-inner {
     margin-right: 16px;
     border-radius: 50%;
     box-sizing: content-box; }
-  md-list-item md-checkbox.md-secondary, md-list-item .md-list-item-inner md-checkbox.md-secondary {
+  md-list-item md-checkbox.md-secondary, md-list-item md-switch.md-secondary, md-list-item .md-list-item-inner md-checkbox.md-secondary, md-list-item .md-list-item-inner md-switch.md-secondary {
     margin-right: 0px; }
-  md-list-item md-switch.md-secondary, md-list-item .md-list-item-inner md-switch.md-secondary {
-    margin: 0;
-    position: relative;
-    right: -9px; }
   md-list-item .md-secondary, md-list-item .md-list-item-inner .md-secondary {
-    margin-left: 16px; }
+    margin-left: 16px;
+    position: absolute;
+    right: 16px;
+    top: 0; }
   md-list-item > p, md-list-item > .md-list-item-inner > p, md-list-item .md-list-item-inner > p, md-list-item .md-list-item-inner > .md-list-item-inner > p {
     -webkit-flex: 1;
         -ms-flex: 1;
