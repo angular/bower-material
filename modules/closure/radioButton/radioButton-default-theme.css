@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-64c4585
+ * v0.8.3-master-e1b32e5
  */
 md-radio-button.md-THEME_NAME-theme .md-off {
   border-color: '{{foreground-2}}'; }
@@ -31,10 +31,12 @@ md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-
   color: '{{warn-color-0.87}}'; }
 md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple, md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-container .md-ripple, md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple {
   color: '{{warn-600}}'; }
-md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-off, md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-off {
-  border-color: '{{foreground-3}}'; }
-md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-on, md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-on {
-  border-color: '{{foreground-3}}'; }
+md-radio-group.md-THEME_NAME-theme[disabled], md-radio-button.md-THEME_NAME-theme[disabled] {
+  color: '{{foreground-3}}'; }
+  md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-off, md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-off {
+    border-color: '{{foreground-3}}'; }
+  md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-on, md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-on {
+    border-color: '{{foreground-3}}'; }
 
 md-radio-group.md-THEME_NAME-theme:focus:not(:empty) {
   border-color: '{{foreground-1}}'; }
