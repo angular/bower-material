@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-84e4504
+ * v0.8.3-master-ade76f9
  */
 goog.provide('ng.material.components.gridList');
 goog.require('ng.material.core');
@@ -13,7 +13,7 @@ goog.require('ng.material.core');
  * @ngdoc module
  * @name material.components.gridList
  */
-angular.module('material.components.gridList', ['material.core'])
+ng.material.components.gridList = angular.module('material.components.gridList', ['material.core'])
        .directive('mdGridList', GridListDirective)
        .directive('mdGridTile', GridTileDirective)
        .directive('mdGridTileFooter', GridTileCaptionDirective)

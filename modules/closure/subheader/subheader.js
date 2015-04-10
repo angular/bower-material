@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-84e4504
+ * v0.8.3-master-ade76f9
  */
 goog.provide('ng.material.components.subheader');
 goog.require('ng.material.components.sticky');
@@ -28,7 +28,7 @@ goog.require('ng.material.core');
  *  > To improve the visual grouping of content, use the system color for your subheaders.
  *
  */
-angular.module('material.components.subheader', [
+ng.material.components.subheader = angular.module('material.components.subheader', [
   'material.core',
   'material.components.sticky'
 ])

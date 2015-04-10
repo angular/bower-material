@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-84e4504
+ * v0.8.3-master-ade76f9
  */
 goog.provide('ng.material.core');
 
@@ -67,7 +67,7 @@ function rAFDecorator( $delegate ) {
 (function() {
 'use strict';
 
-angular.module('material.core')
+ng.material.core = angular.module('material.core')
 .factory('$mdConstant', MdConstantFactory);
 
 function MdConstantFactory($$rAF, $sniffer) {

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-84e4504
+ * v0.8.3-master-ade76f9
  */
 goog.provide('ng.material.components.checkbox');
 goog.require('ng.material.core');
@@ -14,7 +14,7 @@ goog.require('ng.material.core');
  * @name material.components.checkbox
  * @description Checkbox module!
  */
-angular.module('material.components.checkbox', [
+ng.material.components.checkbox = angular.module('material.components.checkbox', [
   'material.core'
 ])
   .directive('mdCheckbox', MdCheckboxDirective);

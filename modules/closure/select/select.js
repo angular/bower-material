@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-84e4504
+ * v0.8.3-master-ade76f9
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -32,7 +32,7 @@ goog.require('ng.material.core');
 var SELECT_EDGE_MARGIN = 8;
 var selectNextId = 0;
 
-angular.module('material.components.select', [
+ng.material.components.select = angular.module('material.components.select', [
   'material.core',
   'material.components.backdrop'
 ])

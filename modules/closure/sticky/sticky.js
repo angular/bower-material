@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-84e4504
+ * v0.8.3-master-ade76f9
  */
 goog.provide('ng.material.components.sticky');
 goog.require('ng.material.components.content');
@@ -18,7 +18,7 @@ goog.require('ng.material.core');
  * Sticky effects for md
  */
 
-angular.module('material.components.sticky', [
+ng.material.components.sticky = angular.module('material.components.sticky', [
   'material.core',
   'material.components.content'
 ])

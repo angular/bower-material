@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-84e4504
+ * v0.8.3-master-ade76f9
  */
 goog.provide('ng.material.components.content');
 goog.require('ng.material.core');
@@ -16,7 +16,7 @@ goog.require('ng.material.core');
  * @description
  * Scrollable content
  */
-angular.module('material.components.content', [
+ng.material.components.content = angular.module('material.components.content', [
   'material.core'
 ])
   .directive('mdContent', mdContentDirective);

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-84e4504
+ * v0.8.3-master-ade76f9
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -16,7 +16,7 @@ goog.require('ng.material.core');
   /*
    * @see js folder for autocomplete implementation
    */
-  angular.module('material.components.autocomplete', [
+  ng.material.components.autocomplete = angular.module('material.components.autocomplete', [
     'material.core',
     'material.components.icon'
   ]);

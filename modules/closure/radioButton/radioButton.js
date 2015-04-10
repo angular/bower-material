@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-84e4504
+ * v0.8.3-master-ade76f9
  */
 goog.provide('ng.material.components.radioButton');
 goog.require('ng.material.core');
@@ -15,7 +15,7 @@ goog.require('ng.material.core');
  * @name material.components.radioButton
  * @description radioButton module!
  */
-angular.module('material.components.radioButton', [
+ng.material.components.radioButton = angular.module('material.components.radioButton', [
   'material.core'
 ])
   .directive('mdRadioGroup', mdRadioGroupDirective)

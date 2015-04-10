@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-84e4504
+ * v0.8.3-master-ade76f9
  */
 goog.provide('ng.material.components.swipe');
 
@@ -49,7 +49,7 @@ goog.provide('ng.material.components.swipe');
  * </hljs>
  */
 
-var module = angular.module('material.components.swipe',[]);
+var module = ng.material.components.swipe = angular.module('material.components.swipe',[]);
 
 ['SwipeLeft', 'SwipeRight'].forEach(function(name) {
   var directiveName = 'md' + name;
