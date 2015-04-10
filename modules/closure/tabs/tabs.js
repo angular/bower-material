@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-2f9eef7
+ * v0.8.3-master-64c4585
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -238,7 +238,8 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
       .module('material.components.tabs')
       .controller('MdTabsController', MdTabsController);
 
-  function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $mdInkRipple, $mdUtil) {
+  function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $mdInkRipple,
+                             $mdUtil) {
     var ctrl = this,
         elements = getElements();
 
@@ -433,12 +434,12 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
     }
 
     function updateHeightFromContent () {
-      if (!$scope.dynamicHeight) return $element.css('height', '');
+      if (!$scope.dynamicHeight) return $element.css('min-height', '');
       var tabContent = elements.contents[$scope.selectedIndex],
           contentHeight = tabContent.offsetHeight,
           tabsHeight    = elements.wrapper.offsetHeight,
           newHeight     = contentHeight + tabsHeight;
-      $element.css('height', newHeight + 'px');
+      $element.css('min-height', newHeight + 'px');
     }
 
     function updateInkBarStyles () {
@@ -700,9 +701,11 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
                   aria-controls="tab-content-{{tab.id}}"\
                   ng-repeat="tab in $mdTabsCtrl.tabs"\
                   ng-click="$mdTabsCtrl.select(tab.getIndex())"\
-                  ng-class="{ \'md-active\': tab.isActive(),\
-                      \'md-focus\': tab.hasFocus(),\
-                      \'md-disabled\': tab.scope.disabled }"\
+                  ng-class="{\
+                      \'md-active\':    tab.isActive(),\
+                      \'md-focus\':     tab.hasFocus(),\
+                      \'md-disabled\':  tab.scope.disabled\
+                  }"\
                   ng-disabled="tab.scope.disabled"\
                   md-swipe-left="$mdTabsCtrl.nextPage()"\
                   md-swipe-right="$mdTabsCtrl.previousPage()"\
@@ -736,10 +739,10 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
               ng-repeat="(index, tab) in $mdTabsCtrl.tabs" \
               ng-class="{\
                 \'md-no-transition\': $mdTabsCtrl.lastSelectedIndex == null,\
-                \'md-active\': tab.isActive(),\
-                \'md-left\':   tab.isLeft(),\
-                \'md-right\':  tab.isRight(),\
-                \'md-no-scroll\': dynamicHeight\
+                \'md-active\':        tab.isActive(),\
+                \'md-left\':          tab.isLeft(),\
+                \'md-right\':         tab.isRight(),\
+                \'md-no-scroll\':     dynamicHeight\
               }"></md-tab-content>\
         </md-tabs-content-wrapper>\
       ',
