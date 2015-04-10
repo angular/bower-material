@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-b47a878
+ * v0.8.3-master-f881b97
  */
 (function() {
 'use strict';
@@ -29,13 +29,12 @@ angular.module('material.components.content', [
  * @description
  * The `<md-content>` directive is a container element useful for scrollable content
  *
- * ### Restrictions
- *
- * - Add the `md-padding` class to make the content padded.
- *
  * @usage
+ *
+ * - Add the `[layout-padding]` attribute to make the content padded.
+ *
  * <hljs lang="html">
- *  <md-content class="md-padding">
+ *  <md-content layout-padding>
  *      Lorem ipsum dolor sit amet, ne quod novum mei.
  *  </md-content>
  * </hljs>
