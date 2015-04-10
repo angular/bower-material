@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-f881b97
+ * v0.8.3-master-240d604
  */
 md-radio-button, .md-switch-thumb {
   box-sizing: border-box;
@@ -73,5 +73,4 @@ md-radio-group {
 
 @media screen and (-ms-high-contrast: active) {
   md-radio-button.md-default-theme .md-on {
-    background-color: #fff; }
- }
+    background-color: #fff; } }

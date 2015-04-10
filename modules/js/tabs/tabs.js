@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-f881b97
+ * v0.8.3-master-240d604
  */
 (function() {
 'use strict';
@@ -163,6 +163,10 @@ angular.module('material.components.tabs', [
             template: getTemplate(),
             label:    getLabel()
           }, index);
+
+      scope.deselect = scope.deselect || angular.noop;
+      scope.select = scope.select || angular.noop;
+
 
       scope.$watch('active', function (active) { if (active) ctrl.select(data.getIndex()); });
       scope.$watch('disabled', function () { ctrl.refreshIndex(); });
@@ -394,6 +398,7 @@ angular.module('material.components.tabs', [
 
     function handleSelectedIndexChange (newValue, oldValue) {
       if (newValue === oldValue) return;
+
       $scope.selectedIndex = getNearestSafeIndex(newValue);
       ctrl.lastSelectedIndex = oldValue;
       updateInkBarStyles();
@@ -547,6 +552,7 @@ angular.module('material.components.tabs', [
   }
   MdTabsController.$inject = ["$scope", "$element", "$window", "$timeout", "$mdConstant", "$mdInkRipple", "$mdUtil"];
 })();
+
 /**
  * @ngdoc directive
  * @name mdTabs

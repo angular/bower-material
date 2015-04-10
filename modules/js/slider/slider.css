@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-f881b97
+ * v0.8.3-master-240d604
  */
 @-webkit-keyframes sliderFocusThumb {
   0% {
@@ -212,5 +212,4 @@ md-slider {
 
 @media screen and (-ms-high-contrast: active) {
   md-slider.md-default-theme .md-track {
-    border-bottom: 1px solid #fff; }
- }
+    border-bottom: 1px solid #fff; } }

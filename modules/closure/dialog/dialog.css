@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-f881b97
+ * v0.8.3-master-240d604
  */
 .md-dialog-container {
   display: -webkit-flex;
@@ -79,5 +79,4 @@ md-dialog {
 
 @media screen and (-ms-high-contrast: active) {
   md-dialog {
-    border: 1px solid #fff; }
- }
+    border: 1px solid #fff; } }
