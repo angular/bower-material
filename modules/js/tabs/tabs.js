@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-859ecb5
+ * v0.8.3-master-0178b89
  */
 (function() {
 'use strict';
@@ -238,6 +238,7 @@ angular.module('material.components.tabs', [
   function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $mdInkRipple,
                              $mdUtil, $animate) {
     var ctrl = this,
+        locked = false,
         elements = getElements();
 
     ctrl.scope = $scope;
@@ -310,7 +311,7 @@ angular.module('material.components.tabs', [
         case $mdConstant.KEY_CODE.SPACE:
         case $mdConstant.KEY_CODE.ENTER:
           event.preventDefault();
-          $scope.selectedIndex = ctrl.focusIndex;
+          if (!locked) $scope.selectedIndex = ctrl.focusIndex;
           break;
       }
       ctrl.lastClick = false;
@@ -437,7 +438,7 @@ angular.module('material.components.tabs', [
           newHeight     = contentHeight + tabsHeight,
           currentHeight = $element.prop('clientHeight');
       if (currentHeight === newHeight) return;
-      console.log('animateing from ' + currentHeight + ' to ' + newHeight);
+      locked = true;
       $animate
           .animate(
             $element,
@@ -445,7 +446,10 @@ angular.module('material.components.tabs', [
             { height: newHeight + 'px'}
           )
           .then(function () {
-            $timeout(function () { $element.css('height', ''); }, 0, false);
+            $timeout(function () {
+              $element.css('height', '');
+              locked = false;
+            }, 0, false);
           });
     }
 
@@ -508,7 +512,7 @@ angular.module('material.components.tabs', [
     }
 
     function select (index) {
-      ctrl.focusIndex = $scope.selectedIndex = index;
+      if (!locked) ctrl.focusIndex = $scope.selectedIndex = index;
       ctrl.lastClick = true;
     }
 
