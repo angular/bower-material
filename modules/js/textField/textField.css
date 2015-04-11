@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-b88b744
+ * v0.8.3-master-ffd299d
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 md-input-group label, .md-input-group label {
@@ -34,26 +34,52 @@ md-input-group, .md-input-group {
   md-input-group label, .md-input-group label {
     -webkit-transform: translate3d(0, 22px, 0);
             transform: translate3d(0, 22px, 0);
-    -webkit-transform-origin: left center;
-            transform-origin: left center;
     transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1);
-    transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
+    transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1);
+    -webkit-transform-origin: left center;
+            transform-origin: left center; }
+    html[dir=rtl] md-input-group label, html[dir=rtl] .md-input-group label {
+      -webkit-transform-origin: left center;
+              transform-origin: left center;
+      -webkit-transform-origin: right center;
+              transform-origin: right center; }
   md-input-group input, md-input-group textarea, .md-input-group input, .md-input-group textarea {
     border-bottom-width: 1px;
     transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
   md-input-group.md-input-focused label, .md-input-group.md-input-focused label {
     -webkit-transform: translate3d(0, 4px, 0) scale(0.75);
-            transform: translate3d(0, 4px, 0) scale(0.75); }
+            transform: translate3d(0, 4px, 0) scale(0.75);
+    -webkit-transform-origin: left center;
+            transform-origin: left center; }
+    html[dir=rtl] md-input-group.md-input-focused label, html[dir=rtl] .md-input-group.md-input-focused label {
+      -webkit-transform-origin: left center;
+              transform-origin: left center;
+      -webkit-transform-origin: right center;
+              transform-origin: right center; }
   md-input-group.md-input-focused input, md-input-group.md-input-focused textarea, .md-input-group.md-input-focused input, .md-input-group.md-input-focused textarea {
     border-bottom-width: 2px; }
   md-input-group.md-input-focused input, .md-input-group.md-input-focused input {
     padding-bottom: 0px; }
   md-input-group.md-input-has-value label, .md-input-group.md-input-has-value label {
     -webkit-transform: translate3d(0, 4px, 0) scale(0.75);
-            transform: translate3d(0, 4px, 0) scale(0.75); }
+            transform: translate3d(0, 4px, 0) scale(0.75);
+    -webkit-transform-origin: left center;
+            transform-origin: left center; }
+    html[dir=rtl] md-input-group.md-input-has-value label, html[dir=rtl] .md-input-group.md-input-has-value label {
+      -webkit-transform-origin: left center;
+              transform-origin: left center;
+      -webkit-transform-origin: right center;
+              transform-origin: right center; }
   md-input-group.md-input-has-value:not(.md-input-focused) label, .md-input-group.md-input-has-value:not(.md-input-focused) label {
     -webkit-transform: translate3d(0, 4px, 0) scale(0.75);
-            transform: translate3d(0, 4px, 0) scale(0.75); }
+            transform: translate3d(0, 4px, 0) scale(0.75);
+    -webkit-transform-origin: left center;
+            transform-origin: left center; }
+    html[dir=rtl] md-input-group.md-input-has-value:not(.md-input-focused) label, html[dir=rtl] .md-input-group.md-input-has-value:not(.md-input-focused) label {
+      -webkit-transform-origin: left center;
+              transform-origin: left center;
+      -webkit-transform-origin: right center;
+              transform-origin: right center; }
   md-input-group[disabled] input, md-input-group[disabled] textarea, .md-input-group[disabled] input, .md-input-group[disabled] textarea {
     border-bottom-width: 0px; }
   md-input-group[disabled] input, md-input-group[disabled] textarea, .md-input-group[disabled] input, .md-input-group[disabled] textarea {
@@ -64,10 +90,22 @@ md-input-group, .md-input-group {
     pointer-events: none; }
   md-input-group[disabled] label, .md-input-group[disabled] label {
     -webkit-transform: translate3d(0, 4px, 0) scale(0.75);
-            transform: translate3d(0, 4px, 0) scale(0.75); }
+            transform: translate3d(0, 4px, 0) scale(0.75);
+    -webkit-transform-origin: left center;
+            transform-origin: left center; }
+    html[dir=rtl] md-input-group[disabled] label, html[dir=rtl] .md-input-group[disabled] label {
+      -webkit-transform-origin: left center;
+              transform-origin: left center;
+      -webkit-transform-origin: right center;
+              transform-origin: right center; }
   md-input-group[disabled] *:not(.md-input-has-value) label, .md-input-group[disabled] *:not(.md-input-has-value) label {
     -webkit-transform: translate3d(0, 22px, 0);
             transform: translate3d(0, 22px, 0);
+    transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1);
     -webkit-transform-origin: left center;
-            transform-origin: left center;
-    transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1); }
+            transform-origin: left center; }
+    html[dir=rtl] md-input-group[disabled] *:not(.md-input-has-value) label, html[dir=rtl] .md-input-group[disabled] *:not(.md-input-has-value) label {
+      -webkit-transform-origin: left center;
+              transform-origin: left center;
+      -webkit-transform-origin: right center;
+              transform-origin: right center; }

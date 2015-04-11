@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-b88b744
+ * v0.8.3-master-ffd299d
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 .md-select-menu-container {
@@ -98,12 +98,12 @@ md-select-menu {
       -ms-flex-direction: column;
           flex-direction: column;
   box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
-  -webkit-transform-origin: 0 0;
-          transform-origin: 0 0;
-  -webkit-transform: scale(1);
-          transform: scale(1);
   max-height: 256px;
-  overflow-y: hidden; }
+  overflow-y: hidden;
+  -webkit-transform-origin: left top;
+          transform-origin: left top;
+  -webkit-transform: scale(1);
+          transform: scale(1); }
   md-select-menu.md-reverse {
     -webkit-flex-direction: column-reverse;
         -ms-flex-direction: column-reverse;
@@ -111,6 +111,11 @@ md-select-menu {
   md-select-menu:not(.md-overflow) md-content {
     padding-top: 8px;
     padding-bottom: 8px; }
+  html[dir=rtl] md-select-menu {
+    -webkit-transform-origin: left top;
+            transform-origin: left top;
+    -webkit-transform-origin: right top;
+            transform-origin: right top; }
   md-select-menu md-content {
     min-width: 136px;
     max-height: 256px;
