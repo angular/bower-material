@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-ffd299d
+ * v0.8.3-master-360e2b6
  */
 goog.provide('ng.material.core');
 
@@ -3348,7 +3348,7 @@ function parseRules(theme, colorType, rules) {
     generatedRules.push(newRule);
   });
 
-  return generatedRules.join('');
+  return generatedRules;
 }
 
 // Generate our themes at run time given the state of THEMES and PALETTES
@@ -3408,16 +3408,17 @@ function generateThemes($injector) {
     angular.forEach(THEMES, function(theme) {
       if ( !GENERATED[theme.name] ) {
 
-        var styleStrings = '';
-        var style = document.createElement('style');
-            style.setAttribute('type', 'text/css');
 
         THEME_COLOR_TYPES.forEach(function(colorType) {
-          styleStrings += parseRules(theme, colorType, rulesByType[colorType] + '');
+          var styleStrings = parseRules(theme, colorType, rulesByType[colorType]);
+          while (styleStrings.length) {
+            var style = document.createElement('style');
+                style.setAttribute('type', 'text/css');
+            style.appendChild(document.createTextNode(styleStrings.shift()));
+            head.insertBefore(style, firstChild);
+          }
         });
 
-        style.innerHTML = styleStrings;
-        head.insertBefore(style, firstChild);
 
         if (theme.colors.primary.name == theme.colors.accent.name) {
           console.warn("$mdThemingProvider: Using the same palette for primary and" +

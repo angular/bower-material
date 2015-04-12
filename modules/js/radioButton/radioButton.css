@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-ffd299d
+ * v0.8.3-master-360e2b6
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 md-radio-button, .md-switch-thumb {
@@ -31,8 +31,8 @@ md-radio-button, .md-switch-thumb {
       top: -16px; }
   md-radio-button .md-off, .md-switch-thumb .md-off {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 16px;
     height: 16px;
     border: solid 2px;
