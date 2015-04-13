@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-9affd12
+ * v0.8.3-master-6d56676
  */
 (function() {
 'use strict';
@@ -1011,6 +1011,9 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
    */
   var pointer, lastPointer;
 
+  // Used to attach event listeners once when multiple ng-apps are running.
+  var isInitialized = false;
+
   angular
     .module('material.core.gestures', [ ])
     .factory('$mdGesture', MdGesture)
@@ -1394,7 +1397,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
       return document.body.contains(node);
     });
 
-    if ( $mdGesture.isHijackingClicks ) {
+    if (!isInitialized && $mdGesture.isHijackingClicks) {
       /*
        * If hijack clicks is true, we preventDefault any click that wasn't
        * sent by ngMaterial. This is because on older Android & iOS, a false, or 'ghost',
@@ -1412,6 +1415,8 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
           ev.stopPropagation();
         }
       }, true);
+      
+      isInitialized = true;
     }
 
     // Listen to all events to cover all platforms.
