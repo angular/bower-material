@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-942d0b9
+ * v0.8.3-master-9affd12
  */
 (function() {
 'use strict';
@@ -666,7 +666,7 @@ angular.module('material.components.tabs', [
         dynamicHeight: '=?mdDynamicHeight',
         centerTabs:    '=?mdCenterTabs',
         selectedIndex: '=?mdSelected',
-        stretchTabs: '@?mdStretchTabs'
+        stretchTabs:   '@?mdStretchTabs'
       },
       transclude: true,
       template: '\

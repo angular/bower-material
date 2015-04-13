@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-942d0b9
+ * v0.8.3-master-9affd12
  */
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic');
 /* mixin definition ; sets LTR and RTL within the same style call */
@@ -6192,6 +6192,15 @@ md-tabs {
     overflow: visible; }
   md-tabs[md-dynamic-height] md-tab-content:not(.md-left):not(.md-right):not(.ng-animate) {
     position: relative; }
+  md-tabs[md-align-tabs="bottom"] md-tabs-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 48px; }
+  md-tabs[md-border-bottom] md-tabs-wrapper {
+    border-width: 0 0 1px;
+    border-style: solid; }
 
 md-tabs-wrapper {
   display: block;
@@ -6231,15 +6240,6 @@ md-tabs-wrapper {
     md-tabs-wrapper md-next-button md-icon {
       -webkit-transform: translate3d(-50%, -50%, 0) rotate(180deg);
               transform: translate3d(-50%, -50%, 0) rotate(180deg); }
-  md-tabs-wrapper[md-align-tabs="bottom"] md-tabs-wrapper {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 48px; }
-  md-tabs-wrapper[md-border-bottom] md-tabs-wrapper {
-    border-width: 0 0 1px;
-    border-style: solid; }
   md-tabs-wrapper.md-stretch-tabs md-pagination-wrapper {
     width: 100%;
     display: -webkit-flex;
