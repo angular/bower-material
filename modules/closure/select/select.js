@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-2680cf1
+ * v0.8.3-master-1cd1d69
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -746,23 +746,7 @@ function SelectProvider($$interimElementProvider) {
       }
 
       if (opts.disableParentScroll) {
-        opts.disableTarget = opts.parent.find('md-content');
-        if (!opts.disableTarget.length) opts.disableTarget = opts.parent;
-        opts.lastDisableCss = opts.disableTarget.attr('style');
-        var heightOffset = opts.disableTarget[0].scrollTop;
-        if (heightOffset == 0 && (heightOffset = $document[0].documentElement.scrollTop)) {
-          opts.restoreScrollOnDocElement = true;
-        }
-        opts.disableTargetOffset = heightOffset;
-        opts.disableTarget.css({
-          overflow: 'hidden',
-          position: 'fixed',
-          width: '100%',
-          top: (-1 * heightOffset) + 'px'
-        });
-        if (!$mdUtil.floatingScrollbars()) {
-          opts.disableTarget.parent().css('overflow-y', 'scroll');
-        }
+        opts.restoreScroll = $mdUtil.disableScrollAround(opts.target);
       }
       // Only activate click listeners after a short time to stop accidental double taps/clicks
       // from clicking the wrong item
@@ -901,19 +885,7 @@ function SelectProvider($$interimElementProvider) {
         opts.backdrop && opts.backdrop.remove();
         if (opts.restoreFocus) opts.target.focus();
         if (opts.disableParentScroll) {
-          opts.disableTarget.attr('style', opts.lastDisableCss || '');
-          if (opts.restoreScrollOnDocElement) {
-            $document[0].documentElement.scrollTop = opts.disableTargetOffset;
-          } else {
-            opts.disableTarget[0].scrollTop = opts.disableTargetOffset;
-          }
-          if (!$mdUtil.floatingScrollbars()) {
-            opts.disableTarget.parent().css('overflow-y', 'auto');
-          }
-          delete opts.lastDisableCss;
-          delete opts.disableTarget;
-          delete opts.disableTargetOffset;
-          delete opts.restoreScrollOnDocElement;
+          opts.restoreScroll();
         }
       });
     }
