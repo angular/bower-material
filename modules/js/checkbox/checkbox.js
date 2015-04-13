@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-cf70325
+ * v0.8.3-master-2680cf1
  */
 (function() {
 'use strict';
@@ -117,7 +117,9 @@ function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant,
 
         scope.$apply(function() {
           // Toggle the checkbox value...
-          ngModelCtrl.$setViewValue( !ngModelCtrl.$viewValue, ev && ev.type);
+          var viewValue = attr.ngChecked ? attr.checked : !ngModelCtrl.$viewValue;
+
+          ngModelCtrl.$setViewValue( viewValue, ev && ev.type);
           ngModelCtrl.$render();
         });
       }
