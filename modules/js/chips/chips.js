@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-6b7f9ce
+ * v0.8.3-master-48eeb62
  */
 (function () {
   'use strict';
@@ -808,6 +808,7 @@
               md-items="item in $mdContactChipsCtrl.queryContact($mdContactChipsCtrl.searchText)"\
               md-item-text="$mdContactChipsCtrl.mdContactName"\
               md-no-cache="$mdContactChipsCtrl.filterSelected"\
+              md-autoselect\
               placeholder="{{$mdContactChipsCtrl.contacts.length == 0 ?\
                   $mdContactChipsCtrl.placeholder : $mdContactChipsCtrl.secondaryPlaceholder}}">\
             <div class="md-contact-suggestion">\

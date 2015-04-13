@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-6b7f9ce
+ * v0.8.3-master-48eeb62
  */
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic');
 /* mixin definition ; sets LTR and RTL within the same style call */
@@ -3000,36 +3000,6 @@ md-bottom-sheet {
         text-transform: none;
         padding-top: 8px; }
 
-md-card {
-  box-sizing: border-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  margin: 8px;
-  box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26); }
-  md-card > img, md-card > :not(md-card-content) img {
-    -webkit-order: 0;
-        -ms-flex-order: 0;
-            order: 0;
-    width: 100%; }
-  md-card md-card-content {
-    -webkit-order: 1;
-        -ms-flex-order: 1;
-            order: 1;
-    padding: 16px; }
-  md-card md-card-footer {
-    -webkit-order: 2;
-        -ms-flex-order: 2;
-            order: 2;
-    padding: 16px; }
-
-@media screen and (-ms-high-contrast: active) {
-  md-card {
-    border: 1px solid #fff; } }
-
 /**
  * Position a FAB button.
  */
@@ -3170,6 +3140,36 @@ md-card {
 
 @media screen and (-ms-high-contrast: active) {
   .md-button.md-raised, .md-button.md-fab {
+    border: 1px solid #fff; } }
+
+md-card {
+  box-sizing: border-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: 8px;
+  box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26); }
+  md-card > img, md-card > :not(md-card-content) img {
+    -webkit-order: 0;
+        -ms-flex-order: 0;
+            order: 0;
+    width: 100%; }
+  md-card md-card-content {
+    -webkit-order: 1;
+        -ms-flex-order: 1;
+            order: 1;
+    padding: 16px; }
+  md-card md-card-footer {
+    -webkit-order: 2;
+        -ms-flex-order: 2;
+            order: 2;
+    padding: 16px; }
+
+@media screen and (-ms-high-contrast: active) {
+  md-card {
     border: 1px solid #fff; } }
 
 md-checkbox {
@@ -3362,6 +3362,18 @@ md-checkbox {
   .md-chips md-autocomplete button {
     display: none; }
 
+md-content {
+  display: block;
+  position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; }
+  md-content[md-scroll-y] {
+    overflow-y: auto;
+    overflow-x: hidden; }
+  md-content[md-scroll-x] {
+    overflow-x: auto;
+    overflow-y: hidden; }
+
 .md-dialog-container {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3438,18 +3450,6 @@ md-dialog {
 @media screen and (-ms-high-contrast: active) {
   md-dialog {
     border: 1px solid #fff; } }
-
-md-content {
-  display: block;
-  position: relative;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch; }
-  md-content[md-scroll-y] {
-    overflow-y: auto;
-    overflow-x: hidden; }
-  md-content[md-scroll-x] {
-    overflow-x: auto;
-    overflow-y: hidden; }
 
 md-divider {
   display: block;
@@ -6177,7 +6177,7 @@ md-tabs {
   overflow: hidden;
   position: relative;
   transition: height 0.5s cubic-bezier(0.35, 0, 0.25, 1); }
-  md-tabs:not(.md-no-tab-content) {
+  md-tabs:not(.md-no-tab-content):not([md-dynamic-height]) {
     min-height: 248px; }
   md-tabs[md-align-tabs="bottom"] {
     padding-bottom: 48px;
@@ -6185,12 +6185,12 @@ md-tabs {
   md-tabs[md-dynamic-height] md-tabs-content-wrapper {
     min-height: 0;
     position: relative;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
     overflow: visible; }
-  md-tabs[md-dynamic-height] md-tab-content:not(.md-left):not(.md-right):not(.ng-animate) {
+  md-tabs[md-dynamic-height] md-tab-content.md-active {
     position: relative; }
   md-tabs[md-align-tabs="bottom"] md-tabs-wrapper {
     position: absolute;
@@ -6201,6 +6201,8 @@ md-tabs {
   md-tabs[md-border-bottom] md-tabs-wrapper {
     border-width: 0 0 1px;
     border-style: solid; }
+    md-tabs[md-border-bottom] md-tabs-wrapper .md-tab {
+      padding-bottom: 11px; }
 
 md-tabs-wrapper {
   display: block;

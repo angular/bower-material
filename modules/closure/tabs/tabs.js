@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-6b7f9ce
+ * v0.8.3-master-48eeb62
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -449,10 +449,8 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
             { height: newHeight + 'px'}
           )
           .then(function () {
-            $timeout(function () {
-              $element.css('height', '');
-              locked = false;
-            }, 0, false);
+            $element.css('height', '');
+            locked = false;
           });
     }
 
