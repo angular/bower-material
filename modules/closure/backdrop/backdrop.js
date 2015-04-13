@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-c2cd2bf
+ * v0.8.3-master-4a419ea
  */
 goog.provide('ng.material.components.backdrop');
 goog.require('ng.material.core');
@@ -23,7 +23,7 @@ goog.require('ng.material.core');
  * @restrict E
  *
  * @description
- * `<md-backdrop>` is a backdrop element used by other coponents, such as dialog and bottom sheet.
+ * `<md-backdrop>` is a backdrop element used by other components, such as dialog and bottom sheet.
  * Apply class `opaque` to make the backdrop use the theme backdrop color.
  *
  */
