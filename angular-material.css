@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-375d4fc
+ * v0.8.3-master-bd1c973
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -6228,13 +6228,20 @@ md-tabs {
   margin: 0;
   border-radius: 2px;
   overflow: hidden;
-  position: relative;
-  transition: height 0.5s cubic-bezier(0.35, 0, 0.25, 1); }
+  position: relative; }
+  md-tabs.ng-animate {
+    transition: height 0.5s cubic-bezier(0.35, 0, 0.25, 1); }
   md-tabs:not(.md-no-tab-content):not([md-dynamic-height]) {
     min-height: 248px; }
-  md-tabs[md-align-tabs="bottom"] {
-    padding-bottom: 48px;
-    position: relative; }
+  md-tabs[md-align-tabs="bottom"] md-tabs-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 48px; }
+  md-tabs[md-align-tabs="bottom"] md-tabs-content-wrapper {
+    top: 0;
+    bottom: 48px; }
   md-tabs[md-dynamic-height] md-tabs-content-wrapper {
     min-height: 0;
     position: relative;
@@ -6245,12 +6252,6 @@ md-tabs {
     overflow: visible; }
   md-tabs[md-dynamic-height] md-tab-content.md-active {
     position: relative; }
-  md-tabs[md-align-tabs="bottom"] md-tabs-wrapper {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 48px; }
   md-tabs[md-border-bottom] md-tabs-wrapper {
     border-width: 0 0 1px;
     border-style: solid; }
@@ -6316,6 +6317,10 @@ md-tabs-canvas {
     content: '';
     display: table;
     clear: both; }
+  md-tabs-canvas .md-dummy-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0; }
   md-tabs-canvas.md-paginated {
     margin: 0 32px; }
 
