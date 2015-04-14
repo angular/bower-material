@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-48eeb62
+ * v0.8.3-master-b9803fe
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 md-toolbar {
@@ -65,12 +65,11 @@ md-toolbar {
     -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center; }
-  .md-toolbar-tools .md-tools {
-    margin-left: auto; }
-  .md-toolbar-tools .md-button:first-of-type {
+  .md-toolbar-tools .md-button {
+    margin-top: 0;
+    margin-bottom: 0; }
+  .md-toolbar-tools > .md-button:first-child {
     margin-left: -0.8rem; }
-  .md-toolbar-tools .md-button:last-of-type:not(:first-of-type) {
-    margin-right: -0.8rem; }
   @media screen and (-ms-high-contrast: active) {
     .md-toolbar-tools {
       border-bottom: 1px solid #fff; } }

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-48eeb62
+ * v0.8.3-master-b9803fe
  */
 goog.provide('ng.material.components.button');
 goog.require('ng.material.core');
@@ -106,17 +106,16 @@ function MdButtonDirective($mdInkRipple, $mdTheming, $mdAria, $timeout) {
 
     // restrict focus styles to the keyboard
     scope.mouseActive = false;
-    element
-      .on('mousedown', function() {
+    element.on('mousedown', function() {
         scope.mouseActive = true;
         $timeout(function(){
           scope.mouseActive = false;
         }, 100);
       })
       .on('focus', function() {
-        if(scope.mouseActive === false) element.addClass('focus');
+        if(scope.mouseActive === false) { element.addClass('md-focused'); }
       })
-      .on('blur', function() { element.removeClass('focus'); });
+      .on('blur', function() { element.removeClass('md-focused'); });
   }
 
 }

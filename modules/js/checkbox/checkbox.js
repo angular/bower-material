@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-48eeb62
+ * v0.8.3-master-b9803fe
  */
 (function() {
 'use strict';
@@ -55,7 +55,7 @@ angular
  * </hljs>
  *
  */
-function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant, $mdTheming, $mdUtil) {
+function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant, $mdTheming, $mdUtil, $timeout) {
   inputDirective = inputDirective[0];
   var CHECKED_CSS = 'md-checked';
 
@@ -78,7 +78,7 @@ function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant,
   function compile (tElement, tAttrs) {
 
     tAttrs.type = 'checkbox';
-    tAttrs.tabIndex = 0;
+    tAttrs.tabindex = tAttrs.tabindex || '0';
     tElement.attr('role', tAttrs.type);
 
     return function postLink(scope, element, attr, ngModelCtrl) {
@@ -91,7 +91,10 @@ function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant,
             ngModelCtrl.$setViewValue.bind(ngModelCtrl)
         );
       }
-
+      $$watchExpr('ngDisabled', 'tabindex', {
+        true: '-1',
+        false: attr.tabindex
+      });
       $mdAria.expectWithText(element, 'aria-label');
 
       // Reuse the original input[type=checkbox] directive from Angular core.
@@ -102,13 +105,37 @@ function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant,
         0: {}
       }, attr, [ngModelCtrl]);
 
+      scope.mouseActive = false;
       element.on('click', listener)
-        .on('keypress', keypressHandler);
+        .on('keypress', keypressHandler)
+        .on('mousedown', function() {
+          scope.mouseActive = true;
+          $timeout(function(){
+            scope.mouseActive = false;
+          }, 100);
+        })
+        .on('focus', function() {
+          if(scope.mouseActive === false) { element.addClass('md-focused'); }
+        })
+        .on('blur', function() { element.removeClass('md-focused'); });
+
       ngModelCtrl.$render = render;
 
+      function $$watchExpr(expr, htmlAttr, valueOpts) {
+        if (attr[expr]) {
+          scope.$watch(attr[expr], function(val) {
+            if (valueOpts[val]) {
+              element.attr(htmlAttr, valueOpts[val]);
+            }
+          });
+        }
+      }
+
       function keypressHandler(ev) {
-        if(ev.which === $mdConstant.KEY_CODE.SPACE || ev.which === $mdConstant.KEY_CODE.ENTER) {
+        var keyCode = ev.which || ev.keyCode;
+        if (keyCode === $mdConstant.KEY_CODE.SPACE || keyCode === $mdConstant.KEY_CODE.ENTER) {
           ev.preventDefault();
+          if (!element.hasClass('md-focused')) { element.addClass('md-focused'); }
           listener(ev);
         }
       }
@@ -134,6 +161,6 @@ function MdCheckboxDirective(inputDirective, $mdInkRipple, $mdAria, $mdConstant,
     };
   }
 }
-MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$mdConstant", "$mdTheming", "$mdUtil"];
+MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$mdConstant", "$mdTheming", "$mdUtil", "$timeout"];
 
 })();

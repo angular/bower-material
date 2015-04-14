@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-48eeb62
+ * v0.8.3-master-b9803fe
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 md-switch {
@@ -34,6 +34,13 @@ md-switch {
   md-switch:not([disabled]) .md-dragging, md-switch:not([disabled]).md-dragging .md-container {
     cursor: -webkit-grabbing;
     cursor: grabbing; }
+  md-switch.md-focused:not([disabled]) .md-thumb:before {
+    left: -8px;
+    top: -8px;
+    right: -8px;
+    bottom: -8px; }
+  md-switch.md-focused:not([disabled]):not(.md-checked) .md-thumb:before {
+    background-color: rgba(0, 0, 0, 0.12); }
   md-switch .md-label {
     border-color: transparent;
     border-width: 0; }
@@ -65,6 +72,19 @@ md-switch {
     width: 20px;
     border-radius: 50%;
     box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26); }
+    md-switch .md-thumb:before {
+      background-color: transparent;
+      border-radius: 50%;
+      content: '';
+      position: absolute;
+      display: block;
+      height: auto;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      transition: all 0.5s;
+      width: auto; }
     md-switch .md-thumb .md-ripple-container {
       position: absolute;
       display: block;

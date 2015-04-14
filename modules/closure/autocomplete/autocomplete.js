@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-48eeb62
+ * v0.8.3-master-b9803fe
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -30,9 +30,9 @@ goog.require('ng.material.core');
 
   var ITEM_HEIGHT = 41,
       MAX_HEIGHT = 5.5 * ITEM_HEIGHT,
-      MENU_PADDING = 16;
+      MENU_PADDING = 8;
 
-  function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $mdTheming, $window) {
+  function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $mdTheming, $window, $rootElement) {
 
     //-- private variables
 
@@ -64,7 +64,6 @@ goog.require('ng.material.core');
     self.focus    = focus;
     self.clear    = clearValue;
     self.select   = select;
-    self.fetch    = $mdUtil.debounce(fetchResults);
     self.getCurrentDisplayValue         = getCurrentDisplayValue;
     self.registerSelectedItemWatcher    = registerSelectedItemWatcher;
     self.unregisterSelectedItemWatcher  = unregisterSelectedItemWatcher;
@@ -92,14 +91,13 @@ goog.require('ng.material.core');
           vrect  = elements.snap.getBoundingClientRect(),
           root   = elements.root.getBoundingClientRect(),
           top    = vrect.bottom - root.top,
-          bot    = root.height - vrect.top,
+          bot    = root.bottom - vrect.top,
           left   = hrect.left - root.left,
           width  = hrect.width,
           styles = {
             left:     left + 'px',
             minWidth: width + 'px',
-            maxWidth: Math.max(hrect.right - root.left, root.right - hrect.left) - MENU_PADDING + 'px',
-            opacity:  0
+            maxWidth: Math.max(hrect.right - root.left, root.right - hrect.left) - MENU_PADDING + 'px'
           };
       if (top > bot && root.height - hrect.bottom - MENU_PADDING < MAX_HEIGHT) {
         styles.top = 'auto';
@@ -108,14 +106,14 @@ goog.require('ng.material.core');
       } else {
         styles.top = top + 'px';
         styles.bottom = 'auto';
-        styles.maxHeight = Math.min(MAX_HEIGHT, root.height - hrect.bottom - MENU_PADDING) + 'px';
+        styles.maxHeight = Math.min(MAX_HEIGHT, root.bottom - hrect.bottom - MENU_PADDING) + 'px';
       }
-      $timeout(correctHorizontalAlignment, 0, false);
       elements.$.ul.css(styles);
+      $timeout(correctHorizontalAlignment, 0, false);
 
       function correctHorizontalAlignment () {
         var dropdown = elements.ul.getBoundingClientRect(),
-            styles   = { opacity: 1 };
+            styles   = {};
         if (dropdown.right > root.right - MENU_PADDING) {
           styles.left = (hrect.right - dropdown.width) + 'px';
         }
@@ -395,7 +393,7 @@ goog.require('ng.material.core');
     }
 
   }
-  MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$timeout", "$mdTheming", "$window"];
+  MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$timeout", "$mdTheming", "$window", "$rootElement"];
 })();
 
 (function () {
