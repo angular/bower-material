@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-554716f
+ * v0.8.3-master-3178094
  */
 goog.provide('ng.material.components.sidenav');
 goog.require('ng.material.components.backdrop');
@@ -124,8 +124,10 @@ function SidenavService($mdComponentRegistry, $q) {
 }
 SidenavService.$inject = ["$mdComponentRegistry", "$q"];
 /**
- * @private
+ * @ngdoc directive
  * @name mdSidenavFocus
+ * @module material.components.sidenav
+ *
  * @restrict A
  *
  * @description
