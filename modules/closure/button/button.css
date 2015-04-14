@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1
+ * v0.9.0-rc1-master-d265d40
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 /**
@@ -148,5 +148,4 @@
 
 @media screen and (-ms-high-contrast: active) {
   .md-button.md-raised, .md-button.md-fab {
-    border: 1px solid #fff; }
- }
+    border: 1px solid #fff; } }
