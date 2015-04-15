@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-c62d4df
+ * v0.9.0-rc1-master-bf6ef07
  */
 (function () {
   'use strict';
@@ -122,6 +122,7 @@
       // Child elements aren't available until after a $timeout tick as they are hidden by an
       // `ng-if`. see http://goo.gl/zIWfuw
       $timeout(function() {
+        element.attr('tabindex', '-1');
         element.find('button').attr('tabindex', '-1');
       });
     }
@@ -253,9 +254,8 @@
         break;
       case this.$mdConstant.KEY_CODE.BACKSPACE:
         if (!event.target.value.length) {
-          event.preventDefault();
-          if (this.items.length) this.removeChip(this.items.length - 1);
-          event.target.focus();
+          event.stopPropagation();
+          if (this.items.length) this.selectAndFocusChipSafe(this.items.length - 1);
         }
         break;
     }
@@ -407,7 +407,11 @@
    * @param index
    */
   MdChipsCtrl.prototype.selectAndFocusChipSafe = function(index) {
-    if (!this.items.length) return this.selectChip(-1);
+    if (!this.items.length) {
+      this.selectChip(-1);
+      this.onFocus();
+      return;
+    }
     if (index === this.items.length) return this.onFocus();
     index = Math.max(index, 0);
     index = Math.min(index, this.items.length - 1);
@@ -593,14 +597,13 @@
   var MD_CHIPS_TEMPLATE = '\
       <md-chips-wrap\
           ng-if="!$mdChipsCtrl.readonly || $mdChipsCtrl.items.length > 0"\
-          ng-focus="$mdChipsCtrl.onFocus()"\
           ng-keydown="$mdChipsCtrl.chipKeydown($event)"\
-          tabindex="0"\
           class="md-chips">\
         <md-chip ng-repeat="$chip in $mdChipsCtrl.items"\
             index="{{$index}}"\
             ng-class="{\'md-focused\': $mdChipsCtrl.selectedChip == $index}">\
           <div class="md-chip-content"\
+              tabindex="-1"\
               ng-click="!$mdChipsCtrl.readonly && $mdChipsCtrl.selectChip($index)"\
               md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"></div>\
           <div class="md-chip-remove-container"\
@@ -646,7 +649,7 @@
         // element propagates to the link function via the attrs argument,
         // where various contained-elements can be consumed.
         attrs['$mdUserTemplate'] = element.clone();
-        attrs['tabindex'] = '-1';
+        attrs['tabindex'] = '0';
         return MD_CHIPS_TEMPLATE;
       },
       require: ['mdChips'],
@@ -718,11 +721,13 @@
        */
       return function postLink(scope, element, attrs, controllers) {
         $mdTheming(element);
-        element.attr('tabindex', '-1');
+        element.attr('tabindex', '0');
         var mdChipsCtrl = controllers[0];
         mdChipsCtrl.chipContentsTemplate = chipContentsTemplate;
         mdChipsCtrl.chipRemoveTemplate   = chipRemoveTemplate;
         mdChipsCtrl.chipInputTemplate    = chipInputTemplate;
+
+        element.on('focus', function () { mdChipsCtrl.onFocus(); });
 
         if (attr.ngModel) {
           mdChipsCtrl.configureNgModel(element.controller('ngModel'));
