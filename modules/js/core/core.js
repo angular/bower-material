@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-77504e9
+ * v0.9.0-rc1-master-ea185ea
  */
 (function() {
 'use strict';
@@ -3058,8 +3058,8 @@ angular.module('material.core.theming', ['material.core.theming.palette'])
  */
 
 // In memory storage of defined themes and color palettes (both loaded by CSS, and user specified)
-var PALETTES = { };
-var THEMES = { };
+var PALETTES;
+var THEMES;
 var GENERATED;
 
 var DARK_FOREGROUND = {

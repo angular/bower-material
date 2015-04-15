@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-77504e9
+ * v0.9.0-rc1-master-ea185ea
  */
 (function() {
 'use strict';
@@ -167,19 +167,8 @@ angular.module('material.components.tabs', [
       scope.deselect = scope.deselect || angular.noop;
       scope.select = scope.select || angular.noop;
 
-
       scope.$watch('active', function (active) { if (active) ctrl.select(data.getIndex()); });
       scope.$watch('disabled', function () { ctrl.refreshIndex(); });
-      scope.$watch(getTemplate, function (template, oldTemplate) {
-        if (template === oldTemplate) return;
-        data.template = template;
-        ctrl.updateInkBarStyles();
-      });
-      scope.$watch(getLabel, function (label, oldLabel) {
-        if (label === oldLabel) return;
-        data.label = label;
-        ctrl.updateInkBarStyles();
-      });
       scope.$on('$destroy', function () { ctrl.removeTab(data); });
 
       function getLabel () {
@@ -187,8 +176,11 @@ angular.module('material.components.tabs', [
       }
 
       function getTemplate () {
-        var content = element.find('md-tab-template');
-        return content.length ? content.html() : attr.label ? element.html() : null;
+        var content = element.find('md-tab-template'),
+            template = content.length ? content.html() : attr.label ? element.html() : null;
+        if (content.length) content.remove();
+        else element.empty();
+        return template;
       }
     }
   }
@@ -358,7 +350,7 @@ angular.module('material.components.tabs', [
     function handleWindowResize () {
       ctrl.lastSelectedIndex = $scope.selectedIndex;
       updateInkBarStyles();
-      ctrl.offsetLeft = shouldPaginate() ? fixOffset(ctrl.offsetLeft) : 0;
+      ctrl.offsetLeft = fixOffset(ctrl.offsetLeft);
     }
 
     function insertTab (tabData, index) {
@@ -521,7 +513,7 @@ angular.module('material.components.tabs', [
     }
 
     function fixOffset (value) {
-      if (!elements.tabs.length) return;
+      if (!elements.tabs.length || !shouldPaginate()) return 0;
       var lastTab = elements.tabs[elements.tabs.length - 1],
           totalWidth = lastTab.offsetLeft + lastTab.offsetWidth;
       value = Math.max(0, value);

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-77504e9
+ * v0.9.0-rc1-master-ea185ea
  */
 goog.provide('ng.material.components.sidenav');
 goog.require('ng.material.components.backdrop');
@@ -301,13 +301,15 @@ function SidenavDirective($timeout, $animate, $parse, $log, $mdMedia, $mdConstan
       disableParentScroll(isOpen);
 
       return promise = $q.all([
-        isOpen ? $animate.enter(backdrop, parent) : $animate.leave(backdrop),
-        $animate[isOpen ? 'removeClass' : 'addClass'](element, 'md-closed').then(function() {
-          if (scope.isOpen) {
-            focusEl && focusEl.focus();
-          }
-        })
-      ]);
+                isOpen ? $animate.enter(backdrop, parent) : $animate.leave(backdrop),
+                $animate[isOpen ? 'removeClass' : 'addClass'](element, 'md-closed')
+              ])
+              .then(function() {
+                // Perform focus when animations are ALL done...
+                if (scope.isOpen) {
+                  focusEl && focusEl.focus();
+                }
+              });
     }
 
     /**
