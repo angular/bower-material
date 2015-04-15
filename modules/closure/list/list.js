@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-17aecd2
+ * v0.9.0-rc1-master-588e58c
  */
 goog.provide('ng.material.components.list');
 goog.require('ng.material.core');
@@ -144,8 +144,8 @@ function mdListItemDirective($mdAria) {
 
         // Check for a secondary item and move it outside
         if ( secondaryItem && (
-          secondaryItem.hasAttribute('ng-click') || 
-            ( tAttrs.ngClick && 
+          secondaryItem.hasAttribute('ng-click') ||
+            ( tAttrs.ngClick &&
              isProxiedElement(secondaryItem) )
         )) {
           tEl.addClass('md-with-secondary');
@@ -171,9 +171,9 @@ function mdListItemDirective($mdAria) {
             proxy = angular.element(proxy);
             proxy.on('focus', function() {
               $element.addClass('md-focused');
-              proxy.on('blur', function() {
+              proxy.on('blur', function proxyOnBlur() {
                 $element.removeClass('md-focused');
-                proxy.off('blur');
+                proxy.off('blur', proxyOnBlur);
               });
             });
           });
@@ -189,7 +189,7 @@ function mdListItemDirective($mdAria) {
           }
         }
         function computeClickable() {
-          if (proxies.length || $element[0].firstElementChild.hasAttribute('ng-click')) { 
+          if (proxies.length || $element[0].firstElementChild.hasAttribute('ng-click')) {
             $element.addClass('md-clickable');
           }
         }

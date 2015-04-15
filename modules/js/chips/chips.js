@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-17aecd2
+ * v0.9.0-rc1-master-588e58c
  */
 (function () {
   'use strict';
@@ -127,32 +127,6 @@
     }
   }
   MdChipRemove.$inject = ["$timeout"];
-})();
-
-(function () {
-  'use strict';
-  angular
-      .module('material.components.chips')
-      .directive('mdChipTransclude', MdChipTransclude);
-
-  function MdChipTransclude ($compile, $mdUtil) {
-    return {
-      restrict: 'EA',
-      terminal: true,
-      link: link,
-      scope: false
-    };
-    function link (scope, element, attr) {
-      var ctrl = scope.$parent.$mdChipsCtrl,
-          newScope = ctrl.parent.$new(false, ctrl.parent);
-      newScope.$$replacedScope = scope;
-      newScope.$chip = scope.$chip;
-      newScope.$mdChipsCtrl = ctrl;
-      element.html(ctrl.$scope.$eval(attr.mdChipTransclude));
-      $compile(element.contents())(newScope);
-    }
-  }
-  MdChipTransclude.$inject = ["$compile", "$mdUtil"];
 })();
 
 (function () {
@@ -458,6 +432,32 @@
       }
     }.bind(this));
   };
+})();
+
+(function () {
+  'use strict';
+  angular
+      .module('material.components.chips')
+      .directive('mdChipTransclude', MdChipTransclude);
+
+  function MdChipTransclude ($compile, $mdUtil) {
+    return {
+      restrict: 'EA',
+      terminal: true,
+      link: link,
+      scope: false
+    };
+    function link (scope, element, attr) {
+      var ctrl = scope.$parent.$mdChipsCtrl,
+          newScope = ctrl.parent.$new(false, ctrl.parent);
+      newScope.$$replacedScope = scope;
+      newScope.$chip = scope.$chip;
+      newScope.$mdChipsCtrl = ctrl;
+      element.html(ctrl.$scope.$eval(attr.mdChipTransclude));
+      $compile(element.contents())(newScope);
+    }
+  }
+  MdChipTransclude.$inject = ["$compile", "$mdUtil"];
 })();
 
 (function () {
