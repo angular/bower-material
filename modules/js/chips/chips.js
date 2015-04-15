@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-19c4a5d
+ * v0.9.0-rc1-master-c62d4df
  */
 (function () {
   'use strict';
@@ -253,8 +253,9 @@
         break;
       case this.$mdConstant.KEY_CODE.BACKSPACE:
         if (!event.target.value.length) {
-          event.stopPropagation();
-          if (this.items.length) this.selectAndFocusChipSafe(this.items.length - 1);
+          event.preventDefault();
+          if (this.items.length) this.removeChip(this.items.length - 1);
+          event.target.focus();
         }
         break;
     }
@@ -406,11 +407,7 @@
    * @param index
    */
   MdChipsCtrl.prototype.selectAndFocusChipSafe = function(index) {
-    if (!this.items.length) {
-      this.selectChip(-1);
-      this.onFocus();
-      return;
-    }
+    if (!this.items.length) return this.selectChip(-1);
     if (index === this.items.length) return this.onFocus();
     index = Math.max(index, 0);
     index = Math.min(index, this.items.length - 1);
