@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-d885d63
+ * v0.9.0-rc1-master-17aecd2
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -175,14 +175,25 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
       scope.$on('$destroy', function () { ctrl.removeTab(data); });
 
       function getLabel () {
-        return attr.label || (element.find('md-tab-label')[0] || element[0]).innerHTML;
+        var label = attr.label || (element.find('md-tab-label')[0] || element[0]).innerHTML;
+        return getLabelAttribute() || getLabelElement() || getElementContents();
+        function getLabelAttribute () { return attr.label; }
+        function getLabelElement () {
+          var label = element.find('md-tab-label');
+          if (label.length) return label.remove().html();
+        }
+        function getElementContents () {
+          var html = element.html();
+          element.empty();
+          return html;
+        }
       }
 
       function getTemplate () {
         var content = element.find('md-tab-template'),
             template = content.length ? content.html() : attr.label ? element.html() : null;
         if (content.length) content.remove();
-        else element.empty();
+        else if (attr.label) element.empty();
         return template;
       }
     }

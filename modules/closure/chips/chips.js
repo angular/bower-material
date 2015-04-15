@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-d885d63
+ * v0.9.0-rc1-master-17aecd2
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.components.autocomplete');
@@ -252,19 +252,12 @@ goog.require('ng.material.core');
         }
         break;
       case this.$mdConstant.KEY_CODE.BACKSPACE:
-        if (shouldDeletePreviousItem(event.target)) {
+        if (!event.target.value.length) {
           event.preventDefault();
           if (this.items.length) this.removeChip(this.items.length - 1);
           event.target.focus();
         }
         break;
-    }
-    function shouldDeletePreviousItem (element) {
-      if ((/text|password|search|tel|url/).test(element.type)) {
-        return !element.selectionStart && !element.selectionEnd;
-      } else {
-        return !element.value.length;
-      }
     }
   };
 
@@ -570,7 +563,7 @@ goog.require('ng.material.core');
           class="md-chips">\
         <md-chip ng-repeat="$chip in $mdChipsCtrl.items"\
             index="{{$index}}"\
-            ng-class="{selected: $mdChipsCtrl.selectedChip == $index}">\
+            ng-class="{\'md-focused\': $mdChipsCtrl.selectedChip == $index}">\
           <div class="md-chip-content"\
               ng-click="!$mdChipsCtrl.readonly && $mdChipsCtrl.selectChip($index)"\
               md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"></div>\
