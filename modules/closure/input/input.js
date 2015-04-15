@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-588e58c
+ * v0.9.0-rc1-master-9655945
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -134,7 +134,7 @@ function labelDirective() {
  *   <md-input-container>
  *     <label>Last Name</label>
  *     <input name="lastName" ng-model="lastName" required md-maxlength="10" minlength="4">
- *     <div ng-messages="userForm.lastName.$error" ng-show="userForm.bio.$dirty">
+ *     <div ng-messages="userForm.lastName.$error" ng-show="userForm.lastName.$dirty">
  *       <div ng-message="required">This is required!</div>
  *       <div ng-message="md-maxlength">That's too long!</div>
  *       <div ng-message="minlength">That's too short!</div>
