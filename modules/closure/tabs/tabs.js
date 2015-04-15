@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-9655945
+ * v0.9.0-rc1-master-5ad4472
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -710,11 +710,8 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
                   tabindex="-1"\
                   class="md-tab"\
                   style="max-width: {{ tabWidth ? tabWidth + \'px\' : \'none\' }}"\
-                  role="tab"\
-                  aria-selected="{{tab.isActive()}}"\
-                  aria-disabled="{{tab.scope.disabled}}"\
-                  aria-controls="tab-content-{{tab.id}}"\
                   ng-repeat="tab in $mdTabsCtrl.tabs"\
+                  role="presentation"\
                   ng-click="$mdTabsCtrl.select(tab.getIndex())"\
                   ng-class="{\
                       \'md-active\':    tab.isActive(),\
@@ -734,7 +731,7 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
                   role="tab"\
                   aria-controls="tab-content-{{tab.id}}"\
                   aria-selected="{{tab.isActive()}}"\
-                  aria-disabled="{{tab.scope.disabled}}"\
+                  aria-disabled="{{tab.scope.disabled || \'false\'}}"\
                   ng-focus="$mdTabsCtrl.hasFocus = true"\
                   ng-blur="$mdTabsCtrl.hasFocus = false"\
                   ng-repeat="tab in $mdTabsCtrl.tabs"\
