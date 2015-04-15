@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-b65236b
+ * v0.9.0-rc1-master-d885d63
  */
 (function () {
   'use strict';
@@ -249,12 +249,19 @@
         }
         break;
       case this.$mdConstant.KEY_CODE.BACKSPACE:
-        if (!event.target.selectionStart && !event.target.selectionEnd) {
+        if (shouldDeletePreviousItem(event.target)) {
           event.preventDefault();
           if (this.items.length) this.removeChip(this.items.length - 1);
           event.target.focus();
         }
         break;
+    }
+    function shouldDeletePreviousItem (element) {
+      if ((/text|password|search|tel|url/).test(element.type)) {
+        return !element.selectionStart && !element.selectionEnd;
+      } else {
+        return !element.value.length;
+      }
     }
   };
 
