@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-27ad2a5
+ * v0.9.0-rc1-master-314aae1
  */
 (function () {
   'use strict';
@@ -287,7 +287,7 @@
       case this.$mdConstant.KEY_CODE.TAB:
         if (this.selectedChip < 0) return;
         event.preventDefault();
-        this.onFocus();
+        this.selectAndFocusChipSafe(this.selectedChip);
         break;
     }
   };
