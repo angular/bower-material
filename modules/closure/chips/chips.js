@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-5d2c4dc
+ * v0.9.0-rc1-master-b65236b
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.components.autocomplete');
@@ -252,7 +252,7 @@ goog.require('ng.material.core');
         }
         break;
       case this.$mdConstant.KEY_CODE.BACKSPACE:
-        if (!event.target.selectionStart) {
+        if (!event.target.selectionStart && !event.target.selectionEnd) {
           event.preventDefault();
           if (this.items.length) this.removeChip(this.items.length - 1);
           event.target.focus();
