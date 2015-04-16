@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-78b861e
+ * v0.9.0-rc1-master-a5d09af
  */
 (function() {
 'use strict';
@@ -575,7 +575,7 @@ angular.module('material.core')
         display: computedStyle.display,
         'padding-top': computedStyle.paddingTop,
         top: (-1 * heightOffset) + 'px',
-        height: '100%',
+        'min-height': '100%',
         width: '100%'
       });
 
