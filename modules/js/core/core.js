@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-e0005fc
+ * v0.9.0-rc1-master-3b3d020
  */
 (function() {
 'use strict';
@@ -2051,6 +2051,9 @@ function InterimElementProvider() {
               if (!(options.parent || {}).length) {
                 options.parent = $rootElement.find('body');
                 if (!options.parent.length) options.parent = $rootElement;
+                if (options.parent[0].nodeName == '#comment') {
+                  options.parent = $document.find('body');
+                }
               }
 
               if (options.themable) $mdTheming(element);
