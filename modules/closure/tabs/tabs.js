@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-972c68a
+ * v0.9.0-rc1-master-78b861e
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -723,7 +723,7 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
                   ng-click="$mdTabsCtrl.select(tab.getIndex())"\
                   ng-class="{\
                       \'md-active\':    tab.isActive(),\
-                      \'md-focus\':     tab.hasFocus(),\
+                      \'md-focused\':   tab.hasFocus(),\
                       \'md-disabled\':  tab.scope.disabled\
                   }"\
                   ng-disabled="tab.scope.disabled"\
