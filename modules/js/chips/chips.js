@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-314aae1
+ * v0.9.0-rc1-master-6d4ecbe
  */
 (function () {
   'use strict';
@@ -275,8 +275,8 @@
         this.removeAndSelectAdjacentChip(this.selectedChip);
         break;
       case this.$mdConstant.KEY_CODE.LEFT_ARROW:
-        if (this.selectedChip < 0) this.selectedChip = this.items.length;
         event.preventDefault();
+        if (this.selectedChip < 0) this.selectedChip = this.items.length;
         if (this.items.length) this.selectAndFocusChipSafe(this.selectedChip - 1);
         break;
       case this.$mdConstant.KEY_CODE.RIGHT_ARROW:
@@ -287,7 +287,7 @@
       case this.$mdConstant.KEY_CODE.TAB:
         if (this.selectedChip < 0) return;
         event.preventDefault();
-        this.selectAndFocusChipSafe(this.selectedChip);
+        this.onFocus();
         break;
     }
   };
@@ -490,7 +490,7 @@
     inputElement
         .attr({ tabindex: 0 })
         .on('keydown', function(event) { scope.$apply(function() { ctrl.inputKeydown(event); }); })
-        .on('focus', function () { scope.$apply(function () { ctrl.selectedChip = null; }); });
+        .on('focus', function () { ctrl.selectedChip = -1; });
   };
 
   MdChipsCtrl.prototype.configureAutocomplete = function(ctrl) {
