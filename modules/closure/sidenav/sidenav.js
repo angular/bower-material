@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-6d4ecbe
+ * v0.9.0-rc1-master-68395a2
  */
 goog.provide('ng.material.components.sidenav');
 goog.require('ng.material.components.backdrop');
