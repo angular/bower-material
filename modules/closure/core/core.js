@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-f3c113c
+ * v0.9.0-rc1-master-972c68a
  */
 goog.provide('ng.material.core');
 
@@ -577,7 +577,9 @@ angular.module('material.core')
         position: 'fixed',
         display: computedStyle.display,
         'padding-top': computedStyle.paddingTop,
-        top: (-1 * heightOffset) + 'px'
+        top: (-1 * heightOffset) + 'px',
+        height: '100%',
+        width: '100%'
       });
 
 
@@ -587,7 +589,7 @@ angular.module('material.core')
 
       function computeSize() {
         wrapperEl.css({
-          'max-width': disableTarget[0].offsetWidth
+          'max-width': disableTarget[0].offsetWidth + 'px'
         });
       }
 
