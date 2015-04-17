@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-736cbdb
+ * v0.9.0-rc1-master-4092400
  */
 (function() {
 'use strict';
@@ -144,6 +144,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
 
     element.empty().append(labelEl);
 
+    attr.tabindex = attr.tabindex || '0';
+
     $mdTheming(element);
 
     return function postLink(scope, element, attr, ctrls) {
@@ -247,17 +249,17 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
         }
         isDisabled = disabled;
         if (disabled) {
-          element.attr('tabindex', -1);
+          element.attr({'tabindex': -1, 'aria-disabled': 'true'});
           element.off('click', openSelect);
           element.off('keydown', handleKeypress);
         } else {
-          element.attr('tabindex', 0);
+          element.attr({'tabindex': attr.tabindex, 'aria-disabled':'false'});
           element.on('click', openSelect);
           element.on('keydown', handleKeypress);
         }
       });
       if (!attr.disabled && !attr.ngDisabled) {
-        element.attr('tabindex', 0);
+        element.attr({'tabindex': attr.tabindex, 'aria-disabled':'false'});
         element.on('click', openSelect);
         element.on('keydown', handleKeypress);
       }
@@ -584,7 +586,8 @@ function OptionDirective($mdInkRipple, $mdUtil) {
   function compile(element, attr) {
     // Manual transclusion to avoid the extra inner <span> that ng-transclude generates
     element.append( angular.element('<div class="md-text">').append(element.contents()) );
-    if (attr.tabindex === undefined) element.attr('tabindex', 0);
+
+    element.attr('tabindex', attr.tabindex || '0');
     return postLink;
   }
 
