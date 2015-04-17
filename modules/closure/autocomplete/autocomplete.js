@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-5a02809
+ * v0.9.0-rc1-master-736cbdb
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -140,7 +140,7 @@ goog.require('ng.material.core');
       registerSelectedItemWatcher(selectedItemChange);
       $scope.$watch('selectedItem', handleSelectedItemChange);
       $scope.$watch('$mdAutocompleteCtrl.hidden', function (hidden, oldHidden) {
-        if (hidden && !oldHidden) positionDropdown();
+        if (!hidden && oldHidden) positionDropdown();
       });
       angular.element($window).on('resize', positionDropdown);
     }

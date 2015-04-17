@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-5a02809
+ * v0.9.0-rc1-master-736cbdb
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.components.autocomplete');
@@ -248,6 +248,7 @@ goog.require('ng.material.core');
     var chipBuffer;
     switch (event.keyCode) {
       case this.$mdConstant.KEY_CODE.ENTER:
+        if (this.$scope.requireMatch) break;
         chipBuffer = this.getChipBuffer();
         if (chipBuffer) {
           event.preventDefault();
@@ -670,7 +671,8 @@ goog.require('ng.material.core');
         secondaryPlaceholder: '@',
         mdOnAppend: '&',
         deleteHint: '@',
-        deleteButtonLabel: '@'
+        deleteButtonLabel: '@',
+        requireMatch: '=?mdRequireMatch'
       }
     };
 
@@ -726,6 +728,14 @@ goog.require('ng.material.core');
        * Configures controller and transcludes.
        */
       return function postLink(scope, element, attrs, controllers) {
+
+        //-- give optional properties with no value a boolean true by default
+        angular.forEach(scope.$$isolateBindings, function (binding, key) {
+          if (binding.optional && angular.isUndefined(scope[key])) {
+            scope[key] = attr.hasOwnProperty(attr.$normalize(binding.attrName));
+          }
+        });
+
         $mdTheming(element);
         var mdChipsCtrl = controllers[0];
         mdChipsCtrl.chipContentsTemplate = chipContentsTemplate;
@@ -851,6 +861,7 @@ goog.require('ng.material.core');
   var MD_CONTACT_CHIPS_TEMPLATE = '\
       <md-chips class="md-contact-chips"\
           ng-model="$mdContactChipsCtrl.contacts"\
+          md-require-match="$mdContactChipsCtrl.requireMatch"\
           md-autocomplete-snap>\
           <md-autocomplete\
               md-menu-class="md-contact-chips-suggestions"\
@@ -910,12 +921,21 @@ goog.require('ng.material.core');
         contactImage: '@mdContactImage',
         contactEmail: '@mdContactEmail',
         filterSelected: '=',
-        contacts: '=ngModel'
+        contacts: '=ngModel',
+        requireMatch: '=?mdRequireMatch'
       }
     };
 
     function compile(element, attr) {
       return function postLink(scope, element, attrs, controllers) {
+
+        //-- give optional properties with no value a boolean true by default
+        angular.forEach(scope.$$isolateBindings, function (binding, key) {
+          if (binding.optional && angular.isUndefined(scope[key])) {
+            scope[key] = attr.hasOwnProperty(attr.$normalize(binding.attrName));
+          }
+        });
+
         $mdTheming(element);
         element.attr('tabindex', '-1');
       };
