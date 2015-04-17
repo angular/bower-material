@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-4092400
+ * v0.9.0-rc1-master-1f26144
  */
 (function () {
   'use strict';
@@ -134,6 +134,32 @@
   'use strict';
   angular
       .module('material.components.chips')
+      .directive('mdChipTransclude', MdChipTransclude);
+
+  function MdChipTransclude ($compile, $mdUtil) {
+    return {
+      restrict: 'EA',
+      terminal: true,
+      link: link,
+      scope: false
+    };
+    function link (scope, element, attr) {
+      var ctrl = scope.$parent.$mdChipsCtrl,
+          newScope = ctrl.parent.$new(false, ctrl.parent);
+      newScope.$$replacedScope = scope;
+      newScope.$chip = scope.$chip;
+      newScope.$mdChipsCtrl = ctrl;
+      element.html(ctrl.$scope.$eval(attr.mdChipTransclude));
+      $compile(element.contents())(newScope);
+    }
+  }
+  MdChipTransclude.$inject = ["$compile", "$mdUtil"];
+})();
+
+(function () {
+  'use strict';
+  angular
+      .module('material.components.chips')
       .controller('MdChipsCtrl', MdChipsCtrl);
 
   /**
@@ -216,22 +242,18 @@
    * @param event
    */
   MdChipsCtrl.prototype.inputKeydown = function(event) {
-    var chipBuffer;
+    var chipBuffer = this.getChipBuffer();
     switch (event.keyCode) {
       case this.$mdConstant.KEY_CODE.ENTER:
-        if (this.$scope.requireMatch) break;
-        chipBuffer = this.getChipBuffer();
-        if (chipBuffer) {
-          event.preventDefault();
-          this.appendChip(chipBuffer);
-          this.resetChipBuffer();
-        }
+        if (this.$scope.requireMatch || !chipBuffer) break;
+        event.preventDefault();
+        this.appendChip(chipBuffer);
+        this.resetChipBuffer();
         break;
       case this.$mdConstant.KEY_CODE.BACKSPACE:
-        if (!event.target.value.length) {
-          event.stopPropagation();
-          if (this.items.length) this.selectAndFocusChipSafe(this.items.length - 1);
-        }
+        if (chipBuffer) break;
+        event.stopPropagation();
+        if (this.items.length) this.selectAndFocusChipSafe(this.items.length - 1);
         break;
     }
   };
@@ -242,6 +264,7 @@
    * @param event
    */
   MdChipsCtrl.prototype.chipKeydown = function (event) {
+    if (this.getChipBuffer()) return;
     switch (event.keyCode) {
       case this.$mdConstant.KEY_CODE.BACKSPACE:
       case this.$mdConstant.KEY_CODE.DELETE:
@@ -476,32 +499,6 @@
       }
     }.bind(this));
   };
-})();
-
-(function () {
-  'use strict';
-  angular
-      .module('material.components.chips')
-      .directive('mdChipTransclude', MdChipTransclude);
-
-  function MdChipTransclude ($compile, $mdUtil) {
-    return {
-      restrict: 'EA',
-      terminal: true,
-      link: link,
-      scope: false
-    };
-    function link (scope, element, attr) {
-      var ctrl = scope.$parent.$mdChipsCtrl,
-          newScope = ctrl.parent.$new(false, ctrl.parent);
-      newScope.$$replacedScope = scope;
-      newScope.$chip = scope.$chip;
-      newScope.$mdChipsCtrl = ctrl;
-      element.html(ctrl.$scope.$eval(attr.mdChipTransclude));
-      $compile(element.contents())(newScope);
-    }
-  }
-  MdChipTransclude.$inject = ["$compile", "$mdUtil"];
 })();
 
 (function () {

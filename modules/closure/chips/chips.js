@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-4092400
+ * v0.9.0-rc1-master-1f26144
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.components.autocomplete');
@@ -245,22 +245,18 @@ goog.require('ng.material.core');
    * @param event
    */
   MdChipsCtrl.prototype.inputKeydown = function(event) {
-    var chipBuffer;
+    var chipBuffer = this.getChipBuffer();
     switch (event.keyCode) {
       case this.$mdConstant.KEY_CODE.ENTER:
-        if (this.$scope.requireMatch) break;
-        chipBuffer = this.getChipBuffer();
-        if (chipBuffer) {
-          event.preventDefault();
-          this.appendChip(chipBuffer);
-          this.resetChipBuffer();
-        }
+        if (this.$scope.requireMatch || !chipBuffer) break;
+        event.preventDefault();
+        this.appendChip(chipBuffer);
+        this.resetChipBuffer();
         break;
       case this.$mdConstant.KEY_CODE.BACKSPACE:
-        if (!event.target.value.length) {
-          event.stopPropagation();
-          if (this.items.length) this.selectAndFocusChipSafe(this.items.length - 1);
-        }
+        if (chipBuffer) break;
+        event.stopPropagation();
+        if (this.items.length) this.selectAndFocusChipSafe(this.items.length - 1);
         break;
     }
   };
@@ -271,6 +267,7 @@ goog.require('ng.material.core');
    * @param event
    */
   MdChipsCtrl.prototype.chipKeydown = function (event) {
+    if (this.getChipBuffer()) return;
     switch (event.keyCode) {
       case this.$mdConstant.KEY_CODE.BACKSPACE:
       case this.$mdConstant.KEY_CODE.DELETE:
