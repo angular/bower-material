@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-ecbbd86
+ * v0.9.0-rc1-master-3c0ce9b
  */
 (function() {
 'use strict';
@@ -562,7 +562,15 @@ angular.module('material.core')
 
       var restoreStyle = disableTarget.attr('style');
       var computedStyle = $window.getComputedStyle(disableTarget[0]);
+      var disableRect = disableTarget[0].getBoundingClientRect();
+
+      var widthOffset = disableRect.left + parseFloat(computedStyle.paddingLeft, 10) - parseFloat(computedStyle.marginLeft, 10);
+
+
+
       computeScrollbars(computedStyle);
+
+      wrapperEl.attr('layout-margin', disableTarget.attr('layout-margin'));
 
       wrapperEl.css({
         overflow: 'hidden',
@@ -578,7 +586,10 @@ angular.module('material.core')
         '-ms-flex': computedStyle.msFlex,
         flex: computedStyle.flex,
         'padding-top': computedStyle.paddingTop,
+        'margin-top': '0px',
+        'margin-left': computedStyle.marginLeft,
         top: (-1 * heightOffset) + 'px',
+        left: widthOffset + 'px',
         width: '100%'
       });
 
