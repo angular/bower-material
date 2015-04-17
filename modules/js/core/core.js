@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-3c0ce9b
+ * v0.9.0-rc1-master-b5c4390
  */
 (function() {
 'use strict';
@@ -2316,6 +2316,7 @@ function InkRippleService($window, $timeout) {
     attachButtonBehavior: attachButtonBehavior,
     attachCheckboxBehavior: attachCheckboxBehavior,
     attachTabBehavior: attachTabBehavior,
+    attachListControlBehavior: attachListControlBehavior,
     attach: attach
   };
 
@@ -2337,6 +2338,15 @@ function InkRippleService($window, $timeout) {
   }
 
   function attachTabBehavior(scope, element, options) {
+    return attach(scope, element, angular.extend({
+      center: false,
+      dimBackground: true,
+      outline: false,
+      rippleSize: 'full'
+    }, options));
+  }
+
+  function attachListControlBehavior(scope, element, options) {
     return attach(scope, element, angular.extend({
       center: false,
       dimBackground: true,

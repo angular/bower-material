@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-3c0ce9b
+ * v0.9.0-rc1-master-b5c4390
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 md-list {
@@ -16,7 +16,13 @@ md-list-item.md-no-proxy, md-list-item .md-no-style {
   padding: 0px 16px;
   -webkit-flex: 1;
       -ms-flex: 1;
-          flex: 1; }
+          flex: 1;
+  transition: background-color 0.15s linear; }
+  md-list-item.md-no-proxy.md-button, md-list-item .md-no-style.md-button {
+    height: inherit;
+    text-align: left;
+    text-transform: none;
+    width: 100%; }
   md-list-item.md-no-proxy:focus, md-list-item .md-no-style:focus {
     outline: none; }
 md-list-item.md-with-secondary {
@@ -87,13 +93,12 @@ md-list-item, md-list-item .md-list-item-inner {
   md-list-item md-checkbox.md-secondary, md-list-item md-switch.md-secondary, md-list-item .md-list-item-inner md-checkbox.md-secondary, md-list-item .md-list-item-inner md-switch.md-secondary {
     margin-right: 0; }
   md-list-item button.md-button.md-secondary-container, md-list-item .md-list-item-inner button.md-button.md-secondary-container {
-    width: 24px;
+    background-color: transparent;
     -webkit-align-self: center;
         -ms-flex-item-align: center;
             align-self: center;
-    margin-right: 0px;
-    box-sizing: content-box;
     border-radius: 50%;
+    margin: 0px;
     min-width: 0px; }
     md-list-item button.md-button.md-secondary-container .md-ripple, md-list-item button.md-button.md-secondary-container .md-ripple-container, md-list-item .md-list-item-inner button.md-button.md-secondary-container .md-ripple, md-list-item .md-list-item-inner button.md-button.md-secondary-container .md-ripple-container {
       border-radius: 50%; }

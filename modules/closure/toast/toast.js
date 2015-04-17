@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-3c0ce9b
+ * v0.9.0-rc1-master-b5c4390
  */
 goog.provide('ng.material.components.toast');
 goog.require('ng.material.components.button');
