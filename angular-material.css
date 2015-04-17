@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-ab0f67c
+ * v0.9.0-rc1-master-ecbbd86
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -3269,18 +3269,6 @@ md-checkbox {
     md-checkbox .md-label span {
       margin-left: 10px; }
 
-md-content {
-  display: block;
-  position: relative;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch; }
-  md-content[md-scroll-y] {
-    overflow-y: auto;
-    overflow-x: hidden; }
-  md-content[md-scroll-x] {
-    overflow-x: auto;
-    overflow-y: hidden; }
-
 .md-contact-chips .md-chips .md-chip {
   padding: 0 0.8rem 0 0; }
   .md-contact-chips .md-chips .md-chip .md-contact-avatar {
@@ -3400,6 +3388,18 @@ md-content {
       border-width: 0; }
   .md-chips md-autocomplete button {
     display: none; }
+
+md-content {
+  display: block;
+  position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; }
+  md-content[md-scroll-y] {
+    overflow-y: auto;
+    overflow-x: hidden; }
+  md-content[md-scroll-x] {
+    overflow-x: auto;
+    overflow-y: hidden; }
 
 .md-dialog-container {
   display: -webkit-flex;
