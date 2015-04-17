@@ -1,8 +1,7 @@
 {
   "name": "angular-material",
-  "homepage": "https://material.angularjs.org",
   "version": "0.9.0-rc1-master-1f26144",
-  "main": "index.js",
+  "homepage": "https://material.angularjs.org",
   "repository": {
     "type": "git",
     "url": "git://github.com/angular/material.git"
@@ -19,6 +18,15 @@
     "browser",
     "client-side"
   ],
+  "main": "index",
+  "format":"cjs",
+  "registry": "jspm",
+  "dependencies": {
+    "angular": "^1.3.15",
+    "angular-animate": "^1.3.15",
+    "angular-aria": "^1.3.15",
+    "css": "^0.1.0"
+  },  
   "peerDependencies": {
       "angular": "^1.3.0 || >1.4.0-beta.0",
       "angular-animate": "^1.3.0 || >1.4.0-beta.0",
