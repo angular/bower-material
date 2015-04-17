@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-d7b2376
+ * v0.9.0-rc1-master-c964609
  */
 (function() {
 'use strict';
@@ -194,7 +194,8 @@ function mdListItemDirective($mdAria, $mdConstant, $timeout) {
         }
 
         function computeProxies() {
-          if (!$element.children()[0].hasAttribute('ng-click')) {
+          var children = $element.children();
+          if (children.length && !children[0].hasAttribute('ng-click')) {
             angular.forEach(proxiedTypes, function(type) {
               angular.forEach($element[0].firstElementChild.querySelectorAll(type), function(child) {
                 proxies.push(child);
