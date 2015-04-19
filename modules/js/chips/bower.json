@@ -1,8 +1,8 @@
 {
   "name": "angular-material-chips",
-  "version": "0.9.0-rc1-master-7d86788",
+  "version": "0.9.0-rc1-master-8410c0d",
   "dependencies": {
-    "angular-material-core": "0.9.0-rc1-master-7d86788",
-    "angular-material-autocomplete": "0.9.0-rc1-master-7d86788"
+    "angular-material-core": "0.9.0-rc1-master-8410c0d",
+    "angular-material-autocomplete": "0.9.0-rc1-master-8410c0d"
   }
 }
