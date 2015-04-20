@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-836b438
+ * v0.9.0-rc1-master-9edd715
  */
 (function() {
 'use strict';
@@ -566,7 +566,6 @@ angular.module('material.core')
 
       computeScrollbars(disableStyle);
 
-      debugger;
       wrapperEl.attr('layout-margin', disableTarget.attr('layout-margin'));
 
       wrapperEl.css({
@@ -708,14 +707,14 @@ angular.module('material.core')
     fakeNgModel: function() {
       return {
         $fake: true,
-        $setTouched : angular.noop,
+        $setTouched: angular.noop,
         $setViewValue: function(value) {
           this.$viewValue = value;
           this.$render(value);
           this.$viewChangeListeners.forEach(function(cb) { cb(); });
         },
         $isEmpty: function(value) {
-          return (''+value).length === 0;
+          return ('' + value).length === 0;
         },
         $parsers: [],
         $formatters: [],
@@ -868,7 +867,7 @@ angular.module('material.core')
      * Functional equivalent for $element.filter(‘md-bottom-sheet’)
      * useful with interimElements where the element and its container are important...
      */
-    extractElementByName : function (element, nodeName) {
+    extractElementByName: function (element, nodeName) {
       for (var i = 0, len = element.length; i < len; i++) {
         if (element[i].nodeName.toLowerCase() === nodeName){
           return angular.element(element[i]);
