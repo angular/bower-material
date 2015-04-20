@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-0e2ccd2
+ * v0.9.0-rc1-master-1b789fe
  */
 (function() {
 'use strict';
@@ -259,7 +259,7 @@ angular.module('material.components.tabs', [
     ctrl.lastSelectedIndex = null;
     ctrl.focusIndex = 0;
     ctrl.offsetLeft = 0;
-    ctrl.hasContent = true;
+    ctrl.hasContent = false;
     ctrl.hasFocus = false;
     ctrl.lastClick = false;
 
@@ -287,9 +287,14 @@ angular.module('material.components.tabs', [
       $scope.$watch('selectedIndex', handleSelectedIndexChange);
       $scope.$watch('$mdTabsCtrl.focusIndex', handleFocusIndexChange);
       $scope.$watch('$mdTabsCtrl.offsetLeft', handleOffsetChange);
+      $scope.$watch('$mdTabsCtrl.hasContent', handleHasContent);
       angular.element($window).on('resize', function () { $scope.$apply(handleWindowResize); });
       $timeout(updateInkBarStyles, 0, false);
       $timeout(updateHeightFromContent, 0, false);
+    }
+
+    function handleHasContent (hasContent) {
+      $element[hasContent ? 'removeClass' : 'hasClass']('md-no-tab-content');
     }
 
     function getElements () {
@@ -388,17 +393,22 @@ angular.module('material.components.tabs', [
             id:       $mdUtil.nextUid()
           },
           tab = angular.extend(proto, tabData);
-      if (!tabData.template) {
-        ctrl.hasContent = false;
-        $element.addClass('md-no-tab-content');
-      }
       if (angular.isDefined(index)) {
         ctrl.tabs.splice(index, 0, tab);
       } else {
         ctrl.tabs.push(tab);
       }
       processQueue();
+      updateHasContent();
       return tab;
+    }
+
+    function updateHasContent () {
+      var hasContent = false;
+      angular.forEach(ctrl.tabs, function (tab) {
+        if (tab.template) hasContent = true;
+      });
+      ctrl.hasContent = hasContent;
     }
 
     function removeTab (tabData) {
@@ -452,7 +462,7 @@ angular.module('material.components.tabs', [
       if (!$scope.dynamicHeight) return $element.css('height', '');
       if (!ctrl.tabs.length) return queue.push(updateHeightFromContent);
       var tabContent    = elements.contents[$scope.selectedIndex],
-          contentHeight = tabContent.offsetHeight,
+          contentHeight = tabContent ? tabContent.offsetHeight : 0,
           tabsHeight    = elements.wrapper.offsetHeight,
           newHeight     = contentHeight + tabsHeight,
           currentHeight = $element.prop('clientHeight');
