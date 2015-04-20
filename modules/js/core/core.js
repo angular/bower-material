@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-2d66368
+ * v0.9.0-rc1-master-b9ee612
  */
 (function() {
 'use strict';
@@ -619,7 +619,7 @@ angular.module('material.core')
 
       function computeScrollbars(computedStyle) {
         var scrollBarsShowing = !Util.floatingScrollbars() &&
-            isScrolling(scrollEl);
+            isScrolling(scrollEl) && computedStyle.overflowY != 'hidden';
 
         if (scrollBarsShowing) {
           disableTarget.css('overflow-y', 'scroll');

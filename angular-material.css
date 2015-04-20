@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-2d66368
+ * v0.9.0-rc1-master-b9ee612
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -3543,17 +3543,6 @@ md-grid-list {
   md-grid-tile-footer {
     border-top: 1px solid #fff; } }
 
-md-icon {
-  margin: auto;
-  background-repeat: no-repeat no-repeat;
-  display: inline-block;
-  vertical-align: middle;
-  fill: currentcolor;
-  height: 24px;
-  width: 24px; }
-  md-icon svg {
-    pointer-events: none; }
-
 md-input-container {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3682,6 +3671,17 @@ md-input-container {
 @media screen and (-ms-high-contrast: active) {
   md-input-container.md-default-theme > md-icon {
     fill: #fff; } }
+
+md-icon {
+  margin: auto;
+  background-repeat: no-repeat no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+  fill: currentcolor;
+  height: 24px;
+  width: 24px; }
+  md-icon svg {
+    pointer-events: none; }
 
 md-list {
   display: block;
