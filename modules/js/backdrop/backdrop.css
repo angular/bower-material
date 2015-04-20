@@ -2,12 +2,12 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-24f6586
+ * v0.9.0-rc2
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 md-backdrop {
   z-index: 50;
-  background-color: transparent;
+  background-color: rgba(0, 0, 0, 0);
   position: absolute;
   height: 100%;
   left: 0;
