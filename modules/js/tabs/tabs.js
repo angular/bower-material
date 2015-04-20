@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-41bd4c4
+ * v0.9.0-rc1-master-e88b3c6
  */
 (function() {
 'use strict';
@@ -294,7 +294,7 @@ angular.module('material.components.tabs', [
     }
 
     function handleHasContent (hasContent) {
-      $element[hasContent ? 'removeClass' : 'hasClass']('md-no-tab-content');
+      $element[hasContent ? 'removeClass' : 'addClass']('md-no-tab-content');
     }
 
     function getElements () {
