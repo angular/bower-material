@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-b9ee612
+ * v0.9.0-rc1-master-def6d3a
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 .md-contact-chips .md-chips .md-chip {
@@ -38,7 +38,7 @@
   display: block;
   font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
   font-size: 1.3rem;
-  padding: 0 0.8rem 0.8rem 0.8rem;
+  padding: 0 0 0.8rem 0;
   vertical-align: middle;
   cursor: text; }
   .md-chips:after {

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-b9ee612
+ * v0.9.0-rc1-master-def6d3a
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.components.autocomplete');
@@ -62,13 +62,17 @@ goog.require('ng.material.core');
   function MdChip($mdTheming) {
     return {
       restrict: 'E',
-      requires: '^mdChips',
-      compile: compile
+      require: '^?mdChips',
+      compile:  compile
     };
 
     function compile(element, attr) {
       element.append(DELETE_HINT_TEMPLATE);
-      return function postLink(scope, element, attr) {
+      return function postLink(scope, element, attr, ctrl) {
+        if (ctrl) angular.element(element[0].querySelector('.md-chip-content'))
+            .on('blur', function () {
+              ctrl.$scope.$apply(function () { ctrl.selectedChip = -1; });
+            });
         element.addClass('md-chip');
         $mdTheming(element);
       };
@@ -466,9 +470,18 @@ goog.require('ng.material.core');
   };
 
   MdChipsCtrl.prototype.onFocus = function () {
-    var input = this.$element[0].querySelectorAll('input')[0];
+    var input = this.$element[0].querySelector('input');
     input && input.focus();
     this.resetSelectedChip();
+  };
+
+  MdChipsCtrl.prototype.onInputFocus = function () {
+    this.inputHasFocus = true;
+    this.resetSelectedChip();
+  };
+
+  MdChipsCtrl.prototype.onInputBlur = function () {
+    this.inputHasFocus = false;
   };
 
   /**
@@ -491,7 +504,8 @@ goog.require('ng.material.core');
     inputElement
         .attr({ tabindex: 0 })
         .on('keydown', function(event) { scope.$apply(function() { ctrl.inputKeydown(event); }); })
-        .on('focus', function () { ctrl.selectedChip = -1; });
+        .on('focus', function () { this.$scope.$apply(this.onInputFocus.bind(this)); }.bind(this))
+        .on('blur', function () { this.$scope.$apply(this.onInputBlur.bind(this)); }.bind(this));
   };
 
   MdChipsCtrl.prototype.configureAutocomplete = function(ctrl) {
@@ -501,6 +515,13 @@ goog.require('ng.material.core');
         this.resetChipBuffer();
       }
     }.bind(this));
+    this.$element.find('input')
+        .on('focus', function () { this.$scope.$apply(this.onInputFocus.bind(this)); }.bind(this))
+        .on('blur', function () { this.$scope.$apply(this.onInputBlur.bind(this)); }.bind(this));
+  };
+
+  MdChipsCtrl.prototype.hasFocus = function () {
+    return this.inputHasFocus || this.selectedChip >= 0;
   };
 })();
 
@@ -600,6 +621,7 @@ goog.require('ng.material.core');
       <md-chips-wrap\
           ng-if="!$mdChipsCtrl.readonly || $mdChipsCtrl.items.length > 0"\
           ng-keydown="$mdChipsCtrl.chipKeydown($event)"\
+          ng-class="{ \'md-focused\': $mdChipsCtrl.hasFocus() }"\
           class="md-chips">\
         <md-chip ng-repeat="$chip in $mdChipsCtrl.items"\
             index="{{$index}}"\
@@ -624,7 +646,8 @@ goog.require('ng.material.core');
             placeholder="{{$mdChipsCtrl.getPlaceholder()}}"\
             aria-label="{{$mdChipsCtrl.getPlaceholder()}}"\
             ng-model="$mdChipsCtrl.chipBuffer"\
-            ng-focus="$mdChipsCtrl.resetSelectedChip()"\
+            ng-focus="$mdChipsCtrl.onInputFocus()"\
+            ng-blur="$mdChipsCtrl.onInputBlur()"\
             ng-keydown="$mdChipsCtrl.inputKeydown($event)">';
 
   var CHIP_DEFAULT_TEMPLATE = '\
@@ -755,7 +778,10 @@ goog.require('ng.material.core');
           // configure the controller.
           if (chipInputTemplate != CHIP_INPUT_TEMPLATE) {
             $timeout(function() {
-              if (chipInputTemplate.indexOf('<md-autocomplete') === 0) mdChipsCtrl.configureAutocomplete(element.find('md-autocomplete').controller('mdAutocomplete'));
+              if (chipInputTemplate.indexOf('<md-autocomplete') === 0)
+                mdChipsCtrl
+                    .configureAutocomplete(element.find('md-autocomplete')
+                        .controller('mdAutocomplete'));
               mdChipsCtrl.configureUserInput(element.find('input'));
             });
           }

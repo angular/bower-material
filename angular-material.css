@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-b9ee612
+ * v0.9.0-rc1-master-def6d3a
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -3265,18 +3265,6 @@ md-checkbox {
     md-checkbox .md-label span {
       margin-left: 10px; }
 
-md-content {
-  display: block;
-  position: relative;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch; }
-  md-content[md-scroll-y] {
-    overflow-y: auto;
-    overflow-x: hidden; }
-  md-content[md-scroll-x] {
-    overflow-x: auto;
-    overflow-y: hidden; }
-
 .md-contact-chips .md-chips .md-chip {
   padding: 0 0.8rem 0 0; }
   .md-contact-chips .md-chips .md-chip .md-contact-avatar {
@@ -3310,7 +3298,7 @@ md-content {
   display: block;
   font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
   font-size: 1.3rem;
-  padding: 0 0.8rem 0.8rem 0.8rem;
+  padding: 0 0 0.8rem 0;
   vertical-align: middle;
   cursor: text; }
   .md-chips:after {
@@ -3395,6 +3383,18 @@ md-content {
       border-width: 0; }
   .md-chips md-autocomplete button {
     display: none; }
+
+md-content {
+  display: block;
+  position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; }
+  md-content[md-scroll-y] {
+    overflow-y: auto;
+    overflow-x: hidden; }
+  md-content[md-scroll-x] {
+    overflow-x: auto;
+    overflow-y: hidden; }
 
 .md-dialog-container {
   display: -webkit-flex;
@@ -3543,6 +3543,17 @@ md-grid-list {
   md-grid-tile-footer {
     border-top: 1px solid #fff; } }
 
+md-icon {
+  margin: auto;
+  background-repeat: no-repeat no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+  fill: currentcolor;
+  height: 24px;
+  width: 24px; }
+  md-icon svg {
+    pointer-events: none; }
+
 md-input-container {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3671,17 +3682,6 @@ md-input-container {
 @media screen and (-ms-high-contrast: active) {
   md-input-container.md-default-theme > md-icon {
     fill: #fff; } }
-
-md-icon {
-  margin: auto;
-  background-repeat: no-repeat no-repeat;
-  display: inline-block;
-  vertical-align: middle;
-  fill: currentcolor;
-  height: 24px;
-  width: 24px; }
-  md-icon svg {
-    pointer-events: none; }
 
 md-list {
   display: block;
