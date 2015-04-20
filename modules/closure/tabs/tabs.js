@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-50ce4e8
+ * v0.9.0-rc1-master-0e2ccd2
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -251,9 +251,10 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
 
   function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $mdInkRipple,
                              $mdUtil, $animate) {
-    var ctrl = this,
-        locked = false,
-        elements = getElements();
+    var ctrl     = this,
+        locked   = false,
+        elements = getElements(),
+        queue    = [];
 
     ctrl.scope = $scope;
     ctrl.parent = $scope.$parent;
@@ -375,6 +376,11 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
       ctrl.offsetLeft = fixOffset(ctrl.offsetLeft);
     }
 
+    function processQueue () {
+      queue.forEach(function (func) { $timeout(func); });
+      queue = [];
+    }
+
     function insertTab (tabData, index) {
       var proto = {
             getIndex: function () { return ctrl.tabs.indexOf(tab); },
@@ -394,6 +400,7 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
       } else {
         ctrl.tabs.push(tab);
       }
+      processQueue();
       return tab;
     }
 
@@ -446,6 +453,7 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
 
     function updateHeightFromContent () {
       if (!$scope.dynamicHeight) return $element.css('height', '');
+      if (!ctrl.tabs.length) return queue.push(updateHeightFromContent);
       var tabContent    = elements.contents[$scope.selectedIndex],
           contentHeight = tabContent.offsetHeight,
           tabsHeight    = elements.wrapper.offsetHeight,
@@ -466,7 +474,7 @@ ng.material.components.tabs = angular.module('material.components.tabs', [
     }
 
     function updateInkBarStyles () {
-      if (!ctrl.tabs.length) return;
+      if (!ctrl.tabs.length) return queue.push(updateInkBarStyles);
       //-- if the element is not visible, we will not be able to calculate sizes until it is
       //-- we should treat that as a resize event rather than just updating the ink bar
       if (!$element.prop('offsetParent')) return handleResizeWhenVisible();
