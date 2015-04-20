@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-aff50d5
+ * v0.9.0-rc1-master-4350803
  */
 (function() {
 'use strict';
@@ -48,9 +48,10 @@ angular.module('material.components.tabs', [
       restrict: 'A',
       link: link,
       scope: { template: '=mdLabelTemplate' },
-      require: '^mdTabs'
+      require: '^?mdTabs'
     };
     function link (scope, element, attr, ctrl) {
+      if (!ctrl) return;
       var index = scope.$parent.$index;
       scope.$watch('template', function (html) {
         element.html(html);
@@ -146,7 +147,7 @@ angular.module('material.components.tabs', [
 
   function MdTab () {
     return {
-      require: '^mdTabs',
+      require: '^?mdTabs',
       terminal: true,
       scope: {
         label:    '@',
@@ -159,6 +160,7 @@ angular.module('material.components.tabs', [
     };
 
     function postLink (scope, element, attr, ctrl) {
+      if (!ctrl) return;
       var tabs = element.parent()[0].getElementsByTagName('md-tab'),
           index = Array.prototype.indexOf.call(tabs, element[0]),
           data = ctrl.insertTab({
@@ -210,8 +212,9 @@ angular.module('material.components.tabs', [
       .directive('mdTabItem', MdTabItem);
 
   function MdTabItem () {
-    return { require: '^mdTabs', link: link };
+    return { require: '^?mdTabs', link: link };
     function link (scope, element, attr, ctrl) {
+      if (!ctrl) return;
       ctrl.attachRipple(scope, element);
     }
   }
