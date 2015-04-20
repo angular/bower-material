@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2
+ * v0.9.0-rc1-master-55fa76a
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.components.autocomplete');
@@ -629,7 +629,7 @@ goog.require('ng.material.core');
           <div class="md-chip-content"\
               tabindex="-1"\
               aria-hidden="true"\
-              ng-click="!$mdChipsCtrl.readonly && $mdChipsCtrl.selectChip($index)"\
+              ng-focus="!$mdChipsCtrl.readonly && $mdChipsCtrl.selectChip($index)"\
               md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"></div>\
           <div class="md-chip-remove-container"\
               md-chip-transclude="$mdChipsCtrl.chipRemoveTemplate"></div>\

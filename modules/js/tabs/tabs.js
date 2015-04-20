@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2
+ * v0.9.0-rc1-master-55fa76a
  */
 (function() {
 'use strict';
@@ -35,53 +35,6 @@ angular.module('material.components.tabs', [
   'material.components.icon'
 ]);
 
-})();
-
-(function () {
-  'use strict';
-  angular
-      .module('material.components.tabs')
-      .directive('mdLabelTemplate', MdLabelTemplate);
-
-  function MdLabelTemplate ($compile) {
-    return {
-      restrict: 'A',
-      link: link,
-      scope: { template: '=mdLabelTemplate' },
-      require: '^?mdTabs'
-    };
-    function link (scope, element, attr, ctrl) {
-      if (!ctrl) return;
-      var index = scope.$parent.$index;
-      scope.$watch('template', function (html) {
-        element.html(html);
-        $compile(element.contents())(ctrl.tabs[index].parent);
-      });
-    }
-  }
-  MdLabelTemplate.$inject = ["$compile"];
-})();
-(function () {
-  'use strict';
-  angular
-      .module('material.components.tabs')
-      .directive('mdTabContent', MdTabContent);
-
-  function MdTabContent ($compile, $mdUtil) {
-    return {
-      terminal: true,
-      scope: {
-        tab: '=mdTabData',
-        active: '=mdActive'
-      },
-      link: link
-    };
-    function link (scope, element) {
-      element.html(scope.tab.template);
-      $compile(element.contents())(scope.tab.parent);
-    }
-  }
-  MdTabContent.$inject = ["$compile", "$mdUtil"];
 })();
 
 /**
@@ -747,7 +700,8 @@ angular.module('material.components.tabs', [
                   ng-disabled="tab.scope.disabled"\
                   md-swipe-left="$mdTabsCtrl.nextPage()"\
                   md-swipe-right="$mdTabsCtrl.previousPage()"\
-                  md-label-template="tab.label"></md-tab-item>\
+                  md-template="tab.label"\
+                  md-scope="tab.parent"></md-tab-item>\
               <md-ink-bar ng-hide="noInkBar"></md-ink-bar>\
             </md-pagination-wrapper>\
             <div class="md-visually-hidden md-dummy-wrapper">\
@@ -761,7 +715,8 @@ angular.module('material.components.tabs', [
                   ng-focus="$mdTabsCtrl.hasFocus = true"\
                   ng-blur="$mdTabsCtrl.hasFocus = false"\
                   ng-repeat="tab in $mdTabsCtrl.tabs"\
-                  md-label-template="tab.label"></md-dummy-tab>\
+                  md-template="tab.label"\
+                  md-scope="tab.parent"></md-dummy-tab>\
             </div>\
           </md-tabs-canvas>\
         </md-tabs-wrapper>\
@@ -770,11 +725,12 @@ angular.module('material.components.tabs', [
               id="tab-content-{{tab.id}}"\
               role="tabpanel"\
               aria-labelledby="tab-item-{{tab.id}}"\
-              md-tab-data="tab"\
               md-swipe-left="$mdTabsCtrl.incrementSelectedIndex(1)"\
               md-swipe-right="$mdTabsCtrl.incrementSelectedIndex(-1)"\
               ng-if="$mdTabsCtrl.hasContent"\
               ng-repeat="(index, tab) in $mdTabsCtrl.tabs" \
+              md-template="tab.template"\
+              md-scope="tab.parent"\
               ng-class="{\
                 \'md-no-transition\': $mdTabsCtrl.lastSelectedIndex == null,\
                 \'md-active\':        tab.isActive(),\
@@ -802,4 +758,28 @@ angular.module('material.components.tabs', [
     };
   }
   MdTabs.$inject = ["$mdTheming"];
+})();
+(function () {
+  'use strict';
+  angular
+      .module('material.components.tabs')
+      .directive('mdTemplate', MdTemplate);
+
+  function MdTemplate ($compile) {
+    return {
+      restrict: 'A',
+      link: link,
+      scope: {
+        template: '=mdTemplate',
+        compileScope: '=mdScope'
+      },
+      require: '^?mdTabs'
+    };
+    function link (scope, element, attr, ctrl) {
+      if (!ctrl) return;
+      element.html(scope.template);
+      $compile(element.contents())(scope.compileScope);
+    }
+  }
+  MdTemplate.$inject = ["$compile"];
 })();
