@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-bd566a5
+ * v0.9.0-rc1-master-6e3b43c
  */
 goog.provide('ng.material.core');
 
@@ -538,7 +538,7 @@ angular.module('material.core')
     disableScrollAround: function(element) {
       var parentContent = element[0] || element;
       var disableTarget, scrollEl, useDocElement;
-      while (parentContent = this.getClosest(parentContent.parentNode, 'MD-CONTENT')) {
+      while (parentContent = this.getClosest(parentContent.parentNode, 'MD-CONTENT', true)) {
         if (isScrolling(parentContent)) {
           disableTarget = angular.element(parentContent);
         }
@@ -855,9 +855,11 @@ angular.module('material.core')
    * @param el Element to start walking the DOM from
    * @param tagName Tag name to find closest to el, such as 'form'
    */
-    getClosest: function getClosest(el, tagName) {
+    getClosest: function getClosest(el, tagName, onlyParent) {
       el = el[0] || el;
       tagName = tagName.toUpperCase();
+      if (onlyParent) el = el.parentNode;
+      if (!el) return null;
       do {
         if (el.nodeName === tagName) {
           return el;
