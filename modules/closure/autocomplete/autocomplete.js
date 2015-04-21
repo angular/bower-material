@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-06f531f
+ * v0.9.0-rc1-master-5e72bb3
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -236,7 +236,7 @@ goog.require('ng.material.core');
 
     function focus () {
       //-- if searchText is null, let's force it to be a string
-      if (!angular.isString($scope.searchText)) return $scope.searchText = '';
+      if (!angular.isString($scope.searchText)) $scope.searchText = '';
       self.hidden = shouldHide();
       if (!self.hidden) handleQuery();
     }
