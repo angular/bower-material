@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-4fbae86
+ * v0.9.0-rc1-master-5a17a14
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -3181,7 +3181,10 @@ md-checkbox {
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
-          user-select: none; }
+          user-select: none;
+  padding-left: 18px;
+  position: relative;
+  line-height: 26px; }
   md-checkbox *, md-checkbox *:before, md-checkbox *:after {
     box-sizing: border-box; }
   md-checkbox.md-focused:not([disabled]) .md-container:before {
@@ -3192,11 +3195,14 @@ md-checkbox {
   md-checkbox.md-focused:not([disabled]):not(.md-checked) .md-container:before {
     background-color: rgba(0, 0, 0, 0.12); }
   md-checkbox .md-container {
-    position: relative;
-    top: 4px;
+    position: absolute;
+    top: 50%;
+    left: 0;
     display: inline-block;
     width: 18px;
-    height: 18px; }
+    height: 18px;
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%); }
     md-checkbox .md-container:before {
       background-color: transparent;
       border-radius: 50%;
@@ -3251,7 +3257,7 @@ md-checkbox {
     border: 2px solid;
     border-top: 0;
     border-left: 0;
-    content: ' '; }
+    content: ''; }
   md-checkbox .md-label {
     position: relative;
     display: inline-block;
@@ -3599,8 +3605,6 @@ md-input-container {
     -webkit-transform-origin: left top;
             transform-origin: left top; }
     html[dir=rtl] md-input-container label:not(.md-no-float), html[dir=rtl] md-input-container .md-placeholder:not(.md-select-label) {
-      -webkit-transform-origin: left top;
-              transform-origin: left top;
       -webkit-transform-origin: right top;
               transform-origin: right top; }
   md-input-container .md-placeholder:not(.md-select-label) {
@@ -5685,8 +5689,6 @@ md-select-menu {
     padding-top: 8px;
     padding-bottom: 8px; }
   html[dir=rtl] md-select-menu {
-    -webkit-transform-origin: left top;
-            transform-origin: left top;
     -webkit-transform-origin: right top;
             transform-origin: right top; }
   md-select-menu md-content {
