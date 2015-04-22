@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-35d4462
+ * v0.9.0-rc2-master-cb70f03
  */
 goog.provide('ng.material.components.button');
 goog.require('ng.material.core');
@@ -63,6 +63,9 @@ ng.material.components.button = angular.module('material.components.button', [
  *  </md-button>
  *  <md-button class="md-fab md-mini" aria-label="Mini FAB">
  *    <md-icon md-svg-src="your/icon.svg"></md-icon>
+ *  </md-button>
+ *  <md-button class="md-icon-button" aria-label="Custom Icon Button">
+ *    <md-icon md-svg-icon="path/to/your.svg"></md-icon>
  *  </md-button>
  * </hljs>
  */
