@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-295df34
+ * v0.9.0-rc2-master-99b4f2f
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 /* Sizes:
@@ -2487,6 +2487,16 @@ input[type="search"] {
 
 .md-margin {
   margin: 8px; }
+
+.md-virtual-scroll-container {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  width: 100%; }
+
+.md-virtual-scroller {
+  position: absolute;
+  width: 100%; }
 
 @media (min-width: 600px) {
   .md-padding {
