@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-7742094
+ * v0.9.0-rc2-master-041ffe9
  */
 goog.provide('ng.material.components.radioButton');
 goog.require('ng.material.core');
@@ -309,4 +309,4 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
 }
 mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
 
-ng.material.components.radioButton = angular.module(material.components.radioButton);
+ng.material.components.radioButton = angular.module("material.components.radioButton");

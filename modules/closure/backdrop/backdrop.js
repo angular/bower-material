@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-7742094
+ * v0.9.0-rc2-master-041ffe9
  */
 goog.provide('ng.material.components.backdrop');
 goog.require('ng.material.core');
@@ -35,4 +35,4 @@ function BackdropDirective($mdTheming) {
 }
 BackdropDirective.$inject = ["$mdTheming"];
 
-ng.material.components.backdrop = angular.module(material.components.backdrop);
+ng.material.components.backdrop = angular.module("material.components.backdrop");

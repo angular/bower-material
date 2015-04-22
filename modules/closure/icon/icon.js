@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-7742094
+ * v0.9.0-rc2-master-041ffe9
  */
 goog.provide('ng.material.components.icon');
 goog.require('ng.material.core');
@@ -571,4 +571,4 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
 
  }
 
-ng.material.components.icon = angular.module(material.components.icon);
+ng.material.components.icon = angular.module("material.components.icon");
