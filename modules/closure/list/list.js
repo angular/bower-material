@@ -2,20 +2,17 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-58f2c48
+ * v0.9.0-rc2-master-7742094
  */
 goog.provide('ng.material.components.list');
 goog.require('ng.material.core');
-(function() {
-'use strict';
-
 /**
  * @ngdoc module
  * @name material.components.list
  * @description
  * List module
  */
-ng.material.components.list = angular.module('material.components.list', [
+angular.module('material.components.list', [
   'material.core'
 ])
   .controller('MdListController', MdListController)
@@ -262,4 +259,5 @@ function MdListController($scope, $element, $mdInkRipple) {
   }
 }
 MdListController.$inject = ["$scope", "$element", "$mdInkRipple"];
-})();
+
+ng.material.components.list = angular.module(material.components.list);

@@ -2,13 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-58f2c48
+ * v0.9.0-rc2-master-7742094
  */
 goog.provide('ng.material.components.content');
 goog.require('ng.material.core');
-(function() {
-'use strict';
-
 /**
  * @ngdoc module
  * @name material.components.content
@@ -16,7 +13,7 @@ goog.require('ng.material.core');
  * @description
  * Scrollable content
  */
-ng.material.components.content = angular.module('material.components.content', [
+angular.module('material.components.content', [
   'material.core'
 ])
   .directive('mdContent', mdContentDirective);
@@ -83,4 +80,5 @@ function iosScrollFix(node) {
     }
   });
 }
-})();
+
+ng.material.components.content = angular.module(material.components.content);

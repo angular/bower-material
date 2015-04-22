@@ -2,13 +2,11 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-58f2c48
+ * v0.9.0-rc2-master-7742094
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
 goog.require('ng.material.core');
-(function() {
-'use strict';
 /**
  * @ngdoc module
  * @name material.components.select
@@ -32,7 +30,7 @@ goog.require('ng.material.core');
 var SELECT_EDGE_MARGIN = 8;
 var selectNextId = 0;
 
-ng.material.components.select = angular.module('material.components.select', [
+angular.module('material.components.select', [
   'material.core',
   'material.components.backdrop'
 ])
@@ -1052,5 +1050,5 @@ function nodesToArray(nodes) {
   }
   return results;
 }
-})();
 
+ng.material.components.select = angular.module(material.components.select);

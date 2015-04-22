@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-58f2c48
+ * v0.9.0-rc2-master-7742094
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -13,7 +13,7 @@ goog.require('ng.material.core');
  * @name material.components.input
  */
 
-ng.material.components.input = angular.module('material.components.input', [
+angular.module('material.components.input', [
   'material.core'
 ])
   .directive('mdInputContainer', mdInputContainerDirective)
@@ -359,3 +359,5 @@ function placeholderDirective() {
 }
 
 })();
+
+ng.material.components.input = angular.module(material.components.input);

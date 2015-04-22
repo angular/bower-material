@@ -2,12 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-58f2c48
+ * v0.9.0-rc2-master-7742094
  */
-(function() {
-'use strict';
-
-
+(function () {
+"use strict";
 /**
  * @ngdoc module
  * @name material.components.swipe
@@ -29,7 +27,6 @@
  * <div md-swipe-left="onSwipeLeft()">Swipe me left!</div>
  * </hljs>
  */
-
 /**
  * @ngdoc directive
  * @module material.components.swipe
@@ -47,31 +44,22 @@
  * </hljs>
  */
 
-var module = angular.module('material.components.swipe',[]);
+angular.module('material.components.swipe', [])
+    .directive('mdSwipeLeft', getDirective('SwipeLeft'))
+    .directive('mdSwipeRight', getDirective('SwipeRight'));
 
-['SwipeLeft', 'SwipeRight'].forEach(function(name) {
+function getDirective(name) {
   var directiveName = 'md' + name;
   var eventName = '$md.' + name.toLowerCase();
-
-  module.directive(directiveName, /*@ngInject*/ ["$parse", function($parse) {
-    return {
-      restrict: 'A',
-      link: postLink
-    };
-
+  return function($parse) {
+    return { restrict: 'A', link: postLink };
     function postLink(scope, element, attr) {
       var fn = $parse(attr[directiveName]);
-
       element.on(eventName, function(ev) {
-        scope.$apply(function() {
-          fn(scope, {
-            $event: ev
-          });
-        });
+        scope.$apply(function() { fn(scope, { $event: ev }); });
       });
-
     }
-  }]);
-});
+  };
+}
 
 })();

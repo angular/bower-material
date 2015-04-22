@@ -2,20 +2,17 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-58f2c48
+ * v0.9.0-rc2-master-7742094
  */
 goog.provide('ng.material.components.icon');
 goog.require('ng.material.core');
-(function() {
-'use strict';
-
 /**
  * @ngdoc module
  * @name material.components.icon
  * @description
  * Icon
  */
-ng.material.components.icon = angular.module('material.components.icon', [
+angular.module('material.components.icon', [
     'material.core'
   ])
   .directive('mdIcon', mdIconDirective);
@@ -110,11 +107,6 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
   }
 }
 mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
-
-})();
-
-(function() {
-  'use strict';
 
   angular
     .module('material.components.icon' )
@@ -579,4 +571,4 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
 
  }
 
-})();
+ng.material.components.icon = angular.module(material.components.icon);
