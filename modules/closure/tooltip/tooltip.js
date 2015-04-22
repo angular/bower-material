@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-bc5f6ad
+ * v0.9.0-rc2-master-0813284
  */
 goog.provide('ng.material.components.tooltip');
 goog.require('ng.material.core');
@@ -147,9 +147,19 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     }
 
     function showTooltip() {
-      // Insert the element before positioning it, so we can get position
-      parent.attr('aria-describedby', element.attr('id'));
+      // Insert the element before positioning it, so we can get the position
+      // and check if we should display it
       tooltipParent.append(element);
+
+      // Check if we should display it or not.
+      // This handles hide-* and show-* along with any user defined css
+      var computedStyles = $window.getComputedStyle(element[0]);
+      if (angular.isDefined(computedStyles.display) && computedStyles.display == 'none') {
+        element.detach();
+        return;
+      }
+
+      parent.attr('aria-describedby', element.attr('id'));
 
       positionTooltip();
       angular.forEach([element, background, content], function (element) {
