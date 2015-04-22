@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-e620228
+ * v0.9.0-rc2-master-bc5f6ad
  */
 goog.provide('ng.material.core');
 
@@ -644,7 +644,7 @@ angular.module('material.core')
       }
 
       function isScrolling(el) {
-        el = el[0] || el;
+        if (el instanceof angular.element) el = el[0];
         return el.scrollHeight > el.offsetHeight;
       }
 
@@ -856,7 +856,7 @@ angular.module('material.core')
    * @param tagName Tag name to find closest to el, such as 'form'
    */
     getClosest: function getClosest(el, tagName, onlyParent) {
-      el = el[0] || el;
+      if (el instanceof angular.element) el = el[0];
       tagName = tagName.toUpperCase();
       if (onlyParent) el = el.parentNode;
       if (!el) return null;
