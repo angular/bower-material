@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 (function () {
 "use strict";
@@ -535,9 +535,9 @@ angular.module('material.core')
       return Util.clientRect(element, offsetParent, true);
     },
     disableScrollAround: function(element) {
-      var parentContent = element[0] || element;
+      var parentContent = element instanceof angular.element ? element[0] : element;
       var disableTarget, scrollEl, useDocElement;
-      while (parentContent = this.getClosest(parentContent.parentNode, 'MD-CONTENT', true)) {
+      while (parentContent = this.getClosest(parentContent, 'MD-CONTENT', true)) {
         if (isScrolling(parentContent)) {
           disableTarget = angular.element(parentContent);
         }
@@ -580,6 +580,9 @@ angular.module('material.core')
         '-ms-flex': disableStyle.msFlex,
         flex: disableStyle.flex
       });
+      if (/flex$/.test(disableStyle.display)) {
+        virtualScroller.css('height', '100%');
+      }
 
       computeSize();
 

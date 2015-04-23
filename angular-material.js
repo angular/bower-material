@@ -2,14 +2,14 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.theming.palette","material.core.theming","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.content","material.components.dialog","material.components.divider","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 /*!
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 (function() {
 'use strict';
@@ -72,7 +72,7 @@ function rAFDecorator( $delegate ) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 (function() {
 'use strict';
@@ -141,7 +141,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 (function(){
 
@@ -378,7 +378,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 (function(){
 
@@ -517,7 +517,7 @@ mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 (function() {
 'use strict';
@@ -564,9 +564,9 @@ angular.module('material.core')
       return Util.clientRect(element, offsetParent, true);
     },
     disableScrollAround: function(element) {
-      var parentContent = element[0] || element;
+      var parentContent = element instanceof angular.element ? element[0] : element;
       var disableTarget, scrollEl, useDocElement;
-      while (parentContent = this.getClosest(parentContent.parentNode, 'MD-CONTENT', true)) {
+      while (parentContent = this.getClosest(parentContent, 'MD-CONTENT', true)) {
         if (isScrolling(parentContent)) {
           disableTarget = angular.element(parentContent);
         }
@@ -609,6 +609,9 @@ angular.module('material.core')
         '-ms-flex': disableStyle.msFlex,
         flex: disableStyle.flex
       });
+      if (/flex$/.test(disableStyle.display)) {
+        virtualScroller.css('height', '100%');
+      }
 
       computeSize();
 
@@ -945,7 +948,7 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 (function() {
 'use strict';
@@ -1035,7 +1038,7 @@ AriaService.$inject = ["$$rAF", "$log", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 (function() {
 'use strict';
@@ -1180,7 +1183,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 (function (jQuery) {
   'use strict';
@@ -1792,7 +1795,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 (function() {
 'use strict';
@@ -2230,7 +2233,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 (function() {
   'use strict';
@@ -2363,7 +2366,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 (function() {
 'use strict';
@@ -2797,7 +2800,7 @@ function attrNoDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 (function() {
 'use strict';
@@ -3169,7 +3172,7 @@ angular.module('material.core.theming.palette', [])
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 (function() {
 'use strict';
@@ -3807,7 +3810,7 @@ function rgba(rgbArray, opacity) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -3825,7 +3828,7 @@ angular.module('material.components.autocomplete', [
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /*
  * @ngdoc module
@@ -3860,7 +3863,7 @@ BackdropDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -4123,7 +4126,7 @@ MdBottomSheetProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -4243,7 +4246,7 @@ MdButtonDirective.$inject = ["$mdInkRipple", "$mdTheming", "$mdAria", "$timeout"
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -4305,7 +4308,7 @@ mdCardDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -4467,7 +4470,7 @@ MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$md
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -4485,7 +4488,7 @@ angular.module('material.components.chips', [
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -4566,7 +4569,7 @@ function iosScrollFix(node) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -5231,7 +5234,7 @@ MdDialogProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -5273,7 +5276,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -6046,7 +6049,7 @@ function GridTileCaptionDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -6154,7 +6157,7 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
   angular
     .module('material.components.icon' )
@@ -6623,7 +6626,7 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 (function() {
 
@@ -6983,7 +6986,7 @@ function placeholderDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -7243,7 +7246,7 @@ MdListController.$inject = ["$scope", "$element", "$mdInkRipple"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -7349,7 +7352,7 @@ MdProgressCircularDirective.$inject = ["$mdConstant", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -7472,7 +7475,7 @@ var transforms = (function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -7781,7 +7784,7 @@ mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -8830,7 +8833,7 @@ function nodesToArray(nodes) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -9250,7 +9253,7 @@ SidenavController.$inject = ["$scope", "$element", "$attrs", "$mdComponentRegist
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
   /**
    * @ngdoc module
@@ -9648,7 +9651,7 @@ SliderDirective.$inject = ["$$rAF", "$window", "$mdAria", "$mdUtil", "$mdConstan
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /*
  * @ngdoc module
@@ -9956,7 +9959,7 @@ MdSticky.$inject = ["$document", "$mdConstant", "$compile", "$$rAF", "$mdUtil"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -10045,7 +10048,7 @@ MdSubheaderDirective.$inject = ["$mdSticky", "$compile", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -10114,7 +10117,7 @@ function getDirective(name) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @private
@@ -10278,7 +10281,7 @@ MdSwitch.$inject = ["mdCheckboxDirective", "$mdTheming", "$mdUtil", "$document",
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -10312,7 +10315,7 @@ angular.module('material.components.tabs', [
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -10573,7 +10576,7 @@ MdToastProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -10728,7 +10731,7 @@ mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -10965,7 +10968,7 @@ MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdU
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc module
@@ -10977,7 +10980,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 angular
     .module('material.components.autocomplete')
@@ -11358,7 +11361,7 @@ MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 angular
     .module('material.components.autocomplete')
@@ -11516,7 +11519,7 @@ MdAutocomplete.$inject = ["$mdTheming", "$mdUtil"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 angular
     .module('material.components.autocomplete')
@@ -11552,7 +11555,7 @@ MdHighlightCtrl.$inject = ["$scope", "$element", "$interpolate"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 angular
     .module('material.components.autocomplete')
@@ -11599,7 +11602,7 @@ function MdHighlight () {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 angular
     .module('material.components.autocomplete')
@@ -11630,7 +11633,7 @@ MdAutocompleteListItem.$inject = ["$compile", "$mdUtil"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 angular
     .module('material.components.chips')
@@ -11692,7 +11695,7 @@ MdChip.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 angular
     .module('material.components.chips')
@@ -11750,7 +11753,7 @@ MdChipRemove.$inject = ["$timeout"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 angular
     .module('material.components.chips')
@@ -11779,7 +11782,7 @@ MdChipTransclude.$inject = ["$compile", "$mdUtil"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 angular
     .module('material.components.chips')
@@ -12144,7 +12147,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 angular
     .module('material.components.chips')
@@ -12415,7 +12418,7 @@ MdChips.$inject = ["$mdTheming", "$mdUtil", "$compile", "$timeout"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 angular
     .module('material.components.chips')
@@ -12451,7 +12454,7 @@ MdContactChipsCtrl.prototype.filterSelectedContacts = function(contact) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 angular
     .module('material.components.chips')
@@ -12585,7 +12588,7 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc directive
@@ -12706,7 +12709,7 @@ function MdTab () {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 angular
     .module('material.components.tabs')
@@ -12724,7 +12727,7 @@ function MdTabItem () {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 angular.module('material.components.tabs')
     .directive('mdTabScroll', MdTabScroll);
@@ -12748,7 +12751,7 @@ MdTabScroll.$inject = ["$parse"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 angular
     .module('material.components.tabs')
@@ -13106,7 +13109,7 @@ MdTabsController.$inject = ["$scope", "$element", "$window", "$timeout", "$mdCon
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 /**
  * @ngdoc directive
@@ -13317,7 +13320,7 @@ MdTabs.$inject = ["$mdTheming", "$mdUtil"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-8fb60c3
+ * v0.9.0-rc2-master-d65edce
  */
 angular
     .module('material.components.tabs')
