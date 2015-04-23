@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-d65edce
+ * v0.9.0-rc2-master-9d76187
  */
 (function () {
 "use strict";
@@ -885,7 +885,9 @@ function SelectProvider($$interimElementProvider) {
       return $mdUtil.transitionEndPromise(element, { timeout: 350 }).then(function() {
         element.removeClass('md-active');
         opts.backdrop && opts.backdrop.remove();
-        opts.parent[0].removeChild(element[0]); // use browser to avoid $destroy event
+        if (element[0].parentNode === opts.parent[0]) {
+          opts.parent[0].removeChild(element[0]); // use browser to avoid $destroy event
+        }
         if (opts.disableParentScroll) {
           opts.restoreScroll();
         }
