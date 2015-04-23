@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-a5c972f
+ * v0.9.0-rc2-master-8fb60c3
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.components.autocomplete');
@@ -651,7 +651,7 @@ var CHIP_REMOVE_TEMPLATE = '\
 /**
  * MDChips Directive Definition
  */
-function MdChips ($mdTheming, $compile, $timeout) {
+function MdChips ($mdTheming, $mdUtil, $compile, $timeout) {
   return {
     template: function(element, attrs) {
       // Clone the element into an attribute. By prepending the attribute
@@ -731,12 +731,7 @@ function MdChips ($mdTheming, $compile, $timeout) {
      */
     return function postLink(scope, element, attrs, controllers) {
 
-      //-- give optional properties with no value a boolean true by default
-      angular.forEach(scope.$$isolateBindings, function (binding, key) {
-        if (binding.optional && angular.isUndefined(scope[key])) {
-          scope[key] = attr.hasOwnProperty(attr.$normalize(binding.attrName));
-        }
-      });
+      $mdUtil.initOptionalProperties(scope, attr);
 
       $mdTheming(element);
       var mdChipsCtrl = controllers[0];
@@ -777,7 +772,7 @@ function MdChips ($mdTheming, $compile, $timeout) {
     };
   }
 }
-MdChips.$inject = ["$mdTheming", "$compile", "$timeout"];
+MdChips.$inject = ["$mdTheming", "$mdUtil", "$compile", "$timeout"];
 
 angular
     .module('material.components.chips')
@@ -902,7 +897,7 @@ var MD_CONTACT_CHIPS_TEMPLATE = '\
  * @returns {*}
  * @ngInject
  */
-function MdContactChips ($mdTheming) {
+function MdContactChips ($mdTheming, $mdUtil) {
   return {
     template: function(element, attrs) {
       return MD_CONTACT_CHIPS_TEMPLATE;
@@ -928,18 +923,13 @@ function MdContactChips ($mdTheming) {
   function compile(element, attr) {
     return function postLink(scope, element, attrs, controllers) {
 
-      //-- give optional properties with no value a boolean true by default
-      angular.forEach(scope.$$isolateBindings, function (binding, key) {
-        if (binding.optional && angular.isUndefined(scope[key])) {
-          scope[key] = attr.hasOwnProperty(attr.$normalize(binding.attrName));
-        }
-      });
-
+      $mdUtil.initOptionalProperties(scope, attr);
       $mdTheming(element);
+
       element.attr('tabindex', '-1');
     };
   }
 }
-MdContactChips.$inject = ["$mdTheming"];
+MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
 
 ng.material.components.chips = angular.module("material.components.chips");

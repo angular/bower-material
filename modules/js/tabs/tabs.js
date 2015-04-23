@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-a5c972f
+ * v0.9.0-rc2-master-8fb60c3
  */
 (function () {
 "use strict";
@@ -618,7 +618,7 @@ angular
     .module('material.components.tabs')
     .directive('mdTabs', MdTabs);
 
-function MdTabs ($mdTheming) {
+function MdTabs ($mdTheming, $mdUtil) {
   return {
     scope: {
       noPagination:  '=?mdNoPagination',
@@ -722,11 +722,9 @@ function MdTabs ($mdTheming) {
     controller: 'MdTabsController',
     controllerAs: '$mdTabsCtrl',
     link: function (scope, element, attr) {
-      angular.forEach(scope.$$isolateBindings, function (binding, key) {
-        if (binding.optional && angular.isUndefined(scope[key])) {
-          scope[key] = attr.hasOwnProperty(attr.$normalize(binding.attrName));
-        }
-      });
+
+      $mdUtil.initOptionalProperties(scope, attr);
+
       //-- watch attributes
       attr.$observe('mdNoBar', function (value) { scope.noInkBar = angular.isDefined(value); });
       //-- set default value for selectedIndex
@@ -736,7 +734,7 @@ function MdTabs ($mdTheming) {
     }
   };
 }
-MdTabs.$inject = ["$mdTheming"];
+MdTabs.$inject = ["$mdTheming", "$mdUtil"];
 
 angular
     .module('material.components.tabs')
