@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-7c74050
+ * v0.9.0-rc2-master-88612d6
  */
 goog.provide('ng.material.core');
 
@@ -537,13 +537,23 @@ angular.module('material.core')
     },
     disableScrollAround: function(element) {
       var parentContent = element instanceof angular.element ? element[0] : element;
+      var lastParent;
       var disableTarget, scrollEl, useDocElement;
       while (parentContent = this.getClosest(parentContent, 'MD-CONTENT', true)) {
         if (isScrolling(parentContent)) {
           disableTarget = angular.element(parentContent);
+        } else {
+          lastParent = parentContent;
         }
       }
-      if (!disableTarget) disableTarget = angular.element($document[0].body);
+      if (!disableTarget) {
+        if (!lastParent ||
+          $document[0].body.scrollTop || $document[0].documentElement.scrollTop ) {
+          disableTarget = angular.element($document[0].body);
+        } else {
+          disableTarget = angular.element(lastParent);
+        }
+      }
 
       if (disableTarget[0].nodeName == 'BODY' && $document[0].documentElement.scrollTop) {
         scrollEl = $document[0].documentElement;
