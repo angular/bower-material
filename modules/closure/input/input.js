@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-7bd97ac
+ * v0.9.0-rc2-master-d931c0d
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -338,7 +338,7 @@ function mdMaxlengthDirective($animate) {
 }
 mdMaxlengthDirective.$inject = ["$animate"];
 
-function placeholderDirective() {
+function placeholderDirective($log) {
   return {
     restrict: 'A',
     require: '^^?mdInputContainer',
@@ -353,13 +353,18 @@ function placeholderDirective() {
     var placeholderText = attr.placeholder;
     element.removeAttr('placeholder');
 
-    var placeholder = '<label ng-click="delegateClick()">' + placeholderText + '</label>';
+    if ( inputContainer.element.find('label').length == 0 ) {
+      var placeholder = '<label ng-click="delegateClick()">' + placeholderText + '</label>';
 
-    inputContainer.element.addClass('md-icon-float');
-    inputContainer.element.prepend(placeholder);
+      inputContainer.element.addClass('md-icon-float');
+      inputContainer.element.prepend(placeholder);
+    } else {
+      $log.warn("The placeholder='" + placeholderText + "' will be ignored since this md-input-container has a child label element.");
+    }
 
   }
 }
+placeholderDirective.$inject = ["$log"];
 
 })();
 
