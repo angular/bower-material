@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-ef0dce0
+ * v0.9.0-rc2-master-790ccca
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -27,7 +27,7 @@ var ITEM_HEIGHT = 41,
     MAX_HEIGHT = 5.5 * ITEM_HEIGHT,
     MENU_PADDING = 8;
 
-function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $mdTheming, $window, $rootElement) {
+function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $mdTheming, $window, $animate, $rootElement) {
 
   //-- private variables
 
@@ -125,6 +125,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
     $mdTheming(elements.$.ul);
     elements.$.ul.detach();
     elements.$.root.append(elements.$.ul);
+    if ($animate.pin) $animate.pin(elements.$.ul, $rootElement);
   }
 
   function focusElement () {
@@ -398,7 +399,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
   }
 
 }
-MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$timeout", "$mdTheming", "$window", "$rootElement"];
+MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$timeout", "$mdTheming", "$window", "$animate", "$rootElement"];
 
 angular
     .module('material.components.autocomplete')
@@ -455,7 +456,6 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
       noCache:       '=?mdNoCache',
       itemChange:    '&?mdSelectedItemChange',
       textChange:    '&?mdSearchTextChange',
-      isDisabled:    '=?ngDisabled',
       minLength:     '=?mdMinLength',
       delay:         '=?mdDelay',
       autofocus:     '=?mdAutofocus',
@@ -542,6 +542,9 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
   };
 
   function link (scope, element, attr) {
+    if (attr.ngDisabled) {
+      scope.$parent.$watch(attr.ngDisabled, function (val) { scope.isDisabled = val; });
+    }
     scope.contents = attr.$mdAutocompleteTemplate;
     delete attr.$mdAutocompleteTemplate;
 
