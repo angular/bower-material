@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-92b3c6e
+ * v0.9.0-rc2-master-fdcceb5
  */
 goog.provide('ng.material.components.button');
 goog.require('ng.material.core');
@@ -102,6 +102,13 @@ function MdButtonDirective($mdInkRipple, $mdTheming, $mdAria, $timeout) {
         element.attr('tabindex', isDisabled ? -1 : 0);
       });
     }
+
+    // disabling click event when disabled is true
+    element.on('click', function(e){
+      if (attr.disabled === true) {
+        e.preventDefault();
+      }
+    });
 
     // restrict focus styles to the keyboard
     scope.mouseActive = false;
