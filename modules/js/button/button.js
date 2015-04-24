@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-fdcceb5
+ * v0.9.0-rc2-master-6fe6a8f
  */
 (function () {
 "use strict";
@@ -107,6 +107,7 @@ function MdButtonDirective($mdInkRipple, $mdTheming, $mdAria, $timeout) {
     element.on('click', function(e){
       if (attr.disabled === true) {
         e.preventDefault();
+        e.stopImmediatePropagation();
       }
     });
 
