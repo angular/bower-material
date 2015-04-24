@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-6372111
+ * v0.9.0-rc2-master-ef0dce0
  */
 (function () {
 "use strict";
@@ -568,7 +568,7 @@ function MdHighlightCtrl ($scope, $element, $interpolate) {
 
   function sanitize (term) {
     if (!term) return term;
-    return term.replace(/[\*\[\]\(\)\{\}\\\^\$]/g, '\\$&');
+    return term.replace(/[\\\^\$\*\+\?\.\(\)\|\{\}\[\]]/g, '\\$&');
   }
 
   function getRegExp (text, flags) {
