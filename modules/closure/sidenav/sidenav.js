@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-6996edd
+ * v0.9.0-rc2-master-986a7a5
  */
 goog.provide('ng.material.components.sidenav');
 goog.require('ng.material.components.backdrop');
@@ -49,13 +49,13 @@ angular.module('material.components.sidenav', [
  *    });
  * // Async open the given sidenav
  * $mdSidenav(componentId)
- *    .open();
+ *    .open()
  *    .then(function(){
  *      $log.debug('opened');
  *    });
  * // Async close the given sidenav
  * $mdSidenav(componentId)
- *    .close();
+ *    .close()
  *    .then(function(){
  *      $log.debug('closed');
  *    });
