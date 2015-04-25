@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-5610dc9
+ * v0.9.0-rc2-master-4a648d5
  */
 (function () {
 "use strict";
@@ -59,18 +59,26 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  * @usage
  * <hljs lang="html">
  * <div  ng-app="demoApp" ng-controller="EmployeeController">
- *   <md-button ng-click="showAlert()" class="md-raised md-warn">
- *     Employee Alert!
- *   </md-button>
- *   <md-button ng-click="showDialog($event)" class="md-raised">
- *     Custom Dialog
- *   </md-button>
- *   <md-button ng-click="closeAlert()" ng-disabled="!hasAlert()" class="md-raised">
- *     Close Alert
- *   </md-button>
- *   <md-button ng-click="showGreeting($event)" class="md-raised md-primary" >
- *     Greet Employee
- *   </md-button>
+ *   <div>
+ *     <md-button ng-click="showAlert()" class="md-raised md-warn">
+ *       Employee Alert!
+ *       </md-button>
+ *   </div>
+ *   <div>
+ *     <md-button ng-click="showDialog($event)" class="md-raised">
+ *       Custom Dialog
+ *       </md-button>
+ *   </div>
+ *   <div>
+ *     <md-button ng-click="closeAlert()" ng-disabled="!hasAlert()" class="md-raised">
+ *       Close Alert
+ *     </md-button>
+ *   </div>
+ *   <div>
+ *     <md-button ng-click="showGreeting($event)" class="md-raised md-primary" >
+ *       Greet Employee
+ *       </md-button>
+ *   </div>
  * </div>
  * </hljs>
  *
@@ -119,7 +127,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  *            '    </md-list>'+
  *            '  </md-dialog-content>' +
  *            '  <div class="md-actions">' +
- *            '    <md-button ng-click="closeDialog()">' +
+ *            '    <md-button ng-click="closeDialog()" class="md-primary">' +
  *            '      Close Dialog' +
  *            '    </md-button>' +
  *            '  </div>' +
@@ -198,7 +206,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  *             '  <md-dialog-content>Hello {{ employee }}!</md-dialog-content>' +
  *
  *             '  <div class="md-actions">' +
- *             '    <md-button ng-click="closeDialog()">' +
+ *             '    <md-button ng-click="closeDialog()" class="md-primary">' +
  *             '      Close Greeting' +
  *             '    </md-button>' +
  *             '  </div>' +
@@ -369,7 +377,8 @@ function MdDialogProvider($$interimElementProvider) {
             '<p>{{ dialog.content }}</p>',
           '</md-dialog-content>',
           '<div class="md-actions">',
-            '<md-button ng-if="dialog.$type == \'confirm\'" ng-click="dialog.abort()">',
+            '<md-button ng-if="dialog.$type == \'confirm\'"' +
+                      ' ng-click="dialog.abort()" class="md-primary">',
               '{{ dialog.cancel }}',
             '</md-button>',
             '<md-button ng-click="dialog.hide()" class="md-primary">',
