@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-9dc6240
+ * v0.9.0-rc2-master-5610dc9
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 md-card {
@@ -19,11 +19,13 @@ md-card {
     width: 100%; }
   md-card md-card-content {
     padding: 16px; }
-  md-card md-action-bar {
+  md-card .md-actions {
     margin: 0; }
-    md-card md-action-bar .md-button {
+    md-card .md-actions .md-button {
       margin-bottom: 8px;
-      margin-top: 8px; }
+      margin-top: 8px;
+      margin-right: 4px;
+      margin-left: 4px; }
   md-card md-card-footer {
     padding: 16px; }
 
