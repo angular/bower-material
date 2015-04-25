@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-790ccca
+ * v0.9.0-rc2-master-9dc6240
  */
 (function () {
 "use strict";
@@ -23,7 +23,7 @@ function MdDialogDirective($$rAF, $mdTheming) {
     link: function(scope, element, attr) {
       $mdTheming(element);
       $$rAF(function() {
-        var content = element[0].querySelector('md-content');
+        var content = element[0].querySelector('md-dialog-content');
         if (content && content.scrollHeight > content.clientHeight) {
           element.addClass('md-content-overflow');
         }
@@ -47,7 +47,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  *
  * - The dialog is always given an isolate scope.
  * - The dialog's template must have an outer `<md-dialog>` element.
- *   Inside, use an `<md-content>` element for the dialog's content, and use
+ *   Inside, use an `<md-dialog-content>` element for the dialog's content, and use
  *   an element with class `md-actions` for the dialog's actions.
  * - Dialogs must cover the entire application to keep interactions inside of them.
  * Use the `parent` option to change where dialogs are appended.
@@ -111,13 +111,13 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  *          targetEvent: $event,
  *          template:
  *            '<md-dialog aria-label="List dialog">' +
- *            '  <md-content>'+
+ *            '  <md-dialog-content>'+
  *            '    <md-list>'+
  *            '      <md-list-item ng-repeat="item in items">'+
  *            '       <p>Number {{item}}</p>' +
  *            '      </md-item>'+
  *            '    </md-list>'+
- *            '  </md-content>' +
+ *            '  </md-dialog-content>' +
  *            '  <div class="md-actions">' +
  *            '    <md-button ng-click="closeDialog()">' +
  *            '      Close Dialog' +
@@ -195,12 +195,11 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  *           template:
  *             '<md-dialog>' +
  *
- *             '  <md-content>Hello {{ employee }}!</md-content>' +
+ *             '  <md-dialog-content>Hello {{ employee }}!</md-dialog-content>' +
  *
  *             '  <div class="md-actions">' +
  *             '    <md-button ng-click="closeDialog()">' +
  *             '      Close Greeting' +
- *
  *             '    </md-button>' +
  *             '  </div>' +
  *             '</md-dialog>',
@@ -365,10 +364,10 @@ function MdDialogProvider($$interimElementProvider) {
     return {
       template: [
         '<md-dialog md-theme="{{ dialog.theme }}" aria-label="{{ dialog.ariaLabel }}">',
-          '<md-content role="document" tabIndex="0">',
+          '<md-dialog-content role="document" tabIndex="0">',
             '<h2 class="md-title">{{ dialog.title }}</h2>',
             '<p>{{ dialog.content }}</p>',
-          '</md-content>',
+          '</md-dialog-content>',
           '<div class="md-actions">',
             '<md-button ng-if="dialog.$type == \'confirm\'" ng-click="dialog.abort()">',
               '{{ dialog.cancel }}',
@@ -446,7 +445,7 @@ function MdDialogProvider($$interimElementProvider) {
 
       if (options.$type === 'alert') {
         role = 'alertdialog';
-        elementToFocus = element.find('md-content');
+        elementToFocus = element.find('md-dialog-content');
       }
 
       configureAria(element.find('md-dialog'), role, options);
@@ -548,7 +547,7 @@ function MdDialogProvider($$interimElementProvider) {
         'tabIndex': '-1'
       });
 
-      var dialogContent = element.find('md-content');
+      var dialogContent = element.find('md-dialog-content');
       if (dialogContent.length === 0){
         dialogContent = element;
       }
