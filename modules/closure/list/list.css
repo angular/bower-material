@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-160df4c
+ * v0.9.0-rc2-master-5e39ca3
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 md-list {
@@ -19,10 +19,12 @@ md-list-item.md-no-proxy, md-list-item .md-no-style {
           flex: 1;
   transition: background-color 0.15s linear; }
   md-list-item.md-no-proxy.md-button, md-list-item .md-no-style.md-button {
+    font-size: inherit;
     height: inherit;
     text-align: left;
     text-transform: none;
-    width: 100%; }
+    width: 100%;
+    white-space: normal; }
   md-list-item.md-no-proxy:focus, md-list-item .md-no-style:focus {
     outline: none; }
 md-list-item.md-with-secondary {
