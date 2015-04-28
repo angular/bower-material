@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc2-master-02a4af5
+ * v0.9.0-rc2-master-6a5a6a7
  */
 (function () {
 "use strict";
@@ -651,7 +651,7 @@ angular.module('material.core')
       }
 
       return function restoreScroll() {
-        disableTarget.append(virtualScroller.children());
+        disableTarget.append(virtualScroller[0].childNodes);
         wrapperEl.remove();
         angular.element($window).off('resize', computeSize);
         disableTarget.attr('style', restoreStyle || false);
@@ -931,6 +931,9 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
 angular.module('material.core')
   .service('$mdAria', AriaService);
 
+/*
+ * @ngInject
+ */
 function AriaService($$rAF, $log, $window) {
 
   return {
