@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-c284438
+ * v0.9.0-rc3-master-ea81787
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -3587,7 +3587,6 @@ md-input-container {
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column;
-  overflow-x: hidden;
   padding: 2px;
   padding-bottom: 26px;
   /*
@@ -3603,6 +3602,8 @@ md-input-container {
     /* remove default appearance from all input/textarea */
     -moz-appearance: none;
     -webkit-appearance: none; }
+  md-input-container input[type="date"], md-input-container input[type="datetime-local"], md-input-container input[type="month"], md-input-container input[type="time"], md-input-container input[type="week"] {
+    min-height: 26px; }
   md-input-container textarea {
     resize: none;
     overflow: hidden; }
@@ -3675,6 +3676,8 @@ md-input-container {
     position: absolute;
     font-size: 12px;
     line-height: 24px; }
+    md-input-container ng-message:not(.md-char-counter), md-input-container data-ng-message:not(.md-char-counter), md-input-container x-ng-message:not(.md-char-counter), md-input-container [ng-message]:not(.md-char-counter), md-input-container [data-ng-message]:not(.md-char-counter), md-input-container [x-ng-message]:not(.md-char-counter), md-input-container .md-char-counter:not(.md-char-counter) {
+      padding-right: 3rem; }
     md-input-container ng-message.ng-enter, md-input-container data-ng-message.ng-enter, md-input-container x-ng-message.ng-enter, md-input-container [ng-message].ng-enter, md-input-container [data-ng-message].ng-enter, md-input-container [x-ng-message].ng-enter, md-input-container .md-char-counter.ng-enter {
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       transition-delay: 0.2s; }
