@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-ea81787
+ * v0.9.0-rc3-master-294e066
  */
 (function () {
 "use strict";
@@ -99,8 +99,8 @@ function MdTab () {
       label:    '@',
       active:   '=?mdActive',
       disabled: '=?ngDisabled',
-      selectExpr:   '@?mdOnSelect',
-      deselectExpr: '@?mdOnDeselect'
+      select:   '&?mdOnSelect',
+      deselect: '&?mdOnDeselect'
     },
     link: postLink
   };
@@ -117,8 +117,8 @@ function MdTab () {
           label:    getLabel()
         }, index);
 
-    scope.deselect = function () { ctrl.parent.$eval(scope.deselectExpr || ''); };
-    scope.select = function () { ctrl.parent.$eval(scope.selectExpr || ''); };
+    scope.select   = scope.select   || angular.noop;
+    scope.deselect = scope.deselect || angular.noop;
 
     scope.$watch('active', function (active) { if (active) ctrl.select(data.getIndex()); });
     scope.$watch('disabled', function () { ctrl.refreshIndex(); });
@@ -618,7 +618,7 @@ angular
     .module('material.components.tabs')
     .directive('mdTabs', MdTabs);
 
-function MdTabs ($mdTheming, $mdUtil) {
+function MdTabs ($mdTheming, $mdUtil, $compile) {
   return {
     scope: {
       noPagination:  '=?mdNoPagination',
@@ -627,101 +627,105 @@ function MdTabs ($mdTheming, $mdUtil) {
       selectedIndex: '=?mdSelected',
       stretchTabs:   '@?mdStretchTabs'
     },
-    transclude: true,
-    template: '\
-      <md-tabs-wrapper ng-class="{ \'md-stretch-tabs\': $mdTabsCtrl.shouldStretchTabs() }">\
-        <md-tab-data ng-transclude></md-tab-data>\
-        <md-prev-button\
-            tabindex="-1"\
-            role="button"\
-            aria-label="Previous Page"\
-            aria-disabled="{{!$mdTabsCtrl.canPageBack()}}"\
-            ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageBack() }"\
-            ng-if="$mdTabsCtrl.shouldPaginate()"\
-            ng-click="$mdTabsCtrl.previousPage()">\
-          <md-icon md-svg-icon="tabs-arrow"></md-icon>\
-        </md-prev-button>\
-        <md-next-button\
-            tabindex="-1"\
-            role="button"\
-            aria-label="Next Page"\
-            aria-disabled="{{!$mdTabsCtrl.canPageForward()}}"\
-            ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageForward() }"\
-            ng-if="$mdTabsCtrl.shouldPaginate()"\
-            ng-click="$mdTabsCtrl.nextPage()">\
-          <md-icon md-svg-icon="tabs-arrow"></md-icon>\
-        </md-next-button>\
-        <md-tabs-canvas\
-            tabindex="0"\
-            aria-activedescendant="tab-item-{{$mdTabsCtrl.tabs[$mdTabsCtrl.focusIndex].id}}"\
-            ng-focus="$mdTabsCtrl.redirectFocus()"\
-            ng-class="{ \'md-paginated\': $mdTabsCtrl.shouldPaginate() }"\
-            ng-keydown="$mdTabsCtrl.keydown($event)"\
-            role="tablist">\
-          <md-pagination-wrapper\
-              ng-class="{ \'md-center-tabs\': $mdTabsCtrl.shouldCenterTabs() }"\
-              md-tab-scroll="$mdTabsCtrl.scroll($event)">\
-            <md-tab-item\
-                tabindex="-1"\
-                class="md-tab"\
-                style="max-width: {{ tabWidth ? tabWidth + \'px\' : \'none\' }}"\
-                ng-repeat="tab in $mdTabsCtrl.tabs"\
-                role="tab"\
-                aria-controls="tab-content-{{tab.id}}"\
-                aria-selected="{{tab.isActive()}}"\
-                aria-disabled="{{tab.scope.disabled || \'false\'}}"\
-                ng-click="$mdTabsCtrl.select(tab.getIndex())"\
-                ng-class="{\
-                    \'md-active\':    tab.isActive(),\
-                    \'md-focused\':   tab.hasFocus(),\
-                    \'md-disabled\':  tab.scope.disabled\
-                }"\
-                ng-disabled="tab.scope.disabled"\
-                md-swipe-left="$mdTabsCtrl.nextPage()"\
-                md-swipe-right="$mdTabsCtrl.previousPage()"\
-                md-template="tab.label"\
-                md-scope="tab.parent"></md-tab-item>\
-            <md-ink-bar ng-hide="noInkBar"></md-ink-bar>\
-          </md-pagination-wrapper>\
-          <div class="md-visually-hidden md-dummy-wrapper">\
-            <md-dummy-tab\
-                tabindex="-1"\
-                id="tab-item-{{tab.id}}"\
-                role="tab"\
-                aria-controls="tab-content-{{tab.id}}"\
-                aria-selected="{{tab.isActive()}}"\
-                aria-disabled="{{tab.scope.disabled || \'false\'}}"\
-                ng-focus="$mdTabsCtrl.hasFocus = true"\
-                ng-blur="$mdTabsCtrl.hasFocus = false"\
-                ng-repeat="tab in $mdTabsCtrl.tabs"\
-                md-template="tab.label"\
-                md-scope="tab.parent"></md-dummy-tab>\
-          </div>\
-        </md-tabs-canvas>\
-      </md-tabs-wrapper>\
-      <md-tabs-content-wrapper ng-show="$mdTabsCtrl.hasContent">\
-        <md-tab-content\
-            id="tab-content-{{tab.id}}"\
-            role="tabpanel"\
-            aria-labelledby="tab-item-{{tab.id}}"\
-            md-swipe-left="$mdTabsCtrl.incrementSelectedIndex(1)"\
-            md-swipe-right="$mdTabsCtrl.incrementSelectedIndex(-1)"\
-            ng-if="$mdTabsCtrl.hasContent"\
-            ng-repeat="(index, tab) in $mdTabsCtrl.tabs" \
-            md-template="tab.template"\
-            md-scope="tab.parent"\
-            ng-class="{\
-              \'md-no-transition\': $mdTabsCtrl.lastSelectedIndex == null,\
-              \'md-active\':        tab.isActive(),\
-              \'md-left\':          tab.isLeft(),\
-              \'md-right\':         tab.isRight(),\
-              \'md-no-scroll\':     dynamicHeight\
-            }"></md-tab-content>\
-      </md-tabs-content-wrapper>\
-    ',
+    template: function (element, attr) {
+      attr.$mdTabsTemplate = element.html();
+      return '\
+        <md-tabs-wrapper ng-class="{ \'md-stretch-tabs\': $mdTabsCtrl.shouldStretchTabs() }">\
+          <md-tab-data></md-tab-data>\
+          <md-prev-button\
+              tabindex="-1"\
+              role="button"\
+              aria-label="Previous Page"\
+              aria-disabled="{{!$mdTabsCtrl.canPageBack()}}"\
+              ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageBack() }"\
+              ng-if="$mdTabsCtrl.shouldPaginate()"\
+              ng-click="$mdTabsCtrl.previousPage()">\
+            <md-icon md-svg-icon="tabs-arrow"></md-icon>\
+          </md-prev-button>\
+          <md-next-button\
+              tabindex="-1"\
+              role="button"\
+              aria-label="Next Page"\
+              aria-disabled="{{!$mdTabsCtrl.canPageForward()}}"\
+              ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageForward() }"\
+              ng-if="$mdTabsCtrl.shouldPaginate()"\
+              ng-click="$mdTabsCtrl.nextPage()">\
+            <md-icon md-svg-icon="tabs-arrow"></md-icon>\
+          </md-next-button>\
+          <md-tabs-canvas\
+              tabindex="0"\
+              aria-activedescendant="tab-item-{{$mdTabsCtrl.tabs[$mdTabsCtrl.focusIndex].id}}"\
+              ng-focus="$mdTabsCtrl.redirectFocus()"\
+              ng-class="{ \'md-paginated\': $mdTabsCtrl.shouldPaginate() }"\
+              ng-keydown="$mdTabsCtrl.keydown($event)"\
+              role="tablist">\
+            <md-pagination-wrapper\
+                ng-class="{ \'md-center-tabs\': $mdTabsCtrl.shouldCenterTabs() }"\
+                md-tab-scroll="$mdTabsCtrl.scroll($event)">\
+              <md-tab-item\
+                  tabindex="-1"\
+                  class="md-tab"\
+                  style="max-width: {{ tabWidth ? tabWidth + \'px\' : \'none\' }}"\
+                  ng-repeat="tab in $mdTabsCtrl.tabs"\
+                  role="tab"\
+                  aria-controls="tab-content-{{tab.id}}"\
+                  aria-selected="{{tab.isActive()}}"\
+                  aria-disabled="{{tab.scope.disabled || \'false\'}}"\
+                  ng-click="$mdTabsCtrl.select(tab.getIndex())"\
+                  ng-class="{\
+                      \'md-active\':    tab.isActive(),\
+                      \'md-focused\':   tab.hasFocus(),\
+                      \'md-disabled\':  tab.scope.disabled\
+                  }"\
+                  ng-disabled="tab.scope.disabled"\
+                  md-swipe-left="$mdTabsCtrl.nextPage()"\
+                  md-swipe-right="$mdTabsCtrl.previousPage()"\
+                  md-template="tab.label"\
+                  md-scope="tab.parent"></md-tab-item>\
+              <md-ink-bar ng-hide="noInkBar"></md-ink-bar>\
+            </md-pagination-wrapper>\
+            <div class="md-visually-hidden md-dummy-wrapper">\
+              <md-dummy-tab\
+                  tabindex="-1"\
+                  id="tab-item-{{tab.id}}"\
+                  role="tab"\
+                  aria-controls="tab-content-{{tab.id}}"\
+                  aria-selected="{{tab.isActive()}}"\
+                  aria-disabled="{{tab.scope.disabled || \'false\'}}"\
+                  ng-focus="$mdTabsCtrl.hasFocus = true"\
+                  ng-blur="$mdTabsCtrl.hasFocus = false"\
+                  ng-repeat="tab in $mdTabsCtrl.tabs"\
+                  md-template="tab.label"\
+                  md-scope="tab.parent"></md-dummy-tab>\
+            </div>\
+          </md-tabs-canvas>\
+        </md-tabs-wrapper>\
+        <md-tabs-content-wrapper ng-show="$mdTabsCtrl.hasContent">\
+          <md-tab-content\
+              id="tab-content-{{tab.id}}"\
+              role="tabpanel"\
+              aria-labelledby="tab-item-{{tab.id}}"\
+              md-swipe-left="$mdTabsCtrl.incrementSelectedIndex(1)"\
+              md-swipe-right="$mdTabsCtrl.incrementSelectedIndex(-1)"\
+              ng-if="$mdTabsCtrl.hasContent"\
+              ng-repeat="(index, tab) in $mdTabsCtrl.tabs" \
+              md-template="tab.template"\
+              md-scope="tab.parent"\
+              ng-class="{\
+                \'md-no-transition\': $mdTabsCtrl.lastSelectedIndex == null,\
+                \'md-active\':        tab.isActive(),\
+                \'md-left\':          tab.isLeft(),\
+                \'md-right\':         tab.isRight(),\
+                \'md-no-scroll\':     dynamicHeight\
+              }"></md-tab-content>\
+        </md-tabs-content-wrapper>\
+      ';
+    },
     controller: 'MdTabsController',
     controllerAs: '$mdTabsCtrl',
     link: function (scope, element, attr) {
+      compileTabData(attr.$mdTabsTemplate);
+      delete attr.$mdTabsTemplate;
 
       $mdUtil.initOptionalProperties(scope, attr);
 
@@ -731,10 +735,16 @@ function MdTabs ($mdTheming, $mdUtil) {
       scope.selectedIndex = angular.isNumber(scope.selectedIndex) ? scope.selectedIndex : 0;
       //-- apply themes
       $mdTheming(element);
+
+      function compileTabData (template) {
+        var dataElement = element.find('md-tab-data');
+        dataElement.html(template);
+        $compile(dataElement.contents())(scope.$parent);
+      }
     }
   };
 }
-MdTabs.$inject = ["$mdTheming", "$mdUtil"];
+MdTabs.$inject = ["$mdTheming", "$mdUtil", "$compile"];
 
 angular
     .module('material.components.tabs')
