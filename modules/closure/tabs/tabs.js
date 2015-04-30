@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-27075c7
+ * v0.9.0-rc3-master-44e6984
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -312,8 +312,8 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
 
   function handleWindowResize () {
     ctrl.lastSelectedIndex = $scope.selectedIndex;
-    updateInkBarStyles();
     ctrl.offsetLeft = fixOffset(ctrl.offsetLeft);
+    $timeout(updateInkBarStyles, 0, false);
   }
 
   function processQueue () {
@@ -657,7 +657,10 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
               tabindex="0"\
               aria-activedescendant="tab-item-{{$mdTabsCtrl.tabs[$mdTabsCtrl.focusIndex].id}}"\
               ng-focus="$mdTabsCtrl.redirectFocus()"\
-              ng-class="{ \'md-paginated\': $mdTabsCtrl.shouldPaginate() }"\
+              ng-class="{\
+                  \'md-paginated\': $mdTabsCtrl.shouldPaginate(),\
+                  \'md-center-tabs\': $mdTabsCtrl.shouldCenterTabs()\
+              }"\
               ng-keydown="$mdTabsCtrl.keydown($event)"\
               role="tablist">\
             <md-pagination-wrapper\

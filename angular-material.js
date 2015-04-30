@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-27075c7
+ * v0.9.0-rc3-master-44e6984
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.theming.palette","material.core.theming","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.content","material.components.dialog","material.components.divider","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -12599,8 +12599,8 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
 
   function handleWindowResize () {
     ctrl.lastSelectedIndex = $scope.selectedIndex;
-    updateInkBarStyles();
     ctrl.offsetLeft = fixOffset(ctrl.offsetLeft);
+    $timeout(updateInkBarStyles, 0, false);
   }
 
   function processQueue () {
@@ -12944,7 +12944,10 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
               tabindex="0"\
               aria-activedescendant="tab-item-{{$mdTabsCtrl.tabs[$mdTabsCtrl.focusIndex].id}}"\
               ng-focus="$mdTabsCtrl.redirectFocus()"\
-              ng-class="{ \'md-paginated\': $mdTabsCtrl.shouldPaginate() }"\
+              ng-class="{\
+                  \'md-paginated\': $mdTabsCtrl.shouldPaginate(),\
+                  \'md-center-tabs\': $mdTabsCtrl.shouldCenterTabs()\
+              }"\
               ng-keydown="$mdTabsCtrl.keydown($event)"\
               role="tablist">\
             <md-pagination-wrapper\
