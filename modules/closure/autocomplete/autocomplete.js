@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-8ea0dc1
+ * v0.9.0-rc3-master-4917a16
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -541,9 +541,7 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
   };
 
   function link (scope, element, attr) {
-    if (attr.ngDisabled) {
-      scope.$parent.$watch(attr.ngDisabled, function (val) { scope.isDisabled = val; });
-    }
+    attr.$observe('disabled', function (value) { scope.isDisabled = value; });
     scope.contents = attr.$mdAutocompleteTemplate;
     delete attr.$mdAutocompleteTemplate;
 
