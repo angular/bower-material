@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-44e6984
+ * v0.9.0-rc3-master-e982547
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -129,13 +129,6 @@ input[type="search"] {
   .md-padding {
     padding: 16px; } }
 
-html {
-  font-size: 62.5%;
-  line-height: 1.4; }
-
-body {
-  font-size: 1.6rem; }
-
 html, body {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
@@ -149,60 +142,60 @@ md-select, md-card, md-list, md-toolbar, ul, ol, p, h1, h2, h3, h4, h5, h6 {
  * Headings
  ************/
 .md-display-4 {
-  font-size: 11.2rem;
+  font-size: 112px;
   font-weight: 300;
   letter-spacing: -0.01em;
-  line-height: 11.2rem; }
+  line-height: 112px; }
 
 .md-display-3 {
-  font-size: 5.6rem;
+  font-size: 56px;
   font-weight: 400;
   letter-spacing: -0.005em;
-  line-height: 5.6rem; }
+  line-height: 56px; }
 
 .md-display-2 {
-  font-size: 4.5rem;
+  font-size: 45px;
   font-weight: 400;
-  line-height: 6.4rem; }
+  line-height: 64px; }
 
 .md-display-1 {
-  font-size: 3.4rem;
+  font-size: 34px;
   font-weight: 400;
-  line-height: 4rem; }
+  line-height: 40px; }
 
 .md-headline {
-  font-size: 2.4rem;
+  font-size: 24px;
   font-weight: 400;
-  line-height: 3.2rem; }
+  line-height: 32px; }
 
 .md-title, .md-toolbar-tools {
-  font-size: 2rem;
+  font-size: 20px;
   font-weight: 500;
   letter-spacing: 0.005em; }
 
 .md-subhead, md-list-item.md-2-line .md-list-item-text h3, md-list-item.md-2-line > .md-no-style .md-list-item-text h3, md-list-item.md-3-line .md-list-item-text h3, md-list-item.md-3-line > .md-no-style .md-list-item-text h3 {
-  font-size: 1.6rem;
+  font-size: 16px;
   font-weight: 400;
   letter-spacing: 0.01em;
-  line-height: 2.4rem; }
+  line-height: 24px; }
 
 /************
  * Body Copy
  ************/
 .md-body-1 {
-  font-size: 1.4rem;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.01em;
-  line-height: 2rem; }
+  line-height: 20px; }
 
 .md-body-2, md-list .md-subheader, md-list-item.md-2-line .md-list-item-text h4, md-list-item.md-2-line > .md-no-style .md-list-item-text h4, md-list-item.md-3-line .md-list-item-text h4, md-list-item.md-3-line > .md-no-style .md-list-item-text h4, md-list-item.md-2-line .md-list-item-text p, md-list-item.md-2-line > .md-no-style .md-list-item-text p, md-list-item.md-3-line .md-list-item-text p, md-list-item.md-3-line > .md-no-style .md-list-item-text p {
-  font-size: 1.4rem;
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.01em;
-  line-height: 2.4rem; }
+  line-height: 24px; }
 
 .md-caption {
-  font-size: 1.2rem;
+  font-size: 12px;
   letter-spacing: 0.02em; }
 
 .md-button {
@@ -3025,17 +3018,17 @@ md-bottom-sheet {
   outline: none;
   border: 0;
   display: inline-block;
-  padding: 0 0.6rem;
-  margin: 0.6rem 0.8rem;
-  line-height: 3.6rem;
-  min-height: 3.6rem;
+  padding: 0 6px;
+  margin: 6px 8px;
+  line-height: 36px;
+  min-height: 36px;
   background: transparent;
   white-space: nowrap;
-  min-width: 8.8rem;
+  min-width: 88px;
   text-align: center;
   text-transform: uppercase;
   font-weight: 500;
-  font-size: 1.4rem;
+  font-size: 14px;
   font-style: inherit;
   font-variant: inherit;
   font-family: inherit;
@@ -3057,19 +3050,19 @@ md-bottom-sheet {
     padding: 0;
     background: none; }
   .md-button.md-icon-button {
-    margin: 0 0.6rem;
-    height: 4.8rem;
+    margin: 0 6px;
+    height: 48px;
     min-width: 0;
-    line-height: 4.8rem;
+    line-height: 48px;
     padding-left: 0;
     padding-right: 0;
-    width: 4.8rem; }
+    width: 48px; }
   .md-button.md-fab {
     z-index: 20;
-    line-height: 5.6rem;
+    line-height: 56px;
     min-width: 0;
-    width: 5.6rem;
-    height: 5.6rem;
+    width: 56px;
+    height: 56px;
     vertical-align: middle;
     border-radius: 50%;
     background-clip: padding-box;
@@ -3078,27 +3071,27 @@ md-bottom-sheet {
     transition-property: background-color, box-shadow; }
     .md-button.md-fab.md-fab-bottom-right {
       top: auto;
-      right: 2rem;
-      bottom: 2rem;
+      right: 20px;
+      bottom: 20px;
       left: auto;
       position: absolute; }
     .md-button.md-fab.md-fab-bottom-left {
       top: auto;
       right: auto;
-      bottom: 2rem;
-      left: 2rem;
+      bottom: 20px;
+      left: 20px;
       position: absolute; }
     .md-button.md-fab.md-fab-top-right {
-      top: 2rem;
-      right: 2rem;
+      top: 20px;
+      right: 20px;
       bottom: auto;
       left: auto;
       position: absolute; }
     .md-button.md-fab.md-fab-top-left {
-      top: 2rem;
+      top: 20px;
       right: auto;
       bottom: auto;
-      left: 2rem;
+      left: 20px;
       position: absolute; }
     .md-button.md-fab .md-ripple-container {
       border-radius: 50%;
@@ -3108,23 +3101,23 @@ md-bottom-sheet {
     .md-button.md-fab md-icon {
       margin-top: 0; }
     .md-button.md-fab.md-mini {
-      line-height: 4rem;
-      width: 4rem;
-      height: 4rem; }
+      line-height: 40px;
+      width: 40px;
+      height: 40px; }
 
 .md-toast-open-top .md-button.md-fab-top-left, .md-toast-open-top .md-button.md-fab-top-right {
-  -webkit-transform: translate3d(0, 4.2rem, 0);
-          transform: translate3d(0, 4.2rem, 0); }
+  -webkit-transform: translate3d(0, 42px, 0);
+          transform: translate3d(0, 42px, 0); }
   .md-toast-open-top .md-button.md-fab-top-left:not([disabled]).md-focused, .md-toast-open-top .md-button.md-fab-top-left:not([disabled]):hover, .md-toast-open-top .md-button.md-fab-top-right:not([disabled]).md-focused, .md-toast-open-top .md-button.md-fab-top-right:not([disabled]):hover {
-    -webkit-transform: translate3d(0, 3.2rem, 0);
-            transform: translate3d(0, 3.2rem, 0); }
+    -webkit-transform: translate3d(0, 41px, 0);
+            transform: translate3d(0, 41px, 0); }
 
 .md-toast-open-bottom .md-button.md-fab-bottom-left, .md-toast-open-bottom .md-button.md-fab-bottom-right {
-  -webkit-transform: translate3d(0, -4.2rem, 0);
-          transform: translate3d(0, -4.2rem, 0); }
+  -webkit-transform: translate3d(0, -42px, 0);
+          transform: translate3d(0, -42px, 0); }
   .md-toast-open-bottom .md-button.md-fab-bottom-left:not([disabled]).md-focused, .md-toast-open-bottom .md-button.md-fab-bottom-left:not([disabled]):hover, .md-toast-open-bottom .md-button.md-fab-bottom-right:not([disabled]).md-focused, .md-toast-open-bottom .md-button.md-fab-bottom-right:not([disabled]):hover {
-    -webkit-transform: translate3d(0, -5.2rem, 0);
-            transform: translate3d(0, -5.2rem, 0); }
+    -webkit-transform: translate3d(0, -43px, 0);
+            transform: translate3d(0, -43px, 0); }
 
 .md-button-group {
   display: -webkit-flex;
@@ -3288,26 +3281,26 @@ md-checkbox {
       margin-left: 10px; }
 
 .md-contact-chips .md-chips .md-chip {
-  padding: 0 0.8rem 0 0; }
+  padding: 0 8px 0 0; }
   .md-contact-chips .md-chips .md-chip .md-contact-avatar {
     float: left; }
     .md-contact-chips .md-chips .md-chip .md-contact-avatar img {
-      height: 3.2rem;
-      border-radius: 1.6rem; }
+      height: 32px;
+      border-radius: 16px; }
   .md-contact-chips .md-chips .md-chip .md-contact-name {
     display: inline-block;
-    height: 3.2rem;
-    margin-left: 0.8rem; }
+    height: 32px;
+    margin-left: 8px; }
 
 .md-contact-suggestion {
-  height: 5.6rem; }
+  height: 56px; }
   .md-contact-suggestion img {
-    height: 4rem;
-    border-radius: 2rem;
-    margin-top: 0.8rem; }
+    height: 40px;
+    border-radius: 20px;
+    margin-top: 8px; }
   .md-contact-suggestion .md-contact-name {
-    margin-left: 0.8rem;
-    width: 12rem; }
+    margin-left: 8px;
+    width: 120px; }
   .md-contact-suggestion .md-contact-name, .md-contact-suggestion .md-contact-email {
     display: inline-block;
     overflow: hidden;
@@ -3319,8 +3312,8 @@ md-checkbox {
 .md-chips {
   display: block;
   font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
-  font-size: 1.3rem;
-  padding: 0 0 0.8rem 0;
+  font-size: 13px;
+  padding: 0 0 8px 0;
   vertical-align: middle;
   cursor: text; }
   .md-chips:after {
@@ -3329,27 +3322,27 @@ md-checkbox {
     clear: both; }
   .md-chips .md-chip {
     cursor: default;
-    border-radius: 1.6rem;
+    border-radius: 16px;
     display: block;
-    height: 3.2rem;
-    line-height: 3.2rem;
-    margin: 0.8rem 0.8rem 0 0;
-    padding: 0 0.8rem 0 1.2rem;
+    height: 32px;
+    line-height: 32px;
+    margin: 8px 8px 0 0;
+    padding: 0 8px 0 12px;
     float: left; }
     .md-chips .md-chip .md-chip-content {
       display: block;
-      padding-right: 0.4rem;
+      padding-right: 4px;
       float: left;
       white-space: nowrap; }
       .md-chips .md-chip .md-chip-content:focus {
         outline: none; }
     .md-chips .md-chip .md-chip-remove-container {
       display: inline-block;
-      margin-right: -0.5rem; }
+      margin-right: -rem(0.5); }
     .md-chips .md-chip .md-chip-remove {
       text-align: center;
-      width: 3.2rem;
-      height: 3.2rem;
+      width: 32px;
+      height: 32px;
       min-width: 0;
       padding: 0;
       background: transparent;
@@ -3358,8 +3351,8 @@ md-checkbox {
       margin: 0;
       position: relative; }
       .md-chips .md-chip .md-chip-remove md-icon {
-        height: 1.8rem;
-        width: 1.8rem;
+        height: 18px;
+        width: 18px;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -3367,39 +3360,39 @@ md-checkbox {
                 transform: translate3d(-50%, -50%, 0); }
   .md-chips .md-chip-input-container {
     display: block;
-    line-height: 3.2rem;
-    margin: 0.8rem 0.8rem 0 0;
-    padding: 0 0.8rem 0 1.2rem;
+    line-height: 32px;
+    margin: 8px 8px 0 0;
+    padding: 0 8px 0 12px;
     float: left; }
     .md-chips .md-chip-input-container input:not([type]), .md-chips .md-chip-input-container input[type="email"], .md-chips .md-chip-input-container input[type="number"], .md-chips .md-chip-input-container input[type="tel"], .md-chips .md-chip-input-container input[type="url"], .md-chips .md-chip-input-container input[type="text"] {
       border: 0;
-      height: 3.2rem;
-      line-height: 3.2rem;
+      height: 32px;
+      line-height: 32px;
       padding: 0; }
       .md-chips .md-chip-input-container input:not([type]):focus, .md-chips .md-chip-input-container input[type="email"]:focus, .md-chips .md-chip-input-container input[type="number"]:focus, .md-chips .md-chip-input-container input[type="tel"]:focus, .md-chips .md-chip-input-container input[type="url"]:focus, .md-chips .md-chip-input-container input[type="text"]:focus {
         outline: none; }
     .md-chips .md-chip-input-container md-autocomplete, .md-chips .md-chip-input-container md-autocomplete-wrap {
       background: transparent;
-      height: 3.2rem; }
+      height: 32px; }
     .md-chips .md-chip-input-container md-autocomplete {
       box-shadow: none; }
       .md-chips .md-chip-input-container md-autocomplete input {
         position: relative; }
     .md-chips .md-chip-input-container input {
       border: 0;
-      height: 3.2rem;
-      line-height: 3.2rem;
+      height: 32px;
+      line-height: 32px;
       padding: 0; }
       .md-chips .md-chip-input-container input:focus {
         outline: none; }
     .md-chips .md-chip-input-container md-autocomplete, .md-chips .md-chip-input-container md-autocomplete-wrap {
-      height: 3.2rem; }
+      height: 32px; }
     .md-chips .md-chip-input-container md-autocomplete {
       box-shadow: none; }
       .md-chips .md-chip-input-container md-autocomplete input {
         position: relative; }
     .md-chips .md-chip-input-container:not(:first-child) {
-      margin: 0.8rem 0.8rem 0 0; }
+      margin: 8px 8px 0 0; }
     .md-chips .md-chip-input-container input {
       background: transparent;
       border-width: 0; }
@@ -3578,8 +3571,8 @@ md-icon {
   display: inline-block;
   vertical-align: middle;
   fill: currentColor;
-  height: 2.8rem;
-  width: 2.8rem; }
+  height: 28px;
+  width: 28px; }
   md-icon svg {
     pointer-events: none; }
   md-icon[md-font-icon] {
@@ -3683,7 +3676,7 @@ md-input-container {
     font-size: 12px;
     line-height: 24px; }
     md-input-container ng-message:not(.md-char-counter), md-input-container data-ng-message:not(.md-char-counter), md-input-container x-ng-message:not(.md-char-counter), md-input-container [ng-message]:not(.md-char-counter), md-input-container [data-ng-message]:not(.md-char-counter), md-input-container [x-ng-message]:not(.md-char-counter), md-input-container .md-char-counter:not(.md-char-counter) {
-      padding-right: 3rem; }
+      padding-right: 30px; }
     md-input-container ng-message.ng-enter, md-input-container data-ng-message.ng-enter, md-input-container x-ng-message.ng-enter, md-input-container [ng-message].ng-enter, md-input-container [data-ng-message].ng-enter, md-input-container [x-ng-message].ng-enter, md-input-container .md-char-counter.ng-enter {
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       transition-delay: 0.2s; }
@@ -5683,7 +5676,7 @@ md-select {
   padding-top: 7px;
   padding-bottom: 10px;
   border-bottom: 1px solid;
-  font-size: 1.6rem;
+  font-size: 16px;
   line-height: 0.8em;
   position: relative;
   box-sizing: border-box;
@@ -5758,13 +5751,13 @@ md-option {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 1.6rem; }
+    font-size: 16px; }
 
 md-optgroup {
   display: block; }
   md-optgroup label {
     display: block;
-    font-size: 1.6rem;
+    font-size: 16px;
     text-transform: uppercase;
     padding: 16px 8px; }
   md-optgroup md-option {
@@ -5913,6 +5906,8 @@ md-slider {
    * The border/background that comes in when focused in non-discrete mode
    */
   /* Don't animate left/right while panning */ }
+  md-slider *, md-slider *:after {
+    box-sizing: border-box; }
   md-slider .md-slider-wrapper {
     position: relative; }
   md-slider .md-track-container {
@@ -6122,7 +6117,7 @@ md-slider {
 
 .md-subheader {
   display: block;
-  font-size: 1.4rem;
+  font-size: 14px;
   font-weight: 500;
   line-height: 1em;
   margin: 0 0 0 0;
@@ -6642,7 +6637,7 @@ md-toolbar {
           flex-direction: column;
   position: relative;
   z-index: 2;
-  font-size: 2rem;
+  font-size: 20px;
   min-height: 64px;
   width: 100%;
   transition: box-shadow 0.5s linear; }
@@ -6697,7 +6692,7 @@ md-toolbar {
     margin-top: 0;
     margin-bottom: 0; }
   .md-toolbar-tools > .md-button:first-child {
-    margin-left: -0.8rem; }
+    margin-left: -rem(0.8); }
   @media screen and (-ms-high-contrast: active) {
     .md-toolbar-tools {
       border-bottom: 1px solid #fff; } }

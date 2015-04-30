@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-44e6984
+ * v0.9.0-rc3-master-e982547
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 /* Sizes:
@@ -2503,13 +2503,6 @@ input[type="search"] {
     padding: 16px; } }
 
 /* mixin definition ; sets LTR and RTL within the same style call */
-html {
-  font-size: 62.5%;
-  line-height: 1.4; }
-
-body {
-  font-size: 1.6rem; }
-
 html, body {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
@@ -2523,60 +2516,60 @@ md-select, md-card, md-list, md-toolbar, ul, ol, p, h1, h2, h3, h4, h5, h6 {
  * Headings
  ************/
 .md-display-4 {
-  font-size: 11.2rem;
+  font-size: 112px;
   font-weight: 300;
   letter-spacing: -0.01em;
-  line-height: 11.2rem; }
+  line-height: 112px; }
 
 .md-display-3 {
-  font-size: 5.6rem;
+  font-size: 56px;
   font-weight: 400;
   letter-spacing: -0.005em;
-  line-height: 5.6rem; }
+  line-height: 56px; }
 
 .md-display-2 {
-  font-size: 4.5rem;
+  font-size: 45px;
   font-weight: 400;
-  line-height: 6.4rem; }
+  line-height: 64px; }
 
 .md-display-1 {
-  font-size: 3.4rem;
+  font-size: 34px;
   font-weight: 400;
-  line-height: 4rem; }
+  line-height: 40px; }
 
 .md-headline {
-  font-size: 2.4rem;
+  font-size: 24px;
   font-weight: 400;
-  line-height: 3.2rem; }
+  line-height: 32px; }
 
 .md-title {
-  font-size: 2rem;
+  font-size: 20px;
   font-weight: 500;
   letter-spacing: 0.005em; }
 
 .md-subhead {
-  font-size: 1.6rem;
+  font-size: 16px;
   font-weight: 400;
   letter-spacing: 0.01em;
-  line-height: 2.4rem; }
+  line-height: 24px; }
 
 /************
  * Body Copy
  ************/
 .md-body-1 {
-  font-size: 1.4rem;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.01em;
-  line-height: 2rem; }
+  line-height: 20px; }
 
 .md-body-2 {
-  font-size: 1.4rem;
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.01em;
-  line-height: 2.4rem; }
+  line-height: 24px; }
 
 .md-caption {
-  font-size: 1.2rem;
+  font-size: 12px;
   letter-spacing: 0.02em; }
 
 .md-button {

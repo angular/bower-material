@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-44e6984
+ * v0.9.0-rc3-master-e982547
  */
 (function () {
 "use strict";
@@ -640,7 +640,7 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
               ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageBack() }"\
               ng-if="$mdTabsCtrl.shouldPaginate()"\
               ng-click="$mdTabsCtrl.previousPage()">\
-            <md-icon md-svg-icon="tabs-arrow"></md-icon>\
+            <md-icon md-svg-icon="md-tabs-arrow"></md-icon>\
           </md-prev-button>\
           <md-next-button\
               tabindex="-1"\
@@ -650,7 +650,7 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
               ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageForward() }"\
               ng-if="$mdTabsCtrl.shouldPaginate()"\
               ng-click="$mdTabsCtrl.nextPage()">\
-            <md-icon md-svg-icon="tabs-arrow"></md-icon>\
+            <md-icon md-svg-icon="md-tabs-arrow"></md-icon>\
           </md-next-button>\
           <md-tabs-canvas\
               tabindex="0"\

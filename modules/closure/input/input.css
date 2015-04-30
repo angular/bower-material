@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-44e6984
+ * v0.9.0-rc3-master-e982547
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 md-input-container {
@@ -103,7 +103,7 @@ md-input-container {
     font-size: 12px;
     line-height: 24px; }
     md-input-container ng-message:not(.md-char-counter), md-input-container data-ng-message:not(.md-char-counter), md-input-container x-ng-message:not(.md-char-counter), md-input-container [ng-message]:not(.md-char-counter), md-input-container [data-ng-message]:not(.md-char-counter), md-input-container [x-ng-message]:not(.md-char-counter), md-input-container .md-char-counter:not(.md-char-counter) {
-      padding-right: 3rem; }
+      padding-right: 30px; }
     md-input-container ng-message.ng-enter, md-input-container data-ng-message.ng-enter, md-input-container x-ng-message.ng-enter, md-input-container [ng-message].ng-enter, md-input-container [data-ng-message].ng-enter, md-input-container [x-ng-message].ng-enter, md-input-container .md-char-counter.ng-enter {
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       transition-delay: 0.2s; }

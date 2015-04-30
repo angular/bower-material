@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-44e6984
+ * v0.9.0-rc3-master-e982547
  */
 (function () {
 "use strict";
@@ -509,7 +509,7 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
               tabindex="-1"\
               ng-if="$mdAutocompleteCtrl.scope.searchText && !isDisabled"\
               ng-click="$mdAutocompleteCtrl.clear()">\
-            <md-icon md-svg-icon="cancel"></md-icon>\
+            <md-icon md-svg-icon="md-cancel"></md-icon>\
             <span class="md-visually-hidden">Clear</span>\
           </button>\
           <md-progress-linear\

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-44e6984
+ * v0.9.0-rc3-master-e982547
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.theming.palette","material.core.theming","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.content","material.components.dialog","material.components.divider","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -6261,28 +6261,28 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
      var iconProvider = this;
      var svgRegistry = [
        {
-         id : 'tabs-arrow',
-         url: 'tabs-arrow.svg',
+         id : 'md-tabs-arrow',
+         url: 'md-tabs-arrow.svg',
          svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><polygon points="15.4,7.4 14,6 8,12 14,18 15.4,16.6 10.8,12 "/></g></svg>'
        },
        {
-         id : 'close',
-         url: 'close.svg',
+         id : 'md-close',
+         url: 'md-close.svg',
          svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/></g></svg>'
        },
        {
-         id:  'cancel',
-         url: 'cancel.svg',
+         id:  'md-cancel',
+         url: 'md-cancel.svg',
          svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><path d="M12 2c-5.53 0-10 4.47-10 10s4.47 10 10 10 10-4.47 10-10-4.47-10-10-10zm5 13.59l-1.41 1.41-3.59-3.59-3.59 3.59-1.41-1.41 3.59-3.59-3.59-3.59 1.41-1.41 3.59 3.59 3.59-3.59 1.41 1.41-3.59 3.59 3.59 3.59z"/></g></svg>'
        },
        {
-         id:  'menu',
-         url: 'menu.svg',
+         id:  'md-menu',
+         url: 'md-menu.svg',
          svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 100 100"><path d="M 50 0 L 100 14 L 92 80 L 50 100 L 8 80 L 0 14 Z" fill="#b2b2b2"></path><path d="M 50 5 L 6 18 L 13.5 77 L 50 94 Z" fill="#E42939"></path><path d="M 50 5 L 94 18 L 86.5 77 L 50 94 Z" fill="#B72833"></path><path d="M 50 7 L 83 75 L 72 75 L 65 59 L 50 59 L 50 50 L 61 50 L 50 26 Z" fill="#b2b2b2"></path><path d="M 50 7 L 17 75 L 28 75 L 35 59 L 50 59 L 50 50 L 39 50 L 50 26 Z" fill="#fff"></path></svg>'
        },
        {
-         id:  'toggle-arrow',
-         url: 'toggle-arrow-svg',
+         id:  'md-toggle-arrow',
+         url: 'md-toggle-arrow-svg',
          svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 48 48"><path d="M24 16l-12 12 2.83 2.83 9.17-9.17 9.17 9.17 2.83-2.83z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>'
        }
      ];
@@ -11268,7 +11268,7 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
               tabindex="-1"\
               ng-if="$mdAutocompleteCtrl.scope.searchText && !isDisabled"\
               ng-click="$mdAutocompleteCtrl.clear()">\
-            <md-icon md-svg-icon="cancel"></md-icon>\
+            <md-icon md-svg-icon="md-cancel"></md-icon>\
             <span class="md-visually-hidden">Clear</span>\
           </button>\
           <md-progress-linear\
@@ -12032,7 +12032,7 @@ var CHIP_REMOVE_TEMPLATE = '\
         ng-click="$mdChipsCtrl.removeChipAndFocusInput($$replacedScope.$index)"\
         aria-hidden="true"\
         tabindex="-1">\
-      <md-icon md-svg-icon="close"></md-icon>\
+      <md-icon md-svg-icon="md-close"></md-icon>\
       <span class="md-visually-hidden">\
         {{$mdChipsCtrl.deleteButtonLabel}}\
       </span>\
@@ -12928,7 +12928,7 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
               ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageBack() }"\
               ng-if="$mdTabsCtrl.shouldPaginate()"\
               ng-click="$mdTabsCtrl.previousPage()">\
-            <md-icon md-svg-icon="tabs-arrow"></md-icon>\
+            <md-icon md-svg-icon="md-tabs-arrow"></md-icon>\
           </md-prev-button>\
           <md-next-button\
               tabindex="-1"\
@@ -12938,7 +12938,7 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
               ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageForward() }"\
               ng-if="$mdTabsCtrl.shouldPaginate()"\
               ng-click="$mdTabsCtrl.nextPage()">\
-            <md-icon md-svg-icon="tabs-arrow"></md-icon>\
+            <md-icon md-svg-icon="md-tabs-arrow"></md-icon>\
           </md-next-button>\
           <md-tabs-canvas\
               tabindex="0"\

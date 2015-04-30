@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-44e6984
+ * v0.9.0-rc3-master-e982547
  */
 (function () {
 "use strict";
@@ -644,7 +644,7 @@ var CHIP_REMOVE_TEMPLATE = '\
         ng-click="$mdChipsCtrl.removeChipAndFocusInput($$replacedScope.$index)"\
         aria-hidden="true"\
         tabindex="-1">\
-      <md-icon md-svg-icon="close"></md-icon>\
+      <md-icon md-svg-icon="md-close"></md-icon>\
       <span class="md-visually-hidden">\
         {{$mdChipsCtrl.deleteButtonLabel}}\
       </span>\
