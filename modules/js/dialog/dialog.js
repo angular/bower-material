@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-2b6dd4d
+ * v0.9.0-rc3-master-6806f55
  */
 (function () {
 "use strict";
@@ -429,6 +429,7 @@ function MdDialogProvider($$interimElementProvider) {
 
     // On show method for dialogs
     function onShow(scope, element, options) {
+      angular.element($document[0].body).addClass('md-dialog-is-showing');
       element = $mdUtil.extractElementByName(element, 'md-dialog');
 
       // Incase the user provides a raw dom element, always wrap it in jqLite
@@ -515,6 +516,7 @@ function MdDialogProvider($$interimElementProvider) {
 
     // On remove function for all dialogs
     function onRemove(scope, element, options) {
+      angular.element($document[0].body).removeClass('md-dialog-is-showing');
 
       if (options.backdrop) {
         $animate.leave(options.backdrop);
