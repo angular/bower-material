@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-4917a16
+ * v0.9.0-rc3-master-92ed465
  */
 (function () {
 "use strict";
@@ -134,6 +134,8 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming) {
             toolbarHeight / shrinkSpeedFactor,
             Math.max(0, y + scrollTop - prevScrollTop)
           );
+
+          element[y ? 'addClass' : 'removeClass']('md-whiteframe-z1');
 
           element.css(
             $mdConstant.CSS.TRANSFORM,

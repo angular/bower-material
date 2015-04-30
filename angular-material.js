@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-4917a16
+ * v0.9.0-rc3-master-92ed465
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.theming.palette","material.core.theming","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.content","material.components.dialog","material.components.divider","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -10512,6 +10512,8 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming) {
             toolbarHeight / shrinkSpeedFactor,
             Math.max(0, y + scrollTop - prevScrollTop)
           );
+
+          element[y ? 'addClass' : 'removeClass']('md-whiteframe-z1');
 
           element.css(
             $mdConstant.CSS.TRANSFORM,
