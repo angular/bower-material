@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-8772d59
+ * v0.9.0-rc3-master-27075c7
  */
 (function () {
 "use strict";
@@ -342,9 +342,9 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
     }
     function handleResults (matches) {
       cache[term] = matches;
+      self.loading = false;
       if (searchText !== $scope.searchText) return; //-- just cache the results if old request
       promise = null;
-      self.loading = false;
       self.matches = matches;
       self.hidden = shouldHide();
       updateMessages();
