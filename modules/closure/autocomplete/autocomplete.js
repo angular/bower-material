@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-211a31e
+ * v0.9.0-rc3-master-e057e27
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -415,6 +415,13 @@ angular
  * `<md-autocomplete>` is a special input component with a drop-down of all possible matches to a custom query.
  * This component allows you to provide real-time suggestions as the user types in the input area.
  *
+ * To start, you will need to specify the required parameters and provide a template for your results.
+ * The content inside `md-autocomplete` will be treated as a template.
+ *
+ * In more complex cases, you may want to include other content such as a message to display when
+ * no matches were found.  You can do this by wrapping your template in `md-item-template` and adding
+ * a tag for `md-not-found`.  An example of this is shown below.
+ *
  * @param {expression} md-items An expression in the format of `item in items` to iterate over matches for your search.
  * @param {expression} md-selected-item-change An expression to be run each time a new item is selected
  * @param {expression} md-search-text-change An expression to be run each time the search text updates
@@ -431,6 +438,7 @@ angular
  * @param {string=} md-menu-class This will be applied to the dropdown menu for styling
  *
  * @usage
+ * ###Basic Example
  * <hljs lang="html">
  *   <md-autocomplete
  *       md-selected-item="selectedItem"
@@ -440,6 +448,25 @@ angular
  *     <span md-highlight-text="searchText">{{item.display}}</span>
  *   </md-autocomplete>
  * </hljs>
+ *
+ * ###Example with "not found" message
+ * <hljs lang="html">
+ * <md-autocomplete
+ *     md-selected-item="selectedItem"
+ *     md-search-text="searchText"
+ *     md-items="item in getMatches(searchText)"
+ *     md-item-text="item.display">
+ *   <md-item-template>
+ *     <span md-highlight-text="searchText">{{item.display}}</span>
+ *   </md-item-template>
+ *   <md-not-found>
+ *     No matches found.
+ *   </md-not-found>
+ * </md-autocomplete>
+ * </hljs>
+ *
+ * In this example, our code utilizes `md-item-template` and `md-not-found` to specify the different
+ * parts that make up our component.
  */
 
 function MdAutocomplete ($mdTheming, $mdUtil) {
@@ -465,10 +492,8 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
       menuClass:     '@?mdMenuClass'
     },
     template: function (element, attr) {
-      //-- grab the original HTML for custom transclusion before Angular attempts to parse it
-      //-- the HTML is being stored on the attr object so that it is available to postLink
-      attr.$mdAutocompleteTemplate = element.html();
-      //-- return the replacement template, which will wipe out the original HTML
+      var itemTemplate = getItemTemplate(),
+          noItemsTemplate = getNoItemsTemplate();
       return '\
         <md-autocomplete-wrap role="listbox">\
           <md-input-container ng-if="floatingLabel">\
@@ -488,7 +513,6 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
                 aria-haspopup="true"\
                 aria-activedescendant=""\
                 aria-expanded="{{!$mdAutocompleteCtrl.hidden}}"/>\
-              \
           </md-input-container>\
           <input type="text"\
               id="input-{{$mdAutocompleteCtrl.id}}"\
@@ -528,9 +552,15 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
                 ng-class="{ selected: index === $mdAutocompleteCtrl.index }"\
                 ng-hide="$mdAutocompleteCtrl.hidden"\
                 ng-click="$mdAutocompleteCtrl.select(index)"\
-                md-autocomplete-list-item-template="contents"\
                 md-autocomplete-list-item="$mdAutocompleteCtrl.itemName">\
+                ' + itemTemplate + '\
             </li>\
+            ' + (function () {
+              return noItemsTemplate
+                  ? '<li ng-if="!$mdAutocompleteCtrl.matches.length"\
+                        ng-hide="$mdAutocompleteCtrl.hidden">' + noItemsTemplate + '</li>'
+                  : '';
+            })() + '\
           </ul>\
         </md-autocomplete-wrap>\
         <aria-status\
@@ -539,13 +569,21 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
             aria-live="assertive">\
           <p ng-repeat="message in $mdAutocompleteCtrl.messages">{{message.display}}</p>\
         </aria-status>';
+
+      function getItemTemplate () {
+        var templateTag = element.find('md-item-template').remove();
+        return templateTag.length ? templateTag.html() : element.html();
+      }
+
+      function getNoItemsTemplate () {
+        var templateTag = element.find('md-not-found').remove();
+        return templateTag.length ? templateTag.html() : '';
+      }
     }
   };
 
   function link (scope, element, attr) {
     attr.$observe('disabled', function (value) { scope.isDisabled = value; });
-    scope.contents = attr.$mdAutocompleteTemplate;
-    delete attr.$mdAutocompleteTemplate;
 
     $mdUtil.initOptionalProperties(scope, attr, {searchText:null, selectedItem:null} );
 
@@ -640,7 +678,6 @@ function MdAutocompleteListItem ($compile, $mdUtil) {
         newScope = ctrl.parent.$new(false, ctrl.parent),
         itemName = ctrl.scope.$eval(attr.mdAutocompleteListItem);
     newScope[itemName] = scope.item;
-    element.html(ctrl.scope.$eval(attr.mdAutocompleteListItemTemplate));
     $compile(element.contents())(newScope);
     element.attr({
       role: 'option',
