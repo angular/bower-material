@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-e057e27
+ * v0.9.0-rc3-master-9abaed0
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -558,7 +558,8 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
             ' + (function () {
               return noItemsTemplate
                   ? '<li ng-if="!$mdAutocompleteCtrl.matches.length"\
-                        ng-hide="$mdAutocompleteCtrl.hidden">' + noItemsTemplate + '</li>'
+                        ng-hide="$mdAutocompleteCtrl.hidden"\
+                        md-autocomplete-parent-scope>' + noItemsTemplate + '</li>'
                   : '';
             })() + '\
           </ul>\
@@ -686,5 +687,23 @@ function MdAutocompleteListItem ($compile, $mdUtil) {
   }
 }
 MdAutocompleteListItem.$inject = ["$compile", "$mdUtil"];
+
+angular
+    .module('material.components.autocomplete')
+    .directive('mdAutocompleteParentScope', MdAutocompleteParentScope);
+
+function MdAutocompleteParentScope ($compile, $mdUtil) {
+  return {
+    restrict: 'A',
+    terminal: true,
+    link: postLink,
+    scope: false
+  };
+  function postLink (scope, element, attr) {
+    var ctrl     = scope.$parent.$mdAutocompleteCtrl;
+    $compile(element.contents())(ctrl.parent);
+  }
+}
+MdAutocompleteParentScope.$inject = ["$compile", "$mdUtil"];
 
 ng.material.components.autocomplete = angular.module("material.components.autocomplete");

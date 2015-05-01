@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-e057e27
+ * v0.9.0-rc3-master-9abaed0
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.theming.palette","material.core.theming","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.content","material.components.dialog","material.components.divider","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -11318,7 +11318,8 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
             ' + (function () {
               return noItemsTemplate
                   ? '<li ng-if="!$mdAutocompleteCtrl.matches.length"\
-                        ng-hide="$mdAutocompleteCtrl.hidden">' + noItemsTemplate + '</li>'
+                        ng-hide="$mdAutocompleteCtrl.hidden"\
+                        md-autocomplete-parent-scope>' + noItemsTemplate + '</li>'
                   : '';
             })() + '\
           </ul>\
@@ -11446,6 +11447,24 @@ function MdAutocompleteListItem ($compile, $mdUtil) {
   }
 }
 MdAutocompleteListItem.$inject = ["$compile", "$mdUtil"];
+
+angular
+    .module('material.components.autocomplete')
+    .directive('mdAutocompleteParentScope', MdAutocompleteParentScope);
+
+function MdAutocompleteParentScope ($compile, $mdUtil) {
+  return {
+    restrict: 'A',
+    terminal: true,
+    link: postLink,
+    scope: false
+  };
+  function postLink (scope, element, attr) {
+    var ctrl     = scope.$parent.$mdAutocompleteCtrl;
+    $compile(element.contents())(ctrl.parent);
+  }
+}
+MdAutocompleteParentScope.$inject = ["$compile", "$mdUtil"];
 
 angular
     .module('material.components.chips')
