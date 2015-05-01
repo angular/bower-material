@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-2fef6ca
+ * v0.9.0-rc3-master-8584692
  */
 (function () {
 "use strict";
@@ -210,8 +210,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
 
   function handleSearchText (searchText, previousSearchText) {
     self.index = getDefaultIndex();
-    //-- do nothing on init if there is no initial value
-    if (!searchText && searchText === previousSearchText) return;
+    //-- do nothing on init
+    if (searchText === previousSearchText) return;
     //-- clear selected item if search text no longer matches it
     if (searchText !== getDisplayValue($scope.selectedItem)) $scope.selectedItem = null;
     else return;
