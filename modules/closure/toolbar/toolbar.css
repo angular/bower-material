@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-544cb27
+ * v0.9.0-rc3-master-cbbdf74
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 md-toolbar {
@@ -17,10 +17,9 @@ md-toolbar {
   z-index: 2;
   font-size: 20px;
   min-height: 64px;
-  width: 100%;
-  transition: box-shadow 0.5s linear; }
-  md-toolbar.ng-animate {
-    transition: none; }
+  width: 100%; }
+  md-toolbar.md-whiteframe-z1-add, md-toolbar.md-whiteframe-z1-remove {
+    transition: box-shadow 0.5s linear; }
   md-toolbar *, md-toolbar *:before, md-toolbar *:after {
     box-sizing: border-box; }
   md-toolbar.md-tall {

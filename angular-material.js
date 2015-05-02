@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-544cb27
+ * v0.9.0-rc3-master-cbbdf74
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.theming.palette","material.core.theming","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.content","material.components.dialog","material.components.divider","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -10447,7 +10447,7 @@ angular.module('material.components.toolbar', [
  * shrinking by. For example, if 0.25 is given then the toolbar will shrink
  * at one fourth the rate at which the user scrolls down. Default 0.5.
  */
-function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming) {
+function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate, $timeout) {
 
   return {
     restrict: 'E',
@@ -10519,8 +10519,6 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming) {
             Math.max(0, y + scrollTop - prevScrollTop)
           );
 
-          element[y ? 'addClass' : 'removeClass']('md-whiteframe-z1');
-
           element.css(
             $mdConstant.CSS.TRANSFORM,
             'translate3d(0,' + (-y * shrinkSpeedFactor) + 'px,0)'
@@ -10531,6 +10529,16 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming) {
           );
 
           prevScrollTop = scrollTop;
+
+            if (element.hasClass('md-whiteframe-z1')) {
+              if (!y) {
+                $timeout(function () { $animate.removeClass(element, 'md-whiteframe-z1'); });
+              }
+            } else {
+              if (y) {
+                $timeout(function () { $animate.addClass(element, 'md-whiteframe-z1'); });
+              }
+            }
         }
 
       }
@@ -10539,7 +10547,7 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming) {
   };
 
 }
-mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming"];
+mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming", "$animate", "$timeout"];
 
 /**
  * @ngdoc module
