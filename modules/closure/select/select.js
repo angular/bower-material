@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-4e855c7
+ * v0.9.0-rc3-master-7e0a2aa
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -146,8 +146,6 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $interpolate, 
 
     attr.tabindex = attr.tabindex || '0';
 
-    $mdTheming(element);
-
     return function postLink(scope, element, attr, ctrls) {
       var isOpen;
       var isDisabled;
@@ -160,6 +158,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $interpolate, 
       var customLabel = labelEl.text().length !== 0;
       var selectContainer, selectScope, selectMenuCtrl;
       createSelect();
+
+      $mdTheming(element);
 
       if (attr.name && formCtrl) {
         var selectEl = element.parent()[0].querySelector('select[name=".' + attr.name + '"]')
