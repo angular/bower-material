@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-7d0aeef
+ * v0.9.0-rc3-master-bd3d8fb
  */
 (function () {
 "use strict";
@@ -214,8 +214,9 @@ function mdListItemDirective($mdAria, $mdConstant, $timeout) {
 
         if (!hasClick && !proxies.length) {
           firstChild.addEventListener('keypress', function(e) {
-            if (e.target.nodeName != 'INPUT') {
-              if (e.keyCode == $mdConstant.KEY_CODE.SPACE) {
+            if (e.target.nodeName != 'INPUT' && e.target.nodeName != 'TEXTAREA') {
+              var keyCode = e.which || e.keyCode;
+              if (keyCode == $mdConstant.KEY_CODE.SPACE) {
                 firstChild.click();
                 e.preventDefault();
                 e.stopPropagation();
