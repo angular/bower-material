@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc3-master-e8826d4
+ * v0.9.0-rc3-master-f01afde
  */
 (function () {
 "use strict";
@@ -174,7 +174,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $interpolate, 
       mdSelectCtrl.setLabelText = function(text) {
         if (customLabel) return; // Assume that user is handling it on their own
         mdSelectCtrl.setIsPlaceholder(!text);
-        mdSelectCtrl.wantedLabelText = text || attr.placeholder || '';
+        text = text || attr.placeholder || '';
         var target = customLabel ? labelEl : labelEl.children().eq(0);
         target.text(text);
       };
