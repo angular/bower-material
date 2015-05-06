@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-master-3d5bd94
+ * v0.9.0-master-2643388
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.theming.palette","material.core.theming","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.content","material.components.dialog","material.components.divider","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -11567,17 +11567,19 @@ angular
  *
  * @description
  * `<md-chip-remove>`
- * Designates a button as a trigger to remove the chip.
+ * Designates an element to be used as the delete button for a chip. This
+ * element is passed as a child of the `md-chips` element.
  *
  * @usage
  * <hljs lang="html">
- *   <md-chip-template>{{$chip}}<button md-chip-remove>DEL</button></md-chip-template>
+ *   <md-chips><button md-chip-remove>DEL</button></md-chips>
  * </hljs>
  */
 
 
 /**
- *
+ * MdChipRemove Directive Definition.
+ * 
  * @param $compile
  * @param $timeout
  * @returns {{restrict: string, require: string[], link: Function, scope: boolean}}
@@ -12134,7 +12136,7 @@ var CHIP_REMOVE_TEMPLATE = '\
 /**
  * MDChips Directive Definition
  */
-function MdChips ($mdTheming, $mdUtil, $compile, $timeout) {
+function MdChips ($mdTheming, $mdUtil, $compile, $log, $timeout) {
   return {
     template: function(element, attrs) {
       // Clone the element into an attribute. By prepending the attribute
@@ -12196,12 +12198,17 @@ function MdChips ($mdTheming, $mdUtil, $compile, $timeout) {
 
     // Set the chip remove, chip contents and chip input templates. The link function will put
     // them on the scope for transclusion later.
-    var chipRemoveTemplate   = getTemplateByQuery('[md-chip-remove]') || CHIP_REMOVE_TEMPLATE,
-        chipContentsTemplate = getTemplateByQuery('md-chip-template') || CHIP_DEFAULT_TEMPLATE,
-        chipInputTemplate    = getTemplateByQuery('md-autocomplete')
-            || getTemplateByQuery('input')
+    var chipRemoveTemplate   = getTemplateByQuery('md-chips>*[md-chip-remove]') || CHIP_REMOVE_TEMPLATE,
+        chipContentsTemplate = getTemplateByQuery('md-chips>md-chip-template') || CHIP_DEFAULT_TEMPLATE,
+        chipInputTemplate    = getTemplateByQuery('md-chips>md-autocomplete')
+            || getTemplateByQuery('md-chips>input')
             || CHIP_INPUT_TEMPLATE,
         staticChips = userTemplate.find('md-chip');
+
+    // Warn of malformed template. See #2545
+    if (userTemplate[0].querySelector('md-chip-template>*[md-chip-remove]')) {
+      $log.warn('invalid placement of md-chip-remove within md-chip-template.');
+    }
 
     function getTemplateByQuery (query) {
       if (!attr.ngModel) return;
@@ -12255,7 +12262,7 @@ function MdChips ($mdTheming, $mdUtil, $compile, $timeout) {
     };
   }
 }
-MdChips.$inject = ["$mdTheming", "$mdUtil", "$compile", "$timeout"];
+MdChips.$inject = ["$mdTheming", "$mdUtil", "$compile", "$log", "$timeout"];
 
 angular
     .module('material.components.chips')
