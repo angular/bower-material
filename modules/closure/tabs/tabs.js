@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-master-4197c04
+ * v0.9.0-master-161763e
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -130,7 +130,8 @@ function MdTab () {
         function (newIndex) {
           data.index = newIndex;
           ctrl.updateTabOrder();
-        });
+        }
+    );
     scope.$on('$destroy', function () { ctrl.removeTab(data); });
 
     function getLabel () {
