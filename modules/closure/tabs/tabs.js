@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-master-bdf21cd
+ * v0.9.0-master-4197c04
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -125,7 +125,6 @@ function MdTab () {
     scope.$watch('disabled', function () { ctrl.refreshIndex(); });
     scope.$watch(
         function () {
-          var tabs = element.parent()[0].getElementsByTagName('md-tab');
           return Array.prototype.indexOf.call(tabs, element[0]);
         },
         function (newIndex) {
