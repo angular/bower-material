@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-master-2643388
+ * v0.9.0-master-48c7c44
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.theming.palette","material.core.theming","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.content","material.components.dialog","material.components.divider","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 (function() {
@@ -12125,6 +12125,7 @@ var CHIP_REMOVE_TEMPLATE = '\
         class="md-chip-remove"\
         ng-if="!$mdChipsCtrl.readonly"\
         ng-click="$mdChipsCtrl.removeChipAndFocusInput($$replacedScope.$index)"\
+        type="button"\
         aria-hidden="true"\
         tabindex="-1">\
       <md-icon md-svg-icon="md-close"></md-icon>\
@@ -12285,8 +12286,7 @@ function MdContactChipsCtrl () {
 
 MdContactChipsCtrl.prototype.queryContact = function(searchText) {
   var results = this.contactQuery({'$query': searchText});
-  return this.filterSelected ?
-      results.filter(this.filterSelectedContacts.bind(this)) : results;
+  return results.filter(this.filterSelectedContacts.bind(this));
 };
 
 
@@ -12321,6 +12321,9 @@ angular
  *    contact's email address.
  * @param {string} md-contact-image The field name of the contact object representing the
  *    contact's image.
+ *
+ *
+ * // The following attribute has been removed but may come back.
  * @param {expression=} filter-selected Whether to filter selected contacts from the list of
  *    suggestions shown in the autocomplete.
  *
@@ -12334,7 +12337,6 @@ angular
  *       md-contact-name="name"
  *       md-contact-image="image"
  *       md-contact-email="email"
- *       md-filter-selected="ctrl.filterSelected"
  *       placeholder="To">
  *   </md-contact-chips>
  * </hljs>
@@ -12353,7 +12355,7 @@ var MD_CONTACT_CHIPS_TEMPLATE = '\
             md-search-text="$mdContactChipsCtrl.searchText"\
             md-items="item in $mdContactChipsCtrl.queryContact($mdContactChipsCtrl.searchText)"\
             md-item-text="$mdContactChipsCtrl.mdContactName"\
-            md-no-cache="$mdContactChipsCtrl.filterSelected"\
+            md-no-cache="true"\
             md-autoselect\
             placeholder="{{$mdContactChipsCtrl.contacts.length == 0 ?\
                 $mdContactChipsCtrl.placeholder : $mdContactChipsCtrl.secondaryPlaceholder}}">\
@@ -12404,7 +12406,6 @@ function MdContactChips ($mdTheming, $mdUtil) {
       contactName: '@mdContactName',
       contactImage: '@mdContactImage',
       contactEmail: '@mdContactEmail',
-      filterSelected: '=',
       contacts: '=ngModel',
       requireMatch: '=?mdRequireMatch'
     }
