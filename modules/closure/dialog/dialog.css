@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-master-e9324a9
+ * v0.9.0-master-9110d1e
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 .md-dialog-is-showing {
@@ -59,6 +59,15 @@ md-dialog {
       margin-top: 0; }
     md-dialog md-dialog-content:focus {
       outline: none; }
+    md-dialog md-dialog-content .md-subheader {
+      margin: 0; }
+      md-dialog md-dialog-content .md-subheader.sticky-clone {
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16); }
+    md-dialog md-dialog-content.sticky-container {
+      padding: 0; }
+      md-dialog md-dialog-content.sticky-container > div {
+        padding: 24px;
+        padding-top: 0; }
   md-dialog .md-actions {
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -75,13 +84,12 @@ md-dialog {
             justify-content: flex-end;
     margin-bottom: 0;
     padding-right: 8px;
-    padding-left: 24px;
+    padding-left: 16px;
     min-height: 52px; }
-    md-dialog .md-actions > * {
-      margin-left: 4px;
-      margin-right: 0; }
     md-dialog .md-actions .md-button {
       margin-bottom: 8px;
+      margin-left: 8px;
+      margin-right: 0;
       margin-top: 8px; }
   md-dialog.md-content-overflow .md-actions {
     border-top: 1px solid; }
