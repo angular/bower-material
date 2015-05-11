@@ -56,7 +56,7 @@ bower update
 > Please note that Angular Material requires **Angular 1.3.x** or higher.
 
 
-### Using the Angular Material Library
+## Using the Angular Material Library
 
 Now that you have installed the Angular libraries, simply include the scripts and 
 stylesheet in your main HTML file, in the order shown in the example below. Note that npm 
@@ -127,7 +127,7 @@ under `/bower_components/angular-material/`.
 </html>
 ```
 
-#### CDN
+## Using the CDN
 
 CDN versions of Angular Material are now available at 
 [Google Hosted Libraries](https://developers.google.com/speed/libraries/devguide#angularmaterial). 
@@ -186,3 +186,54 @@ pull directly from the distribution GitHub
 
 > Please note that the above RawGit access is intended **ONLY** for development purposes or sharing
   low-traffic, temporary examples or demos with small numbers of people.
+
+
+## Jasmine Testing with Angular Material
+
+<br/>
+If you are using Angular Material and will be using Jasmine to test your own custom application code, you will need to also load two (2) Angular mock files:
+
+*  Angular Mocks - **angular-mocks.js** from `/node_modules/angular-mocks/angular-mocks.js`
+*  Angular Material Mocks - **angular-material-mocks.js** from `/node_modules/angular-material/angular-material-mocks.js`
+
+<br/>
+
+Show below is a karma-configuration file (`karma.conf.js`) sample that may be a useful template for your own testing purposes:<br/><br/>
+
+```js
+module.exports = function(config) {
+
+  var SRC = [
+    'src/myApp/**/*.js',
+    'test/myApp/**/*.spec.js'
+  ];
+
+  var LIBS = [
+    'node_modules/angular/angular.js',
+    'node_modules/angular-animate/angular-animate.js',
+    'node_modules/angular-aria/angular-aria.js',
+
+    'node_modules/angular-mocks/angular-mocks.js',
+    'node_modules/angular-material/angular-material-mocks.js'
+  ];
+
+  config.set({
+
+    basePath: __dirname + '/..',
+    frameworks: ['jasmine'],
+    
+    files: LIBS.concat(SRC),
+
+    port: 9876,
+    reporters: ['progress'],
+    colors: true,
+
+    autoWatch: false,
+    singleRun: true,
+    browsers: ['PhantomJS,Chrome']
+
+  });
+
+};
+```
+
