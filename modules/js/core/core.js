@@ -2,12 +2,11 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-master-a8fd0f4
+ * v0.9.0-master-8a886d7
  */
-(function () {
+(function( window, angular, undefined ){
 "use strict";
-(function() {
-'use strict';
+
 
 /**
  * Initialization function that validates environment
@@ -60,11 +59,6 @@ function rAFDecorator( $delegate ) {
   };
   return $delegate;
 }
-
-})();
-
-(function() {
-'use strict';
 
 angular.module('material.core')
 .factory('$mdConstant', MdConstantFactory);
@@ -123,10 +117,6 @@ function MdConstantFactory($$rAF, $sniffer) {
   };
 }
 MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
-
-})();
-
-(function(){
 
   angular
     .module('material.core')
@@ -355,9 +345,6 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
     }
   }
 
-})();
-
-(function(){
 
 angular.module('material.core')
 .factory('$mdMedia', mdMediaFactory);
@@ -486,12 +473,6 @@ function mdMediaFactory($mdConstant, $rootScope, $window) {
   }
 }
 mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];
-
-
-})();
-
-(function() {
-'use strict';
 
 /*
  * This var has to be outside the angular factory, otherwise when
@@ -923,10 +904,6 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
   return this;
 };
 
-})();
-
-(function() {
-'use strict';
 
 angular.module('material.core')
   .service('$mdAria', AriaService);
@@ -1010,10 +987,6 @@ function AriaService($$rAF, $log, $window) {
   }
 }
 AriaService.$inject = ["$$rAF", "$log", "$window"];
-})();
-
-(function() {
-'use strict';
 
 angular.module('material.core')
   .service('$mdCompiler', mdCompilerService);
@@ -1150,10 +1123,6 @@ function mdCompilerService($q, $http, $injector, $compile, $controller, $templat
   };
 }
 mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controller", "$templateCache"];
-})();
-
-(function (jQuery) {
-  'use strict';
 
   var HANDLERS = {};
   /* The state of the current 'pointer'
@@ -1202,9 +1171,12 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
     skipClickHijack: function() {
       return forceSkipClickHijack = true;
     },
-    
-    // $get is used to build an instance of $mdGesture 
-    $get : ['$$MdGestureHandler', '$$rAF', '$timeout', function($$MdGestureHandler, $$rAF, $timeout) {
+
+    /**
+     * $get is used to build an instance of $mdGesture
+     * @ngInject
+     */
+    $get : ["$$MdGestureHandler", "$$rAF", "$timeout", function($$MdGestureHandler, $$rAF, $timeout) {
          return new MdGesture($$MdGestureHandler, $$rAF, $timeout);
     }]
   };
@@ -1213,6 +1185,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
 
   /**
    * MdGesture factory construction function
+   * @ngInject
    */
   function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -1416,6 +1389,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
       });
 
   }
+  MdGesture.$inject = ["$$MdGestureHandler", "$$rAF", "$timeout"];
 
   /**
    * MdGestureHandler
@@ -1433,7 +1407,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
     this.state = {};
   }
 
-  function MdGestureHandler($$rAF) {
+  function MdGestureHandler() {
     var hasJQuery =  typeof jQuery !== 'undefined' && angular.element === jQuery;
 
     GestureHandler.prototype = {
@@ -1573,7 +1547,6 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
     }
 
   }
-  MdGestureHandler.$inject = ["$$rAF"];
 
   /**
    * Attach Gestures: hook document and check shouldHijack clicks
@@ -1756,11 +1729,6 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
       (ev.changedTouches && ev.changedTouches[0]) ||
       ev;
   }
-
-})(window.jQuery);
-
-(function() {
-'use strict';
 
 angular.module('material.core')
   .provider('$$interimElement', InterimElementProvider);
@@ -2193,11 +2161,6 @@ function InterimElementProvider() {
 
 }
 
-})();
-
-(function() {
-  'use strict';
-
   /**
    * @ngdoc module
    * @name material.core.componentRegistry
@@ -2318,12 +2281,6 @@ function InterimElementProvider() {
 
   }
   ComponentRegistry.$inject = ["$log", "$q"];
-
-
-})();
-
-(function() {
-'use strict';
 
 angular.module('material.core')
   .factory('$mdInkRipple', InkRippleService)
@@ -2748,10 +2705,6 @@ function attrNoDirective() {
     };
   };
 }
-})();
-
-(function() {
-'use strict';
 
 angular.module('material.core.theming.palette', [])
 .constant('$mdColorPalette', {
@@ -3114,10 +3067,6 @@ angular.module('material.core.theming.palette', [])
     'contrastStrongLightColors': '400 500'
   }
 });
-})();
-
-(function() {
-'use strict';
 
 angular.module('material.core.theming', ['material.core.theming.palette'])
   .directive('mdTheme', ThemingDirective)
@@ -3169,10 +3118,12 @@ angular.module('material.core.theming', ['material.core.theming.palette'])
  *
  */
 
+// In memory generated CSS rules; registered by theme.name
+var GENERATED = { };
+
 // In memory storage of defined themes and color palettes (both loaded by CSS, and user specified)
 var PALETTES;
 var THEMES;
-var GENERATED;
 
 var DARK_FOREGROUND = {
   name: 'dark',
@@ -3243,7 +3194,6 @@ var VALID_HUE_VALUES = [
 function ThemingProvider($mdColorPalette) {
   PALETTES = { };
   THEMES = { };
-  GENERATED = { };
 
   var themingProvider;
   var defaultTheme = 'default';
@@ -3563,15 +3513,15 @@ function parseRules(theme, colorType, rules) {
 // Generate our themes at run time given the state of THEMES and PALETTES
 function generateThemes($injector) {
 
-  // Insert our newly minted styles into the DOM
   var head = document.getElementsByTagName('head')[0];
-  if (!head) return;
-  var firstChild = head.firstElementChild;
-  if (!firstChild) return;
+  var firstChild = head ? head.firstElementChild : null;
   var themeCss = $injector.has('$MD_THEME_CSS') ? $injector.get('$MD_THEME_CSS') : '';
 
-    // Expose contrast colors for palettes to ensure that text is always readable
-    angular.forEach(PALETTES, sanitizePalette);
+  if ( !firstChild ) return;
+  if (themeCss.length === 0) return; // no rules, so no point in running this expensive task
+
+  // Expose contrast colors for palettes to ensure that text is always readable
+  angular.forEach(PALETTES, sanitizePalette);
 
   // MD_THEME_CSS is a string generated by the build process that includes all the themable
   // components as templates
@@ -3739,6 +3689,8 @@ function colorToRgbaArray(clr) {
 }
 
 function rgba(rgbArray, opacity) {
+  if ( !rgbArray ) return "rgb('0,0,0')";
+
   if (rgbArray.length == 4) {
     rgbArray = angular.copy(rgbArray);
     opacity ? rgbArray.pop() : opacity = rgbArray.pop();
@@ -3748,6 +3700,5 @@ function rgba(rgbArray, opacity) {
     'rgb(' + rgbArray.join(',') + ')';
 }
 
-})();
 
-})();
+})(window, window.angular);

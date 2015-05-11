@@ -2,11 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-master-a8fd0f4
+ * v0.9.0-master-8a886d7
  */
-(function () {
+(function( window, angular, undefined ){
 "use strict";
-(function() {
 
 /**
  * @ngdoc module
@@ -368,6 +367,4 @@ function placeholderDirective($log) {
 }
 placeholderDirective.$inject = ["$log"];
 
-})();
-
-})();
+})(window, window.angular);
