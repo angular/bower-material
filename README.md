@@ -198,7 +198,7 @@ If you are using Angular Material and will be using Jasmine to test your own cus
 
 <br/>
 
-Show below is a karma-configuration file (`karma.conf.js`) sample that may be a useful template for your own testing purposes:<br/><br/>
+Shown below is a karma-configuration file (`karma.conf.js`) sample that may be a useful template for your own testing purposes:<br/><br/>
 
 ```js
 module.exports = function(config) {
@@ -212,7 +212,8 @@ module.exports = function(config) {
     'node_modules/angular/angular.js',
     'node_modules/angular-animate/angular-animate.js',
     'node_modules/angular-aria/angular-aria.js',
-
+    'node_modules/angular-material/angular-material.js',
+    
     'node_modules/angular-mocks/angular-mocks.js',
     'node_modules/angular-material/angular-material-mocks.js'
   ];
