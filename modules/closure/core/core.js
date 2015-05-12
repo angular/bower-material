@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-master-0a5603f
+ * v0.9.0-master-a22f681
  */
 goog.provide('ng.material.core');
 
@@ -1191,12 +1191,13 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
     var isIos = userAgent.match(/ipad|iphone|ipod/i);
     var isAndroid = userAgent.match(/android/i);
+    var hasJQuery =  (typeof window.jQuery !== 'undefined') && (angular.element === window.jQuery);
 
     var self = {
       handler: addHandler,
       register: register,
       // On mobile w/out jQuery, we normally intercept clicks. Should we skip that?
-      isHijackingClicks: (isIos || isAndroid) && !jQuery && !forceSkipClickHijack
+      isHijackingClicks: (isIos || isAndroid) && !hasJQuery && !forceSkipClickHijack
     };
 
     if (self.isHijackingClicks) {
@@ -1408,7 +1409,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
   }
 
   function MdGestureHandler() {
-    var hasJQuery =  typeof jQuery !== 'undefined' && angular.element === jQuery;
+    var hasJQuery =  (typeof window.jQuery !== 'undefined') && (angular.element === window.jQuery);
 
     GestureHandler.prototype = {
       options: {},
