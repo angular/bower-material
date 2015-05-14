@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-master-d864920
+ * v0.9.0-master-2923e08
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
