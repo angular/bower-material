@@ -1,6 +1,7 @@
 <a name="0.9.4"></a>
 ### 0.9.4  (2015-05-15)
 
+This interim relase fixes an incorrect deployment of angular-material.js; which ad the Closure Library **Namespace** features in `goog.provide()`. Only source in `/modules/closure/**.js` should use this namespacing. 
 
 #### Features
 
@@ -9,7 +10,7 @@
 
 #### Bug Fixes
 
-* **build:** fixes issue where JS files were being generated with Closure code
+* **build:** fixes issue where JS files were being generated with Closure code, closes [#2852](https://github.com/angular/material/issues/2852))
 
 
 <a name="0.9.3"></a>
