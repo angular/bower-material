@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.3-master-af9f896
+ * v0.9.3-master-76e3672
  */
 goog.provide('ng.material.components.radioButton');
 goog.require('ng.material.core');
