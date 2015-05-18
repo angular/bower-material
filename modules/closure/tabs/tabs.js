@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.4-master-7aff8ff
+ * v0.9.4-master-d24872c
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -164,11 +164,13 @@ angular
     .directive('mdTabItem', MdTabItem);
 
 function MdTabItem () {
-  return { require: '^?mdTabs', link: link };
-  function link (scope, element, attr, ctrl) {
-    if (!ctrl) return;
-    ctrl.attachRipple(scope, element);
-  }
+  return {
+    require: '^?mdTabs',
+    link: function link (scope, element, attr, ctrl) {
+      if (!ctrl) return;
+      ctrl.attachRipple(scope, element);
+    }
+  };
 }
 
 angular.module('material.components.tabs')
