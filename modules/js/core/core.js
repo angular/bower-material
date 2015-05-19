@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.4-master-2cfc692
+ * v0.9.4-master-87a6d16
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -593,8 +593,7 @@ angular.module('material.core')
           position: 'fixed',
           width: '100%',
           overflowY: 'scroll',
-          transform: 'translateY(-' + scrollOffset + 'px)',
-          '-webkit-transform': 'translateY(-' + scrollOffset + 'px)'
+          top: -scrollOffset + 'px'
         });
 
         return function restoreScroll() {
