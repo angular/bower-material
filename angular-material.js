@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.4-master-41953d5
+ * v0.9.4-master-7425997
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -8204,7 +8204,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
       } else {
         self.hashGetter = function getHashValue(value) {
           if (angular.isObject(value)) {
-            return '$$object_' + (value.$$mdSelectId || (value.$$mdSelectId = ++selectNextId));
+            return 'object_' + (value.$$mdSelectId || (value.$$mdSelectId = ++selectNextId));
           }
           return value;
         };
