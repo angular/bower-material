@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.4-master-d24872c
+ * v0.9.4-master-33ac259
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -607,7 +607,7 @@ angular
 
 function MdHighlightCtrl ($scope, $element, $interpolate) {
   var term = $element.attr('md-highlight-text'),
-      text = $interpolate($element.text())($scope),
+      text = $interpolate($element.html())($scope),
       flags = $element.attr('md-highlight-flags') || '',
       watcher = $scope.$watch(term, function (term) {
         var regex = getRegExp(term, flags),
