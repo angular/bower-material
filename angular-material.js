@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.4-master-87a6d16
+ * v0.9.4-master-0c28cee
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3052,7 +3052,6 @@ angular.module('material.core.theming.palette', [])
     'contrastStrongLightColors': '300 400'
   },
   'grey': {
-    '0': '#ffffff',
     '50': '#fafafa',
     '100': '#f5f5f5',
     '200': '#eeeeee',
