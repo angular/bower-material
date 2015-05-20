@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.4-master-1538ebe
+ * v0.9.4-master-0ef4b79
  */
 goog.provide('ng.material.components.list');
 goog.require('ng.material.core');
@@ -95,7 +95,7 @@ function mdListItemDirective($mdAria, $mdConstant, $timeout) {
         }
         if (hasProxiedElement) {
           wrapIn('div');
-        } else {
+        } else if (!tEl[0].querySelector('md-button')) {
           tEl.addClass('md-no-proxy');
         }
       } else {
