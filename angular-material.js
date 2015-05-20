@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.4-master-7425997
+ * v0.9.4-master-1538ebe
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -11512,7 +11512,8 @@ angular
 
 function MdHighlightCtrl ($scope, $element, $interpolate) {
   var term = $element.attr('md-highlight-text'),
-      text = $interpolate($element.html())($scope),
+      unsafeText = $interpolate($element.html())($scope),
+      text = angular.element('<div>').text(unsafeText).html(),
       flags = $element.attr('md-highlight-flags') || '',
       watcher = $scope.$watch(term, function (term) {
         var regex = getRegExp(term, flags),
