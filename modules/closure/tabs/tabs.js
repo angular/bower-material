@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.4-master-0ef4b79
+ * v0.9.4-master-c7ea4a7
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -195,6 +195,9 @@ angular
     .module('material.components.tabs')
     .controller('MdTabsController', MdTabsController);
 
+/**
+ * @ngInject
+ */
 function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $mdInkRipple,
                            $mdUtil, $animate) {
   var ctrl     = this,
@@ -652,7 +655,7 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
       stretchTabs:   '@?mdStretchTabs'
     },
     template: function (element, attr) {
-      attr.$mdTabsTemplate = element.html();
+      var content = attr["$mdTabsTemplate"] = element.html();
       return '\
         <md-tabs-wrapper ng-class="{ \'md-stretch-tabs\': $mdTabsCtrl.shouldStretchTabs() }">\
           <md-tab-data></md-tab-data>\
