@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.4-master-198199c
+ * v0.9.4-master-d0fc865
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -198,7 +198,7 @@ angular
 /**
  * @ngInject
  */
-function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $mdInkRipple,
+function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $mdTabInkRipple,
                            $mdUtil, $animate) {
   var ctrl     = this,
       locked   = false,
@@ -553,10 +553,10 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
 
   function attachRipple (scope, element) {
     var options = { colorElement: angular.element(elements.inkBar) };
-    $mdInkRipple.attachTabBehavior(scope, element, options);
+    $mdTabInkRipple.attach(scope, element, options);
   }
 }
-MdTabsController.$inject = ["$scope", "$element", "$window", "$timeout", "$mdConstant", "$mdInkRipple", "$mdUtil", "$animate"];
+MdTabsController.$inject = ["$scope", "$element", "$window", "$timeout", "$mdConstant", "$mdTabInkRipple", "$mdUtil", "$animate"];
 
 /**
  * @ngdoc directive

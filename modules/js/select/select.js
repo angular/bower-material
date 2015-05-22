@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.4-master-198199c
+ * v0.9.4-master-d0fc865
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -570,7 +570,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
 }
 SelectMenuDirective.$inject = ["$parse", "$mdUtil", "$mdTheming"];
 
-function OptionDirective($mdInkRipple, $mdUtil) {
+function OptionDirective($mdButtonInkRipple, $mdUtil) {
 
   OptionController.$inject = ["$element"];
   return {
@@ -616,7 +616,7 @@ function OptionDirective($mdInkRipple, $mdUtil) {
       });
     });
 
-    $mdInkRipple.attachButtonBehavior(scope, element);
+    $mdButtonInkRipple.attach(scope, element);
     configureAria();
 
     function setOptionValue(newValue, oldValue) {
@@ -664,7 +664,7 @@ function OptionDirective($mdInkRipple, $mdUtil) {
   }
 
 }
-OptionDirective.$inject = ["$mdInkRipple", "$mdUtil"];
+OptionDirective.$inject = ["$mdButtonInkRipple", "$mdUtil"];
 
 function OptgroupDirective() {
   return {

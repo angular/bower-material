@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.4-master-198199c
+ * v0.9.4-master-d0fc865
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -66,7 +66,7 @@ angular
  *  </md-button>
  * </hljs>
  */
-function MdButtonDirective($mdInkRipple, $mdTheming, $mdAria, $timeout) {
+function MdButtonDirective($mdButtonInkRipple, $mdTheming, $mdAria, $timeout) {
 
   return {
     restrict: 'EA',
@@ -79,7 +79,7 @@ function MdButtonDirective($mdInkRipple, $mdTheming, $mdAria, $timeout) {
   function isAnchor(attr) {
     return angular.isDefined(attr.href) || angular.isDefined(attr.ngHref) || angular.isDefined(attr.ngLink) || angular.isDefined(attr.uiSref);
   }
-  
+
   function getTemplate(element, attr) {
     return isAnchor(attr) ?
            '<a class="md-button" ng-transclude></a>' :
@@ -89,14 +89,14 @@ function MdButtonDirective($mdInkRipple, $mdTheming, $mdAria, $timeout) {
   function postLink(scope, element, attr) {
     var node = element[0];
     $mdTheming(element);
-    $mdInkRipple.attachButtonBehavior(scope, element);
+    $mdButtonInkRipple.attach(scope, element);
 
     var elementHasText = node.textContent.trim();
     if (!elementHasText) {
       $mdAria.expect(element, 'aria-label');
     }
 
-    // For anchor elements, we have to set tabindex manually when the 
+    // For anchor elements, we have to set tabindex manually when the
     // element is disabled
     if (isAnchor(attr) && angular.isDefined(attr.ngDisabled) ) {
       scope.$watch(attr.ngDisabled, function(isDisabled) {
@@ -127,6 +127,6 @@ function MdButtonDirective($mdInkRipple, $mdTheming, $mdAria, $timeout) {
   }
 
 }
-MdButtonDirective.$inject = ["$mdInkRipple", "$mdTheming", "$mdAria", "$timeout"];
+MdButtonDirective.$inject = ["$mdButtonInkRipple", "$mdTheming", "$mdAria", "$timeout"];
 
 })(window, window.angular);

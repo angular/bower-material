@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.4-master-198199c
+ * v0.9.4-master-d0fc865
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2254,6 +2254,124 @@ function InterimElementProvider() {
   }
   ComponentRegistry.$inject = ["$log", "$q"];
 
+(function() {
+  'use strict';
+
+  /**
+   * @ngdoc service
+   * @name $mdButtonInkRipple
+   * @module material.core
+   *
+   * @description
+   * Provides ripple effects for md-button.  See $mdInkRipple service for all possible configuration options.
+   *
+   * @param {object=} scope Scope within the current context
+   * @param {object=} element The element the ripple effect should be applied to
+   * @param {object=} options (Optional) Configuration options to override the defaultripple configuration
+   */
+
+  angular.module('material.core')
+    .factory('$mdButtonInkRipple', MdButtonInkRipple);
+
+  function MdButtonInkRipple($mdInkRipple) {
+    return {
+      attach: attach
+    };
+
+    function attach(scope, element, options) {
+      var elementOptions = optionsForElement(element);
+      return $mdInkRipple.attach(scope, element, angular.extend(elementOptions, options));
+    };
+
+    function optionsForElement(element) {
+      if (element.hasClass('md-icon-button')) {
+        return {
+          isMenuItem: element.hasClass('md-menu-item'),
+          fitRipple: true,
+          center: true
+        };
+      } else {
+        return {
+          isMenuItem: element.hasClass('md-menu-item'),
+          dimBackground: true
+        }
+      }
+    };
+  }
+  MdButtonInkRipple.$inject = ["$mdInkRipple"];;
+})();
+
+(function() {
+  'use strict';
+
+    /**
+   * @ngdoc service
+   * @name $mdCheckboxInkRipple
+   * @module material.core
+   *
+   * @description
+   * Provides ripple effects for md-checkbox.  See $mdInkRipple service for all possible configuration options.
+   *
+   * @param {object=} scope Scope within the current context
+   * @param {object=} element The element the ripple effect should be applied to
+   * @param {object=} options (Optional) Configuration options to override the defaultripple configuration
+   */
+
+  angular.module('material.core')
+    .factory('$mdCheckboxInkRipple', MdCheckboxInkRipple);
+
+  function MdCheckboxInkRipple($mdInkRipple) {
+    return {
+      attach: attach
+    };
+
+    function attach(scope, element, options) {
+      return $mdInkRipple.attach(scope, element, angular.extend({
+        center: true,
+        dimBackground: false,
+        fitRipple: true
+      }, options));
+    };
+  }
+  MdCheckboxInkRipple.$inject = ["$mdInkRipple"];;
+})();
+
+(function() {
+  'use strict';
+
+  /**
+   * @ngdoc service
+   * @name $mdListInkRipple
+   * @module material.core
+   *
+   * @description
+   * Provides ripple effects for md-list.  See $mdInkRipple service for all possible configuration options.
+   *
+   * @param {object=} scope Scope within the current context
+   * @param {object=} element The element the ripple effect should be applied to
+   * @param {object=} options (Optional) Configuration options to override the defaultripple configuration
+   */
+
+  angular.module('material.core')
+    .factory('$mdListInkRipple', MdListInkRipple);
+
+  function MdListInkRipple($mdInkRipple) {
+    return {
+      attach: attach
+    };
+
+    function attach(scope, element, options) {
+      return $mdInkRipple.attach(scope, element, angular.extend({
+        center: false,
+        dimBackground: true,
+        outline: false,
+        rippleSize: 'full'
+      }, options));
+    };
+  }
+  MdListInkRipple.$inject = ["$mdInkRipple"];;
+})();
+
 angular.module('material.core')
   .factory('$mdInkRipple', InkRippleService)
   .directive('mdInkRipple', InkRippleDirective)
@@ -2261,64 +2379,25 @@ angular.module('material.core')
   .directive('mdNoBar', attrNoDirective())
   .directive('mdNoStretch', attrNoDirective());
 
-function InkRippleDirective($mdInkRipple) {
+function InkRippleDirective($mdButtonInkRipple, $mdCheckboxInkRipple) {
   return {
     controller: angular.noop,
     link: function (scope, element, attr) {
       if (attr.hasOwnProperty('mdInkRippleCheckbox')) {
-        $mdInkRipple.attachCheckboxBehavior(scope, element);
+        $mdCheckboxInkRipple.attach(scope, element);
       } else {
-        $mdInkRipple.attachButtonBehavior(scope, element);
+        $mdButtonInkRipple.attach(scope, element);
       }
     }
   };
 }
-InkRippleDirective.$inject = ["$mdInkRipple"];
+InkRippleDirective.$inject = ["$mdButtonInkRipple", "$mdCheckboxInkRipple"];
 
 function InkRippleService($window, $timeout) {
 
   return {
-    attachButtonBehavior: attachButtonBehavior,
-    attachCheckboxBehavior: attachCheckboxBehavior,
-    attachTabBehavior: attachTabBehavior,
-    attachListControlBehavior: attachListControlBehavior,
     attach: attach
   };
-
-  function attachButtonBehavior(scope, element, options) {
-    return attach(scope, element, angular.extend({
-      fullRipple: true,
-      isMenuItem: element.hasClass('md-menu-item'),
-      center: false,
-      dimBackground: true
-    }, options));
-  }
-
-  function attachCheckboxBehavior(scope, element, options) {
-    return attach(scope, element, angular.extend({
-      center: true,
-      dimBackground: false,
-      fitRipple: true
-    }, options));
-  }
-
-  function attachTabBehavior(scope, element, options) {
-    return attach(scope, element, angular.extend({
-      center: false,
-      dimBackground: true,
-      outline: false,
-      rippleSize: 'full'
-    }, options));
-  }
-
-  function attachListControlBehavior(scope, element, options) {
-    return attach(scope, element, angular.extend({
-      center: false,
-      dimBackground: true,
-      outline: false,
-      rippleSize: 'full'
-    }, options));
-  }
 
   function attach(scope, element, options) {
     if (element.controller('mdNoInk')) return angular.noop;
@@ -2677,6 +2756,42 @@ function attrNoDirective() {
     };
   };
 }
+
+(function() {
+  'use strict';
+
+    /**
+   * @ngdoc service
+   * @name $mdTabInkRipple
+   * @module material.core
+   *
+   * @description
+   * Provides ripple effects for md-tabs.  See $mdInkRipple service for all possible configuration options.
+   *
+   * @param {object=} scope Scope within the current context
+   * @param {object=} element The element the ripple effect should be applied to
+   * @param {object=} options (Optional) Configuration options to override the defaultripple configuration
+   */
+
+  angular.module('material.core')
+    .factory('$mdTabInkRipple', MdTabInkRipple);
+
+  function MdTabInkRipple($mdInkRipple) {
+    return {
+      attach: attach
+    };
+
+    function attach(scope, element, options) {
+      return $mdInkRipple.attach(scope, element, angular.extend({
+        center: false,
+        dimBackground: true,
+        outline: false,
+        rippleSize: 'full'
+      }, options));
+    };
+  }
+  MdTabInkRipple.$inject = ["$mdInkRipple"];;
+})();
 
 angular.module('material.core.theming.palette', [])
 .constant('$mdColorPalette', {
