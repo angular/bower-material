@@ -1,8 +1,8 @@
 {
   "name": "angular-material-subheader",
-  "version": "0.9.4-master-154c51b",
+  "version": "0.9.4-master-5a43909",
   "dependencies": {
-    "angular-material-core": "0.9.4-master-154c51b",
-    "angular-material-sticky": "0.9.4-master-154c51b"
+    "angular-material-core": "0.9.4-master-5a43909",
+    "angular-material-sticky": "0.9.4-master-5a43909"
   }
 }
