@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.4-master-f4c30ce
+ * v0.9.4-master-154c51b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -741,7 +741,7 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
               ng-repeat="(index, tab) in $mdTabsCtrl.tabs" \
               md-template="tab.template"\
               md-scope="tab.parent"\
-              ng-if="tab.isActive()"\
+              md-connected-if="tab.isActive()"\
               ng-class="{\
                 \'md-no-transition\': $mdTabsCtrl.lastSelectedIndex == null,\
                 \'md-active\':        tab.isActive(),\
@@ -781,22 +781,35 @@ angular
     .module('material.components.tabs')
     .directive('mdTemplate', MdTemplate);
 
-function MdTemplate ($compile) {
+function MdTemplate ($compile, $mdUtil, $timeout) {
   return {
     restrict: 'A',
     link: link,
     scope: {
       template: '=mdTemplate',
-      compileScope: '=mdScope'
+      compileScope: '=mdScope',
+      connected: '=?mdConnectedIf'
     },
     require: '^?mdTabs'
   };
   function link (scope, element, attr, ctrl) {
     if (!ctrl) return;
+    var compileScope = scope.compileScope.$new();
     element.html(scope.template);
-    $compile(element.contents())(scope.compileScope);
+    $compile(element.contents())(compileScope);
+    return $timeout(handleScope);
+    function handleScope () {
+      scope.$watch('connected', function (value) { value ? reconnect() : disconnect(); });
+      scope.$on('$destroy', reconnect);
+    }
+    function disconnect () {
+      $mdUtil.disconnectScope(compileScope);
+    }
+    function reconnect () {
+      $mdUtil.reconnectScope(compileScope);
+    }
   }
 }
-MdTemplate.$inject = ["$compile"];
+MdTemplate.$inject = ["$compile", "$mdUtil", "$timeout"];
 
 })(window, window.angular);
