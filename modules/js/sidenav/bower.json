@@ -1,8 +1,8 @@
 {
   "name": "angular-material-sidenav",
-  "version": "0.9.4-master-1dc56a6",
+  "version": "0.9.5",
   "dependencies": {
-    "angular-material-core": "0.9.4-master-1dc56a6",
-    "angular-material-backdrop": "0.9.4-master-1dc56a6"
+    "angular-material-core": "0.9.5",
+    "angular-material-backdrop": "0.9.5"
   }
 }
