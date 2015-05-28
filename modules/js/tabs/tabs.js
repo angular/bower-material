@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.6-master-a47526a
+ * v0.9.6-master-9082d27
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -196,7 +196,7 @@ angular
     .controller('MdTabsController', MdTabsController);
 
 /**
- * @ngInject
+ * ngInject
  */
 function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $mdTabInkRipple,
                            $mdUtil, $animate) {

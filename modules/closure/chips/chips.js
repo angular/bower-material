@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.6-master-a47526a
+ * v0.9.6-master-9082d27
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.components.autocomplete');
@@ -52,7 +52,7 @@ var DELETE_HINT_TEMPLATE = '\
  *
  * @param $mdTheming
  * @param $mdInkRipple
- * @ngInject
+ * ngInject
  */
 function MdChip($mdTheming) {
   return {
@@ -910,7 +910,7 @@ MdContactChipsCtrl.prototype.filterSelectedContacts = function(contact) {
    *
    * @param $mdTheming
    * @returns {*}
-   * @ngInject
+   * ngInject
    */
   function MdContactChips ($mdTheming, $mdUtil) {
     return {

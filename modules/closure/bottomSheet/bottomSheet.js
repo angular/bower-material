@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.6-master-a47526a
+ * v0.9.6-master-9082d27
  */
 goog.provide('ng.material.components.bottomSheet');
 goog.require('ng.material.components.backdrop');
@@ -134,7 +134,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
       options: bottomSheetDefaults
     });
 
-  /* @ngInject */
+  /* ngInject */
   function bottomSheetDefaults($animate, $mdConstant, $mdUtil, $timeout, $compile, $mdTheming, $mdBottomSheet, $rootElement, $mdGesture) {
     var backdrop;
 

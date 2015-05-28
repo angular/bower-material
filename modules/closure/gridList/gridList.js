@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.6-master-a47526a
+ * v0.9.6-master-9082d27
  */
 goog.provide('ng.material.components.gridList');
 goog.require('ng.material.core');
@@ -420,7 +420,7 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
 }
 GridListDirective.$inject = ["$interpolate", "$mdConstant", "$mdGridLayout", "$mdMedia"];
 
-/* @ngInject */
+/* ngInject */
 function GridListController($timeout) {
   this.layoutInvalidated = false;
   this.tilesInvalidated = false;
@@ -454,7 +454,7 @@ GridListController.prototype = {
 };
 
 
-/* @ngInject */
+/* ngInject */
 function GridLayoutFactory($mdUtil) {
   var defaultAnimator = GridTileAnimator;
 
