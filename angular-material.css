@@ -3537,6 +3537,13 @@ md-dialog {
   md-dialog {
     border: 1px solid #fff; } }
 
+md-divider {
+  display: block;
+  border-top: 1px solid;
+  margin: 0; }
+  md-divider[md-inset] {
+    margin-left: 80px; }
+
 md-grid-list {
   box-sizing: border-box;
   display: block;
@@ -3598,13 +3605,6 @@ md-grid-list {
     border: 1px solid #fff; }
   md-grid-tile-footer {
     border-top: 1px solid #fff; } }
-
-md-divider {
-  display: block;
-  border-top: 1px solid;
-  margin: 0; }
-  md-divider[md-inset] {
-    margin-left: 80px; }
 
 md-icon {
   margin: auto;
