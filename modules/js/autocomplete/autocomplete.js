@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.6-master-c3ec08d
+ * v0.9.6-master-a7dcfb6
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -370,6 +370,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
   }
 
   function updateScroll () {
+    if (!elements.li[self.index]) return;
     var li  = elements.li[self.index],
         top = li.offsetTop,
         bot = top + li.offsetHeight,
