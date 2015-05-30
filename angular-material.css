@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.6-master-a7dcfb6
+ * v0.9.6-master-73e03a7
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -2687,9 +2687,6 @@ md-autocomplete {
         md-autocomplete md-autocomplete-wrap md-progress-linear.ng-leave.ng-leave-active {
           opacity: 0; }
   md-autocomplete input:not(.md-input) {
-    position: absolute;
-    left: 0;
-    top: 0;
     width: 100%;
     box-sizing: border-box;
     border: none;
@@ -2703,13 +2700,10 @@ md-autocomplete {
     md-autocomplete input:not(.md-input)::-ms-clear {
       display: none; }
   md-autocomplete button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    position: relative;
     line-height: 20px;
     text-align: center;
-    width: 20px;
-    height: 20px;
+    width: 40px;
     cursor: pointer;
     border: none;
     border-radius: 50%;
