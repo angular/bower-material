@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.6-master-c100ef1
+ * v0.9.6-master-6b4e95c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -252,14 +252,14 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
         event.preventDefault();
         self.index = Math.min(self.index + 1, self.matches.length - 1);
         updateScroll();
-        updateSelectionMessage();
+        updateMessages();
         break;
       case $mdConstant.KEY_CODE.UP_ARROW:
         if (self.loading) return;
         event.preventDefault();
         self.index = self.index < 0 ? self.matches.length - 1 : Math.max(0, self.index - 1);
         updateScroll();
-        updateSelectionMessage();
+        updateMessages();
         break;
       case $mdConstant.KEY_CODE.TAB:
       case $mdConstant.KEY_CODE.ENTER:
@@ -355,18 +355,16 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
   }
 
   function updateMessages () {
-    if (self.hidden) return;
-    switch (self.matches.length) {
-      case 0:  return self.messages.splice(0);
-      case 1:  return self.messages.push({ display: 'There is 1 match available.' });
-      default: return self.messages.push({ display: 'There are '
-          + self.matches.length
-          + ' matches available.' });
-    }
+    self.messages = self.matches.length
+        ? [ getCountMessage(), getCurrentDisplayValue() ]
+        : [];
   }
 
-  function updateSelectionMessage () {
-    self.messages.push({ display: getCurrentDisplayValue() });
+  function getCountMessage () {
+    switch (self.matches.length) {
+      case 1:  return 'There is 1 match available.';
+      default: return 'There are ' + self.matches.length + ' matches available.';
+    }
   }
 
   function updateScroll () {
@@ -571,7 +569,7 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
             class="md-visually-hidden"\
             role="status"\
             aria-live="assertive">\
-          <p ng-repeat="message in $mdAutocompleteCtrl.messages">{{message.display}}</p>\
+          <p ng-repeat="message in $mdAutocompleteCtrl.messages" ng-if="message">{{message}}</p>\
         </aria-status>';
 
       function getItemTemplate() {
