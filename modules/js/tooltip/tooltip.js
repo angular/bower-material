@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.6-master-b58ff47
+ * v0.9.6-master-a107490
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -144,7 +144,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       };
       var leaveHandler = function () {
         var autohide = scope.hasOwnProperty('autohide') ? scope.autohide : attr.hasOwnProperty('mdAutohide');
-        if ($document[0].activeElement !== parent[0] || autohide || mouseActive) {
+        if (autohide || mouseActive || ($document[0].activeElement !== parent[0]) ) {
           setVisible(false);
         }
         mouseActive = false;
