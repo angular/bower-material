@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.6-master-417fd1f
+ * v0.9.6-master-b58ff47
  */
 goog.provide('ng.material.components.button');
 goog.require('ng.material.core');
@@ -28,10 +28,8 @@ angular
  * `<md-button>` is a button directive with optional ink ripples (default enabled).
  *
  * If you supply a `href` or `ng-href` attribute, it will become an `<a>` element. Otherwise, it will
- * become a `<button>` element.
- *
- * As per the [material design spec](http://www.google.com/design/spec/style/color.html#color-ui-color-application)
- * the FAB button is in the accent color by default. The primary color palette may be used with
+ * become a `<button>` element. As per the [Material Design specifications](http://www.google.com/design/spec/style/color.html#color-ui-color-application)
+ * the FAB button background is filled with the accent color [by default]. The primary color palette may be used with
  * the `md-primary` class.
  *
  * @param {boolean=} md-no-ink If present, disable ripple ink effects.
@@ -41,25 +39,31 @@ angular
  * If no default text is found, a warning will be logged.
  *
  * @usage
+ *
+ * Regular buttons:
+ *
  * <hljs lang="html">
+ *  <md-button> Flat Button </md-button>
+ *  <md-button href="http://google.com"> Flat link </md-button>
+ *  <md-button class="md-raised"> Raised Button </md-button>
+ *  <md-button ng-disabled="true"> Disabled Button </md-button>
  *  <md-button>
- *    Flat Button
+ *    <md-icon md-svg-src="your/icon.svg"></md-icon>
+ *    Register Now
  *  </md-button>
- *  <md-button href="http://google.com">
- *    Flat link
- *  </md-button>
- *  <md-button class="md-raised">
- *    Raised Button
- *  </md-button>
- *  <md-button ng-disabled="true">
- *    Disabled Button
- *  </md-button>
+ * </hljs>
+ *
+ * FAB buttons:
+ *
+ * <hljs lang="html">
  *  <md-button class="md-fab" aria-label="FAB">
  *    <md-icon md-svg-src="your/icon.svg"></md-icon>
  *  </md-button>
+ *  <!-- mini-FAB -->
  *  <md-button class="md-fab md-mini" aria-label="Mini FAB">
  *    <md-icon md-svg-src="your/icon.svg"></md-icon>
  *  </md-button>
+ *  <!-- Button with SVG Icon -->
  *  <md-button class="md-icon-button" aria-label="Custom Icon Button">
  *    <md-icon md-svg-icon="path/to/your.svg"></md-icon>
  *  </md-button>
