@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.6-master-3ae3848
+ * v0.9.6-master-8f2b2c6
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 md-input-container {
@@ -47,8 +47,8 @@ md-input-container {
     -webkit-font-smoothing: antialiased;
     padding-left: 2px;
     z-index: 1;
-    -webkit-transform: translate3d(0, 30px, 0) scale(1);
-            transform: translate3d(0, 30px, 0) scale(1);
+    -webkit-transform: translate3d(0, 28px, 0) scale(1);
+            transform: translate3d(0, 28px, 0) scale(1);
     transition: -webkit-transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.25s;
     transition: transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.25s;
     -webkit-transform-origin: left top;
@@ -131,8 +131,9 @@ md-input-container {
     border-width: 0 0 2px 0; }
   md-input-container .md-input[disabled], [disabled] md-input-container .md-input {
     background-position: 0 bottom;
-    background-size: 3px 1px;
-    background-repeat: repeat-x; }
+    background-size: 4px 1px;
+    background-repeat: repeat-x;
+    margin-bottom: -1px; }
 
 md-input-container.md-icon-float {
   margin-top: -16px;
