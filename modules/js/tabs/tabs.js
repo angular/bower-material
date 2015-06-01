@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.6-master-025d3dd
+ * v0.9.6-master-6c53d11
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -140,6 +140,7 @@ function MdTab () {
           scope:    scope,
           parent:   scope.$parent,
           index:    index,
+          element:  element,
           template: element.find('md-tab-body').html(),
           label:    element.find('md-tab-label').html()
         }, index);
@@ -342,6 +343,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   function select (index) {
     if (!locked) ctrl.focusIndex = $scope.selectedIndex = index;
     ctrl.lastClick = true;
+    ctrl.tabs[index].element.triggerHandler('click');
   }
 
   function scroll (event) {
