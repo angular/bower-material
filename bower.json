@@ -1,6 +1,6 @@
 {
   "name": "angular-material",
-  "version": "0.9.6-master-72d3682",
+  "version": "0.9.6-master-1f0a845",
   "ignore": [],
   "dependencies": {
     "angular": "^1.3.0 || >1.4.0-beta.0",
