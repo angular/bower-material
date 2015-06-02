@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.7-master-2496317
+ * v0.9.7-master-91576d0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13002,7 +13002,7 @@ function MdTab () {
           '<md-tab-label>' + label + '</md-tab-label>' +
           '<md-tab-body>' + body + '</md-tab-body>';
       function getLabel () {
-        return getLabelAttribute() || getLabelElement() || getElementContents();
+        return getLabelElement() || getLabelAttribute() || getElementContents();
         function getLabelAttribute () { return attr.label; }
         function getLabelElement () {
           var label = element.find('md-tab-label');
@@ -13035,13 +13035,15 @@ function MdTab () {
     if (!ctrl) return;
     var tabs = element.parent()[0].getElementsByTagName('md-tab'),
         index = Array.prototype.indexOf.call(tabs, element[0]),
+        body = element.find('md-tab-body').remove(),
+        label = element.find('md-tab-label').remove(),
         data = ctrl.insertTab({
           scope:    scope,
           parent:   scope.$parent,
           index:    index,
           element:  element,
-          template: element.find('md-tab-body').html(),
-          label:    element.find('md-tab-label').html()
+          template: body.html(),
+          label:    label.html()
         }, index);
 
     scope.select   = scope.select   || angular.noop;
