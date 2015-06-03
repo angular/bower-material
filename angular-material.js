@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.7-master-814431f
+ * v0.9.7-master-5e79c32
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -11552,6 +11552,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
     if (lastCount === self.matches.length) return '';
     lastCount = self.matches.length;
     switch (self.matches.length) {
+      case 0:  return 'There are no matches available.';
       case 1:  return 'There is 1 match available.';
       default: return 'There are ' + self.matches.length + ' matches available.';
     }

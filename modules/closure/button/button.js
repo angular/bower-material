@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.7-master-814431f
+ * v0.9.7-master-5e79c32
  */
 goog.provide('ng.material.components.button');
 goog.require('ng.material.core');
