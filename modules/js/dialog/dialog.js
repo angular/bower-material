@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.7-master-8468c60
+ * v0.9.7-master-4714ed8
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -367,6 +367,8 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  * Hide an existing dialog and resolve the promise returned from `$mdDialog.show()`.
  *
  * @param {*=} response An argument for the resolved promise.
+ *
+ * @returns {promise} A promise that is resolved when the dialog has been closed.
  */
 
 /**
@@ -377,6 +379,8 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  * Hide an existing dialog and reject the promise returned from `$mdDialog.show()`.
  *
  * @param {*=} response An argument for the rejected promise.
+ *
+ * @returns {promise} A promise that is resolved when the dialog has been closed.
  */
 
 function MdDialogProvider($$interimElementProvider) {
