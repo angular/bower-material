@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.7-master-8d17301
+ * v0.9.7-master-8468c60
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3661,6 +3661,12 @@ function parseRules(theme, colorType, rules) {
       });
     if (hueName !== 'default') {
       newRule = newRule.replace(themeNameRegex, '.md-' + theme.name + '-theme.md-' + hueName);
+    }
+
+    // Don't apply a selector rule to the default theme, making it easier to override
+    // styles of the base-component
+    if (theme.name == 'default') {
+      newRule = newRule.replace(/\.md-default-theme/g, '');
     }
     generatedRules.push(newRule);
   });
