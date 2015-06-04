@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.7-master-e9ad549
+ * v0.9.7-master-e3a82c9
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -144,6 +144,11 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
       if (!hidden && oldHidden) positionDropdown();
     });
     angular.element($window).on('resize', positionDropdown);
+    $scope.$on('$destroy', cleanup);
+  }
+
+  function cleanup () {
+    elements.$.ul.remove();
   }
 
   function gatherElements () {
