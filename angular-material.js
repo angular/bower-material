@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.7-master-476d068
+ * v0.9.7-master-4a77b9f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -504,7 +504,7 @@ mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];
  * will create its own instance of this array and the app's IDs
  * will not be unique.
  */
-var nextUniqueId = ['0','0','0'];
+var nextUniqueId = 0;
 
 angular.module('material.core')
 .factory('$mdUtil', ["$cacheFactory", "$document", "$timeout", "$q", "$window", "$mdConstant", function($cacheFactory, $document, $timeout, $q, $window, $mdConstant) {
@@ -753,34 +753,12 @@ angular.module('material.core')
     },
 
     /**
-     * nextUid, from angular.js.
-     * A consistent way of creating unique IDs in angular. The ID is a sequence of alpha numeric
-     * characters such as '012ABC'. The reason why we are not using simply a number counter is that
-     * the number string gets longer over time, and it can also overflow, where as the nextId
-     * will grow much slower, it is a string, and it will never overflow.
+     * Get a unique ID.
      *
-     * @returns an unique alpha-numeric string
+     * @returns {string} an unique numeric string
      */
     nextUid: function() {
-      var index = nextUniqueId.length;
-      var digit;
-
-      while (index) {
-        index--;
-        digit = nextUniqueId[index].charCodeAt(0);
-        if (digit == 57 /*'9'*/) {
-          nextUniqueId[index] = 'A';
-          return nextUniqueId.join('');
-        }
-        if (digit == 90  /*'Z'*/) {
-          nextUniqueId[index] = '0';
-        } else {
-          nextUniqueId[index] = String.fromCharCode(digit + 1);
-          return nextUniqueId.join('');
-        }
-      }
-      nextUniqueId.unshift('0');
-      return nextUniqueId.join('');
+      return '' + nextUniqueId++;
     },
 
     // Stop watchers and events from firing on a scope without destroying it,
