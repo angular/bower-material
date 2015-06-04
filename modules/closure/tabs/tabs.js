@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.7-master-a65f563
+ * v0.9.7-master-4c1bf4b
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -660,6 +660,7 @@ MdTabsController.$inject = ["$scope", "$element", "$window", "$timeout", "$mdCon
  * @param {boolean=} md-center-tabs When enabled, tabs will be centered provided there is no need for pagination
  * @param {boolean=} md-no-pagination When enabled, pagination will remain off
  * @param {boolean=} md-swipe-content When enabled, swipe gestures will be enabled for the content area to jump between tabs
+ * @param {boolean=} md-no-disconnect If your tab content has background tasks (ie. event listeners), you will want to include this to prevent the scope from being disconnected
  *
  * @usage
  * <hljs lang="html">
@@ -694,7 +695,8 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
       centerTabs:    '=?mdCenterTabs',
       selectedIndex: '=?mdSelected',
       stretchTabs:   '@?mdStretchTabs',
-      swipeContent:  '=?mdSwipeContent'
+      swipeContent:  '=?mdSwipeContent',
+      noDisconnect:  '=?mdNoDisconnect'
     },
     template: function (element, attr) {
       attr["$mdTabsTemplate"] = element.html();
@@ -845,9 +847,11 @@ function MdTemplate ($compile, $mdUtil, $timeout) {
       scope.$on('$destroy', reconnect);
     }
     function disconnect () {
+      if (ctrl.scope.noDisconnect) return;
       $mdUtil.disconnectScope(compileScope);
     }
     function reconnect () {
+      if (ctrl.scope.noDisconnect) return;
       $mdUtil.reconnectScope(compileScope);
     }
   }
