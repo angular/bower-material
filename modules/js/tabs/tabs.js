@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.7-master-0c073d1
+ * v0.9.7-master-03d01e9
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -659,6 +659,7 @@ MdTabsController.$inject = ["$scope", "$element", "$window", "$timeout", "$mdCon
  * @param {boolean=} md-dynamic-height When enabled, the tab wrapper will resize based on the contents of the selected tab
  * @param {boolean=} md-center-tabs When enabled, tabs will be centered provided there is no need for pagination
  * @param {boolean=} md-no-pagination When enabled, pagination will remain off
+ * @param {boolean=} md-swipe-content When enabled, swipe gestures will be enabled for the content area to jump between tabs
  *
  * @usage
  * <hljs lang="html">
@@ -692,7 +693,8 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
       dynamicHeight: '=?mdDynamicHeight',
       centerTabs:    '=?mdCenterTabs',
       selectedIndex: '=?mdSelected',
-      stretchTabs:   '@?mdStretchTabs'
+      stretchTabs:   '@?mdStretchTabs',
+      swipeContent:  '=?mdSwipeContent'
     },
     template: function (element, attr) {
       attr["$mdTabsTemplate"] = element.html();
@@ -775,8 +777,8 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
               id="tab-content-{{tab.id}}"\
               role="tabpanel"\
               aria-labelledby="tab-item-{{tab.id}}"\
-              md-swipe-left="$mdTabsCtrl.incrementSelectedIndex(1)"\
-              md-swipe-right="$mdTabsCtrl.incrementSelectedIndex(-1)"\
+              md-swipe-left="swipeContent && $mdTabsCtrl.incrementSelectedIndex(1)"\
+              md-swipe-right="swipeContent && $mdTabsCtrl.incrementSelectedIndex(-1)"\
               ng-if="$mdTabsCtrl.hasContent"\
               ng-repeat="(index, tab) in $mdTabsCtrl.tabs" \
               md-template="tab.template"\
