@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.7-master-4e6b452
+ * v0.9.7-master-0c073d1
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -325,6 +325,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
     //-- force form to update state for validation
     $timeout(function () {
       elements.$.input.controller('ngModel').$setViewValue(getDisplayValue($scope.selectedItem) || $scope.searchText);
+      self.hidden = true;
     });
   }
 
@@ -353,8 +354,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
     }
     function handleResults (matches) {
       cache[term] = matches;
-      self.loading = false;
       if (searchText !== $scope.searchText) return; //-- just cache the results if old request
+      self.loading = false;
       promise = null;
       self.matches = matches;
       self.hidden = shouldHide();
