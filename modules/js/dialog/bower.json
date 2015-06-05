@@ -1,8 +1,8 @@
 {
   "name": "angular-material-dialog",
-  "version": "0.9.7-master-3ee6724",
+  "version": "0.9.8-rc1",
   "dependencies": {
-    "angular-material-core": "0.9.7-master-3ee6724",
-    "angular-material-backdrop": "0.9.7-master-3ee6724"
+    "angular-material-core": "0.9.8-rc1",
+    "angular-material-backdrop": "0.9.8-rc1"
   }
 }
