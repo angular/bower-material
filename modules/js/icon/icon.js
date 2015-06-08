@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.8-master-3f6b4af
+ * v0.9.8-master-9521a1e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -157,35 +157,8 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $interpolate ) {
       svgSrc  : '@mdSvgSrc'
     },
     restrict: 'E',
-    transclude:true,
-    template: getTemplate,
-    link: postLink
+    link : postLink
   };
-
-  function getTemplate(element, attr) {
-    var isEmptyAttr  = function(key) { return angular.isDefined(attr[key]) ? attr[key].length == 0 : false    },
-        hasAttrValue = function(key) { return attr[key] && attr[key].length > 0;     },
-        attrValue    = function(key) { return hasAttrValue(key) ? attr[key] : '' };
-
-    // If using the deprecated md-font-icon API
-    // If using ligature-based font-icons, transclude the ligature or NRCs
-
-    var tmplFontIcon = '<span class="md-font {{classNames}}" ng-class="fontIcon"></span>';
-    var tmplFontSet  = '<span class="{{classNames}}" ng-transclude></span>';
-
-    var tmpl = hasAttrValue('mdSvgIcon')     ? ''           :
-               hasAttrValue('mdSvgSrc')      ? ''           :
-               isEmptyAttr('mdFontIcon')     ? ''           :
-               hasAttrValue('mdFontIcon')    ? tmplFontIcon : tmplFontSet;
-
-    // If available, lookup the fontSet style and add to the list of classnames
-    // NOTE: Material Icons expects classnames like `.material-icons.md-48` instead of `.material-icons .md-48`
-
-    var names = (tmpl == tmplFontSet) ? $mdIcon.fontSet(attrValue('mdFontSet'))  + ' ' : '';
-        names = (names + attrValue('class')).trim();
-
-    return $interpolate( tmpl )({ classNames: names });
-  }
 
 
   /**
@@ -194,6 +167,8 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $interpolate ) {
    */
   function postLink(scope, element, attr) {
     $mdTheming(element);
+
+    prepareForFontIcon();
 
     // If using a font-icon, then the textual name of the icon itself
     // provides the aria-label.
@@ -229,6 +204,7 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $interpolate ) {
 
       });
     }
+
     function parentsHaveText() {
       var parent = element.parent();
       if (parent.attr('aria-label') || parent.text()) {
@@ -238,6 +214,18 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $interpolate ) {
         return true;
       }
       return false;
+    }
+
+    function prepareForFontIcon () {
+      if (!scope.svgIcon && !scope.svgSrc) {
+        if (scope.fontIcon) {
+          element.addClass('md-font');
+          element.addClass(scope.fontIcon);
+        } else {
+          element.addClass($mdIcon.fontSet(scope.fontSet));
+        }
+      }
+
     }
   }
 }
