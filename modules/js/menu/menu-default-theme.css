@@ -5,8 +5,7 @@
  * v0.9.8-master-3f6b4af
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
-md-dialog.md-THEME_NAME-theme {
-  border-radius: 4px;
+md-menu-content.md-THEME_NAME-theme {
   background-color: '{{background-color}}'; }
-  md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions {
-    border-top-color: '{{foreground-4}}'; }
+  md-menu-content.md-THEME_NAME-theme md-menu-divider {
+    background-color: '{{foreground-4}}'; }
