@@ -1,8 +1,8 @@
 {
   "name": "angular-material-sticky",
-  "version": "0.9.8-master-9521a1e",
+  "version": "0.9.8-master-545582d",
   "dependencies": {
-    "angular-material-core": "0.9.8-master-9521a1e",
-    "angular-material-content": "0.9.8-master-9521a1e"
+    "angular-material-core": "0.9.8-master-545582d",
+    "angular-material-content": "0.9.8-master-545582d"
   }
 }
