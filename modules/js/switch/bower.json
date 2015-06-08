@@ -1,8 +1,8 @@
 {
   "name": "angular-material-switch",
-  "version": "0.9.8-master-6523af4",
+  "version": "0.10.0-rc1-master-4af2813",
   "dependencies": {
-    "angular-material-core": "0.9.8-master-6523af4",
-    "angular-material-checkbox": "0.9.8-master-6523af4"
+    "angular-material-core": "0.10.0-rc1-master-4af2813",
+    "angular-material-checkbox": "0.10.0-rc1-master-4af2813"
   }
 }
