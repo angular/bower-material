@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc1-master-c806e8b
+ * v0.10.0-rc1-master-03d88ce
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -216,6 +216,7 @@ angular
  */
 function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $mdTabInkRipple,
                            $mdUtil, $animate) {
+  //-- define private properties
   var ctrl       = this,
       locked     = false,
       elements   = getElements(),
@@ -223,10 +224,12 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
       destroyed  = false,
       loaded     = false;
 
+  //-- define public properties with change handlers
   defineProperty('focusIndex', handleFocusIndexChange, $scope.selectedIndex || 0);
   defineProperty('offsetLeft', handleOffsetChange, 0);
   defineProperty('hasContent', handleHasContent, false);
 
+  //-- define public properties
   ctrl.scope = $scope;
   ctrl.parent = $scope.$parent;
   ctrl.tabs = [];
@@ -236,6 +239,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   ctrl.shouldPaginate = false;
   ctrl.shouldCenterTabs = shouldCenterTabs();
 
+  //-- define public methods
   ctrl.redirectFocus = redirectFocus;
   ctrl.attachRipple = attachRipple;
   ctrl.shouldStretchTabs = shouldStretchTabs;
@@ -255,6 +259,9 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
 
   init();
 
+  /**
+   * Perform initialization for the controller, setup events and watcher(s)
+   */
   function init () {
     $scope.$watch('selectedIndex', handleSelectedIndexChange);
     angular.element($window).on('resize', handleWindowResize);
@@ -269,6 +276,9 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     $scope.$on('$destroy', cleanup);
   }
 
+  /**
+   * Remove any events defined by this controller
+   */
   function cleanup () {
     destroyed = true;
     angular.element($window).off('resize', handleWindowResize);
@@ -278,16 +288,29 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
 
   //-- Change handlers
 
+  /**
+   * Add/remove the `md-no-tab-content` class depending on `ctrl.hasContent`
+   * @param hasContent
+   */
   function handleHasContent (hasContent) {
     $element[hasContent ? 'removeClass' : 'addClass']('md-no-tab-content');
   }
 
+  /**
+   * Apply ctrl.offsetLeft to the paging element when it changes
+   * @param left
+   */
   function handleOffsetChange (left) {
     var newValue = ctrl.shouldCenterTabs ? '' : '-' + left + 'px';
     angular.element(elements.paging).css('transform', 'translate3d(' + newValue + ', 0, 0)');
     $scope.$broadcast('$mdTabsPaginationChanged');
   }
 
+  /**
+   * Update the UI whenever `ctrl.focusIndex` is updated
+   * @param newIndex
+   * @param oldIndex
+   */
   function handleFocusIndexChange (newIndex, oldIndex) {
     if (newIndex === oldIndex) return;
     if (!elements.tabs[newIndex]) return;
@@ -295,6 +318,11 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     redirectFocus();
   }
 
+  /**
+   * Update the UI whenever the selected index changes. Calls user-defined select/deselect methods.
+   * @param newValue
+   * @param oldValue
+   */
   function handleSelectedIndexChange (newValue, oldValue) {
     if (newValue === oldValue) return;
 
@@ -308,6 +336,10 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     ctrl.tabs[newValue] && ctrl.tabs[newValue].scope.select();
   }
 
+  /**
+   * Queues up a call to `handleWindowResize` when a resize occurs while the tabs component is
+   * hidden.
+   */
   function handleResizeWhenVisible () {
     //-- if there is already a watcher waiting for resize, do nothing
     if (handleResizeWhenVisible.watcher) return;
@@ -331,6 +363,10 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
 
   //-- Event handlers / actions
 
+  /**
+   * Handle user keyboard interactions
+   * @param event
+   */
   function keydown (event) {
     switch (event.keyCode) {
       case $mdConstant.KEY_CODE.LEFT_ARROW:
@@ -350,18 +386,30 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     ctrl.lastClick = false;
   }
 
+  /**
+   * Update the selected index and trigger a click event on the original `md-tab` element in order
+   * to fire user-added click events.
+   * @param index
+   */
   function select (index) {
     if (!locked) ctrl.focusIndex = $scope.selectedIndex = index;
     ctrl.lastClick = true;
     ctrl.tabs[index].element.triggerHandler('click');
   }
 
+  /**
+   * When pagination is on, this makes sure the selected index is in view.
+   * @param event
+   */
   function scroll (event) {
     if (!ctrl.shouldPaginate) return;
     event.preventDefault();
     ctrl.offsetLeft = fixOffset(ctrl.offsetLeft - event.wheelDelta);
   }
 
+  /**
+   * Slides the tabs over approximately one page forward.
+   */
   function nextPage () {
     var viewportWidth = elements.canvas.clientWidth,
         totalWidth = viewportWidth + ctrl.offsetLeft,
@@ -373,6 +421,9 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     ctrl.offsetLeft = fixOffset(tab.offsetLeft);
   }
 
+  /**
+   * Slides the tabs over approximately one page backward.
+   */
   function previousPage () {
     var i, tab;
     for (i = 0; i < elements.tabs.length; i++) {
@@ -382,6 +433,9 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     ctrl.offsetLeft = fixOffset(tab.offsetLeft + tab.offsetWidth - elements.canvas.clientWidth);
   }
 
+  /**
+   * Update size calculations when the window is resized.
+   */
   function handleWindowResize () {
     $scope.$apply(function () {
       ctrl.lastSelectedIndex = $scope.selectedIndex;
@@ -391,6 +445,10 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     });
   }
 
+  /**
+   * Remove a tab from the data and select the nearest valid tab.
+   * @param tabData
+   */
   function removeTab (tabData) {
     var selectedIndex = $scope.selectedIndex,
         tab = ctrl.tabs.splice(tabData.getIndex(), 1)[0];
@@ -407,6 +465,12 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     });
   }
 
+  /**
+   * Create an entry in the tabs array for a new tab at the specified index.
+   * @param tabData
+   * @param index
+   * @returns {*}
+   */
   function insertTab (tabData, index) {
     var proto = {
           getIndex: function () { return ctrl.tabs.indexOf(tab); },
@@ -433,6 +497,10 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
 
   //-- Getter methods
 
+  /**
+   * Gathers references to all of the DOM elements used by this controller.
+   * @returns {{}}
+   */
   function getElements () {
     var elements      = {};
 
@@ -451,15 +519,27 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     return elements;
   }
 
+  /**
+   * Determines whether or not the left pagination arrow should be enabled.
+   * @returns {boolean}
+   */
   function canPageBack () {
     return ctrl.offsetLeft > 0;
   }
 
+  /**
+   * Determines whether or not the right pagination arrow should be enabled.
+   * @returns {*|boolean}
+   */
   function canPageForward () {
     var lastTab = elements.tabs[elements.tabs.length - 1];
     return lastTab && lastTab.offsetLeft + lastTab.offsetWidth > elements.canvas.clientWidth + ctrl.offsetLeft;
   }
 
+  /**
+   * Determines if the UI should stretch the tabs to fill the available space.
+   * @returns {*}
+   */
   function shouldStretchTabs () {
     switch ($scope.stretchTabs) {
       case 'always': return true;
@@ -468,10 +548,18 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     }
   }
 
+  /**
+   * Determines if the tabs should appear centered.
+   * @returns {string|boolean}
+   */
   function shouldCenterTabs () {
     return $scope.centerTabs && !ctrl.shouldPaginate;
   }
 
+  /**
+   * Determines if pagination is necessary to display the tabs within the available space.
+   * @returns {boolean}
+   */
   function shouldPaginate () {
     if ($scope.noPagination || !loaded) return false;
     var canvasWidth = $element.prop('clientWidth');
@@ -479,6 +567,12 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     return canvasWidth < 0;
   }
 
+  /**
+   * Finds the nearest tab index that is available.  This is primarily used for when the active
+   * tab is removed.
+   * @param newIndex
+   * @returns {*}
+   */
   function getNearestSafeIndex(newIndex) {
     var maxOffset = Math.max(ctrl.tabs.length - newIndex, newIndex),
         i, tab;
@@ -493,6 +587,13 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
 
   //-- Utility methods
 
+  /**
+   * Defines a property using a getter and setter in order to trigger a change handler without
+   * using `$watch` to observe changes.
+   * @param key
+   * @param handler
+   * @param value
+   */
   function defineProperty (key, handler, value) {
     Object.defineProperty(ctrl, key, {
       get: function () { return value; },
@@ -504,11 +605,18 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     });
   }
 
+  /**
+   * Updates whether or not pagination should be displayed.
+   */
   function updatePagination () {
     ctrl.shouldPaginate = shouldPaginate();
     ctrl.shouldCenterTabs = shouldCenterTabs();
   }
 
+  /**
+   * Re-orders the tabs and updates the selected and focus indexes to their new positions.
+   * This is triggered by `tabDirective.js` when the user's tabs have been re-ordered.
+   */
   function updateTabOrder () {
     var selectedItem = ctrl.tabs[$scope.selectedIndex],
         focusItem = ctrl.tabs[ctrl.focusIndex];
@@ -519,22 +627,32 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     ctrl.focusIndex = ctrl.tabs.indexOf(focusItem);
   }
 
-  function incrementSelectedIndex (inc, focus) {
+  /**
+   * This moves the selected or focus index left or right.  This is used by the keydown handler.
+   * @param inc
+   */
+  function incrementSelectedIndex (inc) {
     var newIndex,
-        index = focus ? ctrl.focusIndex : $scope.selectedIndex;
+        index = ctrl.focusIndex;
     for (newIndex = index + inc;
          ctrl.tabs[newIndex] && ctrl.tabs[newIndex].scope.disabled;
          newIndex += inc) {}
     if (ctrl.tabs[newIndex]) {
-      if (focus) ctrl.focusIndex = newIndex;
-      else $scope.selectedIndex = newIndex;
+      ctrl.focusIndex = newIndex;
     }
   }
 
+  /**
+   * This is used to forward focus to dummy elements.  This method is necessary to avoid aniation
+   * issues when attempting to focus an item that is out of view.
+   */
   function redirectFocus () {
     elements.dummies[ctrl.focusIndex].focus();
   }
 
+  /**
+   * Forces the pagination to move the focused tab into view.
+   */
   function adjustOffset () {
     if (ctrl.shouldCenterTabs) return;
     var tab = elements.tabs[ctrl.focusIndex],
@@ -544,11 +662,18 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     ctrl.offsetLeft = Math.min(ctrl.offsetLeft, fixOffset(left));
   }
 
+  /**
+   * Iterates through all queued functions and clears the queue.  This is used for functions that
+   * are called before the UI is ready, such as size calculations.
+   */
   function processQueue () {
     queue.forEach(function (func) { $timeout(func); });
     queue = [];
   }
 
+  /**
+   * Determines if the tab content area is needed.
+   */
   function updateHasContent () {
     var hasContent = false;
     angular.forEach(ctrl.tabs, function (tab) {
@@ -557,11 +682,18 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     ctrl.hasContent = hasContent;
   }
 
+  /**
+   * Moves the indexes to their nearest valid values.
+   */
   function refreshIndex () {
     $scope.selectedIndex = getNearestSafeIndex($scope.selectedIndex);
     ctrl.focusIndex = getNearestSafeIndex(ctrl.focusIndex);
   }
 
+  /**
+   * Calculates the content height of the current tab.
+   * @returns {*}
+   */
   function updateHeightFromContent () {
     if (!$scope.dynamicHeight) return $element.css('height', '');
     if (!ctrl.tabs.length) return queue.push(updateHeightFromContent);
@@ -584,6 +716,10 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
         });
   }
 
+  /**
+   * Repositions the ink bar to the selected tab.
+   * @returns {*}
+   */
   function updateInkBarStyles () {
     if (!elements.tabs[$scope.selectedIndex]) return;
     if (!ctrl.tabs.length) return queue.push(ctrl.updateInkBarStyles);
@@ -599,6 +735,9 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     angular.element(elements.inkBar).css({ left: left + 'px', right: right + 'px' });
   }
 
+  /**
+   * Adds left/right classes so that the ink bar will animate properly.
+   */
   function updateInkBarClassName () {
     var newIndex = $scope.selectedIndex,
         oldIndex = ctrl.lastSelectedIndex,
@@ -612,6 +751,11 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     }
   }
 
+  /**
+   * Takes an offset value and makes sure that it is within the min/max allowed values.
+   * @param value
+   * @returns {*}
+   */
   function fixOffset (value) {
     if (!elements.tabs.length || !ctrl.shouldPaginate) return 0;
     var lastTab = elements.tabs[elements.tabs.length - 1],
@@ -621,6 +765,11 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     return value;
   }
 
+  /**
+   * Attaches a ripple to the tab item element.
+   * @param scope
+   * @param element
+   */
   function attachRipple (scope, element) {
     var options = { colorElement: angular.element(elements.inkBar) };
     $mdTabInkRipple.attach(scope, element, options);
