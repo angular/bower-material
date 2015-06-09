@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc1-master-03d88ce
+ * v0.10.0-rc1-master-21c32d4
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -478,7 +478,8 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
           isLeft:   function () { return this.getIndex() < $scope.selectedIndex; },
           isRight:  function () { return this.getIndex() > $scope.selectedIndex; },
           shouldRender: function () { return !$scope.noDisconnect || this.isActive(); },
-          hasFocus: function () { return !ctrl.lastClick && ctrl.hasFocus && this.getIndex() === ctrl.focusIndex; },
+          hasFocus: function () { return !ctrl.lastClick
+              && ctrl.hasFocus && this.getIndex() === ctrl.focusIndex; },
           id:       $mdUtil.nextUid()
         },
         tab = angular.extend(proto, tabData);
@@ -533,7 +534,8 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
    */
   function canPageForward () {
     var lastTab = elements.tabs[elements.tabs.length - 1];
-    return lastTab && lastTab.offsetLeft + lastTab.offsetWidth > elements.canvas.clientWidth + ctrl.offsetLeft;
+    return lastTab && lastTab.offsetLeft + lastTab.offsetWidth > elements.canvas.clientWidth +
+        ctrl.offsetLeft;
   }
 
   /**
@@ -544,7 +546,8 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     switch ($scope.stretchTabs) {
       case 'always': return true;
       case 'never':  return false;
-      default:       return !ctrl.shouldPaginate && $window.matchMedia('(max-width: 600px)').matches;
+      default:       return !ctrl.shouldPaginate
+          && $window.matchMedia('(max-width: 600px)').matches;
     }
   }
 
