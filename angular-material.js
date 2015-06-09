@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc1-master-4af2813
+ * v0.10.0-rc1-master-8285e2d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -14343,7 +14343,8 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
       locked    = false,
       elements  = getElements(),
       queue     = [],
-      destroyed = false;
+      destroyed = false,
+      loaded    = false;
 
   ctrl.scope = $scope;
   ctrl.parent = $scope.$parent;
@@ -14383,8 +14384,11 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     $scope.$watch('$mdTabsCtrl.hasContent', handleHasContent);
     angular.element($window).on('resize', handleWindowResize);
     angular.element(elements.paging).on('DOMSubtreeModified', ctrl.updateInkBarStyles);
-    $timeout(updateHeightFromContent, 0, false);
-    $timeout(adjustOffset);
+    $timeout(function () {
+      updateHeightFromContent();
+      adjustOffset();
+      loaded = true;
+    });
     $scope.$on('$destroy', cleanup);
   }
 
@@ -14420,6 +14424,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     ctrl.lastSelectedIndex = oldValue;
     ctrl.updateInkBarStyles();
     updateHeightFromContent();
+    adjustOffset();
     $scope.$broadcast('$mdTabsChanged');
     ctrl.tabs[oldValue] && ctrl.tabs[oldValue].scope.deselect();
     ctrl.tabs[newValue] && ctrl.tabs[newValue].scope.select();
@@ -14540,6 +14545,8 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     }
     processQueue();
     updateHasContent();
+    //-- if autoselect is enabled, select the newly added tab
+    if (loaded && $scope.autoselect) $timeout(function () { select(ctrl.tabs.indexOf(tab)); });
     return tab;
   }
 
@@ -14791,6 +14798,7 @@ MdTabsController.$inject = ["$scope", "$element", "$window", "$timeout", "$mdCon
  * @param {boolean=} md-no-pagination When enabled, pagination will remain off
  * @param {boolean=} md-swipe-content When enabled, swipe gestures will be enabled for the content area to jump between tabs
  * @param {boolean=} md-no-disconnect If your tab content has background tasks (ie. event listeners), you will want to include this to prevent the scope from being disconnected
+ * @param {boolean=} md-autoselect When present, any tabs added after the initial load will be automatically selected
  *
  * @usage
  * <hljs lang="html">
@@ -14826,7 +14834,8 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
       selectedIndex: '=?mdSelected',
       stretchTabs:   '@?mdStretchTabs',
       swipeContent:  '=?mdSwipeContent',
-      noDisconnect:  '=?mdNoDisconnect'
+      noDisconnect:  '=?mdNoDisconnect',
+      autoselect:    '=?mdAutoselect'
     },
     template: function (element, attr) {
       attr["$mdTabsTemplate"] = element.html();
