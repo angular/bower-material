@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc1-master-1bb19b3
+ * v0.10.0-rc1-master-761ded6
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -14414,11 +14414,11 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   ctrl.hasFocus = false;
   ctrl.lastClick = true;
   ctrl.shouldPaginate = false;
+  ctrl.shouldCenterTabs = shouldCenterTabs();
 
   ctrl.redirectFocus = redirectFocus;
   ctrl.attachRipple = attachRipple;
   ctrl.shouldStretchTabs = shouldStretchTabs;
-  ctrl.shouldCenterTabs = shouldCenterTabs;
   ctrl.insertTab = insertTab;
   ctrl.removeTab = removeTab;
   ctrl.select = select;
@@ -14466,7 +14466,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   }
 
   function handleOffsetChange (left) {
-    var newValue = shouldCenterTabs() ? '' : '-' + left + 'px';
+    var newValue = ctrl.shouldCenterTabs ? '' : '-' + left + 'px';
     angular.element(elements.paging).css('transform', 'translate3d(' + newValue + ', 0, 0)');
     $scope.$broadcast('$mdTabsPaginationChanged');
   }
@@ -14678,6 +14678,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
 
   function updatePagination () {
     ctrl.shouldPaginate = shouldPaginate();
+    ctrl.shouldCenterTabs = shouldCenterTabs();
   }
 
   function updateTabOrder () {
@@ -14707,7 +14708,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   }
 
   function adjustOffset () {
-    if (shouldCenterTabs()) return;
+    if (ctrl.shouldCenterTabs) return;
     var tab = elements.tabs[ctrl.focusIndex],
         left = tab.offsetLeft,
         right = tab.offsetWidth + left;
@@ -14936,12 +14937,12 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
               ng-focus="$mdTabsCtrl.redirectFocus()"\
               ng-class="{\
                   \'md-paginated\': $mdTabsCtrl.shouldPaginate,\
-                  \'md-center-tabs\': $mdTabsCtrl.shouldCenterTabs()\
+                  \'md-center-tabs\': $mdTabsCtrl.shouldCenterTabs\
               }"\
               ng-keydown="$mdTabsCtrl.keydown($event)"\
               role="tablist">\
             <md-pagination-wrapper\
-                ng-class="{ \'md-center-tabs\': $mdTabsCtrl.shouldCenterTabs() }"\
+                ng-class="{ \'md-center-tabs\': $mdTabsCtrl.shouldCenterTabs }"\
                 md-tab-scroll="$mdTabsCtrl.scroll($event)">\
               <md-tab-item\
                   tabindex="-1"\
