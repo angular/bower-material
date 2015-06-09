@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc1-master-8285e2d
+ * v0.10.0-rc1-master-114dd41
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -8097,7 +8097,8 @@ angular.module('material.components.menu', [
   'material.core',
   'material.components.backdrop'
 ])
-.directive('mdMenu', MenuDirective);
+.directive('mdMenu', MenuDirective)
+.controller('mdMenuCtrl', MenuController);
 
 /**
  * @ngdoc directive
@@ -8110,8 +8111,8 @@ angular.module('material.components.menu', [
  * additional options within the context of an action.
  *
  * Every `md-menu` must specify exactly two child elements. The first element is what is
- * left in the DOM and is used to open the menu. This element is called the origin element.
- * The origin element's scope has access to `$mdOpenMenu()`
+ * left in the DOM and is used to open the menu. This element is called the trigger element.
+ * The trigger element's scope has access to `$mdOpenMenu()`
  * which it may call to open the menu.
  *
  * The second element is the `md-menu-content` element which represents the
@@ -8120,8 +8121,8 @@ angular.module('material.components.menu', [
  *
  * <hljs lang="html">
  * <md-menu>
- *  <!-- Origin element is a md-button with an icon -->
- *  <md-button ng-click="$mdOpenMenu()" class="md-icon-button">
+ *  <!-- Trigger element is a md-button with an icon -->
+ *  <md-button ng-click="$mdOpenMenu()" class="md-icon-button" aria-label="Open sample menu">
  *    <md-icon md-svg-icon="call:phone"></md-icon>
  *  </md-button>
  *  <md-menu-content>
@@ -8140,7 +8141,7 @@ angular.module('material.components.menu', [
  *
  * ## Aligning Menus
  *
- * When a menu opens, it is important that the content aligns with the origin element.
+ * When a menu opens, it is important that the content aligns with the trigger element.
  * Failure to align menus can result in jarring experiences for users as content
  * suddenly shifts. To help with this, `md-menu` provides serveral APIs to help
  * with alignment.
@@ -8148,14 +8149,14 @@ angular.module('material.components.menu', [
  * ### Target Mode
  *
  * By default, `md-menu` will attempt to align the `md-menu-content` by aligning
- * designated child elements in both the origin and the menu content.
+ * designated child elements in both the trigger and the menu content.
  *
- * To specify the alignment element in the `origin` you can use the `md-menu-origin`
+ * To specify the alignment element in the `trigger` you can use the `md-menu-origin`
  * attribute on a child element. If no `md-menu-origin` is specified, the `md-menu`
  * will be used as the origin element.
  *
  * Similarly, the `md-menu-content` may specify a `md-menu-align-target` for a
- * `md-menu-item` to specify the node that it should try and allign with.
+ * `md-menu-item` to specify the node that it should try and align with.
  *
  * In this example code, we specify an icon to be our origin element, and an
  * icon in our menu content to be our alignment target. This ensures that both
@@ -8163,12 +8164,12 @@ angular.module('material.components.menu', [
  *
  * <hljs lang="html">
  * <md-menu>
- *  <md-button ng-click="$mdOpenMenu()" class="md-icon-button">
+ *  <md-button ng-click="$mdOpenMenu()" class="md-icon-button" aria-label="Open some menu">
  *    <md-icon md-menu-origin md-svg-icon="call:phone"></md-icon>
  *  </md-button>
  *  <md-menu-content>
  *    <md-menu-item>
- *      <md-button ng-click="doSomething()">
+ *      <md-button ng-click="doSomething()" aria-label="Do something">
  *        <md-icon md-menu-align-target md-svg-icon="call:phone"></md-icon>
  *        Do Something
  *      </md-button>
@@ -8227,100 +8228,104 @@ function MenuDirective($mdMenu) {
   return {
     restrict: 'E',
     require: 'mdMenu',
-    controller: function() { }, // empty function to be built by link
+    controller: 'mdMenuCtrl', // empty function to be built by link
     scope: true,
     compile: compile
   };
 
-  function compile(tEl) {
-    tEl.addClass('md-menu');
-    tEl.children().eq(0).attr('aria-haspopup', 'true');
+  function compile(templateElement) {
+    templateElement.addClass('md-menu');
+    templateElement.children().eq(0).attr('aria-haspopup', 'true');
+    if (templateElement.children().length != 2) {
+      throw Error('Invalid HTML for md-menu. Expected two children elements.');
+    }
     return link;
   }
 
-  function link(scope, el, attrs, mdMenuCtrl) {
-    // Se up mdMenuCtrl to keep our code squeaky clean
-    buildCtrl();
+  function link(scope, element, attrs, mdMenuCtrl) {
 
-    // Expose a open function to the child scope for their html to use
-    scope.$mdOpenMenu = function() {
-      mdMenuCtrl.open();
-    };
-
-    if (el.children().length != 2) {
-      throw new Error('Invalid HTML for md-menu. Expected two children elements.');
-    }
-
-    // Move everything into a md-menu-container
-    var menuContainer = angular.element('<div class="md-open-menu-container md-whiteframe-z2"></div>');
-    var menuContents = el.children()[1];
+    // Move everything into a md-menu-container and pass it to the controller
+    var menuContainer = angular.element(
+      '<div class="md-open-menu-container md-whiteframe-z2"></div>'
+    );
+    var menuContents = element.children()[1];
     menuContainer.append(menuContents);
+    mdMenuCtrl.init(menuContainer);
 
-    var enabled;
-    mdMenuCtrl.enable();
-
-    function buildCtrl() {
-      mdMenuCtrl.enable = function enableMenu() {
-        if (!enabled) {
-          //el.on('keydown', handleKeypress);
-          enabled = true;
-        }
-      };
-
-      mdMenuCtrl.disable = function disableMenu() {
-        if (enabled) {
-          //el.off('keydown', handleKeypress);
-          enabled = false;
-        }
-      };
-
-      mdMenuCtrl.open = function openMenu() {
-        el.attr('aria-expanded', 'true');
-        $mdMenu.show({
-          mdMenuCtrl: mdMenuCtrl,
-          element: menuContainer,
-          target: el[0]
-        });
-      };
-
-      mdMenuCtrl.close = function closeMenu(skipFocus) {
-        el.attr('aria-expanded', 'false');
-        $mdMenu.hide();
-        if (!skipFocus) el.children()[0].focus();
-      };
-
-      mdMenuCtrl.positionMode = function() {
-        var attachment = (attrs.mdPositionMode || 'target').split(' ');
-
-        if (attachment.length == 1) { attachment.push(attachment[0]); }
-
-        return {
-          left: attachment[0],
-          top: attachment[1]
-        };
-
-      };
-
-      mdMenuCtrl.offsets = function() {
-        var offsets = (attrs.mdOffset || '0 0').split(' ').map(function(x) { return parseFloat(x, 10); });
-        if (offsets.length == 2) {
-          return {
-            left: offsets[0],
-            top: offsets[1]
-          };
-        } else if (offsets.length == 1) {
-          return {
-            top: offsets[0],
-            left: offsets[0]
-          };
-        } else {
-          throw new Error('Invalid offsets specified. Please follow format <x, y> or <n>');
-        }
-      };
-    }
   }
 }
 MenuDirective.$inject = ["$mdMenu"];
+
+function MenuController($mdMenu, $attrs, $element, $scope) {
+
+  var menuContainer;
+  var ctrl = this;
+
+  // Called by our linking fn to provide access to the menu-content
+  // element removed during link
+  this.init = function(setMenuContainer) {
+    menuContainer = setMenuContainer;
+  };
+
+  // Uses the $mdMenu interim element service to open the menu contents
+  this.open = function openMenu() {
+    $element.attr('aria-expanded', 'true');
+    $mdMenu.show({
+      mdMenuCtrl: ctrl,
+      element: menuContainer,
+      target: $element[0]
+    });
+  };
+  // Expose a open function to the child scope for html to use
+  $scope.$mdOpenMenu = this.open;
+
+  // Use the $mdMenu interim element service to close the menu contents
+  this.close = function closeMenu(skipFocus) {
+    $element.attr('aria-expanded', 'false');
+    $mdMenu.hide();
+
+    if (!skipFocus) {
+      $element.children()[0].focus();
+    }
+  };
+
+  // Build a nice object out of our string attribute which specifies the
+  // target mode for left and top positioning
+  this.positionMode = function() {
+    var attachment = ($attrs.mdPositionMode || 'target').split(' ');
+
+    // If attachment is a single item, duplicate it for our second value.
+    // ie. 'target' -> 'target target'
+    if (attachment.length == 1) {
+      attachment.push(attachment[0]);
+    }
+
+    return {
+      left: attachment[0],
+      top: attachment[1]
+    };
+  };
+
+  // Build a nice object out of our string attribute which specifies
+  // the offset of top and left in pixels.
+  this.offsets = function() {
+    var offsets = ($attrs.mdOffset || '0 0').split(' ').map(parseFloat);
+    if (offsets.length == 2) {
+      return {
+        left: offsets[0],
+        top: offsets[1]
+      };
+    } else if (offsets.length == 1) {
+      return {
+        top: offsets[0],
+        left: offsets[0]
+      };
+    } else {
+      throw Error('Invalid offsets specified. Please follow format <x, y> or <n>');
+    }
+  };
+}
+MenuController.$inject = ["$mdMenu", "$attrs", "$element", "$scope"];
 
 })();
 (function(){
@@ -8361,30 +8366,23 @@ function MenuProvider($$interimElementProvider) {
       themable: true
     };
 
-    // Interim element onShow fn, handles inserting it into the DOM, wiring up
-    // listeners and calling the positioning fn
+    /** 
+     * Boilerplate interimElement onShow function
+     * Handles inserting the menu into the DOM, positioning it, and wiring up
+     * various interaction events
+     */
     function onShow(scope, element, opts) {
-      if (!opts.target) {
-        throw new Error('$mdMenu.show() expected a target to animate from in options.target');
-      }
 
-      angular.extend(opts, {
-        alreadyOpen: false,
-        isRemoved: false,
-        target: angular.element(opts.target), //make sure it's not a naked dom node
-        parent: angular.element(opts.parent),
-        menuContentEl: angular.element(element[0].querySelector('md-menu-content')),
-        backdrop: opts.hasBackdrop && angular.element('<md-backdrop class="md-menu-backdrop md-click-catcher">')
-      });
+      // Sanitize and set defaults on opts
+      buildOpts(opts);
 
+      // Wire up theming on our menu element
       $mdTheming.inherit(opts.menuContentEl, opts.target);
 
-      opts.resizeFn = function() {
-        positionMenu(scope, element, opts);
-      };
-      angular.element($window).on('resize', opts.resizeFn);
-      angular.element($window).on('orientationchange', opts.resizeFn);
+      // Register various listeners to move menu on resize/orientation change
+      handleResizing();
 
+      // Disable scrolling
       if (opts.disableParentScroll) {
         opts.restoreScroll = $mdUtil.disableScrollAround(opts.target);
       }
@@ -8397,45 +8395,92 @@ function MenuProvider($$interimElementProvider) {
         $mdTheming.inherit(opts.backdrop, opts.parent);
         opts.parent.append(opts.backdrop);
       }
-      opts.parent.append(element);
+      showMenu();
 
-      element.removeClass('md-leave');
-      $$rAF(function() {
-        $$rAF(function() {
-          positionMenu(scope, element, opts);
-          $$rAF(function() {
-            element.addClass('md-active');
-            opts.alreadyOpen = true;
-            element[0].style[$mdConstant.CSS.TRANSFORM] = '';
-          });
-        });
-      });
-
+      // Return the promise for when our menu is done animating in
       return $mdUtil.transitionEndPromise(element, {timeout: 350});
 
+      /** Check for valid opts and set some sane defaults */
+      function buildOpts() {
+        if (!opts.target) {
+          throw Error(
+            '$mdMenu.show() expected a target to animate from in options.target'
+          );
+        }
+        angular.extend(opts, {
+          alreadyOpen: false,
+          isRemoved: false,
+          target: angular.element(opts.target), //make sure it's not a naked dom node
+          parent: angular.element(opts.parent),
+          menuContentEl: angular.element(element[0].querySelector('md-menu-content')),
+          backdrop: opts.hasBackdrop && angular.element('<md-backdrop class="md-menu-backdrop md-click-catcher">')
+        });
+      }
 
-      // Activate interaction on the menu popup, allowing it to be closed by
-      // clicking on the backdrop, with escape, clicking options, etc.
+      /** Wireup various resize listeners for screen changes */
+      function handleResizing() {
+        opts.resizeFn = function() {
+          positionMenu(scope, element, opts);
+        };
+        angular.element($window).on('resize', opts.resizeFn);
+        angular.element($window).on('orientationchange', opts.resizeFn);
+      }
+
+      /**
+       * Place the menu into the DOM and call positioning related functions
+       */
+      function showMenu() {
+        opts.parent.append(element);
+
+        element.removeClass('md-leave');
+        // Kick off our animation/positioning but first, wait a few frames
+        // so all of our computed positions/sizes are accurate
+        $$rAF(function() {
+          $$rAF(function() {
+            positionMenu(scope, element, opts);
+            // Wait a frame before fading in menu (md-active) so that we don't trigger
+            // transitions on the menu position changing
+            $$rAF(function() {
+              element.addClass('md-active');
+              opts.alreadyOpen = true;
+              element[0].style[$mdConstant.CSS.TRANSFORM] = '';
+            });
+          });
+        });
+      }
+
+
+      /**
+       * Activate interaction on the menu. Wire up keyboard listerns for
+       * clicks, keypresses, backdrop closing, etc.
+       */
       function activateInteraction() {
         element.addClass('md-clickable');
+
+        // close on backdrop click
         opts.backdrop && opts.backdrop.on('click', function(e) {
           e.preventDefault();
           e.stopPropagation();
           opts.mdMenuCtrl.close(true);
         });
 
+        // Wire up keyboard listeners.
+        // Close on escape, focus next item on down arrow, focus prev item on up
         opts.menuContentEl.on('keydown', function(ev) {
           scope.$apply(function() {
             switch (ev.keyCode) {
               case $mdConstant.KEY_CODE.ESCAPE: opts.mdMenuCtrl.close(); break;
-              case $mdConstant.KEY_CODE.UP_ARROW: focusPrevMenuItem(ev, opts.menuContentEl, opts); break;
-              case $mdConstant.KEY_CODE.DOWN_ARROW: focusNextMenuItem(ev, opts.menuContentEl, opts); break;
+              case $mdConstant.KEY_CODE.UP_ARROW: focusMenuItem(ev, opts.menuContentEl, opts, -1); break;
+              case $mdConstant.KEY_CODE.DOWN_ARROW: focusMenuItem(ev, opts.menuContentEl, opts, 1); break;
             }
           });
         });
 
+        // Close menu on menu item click, if said menu-item is not disabled
         opts.menuContentEl.on('click', function(e) {
           var target = e.target;
+          // Traverse up the event until we get to the menuContentEl to see if
+          // there is an ng-click and that the ng-click is not disabled
           do {
             if (target && target.hasAttribute('ng-click')) {
               if (!target.hasAttribute('disabled')) {
@@ -8452,19 +8497,30 @@ function MenuProvider($$interimElementProvider) {
           }
         });
 
+        // kick off initial focus in the menu on the first element
         var focusTarget = opts.menuContentEl[0].querySelector('[md-menu-focus-target]');
         if (!focusTarget) focusTarget = opts.menuContentEl[0].firstElementChild.firstElementChild;
         focusTarget.focus();
       }
     }
 
-    function focusPrevMenuItem(e, menuEl, opts) {
+    /**
+      * Takes a keypress event and focuses the next/previous menu
+      * item from the emitting element
+      * @param {event} e - The origin keypress event
+      * @param {angular.element} menuEl - The menu element
+      * @param {object} opts - The interim element options for the mdMenu
+      * @param {number} direction - The direction to move in (+1 = next, -1 = prev)
+      */
+    function focusMenuItem(e, menuEl, opts, direction) {
       var currentItem = $mdUtil.getClosest(e.target, 'MD-MENU-ITEM');
 
       var items = nodesToArray(menuEl[0].children);
       var currentIndex = items.indexOf(currentItem);
 
-      for (var i = currentIndex - 1; i >= 0; --i) {
+      // Traverse through our elements in the specified direction (+/-1) and try to
+      // focus them until we find one that accepts focus
+      for (var i = currentIndex + direction; i >= 0 && i < items.length; i = i + direction) {
         var focusTarget = items[i].firstElementChild || items[i];
         var didFocus = attemptFocus(focusTarget);
         if (didFocus) {
@@ -8473,22 +8529,12 @@ function MenuProvider($$interimElementProvider) {
       }
     }
 
-    function focusNextMenuItem(e, menuEl, opts) {
-      var currentItem = $mdUtil.getClosest(e.target, 'MD-MENU-ITEM');
-
-      var items = nodesToArray(menuEl[0].children);
-
-      var currentIndex = items.indexOf(currentItem);
-
-      for (var i = currentIndex + 1; i < items.length; ++i) {
-        var focusTarget = items[i].firstElementChild || items[i];
-        var didFocus = attemptFocus(focusTarget);
-        if (didFocus) {
-          break;
-        }
-      }
-    }
-
+    /**
+     * Attempts to focus an element. Checks whether that element is the currently
+     * focused element after attempting.
+     * @param {HTMLElement} el - the element to attempt focus on
+     * @returns {bool} - whether the element was successfully focused
+     */
     function attemptFocus(el) {
       if (el && el.getAttribute('tabindex') != -1) {
         el.focus();
@@ -8500,15 +8546,22 @@ function MenuProvider($$interimElementProvider) {
       }
     }
 
-    // Interim element onRemove fn, handles removing the element from the DOM
+    /**
+     * Boilerplate interimElement onRemove function
+     * Handles removing the menu from the DOM, cleaning up the element
+     * and removing various listeners
+     */
     function onRemove(scope, element, opts) {
       opts.isRemoved = true;
       element.addClass('md-leave')
         .removeClass('md-clickable');
+
+      // Disable resizing handlers
       angular.element($window).off('resize', opts.resizeFn);
       angular.element($window).off('orientationchange', opts.resizeFn);
       opts.resizeFn = undefined;
 
+      // Wait for animate out, then remove from the DOM
       return $mdUtil.transitionEndPromise(element, { timeout: 350 }).then(function() {
         element.removeClass('md-active');
         opts.backdrop && opts.backdrop.remove();
@@ -8519,8 +8572,12 @@ function MenuProvider($$interimElementProvider) {
       });
     }
 
-    // Handles computing the pop-ups position relative to the target (origin md-menu)
-    function positionMenu(scope, el, opts) {
+    /**
+     * Computes menu position and sets the style on the menu container
+     * @param {HTMLElement} el - the menu container element
+     * @param {object} opts - the interim element options object
+     */
+    function positionMenu(el, opts) {
       if (opts.isRemoved) return;
 
       var containerNode = el[0],
@@ -8550,10 +8607,9 @@ function MenuProvider($$interimElementProvider) {
         alignTarget = alignTarget.querySelector('[md-menu-align-target]') || alignTarget;
         alignTargetRect = alignTarget.getBoundingClientRect();
 
-        var containerNodeStyle = $window.getComputedStyle(containerNode);
         existingOffsets = {
-          top: parseFloat(containerNodeStyle.top, 10),
-          left: parseFloat(containerNodeStyle.left, 10)
+          top: containerNode.style.top,
+          left: containerNode.style.left
         };
       }
 
@@ -8618,6 +8674,10 @@ function MenuProvider($$interimElementProvider) {
         ')';
       }
 
+      /**
+       * Clamps the repositioning of the menu within the confines of
+       * bounding element (often the screen/body)
+       */
       function clamp(pos) {
         pos.top = Math.max(Math.min(pos.top, bounds.bottom - containerNode.offsetHeight), bounds.top);
         pos.left = Math.max(Math.min(pos.left, bounds.right - containerNode.offsetWidth), bounds.left);
@@ -8630,9 +8690,7 @@ MenuProvider.$inject = ["$$interimElementProvider"];
 // Annoying method to copy nodes to an array, thanks to IE
 function nodesToArray(nodes) {
   var results = [];
-  for (var i = 0; i < nodes.length; ++i) {
-    results.push(nodes.item(i));
-  }
+  for (var i = nodes.length; i--; results.unshift(nodes[i]))
   return results;
 }
 
