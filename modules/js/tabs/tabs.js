@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc2-master-d0b385d
+ * v0.10.0-rc2-master-781929d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -767,12 +767,11 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     var newIndex = $scope.selectedIndex,
         oldIndex = ctrl.lastSelectedIndex,
         ink = angular.element(elements.inkBar);
-    ink.removeClass('md-left md-right');
     if (!angular.isNumber(oldIndex)) return;
     if (newIndex < oldIndex) {
-      ink.addClass('md-left');
+      ink.addClass('md-left').removeClass('md-right');
     } else if (newIndex > oldIndex) {
-      ink.addClass('md-right');
+      ink.addClass('md-right').removeClass('md-left');
     }
   }
 
