@@ -1,8 +1,8 @@
 {
   "name": "angular-material-menu",
-  "version": "0.10.0-rc1-master-eced631",
+  "version": "0.10.0-rc1-master-e813dcd",
   "dependencies": {
-    "angular-material-core": "0.10.0-rc1-master-eced631",
-    "angular-material-backdrop": "0.10.0-rc1-master-eced631"
+    "angular-material-core": "0.10.0-rc1-master-e813dcd",
+    "angular-material-backdrop": "0.10.0-rc1-master-e813dcd"
   }
 }
