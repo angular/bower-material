@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc2
+ * v0.10.0-rc1-master-c985880
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -5517,90 +5517,6 @@ md-progress-circular {
       -webkit-animation-name: none;
               animation-name: none; }
 
-md-radio-button, .md-switch-thumb {
-  box-sizing: border-box;
-  display: block;
-  margin: 15px;
-  white-space: nowrap;
-  cursor: pointer; }
-  md-radio-button *, md-radio-button *:before, md-radio-button *:after, .md-switch-thumb *, .md-switch-thumb *:before, .md-switch-thumb *:after {
-    box-sizing: border-box; }
-  md-radio-button input, .md-switch-thumb input {
-    display: none; }
-  md-radio-button .md-container, .md-switch-thumb .md-container {
-    position: relative;
-    top: 4px;
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    cursor: pointer; }
-    md-radio-button .md-container .md-ripple-container, .md-switch-thumb .md-container .md-ripple-container {
-      position: absolute;
-      display: block;
-      width: 48px;
-      height: 48px;
-      left: -16px;
-      top: -16px; }
-    md-radio-button .md-container:before, .md-switch-thumb .md-container:before {
-      background-color: transparent;
-      border-radius: 50%;
-      content: '';
-      position: absolute;
-      display: block;
-      height: auto;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      transition: all 0.5s;
-      width: auto; }
-  md-radio-button .md-off, .md-switch-thumb .md-off {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 16px;
-    height: 16px;
-    border: solid 2px;
-    border-radius: 50%;
-    transition: border-color ease 0.28s; }
-  md-radio-button .md-on, .md-switch-thumb .md-on {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    transition: -webkit-transform ease 0.28s;
-    transition: transform ease 0.28s;
-    -webkit-transform: scale(0);
-            transform: scale(0); }
-  md-radio-button.md-checked .md-on, .md-switch-thumb.md-checked .md-on {
-    -webkit-transform: scale(0.5);
-            transform: scale(0.5); }
-  md-radio-button .md-label, .md-switch-thumb .md-label {
-    position: relative;
-    display: inline-block;
-    margin-left: 10px;
-    margin-right: 10px;
-    vertical-align: middle;
-    white-space: normal;
-    pointer-events: none;
-    width: auto; }
-  md-radio-button .circle, .md-switch-thumb .circle {
-    border-radius: 50%; }
-
-md-radio-group:focus {
-  outline: none; }
-md-radio-group.md-focused .md-checked .md-container:before {
-  left: -8px;
-  top: -8px;
-  right: -8px;
-  bottom: -8px; }
-
-@media screen and (-ms-high-contrast: active) {
-  md-radio-button.md-default-theme .md-on {
-    background-color: #fff; } }
-
 md-progress-linear:not([md-mode="indeterminate"]) {
   display: block;
   width: 100%;
@@ -5882,98 +5798,89 @@ md-progress-linear[md-mode="indeterminate"] {
   100% {
     left: 117.38889%; } }
 
-md-sidenav {
+md-radio-button, .md-switch-thumb {
   box-sizing: border-box;
-  position: absolute;
-  width: 304px;
-  min-width: 304px;
-  max-width: 304px;
-  bottom: 0;
-  z-index: 60;
-  background-color: white;
-  overflow: auto;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column; }
-  md-sidenav *, md-sidenav *:before, md-sidenav *:after {
+  display: block;
+  margin: 15px;
+  white-space: nowrap;
+  cursor: pointer; }
+  md-radio-button *, md-radio-button *:before, md-radio-button *:after, .md-switch-thumb *, .md-switch-thumb *:before, .md-switch-thumb *:after {
     box-sizing: border-box; }
-  md-sidenav ul {
-    list-style: none; }
-  md-sidenav.md-closed {
+  md-radio-button input, .md-switch-thumb input {
     display: none; }
-  md-sidenav.md-closed-add, md-sidenav.md-closed-remove {
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    /* this is required as of 1.3x to properly
-       apply all styling in a show/hide animation */
-    transition: 0s all; }
-  md-sidenav.md-closed-add.md-closed-add-active, md-sidenav.md-closed-remove.md-closed-remove-active {
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
-  md-sidenav.md-locked-open-add, md-sidenav.md-locked-open-remove {
-    position: static;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0); }
-  md-sidenav.md-locked-open {
-    width: 304px;
-    min-width: 304px;
-    max-width: 304px; }
-  md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-left, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-right, md-sidenav.md-locked-open-remove.md-closed {
-    position: static;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0); }
-  md-sidenav.md-locked-open-remove-active {
-    transition: width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2), min-width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-    width: 0;
-    min-width: 0; }
-  md-sidenav.md-closed.md-locked-open-add {
-    width: 0;
-    min-width: 0;
-    -webkit-transform: translate3d(0%, 0, 0);
-            transform: translate3d(0%, 0, 0); }
-  md-sidenav.md-closed.md-locked-open-add-active {
-    transition: width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2), min-width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-    width: 304px;
-    min-width: 304px;
-    -webkit-transform: translate3d(0%, 0, 0);
-            transform: translate3d(0%, 0, 0); }
+  md-radio-button .md-container, .md-switch-thumb .md-container {
+    position: relative;
+    top: 4px;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    cursor: pointer; }
+    md-radio-button .md-container .md-ripple-container, .md-switch-thumb .md-container .md-ripple-container {
+      position: absolute;
+      display: block;
+      width: 48px;
+      height: 48px;
+      left: -16px;
+      top: -16px; }
+    md-radio-button .md-container:before, .md-switch-thumb .md-container:before {
+      background-color: transparent;
+      border-radius: 50%;
+      content: '';
+      position: absolute;
+      display: block;
+      height: auto;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      transition: all 0.5s;
+      width: auto; }
+  md-radio-button .md-off, .md-switch-thumb .md-off {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    border: solid 2px;
+    border-radius: 50%;
+    transition: border-color ease 0.28s; }
+  md-radio-button .md-on, .md-switch-thumb .md-on {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    transition: -webkit-transform ease 0.28s;
+    transition: transform ease 0.28s;
+    -webkit-transform: scale(0);
+            transform: scale(0); }
+  md-radio-button.md-checked .md-on, .md-switch-thumb.md-checked .md-on {
+    -webkit-transform: scale(0.5);
+            transform: scale(0.5); }
+  md-radio-button .md-label, .md-switch-thumb .md-label {
+    position: relative;
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+    vertical-align: middle;
+    white-space: normal;
+    pointer-events: none;
+    width: auto; }
+  md-radio-button .circle, .md-switch-thumb .circle {
+    border-radius: 50%; }
 
-.md-sidenav-backdrop.md-locked-open {
-  display: none; }
-
-.md-sidenav-left, md-sidenav {
-  left: 0;
-  top: 0;
-  -webkit-transform: translate3d(0%, 0, 0);
-          transform: translate3d(0%, 0, 0); }
-  .md-sidenav-left.md-closed, md-sidenav.md-closed {
-    -webkit-transform: translate3d(-100%, 0, 0);
-            transform: translate3d(-100%, 0, 0); }
-
-.md-sidenav-right {
-  left: 100%;
-  top: 0;
-  -webkit-transform: translate3d(-100%, 0, 0);
-          transform: translate3d(-100%, 0, 0); }
-  .md-sidenav-right.md-closed {
-    -webkit-transform: translate3d(0%, 0, 0);
-            transform: translate3d(0%, 0, 0); }
-
-@media (max-width: 360px) {
-  md-sidenav {
-    width: 85%; } }
+md-radio-group:focus {
+  outline: none; }
+md-radio-group.md-focused .md-checked .md-container:before {
+  left: -8px;
+  top: -8px;
+  right: -8px;
+  bottom: -8px; }
 
 @media screen and (-ms-high-contrast: active) {
-  .md-sidenav-left, md-sidenav {
-    border-right: 1px solid #fff; }
-  .md-sidenav-right {
-    border-left: 1px solid #fff; } }
+  md-radio-button.md-default-theme .md-on {
+    background-color: #fff; } }
 
 .md-select-menu-container {
   position: fixed;
@@ -6136,20 +6043,98 @@ md-optgroup {
   md-select-menu {
     border: 1px solid #fff; } }
 
-.md-sticky-clone {
-  z-index: 2;
-  top: 0;
-  left: 0;
-  right: 0;
-  position: absolute !important;
-  -webkit-transform: translate3d(-9999px, -9999px, 0);
-          transform: translate3d(-9999px, -9999px, 0); }
-  .md-sticky-clone[sticky-state="active"] {
+md-sidenav {
+  box-sizing: border-box;
+  position: absolute;
+  width: 304px;
+  min-width: 304px;
+  max-width: 304px;
+  bottom: 0;
+  z-index: 60;
+  background-color: white;
+  overflow: auto;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column; }
+  md-sidenav *, md-sidenav *:before, md-sidenav *:after {
+    box-sizing: border-box; }
+  md-sidenav ul {
+    list-style: none; }
+  md-sidenav.md-closed {
+    display: none; }
+  md-sidenav.md-closed-add, md-sidenav.md-closed-remove {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    /* this is required as of 1.3x to properly
+       apply all styling in a show/hide animation */
+    transition: 0s all; }
+  md-sidenav.md-closed-add.md-closed-add-active, md-sidenav.md-closed-remove.md-closed-remove-active {
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  md-sidenav.md-locked-open-add, md-sidenav.md-locked-open-remove {
+    position: static;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }
-    .md-sticky-clone[sticky-state="active"]:not(.md-sticky-no-effect) .md-subheader-inner {
-      -webkit-animation: subheaderStickyHoverIn 0.3s ease-out both;
-              animation: subheaderStickyHoverIn 0.3s ease-out both; }
+  md-sidenav.md-locked-open {
+    width: 304px;
+    min-width: 304px;
+    max-width: 304px; }
+  md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-left, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-right, md-sidenav.md-locked-open-remove.md-closed {
+    position: static;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0); }
+  md-sidenav.md-locked-open-remove-active {
+    transition: width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2), min-width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    width: 0;
+    min-width: 0; }
+  md-sidenav.md-closed.md-locked-open-add {
+    width: 0;
+    min-width: 0;
+    -webkit-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0); }
+  md-sidenav.md-closed.md-locked-open-add-active {
+    transition: width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2), min-width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    width: 304px;
+    min-width: 304px;
+    -webkit-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0); }
+
+.md-sidenav-backdrop.md-locked-open {
+  display: none; }
+
+.md-sidenav-left, md-sidenav {
+  left: 0;
+  top: 0;
+  -webkit-transform: translate3d(0%, 0, 0);
+          transform: translate3d(0%, 0, 0); }
+  .md-sidenav-left.md-closed, md-sidenav.md-closed {
+    -webkit-transform: translate3d(-100%, 0, 0);
+            transform: translate3d(-100%, 0, 0); }
+
+.md-sidenav-right {
+  left: 100%;
+  top: 0;
+  -webkit-transform: translate3d(-100%, 0, 0);
+          transform: translate3d(-100%, 0, 0); }
+  .md-sidenav-right.md-closed {
+    -webkit-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0); }
+
+@media (max-width: 360px) {
+  md-sidenav {
+    width: 85%; } }
+
+@media screen and (-ms-high-contrast: active) {
+  .md-sidenav-left, md-sidenav {
+    border-right: 1px solid #fff; }
+  .md-sidenav-right {
+    border-left: 1px solid #fff; } }
 
 @-webkit-keyframes sliderFocusThumb {
   0% {
@@ -6365,6 +6350,21 @@ md-slider {
 @media screen and (-ms-high-contrast: active) {
   md-slider.md-default-theme .md-track {
     border-bottom: 1px solid #fff; } }
+
+.md-sticky-clone {
+  z-index: 2;
+  top: 0;
+  left: 0;
+  right: 0;
+  position: absolute !important;
+  -webkit-transform: translate3d(-9999px, -9999px, 0);
+          transform: translate3d(-9999px, -9999px, 0); }
+  .md-sticky-clone[sticky-state="active"] {
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0); }
+    .md-sticky-clone[sticky-state="active"]:not(.md-sticky-no-effect) .md-subheader-inner {
+      -webkit-animation: subheaderStickyHoverIn 0.3s ease-out both;
+              animation: subheaderStickyHoverIn 0.3s ease-out both; }
 
 @-webkit-keyframes subheaderStickyHoverIn {
   0% {
@@ -6985,25 +6985,6 @@ md-toolbar {
     .md-toolbar-tools {
       border-bottom: 1px solid #fff; } }
 
-.md-whiteframe-z1 {
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.14), 0px 2px 2px 0px rgba(0, 0, 0, 0.098), 0px 1px 5px 0px rgba(0, 0, 0, 0.084); }
-
-.md-whiteframe-z2 {
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.14), 0 4px 5px 0 rgba(0, 0, 0, 0.098), 0 1px 10px 0 rgba(0, 0, 0, 0.084); }
-
-.md-whiteframe-z3 {
-  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.14), 0px 6px 10px 0px rgba(0, 0, 0, 0.098), 0px 1px 18px 0px rgba(0, 0, 0, 0.084); }
-
-.md-whiteframe-z4 {
-  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.14), 0px 8px 10px 1px rgba(0, 0, 0, 0.098), 0px 3px 14px 2px rgba(0, 0, 0, 0.084); }
-
-.md-whiteframe-z5 {
-  box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.14), 0px 16px 24px 2px rgba(0, 0, 0, 0.098), 0px 6px 30px 5px rgba(0, 0, 0, 0.084); }
-
-@media screen and (-ms-high-contrast: active) {
-  md-whiteframe {
-    border: 1px solid #fff; } }
-
 md-tooltip {
   position: absolute;
   z-index: 100;
@@ -7069,3 +7050,22 @@ md-tooltip {
     pointer-events: auto;
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }
+
+.md-whiteframe-z1 {
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.14), 0px 2px 2px 0px rgba(0, 0, 0, 0.098), 0px 1px 5px 0px rgba(0, 0, 0, 0.084); }
+
+.md-whiteframe-z2 {
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.14), 0 4px 5px 0 rgba(0, 0, 0, 0.098), 0 1px 10px 0 rgba(0, 0, 0, 0.084); }
+
+.md-whiteframe-z3 {
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.14), 0px 6px 10px 0px rgba(0, 0, 0, 0.098), 0px 1px 18px 0px rgba(0, 0, 0, 0.084); }
+
+.md-whiteframe-z4 {
+  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.14), 0px 8px 10px 1px rgba(0, 0, 0, 0.098), 0px 3px 14px 2px rgba(0, 0, 0, 0.084); }
+
+.md-whiteframe-z5 {
+  box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.14), 0px 16px 24px 2px rgba(0, 0, 0, 0.098), 0px 6px 30px 5px rgba(0, 0, 0, 0.084); }
+
+@media screen and (-ms-high-contrast: active) {
+  md-whiteframe {
+    border: 1px solid #fff; } }
