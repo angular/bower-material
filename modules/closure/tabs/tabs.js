@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc3-master-cc1d9d2
+ * v0.10.0-rc3-master-a0b3d5f
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -328,7 +328,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
    */
   function handleOffsetChange (left) {
     var newValue = ctrl.shouldCenterTabs ? '' : '-' + left + 'px';
-    angular.element(elements.paging).css('transform', 'translate3d(' + newValue + ', 0, 0)');
+    angular.element(elements.paging).css($mdConstant.CSS.TRANSFORM, 'translate3d(' + newValue + ', 0, 0)');
     $scope.$broadcast('$mdTabsPaginationChanged');
   }
 
