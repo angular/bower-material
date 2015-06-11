@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc2-master-deae957
+ * v0.10.0-rc2-master-83a50f2
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -544,11 +544,15 @@ angular.module('material.core')
     disableScrollAround: function(element) {
       if (Util.disableScrollAround._enableScrolling) return Util.disableScrollAround._enableScrolling;
       element = angular.element(element);
-      var body = $document[0].body;
-      disableBodyScroll();
-      disableElementScroll();
+      var body = $document[0].body,
+          restoreBody = disableBodyScroll(),
+          restoreElement = disableElementScroll();
 
-      return Util.disableScrollAround._enableScrolling;
+      return Util.disableScrollAround._enableScrolling = function () {
+        restoreBody();
+        restoreElement();
+        delete Util.disableScrollAround._enableScrolling;
+      };
 
       // Creates a virtual scrolling mask to absorb touchmove, keyboard, scrollbar clicking, and wheel events
       function disableElementScroll() {
@@ -563,7 +567,7 @@ angular.module('material.core')
         scrollMask.on('touchmove', preventDefault);
         $document.on('keydown', disableKeyNav);
 
-        Util.disableScrollAround._enableScrolling = function restoreScroll () {
+        return function restoreScroll () {
           scrollMask.off('wheel');
           scrollMask.off('touchmove');
           scrollMask[0].parentNode.removeChild(scrollMask[0]);
