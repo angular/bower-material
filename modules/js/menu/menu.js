@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc2-master-94b03b0
+ * v0.10.0-rc2-master-67be5ce
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -171,6 +171,13 @@ function MenuDirective($mdMenu) {
     menuContainer.append(menuContents);
     mdMenuCtrl.init(menuContainer);
 
+    scope.$on('$destroy', function() {
+      if (mdMenuCtrl.isOpen) {
+        menuContainer.remove();
+        mdMenuCtrl.close();
+      }
+    });
+
   }
 }
 MenuDirective.$inject = ["$mdMenu"];
@@ -188,6 +195,7 @@ function MenuController($mdMenu, $attrs, $element, $scope) {
 
   // Uses the $mdMenu interim element service to open the menu contents
   this.open = function openMenu() {
+    ctrl.isOpen = true;
     $element.attr('aria-expanded', 'true');
     $mdMenu.show({
       mdMenuCtrl: ctrl,
@@ -200,6 +208,7 @@ function MenuController($mdMenu, $attrs, $element, $scope) {
 
   // Use the $mdMenu interim element service to close the menu contents
   this.close = function closeMenu(skipFocus) {
+    ctrl.isOpen = false;
     $element.attr('aria-expanded', 'false');
     $mdMenu.hide();
 
@@ -493,7 +502,6 @@ function MenuProvider($$interimElementProvider) {
      * @param {object} opts - the interim element options object
      */
     function positionMenu(el, opts) {
-      debugger;
       if (opts.isRemoved) return;
 
       var containerNode = el[0],
