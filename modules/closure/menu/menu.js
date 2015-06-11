@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc2-master-fb245fb
+ * v0.10.0-rc2-master-2513153
  */
 goog.provide('ng.material.components.menu');
 goog.require('ng.material.components.backdrop');
@@ -605,7 +605,7 @@ MenuProvider.$inject = ["$$interimElementProvider"];
 // Annoying method to copy nodes to an array, thanks to IE
 function nodesToArray(nodes) {
   var results = [];
-  for (var i = nodes.length; i--; results.unshift(nodes[i]))
+  for (var i = nodes.length; i--; results.unshift(nodes[i])) {}
   return results;
 }
 
