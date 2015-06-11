@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc2-master-113ad44
+ * v0.10.0-rc2-master-deae957
  */
 goog.provide('ng.material.components.menu');
 goog.require('ng.material.components.backdrop');
@@ -314,7 +314,7 @@ function MenuProvider($$interimElementProvider) {
 
       // Disable scrolling
       if (opts.disableParentScroll) {
-        opts.restoreScroll = $mdUtil.disableScrollAround(opts.target);
+        opts.restoreScroll = $mdUtil.disableScrollAround(opts.element);
       }
 
       // Only activate click listeners after a short time to stop accidental double taps/clicks

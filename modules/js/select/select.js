@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc2-master-113ad44
+ * v0.10.0-rc2-master-deae957
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -756,7 +756,7 @@ function SelectProvider($$interimElementProvider) {
       }
 
       if (opts.disableParentScroll && !$mdUtil.getClosest(opts.target, 'MD-DIALOG')) {
-        opts.restoreScroll = $mdUtil.disableScrollAround(opts.target);
+        opts.restoreScroll = $mdUtil.disableScrollAround(opts.element);
       } else {
         opts.disableParentScroll = false;
       }
