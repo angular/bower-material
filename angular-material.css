@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc2-master-2552686
+ * v0.10.0-rc2-master-6019718
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -6573,7 +6573,7 @@ md-tabs {
           flex-shrink: 0; }
   md-tabs.ng-animate {
     transition: height 0.5s cubic-bezier(0.35, 0, 0.25, 1); }
-  md-tabs:not(.md-no-tab-content):not([md-dynamic-height]) {
+  md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
     min-height: 248px; }
   md-tabs[md-align-tabs="bottom"] md-tabs-wrapper {
     position: absolute;
@@ -6584,7 +6584,7 @@ md-tabs {
   md-tabs[md-align-tabs="bottom"] md-tabs-content-wrapper {
     top: 0;
     bottom: 48px; }
-  md-tabs[md-dynamic-height] md-tabs-content-wrapper {
+  md-tabs.md-dynamic-height md-tabs-content-wrapper {
     min-height: 0;
     position: relative;
     top: auto;
@@ -6592,14 +6592,14 @@ md-tabs {
     right: auto;
     bottom: auto;
     overflow: visible; }
-  md-tabs[md-dynamic-height] md-tab-content.md-active {
+  md-tabs.md-dynamic-height md-tab-content.md-active {
     position: relative; }
   md-tabs[md-border-bottom] md-tabs-wrapper {
     border-width: 0 0 1px;
     border-style: solid; }
     md-tabs[md-border-bottom] md-tabs-wrapper .md-tab {
       padding-bottom: 11px; }
-  md-tabs[md-border-bottom]:not([md-dynamic-height]) md-tabs-content-wrapper {
+  md-tabs[md-border-bottom]:not(.md-dynamic-height) md-tabs-content-wrapper {
     top: 49px; }
 
 md-tabs-wrapper {

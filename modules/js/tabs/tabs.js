@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc2-master-2552686
+ * v0.10.0-rc2-master-6019718
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -294,6 +294,10 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     $mdUtil.initOptionalProperties($scope, $attrs);
     $attrs.$observe('mdNoBar', function (value) { $scope.noInkBar = angular.isDefined(value); });
     $scope.$watch('selectedIndex', handleSelectedIndexChange);
+    $scope.$watch('dynamicHeight', function (value) {
+      if (value) $element.addClass('md-dynamic-height');
+      else $element.removeClass('md-dynamic-height');
+    });
     $scope.$on('$destroy', cleanup);
   }
 
