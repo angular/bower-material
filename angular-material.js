@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc3-master-ca2d5b7
+ * v0.10.0-rc3-master-cc1d9d2
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -14607,6 +14607,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
       updateHeightFromContent();
       adjustOffset();
       updatePagination();
+      ctrl.tabs[$scope.selectedIndex] && ctrl.tabs[$scope.selectedIndex].scope.select();
       loaded = true;
     });
   }
