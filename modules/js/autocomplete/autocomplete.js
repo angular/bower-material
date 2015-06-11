@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc3-master-e53d9e9
+ * v0.10.0-rc3-master-6911506
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -246,7 +246,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
    * When the mouse button is released, send focus back to the input field.
    */
   function onMouseup () {
-    element.input.focus();
+    elements.input.focus();
   }
 
   /**
