@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc2-master-d7bfc86
+ * v0.10.0-rc2-master-113ad44
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -8235,7 +8235,11 @@ function MenuDirective($mdMenu) {
 
   function compile(templateElement) {
     templateElement.addClass('md-menu');
-    templateElement.children().eq(0).attr('aria-haspopup', 'true');
+    var triggerElement = templateElement.children()[0];
+    if (!triggerElement.hasAttribute('ng-click')) {
+      triggerElement = triggerElement.querySelector('[ng-click]');
+    }
+    triggerElement && triggerElement.setAttribute('aria-haspopup', 'true');
     if (templateElement.children().length != 2) {
       throw Error('Invalid HTML for md-menu. Expected two children elements.');
     }
@@ -8267,17 +8271,19 @@ function MenuController($mdMenu, $attrs, $element, $scope) {
 
   var menuContainer;
   var ctrl = this;
+  var triggerElement;
 
   // Called by our linking fn to provide access to the menu-content
   // element removed during link
   this.init = function(setMenuContainer) {
     menuContainer = setMenuContainer;
+    triggerElement = $element[0].querySelector('[ng-click]');
   };
 
   // Uses the $mdMenu interim element service to open the menu contents
   this.open = function openMenu() {
     ctrl.isOpen = true;
-    $element.attr('aria-expanded', 'true');
+    triggerElement.setAttribute('aria-expanded', 'true');
     $mdMenu.show({
       mdMenuCtrl: ctrl,
       element: menuContainer,
@@ -8290,7 +8296,7 @@ function MenuController($mdMenu, $attrs, $element, $scope) {
   // Use the $mdMenu interim element service to close the menu contents
   this.close = function closeMenu(skipFocus) {
     ctrl.isOpen = false;
-    $element.attr('aria-expanded', 'false');
+    triggerElement.setAttribute('aria-expanded', 'false');
     $mdMenu.hide();
 
     if (!skipFocus) {
