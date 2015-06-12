@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc3-master-6911506
+ * v0.10.0-rc3-master-058efeb
  */
 goog.provide('ng.material.components.menu');
 goog.require('ng.material.components.backdrop');
@@ -445,7 +445,7 @@ function MenuProvider($$interimElementProvider) {
     function focusMenuItem(e, menuEl, opts, direction) {
       var currentItem = $mdUtil.getClosest(e.target, 'MD-MENU-ITEM');
 
-      var items = nodesToArray(menuEl[0].children);
+      var items = $mdUtil.nodesToArray(menuEl[0].children);
       var currentIndex = items.indexOf(currentItem);
 
       // Traverse through our elements in the specified direction (+/-1) and try to
@@ -616,12 +616,5 @@ function MenuProvider($$interimElementProvider) {
   }
 }
 MenuProvider.$inject = ["$$interimElementProvider"];
-
-// Annoying method to copy nodes to an array, thanks to IE
-function nodesToArray(nodes) {
-  var results = [];
-  for (var i = nodes.length; i--; results.unshift(nodes[i])) {}
-  return results;
-}
 
 ng.material.components.menu = angular.module("material.components.menu");

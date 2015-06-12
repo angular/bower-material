@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc3-master-6911506
+ * v0.10.0-rc3-master-058efeb
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -514,6 +514,15 @@ angular.module('material.core')
     },
     offsetRect: function(element, offsetParent) {
       return Util.clientRect(element, offsetParent, true);
+    },
+
+    // Annoying method to copy nodes to an array, thanks to IE
+    nodesToArray: function (nodes) {
+      var results = [];
+      for (var i = 0; i < nodes.length; ++i) {
+        results.push(nodes.item(i));
+      }
+      return results;
     },
 
     // Disables scroll around the passed element.
