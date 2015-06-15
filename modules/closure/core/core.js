@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc2-master-781a4bc
+ * v0.10.0-rc4-master-afa213d
  */
 goog.provide('ng.material.core');
 
@@ -516,19 +516,33 @@ angular.module('material.core')
       return Util.clientRect(element, offsetParent, true);
     },
 
+    // Annoying method to copy nodes to an array, thanks to IE
+    nodesToArray: function (nodes) {
+      var results = [];
+      for (var i = 0; i < nodes.length; ++i) {
+        results.push(nodes.item(i));
+      }
+      return results;
+    },
+
     // Disables scroll around the passed element.
     disableScrollAround: function(element) {
       if (Util.disableScrollAround._enableScrolling) return Util.disableScrollAround._enableScrolling;
       element = angular.element(element);
-      var body = $document[0].body;
-      disableBodyScroll();
-      disableElementScroll();
+      var body = $document[0].body,
+          restoreBody = disableBodyScroll(),
+          restoreElement = disableElementScroll();
 
-      return Util.disableScrollAround._enableScrolling;
+      return Util.disableScrollAround._enableScrolling = function () {
+        restoreBody();
+        restoreElement();
+        delete Util.disableScrollAround._enableScrolling;
+      };
 
       // Creates a virtual scrolling mask to absorb touchmove, keyboard, scrollbar clicking, and wheel events
       function disableElementScroll() {
-        var zIndex = $window.getComputedStyle(element[0]).zIndex;
+        var zIndex = $window.getComputedStyle(element[0]).zIndex - 1;
+        if (isNaN(zIndex)) zIndex = 99;
         var scrollMask = angular.element(
             '<div class="md-scroll-mask" style="z-index: ' + zIndex + '">' +
             '  <div class="md-scroll-mask-bar"></div>' +
@@ -539,7 +553,7 @@ angular.module('material.core')
         scrollMask.on('touchmove', preventDefault);
         $document.on('keydown', disableKeyNav);
 
-        Util.disableScrollAround._enableScrolling = function restoreScroll () {
+        return function restoreScroll () {
           scrollMask.off('wheel');
           scrollMask.off('touchmove');
           scrollMask[0].parentNode.removeChild(scrollMask[0]);
@@ -551,6 +565,8 @@ angular.module('material.core')
         // used to stop the keypresses that could cause the page to scroll
         // (arrow keys, spacebar, tab, etc).
         function disableKeyNav(e) {
+          //-- temporarily removed this logic, will possibly re-add at a later date
+          return;
           if (!element[0].contains(e.target)) {
             e.preventDefault();
             e.stopImmediatePropagation();
@@ -566,7 +582,7 @@ angular.module('material.core')
       // position
       function disableBodyScroll() {
         var restoreStyle = body.getAttribute('style') || '';
-        var scrollOffset = body.scrollTop;
+        var scrollOffset = body.scrollTop + body.parentElement.scrollTop;
 
         applyStyles(body, {
           position: 'fixed',

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc2-master-781a4bc
+ * v0.10.0-rc4-master-afa213d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -10,7 +10,7 @@
 (function(){
 "use strict";
 
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.theming.palette","material.core.theming","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.content","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabSpeedDial","material.components.fabTrigger","material.components.fabToolbar","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.theming.palette","material.core.theming","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.content","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabSpeedDial","material.components.fabToolbar","material.components.fabTrigger","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 })();
 (function(){
 "use strict";
@@ -540,19 +540,33 @@ angular.module('material.core')
       return Util.clientRect(element, offsetParent, true);
     },
 
+    // Annoying method to copy nodes to an array, thanks to IE
+    nodesToArray: function (nodes) {
+      var results = [];
+      for (var i = 0; i < nodes.length; ++i) {
+        results.push(nodes.item(i));
+      }
+      return results;
+    },
+
     // Disables scroll around the passed element.
     disableScrollAround: function(element) {
       if (Util.disableScrollAround._enableScrolling) return Util.disableScrollAround._enableScrolling;
       element = angular.element(element);
-      var body = $document[0].body;
-      disableBodyScroll();
-      disableElementScroll();
+      var body = $document[0].body,
+          restoreBody = disableBodyScroll(),
+          restoreElement = disableElementScroll();
 
-      return Util.disableScrollAround._enableScrolling;
+      return Util.disableScrollAround._enableScrolling = function () {
+        restoreBody();
+        restoreElement();
+        delete Util.disableScrollAround._enableScrolling;
+      };
 
       // Creates a virtual scrolling mask to absorb touchmove, keyboard, scrollbar clicking, and wheel events
       function disableElementScroll() {
-        var zIndex = $window.getComputedStyle(element[0]).zIndex;
+        var zIndex = $window.getComputedStyle(element[0]).zIndex - 1;
+        if (isNaN(zIndex)) zIndex = 99;
         var scrollMask = angular.element(
             '<div class="md-scroll-mask" style="z-index: ' + zIndex + '">' +
             '  <div class="md-scroll-mask-bar"></div>' +
@@ -563,7 +577,7 @@ angular.module('material.core')
         scrollMask.on('touchmove', preventDefault);
         $document.on('keydown', disableKeyNav);
 
-        Util.disableScrollAround._enableScrolling = function restoreScroll () {
+        return function restoreScroll () {
           scrollMask.off('wheel');
           scrollMask.off('touchmove');
           scrollMask[0].parentNode.removeChild(scrollMask[0]);
@@ -575,6 +589,8 @@ angular.module('material.core')
         // used to stop the keypresses that could cause the page to scroll
         // (arrow keys, spacebar, tab, etc).
         function disableKeyNav(e) {
+          //-- temporarily removed this logic, will possibly re-add at a later date
+          return;
           if (!element[0].contains(e.target)) {
             e.preventDefault();
             e.stopImmediatePropagation();
@@ -590,7 +606,7 @@ angular.module('material.core')
       // position
       function disableBodyScroll() {
         var restoreStyle = body.getAttribute('style') || '';
-        var scrollOffset = body.scrollTop;
+        var scrollOffset = body.scrollTop + body.parentElement.scrollTop;
 
         applyStyles(body, {
           position: 'fixed',
@@ -5631,55 +5647,6 @@ MdDividerDirective.$inject = ["$mdTheming"];
   'use strict';
 
   angular
-    .module('material.components.fabTrigger', [ 'material.core' ])
-    .directive('mdFabTrigger', MdFabTriggerDirective);
-
-  /**
-   * @ngdoc directive
-   * @name mdFabTrigger
-   * @module material.components.fabSpeedDial
-   *
-   * @restrict E
-   *
-   * @description
-   * The `<md-fab-trigger>` directive is used inside of a `<md-fab-speed-dial>` or
-   * `<md-fab-toolbar>` directive to mark the an element (or elements) as the trigger and setup the
-   * proper event listeners.
-   *
-   * @usage
-   * See the `<md-fab-speed-dial>` or `<md-fab-toolbar>` directives for example usage.
-   */
-  function MdFabTriggerDirective() {
-    return {
-      restrict: 'E',
-
-      require: ['^?mdFabSpeedDial', '^?mdFabToolbar'],
-
-      link: function(scope, element, attributes, controllers) {
-        // Grab whichever parent controller is used
-        var controller = controllers[0] || controllers[1];
-
-        // Make the children open/close their parent directive
-        if (controller) {
-          angular.forEach(element.children(), function(child) {
-            angular.element(child).on('focus', controller.open);
-            angular.element(child).on('blur', controller.close);
-          });
-        }
-      }
-    }
-  }
-})();
-
-
-})();
-(function(){
-"use strict";
-
-(function() {
-  'use strict';
-
-  angular
     .module('material.components.fabToolbar', [
       'material.core',
       'material.components.fabTrigger',
@@ -5883,6 +5850,55 @@ MdDividerDirective.$inject = ["$mdTheming"];
     }
   }
 })();
+})();
+(function(){
+"use strict";
+
+(function() {
+  'use strict';
+
+  angular
+    .module('material.components.fabTrigger', [ 'material.core' ])
+    .directive('mdFabTrigger', MdFabTriggerDirective);
+
+  /**
+   * @ngdoc directive
+   * @name mdFabTrigger
+   * @module material.components.fabSpeedDial
+   *
+   * @restrict E
+   *
+   * @description
+   * The `<md-fab-trigger>` directive is used inside of a `<md-fab-speed-dial>` or
+   * `<md-fab-toolbar>` directive to mark the an element (or elements) as the trigger and setup the
+   * proper event listeners.
+   *
+   * @usage
+   * See the `<md-fab-speed-dial>` or `<md-fab-toolbar>` directives for example usage.
+   */
+  function MdFabTriggerDirective() {
+    return {
+      restrict: 'E',
+
+      require: ['^?mdFabSpeedDial', '^?mdFabToolbar'],
+
+      link: function(scope, element, attributes, controllers) {
+        // Grab whichever parent controller is used
+        var controller = controllers[0] || controllers[1];
+
+        // Make the children open/close their parent directive
+        if (controller) {
+          angular.forEach(element.children(), function(child) {
+            angular.element(child).on('focus', controller.open);
+            angular.element(child).on('blur', controller.close);
+          });
+        }
+      }
+    }
+  }
+})();
+
+
 })();
 (function(){
 "use strict";
@@ -8502,7 +8518,7 @@ function MenuProvider($$interimElementProvider) {
     function focusMenuItem(e, menuEl, opts, direction) {
       var currentItem = $mdUtil.getClosest(e.target, 'MD-MENU-ITEM');
 
-      var items = nodesToArray(menuEl[0].children);
+      var items = $mdUtil.nodesToArray(menuEl[0].children);
       var currentIndex = items.indexOf(currentItem);
 
       // Traverse through our elements in the specified direction (+/-1) and try to
@@ -8673,13 +8689,6 @@ function MenuProvider($$interimElementProvider) {
   }
 }
 MenuProvider.$inject = ["$$interimElementProvider"];
-
-// Annoying method to copy nodes to an array, thanks to IE
-function nodesToArray(nodes) {
-  var results = [];
-  for (var i = nodes.length; i--; results.unshift(nodes[i])) {}
-  return results;
-}
 
 })();
 (function(){
@@ -9703,7 +9712,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
     };
 
     self.selectedLabels = function() {
-      var selectedOptionEls = nodesToArray($element[0].querySelectorAll('md-option[selected]'));
+      var selectedOptionEls = $mdUtil.nodesToArray($element[0].querySelectorAll('md-option[selected]'));
       if (selectedOptionEls.length) {
         return selectedOptionEls.map(function(el) { return el.textContent; }).join(', ');
       } else {
@@ -10044,7 +10053,7 @@ function SelectProvider($$interimElementProvider) {
 
 
         function focusOption(direction) {
-          var optionsArray = nodesToArray(optionNodes);
+          var optionsArray = $mdUtil.nodesToArray(optionNodes);
           var index = optionsArray.indexOf(opts.focusedNode);
           if (index === -1) {
             // We lost the previously focused element, reset to first option
@@ -10261,14 +10270,6 @@ function SelectProvider($$interimElementProvider) {
 }
 SelectProvider.$inject = ["$$interimElementProvider"];
 
-// Annoying method to copy nodes to an array, thanks to IE
-function nodesToArray(nodes) {
-  var results = [];
-  for (var i = 0; i < nodes.length; ++i) {
-    results.push(nodes.item(i));
-  }
-  return results;
-}
 
 })();
 (function(){
@@ -12644,7 +12645,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
   function handleHiddenChange (hidden, oldHidden) {
     if (!hidden && oldHidden) positionDropdown();
     if (!hidden) {
-      if (elements) $mdUtil.disableScrollAround(elements.ul);
+      if (elements) $timeout(function () { $mdUtil.disableScrollAround(elements.ul); }, 0, false);
     } else {
       $mdUtil.enableScrolling();
     }
@@ -12669,7 +12670,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
    * When the mouse button is released, send focus back to the input field.
    */
   function onMouseup () {
-    element.input.focus();
+    elements.input.focus();
   }
 
   /**
@@ -12922,7 +12923,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
         term = searchText.toLowerCase();
     if (angular.isArray(items)) {
       handleResults(items);
-    } else {
+    } else if (items) {
       ctrl.loading = true;
       if (items.success) items.success(handleResults);
       if (items.then)    items.then(handleResults);
@@ -14421,7 +14422,7 @@ function MdTab () {
         return getLabelElement() || getLabelAttribute() || getElementContents();
         function getLabelAttribute () { return attr.label; }
         function getLabelElement () {
-          var label = element.find('md-tab-label');
+          var label = element.find('md-tab-label').eq(0);
           if (label.length) return label.remove().html();
         }
         function getElementContents () {
@@ -14431,7 +14432,7 @@ function MdTab () {
         }
       }
       function getTemplate () {
-        var content = element.find('md-tab-body'),
+        var content = element.find('md-tab-body').eq(0),
             template = content.length ? content.html() : attr.label ? element.html() : '';
         if (content.length) content.remove();
         else if (attr.label) element.empty();
@@ -14451,8 +14452,8 @@ function MdTab () {
     if (!ctrl) return;
     var tabs = element.parent()[0].getElementsByTagName('md-tab'),
         index = Array.prototype.indexOf.call(tabs, element[0]),
-        body = element.find('md-tab-body').remove(),
-        label = element.find('md-tab-label').remove(),
+        body = element.find('md-tab-body').eq(0).remove(),
+        label = element.find('md-tab-label').eq(0).remove(),
         data = ctrl.insertTab({
           scope:    scope,
           parent:   scope.$parent,
@@ -14603,6 +14604,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
       updateHeightFromContent();
       adjustOffset();
       updatePagination();
+      ctrl.tabs[$scope.selectedIndex] && ctrl.tabs[$scope.selectedIndex].scope.select();
       loaded = true;
     });
   }
@@ -14625,6 +14627,10 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     $mdUtil.initOptionalProperties($scope, $attrs);
     $attrs.$observe('mdNoBar', function (value) { $scope.noInkBar = angular.isDefined(value); });
     $scope.$watch('selectedIndex', handleSelectedIndexChange);
+    $scope.$watch('dynamicHeight', function (value) {
+      if (value) $element.addClass('md-dynamic-height');
+      else $element.removeClass('md-dynamic-height');
+    });
     $scope.$on('$destroy', cleanup);
   }
 
@@ -14654,7 +14660,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
    */
   function handleOffsetChange (left) {
     var newValue = ctrl.shouldCenterTabs ? '' : '-' + left + 'px';
-    angular.element(elements.paging).css('transform', 'translate3d(' + newValue + ', 0, 0)');
+    angular.element(elements.paging).css($mdConstant.CSS.TRANSFORM, 'translate3d(' + newValue + ', 0, 0)');
     $scope.$broadcast('$mdTabsPaginationChanged');
   }
 
@@ -14682,7 +14688,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     ctrl.lastSelectedIndex = oldValue;
     ctrl.updateInkBarStyles();
     updateHeightFromContent();
-    adjustOffset();
+    adjustOffset(newValue);
     $scope.$broadcast('$mdTabsChanged');
     ctrl.tabs[oldValue] && ctrl.tabs[oldValue].scope.deselect();
     ctrl.tabs[newValue] && ctrl.tabs[newValue].scope.select();
@@ -14919,7 +14925,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   function shouldPaginate () {
     if ($scope.noPagination || !loaded) return false;
     var canvasWidth = $element.prop('clientWidth');
-    angular.forEach(elements.tabs, function (tab) { canvasWidth -= tab.offsetWidth; });
+    angular.forEach(elements.dummies, function (tab) { canvasWidth -= tab.offsetWidth; });
     return canvasWidth < 0;
   }
 
@@ -14967,6 +14973,9 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   function updatePagination () {
     ctrl.shouldPaginate = shouldPaginate();
     ctrl.shouldCenterTabs = shouldCenterTabs();
+    $timeout(function () {
+      adjustOffset($scope.selectedIndex);
+    });
   }
 
   /**
@@ -15009,9 +15018,10 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   /**
    * Forces the pagination to move the focused tab into view.
    */
-  function adjustOffset () {
+  function adjustOffset (index) {
     if (ctrl.shouldCenterTabs) return;
-    var tab = elements.tabs[ctrl.focusIndex],
+    if (index == null) index = ctrl.focusIndex;
+    var tab = elements.tabs[index],
         left = tab.offsetLeft,
         right = tab.offsetWidth + left;
     ctrl.offsetLeft = Math.max(ctrl.offsetLeft, fixOffset(right - elements.canvas.clientWidth));
@@ -15300,6 +15310,7 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
             </md-pagination-wrapper>\
             <div class="md-visually-hidden md-dummy-wrapper">\
               <md-dummy-tab\
+                  class="md-tab"\
                   tabindex="-1"\
                   id="tab-item-{{tab.id}}"\
                   role="tab"\
