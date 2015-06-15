@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-rc4-master-7b8efe2
+ * v0.10.0-rc2-master-781a4bc
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -221,7 +221,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
   function handleHiddenChange (hidden, oldHidden) {
     if (!hidden && oldHidden) positionDropdown();
     if (!hidden) {
-      if (elements) $timeout(function () { $mdUtil.disableScrollAround(elements.ul); }, 0, false);
+      if (elements) $mdUtil.disableScrollAround(elements.ul);
     } else {
       $mdUtil.enableScrolling();
     }
@@ -246,7 +246,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
    * When the mouse button is released, send focus back to the input field.
    */
   function onMouseup () {
-    elements.input.focus();
+    element.input.focus();
   }
 
   /**
