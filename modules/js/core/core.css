@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0
+ * v0.10.0-master-5c08d5c
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 /* Sizes:
@@ -2379,88 +2379,6 @@
 /* mixin definition ; sets LTR and RTL within the same style call */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-  -webkit-text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased; }
-
-md-select, md-card, md-list, md-toolbar, ul, ol, p, h1, h2, h3, h4, h5, h6 {
-  text-rendering: optimizeLegibility; }
-
-/************
- * Headings
- ************/
-.md-display-4 {
-  font-size: 112px;
-  font-weight: 300;
-  letter-spacing: -0.01em;
-  line-height: 112px; }
-
-.md-display-3 {
-  font-size: 56px;
-  font-weight: 400;
-  letter-spacing: -0.005em;
-  line-height: 56px; }
-
-.md-display-2 {
-  font-size: 45px;
-  font-weight: 400;
-  line-height: 64px; }
-
-.md-display-1 {
-  font-size: 34px;
-  font-weight: 400;
-  line-height: 40px; }
-
-.md-headline {
-  font-size: 24px;
-  font-weight: 400;
-  line-height: 32px; }
-
-.md-title {
-  font-size: 20px;
-  font-weight: 500;
-  letter-spacing: 0.005em; }
-
-.md-subhead {
-  font-size: 16px;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  line-height: 24px; }
-
-/************
- * Body Copy
- ************/
-.md-body-1 {
-  font-size: 14px;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  line-height: 20px; }
-
-.md-body-2 {
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  line-height: 24px; }
-
-.md-caption {
-  font-size: 12px;
-  letter-spacing: 0.02em; }
-
-.md-button {
-  letter-spacing: 0.01em; }
-
-/************
- * Defaults
- ************/
-button, select, html, textarea, input {
-  font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif; }
-
-select, button, textarea, input {
-  font-size: 100%; }
-
-/* mixin definition ; sets LTR and RTL within the same style call */
-html, body {
   height: 100%;
   color: rgba(0, 0, 0, 0.87);
   background: white;
@@ -2590,5 +2508,87 @@ input[type="search"] {
 @media (min-width: 600px) {
   .md-padding {
     padding: 16px; } }
+
+/* mixin definition ; sets LTR and RTL within the same style call */
+html, body {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased; }
+
+md-select, md-card, md-list, md-toolbar, ul, ol, p, h1, h2, h3, h4, h5, h6 {
+  text-rendering: optimizeLegibility; }
+
+/************
+ * Headings
+ ************/
+.md-display-4 {
+  font-size: 112px;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 112px; }
+
+.md-display-3 {
+  font-size: 56px;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 56px; }
+
+.md-display-2 {
+  font-size: 45px;
+  font-weight: 400;
+  line-height: 64px; }
+
+.md-display-1 {
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 40px; }
+
+.md-headline {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px; }
+
+.md-title {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.005em; }
+
+.md-subhead {
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 24px; }
+
+/************
+ * Body Copy
+ ************/
+.md-body-1 {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 20px; }
+
+.md-body-2 {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 24px; }
+
+.md-caption {
+  font-size: 12px;
+  letter-spacing: 0.02em; }
+
+.md-button {
+  letter-spacing: 0.01em; }
+
+/************
+ * Defaults
+ ************/
+button, select, html, textarea, input {
+  font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif; }
+
+select, button, textarea, input {
+  font-size: 100%; }
 
 /* mixin definition ; sets LTR and RTL within the same style call */
