@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-5c08d5c
+ * v0.10.0-master-0c66974
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -616,7 +616,7 @@ angular.module('material.core')
           top: -scrollOffset + 'px'
         });
 
-        if (body.clientWidth < clientWidth) applyStyles(body, { overflow: 'auto' });
+        if (body.clientWidth < clientWidth) applyStyles(body, { overflow: 'hidden' });
 
         return function restoreScroll() {
           body.setAttribute('style', restoreStyle);
@@ -12685,7 +12685,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
     if (selectedItem) {
       $scope.searchText = getDisplayValue(selectedItem);
     }
-    if ($scope.itemChange && selectedItem !== previousSelectedItem)
+    if (angular.isFunction($scope.itemChange) && selectedItem !== previousSelectedItem)
       $scope.itemChange(getItemScope(selectedItem));
   }
 
@@ -12735,7 +12735,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
     if (searchText !== getDisplayValue($scope.selectedItem)) $scope.selectedItem = null;
     else return;
     //-- trigger change event if available
-    if ($scope.textChange && searchText !== previousSearchText)
+    if (angular.isFunction($scope.textChange) && searchText !== previousSearchText)
       $scope.textChange(getItemScope($scope.selectedItem));
     //-- cancel results if search text is not long enough
     if (!isMinLengthMet()) {
