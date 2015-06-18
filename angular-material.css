@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-4623a9d
+ * v0.10.0-master-f452abe
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -3468,6 +3468,14 @@ md-content {
   md-content.autoScroll {
     -webkit-overflow-scrolling: auto; }
 
+md-divider {
+  display: block;
+  border-top-width: 1px;
+  border-top-style: solid;
+  margin: 0; }
+  md-divider[md-inset] {
+    margin-left: 80px; }
+
 .md-dialog-is-showing {
   max-height: 100%; }
 
@@ -3572,14 +3580,6 @@ md-dialog {
 @media screen and (-ms-high-contrast: active) {
   md-dialog {
     border: 1px solid #fff; } }
-
-md-divider {
-  display: block;
-  border-top-width: 1px;
-  border-top-style: solid;
-  margin: 0; }
-  md-divider[md-inset] {
-    margin-left: 80px; }
 
 md-fab-speed-dial {
   position: relative;

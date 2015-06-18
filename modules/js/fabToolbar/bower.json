@@ -1,9 +1,9 @@
 {
   "name": "angular-material-fabToolbar",
-  "version": "0.10.0-master-4623a9d",
+  "version": "0.10.0-master-f452abe",
   "dependencies": {
-    "angular-material-core": "0.10.0-master-4623a9d",
-    "angular-material-fabTrigger": "0.10.0-master-4623a9d",
-    "angular-material-fabActions": "0.10.0-master-4623a9d"
+    "angular-material-core": "0.10.0-master-f452abe",
+    "angular-material-fabTrigger": "0.10.0-master-f452abe",
+    "angular-material-fabActions": "0.10.0-master-f452abe"
   }
 }
