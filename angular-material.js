@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-dd11583
+ * v0.10.0-master-691dd2f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3543,6 +3543,9 @@ function ThemingProvider($mdColorPalette) {
         if (oldTheme) el.removeClass('md-' + oldTheme +'-theme');
         el.addClass('md-' + theme + '-theme');
         el.data('$mdThemeName', theme);
+        if (ctrl) {
+          el.data('$mdThemeController', ctrl);
+        }
       }
     };
 
@@ -9527,6 +9530,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $interpolate, 
         selectEl.data('$ngModelController', ngModel);
         selectEl.data('$mdSelectController', mdSelectCtrl);
         selectScope = scope.$new();
+        $mdTheming.inherit(selectContainer, element);
         selectContainer = $compile(selectContainer)(selectScope);
         selectMenuCtrl = selectContainer.find('md-select-menu').controller('mdSelectMenu');
       }
@@ -10004,7 +10008,7 @@ function SelectProvider($$interimElementProvider) {
       $timeout(activateInteraction, 75, false);
 
       if (opts.backdrop) {
-        $mdTheming.inherit(opts.backdrop, opts.parent);
+        $mdTheming.inherit(opts.backdrop, opts.target);
         opts.parent.append(opts.backdrop);
       }
       opts.parent.append(element);
