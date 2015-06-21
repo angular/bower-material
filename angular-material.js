@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-691dd2f
+ * v0.10.0-master-5cc9af4
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -8508,18 +8508,29 @@ function MenuProvider($$interimElementProvider) {
           // Traverse up the event until we get to the menuContentEl to see if
           // there is an ng-click and that the ng-click is not disabled
           do {
-            if (target && target.hasAttribute('ng-click')) {
+            if (target == opts.menuContentEl[0]) return;
+            if (hasAnyAttribute(target, ['ng-click', 'data-ng-click', 'x-ng-click'])) {
               if (!target.hasAttribute('disabled')) {
                 close();
               }
               break;
             }
-          } while ((target = target.parentNode) && target != opts.menuContentEl)
+          } while (target = target.parentNode)
 
           function close() {
             scope.$apply(function() {
               opts.mdMenuCtrl.close();
             });
+          }
+
+          function hasAnyAttribute(target, attrs) {
+            if (!target) return false;
+            for (var i = 0, attr; attr = attrs[i]; ++i) {
+              if (target.hasAttribute(attr)) {
+                return true;
+              }
+            }
+            return false;
           }
         });
 
