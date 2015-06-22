@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-4a6cd56
+ * v0.10.0-master-fb7b9b3
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -69,10 +69,10 @@ input[type="search"] {
   border-radius: inherit;
   pointer-events: none; }
 
-.md-shadow-bottom-z-1, .md-button.md-raised:not([disabled]), .md-button.md-fab, .md-button.md-raised.md-focused:not([disabled]), .md-button.md-fab.md-focused:not([disabled]) {
+.md-shadow-bottom-z-1 {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
 
-.md-shadow-bottom-z-2, .md-button.md-raised:not([disabled]):active, .md-button.md-fab:not([disabled]):active {
+.md-shadow-bottom-z-2 {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4); }
 
 .md-shadow-animated.md-shadow {
@@ -175,12 +175,12 @@ md-select, md-card, md-list, md-toolbar, ul, ol, p, h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
   line-height: 32px; }
 
-.md-title, .md-toolbar-tools {
+.md-title {
   font-size: 20px;
   font-weight: 500;
   letter-spacing: 0.005em; }
 
-.md-subhead, md-list-item.md-2-line .md-list-item-text h3, md-list-item.md-2-line > .md-no-style .md-list-item-text h3, md-list-item.md-3-line .md-list-item-text h3, md-list-item.md-3-line > .md-no-style .md-list-item-text h3 {
+.md-subhead {
   font-size: 16px;
   font-weight: 400;
   letter-spacing: 0.01em;
@@ -195,7 +195,7 @@ md-select, md-card, md-list, md-toolbar, ul, ol, p, h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.01em;
   line-height: 20px; }
 
-.md-body-2, md-list .md-subheader, md-list-item.md-2-line .md-list-item-text h4, md-list-item.md-2-line > .md-no-style .md-list-item-text h4, md-list-item.md-3-line .md-list-item-text h4, md-list-item.md-3-line > .md-no-style .md-list-item-text h4, md-list-item.md-2-line .md-list-item-text p, md-list-item.md-2-line > .md-no-style .md-list-item-text p, md-list-item.md-3-line .md-list-item-text p, md-list-item.md-3-line > .md-no-style .md-list-item-text p {
+.md-body-2 {
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.01em;
@@ -3074,6 +3074,8 @@ md-bottom-sheet {
   .md-button.md-icon {
     padding: 0;
     background: none; }
+  .md-button.md-raised:not([disabled]) {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
   .md-button.md-icon-button {
     margin: 0 6px;
     height: 48px;
@@ -3101,6 +3103,7 @@ md-bottom-sheet {
     -webkit-flex-shrink: 0;
         -ms-flex-negative: 0;
             flex-shrink: 0;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
     border-radius: 50%;
     background-clip: padding-box;
     overflow: hidden;
@@ -3139,6 +3142,10 @@ md-bottom-sheet {
       line-height: 40px;
       width: 40px;
       height: 40px; }
+  .md-button:not([disabled]).md-raised.md-focused, .md-button:not([disabled]).md-fab.md-focused {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
+  .md-button:not([disabled]).md-raised:active, .md-button:not([disabled]).md-fab:active {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4); }
 
 .md-toast-open-top .md-button.md-fab-top-left, .md-toast-open-top .md-button.md-fab-top-right {
   -webkit-transform: translate3d(0, 42px, 0);
@@ -3981,6 +3988,10 @@ md-list {
   display: block;
   padding: 8px 0px 8px 0px; }
   md-list .md-subheader {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 24px;
     line-height: 0.75em; }
 
 md-list-item.md-proxy-focus.md-focused .md-no-style {
@@ -4099,13 +4110,25 @@ md-list-item.md-2-line, md-list-item.md-2-line > .md-no-style, md-list-item.md-3
     md-list-item.md-2-line .md-list-item-text.md-offset, md-list-item.md-2-line > .md-no-style .md-list-item-text.md-offset, md-list-item.md-3-line .md-list-item-text.md-offset, md-list-item.md-3-line > .md-no-style .md-list-item-text.md-offset {
       margin-left: 56px; }
     md-list-item.md-2-line .md-list-item-text h3, md-list-item.md-2-line > .md-no-style .md-list-item-text h3, md-list-item.md-3-line .md-list-item-text h3, md-list-item.md-3-line > .md-no-style .md-list-item-text h3 {
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      line-height: 24px;
       margin: 0 0 6px 0;
       line-height: 0.75em; }
     md-list-item.md-2-line .md-list-item-text h4, md-list-item.md-2-line > .md-no-style .md-list-item-text h4, md-list-item.md-3-line .md-list-item-text h4, md-list-item.md-3-line > .md-no-style .md-list-item-text h4 {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      line-height: 24px;
       font-weight: 400;
       margin: 10px 0 5px 0;
       line-height: 0.75em; }
     md-list-item.md-2-line .md-list-item-text p, md-list-item.md-2-line > .md-no-style .md-list-item-text p, md-list-item.md-3-line .md-list-item-text p, md-list-item.md-3-line > .md-no-style .md-list-item-text p {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      line-height: 24px;
       margin: 0 0 0px 0;
       line-height: 1.6em; }
 
@@ -7083,6 +7106,9 @@ md-toolbar {
       display: none; }
 
 .md-toolbar-tools {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.005em;
   font-weight: 400;
   display: -webkit-flex;
   display: -ms-flexbox;
