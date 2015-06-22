@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-5cc9af4
+ * v0.10.0-master-4a6cd56
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -566,7 +566,7 @@ angular.module('material.core')
         // Creates a virtual scrolling mask to absorb touchmove, keyboard, scrollbar clicking, and wheel events
         function disableElementScroll() {
           var zIndex = $window.getComputedStyle(element[0]).zIndex - 1;
-          if (isNaN(zIndex)) zIndex = 99;
+          if (isNaN(zIndex)) zIndex = 50;
           var scrollMask = angular.element(
             '<div class="md-scroll-mask" style="z-index: ' + zIndex + '">' +
             '  <div class="md-scroll-mask-bar"></div>' +
@@ -605,7 +605,9 @@ angular.module('material.core')
         // Converts the body to a position fixed block and translate it to the proper scroll
         // position
         function disableBodyScroll() {
-          var restoreStyle = body.getAttribute('style') || '';
+          var htmlNode = body.parentNode;
+          var restoreHtmlStyle = htmlNode.getAttribute('style') || '';
+          var restoreBodyStyle = body.getAttribute('style') || '';
           var scrollOffset = body.scrollTop + body.parentElement.scrollTop;
           var clientWidth = body.clientWidth;
 
@@ -616,10 +618,15 @@ angular.module('material.core')
             top: -scrollOffset + 'px'
           });
 
+          applyStyles(htmlNode, {
+            overflowY: 'hidden'
+          });
+
           if (body.clientWidth < clientWidth) applyStyles(body, {overflow: 'hidden'});
 
           return function restoreScroll() {
-            body.setAttribute('style', restoreStyle);
+            body.setAttribute('style', restoreBodyStyle);
+            htmlNode.setAttribute('style', restoreHtmlStyle);
             body.scrollTop = scrollOffset;
           };
         }
@@ -8256,7 +8263,6 @@ function MenuDirective($mdMenu) {
   }
 
   function link(scope, element, attrs, mdMenuCtrl) {
-
     // Move everything into a md-menu-container and pass it to the controller
     var menuContainer = angular.element(
       '<div class="md-open-menu-container md-whiteframe-z2"></div>'
@@ -8296,6 +8302,7 @@ function MenuController($mdMenu, $attrs, $element, $scope) {
     ctrl.isOpen = true;
     triggerElement.setAttribute('aria-expanded', 'true');
     $mdMenu.show({
+      scope: $scope,
       mdMenuCtrl: ctrl,
       element: menuContainer,
       target: $element[0]
@@ -8389,6 +8396,7 @@ function MenuProvider($$interimElementProvider) {
       hasBackdrop: true,
       disableParentScroll: true,
       skipCompile: true,
+      preserveScope: true,
       themable: true
     };
 
@@ -8398,7 +8406,6 @@ function MenuProvider($$interimElementProvider) {
      * various interaction events
      */
     function onShow(scope, element, opts) {
-
       // Sanitize and set defaults on opts
       buildOpts(opts);
 
@@ -8487,7 +8494,9 @@ function MenuProvider($$interimElementProvider) {
         opts.backdrop && opts.backdrop.on('click', function(e) {
           e.preventDefault();
           e.stopPropagation();
-          opts.mdMenuCtrl.close(true);
+          scope.$apply(function() {
+            opts.mdMenuCtrl.close(true);
+          });
         });
 
         // Wire up keyboard listeners.

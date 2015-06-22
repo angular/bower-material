@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-5cc9af4
+ * v0.10.0-master-4a6cd56
  */
 goog.provide('ng.material.components.menu');
 goog.require('ng.material.components.backdrop');
@@ -167,7 +167,6 @@ function MenuDirective($mdMenu) {
   }
 
   function link(scope, element, attrs, mdMenuCtrl) {
-
     // Move everything into a md-menu-container and pass it to the controller
     var menuContainer = angular.element(
       '<div class="md-open-menu-container md-whiteframe-z2"></div>'
@@ -207,6 +206,7 @@ function MenuController($mdMenu, $attrs, $element, $scope) {
     ctrl.isOpen = true;
     triggerElement.setAttribute('aria-expanded', 'true');
     $mdMenu.show({
+      scope: $scope,
       mdMenuCtrl: ctrl,
       element: menuContainer,
       target: $element[0]
@@ -296,6 +296,7 @@ function MenuProvider($$interimElementProvider) {
       hasBackdrop: true,
       disableParentScroll: true,
       skipCompile: true,
+      preserveScope: true,
       themable: true
     };
 
@@ -305,7 +306,6 @@ function MenuProvider($$interimElementProvider) {
      * various interaction events
      */
     function onShow(scope, element, opts) {
-
       // Sanitize and set defaults on opts
       buildOpts(opts);
 
@@ -394,7 +394,9 @@ function MenuProvider($$interimElementProvider) {
         opts.backdrop && opts.backdrop.on('click', function(e) {
           e.preventDefault();
           e.stopPropagation();
-          opts.mdMenuCtrl.close(true);
+          scope.$apply(function() {
+            opts.mdMenuCtrl.close(true);
+          });
         });
 
         // Wire up keyboard listeners.
