@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-fb7b9b3
+ * v0.10.0-master-c183e9b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -542,6 +542,8 @@ angular.module('material.core')
 
       // Annoying method to copy nodes to an array, thanks to IE
       nodesToArray: function (nodes) {
+        nodes = nodes || [ ];
+
         var results = [];
         for (var i = 0; i < nodes.length; ++i) {
           results.push(nodes.item(i));
