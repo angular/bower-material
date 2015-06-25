@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-05119a7
+ * v0.10.0-master-5d9874f
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -178,7 +178,7 @@ function inputTextareaDirective($mdUtil, $window, $mdAria) {
 
     if ( !containerCtrl ) return;
     if (containerCtrl.input) {
-      throw new Error("<md-input-container> can only have *one* <input> or <textarea> child element!");
+      throw new Error("<md-input-container> can only have *one* <input>, <textarea> or <md-select> child element!");
     }
     containerCtrl.input = element;
 
@@ -339,7 +339,6 @@ function mdMaxlengthDirective($animate) {
 mdMaxlengthDirective.$inject = ["$animate"];
 
 function placeholderDirective($log) {
-  var blackListElements = ['MD-SELECT'];
   return {
     restrict: 'A',
     require: '^^?mdInputContainer',
@@ -349,7 +348,6 @@ function placeholderDirective($log) {
 
   function postLink(scope, element, attr, inputContainer) {
     if (!inputContainer) return;
-    if (blackListElements.indexOf(element[0].nodeName) != -1) return;
     if (angular.isDefined(inputContainer.element.attr('md-no-float'))) return;
 
     var placeholderText = attr.placeholder;
@@ -360,7 +358,7 @@ function placeholderDirective($log) {
 
       inputContainer.element.addClass('md-icon-float');
       inputContainer.element.prepend(placeholder);
-    } else {
+    } else if (element[0].nodeName != 'MD-SELECT') {
       $log.warn("The placeholder='" + placeholderText + "' will be ignored since this md-input-container has a child label element.");
     }
 
