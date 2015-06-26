@@ -1,8 +1,8 @@
 {
   "name": "angular-material-bottomSheet",
-  "version": "0.10.0-master-98e91ae",
+  "version": "0.10.0-master-2ccbc9d",
   "dependencies": {
-    "angular-material-core": "0.10.0-master-98e91ae",
-    "angular-material-backdrop": "0.10.0-master-98e91ae"
+    "angular-material-core": "0.10.0-master-2ccbc9d",
+    "angular-material-backdrop": "0.10.0-master-2ccbc9d"
   }
 }

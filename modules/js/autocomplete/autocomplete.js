@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-98e91ae
+ * v0.10.0-master-2ccbc9d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -770,7 +770,7 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
                   id="fl-input-{{$mdAutocompleteCtrl.id}}"\
                   name="{{inputName}}"\
                   autocomplete="off"\
-                  ng-required="isRequired"\
+                  ng-required="$mdAutocompleteCtrl.isRequired"\
                   ng-minlength="inputMinlength"\
                   ng-maxlength="inputMaxlength"\
                   ng-disabled="$mdAutocompleteCtrl.isDisabled"\
@@ -793,7 +793,7 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
                 name="{{inputName}}"\
                 ng-if="!floatingLabel"\
                 autocomplete="off"\
-                ng-required="isRequired"\
+                ng-required="$mdAutocompleteCtrl.isRequired"\
                 ng-disabled="$mdAutocompleteCtrl.isDisabled"\
                 ng-model="$mdAutocompleteCtrl.scope.searchText"\
                 ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
