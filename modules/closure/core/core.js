@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-b8897db
+ * v0.10.0-master-044dbdc
  */
 goog.provide('ng.material.core');
 
@@ -593,14 +593,14 @@ angular.module('material.core')
             applyStyles(body, {
               position: 'fixed',
               width: '100%',
-              overflowY: 'scroll',
               top: -scrollOffset + 'px'
+            });
+
+            applyStyles(htmlNode, {
+              overflowY: 'scroll'
             });
           }
 
-          applyStyles(htmlNode, {
-            overflowY: 'hidden'
-          });
 
           if (body.clientWidth < clientWidth) applyStyles(body, {overflow: 'hidden'});
 

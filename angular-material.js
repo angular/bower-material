@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-b8897db
+ * v0.10.0-master-044dbdc
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -617,14 +617,14 @@ angular.module('material.core')
             applyStyles(body, {
               position: 'fixed',
               width: '100%',
-              overflowY: 'scroll',
               top: -scrollOffset + 'px'
+            });
+
+            applyStyles(htmlNode, {
+              overflowY: 'scroll'
             });
           }
 
-          applyStyles(htmlNode, {
-            overflowY: 'hidden'
-          });
 
           if (body.clientWidth < clientWidth) applyStyles(body, {overflow: 'hidden'});
 
@@ -8640,8 +8640,8 @@ function MenuProvider($$interimElementProvider) {
 
       var bounds = {
         left: boundryNodeRect.left + MENU_EDGE_MARGIN,
-        top: boundryNodeRect.top + MENU_EDGE_MARGIN,
-        bottom: boundryNodeRect.bottom - MENU_EDGE_MARGIN,
+        top: Math.max(boundryNodeRect.top, 0) + MENU_EDGE_MARGIN,
+        bottom: Math.max(boundryNodeRect.bottom, Math.max(boundryNodeRect.top, 0) + boundryNodeRect.height) - MENU_EDGE_MARGIN,
         right: boundryNodeRect.right - MENU_EDGE_MARGIN
       };
 
