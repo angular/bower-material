@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-16912ba
+ * v0.10.0-master-b8897db
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -54,6 +54,7 @@ angular.module('material.components.select', [
  * @param {expression=} md-on-close expression to be evaluated when the select is closed
  * @param {string=} placeholder Placeholder hint text.
  * @param {string=} aria-label Optional label for accessibility. Only necessary if no placeholder or
+ * @param {string=} md-container-class class list to get applied to the .md-select-menu-container element (for custom styling)
  * explicit label is present.
  *
  * @usage
@@ -345,6 +346,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $interpolate, 
         selectEl.data('$mdSelectController', mdSelectCtrl);
         selectScope = scope.$new();
         $mdTheming.inherit(selectContainer, element);
+        selectContainer[0].setAttribute('class', selectContainer[0].getAttribute('class') + ' ' + element.attr('md-container-class'));
         selectContainer = $compile(selectContainer)(selectScope);
         selectMenuCtrl = selectContainer.find('md-select-menu').controller('mdSelectMenu');
       }

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-16912ba
+ * v0.10.0-master-b8897db
  */
 goog.provide('ng.material.components.fabSpeedDial');
 goog.require('ng.material.components.fabActions');
