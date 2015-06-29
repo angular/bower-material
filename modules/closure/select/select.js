@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-044dbdc
+ * v0.10.0-master-1414b3c
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -182,13 +182,11 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $interpolate, 
       }
 
 
-      ngModelCtrl.$parsers.push(ngModelPipelineCheckValue);
-      ngModelCtrl.$formatters.push(ngModelPipelineCheckValue);
-
       var originalRender = ngModelCtrl.$render;
       ngModelCtrl.$render = function() {
         originalRender();
         syncLabelText();
+        inputCheckValue();
       };
 
       mdSelectCtrl.setLabelText = function(text) {
@@ -240,8 +238,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $interpolate, 
 
       function setAriaLabel() {
         var labelText = element.attr('placeholder');
-        if (!labelText) {
-          labelText = containerCtrl.element.find('label').text();
+        if (!labelText && containerCtrl && containerCtrl.label) {
+          labelText = containerCtrl.label.text();
         }
         $mdAria.expect(element, 'aria-label', labelText);
       }
@@ -326,11 +324,6 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $interpolate, 
           containerCtrl.input = null;
         }
       });
-
-      function ngModelPipelineCheckValue(arg) {
-        containerCtrl && containerCtrl.setHasValue(!ngModelCtrl.$isEmpty(arg));
-        return arg;
-      }
 
       function inputCheckValue() {
         // The select counts as having a value if one or more options are selected,
@@ -668,6 +661,7 @@ function OptionDirective($mdButtonInkRipple, $mdUtil) {
     scope.$$postDigest(function() {
       attr.$observe('selected', function(selected) {
         if (!angular.isDefined(selected)) return;
+        if (typeof selected == 'string') selected = true;
         if (selected) {
           if (!selectCtrl.isMultiple) {
             selectCtrl.deselect( Object.keys(selectCtrl.selected)[0] );

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-044dbdc
+ * v0.10.0-master-1414b3c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -355,10 +355,12 @@ function placeholderDirective($log) {
     element.removeAttr('placeholder');
 
     if ( inputContainer.element.find('label').length == 0 ) {
-      var placeholder = '<label ng-click="delegateClick()">' + placeholderText + '</label>';
+      if (inputContainer.input && inputContainer.input[0].nodeName != 'MD-SELECT') {
+        var placeholder = '<label ng-click="delegateClick()">' + placeholderText + '</label>';
 
-      inputContainer.element.addClass('md-icon-float');
-      inputContainer.element.prepend(placeholder);
+        inputContainer.element.addClass('md-icon-float');
+        inputContainer.element.prepend(placeholder);
+      }
     } else if (element[0].nodeName != 'MD-SELECT') {
       $log.warn("The placeholder='" + placeholderText + "' will be ignored since this md-input-container has a child label element.");
     }
