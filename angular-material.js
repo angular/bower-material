@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-288285c
+ * v0.10.0-master-556be5f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13590,6 +13590,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
    */
   function select (index) {
     $scope.selectedItem = ctrl.matches[index];
+    ctrl.loading = false;
     ctrl.hidden = true;
     ctrl.index = 0;
     ctrl.matches = [];
@@ -13847,7 +13848,7 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
             role="listbox">\
           ' + getInputElement() + '\
           <md-progress-linear\
-              ng-if="$mdAutocompleteCtrl.loading"\
+              ng-if="$mdAutocompleteCtrl.loading && !$mdAutocompleteCtrl.hidden"\
               md-mode="indeterminate"></md-progress-linear>\
           <ul role="presentation"\
               class="md-autocomplete-suggestions md-whiteframe-z1 {{menuClass || \'\'}}"\
@@ -15274,6 +15275,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   ctrl.shouldCenterTabs = shouldCenterTabs();
 
   //-- define public methods
+  ctrl.updatePagination = $mdUtil.debounce(updatePagination, 100);
   ctrl.redirectFocus = redirectFocus;
   ctrl.attachRipple = attachRipple;
   ctrl.shouldStretchTabs = shouldStretchTabs;
@@ -15322,7 +15324,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   function bindEvents () {
     angular.element($window).on('resize', handleWindowResize);
     angular.element(elements.paging).on('DOMSubtreeModified', ctrl.updateInkBarStyles);
-    angular.element(elements.paging).on('DOMSubtreeModified', updatePagination);
+    angular.element(elements.paging).on('DOMSubtreeModified', ctrl.updatePagination);
   }
 
   function configureWatchers () {
@@ -15812,11 +15814,9 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
         oldIndex = ctrl.lastSelectedIndex,
         ink = angular.element(elements.inkBar);
     if (!angular.isNumber(oldIndex)) return;
-    if (newIndex < oldIndex) {
-      ink.addClass('md-left').removeClass('md-right');
-    } else if (newIndex > oldIndex) {
-      ink.addClass('md-right').removeClass('md-left');
-    }
+    ink
+        .toggleClass('md-left', newIndex < oldIndex)
+        .toggleClass('md-right', newIndex > oldIndex);
   }
 
   /**

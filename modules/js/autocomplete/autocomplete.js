@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-288285c
+ * v0.10.0-master-556be5f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -464,6 +464,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
    */
   function select (index) {
     $scope.selectedItem = ctrl.matches[index];
+    ctrl.loading = false;
     ctrl.hidden = true;
     ctrl.index = 0;
     ctrl.matches = [];
@@ -717,7 +718,7 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
             role="listbox">\
           ' + getInputElement() + '\
           <md-progress-linear\
-              ng-if="$mdAutocompleteCtrl.loading"\
+              ng-if="$mdAutocompleteCtrl.loading && !$mdAutocompleteCtrl.hidden"\
               md-mode="indeterminate"></md-progress-linear>\
           <ul role="presentation"\
               class="md-autocomplete-suggestions md-whiteframe-z1 {{menuClass || \'\'}}"\
