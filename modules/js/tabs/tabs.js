@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-556be5f
+ * v0.10.0-master-f5959cc
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -288,8 +288,6 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
 
   function bindEvents () {
     angular.element($window).on('resize', handleWindowResize);
-    angular.element(elements.paging).on('DOMSubtreeModified', ctrl.updateInkBarStyles);
-    angular.element(elements.paging).on('DOMSubtreeModified', ctrl.updatePagination);
   }
 
   function configureWatchers () {
@@ -1040,6 +1038,10 @@ function MdTemplate ($compile, $mdUtil, $timeout) {
     var compileScope = scope.compileScope.$new();
     element.html(scope.template);
     $compile(element.contents())(compileScope);
+    element.on('DOMSubtreeModified', function () {
+      ctrl.updatePagination();
+      ctrl.updateInkBarStyles();
+    });
     return $timeout(handleScope);
     function handleScope () {
       scope.$watch('connected', function (value) { value === false ? disconnect() : reconnect(); });
