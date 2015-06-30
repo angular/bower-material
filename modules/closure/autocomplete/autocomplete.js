@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-f5959cc
+ * v0.10.0-master-1a15d99
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -219,10 +219,10 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
    * @param oldHidden
    */
   function handleHiddenChange (hidden, oldHidden) {
-    if (!hidden && oldHidden) positionDropdown();
-    if (!hidden) {
+    if (!hidden && oldHidden) {
+      positionDropdown();
       if (elements) $timeout(function () { $mdUtil.disableScrollAround(elements.ul); }, 0, false);
-    } else {
+    } else if (hidden && !oldHidden) {
       $mdUtil.enableScrolling();
     }
   }
