@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-44fda3d
+ * v0.10.0-master-adcee7d
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 md-select.md-THEME_NAME-theme .md-select-value {
@@ -26,6 +26,8 @@ md-select.md-THEME_NAME-theme[disabled] .md-select-value {
   md-select.md-THEME_NAME-theme[disabled] .md-select-value.md-select-placeholder {
     color: '{{foreground-3}}'; }
 
+md-select-menu.md-THEME_NAME-theme md-option[disabled] {
+  color: '{{foreground-3}}'; }
 md-select-menu.md-THEME_NAME-theme md-optgroup {
   color: '{{foreground-2}}'; }
   md-select-menu.md-THEME_NAME-theme md-optgroup md-option {
