@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-59c7335
+ * v0.10.0-master-52ca5e5
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -257,6 +257,7 @@ function inputTextareaDirective($mdUtil, $window, $mdAria) {
       element.on('keydown input', onChangeTextarea);
       element.on('scroll', onScroll);
       angular.element($window).on('resize', onChangeTextarea);
+      element.attr('rows', '1');
 
       scope.$on('$destroy', function() {
         angular.element($window).off('resize', onChangeTextarea);
