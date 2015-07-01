@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-ee60441
+ * v0.10.0-master-6fc9212
  */
 goog.provide('ng.material.components.tooltip');
 goog.require('ng.material.core');
@@ -37,7 +37,7 @@ angular
  *
  * @param {expression=} md-visible Boolean bound to whether the tooltip is
  * currently visible.
- * @param {number=} md-delay How many milliseconds to wait to show the tooltip after the user focuses, hovers, or touches the parent. Defaults to 400ms.
+ * @param {number=} md-delay How many milliseconds to wait to show the tooltip after the user focuses, hovers, or touches the parent. Defaults to 300ms.
  * @param {string=} md-direction Which direction would you like the tooltip to go?  Supports left, right, top, and bottom.  Defaults to bottom.
  * @param {boolean=} md-autohide If present or provided with a boolean value, the tooltip will hide on mouse leave, regardless of focus
  */
@@ -74,15 +74,14 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
         tooltipParent = angular.element(current || document.body),
         debouncedOnResize = $$rAF.throttle(function () { if (scope.visible) positionTooltip(); });
 
-    return init();
+    // Initialize element
 
-    function init () {
-      setDefaults();
-      manipulateElement();
-      bindEvents();
-      configureWatchers();
-      addAriaLabel();
-    }
+    setDefaults();
+    manipulateElement();
+    bindEvents();
+    configureWatchers();
+    addAriaLabel();
+
 
     function setDefaults () {
       if (!angular.isDefined(attr.mdDelay)) scope.delay = TOOLTIP_SHOW_DELAY;
@@ -111,9 +110,12 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       element.attr('role', 'tooltip');
     }
 
+    /**
+     * Scan up dom hierarchy for enabled parent;
+     */
     function getParentWithPointerEvents () {
       var parent = element.parent();
-      while (parent && $window.getComputedStyle(parent[0])['pointer-events'] == 'none') {
+      while (parent && hasComputedStyleValue('pointer-events','none', parent[0])) {
         parent = parent.parent();
       }
       return parent;
@@ -128,22 +130,26 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
        return current;
      }
 
-    function hasComputedStyleValue(key, value) {
-        // Check if we should show it or not...
-        var computedStyles = $window.getComputedStyle(element[0]);
-        return angular.isDefined(computedStyles[key]) && (computedStyles[key] == value);
+
+    function hasComputedStyleValue(key, value, target) {
+      key    = attr.$normalize(key);
+      target = target || element[0];
+
+      var computedStyles = $window.getComputedStyle(target);
+
+      return angular.isDefined(computedStyles[key]) && (computedStyles[key] == value);
     }
 
     function bindEvents () {
       var mouseActive = false;
       var enterHandler = function() {
-        if (!hasComputedStyleValue('pointer-events','none')) {
-          setVisible(true);
-        }
+        parent.on('blur mouseleave touchend touchcancel', leaveHandler );
+        setVisible(true);
       };
       var leaveHandler = function () {
         var autohide = scope.hasOwnProperty('autohide') ? scope.autohide : attr.hasOwnProperty('mdAutohide');
         if (autohide || mouseActive || ($document[0].activeElement !== parent[0]) ) {
+          parent.off('blur mouseleave touchend touchcancel', leaveHandler );
           setVisible(false);
         }
         mouseActive = false;
@@ -152,7 +158,6 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       // to avoid `synthetic clicks` we listen to mousedown instead of `click`
       parent.on('mousedown', function() { mouseActive = true; });
       parent.on('focus mouseenter touchstart', enterHandler );
-      parent.on('blur mouseleave touchend touchcancel', leaveHandler );
 
 
       angular.element($window).on('resize', debouncedOnResize);
