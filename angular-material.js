@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-0fbe335
+ * v0.10.0-master-59c7335
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -7184,6 +7184,7 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria", "$interpolate"];
       alias : alias,
       fontSet : className || alias
     });
+    return this;
    },
 
    /**
