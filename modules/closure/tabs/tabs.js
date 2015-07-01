@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-c164ef0
+ * v0.10.0-master-f5cd5a0
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -318,7 +318,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   function defineBinding (key, attr, defaultValue, handler) {
     var value = defaultValue, model;
     defineProperty(key, function (newValue, oldValue) {
-      model && model.assign(ctrl.scope, newValue);
+      model && model.assign && model.assign(ctrl.scope, newValue);
       handler(newValue, oldValue);
     }, value);
     if ($attrs.hasOwnProperty(attr)) {
