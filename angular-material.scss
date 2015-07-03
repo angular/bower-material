@@ -1540,6 +1540,7 @@ $checkbox-margin: 8px !default;
 $checkbox-border-radius: 2px !default;
 $checkbox-border-width: 2px !default;
 $checkbox-text-margin: 10px !default;
+$checkbox-top-left: 12px !default;
 
 md-checkbox {
   box-sizing: border-box;
@@ -1580,10 +1581,10 @@ md-checkbox {
   .md-container {
     position: absolute;
     top: 50%;
+    transform: translateY(-50%);
     display: inline-block;
     width: $checkbox-width;
     height: $checkbox-height;
-    transform: translateY(-50%);
     @include rtl(left, 0, auto);
     @include rtl(right, auto, 0);
 
@@ -1621,6 +1622,10 @@ md-checkbox {
       right: -15px;
       bottom: -15px;
     }
+  }
+
+  &.md-align-top-left > div.md-container {
+    top: $checkbox-top-left;
   }
 
   // unchecked
@@ -1668,10 +1673,9 @@ md-checkbox {
     white-space: normal;
     user-select: text;
 
-    span {
-      @include rtl(margin-left, $checkbox-text-margin, 0);
-      @include rtl(margin-right, 0, $checkbox-text-margin);
-    }
+    @include rtl(margin-left, $checkbox-text-margin, 0);
+    @include rtl(margin-right, 0, $checkbox-text-margin);
+
   }
 }
 
@@ -3327,6 +3331,8 @@ md-progress-linear[md-mode="indeterminate"] {
 
 $radio-width: 16px !default;
 $radio-height: $radio-width !default;
+$radio-text-margin: 10px !default;
+$radio-top-left: -15px !default;
 
 md-radio-button,
 .md-switch-thumb { // Used in switch
@@ -3379,6 +3385,9 @@ md-radio-button,
     }
   }
 
+  &.md-align-top-left > div.md-container {
+     top: $radio-top-left;
+   }
 
   .md-off {
     position: absolute;
@@ -3410,8 +3419,10 @@ md-radio-button,
   .md-label {
     position: relative;
     display: inline-block;
-    margin-left: 10px;
-    margin-right: 10px;
+
+    @include rtl(margin-left, $radio-text-margin, 0);
+    @include rtl(margin-right, 0, $radio-text-margin);
+
     vertical-align: middle;
     white-space: normal;
     pointer-events: none;
