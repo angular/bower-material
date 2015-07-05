@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-9434120
+ * v0.10.0-master-bee0523
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1050,8 +1050,8 @@ function mdCompilerService($q, $http, $injector, $compile, $controller, $templat
     var template = options.template || '';
     var controller = options.controller;
     var controllerAs = options.controllerAs;
-    var resolve = options.resolve || {};
-    var locals = options.locals || {};
+    var resolve = angular.copy(options.resolve || {});
+    var locals = angular.copy(options.locals || {});
     var transformTemplate = options.transformTemplate || angular.identity;
     var bindToController = options.bindToController;
 
