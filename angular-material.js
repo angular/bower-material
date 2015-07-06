@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-b307f54
+ * v0.10.0-master-9a5fc4c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2115,7 +2115,7 @@ function InterimElementProvider() {
               var ret = options.onShow(options.scope, element, options);
               return $q.when(ret)
                 .then(function(){
-                  // Issue onComplete callback when the `show()` finishes
+                  // Trigger onComplete callback when the `show()` finishes
                   (options.onComplete || angular.noop)(options.scope, element, options);
                   startHideTimeout();
                 });
@@ -2125,7 +2125,8 @@ function InterimElementProvider() {
                   hideTimeout = $timeout(service.cancel, options.hideDelay) ;
                 }
               }
-            }, function(reason) { showDone = true; self.deferred.reject(reason); });
+            },
+            function(reason) { showDone = true; self.deferred.reject(reason); })
           },
           cancelTimeout: function() {
             if (hideTimeout) {
@@ -2137,6 +2138,10 @@ function InterimElementProvider() {
             self.cancelTimeout();
             return removeDone = $q.when(showDone).then(function() {
               var ret = element ? options.onRemove(options.scope, element, options) : true;
+
+              // Trigger onRemoving callback *before* the remove operation starts
+              (options.onRemoving || angular.noop)(options.scope, element);
+
               return $q.when(ret).then(function() {
                 if (!options.preserveScope) options.scope.$destroy();
                 removeDone = true;
@@ -4984,6 +4989,8 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  *     to the root element of the application.
  *   - `onComplete` `{function=}`: Callback function used to announce when the show() action is
  *     finished.
+ *   - `onRemoving` `{function=} Callback function used to announce the close/hide() action is
+ *     starting. This allows developers to run custom animations in parallel the close animations.
  *
  * @returns {promise} A promise that can be resolved with `$mdDialog.hide()` or
  * rejected with `$mdDialog.cancel()`.

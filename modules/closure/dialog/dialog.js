@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-b307f54
+ * v0.10.0-master-9a5fc4c
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -354,6 +354,8 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  *     to the root element of the application.
  *   - `onComplete` `{function=}`: Callback function used to announce when the show() action is
  *     finished.
+ *   - `onRemoving` `{function=} Callback function used to announce the close/hide() action is
+ *     starting. This allows developers to run custom animations in parallel the close animations.
  *
  * @returns {promise} A promise that can be resolved with `$mdDialog.hide()` or
  * rejected with `$mdDialog.cancel()`.

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-b307f54
+ * v0.10.0-master-9a5fc4c
  */
 goog.provide('ng.material.core');
 
@@ -2075,7 +2075,7 @@ function InterimElementProvider() {
               var ret = options.onShow(options.scope, element, options);
               return $q.when(ret)
                 .then(function(){
-                  // Issue onComplete callback when the `show()` finishes
+                  // Trigger onComplete callback when the `show()` finishes
                   (options.onComplete || angular.noop)(options.scope, element, options);
                   startHideTimeout();
                 });
@@ -2085,7 +2085,8 @@ function InterimElementProvider() {
                   hideTimeout = $timeout(service.cancel, options.hideDelay) ;
                 }
               }
-            }, function(reason) { showDone = true; self.deferred.reject(reason); });
+            },
+            function(reason) { showDone = true; self.deferred.reject(reason); })
           },
           cancelTimeout: function() {
             if (hideTimeout) {
@@ -2097,6 +2098,10 @@ function InterimElementProvider() {
             self.cancelTimeout();
             return removeDone = $q.when(showDone).then(function() {
               var ret = element ? options.onRemove(options.scope, element, options) : true;
+
+              // Trigger onRemoving callback *before* the remove operation starts
+              (options.onRemoving || angular.noop)(options.scope, element);
+
               return $q.when(ret).then(function() {
                 if (!options.preserveScope) options.scope.$destroy();
                 removeDone = true;
