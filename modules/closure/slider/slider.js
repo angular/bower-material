@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-273fff4
+ * v0.10.0-master-9af9225
  */
 goog.provide('ng.material.components.slider');
 goog.require('ng.material.core');
@@ -215,7 +215,10 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
         }
 
       } else {
-        $log.error('Slider step value must be greater than zero when in discrete mode');
+        var msg = 'Slider step value must be greater than zero when in discrete mode';
+
+        $log.error(msg);
+        throw new Error(msg);
       }
     }
 
