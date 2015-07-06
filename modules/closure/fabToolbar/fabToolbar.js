@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-84c5bff
+ * v0.10.0-master-5d2bcbf
  */
 goog.provide('ng.material.components.fabToolbar');
 goog.require('ng.material.components.fabActions');
@@ -12,13 +12,21 @@ goog.require('ng.material.core');
   'use strict';
 
   angular
+    // Declare our module
     .module('material.components.fabToolbar', [
       'material.core',
       'material.components.fabTrigger',
       'material.components.fabActions'
     ])
+
+    // Register our directive
     .directive('mdFabToolbar', MdFabToolbarDirective)
-    .animation('.md-fab-toolbar', MdFabToolbarAnimation);
+
+    // Register our custom animations
+    .animation('.md-fab-toolbar', MdFabToolbarAnimation)
+
+    // Register a service for the animation so that we can easily inject it into unit tests
+    .service('mdFabToolbarAnimation', MdFabToolbarAnimation);
 
   /**
    * @ngdoc directive
@@ -168,7 +176,7 @@ goog.require('ng.material.core');
 
           // Set the next close animation to have the proper delays
           backgroundElement.style.transitionDelay = '0ms';
-          iconElement.style.transitionDelay = '.3s';
+          iconElement && (iconElement.style.transitionDelay = '.3s');
 
           // Apply a transition delay to actions
           angular.forEach(actions, function(action, index) {
@@ -194,7 +202,7 @@ goog.require('ng.material.core');
 
           // Set the next open animation to have the proper delays
           backgroundElement.style.transitionDelay = '200ms';
-          iconElement.style.transitionDelay = '0ms';
+          iconElement && (iconElement.style.transitionDelay = '0ms');
 
           // Apply a transition delay to actions
           angular.forEach(actions, function(action, index) {
@@ -207,10 +215,12 @@ goog.require('ng.material.core');
     return {
       addClass: function(element, className, done) {
         runAnimation(element, className, done);
+        done();
       },
 
       removeClass: function(element, className, done) {
         runAnimation(element, className, done);
+        done();
       }
     }
   }
