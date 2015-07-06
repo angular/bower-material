@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-9a5fc4c
+ * v0.10.0-master-621bdf7
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -3504,7 +3504,7 @@ md-dialog {
   max-width: 80%;
   max-height: 80%;
   position: relative;
-  overflow: hidden;
+  overflow: auto;
   box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.14), 0px 16px 24px 2px rgba(0, 0, 0, 0.098), 0px 6px 30px 5px rgba(0, 0, 0, 0.084);
   display: -webkit-flex;
   display: -ms-flexbox;
