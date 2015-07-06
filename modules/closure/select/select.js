@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-c7a8c6c
+ * v0.10.0-master-3e3eb9e
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -892,6 +892,7 @@ function SelectProvider($$interimElementProvider) {
             default:
               if (ev.keyCode >= 31 && ev.keyCode <= 90) {
                 var optNode = opts.selectEl.controller('mdSelectMenu').optNodeForKeyboardSearch(ev);
+                opts.focusedNode = optNode || opts.focusedNode;
                 optNode && optNode.focus();
               }
           }
@@ -953,6 +954,7 @@ function SelectProvider($$interimElementProvider) {
         .removeClass('md-clickable');
 
       opts.target.attr('aria-expanded', 'false');
+      opts.selectEl.off('keydown');
       opts.isRemoved = true;
 
       angular.element($window).off('resize', opts.resizeFn);
