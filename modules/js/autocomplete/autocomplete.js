@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-18d8ae0
+ * v0.10.0-master-124f2b7
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -221,9 +221,13 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
   function handleHiddenChange (hidden, oldHidden) {
     if (!hidden && oldHidden) {
       positionDropdown();
+      console.log("Disable scroll");
       if (elements) $timeout(function () { $mdUtil.disableScrollAround(elements.ul); }, 0, false);
     } else if (hidden && !oldHidden) {
-      $mdUtil.enableScrolling();
+      console.log("Enable scroll");
+      $timeout(function() {
+        $mdUtil.enableScrolling();
+      }, 0, false);
     }
   }
 
