@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-e1c3d33
+ * v0.10.0-master-a9bc534
  */
 goog.provide('ng.material.components.icon');
 goog.require('ng.material.core');
@@ -176,7 +176,7 @@ angular.module('material.components.icon', [
  * </hljs>
  *
  */
-function mdIconDirective($mdIcon, $mdTheming, $mdAria, $interpolate ) {
+function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
 
   return {
     scope: {
@@ -269,7 +269,7 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $interpolate ) {
     }
   }
 }
-mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria", "$interpolate"];
+mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
 
   angular
     .module('material.components.icon' )
