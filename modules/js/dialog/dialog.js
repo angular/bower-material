@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-3e3eb9e
+ * v0.10.0-master-b307f54
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -461,8 +461,8 @@ function MdDialogProvider($$interimElementProvider) {
 
       return dialogPopIn(element, options)
         .then(function () {
-          applyAriaToSiblings(element, true);
           activateListeners(element, options);
+          lockScreenReader(element, options);
           focusOnOpen();
         });
 
@@ -493,8 +493,8 @@ function MdDialogProvider($$interimElementProvider) {
       angular.element($document[0].body).removeClass('md-dialog-is-showing');
 
       options.deactivateListeners();
-      applyAriaToSiblings(element, false);
-      hideBackdrop(element, options);
+      options.unlockScreenReader();
+      options.hideBackdrop();
 
       return dialogPopOut(element, options)
         .then(function () {
@@ -557,7 +557,6 @@ function MdDialogProvider($$interimElementProvider) {
           target.off('keyup', keyHandlerFn);
         });
       }
-
       if (options.clickOutsideToClose) {
         var target = element;
         var clickHandler = function (ev) {
@@ -583,7 +582,8 @@ function MdDialogProvider($$interimElementProvider) {
       options.deactivateListeners = function() {
         removeListeners.forEach(function(removeFn){
           removeFn();
-        })
+        });
+        options.deactivateListeners = null;
       };
     }
 
@@ -607,19 +607,22 @@ function MdDialogProvider($$interimElementProvider) {
         $animate.enter(options.backdrop, options.parent);
         element.css('top', parentOffset + 'px');
       }
+
+      /**
+       * Hide modal backdrop element...
+       */
+      options.hideBackdrop = function hideBackdrop() {
+        if (options.backdrop) {
+          $animate.leave(options.backdrop);
+        }
+        if (options.disableParentScroll) {
+          options.restoreScroll();
+        }
+
+        options.hideBackdrop = null;
+      }
     }
 
-    /**
-     * Hide modal backdrop element...
-     */
-    function hideBackdrop(element, options) {
-      if (options.backdrop) {
-        $animate.leave(options.backdrop);
-      }
-      if (options.disableParentScroll) {
-        options.restoreScroll();
-      }
-    }
 
 
     /**
@@ -656,18 +659,27 @@ function MdDialogProvider($$interimElementProvider) {
     }
 
     /**
-     * Walk DOM to apply or remove aria-hidden on sibling nodes
-     * and parent sibling nodes
-     *
      * Prevents screen reader interaction behind modal window
      * on swipe interfaces
      */
-    function applyAriaToSiblings(element, value) {
-      var attribute = 'aria-hidden';
+    function lockScreenReader(element, options) {
+      var isHidden = true;
 
       // get raw DOM node
-      element = element[0];
+      walkDOM(element[0]);
 
+      options.unlockScreenReader = function() {
+        isHidden = false;
+        walkDOM(element[0]);
+
+        options.unlockScreenReader = null;
+      };
+
+      /**
+       * Walk DOM to apply or remove aria-hidden on sibling nodes
+       * and parent sibling nodes
+       *
+       */
       function walkDOM(element) {
         while (element.parentNode) {
           if (element === document.body) {
@@ -678,15 +690,13 @@ function MdDialogProvider($$interimElementProvider) {
             // skip over child if it is an ascendant of the dialog
             // or a script or style tag
             if (element !== children[i] && !isNodeOneOf(children[i], ['SCRIPT', 'STYLE'])) {
-              children[i].setAttribute(attribute, value);
+              children[i].setAttribute('aria-hidden', isHidden);
             }
           }
 
           walkDOM(element = element.parentNode);
         }
       }
-
-      walkDOM(element);
     }
 
     /**
