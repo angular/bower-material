@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-5d2bcbf
+ * v0.10.0-master-5e3a651
  */
 goog.provide('ng.material.components.fabSpeedDial');
 goog.require('ng.material.components.fabActions');
@@ -12,14 +12,23 @@ goog.require('ng.material.core');
   'use strict';
 
   angular
+    // Declare our module
     .module('material.components.fabSpeedDial', [
       'material.core',
       'material.components.fabTrigger',
       'material.components.fabActions'
     ])
+
+    // Register our directive
     .directive('mdFabSpeedDial', MdFabSpeedDialDirective)
+
+    // Register our custom animations
     .animation('.md-fling', MdFabSpeedDialFlingAnimation)
-    .animation('.md-scale', MdFabSpeedDialScaleAnimation);
+    .animation('.md-scale', MdFabSpeedDialScaleAnimation)
+
+    // Register a service for each animation so that we can easily inject them into unit tests
+    .service('mdFabSpeedDialFlingAnimation', MdFabSpeedDialFlingAnimation)
+    .service('mdFabSpeedDialScaleAnimation', MdFabSpeedDialScaleAnimation);
 
   /**
    * @ngdoc directive
@@ -63,7 +72,7 @@ goog.require('ng.material.core');
    * @param {expression=} md-open Programmatically control whether or not the speed-dial is visible.
    */
   function MdFabSpeedDialDirective() {
-    FabSpeedDialController.$inject = ["$scope", "$element", "$animate"];
+    FabSpeedDialController.$inject = ["$scope", "$element", "$animate", "$timeout"];
     return {
       restrict: 'E',
 
@@ -84,7 +93,7 @@ goog.require('ng.material.core');
       element.prepend('<div class="md-css-variables"></div>');
     }
 
-    function FabSpeedDialController($scope, $element, $animate) {
+    function FabSpeedDialController($scope, $element, $animate, $timeout) {
       var vm = this;
 
       // Define our open/close functions
@@ -113,6 +122,11 @@ goog.require('ng.material.core');
       setupDefaults();
       setupListeners();
       setupWatchers();
+
+      // Fire the animations once in a separate digest loop to initialize them
+      $timeout(function() {
+        $animate.addClass($element, 'md-noop');
+      }, 0);
 
       // Set our default variables
       function setupDefaults() {
@@ -210,10 +224,12 @@ goog.require('ng.material.core');
       addClass: function(element, className, done) {
         if (element.hasClass('md-fling')) {
           runAnimation(element);
+          done();
         }
       },
       removeClass: function(element, className, done) {
         runAnimation(element);
+        done();
       }
     }
   }
@@ -240,10 +256,12 @@ goog.require('ng.material.core');
     return {
       addClass: function(element, className, done) {
         runAnimation(element);
+        done();
       },
 
       removeClass: function(element, className, done) {
         runAnimation(element);
+        done();
       }
     }
   }

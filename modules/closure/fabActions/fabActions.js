@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-5d2bcbf
+ * v0.10.0-master-5e3a651
  */
 goog.provide('ng.material.components.fabActions');
 goog.require('ng.material.core');
@@ -34,6 +34,19 @@ goog.require('ng.material.core');
 
       require: ['^?mdFabSpeedDial', '^?mdFabToolbar'],
 
+      compile: function(element, attributes) {
+        var children = element.children();
+
+        // Support both ng-repat and static content
+        if (children.attr('ng-repeat')) {
+          children.addClass('md-fab-action-item');
+        } else {
+          // After setting up the listeners, wrap every child in a new div and add a class that we can
+          // scale/fling independently
+          children.wrap('<div class="md-fab-action-item">');
+        }
+      },
+
       link: function(scope, element, attributes, controllers) {
         // Grab whichever parent controller is used
         var controller = controllers[0] || controllers[1];
@@ -45,10 +58,6 @@ goog.require('ng.material.core');
             angular.element(child).on('blur', controller.close);
           });
         }
-
-        // After setting up the listeners, wrap every child in a new div and add a class that we can
-        // scale/fling independently
-        element.children().wrap('<div class="md-fab-action-item">');
       }
     }
   }

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-5d2bcbf
+ * v0.10.0-master-5e3a651
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -5479,6 +5479,19 @@ MdDividerDirective.$inject = ["$mdTheming"];
 
       require: ['^?mdFabSpeedDial', '^?mdFabToolbar'],
 
+      compile: function(element, attributes) {
+        var children = element.children();
+
+        // Support both ng-repat and static content
+        if (children.attr('ng-repeat')) {
+          children.addClass('md-fab-action-item');
+        } else {
+          // After setting up the listeners, wrap every child in a new div and add a class that we can
+          // scale/fling independently
+          children.wrap('<div class="md-fab-action-item">');
+        }
+      },
+
       link: function(scope, element, attributes, controllers) {
         // Grab whichever parent controller is used
         var controller = controllers[0] || controllers[1];
@@ -5490,10 +5503,6 @@ MdDividerDirective.$inject = ["$mdTheming"];
             angular.element(child).on('blur', controller.close);
           });
         }
-
-        // After setting up the listeners, wrap every child in a new div and add a class that we can
-        // scale/fling independently
-        element.children().wrap('<div class="md-fab-action-item">');
       }
     }
   }
@@ -5507,14 +5516,23 @@ MdDividerDirective.$inject = ["$mdTheming"];
   'use strict';
 
   angular
+    // Declare our module
     .module('material.components.fabSpeedDial', [
       'material.core',
       'material.components.fabTrigger',
       'material.components.fabActions'
     ])
+
+    // Register our directive
     .directive('mdFabSpeedDial', MdFabSpeedDialDirective)
+
+    // Register our custom animations
     .animation('.md-fling', MdFabSpeedDialFlingAnimation)
-    .animation('.md-scale', MdFabSpeedDialScaleAnimation);
+    .animation('.md-scale', MdFabSpeedDialScaleAnimation)
+
+    // Register a service for each animation so that we can easily inject them into unit tests
+    .service('mdFabSpeedDialFlingAnimation', MdFabSpeedDialFlingAnimation)
+    .service('mdFabSpeedDialScaleAnimation', MdFabSpeedDialScaleAnimation);
 
   /**
    * @ngdoc directive
@@ -5558,7 +5576,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
    * @param {expression=} md-open Programmatically control whether or not the speed-dial is visible.
    */
   function MdFabSpeedDialDirective() {
-    FabSpeedDialController.$inject = ["$scope", "$element", "$animate"];
+    FabSpeedDialController.$inject = ["$scope", "$element", "$animate", "$timeout"];
     return {
       restrict: 'E',
 
@@ -5579,7 +5597,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
       element.prepend('<div class="md-css-variables"></div>');
     }
 
-    function FabSpeedDialController($scope, $element, $animate) {
+    function FabSpeedDialController($scope, $element, $animate, $timeout) {
       var vm = this;
 
       // Define our open/close functions
@@ -5608,6 +5626,11 @@ MdDividerDirective.$inject = ["$mdTheming"];
       setupDefaults();
       setupListeners();
       setupWatchers();
+
+      // Fire the animations once in a separate digest loop to initialize them
+      $timeout(function() {
+        $animate.addClass($element, 'md-noop');
+      }, 0);
 
       // Set our default variables
       function setupDefaults() {
@@ -5705,10 +5728,12 @@ MdDividerDirective.$inject = ["$mdTheming"];
       addClass: function(element, className, done) {
         if (element.hasClass('md-fling')) {
           runAnimation(element);
+          done();
         }
       },
       removeClass: function(element, className, done) {
         runAnimation(element);
+        done();
       }
     }
   }
@@ -5735,10 +5760,12 @@ MdDividerDirective.$inject = ["$mdTheming"];
     return {
       addClass: function(element, className, done) {
         runAnimation(element);
+        done();
       },
 
       removeClass: function(element, className, done) {
         runAnimation(element);
+        done();
       }
     }
   }
