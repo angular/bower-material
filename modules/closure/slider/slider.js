@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-5e3a651
+ * v0.10.0-master-273fff4
  */
 goog.provide('ng.material.components.slider');
 goog.require('ng.material.core');
@@ -53,7 +53,7 @@ goog.require('ng.material.core');
  * @param {number=} min The minimum value the user is allowed to pick. Default 0.
  * @param {number=} max The maximum value the user is allowed to pick. Default 100.
  */
-function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdTheming, $mdGesture, $parse) {
+function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdTheming, $mdGesture, $parse, $log) {
   return {
     scope: {},
     require: '?ngModel',
@@ -193,22 +193,29 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     function redrawTicks() {
       if (!angular.isDefined(attr.mdDiscrete)) return;
 
-      var numSteps = Math.floor( (max - min) / step );
-      if (!tickCanvas) {
-        var trackTicksStyle = $window.getComputedStyle(tickContainer[0]);
-        tickCanvas = angular.element('<canvas style="position:absolute;">');
-        tickCtx = tickCanvas[0].getContext('2d');
-        tickCtx.fillStyle = trackTicksStyle.backgroundColor || 'black';
-        tickContainer.append(tickCanvas);
-      }
-      var dimensions = getSliderDimensions();
-      tickCanvas[0].width = dimensions.width;
-      tickCanvas[0].height = dimensions.height;
+      if (step > 0) {
 
-      var distance;
-      for (var i = 0; i <= numSteps; i++) {
-        distance = Math.floor(dimensions.width * (i / numSteps));
-        tickCtx.fillRect(distance - 1, 0, 2, dimensions.height);
+        var numSteps = Math.floor( (max - min) / step );
+        if (!tickCanvas) {
+          tickCanvas = angular.element('<canvas style="position:absolute;">');
+          tickContainer.append(tickCanvas);
+
+          var trackTicksStyle = $window.getComputedStyle(tickContainer[0]);
+          tickCtx = tickCanvas[0].getContext('2d');
+          tickCtx.fillStyle = trackTicksStyle.backgroundColor || 'black';
+        }
+        var dimensions = getSliderDimensions();
+        tickCanvas[0].width = dimensions.width;
+        tickCanvas[0].height = dimensions.height;
+
+        var distance;
+        for (var i = 0; i <= numSteps; i++) {
+          distance = Math.floor(dimensions.width * (i / numSteps));
+          tickCtx.fillRect(distance - 1, 0, 2, dimensions.height);
+        }
+
+      } else {
+        $log.error('Slider step value must be greater than zero when in discrete mode');
       }
     }
 
@@ -398,6 +405,6 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     }
   }
 }
-SliderDirective.$inject = ["$$rAF", "$window", "$mdAria", "$mdUtil", "$mdConstant", "$mdTheming", "$mdGesture", "$parse"];
+SliderDirective.$inject = ["$$rAF", "$window", "$mdAria", "$mdUtil", "$mdConstant", "$mdTheming", "$mdGesture", "$parse", "$log"];
 
 ng.material.components.slider = angular.module("material.components.slider");
