@@ -1061,7 +1061,7 @@ md-backdrop {
 
   background-color: rgba(0,0,0,0);
 
-  position: absolute;
+  position: fixed;
   height: 100%;
   left: 0;
   right: 0;
@@ -1902,7 +1902,7 @@ $dialog-padding: $baseline-grid * 3;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
