@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-e6c757c
+ * v0.10.0-master-8ccf67e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -803,7 +803,14 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
         totalWidth = elements.paging.offsetWidth,
         tab = elements.tabs[index],
         left = tab.offsetLeft,
-        right = totalWidth - left - tab.offsetWidth;
+        right = totalWidth - left - tab.offsetWidth,
+        tabWidth;
+    if (ctrl.shouldCenterTabs) {
+      tabWidth = Array.prototype.slice.call(elements.tabs).reduce(function (value, element) {
+        return value + element.offsetWidth;
+      }, 0);
+      if (totalWidth > tabWidth) $timeout(updateInkBarStyles, 0, false);
+    }
     updateInkBarClassName();
     angular.element(elements.inkBar).css({ left: left + 'px', right: right + 'px' });
   }
