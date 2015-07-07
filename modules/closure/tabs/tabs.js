@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1
+ * v0.10.0-master-d3416df
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -225,7 +225,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
       loaded     = false;
 
   //-- define one-way bindings
-  defineOneWayBinding('stretchTabs', handleStretchTabs);
+  defineOneWayBinding('stretchTabs');
 
   //-- define public properties with change handlers
   defineProperty('focusIndex', handleFocusIndexChange, ctrl.selectedIndex || 0);
@@ -233,7 +233,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   defineProperty('hasContent', handleHasContent, false);
 
   //-- define boolean attributes
-  defineBooleanAttribute('noInkBar', handleInkBar);
+  defineBooleanAttribute('noInkBar');
   defineBooleanAttribute('dynamicHeight', handleDynamicHeight);
   defineBooleanAttribute('noPagination');
   defineBooleanAttribute('swipeContent');
@@ -255,6 +255,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   ctrl.updatePagination = $mdUtil.debounce(updatePagination, 100);
   ctrl.redirectFocus = redirectFocus;
   ctrl.attachRipple = attachRipple;
+  ctrl.shouldStretchTabs = shouldStretchTabs;
   ctrl.insertTab = insertTab;
   ctrl.removeTab = removeTab;
   ctrl.select = select;
@@ -314,9 +315,8 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     $scope.$watch('$mdTabsCtrl.selectedIndex', handleSelectedIndexChange);
   }
 
-  function defineOneWayBinding (key, handler) {
+  function defineOneWayBinding (key) {
     var attr = $attrs.$normalize('md-' + key);
-    if (handler) defineProperty(key, handler);
     $attrs.$observe(attr, function (newValue) { ctrl[key] = newValue; });
   }
 
@@ -343,11 +343,6 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   }
 
   //-- Change handlers
-
-  function handleStretchTabs (stretchTabs) {
-    angular.element(elements.wrapper).toggleClass('md-stretch-tabs', shouldStretchTabs());
-    updateInkBarStyles();
-  }
 
   /**
    * Add/remove the `md-no-tab-content` class depending on `ctrl.hasContent`
@@ -504,10 +499,6 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
       $timeout(ctrl.updateInkBarStyles, 0, false);
       $timeout(updatePagination);
     });
-  }
-
-  function handleInkBar (hide) {
-    angular.element(elements.inkBar).toggleClass('ng-hide', hide);
   }
 
   /**
@@ -961,7 +952,7 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
     template: function (element, attr) {
       attr["$mdTabsTemplate"] = element.html();
       return '\
-        <md-tabs-wrapper>\
+        <md-tabs-wrapper ng-class="{ \'md-stretch-tabs\': $mdTabsCtrl.shouldStretchTabs() }">\
           <md-tab-data></md-tab-data>\
           <md-prev-button\
               tabindex="-1"\
@@ -1002,7 +993,7 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
                   style="max-width: {{ tabWidth ? tabWidth + \'px\' : \'none\' }}"\
                   ng-repeat="tab in $mdTabsCtrl.tabs"\
                   role="tab"\
-                  aria-controls="tab-content-{{::tab.id}}"\
+                  aria-controls="tab-content-{{tab.id}}"\
                   aria-selected="{{tab.isActive()}}"\
                   aria-disabled="{{tab.scope.disabled || \'false\'}}"\
                   ng-click="$mdTabsCtrl.select(tab.getIndex())"\
@@ -1014,32 +1005,32 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
                   ng-disabled="tab.scope.disabled"\
                   md-swipe-left="$mdTabsCtrl.nextPage()"\
                   md-swipe-right="$mdTabsCtrl.previousPage()"\
-                  md-template="::tab.label"\
-                  md-scope="::tab.parent"></md-tab-item>\
-              <md-ink-bar></md-ink-bar>\
+                  md-template="tab.label"\
+                  md-scope="tab.parent"></md-tab-item>\
+              <md-ink-bar ng-hide="$mdTabsCtrl.noInkBar"></md-ink-bar>\
             </md-pagination-wrapper>\
             <div class="md-visually-hidden md-dummy-wrapper">\
               <md-dummy-tab\
                   class="md-tab"\
                   tabindex="-1"\
-                  id="tab-item-{{::tab.id}}"\
+                  id="tab-item-{{tab.id}}"\
                   role="tab"\
-                  aria-controls="tab-content-{{::tab.id}}"\
+                  aria-controls="tab-content-{{tab.id}}"\
                   aria-selected="{{tab.isActive()}}"\
                   aria-disabled="{{tab.scope.disabled || \'false\'}}"\
                   ng-focus="$mdTabsCtrl.hasFocus = true"\
                   ng-blur="$mdTabsCtrl.hasFocus = false"\
                   ng-repeat="tab in $mdTabsCtrl.tabs"\
-                  md-template="::tab.label"\
-                  md-scope="::tab.parent"></md-dummy-tab>\
+                  md-template="tab.label"\
+                  md-scope="tab.parent"></md-dummy-tab>\
             </div>\
           </md-tabs-canvas>\
         </md-tabs-wrapper>\
         <md-tabs-content-wrapper ng-show="$mdTabsCtrl.hasContent">\
           <md-tab-content\
-              id="tab-content-{{::tab.id}}"\
+              id="tab-content-{{tab.id}}"\
               role="tabpanel"\
-              aria-labelledby="tab-item-{{::tab.id}}"\
+              aria-labelledby="tab-item-{{tab.id}}"\
               md-swipe-left="$mdTabsCtrl.swipeContent && $mdTabsCtrl.incrementSelectedIndex(1)"\
               md-swipe-right="$mdTabsCtrl.swipeContent && $mdTabsCtrl.incrementSelectedIndex(-1)"\
               ng-if="$mdTabsCtrl.hasContent"\
@@ -1053,8 +1044,8 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
                 \'md-no-scroll\':     $mdTabsCtrl.dynamicHeight\
               }">\
             <div\
-                md-template="::tab.template"\
-                md-scope="::tab.parent"\
+                md-template="tab.template"\
+                md-scope="tab.parent"\
                 ng-if="tab.shouldRender()"></div>\
           </md-tab-content>\
         </md-tabs-content-wrapper>\
