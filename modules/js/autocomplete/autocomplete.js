@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-cd3e8a1
+ * v0.10.0-master-ced8133
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -755,7 +755,7 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
       return '\
         <md-autocomplete-wrap\
             layout="row"\
-            ng-class="{ \'md-whiteframe-z1\': !floatingLabel }"\
+            ng-class="{ \'md-whiteframe-z1\': !floatingLabel, \'md-menu-showing\': !$mdAutocompleteCtrl.hidden }"\
             role="listbox">\
           ' + getInputElement() + '\
           <md-progress-linear\

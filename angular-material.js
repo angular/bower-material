@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-cd3e8a1
+ * v0.10.0-master-ced8133
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -5486,28 +5486,31 @@ MdDividerDirective.$inject = ["$mdTheming"];
         if (children.attr('ng-repeat')) {
           children.addClass('md-fab-action-item');
         } else {
-          // After setting up the listeners, wrap every child in a new div and add a class that we can
-          // scale/fling independently
+          // Wrap every child in a new div and add a class that we can scale/fling independently
           children.wrap('<div class="md-fab-action-item">');
         }
-      },
 
-      link: function(scope, element, attributes, controllers) {
-        // Grab whichever parent controller is used
-        var controller = controllers[0] || controllers[1];
+        return function postLink(scope, element, attributes, controllers) {
+          // Grab whichever parent controller is used
+          var controller = controllers[0] || controllers[1];
 
-        // Make the children open/close their parent directive
-        if (controller) {
-          angular.forEach(element.children(), function(child) {
-            angular.element(child).on('focus', controller.open);
-            angular.element(child).on('blur', controller.close);
-          });
+          // Make the children open/close their parent directive
+          if (controller) {
+            angular.forEach(element.children(), function(child) {
+              // Attach listeners to the `md-fab-action-item`
+              child = angular.element(child).children()[0];
+
+              angular.element(child).on('focus', controller.open);
+              angular.element(child).on('blur', controller.close);
+            });
+          }
         }
       }
     }
   }
 
 })();
+
 })();
 (function(){
 "use strict";
@@ -11202,33 +11205,32 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     var tickCanvas, tickCtx;
     function redrawTicks() {
       if (!angular.isDefined(attr.mdDiscrete)) return;
+      if ( angular.isUndefined(step) )         return;
 
-      if (step > 0) {
-
-        var numSteps = Math.floor( (max - min) / step );
-        if (!tickCanvas) {
-          tickCanvas = angular.element('<canvas style="position:absolute;">');
-          tickContainer.append(tickCanvas);
-
-          var trackTicksStyle = $window.getComputedStyle(tickContainer[0]);
-          tickCtx = tickCanvas[0].getContext('2d');
-          tickCtx.fillStyle = trackTicksStyle.backgroundColor || 'black';
-        }
-        var dimensions = getSliderDimensions();
-        tickCanvas[0].width = dimensions.width;
-        tickCanvas[0].height = dimensions.height;
-
-        var distance;
-        for (var i = 0; i <= numSteps; i++) {
-          distance = Math.floor(dimensions.width * (i / numSteps));
-          tickCtx.fillRect(distance - 1, 0, 2, dimensions.height);
-        }
-
-      } else {
+      if ( step <= 0 ) {
         var msg = 'Slider step value must be greater than zero when in discrete mode';
-
         $log.error(msg);
         throw new Error(msg);
+      }
+
+      var numSteps = Math.floor( (max - min) / step );
+      if (!tickCanvas) {
+        tickCanvas = angular.element('<canvas style="position:absolute;">');
+        tickContainer.append(tickCanvas);
+
+        var trackTicksStyle = $window.getComputedStyle(tickContainer[0]);
+        tickCtx = tickCanvas[0].getContext('2d');
+        tickCtx.fillStyle = trackTicksStyle.backgroundColor || 'black';
+      }
+
+      var dimensions = getSliderDimensions();
+      tickCanvas[0].width = dimensions.width;
+      tickCanvas[0].height = dimensions.height;
+
+      var distance;
+      for (var i = 0; i <= numSteps; i++) {
+        distance = Math.floor(dimensions.width * (i / numSteps));
+        tickCtx.fillRect(distance - 1, 0, 2, dimensions.height);
       }
     }
 
@@ -14200,7 +14202,7 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
       return '\
         <md-autocomplete-wrap\
             layout="row"\
-            ng-class="{ \'md-whiteframe-z1\': !floatingLabel }"\
+            ng-class="{ \'md-whiteframe-z1\': !floatingLabel, \'md-menu-showing\': !$mdAutocompleteCtrl.hidden }"\
             role="listbox">\
           ' + getInputElement() + '\
           <md-progress-linear\

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-cd3e8a1
+ * v0.10.0-master-ced8133
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 /* Sizes:
@@ -2513,7 +2513,11 @@ input[type="search"] {
 html, body {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
-  -webkit-text-size-adjust: 100%; }
+  min-height: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
 
 /************
  * Headings

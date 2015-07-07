@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-cd3e8a1
+ * v0.10.0-master-ced8133
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 @-webkit-keyframes md-autocomplete-list-out {
@@ -94,6 +94,8 @@ md-autocomplete {
     position: relative;
     overflow: visible;
     height: 40px; }
+    md-autocomplete md-autocomplete-wrap.md-menu-showing {
+      z-index: 51; }
     md-autocomplete md-autocomplete-wrap md-progress-linear[md-mode=indeterminate] {
       position: absolute;
       bottom: 0;

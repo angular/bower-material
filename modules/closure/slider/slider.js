@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-cd3e8a1
+ * v0.10.0-master-ced8133
  */
 goog.provide('ng.material.components.slider');
 goog.require('ng.material.core');
@@ -192,33 +192,32 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     var tickCanvas, tickCtx;
     function redrawTicks() {
       if (!angular.isDefined(attr.mdDiscrete)) return;
+      if ( angular.isUndefined(step) )         return;
 
-      if (step > 0) {
-
-        var numSteps = Math.floor( (max - min) / step );
-        if (!tickCanvas) {
-          tickCanvas = angular.element('<canvas style="position:absolute;">');
-          tickContainer.append(tickCanvas);
-
-          var trackTicksStyle = $window.getComputedStyle(tickContainer[0]);
-          tickCtx = tickCanvas[0].getContext('2d');
-          tickCtx.fillStyle = trackTicksStyle.backgroundColor || 'black';
-        }
-        var dimensions = getSliderDimensions();
-        tickCanvas[0].width = dimensions.width;
-        tickCanvas[0].height = dimensions.height;
-
-        var distance;
-        for (var i = 0; i <= numSteps; i++) {
-          distance = Math.floor(dimensions.width * (i / numSteps));
-          tickCtx.fillRect(distance - 1, 0, 2, dimensions.height);
-        }
-
-      } else {
+      if ( step <= 0 ) {
         var msg = 'Slider step value must be greater than zero when in discrete mode';
-
         $log.error(msg);
         throw new Error(msg);
+      }
+
+      var numSteps = Math.floor( (max - min) / step );
+      if (!tickCanvas) {
+        tickCanvas = angular.element('<canvas style="position:absolute;">');
+        tickContainer.append(tickCanvas);
+
+        var trackTicksStyle = $window.getComputedStyle(tickContainer[0]);
+        tickCtx = tickCanvas[0].getContext('2d');
+        tickCtx.fillStyle = trackTicksStyle.backgroundColor || 'black';
+      }
+
+      var dimensions = getSliderDimensions();
+      tickCanvas[0].width = dimensions.width;
+      tickCanvas[0].height = dimensions.height;
+
+      var distance;
+      for (var i = 0; i <= numSteps; i++) {
+        distance = Math.floor(dimensions.width * (i / numSteps));
+        tickCtx.fillRect(distance - 1, 0, 2, dimensions.height);
       }
     }
 
