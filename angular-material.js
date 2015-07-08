@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-8918116
+ * v0.10.0-master-61bf838
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -15626,7 +15626,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   defineProperty('hasContent', handleHasContent, false);
 
   //-- define boolean attributes
-  defineBooleanAttribute('noInkBar');
+  defineBooleanAttribute('noInkBar', handleInkBar);
   defineBooleanAttribute('dynamicHeight', handleDynamicHeight);
   defineBooleanAttribute('noPagination');
   defineBooleanAttribute('swipeContent');
@@ -15897,6 +15897,10 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
       $timeout(ctrl.updateInkBarStyles, 0, false);
       $timeout(updatePagination);
     });
+  }
+
+  function handleInkBar (hide) {
+    angular.element(elements.inkBar).toggleClass('ng-hide', hide);
   }
 
   /**
@@ -16409,7 +16413,7 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
                   md-swipe-right="$mdTabsCtrl.previousPage()"\
                   md-template="::tab.label"\
                   md-scope="::tab.parent"></md-tab-item>\
-              <md-ink-bar ng-hide="$mdTabsCtrl.noInkBar"></md-ink-bar>\
+              <md-ink-bar></md-ink-bar>\
             </md-pagination-wrapper>\
             <div class="md-visually-hidden md-dummy-wrapper">\
               <md-dummy-tab\
