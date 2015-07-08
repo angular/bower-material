@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-6a4bae8
+ * v0.10.1-rc1-master-3aab9e4
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -18,21 +18,29 @@ angular.module('material.components.dialog', [
   .directive('mdDialog', MdDialogDirective)
   .provider('$mdDialog', MdDialogProvider);
 
-function MdDialogDirective($$rAF, $mdTheming) {
+function MdDialogDirective($$rAF, $mdTheming, $timeout) {
   return {
     restrict: 'E',
     link: function (scope, element, attr) {
       $mdTheming(element);
       $$rAF(function () {
+        var images;
         var content = element[0].querySelector('md-dialog-content');
-        if (content && content.scrollHeight >= content.clientHeight) {
-          element.addClass('md-content-overflow');
+
+        if (content) {
+          images = content.getElementsByTagName('img');
+          addOverflowClass();
+          //-- delayed image loading may impact scroll height, check after images are loaded
+          angular.element(images).on('load', addOverflowClass);
+        }
+        function addOverflowClass () {
+          element.toggleClass('md-content-overflow', content.scrollHeight > content.clientHeight);
         }
       });
     }
   };
 }
-MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
+MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$timeout"];
 
 /**
  * @ngdoc service

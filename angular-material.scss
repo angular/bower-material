@@ -1274,6 +1274,47 @@ md-bottom-sheet {
   }
 }
 
+$card-padding: 16px !default;
+$card-box-shadow: $whiteframe-shadow-z1 !default;
+
+md-card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  margin: $baseline-grid;
+
+  box-shadow: $card-box-shadow;
+
+  > img,
+  > :not(md-card-content) img {
+    width: 100%;
+  }
+
+  md-card-content {
+    padding: $card-padding;
+  }
+  .md-actions {
+    margin: 0;
+
+    .md-button {
+      margin-bottom: $baseline-grid;
+      margin-top: $baseline-grid;
+      margin-right: $baseline-grid * .5;
+      margin-left: $baseline-grid * .5;
+    }
+  }
+  md-card-footer {
+    padding: $card-padding;
+  }
+}
+
+@media screen and (-ms-high-contrast: active) {
+  md-card {
+    border: 1px solid #fff;
+  }
+}
+
+
 $button-line-height: rem(3.60) !default;
 $button-padding: 0 rem(0.600) !default;
 $button-margin: rem(0.600) rem(0.800) !default;
@@ -1505,47 +1546,6 @@ $icon-button-margin: rem(0.600) !default;
     border: 1px solid #fff;
   }
 }
-
-$card-padding: 16px !default;
-$card-box-shadow: $whiteframe-shadow-z1 !default;
-
-md-card {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  margin: $baseline-grid;
-
-  box-shadow: $card-box-shadow;
-
-  > img,
-  > :not(md-card-content) img {
-    width: 100%;
-  }
-
-  md-card-content {
-    padding: $card-padding;
-  }
-  .md-actions {
-    margin: 0;
-
-    .md-button {
-      margin-bottom: $baseline-grid;
-      margin-top: $baseline-grid;
-      margin-right: $baseline-grid * .5;
-      margin-left: $baseline-grid * .5;
-    }
-  }
-  md-card-footer {
-    padding: $card-padding;
-  }
-}
-
-@media screen and (-ms-high-contrast: active) {
-  md-card {
-    border: 1px solid #fff;
-  }
-}
-
 
 $checkbox-width: 18px !default;
 $checkbox-height: $checkbox-width !default;
