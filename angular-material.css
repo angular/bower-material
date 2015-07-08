@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-861167a
+ * v0.10.1-rc1-master-b401751
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -3560,7 +3560,8 @@ md-dialog {
     margin-bottom: 0;
     padding-right: 8px;
     padding-left: 16px;
-    min-height: 52px; }
+    min-height: 52px;
+    overflow: hidden; }
     md-dialog .md-actions .md-button {
       margin-bottom: 8px;
       margin-left: 8px;

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-861167a
+ * v0.10.1-rc1-master-b401751
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -25,7 +25,7 @@ function MdDialogDirective($$rAF, $mdTheming) {
       $mdTheming(element);
       $$rAF(function () {
         var content = element[0].querySelector('md-dialog-content');
-        if (content && content.scrollHeight > content.clientHeight) {
+        if (content && content.scrollHeight >= content.clientHeight) {
           element.addClass('md-content-overflow');
         }
       });
