@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-7774ec7
+ * v0.10.1-rc1-master-6a4bae8
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -4151,7 +4151,9 @@ md-list-item.md-3-line > md-icon:first-child, md-list-item.md-3-line > .md-avata
   left: 0;
   top: 0;
   z-index: 99;
-  opacity: 0; }
+  opacity: 0;
+  border-radius: 2px;
+  overflow: hidden; }
   .md-open-menu-container md-menu-divider {
     margin-top: 4px;
     margin-bottom: 4px;
