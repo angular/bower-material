@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.0-master-6f63d70
+ * v0.10.0-master-8918116
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -225,7 +225,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
       loaded     = false;
 
   //-- define one-way bindings
-  defineOneWayBinding('stretchTabs');
+  defineOneWayBinding('stretchTabs', handleStretchTabs);
 
   //-- define public properties with change handlers
   defineProperty('focusIndex', handleFocusIndexChange, ctrl.selectedIndex || 0);
@@ -255,7 +255,6 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   ctrl.updatePagination = $mdUtil.debounce(updatePagination, 100);
   ctrl.redirectFocus = redirectFocus;
   ctrl.attachRipple = attachRipple;
-  ctrl.shouldStretchTabs = shouldStretchTabs;
   ctrl.insertTab = insertTab;
   ctrl.removeTab = removeTab;
   ctrl.select = select;
@@ -315,8 +314,9 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     $scope.$watch('$mdTabsCtrl.selectedIndex', handleSelectedIndexChange);
   }
 
-  function defineOneWayBinding (key) {
+  function defineOneWayBinding (key, handler) {
     var attr = $attrs.$normalize('md-' + key);
+    if (handler) defineProperty(key, handler);
     $attrs.$observe(attr, function (newValue) { ctrl[key] = newValue; });
   }
 
@@ -343,6 +343,11 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   }
 
   //-- Change handlers
+
+  function handleStretchTabs (stretchTabs) {
+    angular.element(elements.wrapper).toggleClass('md-stretch-tabs', shouldStretchTabs());
+    updateInkBarStyles();
+  }
 
   /**
    * Add/remove the `md-no-tab-content` class depending on `ctrl.hasContent`
@@ -952,7 +957,7 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
     template: function (element, attr) {
       attr["$mdTabsTemplate"] = element.html();
       return '\
-        <md-tabs-wrapper ng-class="{ \'md-stretch-tabs\': $mdTabsCtrl.shouldStretchTabs() }">\
+        <md-tabs-wrapper>\
           <md-tab-data></md-tab-data>\
           <md-prev-button\
               tabindex="-1"\
