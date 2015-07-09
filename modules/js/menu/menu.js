@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-c0659cc
+ * v0.10.1-rc1-master-ea50002
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -280,7 +280,7 @@ angular.module('material.components.menu')
 function MenuProvider($$interimElementProvider) {
   var MENU_EDGE_MARGIN = 8;
 
-  menuDefaultOptions.$inject = ["$$rAF", "$window", "$mdUtil", "$mdTheming", "$timeout", "$mdConstant", "$document"];
+  menuDefaultOptions.$inject = ["$$rAF", "$window", "$mdUtil", "$mdTheming", "$mdConstant", "$document"];
   return $$interimElementProvider('$mdMenu')
     .setDefaults({
       methods: ['target'],
@@ -288,7 +288,7 @@ function MenuProvider($$interimElementProvider) {
     });
 
   /* ngInject */
-  function menuDefaultOptions($$rAF, $window, $mdUtil, $mdTheming, $timeout, $mdConstant, $document) {
+  function menuDefaultOptions($$rAF, $window, $mdUtil, $mdTheming, $mdConstant, $document) {
     return {
       parent: 'body',
       onShow: onShow,
@@ -320,10 +320,6 @@ function MenuProvider($$interimElementProvider) {
         opts.restoreScroll = $mdUtil.disableScrollAround(opts.element);
       }
 
-      // Only activate click listeners after a short time to stop accidental double taps/clicks
-      // from clicking the wrong item
-      $timeout(activateInteraction, 75, false);
-
       if (opts.backdrop) {
         $mdTheming.inherit(opts.backdrop, opts.parent);
         opts.parent.append(opts.backdrop);
@@ -331,7 +327,10 @@ function MenuProvider($$interimElementProvider) {
       showMenu();
 
       // Return the promise for when our menu is done animating in
-      return $mdUtil.transitionEndPromise(element, {timeout: 350});
+      return $mdUtil.transitionEndPromise(element, {timeout: 350}).then(function(res) {
+        activateInteraction();
+        return res;
+      });
 
       /** Check for valid opts and set some sane defaults */
       function buildOpts() {
