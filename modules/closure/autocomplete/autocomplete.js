@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-2d78f2c
+ * v0.10.1-rc1-master-523ff09
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -669,6 +669,9 @@ angular
  * @param {boolean=} md-autoselect If true, the first item will be selected by default
  * @param {string=} md-menu-class This will be applied to the dropdown menu for styling
  * @param {string=} md-floating-label This will add a floating label to autocomplete and wrap it in `md-input-container`
+ * @param {string=} md-input-name The name attribute given to the input element to be used with FormController
+ * @param {number=} md-input-minlength The minimum length for the input's value for validation
+ * @param {number=} md-input-maxlength The maximum length for the input's value for validation
  *
  * @usage
  * ###Basic Example
@@ -706,7 +709,7 @@ angular
  * <form name="autocompleteForm">
  *   <md-autocomplete
  *       required
- *       input-name="autocomplete"
+ *       md-input-name="autocomplete"
  *       md-selected-item="selectedItem"
  *       md-search-text="searchText"
  *       md-items="item in getMatches(searchText)"

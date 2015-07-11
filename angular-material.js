@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-2d78f2c
+ * v0.10.1-rc1-master-523ff09
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -679,20 +679,39 @@ angular.module('material.core')
         node.dispatchEvent(newEvent);
       },
 
+      /**
+       * Listen for transitionEnd event (with optional timeout)
+       * Announce completion or failure via promise handlers
+       */
       transitionEndPromise: function (element, opts) {
-        opts = opts || {};
-        var deferred = $q.defer();
-        element.on($mdConstant.CSS.TRANSITIONEND, finished);
-        function finished(ev) {
-          // Make sure this transitionend didn't bubble up from a child
-          if (!ev || ev.target === element[0]) {
-            element.off($mdConstant.CSS.TRANSITIONEND, finished);
-            deferred.resolve();
-          }
-        }
+        var TIMEOUT = 10000; // fallback is 10 secs
 
-        if (opts.timeout) $timeout(finished, opts.timeout);
-        return deferred.promise;
+        return $q(function(resolve, reject){
+          opts = opts || { };
+
+          var timer = $timeout(finished, opts.timeout || TIMEOUT);
+          element.on($mdConstant.CSS.TRANSITIONEND, finished);
+
+          /**
+           * Upon timeout or transitionEnd, reject or resolve (respectively) this promise.
+           * NOTE: Make sure this transitionEnd didn't bubble up from a child
+           */
+          function finished(ev) {
+            if ( ev && ev.target !== element[0]) return;
+
+            element.off($mdConstant.CSS.TRANSITIONEND, finished);
+            if ( ev  ) $timeout.cancel(timer);
+
+            // Only reject if timeout triggered
+            var announce = ( ev ) ? resolve : reject;
+
+            announce({
+              element:element,
+              options:opts
+            });
+          }
+
+        });
       },
 
       fakeNgModel: function () {
@@ -869,7 +888,7 @@ angular.module('material.core')
 
         if (!this.nextTick.timeout) {
           this.nextTick.timeout = true;
-          $timeout(function () {
+          $timeout(angular.bind(this, function () {
             //-- grab a copy of the current queue
             var queue = this.nextTick.queue;
             //-- reset the queue just in case any callbacks use nextTick
@@ -878,7 +897,7 @@ angular.module('material.core')
             this.nextTick.timeout = false;
             //-- process the existing queue
             queue.forEach(function (callback) { callback(); });
-          }.bind(this));
+          }));
         }
       }
     };
@@ -14146,6 +14165,9 @@ angular
  * @param {boolean=} md-autoselect If true, the first item will be selected by default
  * @param {string=} md-menu-class This will be applied to the dropdown menu for styling
  * @param {string=} md-floating-label This will add a floating label to autocomplete and wrap it in `md-input-container`
+ * @param {string=} md-input-name The name attribute given to the input element to be used with FormController
+ * @param {number=} md-input-minlength The minimum length for the input's value for validation
+ * @param {number=} md-input-maxlength The maximum length for the input's value for validation
  *
  * @usage
  * ###Basic Example
@@ -14183,7 +14205,7 @@ angular
  * <form name="autocompleteForm">
  *   <md-autocomplete
  *       required
- *       input-name="autocomplete"
+ *       md-input-name="autocomplete"
  *       md-selected-item="selectedItem"
  *       md-search-text="searchText"
  *       md-items="item in getMatches(searchText)"
@@ -15703,7 +15725,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     configureWatchers();
     bindEvents();
     $mdTheming($element);
-    $timeout(function () {
+    $mdUtil.nextTick(function () {
       updateHeightFromContent();
       adjustOffset();
       updatePagination();
@@ -15925,7 +15947,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
       ctrl.lastSelectedIndex = ctrl.selectedIndex;
       ctrl.offsetLeft = fixOffset(ctrl.offsetLeft);
       $timeout(ctrl.updateInkBarStyles, 0, false);
-      $timeout(updatePagination);
+      $mdUtil.nextTick(updatePagination);
     });
   }
 
@@ -15955,7 +15977,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
       tab.scope.deselect();
       ctrl.tabs[ctrl.selectedIndex] && ctrl.tabs[ctrl.selectedIndex].scope.select();
     }
-    $timeout(function () {
+    $mdUtil.nextTick(function () {
       updatePagination();
       ctrl.offsetLeft = fixOffset(ctrl.offsetLeft);
     });
@@ -15987,8 +16009,8 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     processQueue();
     updateHasContent();
     //-- if autoselect is enabled, select the newly added tab
-    if (loaded && ctrl.autoselect) $timeout(function () { select(ctrl.tabs.indexOf(tab)); });
-    $timeout(updatePagination);
+    if (loaded && ctrl.autoselect) $mdUtil.nextTick(function () { select(ctrl.tabs.indexOf(tab)); });
+    $mdUtil.nextTick(updatePagination);
     return tab;
   }
 
@@ -16111,9 +16133,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   function updatePagination () {
     ctrl.shouldPaginate = shouldPaginate();
     ctrl.shouldCenterTabs = shouldCenterTabs();
-    $timeout(function () {
-      adjustOffset(ctrl.selectedIndex);
-    });
+    $mdUtil.nextTick(function () { adjustOffset(ctrl.selectedIndex); });
   }
 
   /**
@@ -16172,7 +16192,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
    * are called before the UI is ready, such as size calculations.
    */
   function processQueue () {
-    queue.forEach(function (func) { $timeout(func); });
+    queue.forEach(function (func) { $mdUtil.nextTick(func); });
     queue = [];
   }
 
