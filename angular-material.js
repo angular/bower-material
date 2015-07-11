@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-ea50002
+ * v0.10.1-rc1-master-fc0ba48
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -861,8 +861,20 @@ angular.module('material.core')
             scope[key] = angular.isDefined(defaults[key]) ? defaults[key] : attrIsDefined;
           }
         });
-      }
+      },
 
+      nextTick: function (callback) {
+        this.nextTick.queue = this.nextTick.queue || [];
+        this.nextTick.queue.push(callback);
+
+        if (!this.nextTick.timeout) {
+          this.nextTick.timeout = true;
+          $timeout(function () {
+            this.nextTick.callback = false;
+            this.nextTick.queue.forEach(function (callback) { callback(); });
+          }.bind(this));
+        }
+      }
     };
 
   }]);
