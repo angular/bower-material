@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-fc0ba48
+ * v0.10.1-rc1-master-2d78f2c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -846,8 +846,14 @@ angular.module('material.core')
         if (!this.nextTick.timeout) {
           this.nextTick.timeout = true;
           $timeout(function () {
+            //-- grab a copy of the current queue
+            var queue = this.nextTick.queue;
+            //-- reset the queue just in case any callbacks use nextTick
+            this.nextTick.queue = [];
             this.nextTick.callback = false;
-            this.nextTick.queue.forEach(function (callback) { callback(); });
+            this.nextTick.timeout = false;
+            //-- process the existing queue
+            queue.forEach(function (callback) { callback(); });
           }.bind(this));
         }
       }
