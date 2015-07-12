@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-0d6e5ac
+ * v0.10.1-rc1-master-898fd9b
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 .md-select-menu-container {
@@ -69,7 +69,10 @@ md-select {
   position: relative;
   box-sizing: content-box;
   min-width: 64px;
-  min-height: 26px; }
+  min-height: 26px;
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1; }
   .md-select-value *:first-child {
     -webkit-flex: 1;
         -ms-flex: 1;
@@ -101,9 +104,6 @@ md-select {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-flex-grow: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1;
     -webkit-order: 1;
         -ms-flex-order: 1;
             order: 1;

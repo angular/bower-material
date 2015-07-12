@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-0d6e5ac
+ * v0.10.1-rc1-master-898fd9b
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -177,8 +177,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $interpolate, 
       $mdTheming(element);
 
       if (attr.name && formCtrl) {
-        var selectEl = element.parent()[0].querySelector('select[name=".' + attr.name + '"]');
-        formCtrl.$removeControl(angular.element(selectEl).controller());
+        formCtrl.$removeControl(ngModelCtrl);
       }
 
 

@@ -2859,6 +2859,11 @@ md-list-item.md-3-line > .md-no-style {
 }
 
 $menu-border-radius: 2px;
+$max-visible-items: 6;
+$menu-item-height: 6 * $baseline-grid;
+$dense-menu-item-height: 4 * $baseline-grid;
+$max-menu-height: 2 * $baseline-grid + $max-visible-items * $menu-item-height;
+$max-dense-menu-height: 2 * $baseline-grid + $max-visible-items * $dense-menu-item-height;
 
 .md-open-menu-container {
   position: fixed;
@@ -2909,16 +2914,20 @@ md-menu-content {
   display: flex;
   flex-direction: column;
   padding: $baseline-grid 0;
-
-  &.md-dense md-menu-item {
-    height: 4 * $baseline-grid;
+  max-height: $max-menu-height;
+  overflow-y: auto;
+  &.md-dense {
+    max-height: $max-dense-menu-height;
+    md-menu-item {
+      height: $dense-menu-item-height;
+    }
   }
 }
 
 md-menu-item {
   display: flex;
   flex-direction: row;
-  height: 6 * $baseline-grid;
+  height: $menu-item-height;
   align-content: center;
   justify-content: flex-start;
 
@@ -3573,6 +3582,7 @@ md-select {
   box-sizing: content-box;
   min-width: 8 * $baseline-grid;
   min-height: 26px;
+  flex-grow: 1;
 
   *:first-child {
     flex: 1;
@@ -3602,7 +3612,6 @@ md-select {
 
   &.md-select-placeholder {
     display: flex;
-    flex-grow: 1;
     order: 1;
     pointer-events: none;
     -webkit-font-smoothing: antialiased;
