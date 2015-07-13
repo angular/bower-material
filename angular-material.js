@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-2781eac
+ * v0.10.1-rc1-master-46ffa9e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -15691,6 +15691,8 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   defineProperty('focusIndex', handleFocusIndexChange, ctrl.selectedIndex || 0);
   defineProperty('offsetLeft', handleOffsetChange, 0);
   defineProperty('hasContent', handleHasContent, false);
+  defineProperty('maxTabWidth', handleMaxTabWidth, getMaxTabWidth());
+  defineProperty('shouldPaginate', handleShouldPaginate, false);
 
   //-- define boolean attributes
   defineBooleanAttribute('noInkBar', handleInkBar);
@@ -15708,7 +15710,6 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   ctrl.lastSelectedIndex = null;
   ctrl.hasFocus = false;
   ctrl.lastClick = true;
-  ctrl.shouldPaginate = false;
   ctrl.shouldCenterTabs = shouldCenterTabs();
 
   //-- define public methods
@@ -15743,10 +15744,10 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     $mdUtil.nextTick(function () {
       updateHeightFromContent();
       adjustOffset();
-      updatePagination();
       updateInkBarStyles();
       ctrl.tabs[ctrl.selectedIndex] && ctrl.tabs[ctrl.selectedIndex].scope.select();
       loaded = true;
+      updatePagination();
     });
   }
 
@@ -15770,10 +15771,18 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     $scope.$on('$destroy', cleanup);
   }
 
+  /**
+   * Configure watcher(s) used by Tabs
+   */
   function configureWatchers () {
     $scope.$watch('$mdTabsCtrl.selectedIndex', handleSelectedIndexChange);
   }
 
+  /**
+   * Creates a one-way binding manually rather than relying on Angular's isolated scope
+   * @param key
+   * @param handler
+   */
   function defineOneWayBinding (key, handler) {
     var attr = $attrs.$normalize('md-' + key);
     if (handler) defineProperty(key, handler);
@@ -15804,9 +15813,30 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
 
   //-- Change handlers
 
+  /**
+   * Toggles stretch tabs class and updates inkbar when tab stretching changes
+   * @param stretchTabs
+   */
   function handleStretchTabs (stretchTabs) {
     angular.element(elements.wrapper).toggleClass('md-stretch-tabs', shouldStretchTabs());
     updateInkBarStyles();
+  }
+
+  function handleMaxTabWidth (newWidth, oldWidth) {
+    if (newWidth !== oldWidth) {
+      $mdUtil.nextTick(ctrl.updateInkBarStyles);
+    }
+  }
+
+  function handleShouldPaginate (newValue, oldValue) {
+    if (newValue !== oldValue) {
+      ctrl.maxTabWidth = getMaxTabWidth();
+      ctrl.shouldCenterTabs = shouldCenterTabs();
+      $mdUtil.nextTick(function () {
+        ctrl.maxTabWidth = getMaxTabWidth();
+        adjustOffset(ctrl.selectedIndex);
+      });
+    }
   }
 
   /**
@@ -16099,7 +16129,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
    */
   function shouldPaginate () {
     if (ctrl.noPagination || !loaded) return false;
-    var canvasWidth = $element.prop('clientWidth');
+    var canvasWidth = Math.min($element.prop('clientWidth'), ctrl.maxTabWidth);
     angular.forEach(elements.dummies, function (tab) { canvasWidth -= tab.offsetWidth; });
     return canvasWidth < 0;
   }
@@ -16147,8 +16177,10 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
    */
   function updatePagination () {
     ctrl.shouldPaginate = shouldPaginate();
-    ctrl.shouldCenterTabs = shouldCenterTabs();
-    $mdUtil.nextTick(function () { adjustOffset(ctrl.selectedIndex); });
+  }
+
+  function getMaxTabWidth () {
+    return elements.canvas.clientWidth;
   }
 
   /**
@@ -16461,7 +16493,7 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
               <md-tab-item\
                   tabindex="-1"\
                   class="md-tab"\
-                  style="max-width: {{ tabWidth ? tabWidth + \'px\' : \'none\' }}"\
+                  style="max-width: {{ $mdTabsCtrl.maxTabWidth + \'px\' }}"\
                   ng-repeat="tab in $mdTabsCtrl.tabs"\
                   role="tab"\
                   aria-controls="tab-content-{{::tab.id}}"\
