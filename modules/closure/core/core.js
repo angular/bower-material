@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-d962170
+ * v0.10.1-rc1-master-88877fd
  */
 goog.provide('ng.material.core');
 
@@ -868,8 +868,6 @@ angular.module('material.core')
         //-- set default value for digest to true
         if (digest == null) digest = true;
 
-        console.log(callback, digest, arguments);
-
         //-- store updated digest value
         nextTick.digest = nextTick.digest || digest;
 
@@ -897,8 +895,6 @@ angular.module('material.core')
           nextTick.timeout = false;
           nextTick.digest = false;
 
-          console.log('batch size', queue.length);
-          console.log('digest', digest);
           //-- process the existing queue
           queue.forEach(function (callback) { callback(); });
 
