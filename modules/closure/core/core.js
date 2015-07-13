@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-46ffa9e
+ * v0.10.1-rc1-master-d962170
  */
 goog.provide('ng.material.core');
 
@@ -483,7 +483,8 @@ mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];
 var nextUniqueId = 0;
 
 angular.module('material.core')
-  .factory('$mdUtil', ["$cacheFactory", "$document", "$timeout", "$q", "$window", "$mdConstant", function ($cacheFactory, $document, $timeout, $q, $window, $mdConstant) {
+  .factory('$mdUtil', ["$cacheFactory", "$document", "$timeout", "$q", "$window", "$mdConstant", "$rootScope", function ($cacheFactory, $document, $timeout, $q, $window, $mdConstant,
+                                $rootScope) {
     var Util;
 
     function getNode(el) {
@@ -858,22 +859,51 @@ angular.module('material.core')
         });
       },
 
-      nextTick: function (callback) {
-        this.nextTick.queue = this.nextTick.queue || [];
-        this.nextTick.queue.push(callback);
+      nextTick: function (callback, digest) {
+        //-- grab function reference for storing state details
+        var nextTick = this.nextTick;
+        var timeout = nextTick.timeout;
+        var queue = nextTick.queue || [];
 
-        if (!this.nextTick.timeout) {
-          this.nextTick.timeout = true;
-          $timeout(angular.bind(this, function () {
-            //-- grab a copy of the current queue
-            var queue = this.nextTick.queue;
-            //-- reset the queue just in case any callbacks use nextTick
-            this.nextTick.queue = [];
-            this.nextTick.callback = false;
-            this.nextTick.timeout = false;
-            //-- process the existing queue
-            queue.forEach(function (callback) { callback(); });
-          }));
+        //-- set default value for digest to true
+        if (digest == null) digest = true;
+
+        console.log(callback, digest, arguments);
+
+        //-- store updated digest value
+        nextTick.digest = nextTick.digest || digest;
+
+        //-- update queue/digest values
+        queue = nextTick.queue || [];
+        queue.push(callback);
+
+        //-- set timeout flag to prevent other timeouts from being created until this is finished
+        nextTick.timeout = true;
+
+        //-- store the queue
+        nextTick.queue = queue;
+
+        //-- return either the existing timeout or the newly created one
+        return timeout || $timeout(processQueue, 0, false);
+
+        function processQueue () {
+          //-- grab a copy of the current queue
+          var queue = nextTick.queue;
+          var digest = nextTick.digest;
+
+          //-- reset the queue just in case any callbacks use nextTick
+          nextTick.queue = [];
+          nextTick.callback = false;
+          nextTick.timeout = false;
+          nextTick.digest = false;
+
+          console.log('batch size', queue.length);
+          console.log('digest', digest);
+          //-- process the existing queue
+          queue.forEach(function (callback) { callback(); });
+
+          //-- trigger digest if necessary
+          if (digest) $rootScope.$digest();
         }
       }
     };

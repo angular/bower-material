@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-46ffa9e
+ * v0.10.1-rc1-master-d962170
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -507,7 +507,8 @@ mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];
 var nextUniqueId = 0;
 
 angular.module('material.core')
-  .factory('$mdUtil', ["$cacheFactory", "$document", "$timeout", "$q", "$window", "$mdConstant", function ($cacheFactory, $document, $timeout, $q, $window, $mdConstant) {
+  .factory('$mdUtil', ["$cacheFactory", "$document", "$timeout", "$q", "$window", "$mdConstant", "$rootScope", function ($cacheFactory, $document, $timeout, $q, $window, $mdConstant,
+                                $rootScope) {
     var Util;
 
     function getNode(el) {
@@ -882,22 +883,51 @@ angular.module('material.core')
         });
       },
 
-      nextTick: function (callback) {
-        this.nextTick.queue = this.nextTick.queue || [];
-        this.nextTick.queue.push(callback);
+      nextTick: function (callback, digest) {
+        //-- grab function reference for storing state details
+        var nextTick = this.nextTick;
+        var timeout = nextTick.timeout;
+        var queue = nextTick.queue || [];
 
-        if (!this.nextTick.timeout) {
-          this.nextTick.timeout = true;
-          $timeout(angular.bind(this, function () {
-            //-- grab a copy of the current queue
-            var queue = this.nextTick.queue;
-            //-- reset the queue just in case any callbacks use nextTick
-            this.nextTick.queue = [];
-            this.nextTick.callback = false;
-            this.nextTick.timeout = false;
-            //-- process the existing queue
-            queue.forEach(function (callback) { callback(); });
-          }));
+        //-- set default value for digest to true
+        if (digest == null) digest = true;
+
+        console.log(callback, digest, arguments);
+
+        //-- store updated digest value
+        nextTick.digest = nextTick.digest || digest;
+
+        //-- update queue/digest values
+        queue = nextTick.queue || [];
+        queue.push(callback);
+
+        //-- set timeout flag to prevent other timeouts from being created until this is finished
+        nextTick.timeout = true;
+
+        //-- store the queue
+        nextTick.queue = queue;
+
+        //-- return either the existing timeout or the newly created one
+        return timeout || $timeout(processQueue, 0, false);
+
+        function processQueue () {
+          //-- grab a copy of the current queue
+          var queue = nextTick.queue;
+          var digest = nextTick.digest;
+
+          //-- reset the queue just in case any callbacks use nextTick
+          nextTick.queue = [];
+          nextTick.callback = false;
+          nextTick.timeout = false;
+          nextTick.digest = false;
+
+          console.log('batch size', queue.length);
+          console.log('digest', digest);
+          //-- process the existing queue
+          queue.forEach(function (callback) { callback(); });
+
+          //-- trigger digest if necessary
+          if (digest) $rootScope.$digest();
         }
       }
     };
@@ -13606,7 +13636,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * @returns {*}
    */
   function positionDropdown () {
-    if (!elements) return $mdUtil.nextTick(positionDropdown);
+    if (!elements) return $mdUtil.nextTick(positionDropdown, false);
     var hrect  = elements.wrap.getBoundingClientRect(),
         vrect  = elements.snap.getBoundingClientRect(),
         root   = elements.root.getBoundingClientRect(),
@@ -13629,7 +13659,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       styles.maxHeight = Math.min(MAX_HEIGHT, root.bottom - hrect.bottom - MENU_PADDING) + 'px';
     }
     elements.$.ul.css(styles);
-    $mdUtil.nextTick(correctHorizontalAlignment);
+    $mdUtil.nextTick(correctHorizontalAlignment, false);
 
     /**
      * Makes sure that the menu doesn't go off of the screen on either side.
@@ -13734,9 +13764,9 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   function handleHiddenChange (hidden, oldHidden) {
     if (!hidden && oldHidden) {
       positionDropdown();
-      if (elements) $mdUtil.nextTick(function () { $mdUtil.disableScrollAround(elements.ul); });
+      if (elements) $mdUtil.nextTick(function () { $mdUtil.disableScrollAround(elements.ul); }, false);
     } else if (hidden && !oldHidden) {
-      $mdUtil.nextTick(function() { $mdUtil.enableScrolling(); });
+      $mdUtil.nextTick(function() { $mdUtil.enableScrolling(); }, false);
     }
   }
 
@@ -14023,7 +14053,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
         ctrl.index = 0;
         ctrl.matches = [];
       });
-    });
+    }, false);
   }
 
 
@@ -15674,7 +15704,7 @@ angular
 /**
  * @ngInject
  */
-function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $mdTabInkRipple,
+function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipple,
                            $mdUtil, $animate, $attrs, $compile, $mdTheming) {
   //-- define private properties
   var ctrl       = this,
@@ -15896,8 +15926,8 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     if (handleResizeWhenVisible.watcher) return;
     //-- otherwise, we will abuse the $watch function to check for visible
     handleResizeWhenVisible.watcher = $scope.$watch(function () {
-      //-- since we are checking for DOM size, we use $timeout to wait for after the DOM updates
-      $timeout(function () {
+      //-- since we are checking for DOM size, we use $mdUtil.nextTick() to wait for after the DOM updates
+      $mdUtil.nextTick(function () {
         //-- if the watcher has already run (ie. multiple digests in one cycle), do nothing
         if (!handleResizeWhenVisible.watcher) return;
 
@@ -15908,7 +15938,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
           //-- we have to trigger our own $apply so that the DOM bindings will update
           handleWindowResize();
         }
-      }, 0, false);
+      }, false);
     });
   }
 
@@ -15991,7 +16021,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     $scope.$apply(function () {
       ctrl.lastSelectedIndex = ctrl.selectedIndex;
       ctrl.offsetLeft = fixOffset(ctrl.offsetLeft);
-      $timeout(ctrl.updateInkBarStyles, 0, false);
+      $mdUtil.nextTick(ctrl.updateInkBarStyles, false);
       $mdUtil.nextTick(updatePagination);
     });
   }
@@ -16035,6 +16065,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
    * @returns {*}
    */
   function insertTab (tabData, index) {
+    var hasLoaded = loaded;
     var proto = {
           getIndex: function () { return ctrl.tabs.indexOf(tab); },
           isActive: function () { return this.getIndex() === ctrl.selectedIndex; },
@@ -16053,9 +16084,13 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     }
     processQueue();
     updateHasContent();
-    //-- if autoselect is enabled, select the newly added tab
-    if (loaded && ctrl.autoselect) $mdUtil.nextTick(function () { select(ctrl.tabs.indexOf(tab)); });
-    $mdUtil.nextTick(updatePagination);
+    $mdUtil.nextTick(function () {
+      updatePagination();
+      //-- if autoselect is enabled, select the newly added tab
+      if (hasLoaded && ctrl.autoselect) $mdUtil.nextTick(function () {
+        $mdUtil.nextTick(function () { select(ctrl.tabs.indexOf(tab)); });
+      });
+    });
     return tab;
   }
 
@@ -16308,7 +16343,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
       tabWidth = Array.prototype.slice.call(elements.tabs).reduce(function (value, element) {
         return value + element.offsetWidth;
       }, 0);
-      if (totalWidth > tabWidth) $timeout(updateInkBarStyles, 0, false);
+      if (totalWidth > tabWidth) $mdUtil.nextTick(updateInkBarStyles, false);
     }
     updateInkBarClassName();
     angular.element(elements.inkBar).css({ left: left + 'px', right: right + 'px' });
@@ -16351,7 +16386,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     $mdTabInkRipple.attach(scope, element, options);
   }
 }
-MdTabsController.$inject = ["$scope", "$element", "$window", "$timeout", "$mdConstant", "$mdTabInkRipple", "$mdUtil", "$animate", "$attrs", "$compile", "$mdTheming"];
+MdTabsController.$inject = ["$scope", "$element", "$window", "$mdConstant", "$mdTabInkRipple", "$mdUtil", "$animate", "$attrs", "$compile", "$mdTheming"];
 
 })();
 (function(){

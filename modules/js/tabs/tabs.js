@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-46ffa9e
+ * v0.10.1-rc1-master-d962170
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -214,7 +214,7 @@ angular
 /**
  * ngInject
  */
-function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $mdTabInkRipple,
+function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipple,
                            $mdUtil, $animate, $attrs, $compile, $mdTheming) {
   //-- define private properties
   var ctrl       = this,
@@ -436,8 +436,8 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     if (handleResizeWhenVisible.watcher) return;
     //-- otherwise, we will abuse the $watch function to check for visible
     handleResizeWhenVisible.watcher = $scope.$watch(function () {
-      //-- since we are checking for DOM size, we use $timeout to wait for after the DOM updates
-      $timeout(function () {
+      //-- since we are checking for DOM size, we use $mdUtil.nextTick() to wait for after the DOM updates
+      $mdUtil.nextTick(function () {
         //-- if the watcher has already run (ie. multiple digests in one cycle), do nothing
         if (!handleResizeWhenVisible.watcher) return;
 
@@ -448,7 +448,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
           //-- we have to trigger our own $apply so that the DOM bindings will update
           handleWindowResize();
         }
-      }, 0, false);
+      }, false);
     });
   }
 
@@ -531,7 +531,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     $scope.$apply(function () {
       ctrl.lastSelectedIndex = ctrl.selectedIndex;
       ctrl.offsetLeft = fixOffset(ctrl.offsetLeft);
-      $timeout(ctrl.updateInkBarStyles, 0, false);
+      $mdUtil.nextTick(ctrl.updateInkBarStyles, false);
       $mdUtil.nextTick(updatePagination);
     });
   }
@@ -575,6 +575,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
    * @returns {*}
    */
   function insertTab (tabData, index) {
+    var hasLoaded = loaded;
     var proto = {
           getIndex: function () { return ctrl.tabs.indexOf(tab); },
           isActive: function () { return this.getIndex() === ctrl.selectedIndex; },
@@ -593,9 +594,13 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     }
     processQueue();
     updateHasContent();
-    //-- if autoselect is enabled, select the newly added tab
-    if (loaded && ctrl.autoselect) $mdUtil.nextTick(function () { select(ctrl.tabs.indexOf(tab)); });
-    $mdUtil.nextTick(updatePagination);
+    $mdUtil.nextTick(function () {
+      updatePagination();
+      //-- if autoselect is enabled, select the newly added tab
+      if (hasLoaded && ctrl.autoselect) $mdUtil.nextTick(function () {
+        $mdUtil.nextTick(function () { select(ctrl.tabs.indexOf(tab)); });
+      });
+    });
     return tab;
   }
 
@@ -848,7 +853,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
       tabWidth = Array.prototype.slice.call(elements.tabs).reduce(function (value, element) {
         return value + element.offsetWidth;
       }, 0);
-      if (totalWidth > tabWidth) $timeout(updateInkBarStyles, 0, false);
+      if (totalWidth > tabWidth) $mdUtil.nextTick(updateInkBarStyles, false);
     }
     updateInkBarClassName();
     angular.element(elements.inkBar).css({ left: left + 'px', right: right + 'px' });
@@ -891,7 +896,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     $mdTabInkRipple.attach(scope, element, options);
   }
 }
-MdTabsController.$inject = ["$scope", "$element", "$window", "$timeout", "$mdConstant", "$mdTabInkRipple", "$mdUtil", "$animate", "$attrs", "$compile", "$mdTheming"];
+MdTabsController.$inject = ["$scope", "$element", "$window", "$mdConstant", "$mdTabInkRipple", "$mdUtil", "$animate", "$attrs", "$compile", "$mdTheming"];
 
 /**
  * @ngdoc directive
