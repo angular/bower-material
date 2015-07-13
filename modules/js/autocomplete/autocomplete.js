@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-2b42358
+ * v0.10.1-rc1-master-c5b3131
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -270,7 +270,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
    * Use the user-defined expression to announce changes each time a new item is selected
    */
   function announceItemChange() {
-    angular.isFunction($scope.itemChange) &&  $scope.itemChange();
+    angular.isFunction($scope.itemChange) && $scope.itemChange(getItemAsNameVal($scope.selectedItem));
   }
 
   function announceTextChange() {
