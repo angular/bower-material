@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-44a0b17
+ * v0.10.1-rc1-master-0ebb9eb
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -8832,6 +8832,7 @@ function MenuProvider($$interimElementProvider) {
 
   /* @ngInject */
   function menuDefaultOptions($$rAF, $window, $mdUtil, $mdTheming, $mdConstant, $document) {
+    var animator = $mdUtil.dom.animator;
 
     return {
       parent: 'body',
@@ -8850,7 +8851,6 @@ function MenuProvider($$interimElementProvider) {
      * various interaction events
      */
     function onShow(scope, element, opts) {
-      var waitTransitionEnd = $mdUtil.dom.animator.waitTransitionEnd;
 
       // Sanitize and set defaults on opts
       buildOpts(opts);
@@ -8873,7 +8873,7 @@ function MenuProvider($$interimElementProvider) {
       showMenu();
 
       // Return the promise for when our menu is done animating in
-      return waitTransitionEnd(element, {timeout: 350}).then(function(res) {
+      return animator.waitTransitionEnd(element, {timeout: 350}).then(function(res) {
         activateInteraction();
         return res;
       });
@@ -9046,8 +9046,6 @@ function MenuProvider($$interimElementProvider) {
      * and removing various listeners
      */
     function onRemove(scope, element, opts) {
-      var waitTransitionEnd = $mdUtil.dom.animator.waitTransitionEnd;
-
       opts.isRemoved = true;
       element.addClass('md-leave')
         .removeClass('md-clickable');
@@ -9058,7 +9056,7 @@ function MenuProvider($$interimElementProvider) {
       opts.resizeFn = undefined;
 
       // Wait for animate out, then remove from the DOM
-      return waitTransitionEnd(element, { timeout: 350 }).then(function() {
+      return animator.waitTransitionEnd(element, { timeout: 350 }).then(function() {
         element.removeClass('md-active');
         opts.backdrop && opts.backdrop.remove();
         if (element[0].parentNode === opts.parent[0]) {
@@ -10490,6 +10488,8 @@ function SelectProvider($$interimElementProvider) {
 
   /* @ngInject */
   function selectDefaultOptions($mdSelect, $mdConstant, $$rAF, $mdUtil, $mdTheming, $window ) {
+    var aniamtor = $mdUtil.dom.animator;
+
     return {
       parent: 'body',
       onShow: onShow,
@@ -10500,7 +10500,7 @@ function SelectProvider($$interimElementProvider) {
     };
 
     function onShow(scope, element, opts) {
-      var waitTransitionEnd = $mdUtil.dom.animator.waitTransitionEnd;
+
 
       if (!opts.target) {
         throw new Error('$mdSelect.show() expected a target element in options.target but got ' +
@@ -10570,7 +10570,7 @@ function SelectProvider($$interimElementProvider) {
         });
       });
 
-      return waitTransitionEnd(opts.selectEl, {timeout: 350}).then(function(res) {
+      return aniamtor.waitTransitionEnd(opts.selectEl, {timeout: 350}).then(function(res) {
         activateInteraction();
         return res;
       });
@@ -10678,8 +10678,6 @@ function SelectProvider($$interimElementProvider) {
     }
 
     function onRemove(scope, element, opts) {
-      var waitTransitionEnd = $mdUtil.dom.animator.waitTransitionEnd;
-
       element
         .addClass('md-leave')
         .removeClass('md-clickable');
@@ -10697,7 +10695,7 @@ function SelectProvider($$interimElementProvider) {
         mdSelect.setLabelText(opts.selectEl.controller('mdSelectMenu').selectedLabels());
       }
 
-      return waitTransitionEnd(element, { timeout: 350 }).then(function() {
+      return aniamtor.waitTransitionEnd(element, { timeout: 350 }).then(function() {
         element.removeClass('md-active');
         opts.backdrop && opts.backdrop.remove();
         if (element[0].parentNode === opts.parent[0]) {
