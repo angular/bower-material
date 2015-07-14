@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-88877fd
+ * v0.10.1-rc1-master-2d6cc8a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -882,7 +882,7 @@ angular.module('material.core')
         nextTick.queue = queue;
 
         //-- return either the existing timeout or the newly created one
-        return timeout || $timeout(processQueue, 0, false);
+        return timeout || (nextTick.timeout = $timeout(processQueue, 0, false));
 
         function processQueue () {
           //-- grab a copy of the current queue
