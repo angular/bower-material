@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-2d6cc8a
+ * v0.10.1-rc1-master-d2207ab
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -885,7 +885,7 @@ angular.module('material.core')
 
       nextTick: function (callback, digest) {
         //-- grab function reference for storing state details
-        var nextTick = this.nextTick;
+        var nextTick = Util.nextTick;
         var timeout = nextTick.timeout;
         var queue = nextTick.queue || [];
 
