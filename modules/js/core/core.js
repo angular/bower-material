@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-d364903
+ * v0.10.1-rc1-master-44a0b17
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -820,14 +820,6 @@ angular.module('material.core')
             newEvent.$material = true;
             newEvent.$focus = true;
             node.dispatchEvent(newEvent);
-          },
-
-          /**
-           * Listen for transitionEnd event (with optional timeout)
-           * Announce completion or failure via promise handlers
-           */
-          transitionEndPromise: function (element, opts) {
-            return $mdUtil.dom.animator.waitTransitionEnd(element,opts);
           },
 
           /**

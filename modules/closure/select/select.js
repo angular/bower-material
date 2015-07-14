@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-d364903
+ * v0.10.1-rc1-master-44a0b17
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -771,6 +771,8 @@ function SelectProvider($$interimElementProvider) {
     };
 
     function onShow(scope, element, opts) {
+      var waitTransitionEnd = $mdUtil.dom.animator.waitTransitionEnd;
+
       if (!opts.target) {
         throw new Error('$mdSelect.show() expected a target element in options.target but got ' +
                         '"' + opts.target + '"!');
@@ -839,7 +841,7 @@ function SelectProvider($$interimElementProvider) {
         });
       });
 
-      return $mdUtil.transitionEndPromise(opts.selectEl, {timeout: 350}).then(function(res) {
+      return waitTransitionEnd(opts.selectEl, {timeout: 350}).then(function(res) {
         activateInteraction();
         return res;
       });
@@ -947,6 +949,8 @@ function SelectProvider($$interimElementProvider) {
     }
 
     function onRemove(scope, element, opts) {
+      var waitTransitionEnd = $mdUtil.dom.animator.waitTransitionEnd;
+
       element
         .addClass('md-leave')
         .removeClass('md-clickable');
@@ -964,7 +968,7 @@ function SelectProvider($$interimElementProvider) {
         mdSelect.setLabelText(opts.selectEl.controller('mdSelectMenu').selectedLabels());
       }
 
-      return $mdUtil.transitionEndPromise(element, { timeout: 350 }).then(function() {
+      return waitTransitionEnd(element, { timeout: 350 }).then(function() {
         element.removeClass('md-active');
         opts.backdrop && opts.backdrop.remove();
         if (element[0].parentNode === opts.parent[0]) {
