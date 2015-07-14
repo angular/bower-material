@@ -1061,8 +1061,9 @@ md-backdrop {
 
   background-color: rgba(0,0,0,0);
 
-  position: fixed;
+  position: absolute;
   height: 100%;
+  bottom:0;
   left: 0;
   right: 0;
 
@@ -1075,7 +1076,11 @@ md-backdrop {
     animation: $swift-ease-out-timing-function mdBackdropFadeIn 0.5s both;
   }
   &.ng-leave {
-    animation: $swift-ease-in-timing-function mdBackdropFadeOut 0.2s both;
+    animation: $swift-ease-in-timing-function mdBackdropFadeOut 0.4s both;
+  }
+
+  &.md-opaque {
+    background-color: rgba(0,0,0,0.42);
   }
 }
 
@@ -1911,12 +1916,14 @@ $dialog-padding: $baseline-grid * 3;
 }
 
 md-dialog {
+
   &.md-transition-in {
     opacity: 1;
     transition: $swift-ease-out;
     transform: translate3d(0,0,0) scale(1.0);
   }
   &.md-transition-out {
+    opacity: 0;
     transition: $swift-ease-out;
     transform: translate3d(0,100%,0) scale(0.2);
   }
@@ -3706,15 +3713,15 @@ $sidenav-min-space: 56px !default;
 md-sidenav {
   box-sizing: border-box;
   position: absolute;
+  flex-direction: column;
+  z-index: $z-index-sidenav;
 
   width: $sidenav-default-width;
   min-width: $sidenav-default-width;
   max-width: $sidenav-default-width;
   bottom: 0;
-  z-index: $z-index-sidenav;
   background-color: white;
   overflow: auto;
-  flex-direction: column;
 
   *,
   *:before,

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-d2207ab
+ * v0.10.1-rc1-master-d364903
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -2807,8 +2807,9 @@ md-autocomplete {
 md-backdrop {
   z-index: 50;
   background-color: transparent;
-  position: fixed;
+  position: absolute;
   height: 100%;
+  bottom: 0;
   left: 0;
   right: 0; }
   md-backdrop.md-menu-backdrop {
@@ -2828,8 +2829,10 @@ md-backdrop {
     -webkit-animation: cubic-bezier(0.25, 0.8, 0.25, 1) mdBackdropFadeIn 0.5s both;
             animation: cubic-bezier(0.25, 0.8, 0.25, 1) mdBackdropFadeIn 0.5s both; }
   md-backdrop.ng-leave {
-    -webkit-animation: cubic-bezier(0.55, 0, 0.55, 0.2) mdBackdropFadeOut 0.2s both;
-            animation: cubic-bezier(0.55, 0, 0.55, 0.2) mdBackdropFadeOut 0.2s both; }
+    -webkit-animation: cubic-bezier(0.55, 0, 0.55, 0.2) mdBackdropFadeOut 0.4s both;
+            animation: cubic-bezier(0.55, 0, 0.55, 0.2) mdBackdropFadeOut 0.4s both; }
+  md-backdrop.md-opaque {
+    background-color: rgba(0, 0, 0, 0.42); }
 
 @-webkit-keyframes mdBackdropFadeIn {
   from {
@@ -3509,6 +3512,7 @@ md-dialog {
     -webkit-transform: translate3d(0, 0, 0) scale(1);
             transform: translate3d(0, 0, 0) scale(1); }
   md-dialog.md-transition-out {
+    opacity: 0;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     -webkit-transform: translate3d(0, 100%, 0) scale(0.2);
             transform: translate3d(0, 100%, 0) scale(0.2); }
@@ -6231,16 +6235,16 @@ md-optgroup {
 md-sidenav {
   box-sizing: border-box;
   position: absolute;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  z-index: 60;
   width: 304px;
   min-width: 304px;
   max-width: 304px;
   bottom: 0;
-  z-index: 60;
   background-color: white;
-  overflow: auto;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column; }
+  overflow: auto; }
   md-sidenav *, md-sidenav *:before, md-sidenav *:after {
     box-sizing: border-box; }
   md-sidenav ul {

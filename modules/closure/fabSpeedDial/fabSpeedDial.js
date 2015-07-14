@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-d2207ab
+ * v0.10.1-rc1-master-d364903
  */
 goog.provide('ng.material.components.fabSpeedDial');
 goog.require('ng.material.components.fabActions');
@@ -72,7 +72,7 @@ goog.require('ng.material.core');
    * @param {expression=} md-open Programmatically control whether or not the speed-dial is visible.
    */
   function MdFabSpeedDialDirective() {
-    FabSpeedDialController.$inject = ["$scope", "$element", "$animate", "$timeout"];
+    FabSpeedDialController.$inject = ["$scope", "$element", "$animate", "$mdUtil"];
     return {
       restrict: 'E',
 
@@ -93,7 +93,7 @@ goog.require('ng.material.core');
       element.prepend('<div class="md-css-variables"></div>');
     }
 
-    function FabSpeedDialController($scope, $element, $animate, $timeout) {
+    function FabSpeedDialController($scope, $element, $animate, $mdUtil) {
       var vm = this;
 
       // Define our open/close functions
@@ -124,9 +124,9 @@ goog.require('ng.material.core');
       setupWatchers();
 
       // Fire the animations once in a separate digest loop to initialize them
-      $timeout(function() {
+      $mdUtil.nextTick(function() {
         $animate.addClass($element, 'md-noop');
-      }, 0);
+      });
 
       // Set our default variables
       function setupDefaults() {

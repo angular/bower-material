@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-d2207ab
+ * v0.10.1-rc1-master-d364903
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -71,7 +71,7 @@
    * @param {expression=} md-open Programmatically control whether or not the speed-dial is visible.
    */
   function MdFabSpeedDialDirective() {
-    FabSpeedDialController.$inject = ["$scope", "$element", "$animate", "$timeout"];
+    FabSpeedDialController.$inject = ["$scope", "$element", "$animate", "$mdUtil"];
     return {
       restrict: 'E',
 
@@ -92,7 +92,7 @@
       element.prepend('<div class="md-css-variables"></div>');
     }
 
-    function FabSpeedDialController($scope, $element, $animate, $timeout) {
+    function FabSpeedDialController($scope, $element, $animate, $mdUtil) {
       var vm = this;
 
       // Define our open/close functions
@@ -123,9 +123,9 @@
       setupWatchers();
 
       // Fire the animations once in a separate digest loop to initialize them
-      $timeout(function() {
+      $mdUtil.nextTick(function() {
         $animate.addClass($element, 'md-noop');
-      }, 0);
+      });
 
       // Set our default variables
       function setupDefaults() {
