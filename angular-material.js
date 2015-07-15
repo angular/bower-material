@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-b9f91d7
+ * v0.10.1-rc1-master-92853be
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13082,7 +13082,6 @@ angular.module('material.components.virtualRepeat', [
 function VirtualRepeatContainerDirective() {
   return {
     controller: VirtualRepeatContainerController,
-    restrict: 'E',
     template: virtualRepeatContainerTemplate,
     compile: function virtualRepeatContainerCompile($element, $attrs) {
       $element

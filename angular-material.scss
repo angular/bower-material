@@ -5025,6 +5025,7 @@ $virtual-repeat-scrollbar-width: 16px;
     // TODO: Will probably need to perform measurements at runtime.
     bottom: $virtual-repeat-scrollbar-width;
     right: auto;
+    white-space: nowrap;
   }
 }
 
