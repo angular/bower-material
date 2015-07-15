@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-869ca03
+ * v0.10.1-rc1-master-8b59e03
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -16773,7 +16773,7 @@ angular
     .module('material.components.tabs')
     .directive('mdTemplate', MdTemplate);
 
-function MdTemplate ($compile, $mdUtil, $timeout) {
+function MdTemplate ($compile, $mdUtil) {
   return {
     restrict: 'A',
     link: link,
@@ -16793,7 +16793,7 @@ function MdTemplate ($compile, $mdUtil, $timeout) {
       ctrl.updatePagination();
       ctrl.updateInkBarStyles();
     });
-    return $timeout(handleScope);
+    return $mdUtil.nextTick(handleScope);
     function handleScope () {
       scope.$watch('connected', function (value) { value === false ? disconnect() : reconnect(); });
       scope.$on('$destroy', reconnect);
@@ -16808,7 +16808,7 @@ function MdTemplate ($compile, $mdUtil, $timeout) {
     }
   }
 }
-MdTemplate.$inject = ["$compile", "$mdUtil", "$timeout"];
+MdTemplate.$inject = ["$compile", "$mdUtil"];
 
 })();
 (function(){ 
