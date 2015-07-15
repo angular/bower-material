@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-8b59e03
+ * v0.10.1-rc1-master-1c7b806
  */
 goog.provide('ng.material.core');
 
@@ -2623,7 +2623,7 @@ function InkRippleDirective($mdButtonInkRipple, $mdCheckboxInkRipple) {
 }
 InkRippleDirective.$inject = ["$mdButtonInkRipple", "$mdCheckboxInkRipple"];
 
-function InkRippleService($window, $timeout) {
+function InkRippleService($window, $timeout, $mdUtil) {
 
   return {
     attach: attach
@@ -2679,7 +2679,7 @@ function InkRippleService($window, $timeout) {
       scope.$watch(isActiveExpr, function watchActive(newValue) {
         isActive = newValue;
         if (isActive && !ripples.length) {
-          $timeout(function () { createRipple(0, 0); }, 0, false);
+          mdUtil.nextTick(function () { createRipple(0, 0); });
         }
         angular.forEach(ripples, updateElement);
       });
@@ -2799,7 +2799,7 @@ function InkRippleService($window, $timeout) {
 
       state.animating = true;
 
-      $timeout(function () {
+      $mdUtil.nextTick(function () {
         if (options.dimBackground) {
           container.css({ backgroundColor: color });
         }
@@ -2818,7 +2818,7 @@ function InkRippleService($window, $timeout) {
           state.animating = false;
           updateElement(elem);
         }, (options.outline ? 450 : 225), false);
-      }, 0, false);
+      });
 
       return elem;
 
@@ -2926,7 +2926,7 @@ function InkRippleService($window, $timeout) {
     function onPressUp() {
       isHeld = false;
       var ripple = ripples[ ripples.length - 1 ];
-      $timeout(function () { updateElement(ripple); }, 0, false);
+      $mdUtil.nextTick(function () { updateElement(ripple); });
     }
 
     /**
@@ -2946,7 +2946,7 @@ function InkRippleService($window, $timeout) {
 
   }
 }
-InkRippleService.$inject = ["$window", "$timeout"];
+InkRippleService.$inject = ["$window", "$timeout", "$mdUtil"];
 
 /**
  * noink/nobar/nostretch directive: make any element that has one of

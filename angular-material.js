@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-8b59e03
+ * v0.10.1-rc1-master-1c7b806
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2687,7 +2687,7 @@ function InkRippleDirective($mdButtonInkRipple, $mdCheckboxInkRipple) {
 }
 InkRippleDirective.$inject = ["$mdButtonInkRipple", "$mdCheckboxInkRipple"];
 
-function InkRippleService($window, $timeout) {
+function InkRippleService($window, $timeout, $mdUtil) {
 
   return {
     attach: attach
@@ -2743,7 +2743,7 @@ function InkRippleService($window, $timeout) {
       scope.$watch(isActiveExpr, function watchActive(newValue) {
         isActive = newValue;
         if (isActive && !ripples.length) {
-          $timeout(function () { createRipple(0, 0); }, 0, false);
+          mdUtil.nextTick(function () { createRipple(0, 0); });
         }
         angular.forEach(ripples, updateElement);
       });
@@ -2863,7 +2863,7 @@ function InkRippleService($window, $timeout) {
 
       state.animating = true;
 
-      $timeout(function () {
+      $mdUtil.nextTick(function () {
         if (options.dimBackground) {
           container.css({ backgroundColor: color });
         }
@@ -2882,7 +2882,7 @@ function InkRippleService($window, $timeout) {
           state.animating = false;
           updateElement(elem);
         }, (options.outline ? 450 : 225), false);
-      }, 0, false);
+      });
 
       return elem;
 
@@ -2990,7 +2990,7 @@ function InkRippleService($window, $timeout) {
     function onPressUp() {
       isHeld = false;
       var ripple = ripples[ ripples.length - 1 ];
-      $timeout(function () { updateElement(ripple); }, 0, false);
+      $mdUtil.nextTick(function () { updateElement(ripple); });
     }
 
     /**
@@ -3010,7 +3010,7 @@ function InkRippleService($window, $timeout) {
 
   }
 }
-InkRippleService.$inject = ["$window", "$timeout"];
+InkRippleService.$inject = ["$window", "$timeout", "$mdUtil"];
 
 /**
  * noink/nobar/nostretch directive: make any element that has one of
@@ -4275,7 +4275,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
   var CLOSING_VELOCITY = 0.5;
   var PADDING = 80; // same as css
 
-  bottomSheetDefaults.$inject = ["$animate", "$mdConstant", "$mdUtil", "$timeout", "$compile", "$mdTheming", "$mdBottomSheet", "$rootElement", "$mdGesture"];
+  bottomSheetDefaults.$inject = ["$animate", "$mdConstant", "$mdUtil", "$compile", "$mdTheming", "$mdBottomSheet", "$rootElement", "$mdGesture"];
   return $$interimElementProvider('$mdBottomSheet')
     .setDefaults({
       methods: ['disableParentScroll', 'escapeToClose', 'targetEvent'],
@@ -4283,7 +4283,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
     });
 
   /* @ngInject */
-  function bottomSheetDefaults($animate, $mdConstant, $mdUtil, $timeout, $compile, $mdTheming, $mdBottomSheet, $rootElement, $mdGesture) {
+  function bottomSheetDefaults($animate, $mdConstant, $mdUtil, $compile, $mdTheming, $mdBottomSheet, $rootElement, $mdGesture) {
     var backdrop;
 
     return {
@@ -4303,7 +4303,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
       // Add a backdrop that will close on click
       backdrop = $compile('<md-backdrop class="md-opaque md-bottom-sheet-backdrop">')(scope);
       backdrop.on('click', function() {
-        $timeout($mdBottomSheet.cancel);
+        $mdUtil.nextTick($mdBottomSheet.cancel,true);
       });
       $mdTheming.inherit(backdrop, options.parent);
 
@@ -4333,7 +4333,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
           if (options.escapeToClose) {
             options.rootElementKeyupCallback = function(e) {
               if (e.keyCode === $mdConstant.KEY_CODE.ESCAPE) {
-                $timeout($mdBottomSheet.cancel);
+                $mdUtil.nextTick($mdBottomSheet.cancel,true);
               }
             };
             $rootElement.on('keyup', options.rootElementKeyupCallback);
@@ -4399,7 +4399,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
           var distanceRemaining = element.prop('offsetHeight') - ev.pointer.distanceY;
           var transitionDuration = Math.min(distanceRemaining / ev.pointer.velocityY * 0.75, 500);
           element.css($mdConstant.CSS.TRANSITION_DURATION, transitionDuration + 'ms');
-          $timeout($mdBottomSheet.cancel);
+          $mdUtil.nextTick($mdBottomSheet.cancel,true);
         } else {
           element.css($mdConstant.CSS.TRANSITION_DURATION, '');
           element.css($mdConstant.CSS.TRANSFORM, '');
@@ -11079,7 +11079,7 @@ function SidenavFocusDirective() {
  *   - `<md-sidenav md-is-locked-open="$mdMedia('min-width: 1000px')"></md-sidenav>`
  *   - `<md-sidenav md-is-locked-open="$mdMedia('sm')"></md-sidenav>` (locks open on small screens)
  */
-function SidenavDirective($timeout, $animate, $parse, $log, $mdMedia, $mdConstant, $compile, $mdTheming, $q, $document) {
+function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $animate, $parse, $log, $compile, $q, $document) {
   return {
     restrict: 'E',
     scope: {
@@ -11206,7 +11206,7 @@ function SidenavDirective($timeout, $animate, $parse, $log, $mdMedia, $mdConstan
         // Toggle value to force an async `updateIsOpen()` to run
         scope.isOpen = isOpen;
 
-        $timeout(function() {
+        $mdUtil.nextTick(function() {
 
           // When the current `updateIsOpen()` animation finishes
           promise.then(function(result) {
@@ -11220,7 +11220,7 @@ function SidenavDirective($timeout, $animate, $parse, $log, $mdMedia, $mdConstan
             deferred.resolve(result);
           });
 
-        },0,false);
+        });
 
         return deferred.promise;
       }
@@ -11249,7 +11249,7 @@ function SidenavDirective($timeout, $animate, $parse, $log, $mdMedia, $mdConstan
 
   }
 }
-SidenavDirective.$inject = ["$timeout", "$animate", "$parse", "$log", "$mdMedia", "$mdConstant", "$compile", "$mdTheming", "$q", "$document"];
+SidenavDirective.$inject = ["$mdMedia", "$mdUtil", "$mdConstant", "$mdTheming", "$animate", "$parse", "$log", "$compile", "$q", "$document"];
 
 /*
  * @private
@@ -12942,7 +12942,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
             setVisible.queued = false;
           }, scope.delay);
         } else {
-          $timeout(function() { scope.visible = false; });
+          $mdUtil.nextTick(function() { scope.visible = false; });
         }
       }
     }

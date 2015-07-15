@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-8b59e03
+ * v0.10.1-rc1-master-1c7b806
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -174,7 +174,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
             setVisible.queued = false;
           }, scope.delay);
         } else {
-          $timeout(function() { scope.visible = false; });
+          $mdUtil.nextTick(function() { scope.visible = false; });
         }
       }
     }
