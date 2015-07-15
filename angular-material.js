@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-d31ffd9
+ * v0.10.1-rc1-master-f687475
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1040,8 +1040,12 @@ angular.module('material.core')
 
           /**
            * Alternative to $timeout calls with 0 delay.
-           * nextTick() coalesces all calls within a single frame 
+           * nextTick() coalesces all calls within a single frame
            * to minimize $digest thrashing
+           *
+           * @param callback
+           * @param digest
+           * @returns {*}
            */
           nextTick: function (callback, digest) {
             //-- grab function reference for storing state details
@@ -1058,9 +1062,6 @@ angular.module('material.core')
             //-- update queue/digest values
             queue = nextTick.queue || [];
             queue.push(callback);
-
-            //-- set timeout flag to prevent other timeouts from being created until this is finished
-            nextTick.timeout = true;
 
             //-- store the queue
             nextTick.queue = queue;
@@ -1079,8 +1080,7 @@ angular.module('material.core')
               var digest = nextTick.digest;
 
               nextTick.queue = [];
-              nextTick.callback = false;
-              nextTick.timeout = false;
+              nextTick.timeout = null;
               nextTick.digest = false;
 
               queue.forEach(function (callback) { callback(); });
