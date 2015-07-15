@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-17490ba
+ * v0.10.1-rc1-master-d31ffd9
  */
 goog.provide('ng.material.components.menu');
 goog.require('ng.material.components.backdrop');
@@ -330,10 +330,12 @@ function MenuProvider($$interimElementProvider) {
       showMenu();
 
       // Return the promise for when our menu is done animating in
-      return animator.waitTransitionEnd(element, {timeout: 350}).then(function(res) {
-        activateInteraction();
-        return res;
-      });
+      return animator
+          .waitTransitionEnd(element, {timeout: 370})
+          .then( function(response) {
+            activateInteraction();
+            return response;
+          });
 
       /** Check for valid opts and set some sane defaults */
       function buildOpts() {
@@ -513,14 +515,17 @@ function MenuProvider($$interimElementProvider) {
       opts.resizeFn = undefined;
 
       // Wait for animate out, then remove from the DOM
-      return animator.waitTransitionEnd(element, { timeout: 350 }).then(function() {
-        element.removeClass('md-active');
-        opts.backdrop && opts.backdrop.remove();
-        if (element[0].parentNode === opts.parent[0]) {
-          opts.parent[0].removeChild(element[0]);
-        }
-        opts.restoreScroll && opts.restoreScroll();
-      });
+      return animator
+        .waitTransitionEnd(element, { timeout: 370 })
+        .finally(function() {
+          element.removeClass('md-active');
+
+          opts.backdrop && opts.backdrop.remove();
+          if (element[0].parentNode === opts.parent[0]) {
+            opts.parent[0].removeChild(element[0]);
+          }
+          opts.restoreScroll && opts.restoreScroll();
+        });
     }
 
     /**

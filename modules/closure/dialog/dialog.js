@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-17490ba
+ * v0.10.1-rc1-master-d31ffd9
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -515,11 +515,8 @@ function MdDialogProvider($$interimElementProvider) {
     }
 
     function captureSourceAndParent(element, options) {
-         options.origin = {
-           element: null,
-           bounds: null,
-           focus: angular.noop
-         };
+         var origin = { element: null, bounds: null,  focus: angular.noop };
+         options.origin = angular.extend({ }, origin, options.origin || {} );
 
          var source = angular.element((options.targetEvent || {}).target);
          if (source && source.length) {
