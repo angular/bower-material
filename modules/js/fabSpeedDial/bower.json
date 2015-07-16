@@ -1,9 +1,9 @@
 {
   "name": "angular-material-fabSpeedDial",
-  "version": "0.10.1-rc1-master-aa1e47d",
+  "version": "0.10.1-rc1-master-cc8130c",
   "dependencies": {
-    "angular-material-core": "0.10.1-rc1-master-aa1e47d",
-    "angular-material-fabTrigger": "0.10.1-rc1-master-aa1e47d",
-    "angular-material-fabActions": "0.10.1-rc1-master-aa1e47d"
+    "angular-material-core": "0.10.1-rc1-master-cc8130c",
+    "angular-material-fabTrigger": "0.10.1-rc1-master-cc8130c",
+    "angular-material-fabActions": "0.10.1-rc1-master-cc8130c"
   }
 }
