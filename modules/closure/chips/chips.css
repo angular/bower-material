@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-cc8130c
+ * v0.10.1-rc1-master-e9b4de5
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 .md-contact-chips .md-chips .md-chip {
@@ -53,12 +53,17 @@
     line-height: 32px;
     margin: 8px 8px 0 0;
     padding: 0 8px 0 12px;
-    float: left; }
+    float: left;
+    box-sizing: border-box;
+    max-width: 100%; }
     .md-chips .md-chip .md-chip-content {
       display: block;
       padding-right: 4px;
       float: left;
-      white-space: nowrap; }
+      white-space: nowrap;
+      max-width: calc(100% - 31px);
+      overflow: hidden;
+      text-overflow: ellipsis; }
       .md-chips .md-chip .md-chip-content:focus {
         outline: none; }
     .md-chips .md-chip .md-chip-remove-container {
