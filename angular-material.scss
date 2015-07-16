@@ -1041,58 +1041,6 @@ md-autocomplete {
   }
 }
 
-md-backdrop {
-  z-index: $z-index-backdrop;
-  &.md-menu-backdrop {
-    z-index: $z-index-menu - 1;
-  }
-  &.md-select-backdrop {
-    z-index: $z-index-dialog + 1;
-  }
-  &.md-dialog-backdrop {
-    z-index: $z-index-dialog - 1;
-  }
-  &.md-bottom-sheet-backdrop {
-    z-index: $z-index-bottom-sheet - 1;
-  }
-  &.md-sidenav-backdrop {
-    z-index: $z-index-sidenav - 1;
-  }
-
-  background-color: rgba(0,0,0,0);
-
-  position: absolute;
-  top:0;
-  bottom:0;
-  left: 0;
-  right: 0;
-
-  &.md-click-catcher {
-    top: 0;
-    position: fixed;
-  }
-
-  &.ng-enter {
-    animation: $swift-ease-out-timing-function mdBackdropFadeIn 0.5s both;
-  }
-  &.ng-leave {
-    animation: $swift-ease-in-timing-function mdBackdropFadeOut 0.4s both;
-  }
-
-  &.md-opaque {
-    background-color: rgba(0,0,0,0.42);
-  }
-}
-
-@keyframes mdBackdropFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes mdBackdropFadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
 $bottom-sheet-horizontal-padding: 2 * $baseline-grid !default;
 $bottom-sheet-vertical-padding: 1 * $baseline-grid !default;
 $bottom-sheet-icon-after-margin: 4 * $baseline-grid !default;
@@ -1277,6 +1225,58 @@ md-bottom-sheet {
   md-bottom-sheet {
     border: 1px solid #fff;
   }
+}
+
+md-backdrop {
+  z-index: $z-index-backdrop;
+  &.md-menu-backdrop {
+    z-index: $z-index-menu - 1;
+  }
+  &.md-select-backdrop {
+    z-index: $z-index-dialog + 1;
+  }
+  &.md-dialog-backdrop {
+    z-index: $z-index-dialog - 1;
+  }
+  &.md-bottom-sheet-backdrop {
+    z-index: $z-index-bottom-sheet - 1;
+  }
+  &.md-sidenav-backdrop {
+    z-index: $z-index-sidenav - 1;
+  }
+
+  background-color: rgba(0,0,0,0);
+
+  position: absolute;
+  top:0;
+  bottom:0;
+  left: 0;
+  right: 0;
+
+  &.md-click-catcher {
+    top: 0;
+    position: fixed;
+  }
+
+  &.ng-enter {
+    animation: $swift-ease-out-timing-function mdBackdropFadeIn 0.5s both;
+  }
+  &.ng-leave {
+    animation: $swift-ease-in-timing-function mdBackdropFadeOut 0.4s both;
+  }
+
+  &.md-opaque {
+    background-color: rgba(0,0,0,0.42);
+  }
+}
+
+@keyframes mdBackdropFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes mdBackdropFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 $button-line-height: rem(3.60) !default;
@@ -1697,6 +1697,34 @@ md-checkbox {
   }
 }
 
+md-content {
+
+  display: block;
+  position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &[md-scroll-y] {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  &[md-scroll-x] {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  &[md-scroll-xy] {
+  }
+
+  // For iOS allow disabling of momentum scrolling
+  // @see issue #2640.
+
+  &.autoScroll {
+    -webkit-overflow-scrolling: auto;
+  }
+}
+
+
+
 $chip-font-size: rem(1.3) !default;
 $chip-height: rem(3.2) !default;
 $chip-padding: 0 rem(0.8) 0 rem(1.2) !default;
@@ -1875,34 +1903,6 @@ $contact-chip-name-width: rem(12) !default;
 }
 
 
-md-content {
-
-  display: block;
-  position: relative;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-
-  &[md-scroll-y] {
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-  &[md-scroll-x] {
-    overflow-x: auto;
-    overflow-y: hidden;
-  }
-  &[md-scroll-xy] {
-  }
-
-  // For iOS allow disabling of momentum scrolling
-  // @see issue #2640.
-
-  &.autoScroll {
-    -webkit-overflow-scrolling: auto;
-  }
-}
-
-
-
 $dialog-padding: $baseline-grid * 3;
 
 .md-dialog-is-showing {
@@ -2025,109 +2025,6 @@ md-divider {
   }
 }
 
-md-fab-speed-dial {
-  position: relative;
-  display: flex;
-  align-items: center;
-
-  .md-css-variables {
-    z-index: $z-index-fab;
-  }
-
-  &.md-is-open {
-    .md-fab-action-item {
-      visibility: visible;
-      align-items: center;
-    }
-  }
-
-  md-fab-actions {
-    display: flex;
-
-    // Set the height so that the z-index in the JS animation works
-    height: initial;
-
-    .md-fab-action-item {
-      visibility: hidden;
-      transition: $swift-ease-in;
-    }
-  }
-
-  &.md-down {
-    flex-direction: column;
-
-    md-fab-trigger {
-      order: 1;
-    }
-
-    md-fab-actions {
-      flex-direction: column;
-      order: 2;
-    }
-  }
-
-  &.md-up {
-    flex-direction: column;
-
-    md-fab-trigger {
-      order: 2;
-    }
-
-    md-fab-actions {
-      flex-direction: column-reverse;
-      order: 1;
-    }
-  }
-
-  &.md-left {
-    flex-direction: row;
-
-    md-fab-trigger {
-      order: 2;
-    }
-
-    md-fab-actions {
-      flex-direction: row-reverse;
-      order: 1;
-
-      .md-fab-action-item {
-        transition: $swift-ease-in;
-      }
-    }
-  }
-
-  &.md-right {
-    flex-direction: row;
-
-    md-fab-trigger {
-      order: 1;
-    }
-
-    md-fab-actions {
-      flex-direction: row;
-      order: 2;
-
-      .md-fab-action-item {
-        transition: $swift-ease-in;
-      }
-    }
-  }
-
-  /*
-   * Handle the animations
-   */
-  &.md-scale {
-    .md-fab-action-item {
-      opacity: 0;
-      transform: scale(0);
-      transition: $swift-ease-in;
-
-      // Make the scale animation a bit faster since we are delaying each item
-      transition-duration: $swift-ease-in-duration / 2.1;
-    }
-  }
-}
-
 md-fab-toolbar {
   $icon-delay: 200ms;
 
@@ -2245,6 +2142,109 @@ md-fab-toolbar {
     }
   }
 }
+md-fab-speed-dial {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .md-css-variables {
+    z-index: $z-index-fab;
+  }
+
+  &.md-is-open {
+    .md-fab-action-item {
+      visibility: visible;
+      align-items: center;
+    }
+  }
+
+  md-fab-actions {
+    display: flex;
+
+    // Set the height so that the z-index in the JS animation works
+    height: initial;
+
+    .md-fab-action-item {
+      visibility: hidden;
+      transition: $swift-ease-in;
+    }
+  }
+
+  &.md-down {
+    flex-direction: column;
+
+    md-fab-trigger {
+      order: 1;
+    }
+
+    md-fab-actions {
+      flex-direction: column;
+      order: 2;
+    }
+  }
+
+  &.md-up {
+    flex-direction: column;
+
+    md-fab-trigger {
+      order: 2;
+    }
+
+    md-fab-actions {
+      flex-direction: column-reverse;
+      order: 1;
+    }
+  }
+
+  &.md-left {
+    flex-direction: row;
+
+    md-fab-trigger {
+      order: 2;
+    }
+
+    md-fab-actions {
+      flex-direction: row-reverse;
+      order: 1;
+
+      .md-fab-action-item {
+        transition: $swift-ease-in;
+      }
+    }
+  }
+
+  &.md-right {
+    flex-direction: row;
+
+    md-fab-trigger {
+      order: 1;
+    }
+
+    md-fab-actions {
+      flex-direction: row;
+      order: 2;
+
+      .md-fab-action-item {
+        transition: $swift-ease-in;
+      }
+    }
+  }
+
+  /*
+   * Handle the animations
+   */
+  &.md-scale {
+    .md-fab-action-item {
+      opacity: 0;
+      transform: scale(0);
+      transition: $swift-ease-in;
+
+      // Make the scale animation a bit faster since we are delaying each item
+      transition-duration: $swift-ease-in-duration / 2.1;
+    }
+  }
+}
+
 md-grid-list {
   box-sizing: border-box;
   display: block;
