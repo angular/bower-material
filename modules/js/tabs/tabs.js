@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-d52e9c2
+ * v0.10.1-rc1-master-aa1e47d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -241,7 +241,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   defineBooleanAttribute('swipeContent');
   defineBooleanAttribute('noDisconnect');
   defineBooleanAttribute('autoselect');
-  defineBooleanAttribute('centerTabs');
+  defineBooleanAttribute('centerTabs', handleCenterTabs);
 
   //-- define public properties
   ctrl.scope = $scope;
@@ -360,6 +360,10 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   function handleStretchTabs (stretchTabs) {
     angular.element(elements.wrapper).toggleClass('md-stretch-tabs', shouldStretchTabs());
     updateInkBarStyles();
+  }
+
+  function handleCenterTabs (newValue) {
+    ctrl.shouldCenterTabs = shouldCenterTabs();
   }
 
   function handleMaxTabWidth (newWidth, oldWidth) {
