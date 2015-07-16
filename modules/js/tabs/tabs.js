@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-5616f48
+ * v0.10.1-rc2
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -180,15 +180,6 @@ function MdTabItem () {
   };
 }
 
-angular
-    .module('material.components.tabs')
-    .directive('mdTabLabel', MdTabLabel);
-
-function MdTabLabel () {
-  return { terminal: true };
-}
-
-
 angular.module('material.components.tabs')
     .directive('mdTabScroll', MdTabScroll);
 
@@ -206,6 +197,15 @@ function MdTabScroll ($parse) {
   }
 }
 MdTabScroll.$inject = ["$parse"];
+
+angular
+    .module('material.components.tabs')
+    .directive('mdTabLabel', MdTabLabel);
+
+function MdTabLabel () {
+  return { terminal: true };
+}
+
 
 angular
     .module('material.components.tabs')
