@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-8c4f838
+ * v0.10.1-rc1-master-5616f48
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -774,9 +774,9 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * Forces the pagination to move the focused tab into view.
    */
   function adjustOffset (index) {
+    if (index == null) index = ctrl.focusIndex;
     if (!elements.tabs[index]) return;
     if (ctrl.shouldCenterTabs) return;
-    if (index == null) index = ctrl.focusIndex;
     var tab = elements.tabs[index],
         left = tab.offsetLeft,
         right = tab.offsetWidth + left;
