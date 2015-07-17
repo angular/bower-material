@@ -4357,9 +4357,15 @@ $tabs-tab-width: $baseline-grid * 12 !default;
 $tabs-header-height: 48px !default;
 
 @keyframes md-tab-content-hide {
-  0% { opacity: 1; }
-  50% { opacity: 1; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 md-tab-data {
@@ -4371,6 +4377,7 @@ md-tab-data {
   z-index: -1;
   opacity: 0;
 }
+
 md-tabs {
   display: block;
   margin: 0;
@@ -4401,7 +4408,10 @@ md-tabs {
     md-tabs-content-wrapper {
       min-height: 0;
       position: relative;
-      top: auto; left: auto; right: auto; bottom: auto;
+      top: auto;
+      left: auto;
+      right: auto;
+      bottom: auto;
       overflow: visible;
     }
     md-tab-content {
@@ -4422,6 +4432,7 @@ md-tabs {
     }
   }
 }
+
 md-tabs-wrapper {
   display: block;
   position: relative;
@@ -4476,6 +4487,7 @@ md-tabs-wrapper {
     }
   }
 }
+
 md-tabs-canvas {
   @include pie-clearfix;
   position: relative;
@@ -4500,6 +4512,7 @@ md-tabs-canvas {
     }
   }
 }
+
 md-pagination-wrapper {
   @include pie-clearfix;
   height: $tabs-header-height;
@@ -4516,16 +4529,24 @@ md-pagination-wrapper {
     margin: 0 auto;
   }
 }
+
 md-tabs-content-wrapper {
   display: block;
   position: absolute;
-  top: $tabs-header-height; left: 0; right: 0; bottom: 0;
+  top: $tabs-header-height;
+  left: 0;
+  right: 0;
+  bottom: 0;
   overflow: hidden;
 }
+
 md-tab-content {
   display: block;
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   transform: translateX(0);
   transition: transform $swift-ease-in-out-duration $swift-ease-in-out-timing-function;
   overflow: auto;
@@ -4560,6 +4581,7 @@ md-tab-content {
     animation: 2 * $swift-ease-in-out-duration md-tab-content-hide;
   }
 }
+
 md-ink-bar {
   position: absolute;
   left: auto;
@@ -4575,11 +4597,13 @@ md-ink-bar {
         right ($swift-ease-in-out-duration * 0.45) $swift-ease-in-out-timing-function;
   }
 }
+
 md-tab {
   position: absolute;
   z-index: -1;
   left: -9999px;
 }
+
 .md-tab {
   font-size: 14px;
   text-align: center;
@@ -4614,6 +4638,7 @@ md-tab {
     transition: none;
   }
 }
+
 md-toolbar + md-tabs {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
