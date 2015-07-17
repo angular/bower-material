@@ -64,6 +64,7 @@ $whiteframe-zindex-z5: 5 !default;
 
 $z-index-tooltip: 100 !default;
 $z-index-menu: 99 !default;
+$z-index-select: 99 !default;
 $z-index-dialog: 80 !default;
 $z-index-toast: 90 !default;
 $z-index-bottom-sheet: 70 !default;
@@ -3512,7 +3513,7 @@ $select-max-visible-options: 5;
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 99;
+  z-index: $z-index-select;
   opacity: 0;
 
   // Don't let the user select a new choice while it's animating

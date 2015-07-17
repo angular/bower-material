@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc2-master-86a4ca9
+ * v0.10.1-rc2-master-7bbfd1f
  */
 goog.provide('ng.material.core');
 
@@ -43,15 +43,15 @@ function rAFDecorator( $delegate ) {
    * @param {function} callback function to debounce
    */
   $delegate.throttle = function(cb) {
-    var queueArgs, alreadyQueued, queueCb, context;
+    var queuedArgs, alreadyQueued, queueCb, context;
     return function debounced() {
-      queueArgs = arguments;
+      queuedArgs = arguments;
       context = this;
       queueCb = cb;
       if (!alreadyQueued) {
         alreadyQueued = true;
         $delegate(function() {
-          queueCb.apply(context, queueArgs);
+          queueCb.apply(context, Array.prototype.slice.call(queuedArgs));
           alreadyQueued = false;
         });
       }
@@ -114,7 +114,7 @@ function AnimateDomUtils($mdUtil, $$rAF, $q, $timeout, $mdConstant) {
      * Announce completion or failure via promise handlers
      */
     waitTransitionEnd: function (element, opts) {
-        var TIMEOUT = 10000; // fallback is 10 secs
+        var TIMEOUT = 3000; // fallback is 3 secs
 
         return $q(function(resolve, reject){
           opts = opts || { };
@@ -2183,7 +2183,7 @@ function InterimElementProvider() {
        */
       function show(options) {
         if (stack.length) {
-          return service.cancel().then(function() {
+          return service.cancel().finally(function() {
             return show(options);
           });
         } else {
@@ -2239,6 +2239,7 @@ function InterimElementProvider() {
                   .remove()
                   .then(function() {
                     interimElement.deferred.reject(reason);
+                    return interimElement.deferred.promise;
                   });
       }
 
@@ -2342,7 +2343,7 @@ function InterimElementProvider() {
               // Trigger onRemoving callback *before* the remove operation starts
               (options.onRemoving || angular.noop)(options.scope, element);
 
-              return $q.when(ret).then(function() {
+              return $q.when(ret).finally(function() {
                 if (!options.preserveScope) options.scope.$destroy();
                 removeDone = true;
               });
