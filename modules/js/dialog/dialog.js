@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc2-master-31bb121
+ * v0.10.1-rc2-master-171b7ed
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -575,7 +575,7 @@ function MdDialogProvider($$interimElementProvider) {
       if (options.clickOutsideToClose) {
         var target = element;
         var clickHandler = function (ev) {
-              // Only close if we click the flex container outside the backdrop
+              // Only close if we click the flex container outside on the backdrop
               if (ev.target === target[0]) {
                 ev.stopPropagation();
                 ev.preventDefault();

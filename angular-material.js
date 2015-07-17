@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc2-master-31bb121
+ * v0.10.1-rc2-master-171b7ed
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2389,7 +2389,7 @@ function InterimElementProvider() {
 
               return $q.when(ret).finally(function() {
                 if (!options.preserveScope) options.scope.$destroy();
-                removeDone = true;
+                return removeDone = true;
               });
             });
           }
@@ -5455,7 +5455,7 @@ function MdDialogProvider($$interimElementProvider) {
       if (options.clickOutsideToClose) {
         var target = element;
         var clickHandler = function (ev) {
-              // Only close if we click the flex container outside the backdrop
+              // Only close if we click the flex container outside on the backdrop
               if (ev.target === target[0]) {
                 ev.stopPropagation();
                 ev.preventDefault();
@@ -10063,7 +10063,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $interpolate, 
 
       scope.$on('$destroy', function() {
         if (isOpen) {
-          $mdSelect.cancel().then(function() {
+          $mdSelect.hide().finally(function() {
             selectContainer.remove();
           });
         } else {
@@ -10118,19 +10118,18 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $interpolate, 
       }
 
       function openSelect() {
-        scope.$evalAsync(function() {
-          isOpen = true;
-          $mdSelect.show({
-            scope: selectScope,
-            preserveScope: true,
-            skipCompile: true,
-            element: selectContainer,
-            target: element[0],
-            hasBackdrop: true,
-            loadingAsync: attr.mdOnOpen ? scope.$eval(attr.mdOnOpen) || true : false
-          }).then(function(selectedText) {
-            isOpen = false;
-          });
+        scope.$apply('isOpen = true');
+
+        $mdSelect.show({
+          scope: selectScope,
+          preserveScope: true,
+          skipCompile: true,
+          element: selectContainer,
+          target: element[0],
+          hasBackdrop: true,
+          loadingAsync: attr.mdOnOpen ? scope.$eval(attr.mdOnOpen) || true : false
+        }).then(function() {
+          isOpen = false;
         });
       }
     };
@@ -10504,7 +10503,7 @@ function OptgroupDirective() {
 }
 
 function SelectProvider($$interimElementProvider) {
-  selectDefaultOptions.$inject = ["$mdSelect", "$mdConstant", "$$rAF", "$mdUtil", "$mdTheming", "$window"];
+  selectDefaultOptions.$inject = ["$mdSelect", "$mdConstant", "$$rAF", "$mdUtil", "$mdTheming", "$window", "$q", "$log"];
   return $$interimElementProvider('$mdSelect')
     .setDefaults({
       methods: ['target'],
@@ -10512,7 +10511,7 @@ function SelectProvider($$interimElementProvider) {
     });
 
   /* @ngInject */
-  function selectDefaultOptions($mdSelect, $mdConstant, $$rAF, $mdUtil, $mdTheming, $window ) {
+  function selectDefaultOptions($mdSelect, $mdConstant, $$rAF, $mdUtil, $mdTheming, $window, $q, $log ) {
     var animator = $mdUtil.dom.animator;
 
     return {
@@ -10595,11 +10594,10 @@ function SelectProvider($$interimElementProvider) {
         });
       });
 
-      return animator
-        .waitTransitionEnd(opts.selectEl, {timeout: 370})
-        .then(function(res) {
+      return opts.isRemoved ? $q.reject(true) : animator
+        .waitTransitionEnd(opts.selectEl, {timeout: 470})
+        .finally(function() {
           activateInteraction();
-          return res;
         });
 
       function configureAria() {
@@ -10612,10 +10610,12 @@ function SelectProvider($$interimElementProvider) {
         element.addClass('md-clickable');
 
         opts.backdrop && opts.backdrop.on('click', function(e) {
+          $log.debug("backdrop click");
+
           e.preventDefault();
           e.stopPropagation();
           opts.restoreFocus = false;
-          scope.$apply($mdSelect.cancel);
+          $mdUtil.nextTick($mdSelect.hide,true);
         });
 
         // Escape to close
@@ -10636,7 +10636,7 @@ function SelectProvider($$interimElementProvider) {
             case $mdConstant.KEY_CODE.ESCAPE:
               ev.preventDefault();
               opts.restoreFocus = true;
-              scope.$apply($mdSelect.cancel);
+              $mdUtil.nextTick($mdSelect.hide,true);
           }
         });
 
@@ -10695,9 +10695,10 @@ function SelectProvider($$interimElementProvider) {
         function checkCloseMenu() {
           if (!selectCtrl.isMultiple) {
             opts.restoreFocus = true;
-            scope.$evalAsync(function() {
+
+            $mdUtil.nextTick(function() {
               $mdSelect.hide(selectCtrl.ngModel.$viewValue);
-            });
+            },true);
           }
         }
       }
@@ -10705,28 +10706,35 @@ function SelectProvider($$interimElementProvider) {
     }
 
     function onRemove(scope, element, opts) {
-      element
-        .addClass('md-leave')
-        .removeClass('md-clickable');
+      opts.isRemoved = true;
 
       opts.target.attr('aria-expanded', 'false');
       opts.selectEl.off('keydown');
-      opts.isRemoved = true;
 
       angular.element($window).off('resize', opts.resizeFn);
       angular.element($window).off('orientationchange', opts.resizefn);
       opts.resizeFn = undefined;
 
+      element
+        .addClass('md-leave')
+        .removeClass('md-clickable');
+
       var mdSelect = opts.selectEl.controller('mdSelect');
       if (mdSelect) {
-        mdSelect.setLabelText(opts.selectEl.controller('mdSelectMenu').selectedLabels());
+        mdSelect.setLabelText(opts.selectEl
+          .controller('mdSelectMenu')
+          .selectedLabels()
+        );
       }
+
+      opts.backdrop && opts.backdrop.remove();
 
       return animator
         .waitTransitionEnd(element, { timeout: 370 })
         .finally(function() {
+          mdSelect && mdSelect.triggerClose();
+
           element.removeClass('md-active');
-          opts.backdrop && opts.backdrop.remove();
           if (element[0].parentNode === opts.parent[0]) {
             opts.parent[0].removeChild(element[0]); // use browser to avoid $destroy event
           }
@@ -10734,7 +10742,6 @@ function SelectProvider($$interimElementProvider) {
             opts.restoreScroll();
           }
           if (opts.restoreFocus) opts.target.focus();
-          mdSelect && mdSelect.triggerClose();
         });
     }
 

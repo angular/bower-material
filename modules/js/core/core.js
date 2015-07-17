@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc2-master-31bb121
+ * v0.10.1-rc2-master-171b7ed
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2345,7 +2345,7 @@ function InterimElementProvider() {
 
               return $q.when(ret).finally(function() {
                 if (!options.preserveScope) options.scope.$destroy();
-                removeDone = true;
+                return removeDone = true;
               });
             });
           }
