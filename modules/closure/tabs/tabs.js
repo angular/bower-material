@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc2-master-7bbfd1f
+ * v0.10.1-rc2-master-31bb121
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -550,12 +550,13 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * @param tabData
    */
   function removeTab (tabData) {
+    if (destroyed) return;
     var selectedIndex = ctrl.selectedIndex,
         tab           = ctrl.tabs.splice(tabData.getIndex(), 1)[ 0 ];
     refreshIndex();
     // when removing a tab, if the selected index did not change, we have to manually trigger the
     //   tab select/deselect events
-    if (ctrl.selectedIndex === selectedIndex && !destroyed) {
+    if (ctrl.selectedIndex === selectedIndex) {
       tab.scope.deselect();
       ctrl.tabs[ ctrl.selectedIndex ] && ctrl.tabs[ ctrl.selectedIndex ].scope.select();
     }
