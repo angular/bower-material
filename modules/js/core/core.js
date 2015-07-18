@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc2-master-171b7ed
+ * v0.10.1-rc2-master-d6a938e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2337,7 +2337,7 @@ function InterimElementProvider() {
           },
           remove: function() {
             self.cancelTimeout();
-            return removeDone = $q.when(showDone).then(function() {
+            return removeDone = $q.when(showDone).finally(function() {
               var ret = element ? options.onRemove(options.scope, element, options) : true;
 
               // Trigger onRemoving callback *before* the remove operation starts
