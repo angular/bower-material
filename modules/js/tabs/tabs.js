@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc2-master-bd38246
+ * v0.10.1-rc2-master-7fff84a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -340,8 +340,6 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   function cleanup () {
     destroyed = true;
     angular.element($window).off('resize', handleWindowResize);
-    angular.element(elements.paging).off('DOMSubtreeModified', ctrl.updateInkBarStyles);
-    angular.element(elements.paging).off('DOMSubtreeModified', updatePagination);
   }
 
   // Change handlers
