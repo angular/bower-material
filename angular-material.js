@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc2-master-15e6c8c
+ * v0.10.1-rc2-master-976e0f4
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2251,7 +2251,7 @@ function InterimElementProvider() {
           interimElement
             .show()
             .catch(function( reason ) {
-              $log.error("InterimElement.show() error: " + reason );
+              // $log.error("InterimElement.show() error: " + reason );
             });
 
         });
@@ -2281,7 +2281,7 @@ function InterimElementProvider() {
         interim
           .remove(reason || SHOW_CLOSED, false)
           .catch(function( reason ) {
-            $log.error("InterimElement.hide() error: " + reason );
+            // $log.error("InterimElement.hide() error: " + reason );
           });
 
         return interim.deferred.promise;
@@ -2306,7 +2306,7 @@ function InterimElementProvider() {
         interim
           .remove(reason || SHOW_CANCELLED, true)
           .catch(function( reason ) {
-            $log.error("InterimElement.cancel() error: " + reason );
+            // $log.error("InterimElement.cancel() error: " + reason );
           });
 
         return interim.deferred.promise;
