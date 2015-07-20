@@ -1,8 +1,8 @@
 {
   "name": "angular-material-core",
-  "version": "0.10.1-rc2-master-7fff84a",
+  "version": "0.10.1-rc2-master-c5c148d",
   "dependencies": {
-    "angular-material-gestures": "0.10.1-rc2-master-7fff84a",
-    "angular-material-theming": "0.10.1-rc2-master-7fff84a"
+    "angular-material-gestures": "0.10.1-rc2-master-c5c148d",
+    "angular-material-theming": "0.10.1-rc2-master-c5c148d"
   }
 }
