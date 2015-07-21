@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc2-master-c5c148d
+ * v0.10.1-rc2-master-623496e
  */
 goog.provide('ng.material.core');
 
@@ -662,7 +662,7 @@ mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];
 var nextUniqueId = 0;
 
 angular.module('material.core')
-  .factory('$mdUtil', ["$cacheFactory", "$document", "$timeout", "$q", "$window", "$mdConstant", "$$rAF", "$rootScope", "$$mdAnimate", function ($cacheFactory, $document, $timeout, $q, $window, $mdConstant, $$rAF, $rootScope, $$mdAnimate) {
+  .factory('$mdUtil', ["$cacheFactory", "$document", "$timeout", "$q", "$compile", "$window", "$mdConstant", "$$rAF", "$rootScope", "$$mdAnimate", function ($cacheFactory, $document, $timeout, $q, $compile, $window, $mdConstant, $$rAF, $rootScope, $$mdAnimate) {
     var $mdUtil = {
           dom : { },
           now: window.performance ?
@@ -702,14 +702,14 @@ angular.module('material.core')
           },
 
           // Disables scroll around the passed element.
-          disableScrollAround: function (element) {
+          disableScrollAround: function (element, parent) {
             $mdUtil.disableScrollAround._count = $mdUtil.disableScrollAround._count || 0;
             ++$mdUtil.disableScrollAround._count;
             if ($mdUtil.disableScrollAround._enableScrolling) return $mdUtil.disableScrollAround._enableScrolling;
             element = angular.element(element);
             var body = $document[0].body,
               restoreBody = disableBodyScroll(),
-              restoreElement = disableElementScroll();
+              restoreElement = disableElementScroll(parent);
 
             return $mdUtil.disableScrollAround._enableScrolling = function () {
               if (!--$mdUtil.disableScrollAround._count) {
@@ -720,13 +720,14 @@ angular.module('material.core')
             };
 
             // Creates a virtual scrolling mask to absorb touchmove, keyboard, scrollbar clicking, and wheel events
-            function disableElementScroll() {
+            function disableElementScroll(element) {
+              element = angular.element(element || body)[0];
               var zIndex = 50;
               var scrollMask = angular.element(
                 '<div class="md-scroll-mask" style="z-index: ' + zIndex + '">' +
                 '  <div class="md-scroll-mask-bar"></div>' +
                 '</div>');
-              body.appendChild(scrollMask[0]);
+              element.appendChild(scrollMask[0]);
 
               scrollMask.on('wheel', preventDefault);
               scrollMask.on('touchmove', preventDefault);
@@ -827,6 +828,14 @@ angular.module('material.core')
             newEvent.$material = true;
             newEvent.$focus = true;
             node.dispatchEvent(newEvent);
+          },
+
+          /**
+           * facade to build md-backdrop element with desired styles
+           * NOTE: Use $compile to trigger backdrop postLink function
+           */
+          createBackdrop : function(scope, addClass){
+            return $compile( $mdUtil.supplant('<md-backdrop class="{0}">',[addClass]) )(scope);
           },
 
           /**
@@ -1184,7 +1193,8 @@ function AriaService($$rAF, $log, $window) {
 }
 AriaService.$inject = ["$$rAF", "$log", "$window"];
 
-angular.module('material.core')
+angular
+  .module('material.core')
   .service('$mdCompiler', mdCompilerService);
 
 function mdCompilerService($q, $http, $injector, $compile, $controller, $templateCache) {
