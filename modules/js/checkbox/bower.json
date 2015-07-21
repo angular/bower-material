@@ -1,7 +1,7 @@
 {
   "name": "angular-material-checkbox",
-  "version": "0.10.1-rc3-master-27783df",
+  "version": "0.10.1-rc3-master-2e17598",
   "dependencies": {
-    "angular-material-core": "0.10.1-rc3-master-27783df"
+    "angular-material-core": "0.10.1-rc3-master-2e17598"
   }
 }
