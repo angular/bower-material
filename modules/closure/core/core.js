@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc4-master-c63e859
+ * v0.10.1-rc4-master-f984c29
  */
 goog.provide('ng.material.core');
 
@@ -703,6 +703,8 @@ angular.module('material.core')
 
           /**
            * Calculate the positive scroll offset
+           * TODO: Check with pinch-zoom in IE/Chrome;
+           *       https://code.google.com/p/chromium/issues/detail?id=496285
            */
           scrollTop : function(element) {
             element = angular.element(element || $document[0].body);
