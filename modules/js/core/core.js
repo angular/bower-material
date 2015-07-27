@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc3-master-d270684
+ * v0.10.1-rc3-master-b71fdfb
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -701,6 +701,19 @@ angular.module('material.core')
             return results;
           },
 
+          /**
+           * Calculate the positive scroll offset
+           */
+          scrollTop : function(element) {
+            element = angular.element(element || $document[0].body);
+
+            var body = (element[0] == $document[0].body) ? $document[0].body : undefined;
+            var scrollTop = body ? body.scrollTop + body.parentElement.scrollTop : 0;
+
+             // Calculate the positive scroll offset
+            return scrollTop || Math.abs(element[0].getBoundingClientRect().top);
+          },
+
           // Disables scroll around the passed element.
           disableScrollAround: function (element, parent) {
             $mdUtil.disableScrollAround._count = $mdUtil.disableScrollAround._count || 0;
@@ -764,7 +777,7 @@ angular.module('material.core')
               var htmlNode = body.parentNode;
               var restoreHtmlStyle = htmlNode.getAttribute('style') || '';
               var restoreBodyStyle = body.getAttribute('style') || '';
-              var scrollOffset = body.scrollTop + body.parentElement.scrollTop;
+              var scrollOffset = $mdUtil.scrollTop(body);
               var clientWidth = body.clientWidth;
 
               if (body.scrollHeight > body.clientHeight) {
@@ -2433,14 +2446,16 @@ function InterimElementProvider() {
          * Search for parent at insertion time, if not specified
          */
         function findParent(element, options) {
-          var parent = options.parent;
 
           // Search for parent at insertion time, if not specified
-          if (angular.isFunction(parent)) {
-            parent = parent(options.scope, element, options);
-          } else if (angular.isString(parent)) {
-            parent = angular.element($document[0].querySelector(parent));
+          if (angular.isFunction(options.parent)) {
+            parent = options.parent(options.scope, element, options);
+          } else if (angular.isString(options.parent)) {
+            parent = angular.element($document[0].querySelector(options.parent));
+          } else {
+            parent = angular.element(options.parent);
           }
+
 
           // If parent querySelector/getter function fails, or it's just null,
           // find a default.

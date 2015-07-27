@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc3-master-d270684
+ * v0.10.1-rc3-master-b71fdfb
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -729,6 +729,19 @@ angular.module('material.core')
             return results;
           },
 
+          /**
+           * Calculate the positive scroll offset
+           */
+          scrollTop : function(element) {
+            element = angular.element(element || $document[0].body);
+
+            var body = (element[0] == $document[0].body) ? $document[0].body : undefined;
+            var scrollTop = body ? body.scrollTop + body.parentElement.scrollTop : 0;
+
+             // Calculate the positive scroll offset
+            return scrollTop || Math.abs(element[0].getBoundingClientRect().top);
+          },
+
           // Disables scroll around the passed element.
           disableScrollAround: function (element, parent) {
             $mdUtil.disableScrollAround._count = $mdUtil.disableScrollAround._count || 0;
@@ -792,7 +805,7 @@ angular.module('material.core')
               var htmlNode = body.parentNode;
               var restoreHtmlStyle = htmlNode.getAttribute('style') || '';
               var restoreBodyStyle = body.getAttribute('style') || '';
-              var scrollOffset = body.scrollTop + body.parentElement.scrollTop;
+              var scrollOffset = $mdUtil.scrollTop(body);
               var clientWidth = body.clientWidth;
 
               if (body.scrollHeight > body.clientHeight) {
@@ -2477,14 +2490,16 @@ function InterimElementProvider() {
          * Search for parent at insertion time, if not specified
          */
         function findParent(element, options) {
-          var parent = options.parent;
 
           // Search for parent at insertion time, if not specified
-          if (angular.isFunction(parent)) {
-            parent = parent(options.scope, element, options);
-          } else if (angular.isString(parent)) {
-            parent = angular.element($document[0].querySelector(parent));
+          if (angular.isFunction(options.parent)) {
+            parent = options.parent(options.scope, element, options);
+          } else if (angular.isString(options.parent)) {
+            parent = angular.element($document[0].querySelector(options.parent));
+          } else {
+            parent = angular.element(options.parent);
           }
+
 
           // If parent querySelector/getter function fails, or it's just null,
           // find a default.
@@ -4332,7 +4347,7 @@ angular.module('material.components.autocomplete', [
 
 angular
   .module('material.components.backdrop', ['material.core'])
-  .directive('mdBackdrop', ["$mdTheming", "$animate", "$rootElement", "$window", "$log", "$$rAF", function BackdropDirective($mdTheming, $animate, $rootElement, $window, $log, $$rAF) {
+  .directive('mdBackdrop', ["$mdTheming", "$animate", "$rootElement", "$window", "$log", "$$rAF", "$document", function BackdropDirective($mdTheming, $animate, $rootElement, $window, $log, $$rAF, $document) {
     var ERROR_CSS_POSITION = "<md-backdrop> may not work properly in a scrolled, static-positioned parent container.";
 
     return {
@@ -4341,17 +4356,28 @@ angular
       };
 
     function postLink(scope, element, attrs) {
+
+        // If body scrolling has been disabled using mdUtil.disableBodyScroll(),
+        // adjust the 'backdrop' height to account for the fixed 'body' top offset
+        var body = $window.getComputedStyle($document[0].body);
+        if ( body.position == 'fixed') {
+          var hViewport = parseInt(body.height,10) + Math.abs(parseInt(body.top,10));
+          element.css({
+            height : hViewport + 'px'
+          });
+        }
+
       // backdrop may be outside the $rootElement, tell ngAnimate to animate regardless
       if( $animate.pin ) $animate.pin(element,$rootElement);
 
       $$rAF(function(){
+
         // Often $animate.enter() is used to append the backDrop element
         // so let's wait until $animate is done...
-
         var parent = element.parent()[0];
         if ( parent ) {
-          var position = $window.getComputedStyle(parent).getPropertyValue('position');
-          if (position == 'static') {
+          var styles = $window.getComputedStyle(parent);
+          if (styles.position == 'static') {
             // backdrop uses position:absolute and will not work properly with parent position:static (default)
             $log.warn( ERROR_CSS_POSITION );
           }
@@ -4360,7 +4386,8 @@ angular
         $mdTheming.inherit(element, element.parent());
       });
 
-    };
+    }
+
   }]);
 
 })();
@@ -5482,7 +5509,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
 function MdDialogProvider($$interimElementProvider) {
 
   advancedDialogOptions.$inject = ["$mdDialog", "$mdTheming"];
-  dialogDefaultOptions.$inject = ["$mdDialog", "$mdAria", "$mdUtil", "$mdConstant", "$animate", "$document"];
+  dialogDefaultOptions.$inject = ["$mdDialog", "$mdAria", "$mdUtil", "$mdConstant", "$animate", "$document", "$window", "$rootElement"];
   return $$interimElementProvider('$mdDialog')
     .setDefaults({
       methods: ['disableParentScroll', 'hasBackdrop', 'clickOutsideToClose', 'escapeToClose', 'targetEvent', 'parent'],
@@ -5528,7 +5555,7 @@ function MdDialogProvider($$interimElementProvider) {
   }
 
   /* @ngInject */
-  function dialogDefaultOptions($mdDialog, $mdAria, $mdUtil, $mdConstant, $animate, $document) {
+  function dialogDefaultOptions($mdDialog, $mdAria, $mdUtil, $mdConstant, $animate, $document, $window, $rootElement) {
     return {
       hasBackdrop: true,
       isolateScope: true,
@@ -5562,6 +5589,10 @@ function MdDialogProvider($$interimElementProvider) {
           focusOnOpen();
         });
 
+      /**
+       * For alerts, focus on content... otherwise focus on
+       * the close button (or equivalent)
+       */
       function focusOnOpen() {
         if (options.focusOnOpen) {
           var target = (options.$type === 'alert') ? element.find('md-dialog-content') : findCloseButton();
@@ -5600,6 +5631,11 @@ function MdDialogProvider($$interimElementProvider) {
         });
     }
 
+    /**
+     * Capture originator/trigger element information (if available)
+     * and the parent container for the dialog; defaults to the $rootElement
+     * unless overridden in the options.parent
+     */
     function captureSourceAndParent(element, options) {
          var origin = { element: null, bounds: null,  focus: angular.noop };
          options.origin = angular.extend({ }, origin, options.origin || {} );
@@ -5617,7 +5653,7 @@ function MdDialogProvider($$interimElementProvider) {
          }
 
          // In case the user provides a raw dom element, always wrap it in jqLite
-         options.parent = angular.element(options.parent);
+         options.parent = angular.element(options.parent || $rootElement);
 
          if (options.disableParentScroll) {
            options.restoreScroll = $mdUtil.disableScrollAround(element,options.parent);
@@ -5695,16 +5731,7 @@ function MdDialogProvider($$interimElementProvider) {
     function showBackdrop(scope, element, options) {
 
       if (options.hasBackdrop) {
-        // Fix for IE 10
-        var docElement = $document[0].documentElement;
-        var hasScrollTop = (options.parent[0] == $document[0].body) && (docElement && docElement.scrollTop);
-        var computeFrom = hasScrollTop ? angular.element(docElement) : options.parent;
-        var parentOffset = computeFrom.prop('scrollTop');
-
-        element.css('top', parentOffset + 'px');
-
         options.backdrop = $mdUtil.createBackdrop(scope, "md-dialog-backdrop md-opaque");
-
         $animate.enter(options.backdrop, options.parent);
       }
 
@@ -5800,18 +5827,38 @@ function MdDialogProvider($$interimElementProvider) {
     }
 
     /**
+     * Ensure the dialog container fill-stretches to the viewport
+     */
+    function adjustDialogContainer(container, options) {
+
+      var isFixed = $window.getComputedStyle($document[0].body).position == 'fixed';
+      var backdrop = options.backdrop ? $window.getComputedStyle(options.backdrop[0]) : null;
+      var height = backdrop ? Math.ceil(Math.abs(parseInt(backdrop.height,10))) : 0;
+
+      container.css({
+        top: (isFixed ? $mdUtil.scrollTop(options.parent)/2 : 0) + 'px',
+        height: height ? height +'px' : '100%'
+      });
+
+      return container;
+    }
+
+    /**
      *  Dialog open and pop-in animation
      */
     function dialogPopIn(container, options ) {
-      options.parent.append(container);
 
+      // Add the `md-dialog-container` to the DOM
+      options.parent.append( container );
+      adjustDialogContainer(container,options);
+
+      var dialogEl = container.find('md-dialog');
       var animator = $mdUtil.dom.animator ;
       var buildTranslateToOrigin = animator.calculateZoomToOrigin;
       var translateOptions = { transitionInClass :'md-transition-in' , transitionOutClass : 'md-transition-out' };
-
-      var dialogEl = container.find('md-dialog');
       var from = animator.toTransformCss( buildTranslateToOrigin(dialogEl, options.origin) );
-      var to = animator.toTransformCss("");  // defaults to center display (or parent or $rootElement)
+      var to = animator.toTransformCss( "" );  // defaults to center display (or parent or $rootElement)
+
 
       return animator
          .translate3d(dialogEl,from,to,translateOptions)
