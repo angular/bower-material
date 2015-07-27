@@ -1,7 +1,7 @@
 {
   "name": "angular-material-virtualRepeat",
-  "version": "0.10.1-rc4",
+  "version": "0.10.1-rc4-master-c63e859",
   "dependencies": {
-    "angular-material-core": "0.10.1-rc4"
+    "angular-material-core": "0.10.1-rc4-master-c63e859"
   }
 }
