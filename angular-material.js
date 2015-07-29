@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc4-master-ce46a9a
+ * v0.10.1-rc4-master-af05235
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2486,16 +2486,16 @@ function InterimElementProvider() {
          * Search for parent at insertion time, if not specified
          */
         function findParent(element, options) {
+          var parent = options.parent;
 
           // Search for parent at insertion time, if not specified
-          if (angular.isFunction(options.parent)) {
-            parent = options.parent(options.scope, element, options);
-          } else if (angular.isString(options.parent)) {
-            parent = angular.element($document[0].querySelector(options.parent));
+          if (angular.isFunction(parent)) {
+            parent = parent(options.scope, element, options);
+          } else if (angular.isString(parent)) {
+            parent = angular.element($document[0].querySelector(parent));
           } else {
-            parent = angular.element(options.parent);
+            parent = angular.element(parent);
           }
-
 
           // If parent querySelector/getter function fails, or it's just null,
           // find a default.
