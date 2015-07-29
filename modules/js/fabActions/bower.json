@@ -1,7 +1,7 @@
 {
   "name": "angular-material-fabActions",
-  "version": "0.10.1-rc4-master-f984c29",
+  "version": "0.10.1-rc4-master-ce46a9a",
   "dependencies": {
-    "angular-material-core": "0.10.1-rc4-master-f984c29"
+    "angular-material-core": "0.10.1-rc4-master-ce46a9a"
   }
 }

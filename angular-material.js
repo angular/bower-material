@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc4-master-f984c29
+ * v0.10.1-rc4-master-ce46a9a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -140,19 +140,13 @@ function AnimateDomUtils($mdUtil, $$rAF, $q, $timeout, $mdConstant) {
            */
           function finished(ev) {
             if ( ev && ev.target !== element[0]) return;
+
+            if ( ev  ) $timeout.cancel(timer);
             element.off($mdConstant.CSS.TRANSITIONEND, finished);
 
-            if ( ev  ) {
+            // Never reject since ngAnimate may cause timeouts due missed transitionEnd events
+            resolve();
 
-              $timeout.cancel(timer);
-              resolve();
-
-            } else {
-
-              // Only reject if timeout triggered
-              reject("waitTransitionEnd() timeout");
-
-            }
           }
 
         });
@@ -9133,7 +9127,7 @@ function MenuProvider($$interimElementProvider) {
       // Return the promise for when our menu is done animating in
       return animator
           .waitTransitionEnd(element, {timeout: 370})
-          .then( function(response) {
+          .finally( function(response) {
             opts.cleanupInteraction = activateInteraction();
             return response;
           });
