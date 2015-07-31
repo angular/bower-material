@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc4-master-af05235
+ * v0.10.1-rc4-master-2976add
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -17118,14 +17118,13 @@ angular
     .module('material.components.tabs')
     .directive('mdTemplate', MdTemplate);
 
-function MdTemplate ($compile, $mdUtil) {
+function MdTemplate ($compile) {
   return {
     restrict: 'A',
     link:     link,
     scope:    {
       template:     '=mdTemplate',
-      compileScope: '=mdScope',
-      connected:    '=?mdConnectedIf'
+      compileScope: '=mdScope'
     },
     require:  '^?mdTabs'
   };
@@ -17138,24 +17137,9 @@ function MdTemplate ($compile, $mdUtil) {
       ctrl.updatePagination();
       ctrl.updateInkBarStyles();
     });
-    return $mdUtil.nextTick(handleScope);
-    function handleScope () {
-      scope.$watch('connected', function (value) { value === false ? disconnect() : reconnect(); });
-      scope.$on('$destroy', reconnect);
-    }
-
-    function disconnect () {
-      if (ctrl.scope.noDisconnect) return;
-      $mdUtil.disconnectScope(compileScope);
-    }
-
-    function reconnect () {
-      if (ctrl.scope.noDisconnect) return;
-      $mdUtil.reconnectScope(compileScope);
-    }
   }
 }
-MdTemplate.$inject = ["$compile", "$mdUtil"];
+MdTemplate.$inject = ["$compile"];
 
 })();
 (function(){ 
