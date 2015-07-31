@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc5
+ * v0.10.1-rc5-master-69385ad
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -2804,6 +2804,30 @@ md-autocomplete {
   md-autocomplete, .md-autocomplete-suggestions {
     border: 1px solid #fff; } }
 
+md-backdrop {
+  z-index: 50;
+  opacity: 1;
+  transition: background-color 450ms cubic-bezier(0.55, 0, 0.55, 0.2);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0; }
+  md-backdrop.md-menu-backdrop {
+    z-index: 98; }
+  md-backdrop.md-select-backdrop {
+    z-index: 81; }
+  md-backdrop.md-dialog-backdrop {
+    z-index: 79; }
+  md-backdrop.md-bottom-sheet-backdrop {
+    z-index: 69; }
+  md-backdrop.md-sidenav-backdrop {
+    z-index: 59; }
+  md-backdrop.md-click-catcher {
+    position: absolute; }
+  md-backdrop.md-opaque.ng-leave {
+    transition: background-color 400ms linear; }
+
 md-bottom-sheet {
   position: absolute;
   left: 0;
@@ -2968,58 +2992,6 @@ md-bottom-sheet {
   md-bottom-sheet {
     border: 1px solid #fff; } }
 
-md-backdrop {
-  z-index: 50;
-  opacity: 1;
-  transition: background-color 450ms cubic-bezier(0.55, 0, 0.55, 0.2);
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0; }
-  md-backdrop.md-menu-backdrop {
-    z-index: 98; }
-  md-backdrop.md-select-backdrop {
-    z-index: 81; }
-  md-backdrop.md-dialog-backdrop {
-    z-index: 79; }
-  md-backdrop.md-bottom-sheet-backdrop {
-    z-index: 69; }
-  md-backdrop.md-sidenav-backdrop {
-    z-index: 59; }
-  md-backdrop.md-click-catcher {
-    position: absolute; }
-  md-backdrop.md-opaque.ng-leave {
-    transition: background-color 400ms linear; }
-
-md-card {
-  box-sizing: border-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  margin: 8px;
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.14), 0px 2px 2px 0px rgba(0, 0, 0, 0.098), 0px 1px 5px 0px rgba(0, 0, 0, 0.084); }
-  md-card > img, md-card > :not(md-card-content) img {
-    width: 100%; }
-  md-card md-card-content {
-    padding: 16px; }
-  md-card .md-actions {
-    margin: 0; }
-    md-card .md-actions .md-button {
-      margin-bottom: 8px;
-      margin-top: 8px;
-      margin-right: 4px;
-      margin-left: 4px; }
-  md-card md-card-footer {
-    padding: 16px; }
-
-@media screen and (-ms-high-contrast: active) {
-  md-card {
-    border: 1px solid #fff; } }
-
 /**
  * Position a FAB button.
  */
@@ -3178,6 +3150,34 @@ md-card {
 
 @media screen and (-ms-high-contrast: active) {
   .md-button.md-raised, .md-button.md-fab {
+    border: 1px solid #fff; } }
+
+md-card {
+  box-sizing: border-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: 8px;
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.14), 0px 2px 2px 0px rgba(0, 0, 0, 0.098), 0px 1px 5px 0px rgba(0, 0, 0, 0.084); }
+  md-card > img, md-card > :not(md-card-content) img {
+    width: 100%; }
+  md-card md-card-content {
+    padding: 16px; }
+  md-card .md-actions {
+    margin: 0; }
+    md-card .md-actions .md-button {
+      margin-bottom: 8px;
+      margin-top: 8px;
+      margin-right: 4px;
+      margin-left: 4px; }
+  md-card md-card-footer {
+    padding: 16px; }
+
+@media screen and (-ms-high-contrast: active) {
+  md-card {
     border: 1px solid #fff; } }
 
 md-checkbox {
@@ -5935,6 +5935,97 @@ md-progress-linear[md-mode="indeterminate"] {
   100% {
     left: 117.38889%; } }
 
+md-radio-button, .md-switch-thumb {
+  box-sizing: border-box;
+  display: block;
+  margin: 15px;
+  white-space: nowrap;
+  cursor: pointer; }
+  md-radio-button *, md-radio-button *:before, md-radio-button *:after, .md-switch-thumb *, .md-switch-thumb *:before, .md-switch-thumb *:after {
+    box-sizing: border-box; }
+  md-radio-button input, .md-switch-thumb input {
+    display: none; }
+  md-radio-button .md-container, .md-switch-thumb .md-container {
+    position: relative;
+    top: 4px;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    cursor: pointer; }
+    md-radio-button .md-container .md-ripple-container, .md-switch-thumb .md-container .md-ripple-container {
+      position: absolute;
+      display: block;
+      width: 48px;
+      height: 48px;
+      left: -16px;
+      top: -16px; }
+    md-radio-button .md-container:before, .md-switch-thumb .md-container:before {
+      background-color: transparent;
+      border-radius: 50%;
+      content: '';
+      position: absolute;
+      display: block;
+      height: auto;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      transition: all 0.5s;
+      width: auto; }
+  md-radio-button.md-align-top-left > div.md-container, .md-switch-thumb.md-align-top-left > div.md-container {
+    top: -15px; }
+  md-radio-button .md-off, .md-switch-thumb .md-off {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 50%;
+    transition: border-color ease 0.28s; }
+  md-radio-button .md-on, .md-switch-thumb .md-on {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    transition: -webkit-transform ease 0.28s;
+    transition: transform ease 0.28s;
+    -webkit-transform: scale(0);
+            transform: scale(0); }
+  md-radio-button.md-checked .md-on, .md-switch-thumb.md-checked .md-on {
+    -webkit-transform: scale(0.5);
+            transform: scale(0.5); }
+  md-radio-button .md-label, .md-switch-thumb .md-label {
+    position: relative;
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 0;
+    vertical-align: middle;
+    white-space: normal;
+    pointer-events: none;
+    width: auto; }
+    html[dir=rtl] md-radio-button .md-label, html[dir=rtl] .md-switch-thumb .md-label {
+      margin-left: 0; }
+    html[dir=rtl] md-radio-button .md-label, html[dir=rtl] .md-switch-thumb .md-label {
+      margin-right: 10px; }
+  md-radio-button .circle, .md-switch-thumb .circle {
+    border-radius: 50%; }
+
+md-radio-group:focus {
+  outline: none; }
+md-radio-group.md-focused .md-checked .md-container:before {
+  left: -8px;
+  top: -8px;
+  right: -8px;
+  bottom: -8px; }
+
+@media screen and (-ms-high-contrast: active) {
+  md-radio-button.md-default-theme .md-on {
+    background-color: #fff; } }
+
 .md-select-menu-container {
   position: fixed;
   left: 0;
@@ -6114,96 +6205,98 @@ md-optgroup {
   md-select-menu {
     border: 1px solid #fff; } }
 
-md-radio-button, .md-switch-thumb {
+md-sidenav {
   box-sizing: border-box;
-  display: block;
-  margin: 15px;
-  white-space: nowrap;
-  cursor: pointer; }
-  md-radio-button *, md-radio-button *:before, md-radio-button *:after, .md-switch-thumb *, .md-switch-thumb *:before, .md-switch-thumb *:after {
+  position: absolute;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  z-index: 60;
+  width: 304px;
+  min-width: 304px;
+  max-width: 304px;
+  bottom: 0;
+  background-color: white;
+  overflow: auto; }
+  md-sidenav *, md-sidenav *:before, md-sidenav *:after {
     box-sizing: border-box; }
-  md-radio-button input, .md-switch-thumb input {
+  md-sidenav ul {
+    list-style: none; }
+  md-sidenav.md-closed {
     display: none; }
-  md-radio-button .md-container, .md-switch-thumb .md-container {
-    position: relative;
-    top: 4px;
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    cursor: pointer; }
-    md-radio-button .md-container .md-ripple-container, .md-switch-thumb .md-container .md-ripple-container {
-      position: absolute;
-      display: block;
-      width: 48px;
-      height: 48px;
-      left: -16px;
-      top: -16px; }
-    md-radio-button .md-container:before, .md-switch-thumb .md-container:before {
-      background-color: transparent;
-      border-radius: 50%;
-      content: '';
-      position: absolute;
-      display: block;
-      height: auto;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      transition: all 0.5s;
-      width: auto; }
-  md-radio-button.md-align-top-left > div.md-container, .md-switch-thumb.md-align-top-left > div.md-container {
-    top: -15px; }
-  md-radio-button .md-off, .md-switch-thumb .md-off {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 16px;
-    height: 16px;
-    border-style: solid;
-    border-width: 2px;
-    border-radius: 50%;
-    transition: border-color ease 0.28s; }
-  md-radio-button .md-on, .md-switch-thumb .md-on {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    transition: -webkit-transform ease 0.28s;
-    transition: transform ease 0.28s;
-    -webkit-transform: scale(0);
-            transform: scale(0); }
-  md-radio-button.md-checked .md-on, .md-switch-thumb.md-checked .md-on {
-    -webkit-transform: scale(0.5);
-            transform: scale(0.5); }
-  md-radio-button .md-label, .md-switch-thumb .md-label {
-    position: relative;
-    display: inline-block;
-    margin-left: 10px;
-    margin-right: 0;
-    vertical-align: middle;
-    white-space: normal;
-    pointer-events: none;
-    width: auto; }
-    html[dir=rtl] md-radio-button .md-label, html[dir=rtl] .md-switch-thumb .md-label {
-      margin-left: 0; }
-    html[dir=rtl] md-radio-button .md-label, html[dir=rtl] .md-switch-thumb .md-label {
-      margin-right: 10px; }
-  md-radio-button .circle, .md-switch-thumb .circle {
-    border-radius: 50%; }
+  md-sidenav.md-closed-add, md-sidenav.md-closed-remove {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    /* this is required as of 1.3x to properly
+       apply all styling in a show/hide animation */
+    transition: 0s all; }
+  md-sidenav.md-closed-add.md-closed-add-active, md-sidenav.md-closed-remove.md-closed-remove-active {
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  md-sidenav.md-locked-open-add, md-sidenav.md-locked-open-remove {
+    position: static;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0); }
+  md-sidenav.md-locked-open {
+    width: 304px;
+    min-width: 304px;
+    max-width: 304px; }
+  md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-left, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-right, md-sidenav.md-locked-open-remove.md-closed {
+    position: static;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0); }
+  md-sidenav.md-locked-open-remove-active {
+    transition: width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2), min-width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    width: 0;
+    min-width: 0; }
+  md-sidenav.md-closed.md-locked-open-add {
+    width: 0;
+    min-width: 0;
+    -webkit-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0); }
+  md-sidenav.md-closed.md-locked-open-add-active {
+    transition: width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2), min-width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    width: 304px;
+    min-width: 304px;
+    -webkit-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0); }
 
-md-radio-group:focus {
-  outline: none; }
-md-radio-group.md-focused .md-checked .md-container:before {
-  left: -8px;
-  top: -8px;
-  right: -8px;
-  bottom: -8px; }
+.md-sidenav-backdrop.md-locked-open {
+  display: none; }
+
+.md-sidenav-left, md-sidenav {
+  left: 0;
+  top: 0;
+  -webkit-transform: translate3d(0%, 0, 0);
+          transform: translate3d(0%, 0, 0); }
+  .md-sidenav-left.md-closed, md-sidenav.md-closed {
+    -webkit-transform: translate3d(-100%, 0, 0);
+            transform: translate3d(-100%, 0, 0); }
+
+.md-sidenav-right {
+  left: 100%;
+  top: 0;
+  -webkit-transform: translate3d(-100%, 0, 0);
+          transform: translate3d(-100%, 0, 0); }
+  .md-sidenav-right.md-closed {
+    -webkit-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0); }
+
+@media (max-width: 360px) {
+  md-sidenav {
+    width: 85%; } }
 
 @media screen and (-ms-high-contrast: active) {
-  md-radio-button.md-default-theme .md-on {
-    background-color: #fff; } }
+  .md-sidenav-left, md-sidenav {
+    border-right: 1px solid #fff; }
+  .md-sidenav-right {
+    border-left: 1px solid #fff; } }
 
 @-webkit-keyframes sliderFocusThumb {
   0% {
@@ -6421,99 +6514,6 @@ md-slider {
 @media screen and (-ms-high-contrast: active) {
   md-slider.md-default-theme .md-track {
     border-bottom: 1px solid #fff; } }
-
-md-sidenav {
-  box-sizing: border-box;
-  position: absolute;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  z-index: 60;
-  width: 304px;
-  min-width: 304px;
-  max-width: 304px;
-  bottom: 0;
-  background-color: white;
-  overflow: auto; }
-  md-sidenav *, md-sidenav *:before, md-sidenav *:after {
-    box-sizing: border-box; }
-  md-sidenav ul {
-    list-style: none; }
-  md-sidenav.md-closed {
-    display: none; }
-  md-sidenav.md-closed-add, md-sidenav.md-closed-remove {
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    /* this is required as of 1.3x to properly
-       apply all styling in a show/hide animation */
-    transition: 0s all; }
-  md-sidenav.md-closed-add.md-closed-add-active, md-sidenav.md-closed-remove.md-closed-remove-active {
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
-  md-sidenav.md-locked-open-add, md-sidenav.md-locked-open-remove {
-    position: static;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0); }
-  md-sidenav.md-locked-open {
-    width: 304px;
-    min-width: 304px;
-    max-width: 304px; }
-  md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-left, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-right, md-sidenav.md-locked-open-remove.md-closed {
-    position: static;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0); }
-  md-sidenav.md-locked-open-remove-active {
-    transition: width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2), min-width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-    width: 0;
-    min-width: 0; }
-  md-sidenav.md-closed.md-locked-open-add {
-    width: 0;
-    min-width: 0;
-    -webkit-transform: translate3d(0%, 0, 0);
-            transform: translate3d(0%, 0, 0); }
-  md-sidenav.md-closed.md-locked-open-add-active {
-    transition: width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2), min-width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-    width: 304px;
-    min-width: 304px;
-    -webkit-transform: translate3d(0%, 0, 0);
-            transform: translate3d(0%, 0, 0); }
-
-.md-sidenav-backdrop.md-locked-open {
-  display: none; }
-
-.md-sidenav-left, md-sidenav {
-  left: 0;
-  top: 0;
-  -webkit-transform: translate3d(0%, 0, 0);
-          transform: translate3d(0%, 0, 0); }
-  .md-sidenav-left.md-closed, md-sidenav.md-closed {
-    -webkit-transform: translate3d(-100%, 0, 0);
-            transform: translate3d(-100%, 0, 0); }
-
-.md-sidenav-right {
-  left: 100%;
-  top: 0;
-  -webkit-transform: translate3d(-100%, 0, 0);
-          transform: translate3d(-100%, 0, 0); }
-  .md-sidenav-right.md-closed {
-    -webkit-transform: translate3d(0%, 0, 0);
-            transform: translate3d(0%, 0, 0); }
-
-@media (max-width: 360px) {
-  md-sidenav {
-    width: 85%; } }
-
-@media screen and (-ms-high-contrast: active) {
-  .md-sidenav-left, md-sidenav {
-    border-right: 1px solid #fff; }
-  .md-sidenav-right {
-    border-left: 1px solid #fff; } }
 
 .md-sticky-clone {
   z-index: 2;
