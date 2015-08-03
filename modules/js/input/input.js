@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc5-master-c93ba5c
+ * v0.10.1-rc5-master-e38a2c8
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -302,7 +302,7 @@ function inputTextareaDirective($mdUtil, $window, $mdAria) {
           if(!lineHeight) {
             node.style.minHeight = '0';
 
-            lineHeight = element.height();
+            lineHeight = element.prop('clientHeight');
 
             node.style.minHeight = null;
           }
