@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc5-master-69385ad
+ * v0.10.1-rc5-master-c93ba5c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2943,7 +2943,7 @@ function InkRippleService($window, $timeout, $mdUtil) {
       scope.$watch(isActiveExpr, function watchActive(newValue) {
         isActive = newValue;
         if (isActive && !ripples.length) {
-          mdUtil.nextTick(function () { createRipple(0, 0); });
+          $mdUtil.nextTick(function () { createRipple(0, 0); });
         }
         angular.forEach(ripples, updateElement);
       });
