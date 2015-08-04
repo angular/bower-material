@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc5-master-a2ec308
+ * v0.10.1-rc5-master-5722449
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -730,7 +730,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   }
 
   function getMaxTabWidth () {
-    return elements.canvas.clientWidth;
+    return $element.prop('clientWidth');
   }
 
   /**
