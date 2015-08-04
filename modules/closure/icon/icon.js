@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc5-master-778af93
+ * v0.10.1-rc5-master-f5a9101
  */
 goog.provide('ng.material.components.icon');
 goog.require('ng.material.core');
@@ -249,23 +249,22 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
       if (!scope.svgIcon && !scope.svgSrc) {
 
         if (scope.fontIcon) {
-          element.addClass('md-font');
-          element.addClass(scope.fontIcon);
+          element.addClass('md-font ' + scope.fontIcon);
         }
 
         if (scope.fontSet) {
           element.addClass($mdIcon.fontSet(scope.fontSet));
         }
 
-        // For Material Design font icons, the class '.material-icons'
-        // is auto-added IF a style has not been specified
-
-        if (!scope.fontIcon && !scope.fontSet && !angular.isDefined(attr.class)) {
-
-            element.addClass('material-icons');
+        if (shouldUseDefaultFontSet()) {
+          element.addClass($mdIcon.fontSet());
         }
+
       }
 
+      function shouldUseDefaultFontSet() {
+        return !scope.fontIcon && !scope.fontSet && !attr.hasOwnProperty('class');
+      }
     }
   }
 }
