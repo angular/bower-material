@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc5-master-a9f2da3
+ * v0.10.1-rc5-master-176e2fa
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -3966,6 +3966,8 @@ md-list {
     font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.01em;
+    line-height: 24px;
+    /* @alternate */
     line-height: 0.75em; }
 
 md-list-item.md-proxy-focus.md-focused .md-no-style {
@@ -4087,13 +4089,19 @@ md-list-item.md-2-line, md-list-item.md-2-line > .md-no-style, md-list-item.md-3
       font-size: 16px;
       font-weight: 400;
       letter-spacing: 0.01em;
+      line-height: 24px;
       margin: 0 0 6px 0;
+      /* @alternate */
       line-height: 0.75em; }
     md-list-item.md-2-line .md-list-item-text h4, md-list-item.md-2-line > .md-no-style .md-list-item-text h4, md-list-item.md-3-line .md-list-item-text h4, md-list-item.md-3-line > .md-no-style .md-list-item-text h4 {
       font-size: 14px;
+      font-weight: 500;
       letter-spacing: 0.01em;
-      font-weight: 400;
+      line-height: 24px;
       margin: 10px 0 5px 0;
+      /* @alternate */
+      font-weight: 400;
+      /* @alternate */
       line-height: 0.75em; }
     md-list-item.md-2-line .md-list-item-text p, md-list-item.md-2-line > .md-no-style .md-list-item-text p, md-list-item.md-3-line .md-list-item-text p, md-list-item.md-3-line > .md-no-style .md-list-item-text p {
       font-size: 14px;
@@ -7126,6 +7134,7 @@ md-toolbar {
   height: 64px;
   max-height: 64px;
   padding: 0 16px;
+  /* @alternate */
   margin: 0; }
   .md-toolbar-tools h1, .md-toolbar-tools h2, .md-toolbar-tools h3 {
     font-size: inherit;
