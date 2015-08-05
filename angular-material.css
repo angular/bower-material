@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc5-master-0b6e624
+ * v0.10.1-rc5-master-aba09c7
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 html, body {
@@ -4108,7 +4108,8 @@ md-list-item.md-2-line, md-list-item.md-2-line > .md-no-style, md-list-item.md-3
       font-weight: 500;
       letter-spacing: 0.01em;
       line-height: 24px;
-      margin: 0 0 0px 0;
+      margin: 0 0 0 0;
+      /* @alternate */
       line-height: 1.6em; }
 
 md-list-item.md-2-line > .md-avatar:first-child, md-list-item.md-2-line > .md-no-style > .md-avatar:first-child {
