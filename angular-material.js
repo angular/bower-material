@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc5-master-5cf7470
+ * v0.10.1-rc5-master-17676e6
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -5950,7 +5950,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
   /**
    * @ngdoc directive
    * @name mdFabActions
-   * @module material.components.fabSpeedDial
+   * @module material.components.fabActions
    *
    * @restrict E
    *
@@ -5971,8 +5971,14 @@ MdDividerDirective.$inject = ["$mdTheming"];
       compile: function(element, attributes) {
         var children = element.children();
 
-        // Support both ng-repat and static content
-        if (children.attr('ng-repeat')) {
+        var hasNgRepeat = false;
+
+        angular.forEach(['', 'data-', 'x-'], function(prefix) {
+          hasNgRepeat = hasNgRepeat || (children.attr(prefix + 'ng-repeat') ? true : false);
+        });
+
+        // Support both ng-repeat and static content
+        if (hasNgRepeat) {
           children.addClass('md-fab-action-item');
         } else {
           // Wrap every child in a new div and add a class that we can scale/fling independently
@@ -6297,7 +6303,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
    * @description
    *
    * The `<md-fab-toolbar>` directive is used present a toolbar of elements (usually `<md-button>`s)
-   * for quick access to common actions when a floating action button is activated (via hover or
+   * for quick access to common actions when a floating action button is activated (via click or
    * keyboard navigation).
    *
    * @usage
@@ -6415,7 +6421,6 @@ MdDividerDirective.$inject = ["$mdTheming"];
 
         // If we're open
         if (ctrl.isOpen) {
-
           // Set the width/height to take up the full toolbar width
           backgroundElement.style.width = scale + 'px';
           backgroundElement.style.height = scale + 'px';
