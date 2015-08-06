@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc5-master-17676e6
+ * v0.10.1-rc5-master-e1a98cc
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 md-toast {
@@ -23,7 +23,6 @@ md-toast {
   font-size: 14px;
   cursor: default;
   height: auto;
-  min-height: 48px;
   max-height: 168px;
   max-width: 100%;
   overflow: hidden;

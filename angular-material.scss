@@ -1051,6 +1051,7 @@ md-backdrop {
   }
   &.md-select-backdrop {
     z-index: $z-index-dialog + 1;
+    transition-duration: 0;
   }
   &.md-dialog-backdrop {
     z-index: $z-index-dialog - 1;
@@ -2122,6 +2123,9 @@ md-fab-speed-dial {
   }
 }
 
+$button-fab-width: rem(5.600) !default;
+$icon-button-margin: rem(0.600) !default;
+
 md-fab-toolbar {
   $icon-delay: 200ms;
 
@@ -2135,8 +2139,8 @@ md-fab-toolbar {
     position: relative;
     overflow: hidden;
 
-    // Account for the size of the trigger (5.6rem) plus it's margin/shadow (0.6rem * 2)
-    height: 6.8rem;
+    // Account for the size of the trigger plus it's margin/shadow
+    height: $button-fab-width + ($icon-button-margin * 2);
   }
 
   md-fab-trigger {
@@ -2674,6 +2678,7 @@ $list-item-secondary-button-width: $baseline-grid * 6 !default;
 $list-item-text-padding-top: $baseline-grid * 2 !default;
 $list-item-text-padding-bottom: $baseline-grid * 2.5 !default;
 $list-item-inset-divider-offset: 12 * $baseline-grid !default;
+$list-item-height: 8 * $baseline-grid !default;
 
 md-list {
   display: block;
@@ -2733,7 +2738,7 @@ md-list-item, md-list-item .md-list-item-inner {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  min-height: 48px;
+  min-height: $list-item-height;
 
   // Layout for controls in primary or secondary divs, or auto-infered first child
   & > div.md-primary > md-icon,
@@ -3529,11 +3534,11 @@ $select-max-visible-options: 5;
     opacity: 1;
     md-select-menu {
       transition: $swift-ease-out;
-      transition-duration: 200ms;
+      transition-duration: 150ms;
       > * {
         opacity: 1;
         transition: $swift-ease-in;
-        transition-duration: 200ms;
+        transition-duration: 150ms;
         transition-delay: 100ms;
       }
     }
@@ -3588,6 +3593,7 @@ md-select {
   padding: 2px 2px 1px;
   border-bottom-width: 1px;
   border-bottom-style: solid;
+  background-color: rgba(0,0,0,0);
   position: relative;
   box-sizing: content-box;
   min-width: 8 * $baseline-grid;
@@ -3676,6 +3682,7 @@ md-option {
   }
 
   .md-text {
+    @include not-selectable();
     width: auto;
     white-space: nowrap;
     overflow: hidden;
@@ -4663,9 +4670,7 @@ md-toast {
   cursor: default;
 
   height:auto;
-  min-height: 2*$toast-height;
   max-height: 7*$toast-height;
-
   max-width: 100%;
 
   overflow:hidden;
