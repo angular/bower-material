@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc5-master-70175fd
+ * v0.10.1-rc5-master-6021f94
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -332,7 +332,11 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   function defineBooleanAttribute (key, handler) {
     var attr = $attrs.$normalize('md-' + key);
     if (handler) defineProperty(key, handler);
-    $attrs.$observe(attr, function (newValue) { ctrl[ key ] = newValue !== 'false'; });
+    if ($attrs.hasOwnProperty(attr)) updateValue($attrs[attr]);
+    $attrs.$observe(attr, updateValue);
+    function updateValue (newValue) {
+      ctrl[ key ] = newValue !== 'false';
+    }
   }
 
   /**
