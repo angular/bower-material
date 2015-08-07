@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc5-master-f4c91b3
+ * v0.10.1-rc5-master-70175fd
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -16924,6 +16924,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   defineBooleanAttribute('noDisconnect');
   defineBooleanAttribute('autoselect');
   defineBooleanAttribute('centerTabs', handleCenterTabs);
+  defineBooleanAttribute('enableDisconnect');
 
   // define public properties
   ctrl.scope             = $scope;
@@ -17687,10 +17688,10 @@ angular
     .module('material.components.tabs')
     .directive('mdTabs', MdTabs);
 
-function MdTabs ($mdTheming, $mdUtil, $compile) {
+function MdTabs () {
   return {
     scope:            {
-      selectedIndex: '=?mdSelected',
+      selectedIndex: '=?mdSelected'
     },
     template:         function (element, attr) {
       attr[ "$mdTabsTemplate" ] = element.html();
@@ -17778,7 +17779,6 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
               md-swipe-right="$mdTabsCtrl.swipeContent && $mdTabsCtrl.incrementIndex(-1)"\
               ng-if="$mdTabsCtrl.hasContent"\
               ng-repeat="(index, tab) in $mdTabsCtrl.tabs"\
-              md-connected-if="tab.isActive()"\
               ng-class="{\
                 \'md-no-transition\': $mdTabsCtrl.lastSelectedIndex == null,\
                 \'md-active\':        tab.isActive(),\
@@ -17788,8 +17788,9 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
               }">\
             <div\
                 md-template="::tab.template"\
+                md-connected-if="tab.isActive()"\
                 md-scope="::tab.parent"\
-                ng-if="tab.shouldRender()"></div>\
+                ng-if="$mdTabsCtrl.enableDisconnect || tab.shouldRender()"></div>\
           </md-tab-content>\
         </md-tabs-content-wrapper>\
       ';
@@ -17799,7 +17800,6 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
     bindToController: true
   };
 }
-MdTabs.$inject = ["$mdTheming", "$mdUtil", "$compile"];
 
 })();
 (function(){
@@ -17809,28 +17809,43 @@ angular
     .module('material.components.tabs')
     .directive('mdTemplate', MdTemplate);
 
-function MdTemplate ($compile) {
+function MdTemplate ($compile, $mdUtil) {
   return {
     restrict: 'A',
     link:     link,
     scope:    {
       template:     '=mdTemplate',
+      connected:    '=?mdConnectedIf',
       compileScope: '=mdScope'
     },
     require:  '^?mdTabs'
   };
   function link (scope, element, attr, ctrl) {
     if (!ctrl) return;
-    var compileScope = scope.compileScope;
+    var compileScope = ctrl.enableDisconnect ? scope.compileScope.$new() : scope.compileScope;
     element.html(scope.template);
     $compile(element.contents())(compileScope);
     element.on('DOMSubtreeModified', function () {
       ctrl.updatePagination();
       ctrl.updateInkBarStyles();
     });
+    return $mdUtil.nextTick(handleScope);
+
+    function handleScope () {
+      scope.$watch('connected', function (value) { value === false ? disconnect() : reconnect(); });
+      scope.$on('$destroy', reconnect);
+    }
+
+    function disconnect () {
+      if (ctrl.enableDisconnect) $mdUtil.disconnectScope(compileScope);
+    }
+
+    function reconnect () {
+      if (ctrl.enableDisconnect) $mdUtil.reconnectScope(compileScope);
+    }
   }
 }
-MdTemplate.$inject = ["$compile"];
+MdTemplate.$inject = ["$compile", "$mdUtil"];
 
 })();
 (function(){ 
