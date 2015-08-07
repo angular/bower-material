@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc5-master-6021f94
+ * v0.10.1-rc5-master-1daa8bc
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -264,7 +264,7 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
       }
 
       function shouldUseDefaultFontSet() {
-        return !scope.fontIcon && !scope.fontSet && !attr.hasOwnProperty('class');
+        return !scope.fontIcon && !scope.fontSet;
       }
     }
   }
