@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc5-master-1daa8bc
+ * v0.10.1-rc5-master-4111c93
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -9389,6 +9389,7 @@ angular.module('material.components.menu', [
  */
 
 function MenuDirective($mdMenu) {
+  var INVALID_PREFIX = 'Invalid HTML for md-menu: ';
   return {
     restrict: 'E',
     require: 'mdMenu',
@@ -9401,12 +9402,14 @@ function MenuDirective($mdMenu) {
     templateElement.addClass('md-menu');
     var triggerElement = templateElement.children()[0];
     if (!triggerElement.hasAttribute('ng-click')) {
-      triggerElement = triggerElement.querySelector('[ng-click]');
+      triggerElement = triggerElement.querySelector('[ng-click],[ng-mouseenter]');
     }
-    triggerElement && triggerElement.setAttribute('aria-haspopup', 'true');
     if (templateElement.children().length != 2) {
-      throw Error('Invalid HTML for md-menu. Expected two children elements.');
+      throw Error(INVALID_PREFIX + 'Expected two children elements.');
     }
+
+    // Default element for ARIA attributes has the ngClick or ngMouseenter expression
+    triggerElement && triggerElement.setAttribute('aria-haspopup', 'true');
     return link;
   }
 
@@ -9429,50 +9432,68 @@ function MenuDirective($mdMenu) {
 MenuDirective.$inject = ["$mdMenu"];
 
 function MenuController($mdMenu, $attrs, $element, $scope) {
-
   var menuContainer;
   var ctrl = this;
   var triggerElement;
 
-  // Called by our linking fn to provide access to the menu-content
-  // element removed during link
-  this.init = function(setMenuContainer) {
-    menuContainer = setMenuContainer;
-    triggerElement = $element[0].querySelector('[ng-click]');
-  };
+  this.init = angular.bind(this, init);
+  this.open = angular.bind(this, openMenu);
+  this.close = angular.bind(this, closeMenu);
 
-  // Uses the $mdMenu interim element service to open the menu contents
-  this.open = function openMenu(ev) {
+  this.positionMode = angular.bind(this, positionMode);
+  this.offsets = angular.bind(this, offsets);
+
+  // Expose a open function to the child scope for html to use
+  $scope.$mdOpenMenu = this.open;
+
+  /**
+   * Called by our linking fn to provide access to the menu-content
+   * element removed during link
+   */
+  function init(setMenuContainer) {
+    menuContainer = setMenuContainer;
+    // Default element for ARIA attributes has the ngClick or ngMouseenter expression
+    triggerElement = $element[0].querySelector('[ng-click],[ng-mouseenter]');
+  }
+
+  /**
+   * Uses the $mdMenu interim element service to open the menu contents
+   */
+  function openMenu(ev) {
     ev && ev.stopPropagation();
 
-    ctrl.isOpen = true;
+    triggerElement = triggerElement || (ev ? ev.target : $element[0]);
     triggerElement.setAttribute('aria-expanded', 'true');
+
+    ctrl.isOpen = true;
     $mdMenu.show({
       scope: $scope,
       mdMenuCtrl: ctrl,
       element: menuContainer,
-      target: $element[0]
+      target: triggerElement
     });
-  };
-  // Expose a open function to the child scope for html to use
-  $scope.$mdOpenMenu = this.open;
+  }
 
-  // Use the $mdMenu interim element service to close the menu contents
-  this.close = function closeMenu(skipFocus) {
+  /**
+   * Use the $mdMenu interim element service to close the menu contents
+   */
+  function closeMenu(skipFocus) {
     if ( !ctrl.isOpen ) return;
 
     ctrl.isOpen = false;
-    triggerElement.setAttribute('aria-expanded', 'false');
+    triggerElement && triggerElement.setAttribute('aria-expanded', 'false');
     $mdMenu.hide();
 
     if (!skipFocus) {
       $element.children()[0].focus();
     }
-  };
+  }
 
-  // Build a nice object out of our string attribute which specifies the
-  // target mode for left and top positioning
-  this.positionMode = function() {
+  /**
+   * Build a nice object out of our string attribute which specifies the
+   * target mode for left and top positioning
+   */
+  function positionMode() {
     var attachment = ($attrs.mdPositionMode || 'target').split(' ');
 
     // If attachment is a single item, duplicate it for our second value.
@@ -9485,11 +9506,13 @@ function MenuController($mdMenu, $attrs, $element, $scope) {
       left: attachment[0],
       top: attachment[1]
     };
-  };
+  }
 
-  // Build a nice object out of our string attribute which specifies
-  // the offset of top and left in pixels.
-  this.offsets = function() {
+  /**
+   * Build a nice object out of our string attribute which specifies
+   * the offset of top and left in pixels.
+   */
+  function offsets() {
     var offsets = ($attrs.mdOffset || '0 0').split(' ').map(parseFloat);
     if (offsets.length == 2) {
       return {
@@ -9504,7 +9527,7 @@ function MenuController($mdMenu, $attrs, $element, $scope) {
     } else {
       throw Error('Invalid offsets specified. Please follow format <x, y> or <n>');
     }
-  };
+  }
 }
 MenuController.$inject = ["$mdMenu", "$attrs", "$element", "$scope"];
 
