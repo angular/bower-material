@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1
+ * v0.10.1-master-70cf536
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -37,7 +37,7 @@
    * @description
    *
    * The `<md-fab-toolbar>` directive is used present a toolbar of elements (usually `<md-button>`s)
-   * for quick access to common actions when a floating action button is activated (via hover or
+   * for quick access to common actions when a floating action button is activated (via click or
    * keyboard navigation).
    *
    * @usage
@@ -155,7 +155,6 @@
 
         // If we're open
         if (ctrl.isOpen) {
-
           // Set the width/height to take up the full toolbar width
           backgroundElement.style.width = scale + 'px';
           backgroundElement.style.height = scale + 'px';

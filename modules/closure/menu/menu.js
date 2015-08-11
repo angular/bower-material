@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1
+ * v0.10.1-master-70cf536
  */
 goog.provide('ng.material.components.menu');
 goog.require('ng.material.components.backdrop');
@@ -145,6 +145,7 @@ angular.module('material.components.menu', [
  */
 
 function MenuDirective($mdMenu) {
+  var INVALID_PREFIX = 'Invalid HTML for md-menu: ';
   return {
     restrict: 'E',
     require: 'mdMenu',
@@ -157,12 +158,14 @@ function MenuDirective($mdMenu) {
     templateElement.addClass('md-menu');
     var triggerElement = templateElement.children()[0];
     if (!triggerElement.hasAttribute('ng-click')) {
-      triggerElement = triggerElement.querySelector('[ng-click]');
+      triggerElement = triggerElement.querySelector('[ng-click],[ng-mouseenter]');
     }
-    triggerElement && triggerElement.setAttribute('aria-haspopup', 'true');
     if (templateElement.children().length != 2) {
-      throw Error('Invalid HTML for md-menu. Expected two children elements.');
+      throw Error(INVALID_PREFIX + 'Expected two children elements.');
     }
+
+    // Default element for ARIA attributes has the ngClick or ngMouseenter expression
+    triggerElement && triggerElement.setAttribute('aria-haspopup', 'true');
     return link;
   }
 
@@ -185,50 +188,68 @@ function MenuDirective($mdMenu) {
 MenuDirective.$inject = ["$mdMenu"];
 
 function MenuController($mdMenu, $attrs, $element, $scope) {
-
   var menuContainer;
   var ctrl = this;
   var triggerElement;
 
-  // Called by our linking fn to provide access to the menu-content
-  // element removed during link
-  this.init = function(setMenuContainer) {
-    menuContainer = setMenuContainer;
-    triggerElement = $element[0].querySelector('[ng-click]');
-  };
+  this.init = angular.bind(this, init);
+  this.open = angular.bind(this, openMenu);
+  this.close = angular.bind(this, closeMenu);
 
-  // Uses the $mdMenu interim element service to open the menu contents
-  this.open = function openMenu(ev) {
+  this.positionMode = angular.bind(this, positionMode);
+  this.offsets = angular.bind(this, offsets);
+
+  // Expose a open function to the child scope for html to use
+  $scope.$mdOpenMenu = this.open;
+
+  /**
+   * Called by our linking fn to provide access to the menu-content
+   * element removed during link
+   */
+  function init(setMenuContainer) {
+    menuContainer = setMenuContainer;
+    // Default element for ARIA attributes has the ngClick or ngMouseenter expression
+    triggerElement = $element[0].querySelector('[ng-click],[ng-mouseenter]');
+  }
+
+  /**
+   * Uses the $mdMenu interim element service to open the menu contents
+   */
+  function openMenu(ev) {
     ev && ev.stopPropagation();
 
-    ctrl.isOpen = true;
+    triggerElement = triggerElement || (ev ? ev.target : $element[0]);
     triggerElement.setAttribute('aria-expanded', 'true');
+
+    ctrl.isOpen = true;
     $mdMenu.show({
       scope: $scope,
       mdMenuCtrl: ctrl,
       element: menuContainer,
-      target: $element[0]
+      target: triggerElement
     });
-  };
-  // Expose a open function to the child scope for html to use
-  $scope.$mdOpenMenu = this.open;
+  }
 
-  // Use the $mdMenu interim element service to close the menu contents
-  this.close = function closeMenu(skipFocus) {
+  /**
+   * Use the $mdMenu interim element service to close the menu contents
+   */
+  function closeMenu(skipFocus) {
     if ( !ctrl.isOpen ) return;
 
     ctrl.isOpen = false;
-    triggerElement.setAttribute('aria-expanded', 'false');
+    triggerElement && triggerElement.setAttribute('aria-expanded', 'false');
     $mdMenu.hide();
 
     if (!skipFocus) {
       $element.children()[0].focus();
     }
-  };
+  }
 
-  // Build a nice object out of our string attribute which specifies the
-  // target mode for left and top positioning
-  this.positionMode = function() {
+  /**
+   * Build a nice object out of our string attribute which specifies the
+   * target mode for left and top positioning
+   */
+  function positionMode() {
     var attachment = ($attrs.mdPositionMode || 'target').split(' ');
 
     // If attachment is a single item, duplicate it for our second value.
@@ -241,11 +262,13 @@ function MenuController($mdMenu, $attrs, $element, $scope) {
       left: attachment[0],
       top: attachment[1]
     };
-  };
+  }
 
-  // Build a nice object out of our string attribute which specifies
-  // the offset of top and left in pixels.
-  this.offsets = function() {
+  /**
+   * Build a nice object out of our string attribute which specifies
+   * the offset of top and left in pixels.
+   */
+  function offsets() {
     var offsets = ($attrs.mdOffset || '0 0').split(' ').map(parseFloat);
     if (offsets.length == 2) {
       return {
@@ -260,12 +283,12 @@ function MenuController($mdMenu, $attrs, $element, $scope) {
     } else {
       throw Error('Invalid offsets specified. Please follow format <x, y> or <n>');
     }
-  };
+  }
 }
 MenuController.$inject = ["$mdMenu", "$attrs", "$element", "$scope"];
 
 angular.module('material.components.menu')
-.provider('$mdMenu', MenuProvider);
+  .provider('$mdMenu', MenuProvider);
 
 /*
  * Interim element provider for the menu.
@@ -280,7 +303,7 @@ angular.module('material.components.menu')
 function MenuProvider($$interimElementProvider) {
   var MENU_EDGE_MARGIN = 8;
 
-  menuDefaultOptions.$inject = ["$$rAF", "$window", "$mdUtil", "$mdTheming", "$mdConstant", "$document"];
+  menuDefaultOptions.$inject = ["$mdUtil", "$mdTheming", "$mdConstant", "$document", "$window", "$q", "$$rAF", "$animateCss", "$animate"];
   return $$interimElementProvider('$mdMenu')
     .setDefaults({
       methods: ['target'],
@@ -288,7 +311,7 @@ function MenuProvider($$interimElementProvider) {
     });
 
   /* ngInject */
-  function menuDefaultOptions($$rAF, $window, $mdUtil, $mdTheming, $mdConstant, $document) {
+  function menuDefaultOptions($mdUtil, $mdTheming, $mdConstant, $document, $window, $q, $$rAF, $animateCss, $animate) {
     var animator = $mdUtil.dom.animator;
 
     return {
@@ -303,42 +326,109 @@ function MenuProvider($$interimElementProvider) {
     };
 
     /**
-     * Boilerplate interimElement onShow function
-     * Handles inserting the menu into the DOM, positioning it, and wiring up
-     * various interaction events
+     * Show modal backdrop element...
+     * @returns {function(): void} A function that removes this backdrop
+     */
+    function showBackdrop(scope, element, options) {
+
+      // If we are not within a dialog...
+      if (options.disableParentScroll && !$mdUtil.getClosest(options.target, 'MD-DIALOG')) {
+        // !! DO this before creating the backdrop; since disableScrollAround()
+        //    configures the scroll offset; which is used by mdBackDrop postLink()
+        options.restoreScroll = $mdUtil.disableScrollAround(options.element, options.parent);
+      } else {
+        options.disableParentScroll = false;
+      }
+
+      if (options.hasBackdrop) {
+        options.backdrop = $mdUtil.createBackdrop(scope, "md-menu-backdrop md-click-catcher");
+
+        $animate.enter(options.backdrop, options.parent);
+      }
+
+      /**
+       * Hide and destroys the backdrop created by showBackdrop()
+       */
+      return function hideBackdrop() {
+        if (options.backdrop) {
+          // Override duration to immediately remove invisible backdrop
+          $animate.leave(options.backdrop, {duration:0});
+        }
+        if (options.disableParentScroll) {
+          options.restoreScroll();
+        }
+      }
+    }
+
+    /**
+     * Removing the menu element from the DOM and remove all associated evetn listeners
+     * and backdrop
+     */
+    function onRemove(scope, element, opts) {
+      opts.cleanupInteraction();
+      opts.cleanupResizing();
+      opts.hideBackdrop();
+
+      return $animateCss(element, {addClass: 'md-leave'})
+        .start()
+        .then(function() {
+          element.removeClass('md-active');
+
+          detachElement(element, opts);
+          opts.alreadyOpen = false;
+        });
+    }
+
+    /**
+     * Inserts and configures the staged Menu element into the DOM, positioning it,
+     * and wiring up various interaction events
      */
     function onShow(scope, element, opts) {
-
-      // Sanitize and set defaults on opts
-      buildOpts(opts);
+      sanitizeAndConfigure(opts);
 
       // Wire up theming on our menu element
       $mdTheming.inherit(opts.menuContentEl, opts.target);
 
       // Register various listeners to move menu on resize/orientation change
-      handleResizing();
-
-      // Disable scrolling
-      if (opts.disableParentScroll) {
-        opts.restoreScroll = $mdUtil.disableScrollAround(opts.element);
-      }
-
-      if (opts.backdrop) {
-        $mdTheming.inherit(opts.backdrop, opts.parent);
-        opts.parent.append(opts.backdrop);
-      }
-      showMenu();
+      opts.cleanupResizing = startRepositioningOnResize();
+      opts.hideBackdrop = showBackdrop(scope, element, opts);
 
       // Return the promise for when our menu is done animating in
-      return animator
-          .waitTransitionEnd(element, {timeout: 370})
-          .finally( function(response) {
-            opts.cleanupInteraction = activateInteraction();
-            return response;
-          });
+      return showMenu()
+        .then(function(response) {
+          opts.alreadyOpen = true;
+          opts.cleanupInteraction = activateInteraction();
+          return response;
+        });
 
-      /** Check for valid opts and set some sane defaults */
-      function buildOpts() {
+      /**
+       * Place the menu into the DOM and call positioning related functions
+       */
+      function showMenu() {
+        opts.parent.append(element);
+
+        return $q(function(resolve) {
+          var position = calculateMenuPosition(element, opts);
+
+          element.removeClass('md-leave');
+
+          // Animate the menu scaling, and opacity [from its position origin (default == top-left)]
+          // to normal scale.
+          $animateCss(element, {
+            addClass: 'md-active',
+            from: animator.toCss(position),
+            to: animator.toCss({transform: 'scale(1.0,1.0)'})
+          })
+          .start()
+          .then(resolve);
+
+        });
+      }
+
+      /**
+       * Check for valid opts and set some sane defaults
+       */
+      function sanitizeAndConfigure() {
         if (!opts.target) {
           throw Error(
             '$mdMenu.show() expected a target to animate from in options.target'
@@ -349,43 +439,35 @@ function MenuProvider($$interimElementProvider) {
           isRemoved: false,
           target: angular.element(opts.target), //make sure it's not a naked dom node
           parent: angular.element(opts.parent),
-          menuContentEl: angular.element(element[0].querySelector('md-menu-content')),
-          backdrop: opts.hasBackdrop && $mdUtil.createBackdrop(scope, "md-menu-backdrop md-click-catcher")
+          menuContentEl: angular.element(element[0].querySelector('md-menu-content'))
         });
-      }
-
-      /** Wireup various resize listeners for screen changes */
-      function handleResizing() {
-        opts.resizeFn = function() {
-          positionMenu(element, opts);
-        };
-        angular.element($window).on('resize', opts.resizeFn);
-        angular.element($window).on('orientationchange', opts.resizeFn);
       }
 
       /**
-       * Place the menu into the DOM and call positioning related functions
+       * Configure various resize listeners for screen changes
        */
-      function showMenu() {
-        opts.parent.append(element);
+      function startRepositioningOnResize() {
 
-        element.removeClass('md-leave');
-        // Kick off our animation/positioning but first, wait a few frames
-        // so all of our computed positions/sizes are accurate
-        $$rAF(function() {
-          $$rAF(function() {
-            positionMenu(element, opts);
-            // Wait a frame before fading in menu (md-active) so that we don't trigger
-            // transitions on the menu position changing
-            $$rAF(function() {
-              element.addClass('md-active');
-              opts.alreadyOpen = true;
-              element[0].style[$mdConstant.CSS.TRANSFORM] = '';
-            });
+        var repositionMenu = (function(target, options) {
+          return $$rAF.throttle(function() {
+            if (opts.isRemoved) return;
+            var position = calculateMenuPosition(target, options);
+
+            target.css(animator.toCss(position));
           });
-        });
-      }
+        })(element, opts);
 
+        $window.addEventListener('resize', repositionMenu);
+        $window.addEventListener('orientationchange', repositionMenu);
+
+        return function stopRepositioningOnResize() {
+
+          // Disable resizing handlers
+          $window.removeEventListener('resize', repositionMenu);
+          $window.removeEventListener('orientationchange', repositionMenu);
+
+        }
+      }
 
       /**
        * Activate interaction on the menu. Wire up keyboard listerns for
@@ -395,28 +477,58 @@ function MenuProvider($$interimElementProvider) {
         element.addClass('md-clickable');
 
         // close on backdrop click
-        opts.backdrop && opts.backdrop.on('click', function(e) {
+        if (opts.backdrop) opts.backdrop.on('click', onBackdropClick);
+
+        // Wire up keyboard listeners.
+        // - Close on escape,
+        // - focus next item on down arrow,
+        // - focus prev item on up
+        opts.menuContentEl.on('keydown', onMenuKeyDown);
+        opts.menuContentEl[0].addEventListener('click', captureClickListener, true);
+
+        // kick off initial focus in the menu on the first element
+        var focusTarget = opts.menuContentEl[0].querySelector('[md-menu-focus-target]') ||
+          opts.menuContentEl[0].firstElementChild.firstElementChild;
+        focusTarget.focus();
+
+        return function cleanupInteraction() {
+          element.removeClass('md-clickable');
+          if (opts.backdrop) opts.backdrop.off('click', onBackdropClick);
+          opts.menuContentEl.off('keydown', onMenuKeyDown);
+          opts.menuContentEl[0].removeEventListener('click', captureClickListener, true);
+        };
+
+        // ************************************
+        // internal functions
+        // ************************************
+
+        function onMenuKeyDown(ev) {
+          scope.$apply(function() {
+            var keyCodes = $mdConstant.KEY_CODE;
+            switch (ev.keyCode) {
+              case keyCodes.ESCAPE:
+                opts.mdMenuCtrl.close();
+                break;
+              case keyCodes.UP_ARROW:
+                focusMenuItem(ev, opts.menuContentEl, opts, -1);
+                break;
+              case keyCodes.DOWN_ARROW:
+                focusMenuItem(ev, opts.menuContentEl, opts, 1);
+                break;
+            }
+          });
+        }
+
+        function onBackdropClick(e) {
           e.preventDefault();
           e.stopPropagation();
           scope.$apply(function() {
             opts.mdMenuCtrl.close(true);
           });
-        });
-
-        // Wire up keyboard listeners.
-        // Close on escape, focus next item on down arrow, focus prev item on up
-        opts.menuContentEl.on('keydown', function(ev) {
-          scope.$apply(function() {
-            switch (ev.keyCode) {
-              case $mdConstant.KEY_CODE.ESCAPE: opts.mdMenuCtrl.close(); break;
-              case $mdConstant.KEY_CODE.UP_ARROW: focusMenuItem(ev, opts.menuContentEl, opts, -1); break;
-              case $mdConstant.KEY_CODE.DOWN_ARROW: focusMenuItem(ev, opts.menuContentEl, opts, 1); break;
-            }
-          });
-        });
+        }
 
         // Close menu on menu item click, if said menu-item is not disabled
-        var captureClickListener = function(e) {
+        function captureClickListener(e) {
           var target = e.target;
           // Traverse up the event until we get to the menuContentEl to see if
           // there is an ng-click and that the ng-click is not disabled
@@ -448,31 +560,19 @@ function MenuProvider($$interimElementProvider) {
             }
             return false;
           }
-        };
-        opts.menuContentEl[0].addEventListener('click', captureClickListener, true);
+        }
 
-        // kick off initial focus in the menu on the first element
-        var focusTarget = opts.menuContentEl[0].querySelector('[md-menu-focus-target]');
-        if (!focusTarget) focusTarget = opts.menuContentEl[0].firstElementChild.firstElementChild;
-        focusTarget.focus();
-
-        return function cleanupInteraction() {
-          element.removeClass('md-clickable');
-          opts.backdrop.off('click');
-          opts.menuContentEl.off('keydown');
-          opts.menuContentEl[0].removeEventListener('click', captureClickListener, true);
-        };
       }
     }
 
     /**
-      * Takes a keypress event and focuses the next/previous menu
-      * item from the emitting element
-      * @param {event} e - The origin keypress event
-      * @param {angular.element} menuEl - The menu element
-      * @param {object} opts - The interim element options for the mdMenu
-      * @param {number} direction - The direction to move in (+1 = next, -1 = prev)
-      */
+     * Takes a keypress event and focuses the next/previous menu
+     * item from the emitting element
+     * @param {event} e - The origin keypress event
+     * @param {angular.element} menuEl - The menu element
+     * @param {object} opts - The interim element options for the mdMenu
+     * @param {number} direction - The direction to move in (+1 = next, -1 = prev)
+     */
     function focusMenuItem(e, menuEl, opts, direction) {
       var currentItem = $mdUtil.getClosest(e.target, 'MD-MENU-ITEM');
 
@@ -499,42 +599,17 @@ function MenuProvider($$interimElementProvider) {
     function attemptFocus(el) {
       if (el && el.getAttribute('tabindex') != -1) {
         el.focus();
-        if ($document[0].activeElement == el) {
-          return true;
-        } else {
-          return false;
-        }
+        return ($document[0].activeElement == el);
       }
     }
 
     /**
-     * Boilerplate interimElement onRemove function
-     * Handles removing the menu from the DOM, cleaning up the element
-     * and removing various listeners
+     * Use browser to remove this element without triggering a $destory event
      */
-    function onRemove(scope, element, opts) {
-      opts.isRemoved = true;
-      element.addClass('md-leave');
-
-      opts.cleanupInteraction();
-
-      // Disable resizing handlers
-      angular.element($window).off('resize', opts.resizeFn);
-      angular.element($window).off('orientationchange', opts.resizeFn);
-      opts.resizeFn = undefined;
-
-      // Wait for animate out, then remove from the DOM
-      return animator
-        .waitTransitionEnd(element, { timeout: 370 })
-        .finally(function() {
-          element.removeClass('md-active');
-
-          opts.backdrop && opts.backdrop.remove();
-          if (element[0].parentNode === opts.parent[0]) {
-            opts.parent[0].removeChild(element[0]);
-          }
-          opts.restoreScroll && opts.restoreScroll();
-        });
+    function detachElement(element, opts) {
+      if (element[0].parentNode === opts.parent[0]) {
+        opts.parent[0].removeChild(element[0]);
+      }
     }
 
     /**
@@ -542,18 +617,16 @@ function MenuProvider($$interimElementProvider) {
      * @param {HTMLElement} el - the menu container element
      * @param {object} opts - the interim element options object
      */
-    function positionMenu(el, opts) {
-      if (opts.isRemoved) return;
+    function calculateMenuPosition(el, opts) {
 
       var containerNode = el[0],
-          openMenuNode = el[0].firstElementChild,
-          openMenuNodeRect = openMenuNode.getBoundingClientRect(),
-          boundryNode = opts.parent[0],
-          boundryNodeRect = boundryNode.getBoundingClientRect();
+        openMenuNode = el[0].firstElementChild,
+        openMenuNodeRect = openMenuNode.getBoundingClientRect(),
+        boundryNode = opts.parent[0],
+        boundryNodeRect = boundryNode.getBoundingClientRect();
 
       var originNode = opts.target[0].querySelector('[md-menu-origin]') || opts.target[0],
-          originNodeRect = originNode.getBoundingClientRect();
-
+        originNodeRect = originNode.getBoundingClientRect();
 
       var bounds = {
         left: boundryNodeRect.left + MENU_EDGE_MARGIN,
@@ -561,7 +634,6 @@ function MenuProvider($$interimElementProvider) {
         bottom: Math.max(boundryNodeRect.bottom, Math.max(boundryNodeRect.top, 0) + boundryNodeRect.height) - MENU_EDGE_MARGIN,
         right: boundryNodeRect.right - MENU_EDGE_MARGIN
       };
-
 
       var alignTarget, alignTargetRect, existingOffsets;
       var positionMode = opts.mdMenuCtrl.positionMode();
@@ -583,7 +655,7 @@ function MenuProvider($$interimElementProvider) {
         };
       }
 
-      var position = { };
+      var position = {};
       var transformOrigin = 'top ';
 
       switch (positionMode.top) {
@@ -594,9 +666,9 @@ function MenuProvider($$interimElementProvider) {
         // case 'top':
         //   position.top = originNodeRect.top;
         //   break;
-        // case 'bottom':
-        //   position.top = originNodeRect.top + originNodeRect.height;
-        //   break;
+        case 'bottom':
+          position.top = originNodeRect.top + originNodeRect.height;
+          break;
         default:
           throw new Error('Invalid target mode "' + positionMode.top + '" specified for md-menu on Y axis.');
       }
@@ -611,10 +683,10 @@ function MenuProvider($$interimElementProvider) {
           transformOrigin += 'right';
           break;
         // Future support for mdMenuBar
-        // case 'left':
-        //   position.left = originNodeRect.left;
-        //   transformOrigin += 'left';
-        //   break;
+        case 'left':
+          position.left = originNodeRect.left;
+          transformOrigin += 'left';
+          break;
         // case 'right':
         //   position.left = originNodeRect.right - containerNode.offsetWidth;
         //   transformOrigin += 'right';
@@ -629,20 +701,18 @@ function MenuProvider($$interimElementProvider) {
 
       clamp(position);
 
-      el.css({
-        top: position.top + 'px',
-        left: position.left + 'px'
-      });
+      var scaleX = Math.round(100 * Math.min(originNodeRect.width / containerNode.offsetWidth, 1.0)) / 100;
+      var scaleY = Math.round(100 * Math.min(originNodeRect.height / containerNode.offsetHeight, 1.0)) / 100;
 
-      containerNode.style[$mdConstant.CSS.TRANSFORM_ORIGIN] = transformOrigin;
+      return {
+        top: Math.round(position.top),
+        left: Math.round(position.left),
 
-      // Animate a scale out if we aren't just repositioning
-      if (!opts.alreadyOpen) {
-        containerNode.style[$mdConstant.CSS.TRANSFORM] = 'scale(' +
-          Math.min(originNodeRect.width / containerNode.offsetWidth, 1.0) + ',' +
-          Math.min(originNodeRect.height / containerNode.offsetHeight, 1.0) +
-        ')';
-      }
+        // Animate a scale out if we aren't just repositioning
+        transform: !opts.alreadyOpen ? $mdUtil.supplant('scale({0},{1})', [scaleX, scaleY]) : undefined,
+
+        transformOrigin: transformOrigin
+      };
 
       /**
        * Clamps the repositioning of the menu within the confines of
@@ -654,12 +724,12 @@ function MenuProvider($$interimElementProvider) {
       }
 
       /**
-        * Gets the first visible child in the openMenuNode
-        * Necessary incase menu nodes are being dynamically hidden
-        */
+       * Gets the first visible child in the openMenuNode
+       * Necessary incase menu nodes are being dynamically hidden
+       */
       function firstVisibleChild() {
         for (var i = 0; i < openMenuNode.children.length; ++i) {
-          if (window.getComputedStyle(openMenuNode.children[i]).display != 'none') {
+          if ($window.getComputedStyle(openMenuNode.children[i]).display != 'none') {
             return openMenuNode.children[i];
           }
         }
