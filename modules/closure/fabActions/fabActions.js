@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc5-master-0844db0
+ * v0.10.1
  */
 goog.provide('ng.material.components.fabActions');
 goog.require('ng.material.core');
@@ -16,7 +16,7 @@ goog.require('ng.material.core');
   /**
    * @ngdoc directive
    * @name mdFabActions
-   * @module material.components.fabActions
+   * @module material.components.fabSpeedDial
    *
    * @restrict E
    *
@@ -37,14 +37,8 @@ goog.require('ng.material.core');
       compile: function(element, attributes) {
         var children = element.children();
 
-        var hasNgRepeat = false;
-
-        angular.forEach(['', 'data-', 'x-'], function(prefix) {
-          hasNgRepeat = hasNgRepeat || (children.attr(prefix + 'ng-repeat') ? true : false);
-        });
-
-        // Support both ng-repeat and static content
-        if (hasNgRepeat) {
+        // Support both ng-repat and static content
+        if (children.attr('ng-repeat')) {
           children.addClass('md-fab-action-item');
         } else {
           // Wrap every child in a new div and add a class that we can scale/fling independently

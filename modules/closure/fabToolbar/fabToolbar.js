@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc5-master-0844db0
+ * v0.10.1
  */
 goog.provide('ng.material.components.fabToolbar');
 goog.require('ng.material.components.fabActions');
@@ -38,7 +38,7 @@ goog.require('ng.material.core');
    * @description
    *
    * The `<md-fab-toolbar>` directive is used present a toolbar of elements (usually `<md-button>`s)
-   * for quick access to common actions when a floating action button is activated (via click or
+   * for quick access to common actions when a floating action button is activated (via hover or
    * keyboard navigation).
    *
    * @usage
@@ -156,6 +156,7 @@ goog.require('ng.material.core');
 
         // If we're open
         if (ctrl.isOpen) {
+
           // Set the width/height to take up the full toolbar width
           backgroundElement.style.width = scale + 'px';
           backgroundElement.style.height = scale + 'px';
