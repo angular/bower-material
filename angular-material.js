@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-70cf536
+ * v0.10.1-master-514927a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -516,8 +516,9 @@ angular.module('material.core')
     var $mdUtil = {
           dom : { },
           now: window.performance ?
-            angular.bind(window.performance, window.performance.now) :
-            Date.now,
+            angular.bind(window.performance, window.performance.now) : Date.now || function() {
+              return new Date().getTime();
+            },
 
           clientRect: function (element, offsetParent, isOffsetRect) {
             var node = getNode(element);
