@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-333984f
+ * v0.10.1-master-db815db
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 /**
@@ -172,6 +172,7 @@ md-calendar {
 
 .md-datepicker-triangle-button.md-button.md-icon-button {
   height: 100%;
+  width: 36px;
   position: absolute; }
 
 md-datepicker[disabled] .md-datepicker-input-container {
