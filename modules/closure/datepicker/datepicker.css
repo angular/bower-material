@@ -2,9 +2,12 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-1d90ffa
+ * v0.10.1-master-cca1955
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
+/**
+ * Position a FAB button.
+ */
 /** Styles for mdCalendar. */
 md-calendar {
   font-size: 13px;
@@ -83,6 +86,9 @@ md-calendar {
     border-top: 1px solid transparent; }
 
 /* mixin definition ; sets LTR and RTL within the same style call */
+/**
+ * Position a FAB button.
+ */
 /** Styles for mdDatepicker. */
 .md-datepicker-button {
   display: inline-block;

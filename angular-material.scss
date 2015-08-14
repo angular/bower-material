@@ -88,6 +88,12 @@ $swift-ease-in-out-duration: 0.5s !default;
 $swift-ease-in-out-timing-function: cubic-bezier(0.35, 0, 0.25, 1) !default;
 $swift-ease-in-out: all $swift-ease-in-out-duration $swift-ease-in-out-timing-function !default;
 
+// Fab Buttons (shared between buttons.scss and fab*.scss)
+// -------------------------------------------
+$button-fab-width: rem(5.600) !default;
+$button-fab-height: rem(5.600) !default;
+$button-fab-padding: rem(1.60) !default;
+
 @mixin margin-selectors($before:1em, $after:1em, $start:0px, $end:0px) {
   -webkit-margin-before: $before;
   -webkit-margin-after: $after;
@@ -197,6 +203,26 @@ $swift-ease-in-out: all $swift-ease-in-out-duration $swift-ease-in-out-timing-fu
   html[dir=rtl] & {
     #{$prop}: $rtl-value;
   }
+}
+
+/**
+ * Position a FAB button.
+ */
+@mixin fab-position($spot, $top: auto, $right: auto, $bottom: auto, $left: auto) {
+  &.md-fab-#{$spot} {
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+    position: absolute;
+  }
+}
+
+@mixin fab-all-positions() {
+  @include fab-position(bottom-right, auto, ($button-fab-width - $button-fab-padding)/2, ($button-fab-height - $button-fab-padding)/2, auto);
+  @include fab-position(bottom-left, auto, auto, ($button-fab-height - $button-fab-padding)/2, ($button-fab-width - $button-fab-padding)/2);
+  @include fab-position(top-right, ($button-fab-height - $button-fab-padding)/2, ($button-fab-width - $button-fab-padding)/2, auto, auto);
+  @include fab-position(top-left, ($button-fab-height - $button-fab-padding)/2, auto, auto, ($button-fab-width - $button-fab-padding)/2);
 }
 
 html, body {
@@ -1288,10 +1314,7 @@ $button-margin: rem(0.600) rem(0.800) !default;
 $button-min-width: rem(8.800) !default;
 
 // Fab buttons
-$button-fab-width: rem(5.600) !default;
-$button-fab-height: rem(5.600) !default;
 $button-fab-line-height: rem(5.600) !default;
-$button-fab-padding: rem(1.60) !default;
 $button-fab-mini-width: rem(4.00) !default;
 $button-fab-mini-height: rem(4.00) !default;
 $button-fab-mini-line-height: rem(4.00) !default;
@@ -1301,19 +1324,6 @@ $button-fab-toast-offset: $button-fab-height * 0.75 !default;
 $icon-button-height: rem(4.800) !default;
 $icon-button-width: rem(4.800) !default;
 $icon-button-margin: rem(0.600) !default;
-
-/**
- * Position a FAB button.
- */
-@mixin fab-position($spot, $top: auto, $right: auto, $bottom: auto, $left: auto) {
-  &.md-fab-#{$spot} {
-    top: $top;
-    right: $right;
-    bottom: $bottom;
-    left: $left;
-    position: absolute;
-  }
-}
 
 .md-button {
   box-sizing: border-box;
@@ -1404,10 +1414,8 @@ $icon-button-margin: rem(0.600) !default;
 
   &.md-fab {
 
-    @include fab-position(bottom-right, auto, ($button-fab-width - $button-fab-padding)/2, ($button-fab-height - $button-fab-padding)/2, auto);
-    @include fab-position(bottom-left, auto, auto, ($button-fab-height - $button-fab-padding)/2, ($button-fab-width - $button-fab-padding)/2);
-    @include fab-position(top-right, ($button-fab-height - $button-fab-padding)/2, ($button-fab-width - $button-fab-padding)/2, auto, auto);
-    @include fab-position(top-left, ($button-fab-height - $button-fab-padding)/2, auto, auto, ($button-fab-width - $button-fab-padding)/2);
+    // Include the top/left/bottom/right fab positions
+    @include fab-all-positions();
 
     z-index: $z-index-fab;
 
@@ -2333,6 +2341,9 @@ md-fab-speed-dial {
   display: flex;
   align-items: center;
 
+  // Include the top/left/bottom/right fab positions
+  @include fab-all-positions();
+
   .md-css-variables {
     z-index: $z-index-fab;
   }
@@ -2436,6 +2447,9 @@ $icon-button-margin: rem(0.600) !default;
 
 md-fab-toolbar {
   $icon-delay: 200ms;
+
+  // Include the top/left/bottom/right fab positions
+  @include fab-all-positions();
 
   display: block;
 

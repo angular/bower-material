@@ -2,9 +2,12 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-1d90ffa
+ * v0.10.1-master-cca1955
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
+/**
+ * Position a FAB button.
+ */
 md-backdrop {
   background-color: '{{background-900-0.0}}'; }
   md-backdrop.md-opaque.md-THEME_NAME-theme {
