@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-514927a
+ * v0.10.1-master-1d90ffa
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -82,8 +82,9 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     configureWatchers();
     $mdUtil.nextTick(function () {
       gatherElements();
-      focusElement();
       moveDropdown();
+      focusElement();
+      $element.on('focus', focusElement);
     });
   }
 

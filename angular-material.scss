@@ -7,7 +7,7 @@
 
 // Typography
 // ------------------------------
-$font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif !default;
+$font-family: Roboto, 'Helvetica Neue', sans-serif !default;
 $font-size:   10px;
 
 $display-4-font-size-base: rem(11.20) !default;
@@ -127,6 +127,23 @@ $swift-ease-in-out: all $swift-ease-in-out-duration $swift-ease-in-out-timing-fu
 
 @mixin md-shadow-bottom-z-2() {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+}
+
+// Mixin for a "flat" input that can be used for components that contain an input
+// (datepicker, autocomplete).
+@mixin md-flat-input() {
+  font-size: 14px;
+
+  box-sizing: border-box;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  background: transparent;
+
+  // The the "clear X" that IE adds to input[type="search"]
+  &::-ms-clear {
+    display: none;
+  }
 }
 
 // Typography mixins
@@ -920,19 +937,11 @@ md-autocomplete {
     }
   }
   input:not(.md-input) {
+    @include md-flat-input();
     width: 100%;
-    box-sizing: border-box;
-    border: none;
-    box-shadow: none;
     padding: 0 15px;
-    font-size: 14px;
     line-height: 40px;
     height: 40px;
-    outline: none;
-    background: transparent;
-    &::-ms-clear {
-      display: none;
-    }
   }
   button {
     position: relative;
@@ -1456,6 +1465,7 @@ $icon-button-margin: rem(0.600) !default;
     }
   }
 }
+
 .md-toast-open-bottom {
   .md-button.md-fab-bottom-left,
   .md-button.md-fab-bottom-right {
@@ -1474,6 +1484,7 @@ $icon-button-margin: rem(0.600) !default;
   flex: 1;
   width: 100%;
 }
+
 .md-button-group > .md-button {
   flex: 1;
 
@@ -1691,11 +1702,11 @@ md-checkbox {
   }
 }
 
-$chip-font-size: rem(1.3) !default;
+$chip-font-size: rem(1.6) !default;
 $chip-height: rem(3.2) !default;
 $chip-padding: 0 rem(0.8) 0 rem(1.2) !default;
 $chip-margin: rem(0.8) rem(0.8) 0 0 !default;
-$chip-wrap-padding: 0 0 rem(0.8) 0 !default;
+$chip-wrap-padding: 0 0 rem(0.8) rem(0.3) !default;
 $chip-delete-icon-size: rem(1.8) !default;
 $contact-chip-padding: 0 rem(0.8) 0 0 !default;
 $contact-chip-suggestion-image-height: rem(4.0) !default;
@@ -1748,7 +1759,10 @@ $contact-chip-name-width: rem(12) !default;
   font-size: $chip-font-size;
   padding: $chip-wrap-padding;
   vertical-align: middle;
-  cursor: text;
+
+  &:not('.md-readonly') {
+    cursor: text;
+  }
   .md-chip {
     cursor: default;
     border-radius: $chip-height / 2;
@@ -1896,6 +1910,300 @@ md-content {
 }
 
 
+
+/** Styles for mdCalendar. */
+$md-calendar-cell-size: 44px !default;
+$md-calendar-header-height: 40px;
+$md-calendar-cell-emphasis-size: 40px !default;
+$md-calendar-side-padding: 16px !default;
+$md-calendar-weeks-to-show: 7 !default;
+
+$md-calendar-month-label-padding: 8px !default;
+$md-calendar-month-label-font-size: 13px !default;
+
+$md-calendar-width: (7 * $md-calendar-cell-size) + (2 * $md-calendar-side-padding);
+$md-calendar-height:
+    ($md-calendar-weeks-to-show * $md-calendar-cell-size) + $md-calendar-header-height;
+
+
+// Styles for date cells, including day-of-the-week header cells.
+@mixin md-calendar-cell() {
+  height: $md-calendar-cell-size;
+  width: $md-calendar-cell-size;
+
+  text-align: center;
+
+  // Remove all padding and borders so we can completely
+  // control the size of the table cells.
+  padding: 0;
+  border: none;
+
+  // The left / right padding is applied to the cells instead of the wrapper
+  // because we want the header background and the month dividing border to
+  // extend the entire width of the calendar.
+  &:first-child {
+    padding-left: $md-calendar-side-padding;
+  }
+
+  &:last-child {
+    padding-right: $md-calendar-side-padding;
+  }
+}
+
+// Styles for tables used in mdCalendar (the day-of-the-week header and the table of dates itself).
+@mixin md-calendar-table() {
+  // Fixed table layout makes IE faster.
+  // https://msdn.microsoft.com/en-us/library/ms533020(VS.85).aspx
+  table-layout: fixed;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+md-calendar {
+  font-size: 13px;
+  user-select: none;
+}
+
+// Wrap the scroll with overflow: hidden in order to hide the scrollbar.
+// The inner .md-calendar-scroll-container will using a padding-right to push the
+// scrollbar into the hidden area (done with javascript).
+.md-calendar-scroll-mask {
+  display: inline-block;
+  overflow: hidden;
+  height: $md-calendar-weeks-to-show * $md-calendar-cell-size;
+
+  // The actual scrolling element.
+  .md-virtual-repeat-scroller {
+    // These two properties are needed to get touch momentum to work.
+    // See https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  // Offsetter is the element that is translateY'ed into view of the user and contains the
+  // calendar content.
+  .md-virtual-repeat-offsetter {
+    width: 100%;
+  }
+}
+
+// Contains the scrolling element (this is the md-virtual-repeat-container).
+.md-calendar-scroll-container {
+  display: inline-block;
+  height: $md-calendar-weeks-to-show * $md-calendar-cell-size;
+  width: $md-calendar-width;
+}
+
+// A single date cell in the calendar table.
+.md-calendar-date {
+  @include md-calendar-cell();
+}
+
+// Circle element inside of every date cell used to indicate selection or focus.
+.md-calendar-date-selection-indicator {
+  transition: background-color, color $swift-ease-out-duration $swift-ease-out-timing-function;
+
+  border-radius: 50%;
+  display: inline-block;
+
+  cursor: pointer;
+
+  width: $md-calendar-cell-emphasis-size;
+  height: $md-calendar-cell-emphasis-size;
+  line-height: $md-calendar-cell-emphasis-size;
+}
+
+// The label above each month (containing the month name and the year, e.g. "Jun 2014").
+.md-calendar-month-label {
+  height: $md-calendar-cell-size;
+  font-size: $md-calendar-month-label-font-size;
+  padding: 0 0 0 $md-calendar-side-padding + $md-calendar-month-label-padding;
+}
+
+// Table containing the day-of-the-week header.
+.md-calendar-day-header {
+  @include md-calendar-table();
+
+  th {
+    @include md-calendar-cell();
+    font-weight: normal;
+    height: $md-calendar-header-height;
+  }
+}
+
+// Primary table containing all date cells. Each month is a tbody in this table.
+.md-calendar {
+  @include md-calendar-table();
+
+  // Divider between months.
+  tr:last-child td {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+  }
+
+  // The divider between months doesn't actually change the height of the tbody in which the
+  // border appear; it changes the height of the following tbody. The causes the first-child to be
+  // 1px shorter than the other months. We fix this by adding an invisible border-top.
+  &:first-child {
+    border-top: 1px solid transparent;
+  }
+}
+
+/** Styles for mdDatepicker. */
+$md-datepicker-button-gap: 12px;  // Space between the text input and the calendar-icon button.
+$md-datepicker-border-bottom-gap: 5px;  // Space between input and the grey underline.
+$md-datepicker-open-animation-duration: 0.2s;
+
+
+// The calendar icon button used to open the calendar pane.
+// Need absurd specificty to override md-button.md-icon-button.
+.md-datepicker-button {
+  display: inline-block;
+  box-sizing: border-box;
+  background: none;
+}
+
+// The input into which the user can type the date.
+.md-datepicker-input {
+  @include md-flat-input();
+  min-width: 120px;
+  max-width: $md-calendar-width - $md-datepicker-button-gap;
+}
+
+// Container for the datepicker input.
+.md-datepicker-input-container {
+  // Position relative in order to absolutely position the down-triangle button within.
+  position: relative;
+
+  padding-bottom: $md-datepicker-border-bottom-gap;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+
+  display: inline-block;
+  width: auto;
+  margin-left: $md-datepicker-button-gap;
+
+  &.md-datepicker-focused {
+    border-bottom-width: 2px;
+  }
+}
+
+
+// Floating pane that contains the calendar at the bottom of the input.
+.md-datepicker-calendar-pane {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: $z-index-menu;
+
+  border-width: 1px;
+  border-style: solid;
+  background: transparent;
+
+  transform: scale(0);
+  transform-origin: 0 0;
+  transition: transform $md-datepicker-open-animation-duration $swift-ease-out-timing-function;
+
+  &.md-pane-open {
+    transform: scale(1);
+  }
+}
+
+// Portion of the floating panel that sits, invisibly, on top of the input.
+.md-datepicker-input-mask {
+  height: 40px;
+  width: $md-calendar-width;
+
+  background: transparent;
+  pointer-events: none;
+  cursor: text;
+}
+
+// The calendar portion of the floating pane (vs. the input mask).
+.md-datepicker-calendar {
+  opacity: 0;
+  // Use a modified timing function (from swift-ease-out) so that the opacity part of the
+  // animation doesn't come in as quickly so that the floating pane doesn't ever seem to
+  // cover up the trigger input.
+  transition: opacity $md-datepicker-open-animation-duration cubic-bezier(0.5, 0, 0.25, 1);
+
+  .md-pane-open & {
+    opacity: 1;
+  }
+
+  md-calendar:focus {
+    outline: none;
+  }
+}
+
+// Down triangle/arrow indicating that the datepicker can be opened.
+// We can do this entirely with CSS without needing to load an icon.
+// See https://css-tricks.com/snippets/css/css-triangle/
+$md-date-arrow-size: 5px;
+.md-datepicker-expand-triangle {
+  // Center the triangle inside of the button so that the
+  // ink ripple origin looks correct.
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 0;
+  height: 0;
+  border-left: $md-date-arrow-size solid transparent;
+  border-right: $md-date-arrow-size solid transparent;
+  border-top: $md-date-arrow-size solid rgba(black, 0.20);
+}
+
+// Button containing the down "disclosure" triangle/arrow.
+.md-datepicker-triangle-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  // TODO(jelbourn): This position isn't great on all platforms.
+  transform: translateY(-25%) translateX(45%);
+}
+
+// Need crazy specificity to override .md-button.md-icon-button.
+// Only apply this high specifiy to the property we need to override.
+.md-datepicker-triangle-button.md-button.md-icon-button {
+  height: 100%;
+  position: absolute;
+}
+
+// Disabled state for all elements of the picker.
+md-datepicker[disabled] {
+  .md-datepicker-input-container {
+    border-bottom-color: transparent;
+  }
+
+  .md-datepicker-triangle-button {
+    display: none;
+  }
+}
+
+// Open state for all of the elements of the picker.
+.md-datepicker-open {
+  .md-datepicker-input-container {
+    min-width: $md-calendar-width;
+    margin-left: -$md-datepicker-button-gap;
+    border: none;
+  }
+
+  .md-datepicker-input {
+    margin-left: 24px;
+    height: 40px;
+  }
+
+  .md-datepicker-triangle-button {
+    display: none;
+  }
+}
 
 $dialog-padding: $baseline-grid * 3;
 
@@ -5030,7 +5338,6 @@ $virtual-repeat-scrollbar-width: 16px;
     left: 0;
     margin: 0;
     overflow-x: hidden;
-    overflow-y: auto;
     padding: 0;
     position: absolute;
     right: 0;

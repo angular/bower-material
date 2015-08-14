@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-514927a
+ * v0.10.1-master-1d90ffa
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -41,6 +41,8 @@ function MdDialogDirective($$rAF, $mdTheming) {
   };
 }
 MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
+
+
 
 /**
  * @ngdoc service
@@ -425,7 +427,7 @@ function MdDialogProvider($$interimElementProvider) {
         '     ng-click="dialog.abort()" class="md-primary">',
         '     {{ dialog.cancel }}',
         '   </md-button>',
-        '   <md-button ng-click="dialog.hide()" class="md-primary">',
+        '   <md-button ng-click="dialog.hide()" class="md-primary" md-autofocus="dialog.$type!=\'confirm\'">',
         '     {{ dialog.ok }}',
         '   </md-button>',
         ' </div>',
@@ -465,7 +467,7 @@ function MdDialogProvider($$interimElementProvider) {
     /**
      * Show method for dialogs
      */
-    function onShow(scope, element, options) {
+    function onShow(scope, element, options, controller) {
       element = $mdUtil.extractElementByName(element, 'md-dialog');
       angular.element($document[0].body).addClass('md-dialog-is-showing');
 
@@ -486,13 +488,15 @@ function MdDialogProvider($$interimElementProvider) {
        */
       function focusOnOpen() {
         if (options.focusOnOpen) {
-          var target = (options.$type === 'alert') ? element.find('md-dialog-content') : findCloseButton();
+          var target = $mdUtil.findFocusTarget(element) || findCloseButton();
           target.focus();
         }
 
+        /**
+         *  If no element with class dialog-close, try to find the last
+         *  button child in md-actions and assume it is a close button
+         */
         function findCloseButton() {
-          //If no element with class dialog-close, try to find the last
-          //button child in md-actions and assume it is a close button
           var closeButton = element[0].querySelector('.dialog-close');
           if (!closeButton) {
             var actionButtons = element[0].querySelectorAll('.md-actions button');
@@ -545,6 +549,8 @@ function MdDialogProvider($$interimElementProvider) {
 
       // In case the user provides a raw dom element, always wrap it in jqLite
       options.parent = angular.element(options.parent || $rootElement);
+
+
 
     }
 

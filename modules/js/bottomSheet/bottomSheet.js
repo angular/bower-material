@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-514927a
+ * v0.10.1-master-1d90ffa
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -25,6 +25,7 @@ function MdBottomSheetDirective() {
     restrict: 'E'
   };
 }
+
 
 /**
  * @ngdoc service
@@ -148,7 +149,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
     };
 
 
-    function onShow(scope, element, options) {
+    function onShow(scope, element, options, controller) {
 
       element = $mdUtil.extractElementByName(element, 'md-bottom-sheet');
 
@@ -175,7 +176,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
 
       return $animate.enter(bottomSheet.element, options.parent)
         .then(function() {
-          var focusable = angular.element(
+          var focusable = $mdUtil.findFocusTarget(element) || angular.element(
             element[0].querySelector('button') ||
             element[0].querySelector('a') ||
             element[0].querySelector('[ng-click]')
