@@ -2495,16 +2495,6 @@ md-fab-toolbar {
 
   &.md-left {
     md-fab-trigger {
-      left: 0;
-    }
-
-    .md-toolbar-tools {
-      flex-direction: row;
-    }
-  }
-
-  &.md-right {
-    md-fab-trigger {
       right: 0;
     }
 
@@ -2512,11 +2502,11 @@ md-fab-toolbar {
       flex-direction: row-reverse;
 
       > .md-button:first-child {
-        margin-left: 0.6rem;
+        margin-right: 0.6rem;
       }
 
       > .md-button:first-child {
-        margin-right: -0.8rem;
+        margin-left: -0.8rem;
       }
 
 
@@ -2524,6 +2514,16 @@ md-fab-toolbar {
         margin-right: 8px;
       }
 
+    }
+  }
+
+  &.md-right {
+    md-fab-trigger {
+      left: 0;
+    }
+
+    .md-toolbar-tools {
+      flex-direction: row;
     }
   }
 

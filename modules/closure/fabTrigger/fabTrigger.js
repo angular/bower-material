@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-346198a
+ * v0.10.1-master-33815a7
  */
 goog.provide('ng.material.components.fabTrigger');
 goog.require('ng.material.core');
@@ -10,7 +10,7 @@ goog.require('ng.material.core');
   'use strict';
 
   angular
-    .module('material.components.fabTrigger', [ 'material.core' ])
+    .module('material.components.fabTrigger', ['material.core'])
     .directive('mdFabTrigger', MdFabTriggerDirective);
 
   /**
@@ -29,24 +29,12 @@ goog.require('ng.material.core');
    * See the `<md-fab-speed-dial>` or `<md-fab-toolbar>` directives for example usage.
    */
   function MdFabTriggerDirective() {
+    // TODO: Remove this completely?
     return {
       restrict: 'E',
 
-      require: ['^?mdFabSpeedDial', '^?mdFabToolbar'],
-
-      link: function(scope, element, attributes, controllers) {
-        // Grab whichever parent controller is used
-        var controller = controllers[0] || controllers[1];
-
-        // Make the children open/close their parent directive
-        if (controller) {
-          angular.forEach(element.children(), function(child) {
-            angular.element(child).on('focus', controller.open);
-            angular.element(child).on('blur', controller.close);
-          });
-        }
-      }
-    }
+      require: ['^?mdFabSpeedDial', '^?mdFabToolbar']
+    };
   }
 })();
 
