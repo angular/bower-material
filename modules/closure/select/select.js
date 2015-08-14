@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-cca1955
+ * v0.10.1-master-346198a
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -621,7 +621,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
     };
 
     function renderMultiple() {
-      var newSelectedValues = self.ngModel.$modelValue || self.ngModel.$viewValue;
+      var newSelectedValues = self.ngModel.$modelValue || self.ngModel.$viewValue || [];
       if (!angular.isArray(newSelectedValues)) return;
 
       var oldSelected = Object.keys(self.selected);
