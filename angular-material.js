@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-40c82a1
+ * v0.10.1-master-ca4f5a5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -8066,6 +8066,10 @@ MdDividerDirective.$inject = ["$mdTheming"];
 (function() {
   'use strict';
 
+  /**
+   * @ngdoc module
+   * @name material.components.fabActions
+   */
   angular
     .module('material.components.fabActions', ['material.core'])
     .directive('mdFabActions', MdFabActionsDirective);
@@ -8451,6 +8455,10 @@ MdDividerDirective.$inject = ["$mdTheming"];
 (function() {
   'use strict';
 
+  /**
+   * @ngdoc module
+   * @name material.components.fabSpeedDial
+   */
   angular
     // Declare our module
     .module('material.components.fabSpeedDial', [
@@ -8489,9 +8497,19 @@ MdDividerDirective.$inject = ["$mdTheming"];
    *    appropriate positions.
    *  - `md-scale` - The speed dial items appear in their proper places by scaling from 0% to 100%.
    *
+   * You may also easily position the trigger by applying one one of the following classes to the
+   * `<md-fab-speed-dial>` element:
+   *  - `md-fab-top-left`
+   *  - `md-fab-top-right`
+   *  - `md-fab-bottom-left`
+   *  - `md-fab-bottom-right`
+   *
+   * These CSS classes use `position: absolute`, so you need to ensure that the container element
+   * also uses `position: absolute` or `position: relative` in order for them to work.
+   *
    * @usage
    * <hljs lang="html">
-   * <md-fab-speed-dial direction="up" class="md-fling">
+   * <md-fab-speed-dial md-direction="up" class="md-fling">
    *   <md-fab-trigger>
    *     <md-button aria-label="Add..."><md-icon icon="/img/icons/plus.svg"></md-icon></md-button>
    *   </md-fab-trigger>
@@ -8650,6 +8668,10 @@ MdDividerDirective.$inject = ["$mdTheming"];
 (function() {
   'use strict';
 
+  /**
+   * @ngdoc module
+   * @name material.components.fabToolbar
+   */
   angular
     // Declare our module
     .module('material.components.fabToolbar', [
@@ -8681,10 +8703,20 @@ MdDividerDirective.$inject = ["$mdTheming"];
    * for quick access to common actions when a floating action button is activated (via click or
    * keyboard navigation).
    *
+   * You may also easily position the trigger by applying one one of the following classes to the
+   * `<md-fab-toolbar>` element:
+   *  - `md-fab-top-left`
+   *  - `md-fab-top-right`
+   *  - `md-fab-bottom-left`
+   *  - `md-fab-bottom-right`
+   *
+   * These CSS classes use `position: absolute`, so you need to ensure that the container element
+   * also uses `position: absolute` or `position: relative` in order for them to work.
+   *
    * @usage
    *
    * <hljs lang="html">
-   * <md-fab-toolbar>
+   * <md-fab-toolbar md-direction='left'>
    *   <md-fab-trigger>
    *     <md-button aria-label="Add..."><md-icon icon="/img/icons/plus.svg"></md-icon></md-button>
    *   </md-fab-trigger>
@@ -8850,6 +8882,10 @@ MdDividerDirective.$inject = ["$mdTheming"];
 (function() {
   'use strict';
 
+  /**
+   * @ngdoc module
+   * @name material.components.fabTrigger
+   */
   angular
     .module('material.components.fabTrigger', ['material.core'])
     .directive('mdFabTrigger', MdFabTriggerDirective);

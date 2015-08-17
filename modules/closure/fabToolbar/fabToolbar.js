@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-40c82a1
+ * v0.10.1-master-ca4f5a5
  */
 goog.provide('ng.material.components.fabToolbar');
 goog.require('ng.material.components.fabActions');
@@ -12,6 +12,10 @@ goog.require('ng.material.core');
 (function() {
   'use strict';
 
+  /**
+   * @ngdoc module
+   * @name material.components.fabToolbar
+   */
   angular
     // Declare our module
     .module('material.components.fabToolbar', [
@@ -43,10 +47,20 @@ goog.require('ng.material.core');
    * for quick access to common actions when a floating action button is activated (via click or
    * keyboard navigation).
    *
+   * You may also easily position the trigger by applying one one of the following classes to the
+   * `<md-fab-toolbar>` element:
+   *  - `md-fab-top-left`
+   *  - `md-fab-top-right`
+   *  - `md-fab-bottom-left`
+   *  - `md-fab-bottom-right`
+   *
+   * These CSS classes use `position: absolute`, so you need to ensure that the container element
+   * also uses `position: absolute` or `position: relative` in order for them to work.
+   *
    * @usage
    *
    * <hljs lang="html">
-   * <md-fab-toolbar>
+   * <md-fab-toolbar md-direction='left'>
    *   <md-fab-trigger>
    *     <md-button aria-label="Add..."><md-icon icon="/img/icons/plus.svg"></md-icon></md-button>
    *   </md-fab-trigger>
