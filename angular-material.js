@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-b6e1098
+ * v0.10.1-master-dc5357d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -18612,6 +18612,11 @@ MdContactChipsCtrl.prototype.queryContact = function(searchText) {
 };
 
 
+MdContactChipsCtrl.prototype.itemName = function(item) {
+  return item[this.contactName];
+};
+
+
 MdContactChipsCtrl.prototype.filterSelectedContacts = function(contact) {
   return this.contacts.indexOf(contact) == -1;
 };
@@ -18680,7 +18685,7 @@ MdContactChipsCtrl.prototype.filterSelectedContacts = function(contact) {
               md-selected-item="$mdContactChipsCtrl.selectedItem"\
               md-search-text="$mdContactChipsCtrl.searchText"\
               md-items="item in $mdContactChipsCtrl.queryContact($mdContactChipsCtrl.searchText)"\
-              md-item-text="$mdContactChipsCtrl.mdContactName"\
+              md-item-text="$mdContactChipsCtrl.itemName(item)"\
               md-no-cache="true"\
               md-autoselect\
               placeholder="{{$mdContactChipsCtrl.contacts.length == 0 ?\
