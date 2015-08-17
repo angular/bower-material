@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-70c0c6e
+ * v0.10.1-master-e92dd26
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 /**
@@ -2479,18 +2479,18 @@ input[type="search"] {
 
 .md-ripple {
   position: absolute;
-  -webkit-transform: scale(0);
-          transform: scale(0);
+  -webkit-transform: translate(-50%, -50%) scale(0);
+          transform: translate(-50%, -50%) scale(0);
   -webkit-transform-origin: 50% 50%;
           transform-origin: 50% 50%;
   opacity: 0;
   border-radius: 50%; }
   .md-ripple.md-ripple-placed {
-    transition: left 1.8s cubic-bezier(0.25, 0.8, 0.25, 1), top 1.8s cubic-bezier(0.25, 0.8, 0.25, 1), margin 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), border 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), width 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), height 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 1.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition: left 1.8s cubic-bezier(0.25, 0.8, 0.25, 1), top 1.8s cubic-bezier(0.25, 0.8, 0.25, 1), margin 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), border 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), width 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), height 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), transform 1.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    transition: margin 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), border 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 0.9s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: margin 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), border 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.9s cubic-bezier(0.25, 0.8, 0.25, 1); }
   .md-ripple.md-ripple-scaled {
-    -webkit-transform: scale(1);
-            transform: scale(1); }
+    -webkit-transform: translate(-50%, -50%) scale(1);
+            transform: translate(-50%, -50%) scale(1); }
   .md-ripple.md-ripple-active, .md-ripple.md-ripple-full, .md-ripple.md-ripple-visible {
     opacity: 0.20; }
 
