@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-f491e6d
+ * v0.10.1-master-70c0c6e
  */
 goog.provide('ng.material.components.slider');
 goog.require('ng.material.core');
