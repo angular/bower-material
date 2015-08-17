@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-8abaf3c
+ * v0.10.1-master-b6e1098
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 /**
@@ -90,3 +90,18 @@ md-toolbar {
   @media screen and (-ms-high-contrast: active) {
     .md-toolbar-tools {
       border-bottom: 1px solid #fff; } }
+
+@media only screen and (min-width: 0) and (max-width: 600px) and (orientation: portrait) {
+  md-toolbar {
+    background: green;
+    min-height: 56px; }
+  .md-toolbar-tools {
+    height: 56px;
+    max-height: 56px; } }
+
+@media only screen and (min-width: 0) and (max-width: 600px) and (orientation: landscape) {
+  md-toolbar {
+    min-height: 48px; }
+  .md-toolbar-tools {
+    height: 48px;
+    max-height: 48px; } }
