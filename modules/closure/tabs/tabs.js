@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-f38ada4
+ * v0.10.1-master-136486f
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -127,8 +127,7 @@ function MdTab () {
 
   function postLink (scope, element, attr, ctrl) {
     if (!ctrl) return;
-    var tabs  = element.parent()[ 0 ].getElementsByTagName('md-tab'),
-        index = Array.prototype.indexOf.call(tabs, element[ 0 ]),
+    var index = ctrl.getTabElementIndex(element),
         body  = element.find('md-tab-body').eq(0).remove(),
         label = element.find('md-tab-label').eq(0).remove(),
         data  = ctrl.insertTab({
@@ -147,7 +146,7 @@ function MdTab () {
     scope.$watch('disabled', function () { ctrl.refreshIndex(); });
     scope.$watch(
         function () {
-          return Array.prototype.indexOf.call(tabs, element[ 0 ]);
+          return ctrl.getTabElementIndex(element);
         },
         function (newIndex) {
           data.index = newIndex;
@@ -261,6 +260,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   ctrl.canPageBack        = canPageBack;
   ctrl.refreshIndex       = refreshIndex;
   ctrl.incrementIndex     = incrementIndex;
+  ctrl.getTabElementIndex = getTabElementIndex;
   ctrl.updateInkBarStyles = $mdUtil.debounce(updateInkBarStyles, 100);
   ctrl.updateTabOrder     = $mdUtil.debounce(updateTabOrder, 100);
 
@@ -416,7 +416,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    */
   function handleSelectedIndexChange (newValue, oldValue) {
     if (newValue === oldValue) return;
-
+    
     ctrl.selectedIndex     = getNearestSafeIndex(newValue);
     ctrl.lastSelectedIndex = oldValue;
     ctrl.updateInkBarStyles();
@@ -425,6 +425,11 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
     $scope.$broadcast('$mdTabsChanged');
     ctrl.tabs[ oldValue ] && ctrl.tabs[ oldValue ].scope.deselect();
     ctrl.tabs[ newValue ] && ctrl.tabs[ newValue ].scope.select();
+  }
+
+  function getTabElementIndex(tabEl){
+    var tabs = $element[0].getElementsByTagName('md-tab');
+    return Array.prototype.indexOf.call(tabs, tabEl[0]);
   }
 
   /**
