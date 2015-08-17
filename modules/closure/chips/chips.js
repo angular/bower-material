@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-7b3a690
+ * v0.10.1-master-40c82a1
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.components.autocomplete');
@@ -633,9 +633,9 @@ MdChipsCtrl.prototype.hasFocus = function () {
    *    the input and delete buttons
    * @param {expression} md-on-append An expression expected to convert the input string into an
    *    object when adding a chip.
-   * @param {expression} md-on-remove An expression which will be called when a chip has been
+   * @param {expression=} md-on-remove An expression which will be called when a chip has been
    *    removed.
-   * @param {expression} md-on-select An expression which will be called when a chip is selected.
+   * @param {expression=} md-on-select An expression which will be called when a chip is selected.
    * @param {string=} delete-hint A string read by screen readers instructing users that pressing
    *    the delete key will remove the chip.
    * @param {string=} delete-button-label A label for the delete button. Also hidden and read by

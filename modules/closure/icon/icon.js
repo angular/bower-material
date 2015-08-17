@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-7b3a690
+ * v0.10.1-master-40c82a1
  */
 goog.provide('ng.material.components.icon');
 goog.require('ng.material.core');
