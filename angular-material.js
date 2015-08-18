@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-e6657c9
+ * v0.10.1-master-cc95924
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -11690,12 +11690,15 @@ function MenuProvider($$interimElementProvider) {
             switch (ev.keyCode) {
               case keyCodes.ESCAPE:
                 opts.mdMenuCtrl.close();
+                ev.stopPropagation();
                 break;
               case keyCodes.UP_ARROW:
                 focusMenuItem(ev, opts.menuContentEl, opts, -1);
+                ev.stopPropagation();
                 break;
               case keyCodes.DOWN_ARROW:
                 focusMenuItem(ev, opts.menuContentEl, opts, 1);
+                ev.stopPropagation();
                 break;
             }
           });
