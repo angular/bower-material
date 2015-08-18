@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-cc95924
+ * v0.10.1-master-e2a8f29
  */
 goog.provide('ng.material.components.icon');
 goog.require('ng.material.core');
@@ -666,10 +666,8 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
      if ( urlRegex.test(id)     ) return loadByURL(id).then( cacheIcon(id) );
      if ( id.indexOf(':') == -1 ) id = '$default:' + id;
 
-     return loadByID(id)
-         .catch(loadFromIconSet)
-         .catch(announceIdNotFound)
-         .catch(announceNotFound)
+     var load = config[id] ? loadByID : loadFromIconSet;
+     return load(id)
          .then( cacheIcon(id) );
    }
 
@@ -707,9 +705,8 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
     *
     */
    function loadByID(id) {
-     var iconConfig = config[id];
-
-     return !iconConfig ? $q.reject(id) : loadByURL(iconConfig.url).then(function(icon) {
+    var iconConfig = config[id];
+     return loadByURL(iconConfig.url).then(function(icon) {
        return new Icon(icon, iconConfig);
      });
    }
@@ -722,12 +719,19 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
      var setName = id.substring(0, id.lastIndexOf(':')) || '$default';
      var iconSetConfig = config[setName];
 
-     return !iconSetConfig ? $q.reject(id) : loadByURL(iconSetConfig.url).then(extractFromSet);
+     return !iconSetConfig ? announceIdNotFound(id) : loadByURL(iconSetConfig.url).then(extractFromSet);
 
      function extractFromSet(set) {
        var iconName = id.slice(id.lastIndexOf(':') + 1);
        var icon = set.querySelector('#' + iconName);
-       return !icon ? $q.reject(id) : new Icon(icon, iconSetConfig);
+       return !icon ? announceIdNotFound(id) : new Icon(icon, iconSetConfig);
+     }
+
+     function announceIdNotFound(id) {
+       var msg = 'icon ' + id + ' not found';
+      $log.warn(msg);
+
+       return $q.reject(msg || id);
      }
    }
 
@@ -740,22 +744,7 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
        .get(url, { cache: $templateCache })
        .then(function(response) {
          return angular.element('<div>').append(response.data).find('svg')[0];
-       });
-   }
-
-   /**
-    * User did not specify a URL and the ID has not been registered with the $mdIcon
-    * registry
-    */
-   function announceIdNotFound(id) {
-     var msg;
-
-     if (angular.isString(id)) {
-       msg = 'icon ' + id + ' not found';
-       $log.warn(msg);
-     }
-
-     return $q.reject(msg || id);
+       }).catch(announceNotFound);
    }
 
    /**
