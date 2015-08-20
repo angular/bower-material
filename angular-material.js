@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-da7d8f6
+ * v0.10.1-master-18458b7
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -6843,8 +6843,11 @@ function iosScrollFix(node) {
 
     self.$scope.$on('md-calendar-change', function(event, date) {
       self.ngModelCtrl.$setViewValue(date);
+      self.date = date;
       self.inputElement.value = self.dateLocale.formatDate(date);
       self.closeCalendarPane();
+      self.resizeInputElement();
+      self.inputContainer.classList.remove(INVALID_CLASS);
     });
 
     var ngElement = angular.element(self.inputElement);
@@ -6923,7 +6926,6 @@ function iosScrollFix(node) {
       this.ngModelCtrl.$setViewValue(parsedDate);
       this.date = parsedDate;
       this.inputContainer.classList.remove(INVALID_CLASS);
-      this.$scope.$apply();
     } else {
       // If there's an input string, it's an invalid date.
       this.inputContainer.classList.toggle(INVALID_CLASS, inputString);
