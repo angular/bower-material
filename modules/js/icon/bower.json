@@ -1,7 +1,7 @@
 {
   "name": "angular-material-icon",
-  "version": "0.10.1-master-8c71d0c",
+  "version": "0.10.1-master-da7d8f6",
   "dependencies": {
-    "angular-material-core": "0.10.1-master-8c71d0c"
+    "angular-material-core": "0.10.1-master-da7d8f6"
   }
 }

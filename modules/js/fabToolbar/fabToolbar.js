@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-8c71d0c
+ * v0.10.1-master-da7d8f6
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -88,7 +88,7 @@
       '</div>',
 
       scope: {
-        direction: '=?mdDirection',
+        direction: '@?mdDirection',
         isOpen: '=?mdOpen'
       },
 

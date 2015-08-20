@@ -197,17 +197,34 @@ $button-fab-padding: rem(1.60) !default;
 }
 
 
-/* mixin definition ; sets LTR and RTL within the same style call */
+// mixin definition ; sets LTR and RTL within the same style call
+// @see https://css-tricks.com/almanac/properties/d/direction/
+
 @mixin rtl($prop, $value, $rtl-value) {
   #{$prop}: $value;
+
   html[dir=rtl] & {
     #{$prop}: $rtl-value;
+    unicode-bidi: embed;
   }
+  body[dir=rtl] & {
+    #{$prop}: $rtl-value;
+    unicode-bidi: embed;
+  }
+
+  bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+  }
+  bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override;
+  }
+
+
 }
 
-/**
- * Position a FAB button.
- */
+// Position a FAB button.
 @mixin fab-position($spot, $top: auto, $right: auto, $bottom: auto, $left: auto) {
   &.md-fab-#{$spot} {
     top: $top;
@@ -1364,11 +1381,6 @@ $icon-button-margin: rem(0.600) !default;
   transition: box-shadow $swift-ease-out-duration $swift-ease-out-timing-function,
               background-color $swift-ease-out-duration $swift-ease-out-timing-function;
 
-  *,
-  *:before,
-  *:after {
-    box-sizing: border-box;
-  }
   &:focus {
     outline: none;
   }
@@ -1598,12 +1610,6 @@ md-checkbox {
   min-width: $checkbox-width;
   min-height: $checkbox-width;
 
-  *,
-  *:before,
-  *:after {
-    box-sizing: border-box;
-  }
-
   &.md-focused:not([disabled]) {
     .md-container:before {
       left: -8px;
@@ -1623,13 +1629,17 @@ md-checkbox {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+
+    box-sizing: border-box;
     display: inline-block;
+
     width: $checkbox-width;
     height: $checkbox-height;
     @include rtl(left, 0, auto);
     @include rtl(right, auto, 0);
 
     &:before {
+      box-sizing: border-box;
       background-color: transparent;
       border-radius: 50%;
       content: '';
@@ -1645,6 +1655,7 @@ md-checkbox {
     }
 
     &:after {
+      box-sizing: border-box;
       content: '';
       position: absolute;
       top: -10px;
@@ -1671,6 +1682,7 @@ md-checkbox {
 
   // unchecked
   .md-icon {
+    box-sizing: border-box;
     transition: 240ms;
     position: absolute;
     top: 0;
@@ -1693,6 +1705,7 @@ md-checkbox {
 
 
   &.md-checked .md-icon:after {
+    box-sizing: border-box;
     transform: rotate(45deg);
     position: absolute;
     left: $checkbox-width / 3;
@@ -1708,6 +1721,7 @@ md-checkbox {
   }
 
   .md-label {
+    box-sizing: border-box;
     position: relative;
     display: inline-block;
     vertical-align: middle;
@@ -3737,17 +3751,8 @@ md-radio-button,
   white-space: nowrap;
   cursor: pointer;
 
-  *,
-  *:before,
-  *:after {
-    box-sizing: border-box;
-  }
-
-  input {
-    display: none;
-  }
-
   .md-container {
+    box-sizing: border-box;
     position: relative;
     top: 4px;
     display: inline-block;
@@ -3765,6 +3770,7 @@ md-radio-button,
     }
 
     &:before {
+      box-sizing: border-box;
       background-color: transparent;
       border-radius: 50%;
       content: '';
@@ -3785,6 +3791,7 @@ md-radio-button,
    }
 
   .md-off {
+    box-sizing: border-box;
     position: absolute;
     top: 0;
     left: 0;
@@ -3797,6 +3804,7 @@ md-radio-button,
   }
 
   .md-on {
+    box-sizing: border-box;
     position: absolute;
     top: 0;
     left: 0;
@@ -3812,6 +3820,7 @@ md-radio-button,
   }
 
   .md-label {
+    box-sizing: border-box;
     position: relative;
     display: inline-block;
 
@@ -4078,12 +4087,6 @@ md-sidenav {
   bottom: 0;
   background-color: white;
   overflow: auto;
-
-  *,
-  *:before,
-  *:after {
-    box-sizing: border-box;
-  }
 
   ul {
     list-style: none;
@@ -4371,10 +4374,9 @@ md-slider {
   }
   .md-focus-ring {
     @include slider-thumb-position($slider-focus-thumb-width, $slider-focus-thumb-height);
-    border: 2px solid #D6D6D6;
-    background-color: transparent;
     transform: scale(0);
     transition: all 0.2s linear;
+    opacity: 0.26;
   }
   .md-disabled-thumb {
     @include slider-thumb-position(
@@ -4523,6 +4525,39 @@ $subheader-sticky-shadow: 0px 2px 4px 0 rgba(0,0,0,0.16) !default;
   }
 }
 
+.md-subheader-wrapper {
+
+  &:not(.md-sticky-no-effect) {
+    .md-subheader {
+      margin: 0;
+    }
+
+    .md-subheader:after {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      top: 0;
+      right: -$subheader-margin-right;
+      content: '';
+    }
+
+    transition: 0.2s ease-out margin;
+
+    &.md-sticky-clone {
+      z-index: 2;
+    }
+
+    &[sticky-state="active"] {
+      margin-top: -2px;
+    }
+
+    &:not(.md-sticky-clone)[sticky-prev-state="active"] .md-subheader-inner:after {
+      animation: subheaderStickyHoverOut 0.3s ease-out both;
+    }
+  }
+
+}
+
 .md-subheader {
   display: block;
   font-size: $subheader-font-size;
@@ -4534,28 +4569,6 @@ $subheader-sticky-shadow: 0px 2px 4px 0 rgba(0,0,0,0.16) !default;
 
   .md-subheader-inner {
     padding: $subheader-padding;
-  }
-
-  &:not(.md-sticky-no-effect) {
-    &:after {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      top: 0;
-      right: -$subheader-margin-right;
-      content: '';
-    }
-
-    transition: 0.2s ease-out margin;
-    &.md-sticky-clone {
-      z-index: 2;
-    }
-    &[sticky-state="active"] {
-      margin-top: -2px;
-    }
-    &:not(.md-sticky-clone)[sticky-prev-state="active"] .md-subheader-inner:after {
-      animation: subheaderStickyHoverOut 0.3s ease-out both;
-    }
   }
 
   .md-subheader-content {

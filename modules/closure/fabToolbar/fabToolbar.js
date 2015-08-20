@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-8c71d0c
+ * v0.10.1-master-da7d8f6
  */
 goog.provide('ng.material.components.fabToolbar');
 goog.require('ng.material.components.fabActions');
@@ -90,7 +90,7 @@ goog.require('ng.material.core');
       '</div>',
 
       scope: {
-        direction: '=?mdDirection',
+        direction: '@?mdDirection',
         isOpen: '=?mdOpen'
       },
 

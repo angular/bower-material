@@ -2,11 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-8c71d0c
- */
-/* mixin definition ; sets LTR and RTL within the same style call */
-/**
- * Position a FAB button.
+ * v0.10.1-master-da7d8f6
  */
 @-webkit-keyframes sliderFocusThumb {
   0% {
@@ -21,6 +17,7 @@
 
   100% {
     opacity: 0; } }
+
 @keyframes sliderFocusThumb {
   0% {
     opacity: 0;
@@ -162,11 +159,10 @@ md-slider {
     width: 48px;
     height: 48px;
     border-radius: 48px;
-    border: 2px solid #D6D6D6;
-    background-color: transparent;
     -webkit-transform: scale(0);
             transform: scale(0);
-    transition: all 0.2s linear; }
+    transition: all 0.2s linear;
+    opacity: 0.26; }
   md-slider .md-disabled-thumb {
     position: absolute;
     left: -22px;

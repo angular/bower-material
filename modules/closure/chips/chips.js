@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-8c71d0c
+ * v0.10.1-master-da7d8f6
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.components.autocomplete');
@@ -154,6 +154,7 @@ function MdChipTransclude ($compile) {
         newScope = ctrl.parent.$new(false, ctrl.parent);
     newScope.$$replacedScope = scope;
     newScope.$chip = scope.$chip;
+    newScope.$index = scope.$index;
     newScope.$mdChipsCtrl = ctrl;
 
     var newHtml = ctrl.$scope.$eval(attr.mdChipTransclude);

@@ -2,11 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-8c71d0c
- */
-/* mixin definition ; sets LTR and RTL within the same style call */
-/**
- * Position a FAB button.
+ * v0.10.1-master-da7d8f6
  */
 /* Sizes:
   0    <= size < 600  Phone
@@ -2378,18 +2374,6 @@
   [layout="column"] > [flex-gt-lg="66"], [layout="column"] > [flex-gt-lg="67"] {
     max-height: 66.66%; } }
 
-/* mixin definition ; sets LTR and RTL within the same style call */
-/**
- * Position a FAB button.
- */
-/* mixin definition ; sets LTR and RTL within the same style call */
-/**
- * Position a FAB button.
- */
-/* mixin definition ; sets LTR and RTL within the same style call */
-/**
- * Position a FAB button.
- */
 html, body {
   height: 100%;
   color: rgba(0, 0, 0, 0.87);
@@ -2521,10 +2505,6 @@ input[type="search"] {
   .md-padding {
     padding: 16px; } }
 
-/* mixin definition ; sets LTR and RTL within the same style call */
-/**
- * Position a FAB button.
- */
 html, body {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
@@ -2605,8 +2585,3 @@ button, select, html, textarea, input {
 
 select, button, textarea, input {
   font-size: 100%; }
-
-/* mixin definition ; sets LTR and RTL within the same style call */
-/**
- * Position a FAB button.
- */

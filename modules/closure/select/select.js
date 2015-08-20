@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-8c71d0c
+ * v0.10.1-master-da7d8f6
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -1122,6 +1122,7 @@ function SelectProvider($$interimElementProvider) {
 
         function checkCloseMenu(ev) {
           if (ev && ( ev.type == 'mouseup') && (ev.currentTarget != dropDown[0])) return;
+          if ( mouseOnScrollbar() ) return;
 
           if (!selectCtrl.isMultiple) {
             opts.restoreFocus = true;
@@ -1129,6 +1130,23 @@ function SelectProvider($$interimElementProvider) {
             $mdUtil.nextTick(function() {
               $mdSelect.hide(selectCtrl.ngModel.$viewValue);
             }, true);
+          }
+
+          /**
+           * check if the mouseup event was on a scrollbar
+           */
+          function mouseOnScrollbar() {
+            var clickOnScrollbar = false;
+            if(ev.currentTarget.children.length > 0) {
+              var child = ev.currentTarget.children[0];
+              var hasScrollbar = child.scrollHeight > child.clientHeight;
+              if (hasScrollbar && child.children.length > 0) {
+                var relPosX = ev.pageX - ev.currentTarget.getBoundingClientRect().left;
+                if(relPosX > child.children[0].offsetWidth)
+                  clickOnScrollbar = true;
+              }
+            }
+            return clickOnScrollbar;
           }
         }
       }

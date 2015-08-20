@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-8c71d0c
+ * v0.10.1-master-da7d8f6
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -174,6 +174,7 @@ function inputTextareaDirective($mdUtil, $window, $mdAria) {
   function postLink(scope, element, attr, ctrls) {
 
     var containerCtrl = ctrls[0];
+    var hasNgModel = !!ctrls[1];
     var ngModelCtrl = ctrls[1] || $mdUtil.fakeNgModel();
     var isReadonly = angular.isDefined(attr.readonly);
 
@@ -194,6 +195,13 @@ function inputTextareaDirective($mdUtil, $window, $mdAria) {
 
     if (element[0].tagName.toLowerCase() === 'textarea') {
       setupTextarea();
+    }
+
+    // If the input doesn't have an ngModel, it may have a static value. For that case,
+    // we have to do one initial check to determine if the container should be in the
+    // "has a value" state.
+    if (!hasNgModel) {
+      inputCheckValue();
     }
 
     var isErrorGetter = containerCtrl.isErrorGetter || function() {
