@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-5d03df8
+ * v0.10.1-master-c9f2b9f
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -672,7 +672,7 @@ function OptionDirective($mdButtonInkRipple, $mdUtil) {
     if (angular.isDefined(attr.ngValue)) {
       scope.$watch(attr.ngValue, setOptionValue);
     } else if (angular.isDefined(attr.value)) {
-      setOptionValue(attr.value);
+      setOptionValue(isNaN(attr.value) ? attr.value : Number(attr.value));
     } else {
       scope.$watch(function() {
         return element.text();
