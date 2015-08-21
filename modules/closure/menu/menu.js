@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-af3ef52
+ * v0.10.1-master-90efac6
  */
 goog.provide('ng.material.components.menu');
 goog.require('ng.material.components.backdrop');
@@ -148,7 +148,7 @@ function MenuDirective($mdMenu, $mdUtil, $timeout) {
   var INVALID_PREFIX = 'Invalid HTML for md-menu: ';
   return {
     restrict: 'E',
-    require: ['mdMenu', '?mdMenuBar'],
+    require: ['mdMenu', '?^mdMenuBar'],
     controller: 'mdMenuCtrl', // empty function to be built by link
     scope: true,
     compile: compile
@@ -191,6 +191,7 @@ function MenuDirective($mdMenu, $mdUtil, $timeout) {
 
   function link(scope, element, attrs, ctrls) {
     var mdMenuCtrl = ctrls[0];
+    debugger;
     var isInMenuBar = ctrls[1] != undefined;
     // Move everything into a md-menu-container and pass it to the controller
     var menuContainer = angular.element(

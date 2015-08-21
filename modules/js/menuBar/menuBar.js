@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-af3ef52
+ * v0.10.1-master-90efac6
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -88,7 +88,7 @@
  * <hljs lang="html">
  * <md-menu-item>
  *   <md-menu>
- *     <md-button ng-click="$mdOpenMenu()">New</md-button>
+ *     <button ng-click="$mdOpenMenu()">New</md-button>
  *     <md-menu-content>
  *       <md-menu-item><md-button ng-click="ctrl.sampleAction('New Document', $event)">Document</md-button></md-menu-item>
  *       <md-menu-item><md-button ng-click="ctrl.sampleAction('New Spreadsheet', $event)">Spreadsheet</md-button></md-menu-item>
@@ -304,7 +304,8 @@ MenuBarCtrl.prototype.openFocusedMenu = function() {
 
 MenuBarCtrl.prototype.getMenus = function() {
   var $element = this.$element;
-  return this.$mdUtil.nodesToArray($element[0].querySelectorAll('md-menu'));
+  return this.$mdUtil.nodesToArray($element[0].children)
+    .filter(function(el) { return el.nodeName == 'MD-MENU'; });
 };
 
 MenuBarCtrl.prototype.getFocusedMenu = function() {
