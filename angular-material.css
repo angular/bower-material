@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-c9f2b9f
+ * v0.10.1-master-e22cd6b
  */
 html, body {
   height: 100%;
@@ -2813,6 +2813,7 @@ md-backdrop {
   left: 0;
   right: 0; }
   md-backdrop.md-menu-backdrop {
+    position: fixed !important;
     z-index: 98; }
   md-backdrop.md-select-backdrop {
     z-index: 81;
@@ -4439,8 +4440,7 @@ md-list-item.md-3-line > md-icon:first-child, md-list-item.md-3-line > .md-avata
   top: 0;
   z-index: 99;
   opacity: 0;
-  border-radius: 2px;
-  overflow: hidden; }
+  border-radius: 2px; }
   .md-open-menu-container md-menu-divider {
     margin-top: 4px;
     margin-bottom: 4px;
@@ -4477,7 +4477,8 @@ md-menu-content {
   md-menu-content.md-dense {
     max-height: 208px; }
     md-menu-content.md-dense md-menu-item {
-      height: 32px; }
+      height: 32px;
+      min-height: 0px; }
 
 md-menu-item {
   display: -webkit-flex;
@@ -4560,6 +4561,86 @@ md-toolbar .md-menu {
     min-width: 384px; }
   md-menu-content[width="7"] {
     min-width: 448px; } }
+
+md-toolbar.md-menu-toolbar h2.md-toolbar-tools {
+  line-height: 1rem;
+  height: auto;
+  padding: 28px;
+  padding-bottom: 12px; }
+
+md-menu-bar {
+  padding: 0 20px;
+  display: block;
+  position: relative;
+  z-index: 2; }
+  md-menu-bar .md-menu {
+    display: inline-block;
+    padding: 0;
+    position: relative; }
+  md-menu-bar button {
+    font-size: 14px;
+    padding: 0 10px;
+    margin: 0;
+    border: 0;
+    background-color: transparent;
+    height: 40px; }
+  md-menu-bar md-backdrop.md-menu-backdrop {
+    z-index: -2; }
+
+md-menu-content.md-menu-bar-menu.md-dense {
+  max-height: none;
+  padding: 16px 0; }
+  md-menu-content.md-menu-bar-menu.md-dense md-menu-item.md-indent {
+    position: relative; }
+    md-menu-content.md-menu-bar-menu.md-dense md-menu-item.md-indent > md-icon {
+      position: absolute;
+      padding: 0;
+      width: 24px;
+      top: 6px;
+      left: 24px; }
+    md-menu-content.md-menu-bar-menu.md-dense md-menu-item.md-indent > .md-button, md-menu-content.md-menu-bar-menu.md-dense md-menu-item.md-indent .md-menu > .md-button {
+      padding: 0 32px 0 64px; }
+  md-menu-content.md-menu-bar-menu.md-dense .md-button {
+    min-height: 0;
+    height: 32px;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+    md-menu-content.md-menu-bar-menu.md-dense .md-button span {
+      -webkit-flex-grow: 1;
+          -ms-flex-positive: 1;
+              flex-grow: 1; }
+    md-menu-content.md-menu-bar-menu.md-dense .md-button span.md-alt-text {
+      -webkit-flex-grow: 0;
+          -ms-flex-positive: 0;
+              flex-grow: 0;
+      -webkit-align-self: flex-end;
+          -ms-flex-item-align: end;
+              align-self: flex-end;
+      margin: 0 8px; }
+  md-menu-content.md-menu-bar-menu.md-dense md-menu-divider {
+    margin: 8px 0; }
+  md-menu-content.md-menu-bar-menu.md-dense .md-menu {
+    padding: 0; }
+    md-menu-content.md-menu-bar-menu.md-dense .md-menu > .md-button {
+      position: relative;
+      margin: 0;
+      width: 100%;
+      text-align: left;
+      text-align: start;
+      text-transform: none;
+      font-weight: normal;
+      border-radius: 0px;
+      padding-left: 16px; }
+      md-menu-content.md-menu-bar-menu.md-dense .md-menu > .md-button:after {
+        display: block;
+        content: '\25BC';
+        position: absolute;
+        top: 0px;
+        speak: none;
+        -webkit-transform: rotate(270deg) scaleY(0.45) scaleX(0.9);
+                transform: rotate(270deg) scaleY(0.45) scaleX(0.9);
+        right: 28px; }
 
 @-webkit-keyframes outer-rotate {
   100% {
@@ -7443,6 +7524,10 @@ md-toolbar {
   width: 100%; }
   md-toolbar.md-whiteframe-z1-add, md-toolbar.md-whiteframe-z1-remove {
     transition: box-shadow 0.5s linear; }
+  md-toolbar md-toolbar-filler {
+    width: 72px; }
+  md-toolbar *, md-toolbar *:before, md-toolbar *:after {
+    box-sizing: border-box; }
   md-toolbar.md-tall {
     height: 128px;
     min-height: 128px;
@@ -7455,7 +7540,7 @@ md-toolbar {
       height: 48px;
       min-height: 48px;
       max-height: 48px; }
-  md-toolbar .md-indent {
+  md-toolbar > .md-indent {
     margin-left: 64px; }
   md-toolbar ~ md-content > md-list {
     padding: 0; }

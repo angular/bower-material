@@ -1096,6 +1096,7 @@ md-autocomplete {
 md-backdrop {
   z-index: $z-index-backdrop;
   &.md-menu-backdrop {
+    position: fixed !important;
     z-index: $z-index-menu - 1;
   }
   &.md-select-backdrop {
@@ -3258,7 +3259,6 @@ $max-dense-menu-height: 2 * $baseline-grid + $max-visible-items * $dense-menu-it
   z-index: $z-index-menu;
   opacity: 0;
   border-radius: $menu-border-radius;
-  overflow: hidden;
 
   md-menu-divider {
     margin-top: $baseline-grid / 2;
@@ -3306,6 +3306,7 @@ md-menu-content {
     max-height: $max-dense-menu-height;
     md-menu-item {
       height: $dense-menu-item-height;
+      min-height: 0px;
     }
   }
 }
@@ -3381,6 +3382,97 @@ md-toolbar {
   @for $i from 3 through 7 {
     md-menu-content[width="#{$i}"] {
       min-width: $i * 64px;
+    }
+  }
+}
+
+md-toolbar.md-menu-toolbar {
+  h2.md-toolbar-tools {
+    line-height: 1rem;
+    height: auto;
+    padding: 3.5 * $baseline-grid;
+    padding-bottom: 1.5 * $baseline-grid;
+  }
+}
+
+md-menu-bar {
+  padding: 0 2.5 * $baseline-grid;
+  display: block;
+  position: relative;
+  z-index: 2;
+  .md-menu {
+    display: inline-block;
+    padding: 0;
+    position: relative;
+  }
+  button {
+    font-size: rem(1.4);
+    padding: 0 1.25 * $baseline-grid;
+    margin: 0;
+    border: 0;
+    background-color: transparent;
+    height: 5 * $baseline-grid;
+  }
+
+  md-backdrop.md-menu-backdrop {
+    z-index: -2;
+  }
+}
+
+md-menu-content.md-menu-bar-menu.md-dense {
+  max-height: none;
+  padding: 2 * $baseline-grid 0;
+  md-menu-item.md-indent {
+    position: relative;
+    > md-icon {
+      position: absolute;
+      padding: 0;
+      width: 24px;
+      top: 0.75 * $baseline-grid;
+      left: 3 * $baseline-grid;
+    }
+    > .md-button, .md-menu > .md-button {
+      padding: 0 4 * $baseline-grid 0 8 * $baseline-grid;
+    }
+  }
+  .md-button {
+    min-height: 0;
+    height: 4 * $baseline-grid;
+    display: flex;
+    span {
+      flex-grow: 1;
+    }
+    span.md-alt-text {
+      flex-grow: 0;
+      align-self: flex-end;
+      margin: 0 $baseline-grid;
+    }
+  }
+  md-menu-divider {
+    margin: $baseline-grid 0;
+  }
+
+  .md-menu {
+    padding: 0;
+    > .md-button {
+      position: relative;
+      margin: 0;
+      width: 100%;
+      text-align: left;
+      text-align: start;
+      text-transform: none;
+      font-weight: normal;
+      border-radius: 0px;
+      padding-left: 2 * $baseline-grid;
+      &:after {
+        display: block;
+        content: '\25BC';
+        position: absolute;
+        top: 0px;
+        speak: none;
+        transform: rotate(270deg) scaleY(0.45) scaleX(0.9);
+        right: 3.5 * $baseline-grid;
+      }
     }
   }
 }
@@ -5209,6 +5301,16 @@ md-toolbar {
     transition: box-shadow $swift-ease-in-out-duration linear;
   }
 
+  md-toolbar-filler {
+    width: 9 * $baseline-grid;
+  }
+
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
   &.md-tall {
     height: $toolbar-tall-height;
     min-height: $toolbar-tall-height;
@@ -5227,7 +5329,7 @@ md-toolbar {
     }
   }
 
-  .md-indent {
+  > .md-indent {
     margin-left: $toolbar-indent-margin;
   }
 

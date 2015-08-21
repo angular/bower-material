@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-c9f2b9f
+ * v0.10.1-master-e22cd6b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -125,7 +125,7 @@ function MdButtonDirective($mdButtonInkRipple, $mdTheming, $mdAria, $timeout) {
         }, 100);
       })
       .on('focus', function() {
-        if(scope.mouseActive === false) { element.addClass('md-focused'); }
+        if (scope.mouseActive === false) { element.addClass('md-focused'); }
       })
       .on('blur', function() { element.removeClass('md-focused'); });
   }
