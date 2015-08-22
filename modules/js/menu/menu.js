@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-5207164
+ * v0.10.1-master-2fe726c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -191,7 +191,6 @@ function MenuDirective($mdMenu, $mdUtil, $timeout) {
 
   function link(scope, element, attrs, ctrls) {
     var mdMenuCtrl = ctrls[0];
-    debugger;
     var isInMenuBar = ctrls[1] != undefined;
     // Move everything into a md-menu-container and pass it to the controller
     var menuContainer = angular.element(
