@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-2fe726c
+ * v0.10.1-master-46b5500
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -10,7 +10,7 @@
 (function(){
 "use strict";
 
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.layouts","material.core.theming.palette","material.core.theming","material.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.fabTrigger","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.virtualRepeat","material.components.whiteframe"]);
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.layout","material.core.theming.palette","material.core.theming","material.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.fabTrigger","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.virtualRepeat","material.components.whiteframe"]);
 })();
 (function(){
 "use strict";
@@ -24,6 +24,7 @@ angular
     'ngAnimate',
     'material.animate',
     'material.core.gestures',
+    'material.core.layout',
     'material.core.theming'
   ])
   .directive('mdTemplate', MdTemplateDirective)
@@ -2634,7 +2635,46 @@ function InterimElementProvider() {
 
   'use strict';
 
-  angular.module('material.layouts', ['material.core'])
+    /**
+     *
+     *   The original ngMaterial Layout solution used attribute selectors and CSS.
+     *
+     *  ```html
+     *  <div layout="column"> My Content </div>
+     *  ```
+     *
+     *  ```css
+     *  [layout] {
+     *    box-sizing: border-box;
+     *    display:flex;
+     *  }
+     *  [layout=column] {
+     *    flex-direction : column
+     *  }
+     *  ```
+     *
+     *  Use of attribute selectors creates significant performance impacts in some
+     *  browsers... mainly IE.
+     *
+     *  This module registers directives that allow the same layout attributes to be
+     *  interpreted and converted to class selectors. The directive will add equivalent classes to each element that
+     *  contains a Layout directive.
+     *
+     * ```html
+     *   <div layout="column" class="layout layout-column"> My Content </div>
+     *```
+     *
+     *  ```css
+     *  .layout {
+     *    box-sizing: border-box;
+     *    display:flex;
+     *  }
+     *  .layout-column {
+     *    flex-direction : column
+     *  }
+     *  ```
+     */
+    angular.module('material.core.layout', [ ])
 
       // Attribute directives with optional value(s)
 
