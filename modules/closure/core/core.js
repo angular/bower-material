@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-46b5500
+ * v0.10.1-master-6f31200
  */
 goog.provide('ng.material.core');
 goog.require('ng.material.animate');
