@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-d5c3edb
+ * v0.10.1-master-d32270e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -55,11 +55,11 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil) {
     replace: true,
     transclude: true,
     template: (
-    '<h2 class="md-subheader">' +
+    '<div class="md-subheader">' +
     '  <div class="md-subheader-inner">' +
     '    <span class="md-subheader-content"></span>' +
     '  </div>' +
-    '</h2>'
+    '</div>'
     ),
     link: function postLink(scope, element, attr, controllers, transclude) {
       $mdTheming(element);

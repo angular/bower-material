@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-d5c3edb
+ * v0.10.1-master-d32270e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -43,12 +43,19 @@
    */
   var TBODY_HEIGHT = 265;
 
+  /**
+   * Height of a calendar month with a single row. This is needed to calculate the offset for
+   * rendering an extra month in virtual-repeat that only contains one row.
+   */
+  var TBODY_SINGLE_ROW_HEIGHT = 45;
+
   function calendarDirective() {
     return {
       template:
           '<table aria-hidden="true" class="md-calendar-day-header"><thead></thead></table>' +
           '<div class="md-calendar-scroll-mask">' +
-            '<md-virtual-repeat-container class="md-calendar-scroll-container">' +
+          '<md-virtual-repeat-container class="md-calendar-scroll-container" ' +
+                'md-offset-size="' + (TBODY_SINGLE_ROW_HEIGHT - TBODY_HEIGHT) + '">' +
               '<table role="grid" tabindex="0" class="md-calendar" aria-readonly="true">' +
                 '<tbody role="rowgroup" md-virtual-repeat="i in ctrl.items" md-calendar-month ' +
                     'md-month-offset="$index" class="md-calendar-month" ' +
@@ -57,7 +64,10 @@
               '</table>' +
             '</md-virtual-repeat-container>' +
           '</div>',
-      scope: {},
+      scope: {
+        minDate: '=mdMinDate',
+        maxDate: '=mdMaxDate',
+      },
       require: ['ngModel', 'mdCalendar'],
       controller: CalendarCtrl,
       controllerAs: 'ctrl',
@@ -96,6 +106,15 @@
      */
     this.items = {length: 2000};
 
+    if (this.maxDate && this.minDate) {
+      // Limit the number of months if min and max dates are set.
+      var numMonths = $$mdDateUtil.getMonthDistance(this.minDate, this.maxDate) + 1;
+      numMonths = Math.max(numMonths, 1);
+      // Add an additional month as the final dummy month for rendering purposes.
+      numMonths += 1;
+      this.items.length = numMonths;
+    }
+
     /** @final {!angular.$animate} */
     this.$animate = $animate;
 
@@ -132,9 +151,19 @@
     /** @final {Date} */
     this.today = this.dateUtil.createDateAtMidnight();
 
-    // Set the first renderable date once for all calendar instances.
-    firstRenderableDate =
-        firstRenderableDate || this.dateUtil.incrementMonths(this.today, -this.items.length / 2);
+    /** @type {Date} */
+    this.firstRenderableDate = this.dateUtil.incrementMonths(this.today, -this.items.length / 2);
+
+    if (this.minDate && this.minDate > this.firstRenderableDate) {
+      this.firstRenderableDate = this.minDate;
+    } else if (this.maxDate) {
+      // Calculate the difference between the start date and max date.
+      // Subtract 1 because it's an inclusive difference and 1 for the final dummy month.
+      //
+      var monthDifference = this.items.length - 2;
+      this.firstRenderableDate = this.dateUtil.incrementMonths(this.maxDate, -(this.items.length - 2));
+    }
+
 
     /** @final {number} Unique ID for this calendar instance. */
     this.id = nextUniqueId++;
@@ -289,6 +318,7 @@
       // Selection isn't occuring, so the key event is either navigation or nothing.
       var date = self.getFocusDateFromKeyEvent(event);
       if (date) {
+        date = self.boundDateByMinAndMax(date);
         event.preventDefault();
         event.stopPropagation();
 
@@ -334,7 +364,8 @@
    * @returns {number}
    */
   CalendarCtrl.prototype.getSelectedMonthIndex = function() {
-    return this.dateUtil.getMonthDistance(firstRenderableDate, this.selectedDate || this.today);
+    return this.dateUtil.getMonthDistance(this.firstRenderableDate,
+        this.selectedDate || this.today);
   };
 
   /**
@@ -346,7 +377,7 @@
       return;
     }
 
-    var monthDistance = this.dateUtil.getMonthDistance(firstRenderableDate, date);
+    var monthDistance = this.dateUtil.getMonthDistance(this.firstRenderableDate, date);
     this.calendarScroller.scrollTop = monthDistance * TBODY_HEIGHT;
   };
 
@@ -380,6 +411,23 @@
     } else {
       this.focusDate = date;
     }
+  };
+
+  /**
+   * If a date exceeds minDate or maxDate, returns date matching minDate or maxDate, respectively.
+   * Otherwise, returns the date.
+   * @param {Date} date
+   * @return {Date}
+   */
+  CalendarCtrl.prototype.boundDateByMinAndMax = function(date) {
+    var boundDate = date;
+    if (this.minDate && date < this.minDate) {
+      boundDate = new Date(this.minDate.getTime());
+    }
+    if (this.maxDate && date > this.maxDate) {
+      boundDate = new Date(this.maxDate.getTime());
+    }
+    return boundDate;
   };
 
   /*** Updating the displayed / selected date ***/
@@ -568,8 +616,7 @@
   /** Generate and append the content for this month to the directive element. */
   CalendarMonthCtrl.prototype.generateContent = function() {
     var calendarCtrl = this.calendarCtrl;
-    var offset = (-calendarCtrl.items.length / 2) + this.offset;
-    var date = this.dateUtil.incrementMonths(calendarCtrl.today, offset);
+    var date = this.dateUtil.incrementMonths(calendarCtrl.firstRenderableDate, this.offset);
 
     this.$element.empty();
     this.$element.append(this.buildCalendarForMonth(date));
@@ -598,16 +645,9 @@
     cell.setAttribute('role', 'gridcell');
 
     if (opt_date) {
-      // Add a indicator for select, hover, and focus states.
-      var selectionIndicator = document.createElement('span');
-      cell.appendChild(selectionIndicator);
-      selectionIndicator.classList.add('md-calendar-date-selection-indicator');
-      selectionIndicator.textContent = this.dateLocale.dates[opt_date.getDate()];
-
       cell.setAttribute('tabindex', '-1');
       cell.setAttribute('aria-label', this.dateLocale.longDateFormatter(opt_date));
       cell.id = calendarCtrl.getDateId(opt_date);
-      cell.addEventListener('click', calendarCtrl.cellClickHandler);
 
       // Use `data-timestamp` attribute because IE10 does not support the `dataset` property.
       cell.setAttribute('data-timestamp', opt_date.getTime());
@@ -624,8 +664,24 @@
         cell.setAttribute('aria-selected', 'true');
       }
 
-      if (calendarCtrl.focusDate && this.dateUtil.isSameDay(opt_date, calendarCtrl.focusDate)) {
-        this.focusAfterAppend = cell;
+      var cellText = this.dateLocale.dates[opt_date.getDate()];
+
+      if (this.dateUtil.isDateWithinRange(opt_date,
+          this.calendarCtrl.minDate, this.calendarCtrl.maxDate)) {
+        // Add a indicator for select, hover, and focus states.
+        var selectionIndicator = document.createElement('span');
+        cell.appendChild(selectionIndicator);
+        selectionIndicator.classList.add('md-calendar-date-selection-indicator');
+        selectionIndicator.textContent = cellText;
+
+        cell.addEventListener('click', calendarCtrl.cellClickHandler);
+
+        if (calendarCtrl.focusDate && this.dateUtil.isSameDay(opt_date, calendarCtrl.focusDate)) {
+          this.focusAfterAppend = cell;
+        }
+      } else {
+        cell.classList.add('md-calendar-date-disabled');
+        cell.textContent = cellText;
       }
     }
 
@@ -668,25 +724,37 @@
     var row = this.buildDateRow(rowNumber);
     monthBody.appendChild(row);
 
+    // If this is the final month in the list of items, only the first week should render,
+    // so we should return immediately after the first row is complete and has been
+    // attached to the body.
+    var isFinalMonth = this.offset === this.calendarCtrl.items.length - 1;
+
     // Add a label for the month. If the month starts on a Sun/Mon/Tues, the month label
     // goes on a row above the first of the month. Otherwise, the month label takes up the first
     // two cells of the first row.
     var blankCellOffset = 0;
     var monthLabelCell = document.createElement('td');
     monthLabelCell.classList.add('md-calendar-month-label');
+    // If the entire month is after the max date, render the label as a disabled state.
+    if (this.calendarCtrl.maxDate && firstDayOfMonth > this.calendarCtrl.maxDate) {
+      monthLabelCell.classList.add('md-calendar-month-label-disabled');
+    }
+    monthLabelCell.textContent = this.dateLocale.monthHeaderFormatter(date);
     if (firstDayOfTheWeek <= 2) {
       monthLabelCell.setAttribute('colspan', '7');
 
       var monthLabelRow = this.buildDateRow();
       monthLabelRow.appendChild(monthLabelCell);
       monthBody.insertBefore(monthLabelRow, row);
+
+      if (isFinalMonth) {
+        return monthBody;
+      }
     } else {
       blankCellOffset = 2;
       monthLabelCell.setAttribute('colspan', '2');
       row.appendChild(monthLabelCell);
     }
-
-    monthLabelCell.textContent = this.dateLocale.monthHeaderFormatter(date);
 
     // Add a blank cell for each day of the week that occurs before the first of the month.
     // For example, if the first day of the month is a Tuesday, add blank cells for Sun and Mon.
@@ -702,6 +770,10 @@
     for (var d = 1; d <= numberOfDaysInMonth; d++) {
       // If we've reached the end of the week, start a new row.
       if (dayOfWeek === 7) {
+        // We've finished the first row, so we're done if this is the final month.
+        if (isFinalMonth) {
+          return monthBody;
+        }
         dayOfWeek = 0;
         rowNumber++;
         row = this.buildDateRow(rowNumber);
@@ -1010,6 +1082,8 @@
    *
    * @param {Date} ng-model The component's model. Expects a JavaScript Date object.
    * @param {expression=} ng-change Expression evaluated when the model value changes.
+   * @param {expression=} md-min-date Expression representing a min date (inclusive).
+   * @param {expression=} md-max-date Expression representing a max date (inclusive).
    * @param {boolean=} disabled Whether the datepicker is disabled.
    *
    * @description
@@ -1053,11 +1127,15 @@
             '</div>' +
             '<div class="md-datepicker-calendar">' +
               '<md-calendar role="dialog" aria-label="{{::ctrl.dateLocale.msgCalendar}}" ' +
-                  'ng-model="ctrl.date" ng-if="ctrl.isCalendarOpen"></md-calendar>' +
+                  'md-min-date="ctrl.minDate" md-max-date="ctrl.maxDate"' +
+                  'ng-model="ctrl.date" ng-if="ctrl.isCalendarOpen">' +
+              '</md-calendar>' +
             '</div>' +
           '</div>',
       require: ['ngModel', 'mdDatepicker'],
       scope: {
+        minDate: '=mdMinDate',
+        maxDate: '=mdMaxDate',
         placeholder: '@mdPlaceholder'
       },
       controller: DatePickerCtrl,
@@ -1114,6 +1192,9 @@
 
     /** @type {HTMLInputElement} */
     this.inputElement = $element[0].querySelector('input');
+
+    /** @final {!angular.JQLite} */
+    this.ngInputElement = angular.element(this.inputElement);
 
     /** @type {HTMLElement} */
     this.inputContainer = $element[0].querySelector('.md-datepicker-input-container');
@@ -1216,10 +1297,9 @@
       self.inputContainer.classList.remove(INVALID_CLASS);
     });
 
-    var ngElement = angular.element(self.inputElement);
-    ngElement.on('input', angular.bind(self, self.resizeInputElement));
+    self.ngInputElement.on('input', angular.bind(self, self.resizeInputElement));
     // TODO(chenmike): Add ability for users to specify this interval.
-    ngElement.on('input', self.$mdUtil.debounce(self.handleInputEvent,
+    self.ngInputElement.on('input', self.$mdUtil.debounce(self.handleInputEvent,
         DEFAULT_DEBOUNCE_INTERVAL, self));
   };
 
@@ -1230,7 +1310,7 @@
     var keyCodes = this.$mdConstant.KEY_CODE;
 
     // Add event listener through angular so that we can triggerHandler in unit tests.
-    angular.element(self.inputElement).on('keydown', function(event) {
+    self.ngInputElement.on('keydown', function(event) {
       if (event.altKey && event.keyCode == keyCodes.DOWN_ARROW) {
         self.openCalendarPane(event);
         $scope.$digest();
@@ -1287,8 +1367,11 @@
   DatePickerCtrl.prototype.handleInputEvent = function() {
     var inputString = this.inputElement.value;
     var parsedDate = this.dateLocale.parseDate(inputString);
+    this.dateUtil.setDateTimeToMidnight(parsedDate);
 
-    if (this.dateUtil.isValidDate(parsedDate) && this.dateLocale.isDateComplete(inputString)) {
+    if (this.dateUtil.isValidDate(parsedDate) &&
+        this.dateLocale.isDateComplete(inputString) &&
+        this.dateUtil.isDateWithinRange(parsedDate, this.minDate, this.maxDate)) {
       this.ngModelCtrl.$setViewValue(parsedDate);
       this.date = parsedDate;
       this.inputContainer.classList.remove(INVALID_CLASS);
@@ -1436,7 +1519,9 @@
       isSameDay: isSameDay,
       getMonthDistance: getMonthDistance,
       isValidDate: isValidDate,
-      createDateAtMidnight: createDateAtMidnight
+      setDateTimeToMidnight: setDateTimeToMidnight,
+      createDateAtMidnight: createDateAtMidnight,
+      isDateWithinRange: isDateWithinRange
     };
 
     /**
@@ -1603,6 +1688,14 @@
     }
 
     /**
+     * Sets a date's time to midnight.
+     * @param {Date} date
+     */
+    function setDateTimeToMidnight(date) {
+      date.setHours(0, 0, 0, 0);
+    }
+
+    /**
      * Creates a date with the time set to midnight.
      * Drop-in replacement for two forms of the Date constructor:
      * 1. No argument for Date representing now.
@@ -1617,9 +1710,21 @@
       } else {
         date = new Date(opt_value);
       }
-      date.setHours(0, 0, 0, 0);
+      setDateTimeToMidnight(date);
       return date;
     }
+
+     /**
+      * Checks if a date is within a min and max range.
+      * If minDate or maxDate are not dates, they are ignored.
+      * @param {Date} date
+      * @param {Date} minDate
+      * @param {Date} maxDate
+      */
+     function isDateWithinRange(date, minDate, maxDate) {
+       return (!angular.isDate(minDate) || minDate <= date) &&
+           (!angular.isDate(maxDate) || maxDate >= date);
+     }
   });
 })();
 

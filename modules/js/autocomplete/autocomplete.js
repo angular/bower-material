@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-d5c3edb
+ * v0.10.1-master-d32270e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -16,7 +16,8 @@
  */
 angular.module('material.components.autocomplete', [
   'material.core',
-  'material.components.icon'
+  'material.components.icon',
+  'material.components.virtualRepeat'
 ]);
 
 angular
@@ -68,6 +69,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   ctrl.getCurrentDisplayValue        = getCurrentDisplayValue;
   ctrl.registerSelectedItemWatcher   = registerSelectedItemWatcher;
   ctrl.unregisterSelectedItemWatcher = unregisterSelectedItemWatcher;
+  ctrl.notFoundVisible               = notFoundVisible;
 
   return init();
 
@@ -115,19 +117,20 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       styles.bottom    = 'auto';
       styles.maxHeight = Math.min(MAX_HEIGHT, root.bottom - hrect.bottom - MENU_PADDING) + 'px';
     }
-    elements.$.ul.css(styles);
+
+    elements.$.scrollContainer.css(styles);
     $mdUtil.nextTick(correctHorizontalAlignment, false);
 
     /**
      * Makes sure that the menu doesn't go off of the screen on either side.
      */
     function correctHorizontalAlignment () {
-      var dropdown = elements.ul.getBoundingClientRect(),
+      var dropdown = elements.scrollContainer.getBoundingClientRect(),
           styles   = {};
       if (dropdown.right > root.right - MENU_PADDING) {
         styles.left = (hrect.right - dropdown.width) + 'px';
       }
-      elements.$.ul.css(styles);
+      elements.$.scrollContainer.css(styles);
     }
   }
 
@@ -136,10 +139,10 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    */
   function moveDropdown () {
     if (!elements.$.root.length) return;
-    $mdTheming(elements.$.ul);
-    elements.$.ul.detach();
-    elements.$.root.append(elements.$.ul);
-    if ($animate.pin) $animate.pin(elements.$.ul, $rootElement);
+    $mdTheming(elements.$.scrollContainer);
+    elements.$.scrollContainer.detach();
+    elements.$.root.append(elements.$.scrollContainer);
+    if ($animate.pin) $animate.pin(elements.$.scrollContainer, $rootElement);
   }
 
   /**
@@ -167,18 +170,20 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    */
   function cleanup () {
     angular.element($window).off('resize', positionDropdown);
-    elements.$.ul.remove();
+    elements.$.scrollContainer.remove();
   }
 
   /**
    * Gathers all of the elements needed for this controller
    */
   function gatherElements () {
-    elements      = {
-      main:  $element[ 0 ],
-      ul:    $element.find('ul')[ 0 ],
-      input: $element.find('input')[ 0 ],
-      wrap:  $element.find('md-autocomplete-wrap')[ 0 ],
+    elements = {
+      main:  $element[0],
+      scrollContainer: $element[0].getElementsByClassName('md-virtual-repeat-container')[0],
+      scroller: $element[0].getElementsByClassName('md-virtual-repeat-scroller')[0],
+      ul:    $element.find('ul')[0],
+      input: $element.find('input')[0],
+      wrap:  $element.find('md-autocomplete-wrap')[0],
       root:  document.body
     };
     elements.li   = elements.ul.getElementsByTagName('li');
@@ -588,16 +593,25 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * Makes sure that the focused element is within view.
    */
   function updateScroll () {
-    if (!elements.li[ ctrl.index ]) return;
-    var li  = elements.li[ ctrl.index ],
-        top = li.offsetTop,
-        bot = top + li.offsetHeight,
-        hgt = elements.ul.clientHeight;
-    if (top < elements.ul.scrollTop) {
-      elements.ul.scrollTop = top;
-    } else if (bot > elements.ul.scrollTop + hgt) {
-      elements.ul.scrollTop = bot - hgt;
+    if (!elements.li[0]) return;
+    var height = elements.li[0].offsetHeight,
+        top = height * ctrl.index,
+        bot = top + height,
+        hgt = elements.scroller.clientHeight,
+        scrollTop = elements.scroller.scrollTop;
+    if (top < scrollTop) {
+      scrollTo(top);
+    } else if (bot > scrollTop + hgt) {
+      scrollTo(bot - hgt);
     }
+  }
+
+  function scrollTo (offset) {
+    elements.$.scrollContainer.controller('mdVirtualRepeatContainer').scrollTo(offset);
+  }
+
+  function notFoundVisible () {
+    return !ctrl.matches.length && !ctrl.loading && ctrl.scope.searchText;
   }
 
   /**
@@ -791,21 +805,26 @@ function MdAutocomplete () {
           <md-progress-linear\
               ng-if="$mdAutocompleteCtrl.loading && !$mdAutocompleteCtrl.hidden"\
               md-mode="indeterminate"></md-progress-linear>\
-          <ul role="presentation"\
-              class="md-autocomplete-suggestions md-whiteframe-z1 {{menuClass || \'\'}}"\
-              id="ul-{{$mdAutocompleteCtrl.id}}"\
-              ng-hide="$mdAutocompleteCtrl.hidden"\
-              ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
-              ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
-              ng-mouseup="$mdAutocompleteCtrl.mouseUp()">\
-            <li ng-repeat="(index, item) in $mdAutocompleteCtrl.matches"\
-                ng-class="{ selected: index === $mdAutocompleteCtrl.index }"\
-                ng-click="$mdAutocompleteCtrl.select(index)"\
-                md-autocomplete-list-item="$mdAutocompleteCtrl.itemName">\
-                ' + itemTemplate + '\
-            </li>\
-            ' + noItemsTemplate + '\
-          </ul>\
+          <md-virtual-repeat-container\
+              md-auto-shrink\
+              md-auto-shrink-min="1"\
+              ng-hide="$mdAutocompleteCtrl.hidden && !$mdAutocompleteCtrl.notFoundVisible()"\
+              class="md-autocomplete-suggestions-container md-whiteframe-z1"\
+              role="presentation">\
+            <ul class="md-autocomplete-suggestions"\
+                ng-class="::menuClass"\
+                id="ul-{{$mdAutocompleteCtrl.id}}"\
+                ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
+                ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
+                ng-mouseup="$mdAutocompleteCtrl.mouseUp()">\
+              <li md-virtual-repeat="item in $mdAutocompleteCtrl.matches"\
+                  ng-class="{ selected: $index === $mdAutocompleteCtrl.index }"\
+                  ng-click="$mdAutocompleteCtrl.select($index)"\
+                  md-extra-name="$mdAutocompleteCtrl.itemName">\
+                  ' + itemTemplate + '\
+                  </li>' + noItemsTemplate + '\
+            </ul>\
+          </md-virtual-repeat-container>\
         </md-autocomplete-wrap>\
         <aria-status\
             class="md-visually-hidden"\
@@ -814,21 +833,19 @@ function MdAutocomplete () {
           <p ng-repeat="message in $mdAutocompleteCtrl.messages track by $index" ng-if="message">{{message}}</p>\
         </aria-status>';
 
-      function getItemTemplate () {
-        var templateTag = element.find('md-item-template').remove(),
-            html        = templateTag.length ? templateTag.html() : element.html();
+      function getItemTemplate() {
+        var templateTag = element.find('md-item-template').detach(),
+            html = templateTag.length ? templateTag.html() : element.html();
         if (!templateTag.length) element.empty();
         return html;
       }
 
-      function getNoItemsTemplate () {
-        var templateTag = element.find('md-not-found').remove(),
-            template    = templateTag.length ? templateTag.html() : '';
+      function getNoItemsTemplate() {
+        var templateTag = element.find('md-not-found').detach(),
+            template = templateTag.length ? templateTag.html() : '';
         return template
-            ? '<li ng-if="!$mdAutocompleteCtrl.matches.length && !$mdAutocompleteCtrl.loading\
-                       && !$mdAutocompleteCtrl.hidden"\
-                   ng-hide="$mdAutocompleteCtrl.hidden"\
-                   md-autocomplete-parent-scope>' + template + '</li>'
+            ? '<li ng-if="$mdAutocompleteCtrl.notFoundVisible()"\
+                         md-autocomplete-parent-scope>' + template + '</li>'
             : '';
 
       }
@@ -897,49 +914,33 @@ angular
     .module('material.components.autocomplete')
     .controller('MdHighlightCtrl', MdHighlightCtrl);
 
-function MdHighlightCtrl ($scope, $element, $interpolate) {
-  var ctrl = this;
+function MdHighlightCtrl ($scope, $element, $attrs) {
+  this.init = init;
 
-  ctrl.term     = null;
-  ctrl.template = null;
-  ctrl.watchers = [];
-  ctrl.init     = init;
+  function init (termExpr, unsafeTextExpr) {
+    var text = null,
+        regex = null,
+        flags = $attrs.mdHighlightFlags || '',
+        watcher = $scope.$watch(function($scope) {
+          return {
+            term: termExpr($scope),
+            unsafeText: unsafeTextExpr($scope)
+          };
+        }, function (state, prevState) {
+          if (text === null || state.unsafeText !== prevState.unsafeText) {
+            text = angular.element('<div>').text(state.unsafeText).html()
+          }
+          if (regex === null || state.term !== prevState.term) {
+            regex = getRegExp(state.term, flags);
+          }
 
-  function init (term, template) {
-    createWatchers(term, template);
-    $element.on('$destroy', cleanup);
-  }
-
-  function createWatchers (term, template) {
-    ctrl.watchers.push($scope.$watch(term, function (term) {
-      ctrl.term = term;
-      updateHTML(term, ctrl.template);
-    }));
-    ctrl.watchers.push($scope.$watch(compileTemplate, function (template) {
-      ctrl.template = template;
-      updateHTML(ctrl.term, template);
-    }));
-
-    function compileTemplate () { return $interpolate(template)($scope); }
-  }
-
-  function cleanup () {
-    ctrl.watchers.forEach(function (watcher) { watcher(); });
-  }
-
-  function updateHTML () {
-    if (ctrl.term === null || ctrl.template === null) return;
-    var unsafeText = $interpolate(ctrl.template)($scope),
-        text       = angular.element('<div>').text(unsafeText).html(),
-        flags      = $element.attr('md-highlight-flags') || '',
-        regex      = getRegExp(ctrl.term, flags),
-        html       = text.replace(regex, '<span class="highlight">$&</span>');
-    $element.html(html);
+          $element.html(text.replace(regex, '<span class="highlight">$&</span>'));
+        }, true);
+    $element.on('$destroy', function () { watcher(); });
   }
 
   function sanitize (term) {
-    if (!term) return term;
-    return term.replace(/[\\\^\$\*\+\?\.\(\)\|\{}\[\]]/g, '\\$&');
+    return term && term.replace(/[\\\^\$\*\+\?\.\(\)\|\{}\[\]]/g, '\\$&');
   }
 
   function getRegExp (text, flags) {
@@ -950,7 +951,7 @@ function MdHighlightCtrl ($scope, $element, $interpolate) {
     return new RegExp(sanitize(str), flags.replace(/[\$\^]/g, ''));
   }
 }
-MdHighlightCtrl.$inject = ["$scope", "$element", "$interpolate"];
+MdHighlightCtrl.$inject = ["$scope", "$element", "$attrs"];
 
 angular
     .module('material.components.autocomplete')
@@ -985,43 +986,21 @@ angular
  * </hljs>
  */
 
-function MdHighlight () {
+function MdHighlight ($interpolate, $parse) {
   return {
-    terminal:   true,
-    scope:      false,
+    terminal: true,
     controller: 'MdHighlightCtrl',
-    compile:    function (element, attr) {
-      var template = element.html();
-      return function (scope, element, attr, ctrl) {
-        ctrl.init(attr.mdHighlightText, template);
+    compile: function mdHighlightCompile(tElement, tAttr) {
+      var termExpr = $parse(tAttr.mdHighlightText);
+      var unsafeTextExpr = $interpolate(tElement.html());
+
+      return function mdHighlightLink(scope, element, attr, ctrl) {
+        ctrl.init(termExpr, unsafeTextExpr);
       };
     }
   };
 }
-
-angular
-    .module('material.components.autocomplete')
-    .directive('mdAutocompleteListItem', MdAutocompleteListItem);
-
-function MdAutocompleteListItem ($compile, $mdUtil) {
-  return {
-    terminal: true,
-    link:     postLink,
-    scope:    false
-  };
-  function postLink (scope, element, attr) {
-    var ctrl             = scope.$parent.$mdAutocompleteCtrl,
-        newScope         = ctrl.parent.$new(false, ctrl.parent),
-        itemName         = ctrl.scope.$eval(attr.mdAutocompleteListItem);
-    newScope[ itemName ] = scope.item;
-    $compile(element.contents())(newScope);
-    element.attr({
-      role: 'option',
-      id:   'item_' + $mdUtil.nextUid()
-    });
-  }
-}
-MdAutocompleteListItem.$inject = ["$compile", "$mdUtil"];
+MdHighlight.$inject = ["$interpolate", "$parse"];
 
 angular
     .module('material.components.autocomplete')
@@ -1036,6 +1015,9 @@ function MdAutocompleteParentScope ($compile) {
   };
   function postLink (scope, element, attr) {
     var ctrl = scope.$parent.$mdAutocompleteCtrl;
+
+    // TODO: transclude self might make it possible to do this without
+    // re-compiling, which is slow.
     $compile(element.contents())(ctrl.parent);
     if (attr.hasOwnProperty('mdAutocompleteReplace')) {
       element.after(element.contents());

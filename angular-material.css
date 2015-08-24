@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-d5c3edb
+ * v0.10.1-master-d32270e
  */
 html, body {
   height: 100%;
@@ -2769,14 +2769,17 @@ md-autocomplete {
     md-autocomplete li:focus {
       color: #fff; } }
 
-.md-autocomplete-suggestions {
+.md-virtual-repeat-container.md-autocomplete-suggestions-container {
   position: absolute;
-  margin: 0;
-  list-style: none;
-  padding: 0;
-  overflow: auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  height: 225.5px;
   max-height: 225.5px;
   z-index: 100; }
+
+.md-autocomplete-suggestions {
+  margin: 0;
+  list-style: none;
+  padding: 0; }
   .md-autocomplete-suggestions li {
     cursor: pointer;
     font-size: 14px;
@@ -2788,14 +2791,6 @@ md-autocomplete {
     margin: 0;
     white-space: nowrap;
     text-overflow: ellipsis; }
-    .md-autocomplete-suggestions li.ng-enter, .md-autocomplete-suggestions li.ng-hide-remove {
-      transition: none;
-      -webkit-animation: md-autocomplete-list-in 0.2s;
-              animation: md-autocomplete-list-in 0.2s; }
-    .md-autocomplete-suggestions li.ng-leave, .md-autocomplete-suggestions li.ng-hide-add {
-      transition: none;
-      -webkit-animation: md-autocomplete-list-out 0.2s;
-              animation: md-autocomplete-list-out 0.2s; }
     .md-autocomplete-suggestions li:focus {
       outline: none; }
 
@@ -3549,15 +3544,18 @@ md-calendar {
     padding-left: 16px; }
   .md-calendar-date:last-child {
     padding-right: 16px; }
+  .md-calendar-date.md-calendar-date-disabled {
+    cursor: default; }
 
 .md-calendar-date-selection-indicator {
   transition: background-color, color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   border-radius: 50%;
   display: inline-block;
-  cursor: pointer;
   width: 40px;
   height: 40px;
   line-height: 40px; }
+  .md-calendar-date:not(.md-disabled) .md-calendar-date-selection-indicator {
+    cursor: pointer; }
 
 .md-calendar-month-label {
   height: 44px;
@@ -6995,13 +6993,6 @@ md-slider {
   transition: 0.2s ease-out margin; }
   .md-subheader-wrapper:not(.md-sticky-no-effect) .md-subheader {
     margin: 0; }
-  .md-subheader-wrapper:not(.md-sticky-no-effect) .md-subheader:after {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    top: 0;
-    right: -16px;
-    content: ''; }
   .md-subheader-wrapper:not(.md-sticky-no-effect).md-sticky-clone {
     z-index: 2; }
   .md-subheader-wrapper:not(.md-sticky-no-effect)[sticky-state="active"] {
@@ -7019,8 +7010,10 @@ md-slider {
   margin-right: 16px;
   position: relative; }
   .md-subheader .md-subheader-inner {
+    display: block;
     padding: 16px 0px 16px 16px; }
   .md-subheader .md-subheader-content {
+    display: block;
     z-index: 1;
     position: relative; }
 

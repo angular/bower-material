@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-d5c3edb
+ * v0.10.1-master-d32270e
  */
 /** Styles for mdCalendar. */
 md-calendar {
@@ -39,15 +39,18 @@ md-calendar {
     padding-left: 16px; }
   .md-calendar-date:last-child {
     padding-right: 16px; }
+  .md-calendar-date.md-calendar-date-disabled {
+    cursor: default; }
 
 .md-calendar-date-selection-indicator {
   transition: background-color, color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   border-radius: 50%;
   display: inline-block;
-  cursor: pointer;
   width: 40px;
   height: 40px;
   line-height: 40px; }
+  .md-calendar-date:not(.md-disabled) .md-calendar-date-selection-indicator {
+    cursor: pointer; }
 
 .md-calendar-month-label {
   height: 44px;

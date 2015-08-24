@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-d5c3edb
+ * v0.10.1-master-d32270e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -106,6 +106,9 @@ function VirtualRepeatContainerController($$rAF, $scope, $element, $attrs) {
   this.autoShrinkMin = parseInt(this.$attrs.mdAutoShrinkMin, 10) || 0;
   /** @type {?number} Original container size when shrank */
   this.originalSize = null;
+  /** @type {number} Amount to offset the total scroll size by. */
+  this.offsetSize = parseInt(this.$attrs.mdOffsetSize, 10) || 0;
+
 
   this.scroller = $element[0].getElementsByClassName('md-virtual-repeat-scroller')[0];
   this.sizer = this.scroller.getElementsByClassName('md-virtual-repeat-sizer')[0];
@@ -239,9 +242,10 @@ VirtualRepeatContainerController.prototype.autoShrink_ = function(size) {
 /**
  * Sets the scrollHeight or scrollWidth. Called by the repeater based on
  * its item count and item size.
- * @param {number} size The new size.
+ * @param {number} itemsSize The total size of the items.
  */
-VirtualRepeatContainerController.prototype.setScrollSize = function(size) {
+VirtualRepeatContainerController.prototype.setScrollSize = function(itemsSize) {
+  var size = itemsSize + this.offsetSize;
   if (this.scrollSize === size) return;
 
   this.sizeScroller_(size);
@@ -448,6 +452,9 @@ VirtualRepeatController.prototype.readItemSize_ = function() {
   this.items = this.repeatListExpression(this.$scope);
   this.parentNode = this.$element[0].parentNode;
   var block = this.getBlock_(0);
+  if (!block.element[0].parentNode) {
+    this.parentNode.appendChild(block.element[0]);
+  }
 
   this.itemSize = block.element[0][
       this.container.isHorizontal() ? 'offsetWidth' : 'offsetHeight'] || null;
@@ -487,7 +494,7 @@ VirtualRepeatController.prototype.repeatListExpression_ = function(scope) {
 VirtualRepeatController.prototype.containerUpdated = function() {
   // If itemSize is unknown, attempt to measure it.
   if (!this.itemSize) {
-    this.unwatchItemSize_ = this.$scope.$watch(
+    this.unwatchItemSize_ = this.$scope.$watchCollection(
         this.repeatListExpression,
         angular.bind(this, function(items) {
           if (items && items.length) {

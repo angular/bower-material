@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-d5c3edb
+ * v0.10.1-master-d32270e
  */
 @-webkit-keyframes md-autocomplete-list-out {
   0% {
@@ -187,14 +187,17 @@ md-autocomplete {
     md-autocomplete li:focus {
       color: #fff; } }
 
-.md-autocomplete-suggestions {
+.md-virtual-repeat-container.md-autocomplete-suggestions-container {
   position: absolute;
-  margin: 0;
-  list-style: none;
-  padding: 0;
-  overflow: auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  height: 225.5px;
   max-height: 225.5px;
   z-index: 100; }
+
+.md-autocomplete-suggestions {
+  margin: 0;
+  list-style: none;
+  padding: 0; }
   .md-autocomplete-suggestions li {
     cursor: pointer;
     font-size: 14px;
@@ -206,14 +209,6 @@ md-autocomplete {
     margin: 0;
     white-space: nowrap;
     text-overflow: ellipsis; }
-    .md-autocomplete-suggestions li.ng-enter, .md-autocomplete-suggestions li.ng-hide-remove {
-      transition: none;
-      -webkit-animation: md-autocomplete-list-in 0.2s;
-              animation: md-autocomplete-list-in 0.2s; }
-    .md-autocomplete-suggestions li.ng-leave, .md-autocomplete-suggestions li.ng-hide-add {
-      transition: none;
-      -webkit-animation: md-autocomplete-list-out 0.2s;
-              animation: md-autocomplete-list-out 0.2s; }
     .md-autocomplete-suggestions li:focus {
       outline: none; }
 

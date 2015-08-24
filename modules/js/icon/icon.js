@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-d5c3edb
+ * v0.10.1-master-d32270e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -17,12 +17,6 @@ angular.module('material.components.icon', [
     'material.core'
   ]);
 
-/**
- * @ngdoc directive
- * @name material.components.icon
- * @description
- * Icon
- */
 angular
   .module('material.components.icon')
   .directive('mdIcon', ['$mdIcon', '$mdTheming', '$mdAria', mdIconDirective]);
