@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-dc6b8d6
+ * v0.10.1-master-814e58b
  */
 goog.provide('ng.material.components.icon');
 goog.require('ng.material.core');
@@ -14,8 +14,17 @@ goog.require('ng.material.core');
  */
 angular.module('material.components.icon', [
     'material.core'
-  ])
-  .directive('mdIcon', mdIconDirective);
+  ]);
+
+/**
+ * @ngdoc directive
+ * @name material.components.icon
+ * @description
+ * Icon
+ */
+angular
+  .module('material.components.icon')
+  .directive('mdIcon', ['$mdIcon', '$mdTheming', '$mdAria', mdIconDirective]);
 
 /**
  * @ngdoc directive
@@ -268,7 +277,6 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
     }
   }
 }
-mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
 
   angular
     .module('material.components.icon' )
@@ -643,6 +651,8 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
   * NOTE: The `<md-icon />  ` directive internally uses the `$mdIcon` service to query, loaded, and instantiate
   * SVG DOM elements.
   */
+
+  /* ngInject */
  function MdIconService(config, $http, $q, $log, $templateCache) {
    var iconCache = {};
    var urlRegex = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/i;
@@ -814,5 +824,6 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
    }
 
  }
+ MdIconService.$inject = ["config", "$http", "$q", "$log", "$templateCache"];
 
 ng.material.components.icon = angular.module("material.components.icon");
