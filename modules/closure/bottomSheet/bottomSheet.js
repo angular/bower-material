@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-d85e14a
+ * v0.10.1-master-1a90a72
  */
 goog.provide('ng.material.components.bottomSheet');
 goog.require('ng.material.components.backdrop');
@@ -171,7 +171,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
       $mdTheming.inherit(bottomSheet.element, options.parent);
 
       if (options.disableParentScroll) {
-        options.restoreScroll = $mdUtil.disableScrollAround(options.parent);
+        options.restoreScroll = $mdUtil.disableScrollAround(bottomSheet.element, options.parent);
       }
 
       return $animate.enter(bottomSheet.element, options.parent)
