@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-e4ca61f
+ * v0.10.1-master-d85e14a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13,10 +13,11 @@
  * @description
  * BottomSheet
  */
-angular.module('material.components.bottomSheet', [
-  'material.core',
-  'material.components.backdrop'
-])
+angular
+  .module('material.components.bottomSheet', [
+    'material.core',
+    'material.components.backdrop'
+  ])
   .directive('mdBottomSheet', MdBottomSheetDirective)
   .provider('$mdBottomSheet', MdBottomSheetProvider);
 

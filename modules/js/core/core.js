@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-e4ca61f
+ * v0.10.1-master-d85e14a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3700,9 +3700,9 @@ angular.module('material.core.theming', ['material.core.theming.palette'])
   .run(generateThemes);
 
 /**
- * @ngdoc provider
+ * @ngdoc service
  * @name $mdThemingProvider
- * @module material.core
+ * @module material.core.theming
  *
  * @description Provider to configure the `$mdTheming` service.
  */

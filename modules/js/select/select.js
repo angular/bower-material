@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-e4ca61f
+ * v0.10.1-master-d85e14a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -31,9 +31,9 @@ var SELECT_EDGE_MARGIN = 8;
 var selectNextId = 0;
 
 angular.module('material.components.select', [
-  'material.core',
-  'material.components.backdrop'
-])
+    'material.core',
+    'material.components.backdrop'
+  ])
   .directive('mdSelect', SelectDirective)
   .directive('mdSelectMenu', SelectMenuDirective)
   .directive('mdOption', OptionDirective)

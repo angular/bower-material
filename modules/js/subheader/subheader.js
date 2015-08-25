@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-e4ca61f
+ * v0.10.1-master-d85e14a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -25,10 +25,11 @@
  *  > To improve the visual grouping of content, use the system color for your subheaders.
  *
  */
-angular.module('material.components.subheader', [
-  'material.core',
-  'material.components.sticky'
-])
+angular
+  .module('material.components.subheader', [
+    'material.core',
+    'material.components.sticky'
+  ])
   .directive('mdSubheader', MdSubheaderDirective);
 
 /**

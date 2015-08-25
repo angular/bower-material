@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-e4ca61f
+ * v0.10.1-master-d85e14a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -14,7 +14,8 @@
  * @description
  * A Sidenav QP component.
  */
-angular.module('material.components.sidenav', [
+angular
+  .module('material.components.sidenav', [
     'material.core',
     'material.components.backdrop'
   ])
@@ -25,7 +26,6 @@ angular.module('material.components.sidenav', [
 
 
 /**
- * @private
  * @ngdoc service
  * @name $mdSidenav
  * @module material.components.sidenav

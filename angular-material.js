@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-e4ca61f
+ * v0.10.1-master-d85e14a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3776,9 +3776,9 @@ angular.module('material.core.theming', ['material.core.theming.palette'])
   .run(generateThemes);
 
 /**
- * @ngdoc provider
+ * @ngdoc service
  * @name $mdThemingProvider
- * @module material.core
+ * @module material.core.theming
  *
  * @description Provider to configure the `$mdTheming` service.
  */
@@ -5125,10 +5125,11 @@ angular
  * @description
  * BottomSheet
  */
-angular.module('material.components.bottomSheet', [
-  'material.core',
-  'material.components.backdrop'
-])
+angular
+  .module('material.components.bottomSheet', [
+    'material.core',
+    'material.components.backdrop'
+  ])
   .directive('mdBottomSheet', MdBottomSheetDirective)
   .provider('$mdBottomSheet', MdBottomSheetProvider);
 
@@ -11339,9 +11340,9 @@ var SELECT_EDGE_MARGIN = 8;
 var selectNextId = 0;
 
 angular.module('material.components.select', [
-  'material.core',
-  'material.components.backdrop'
-])
+    'material.core',
+    'material.components.backdrop'
+  ])
   .directive('mdSelect', SelectDirective)
   .directive('mdSelectMenu', SelectMenuDirective)
   .directive('mdOption', OptionDirective)
@@ -12668,7 +12669,8 @@ SelectProvider.$inject = ["$$interimElementProvider"];
  * @description
  * A Sidenav QP component.
  */
-angular.module('material.components.sidenav', [
+angular
+  .module('material.components.sidenav', [
     'material.core',
     'material.components.backdrop'
   ])
@@ -12679,7 +12681,6 @@ angular.module('material.components.sidenav', [
 
 
 /**
- * @private
  * @ngdoc service
  * @name $mdSidenav
  * @module material.components.sidenav
@@ -13478,21 +13479,21 @@ SliderDirective.$inject = ["$$rAF", "$window", "$mdAria", "$mdUtil", "$mdConstan
 (function(){
 "use strict";
 
-/*
+/**
  * @ngdoc module
  * @name material.components.sticky
  * @description
- *
  * Sticky effects for md
+ *
  */
-
-angular.module('material.components.sticky', [
-  'material.core',
-  'material.components.content'
-])
+angular
+  .module('material.components.sticky', [
+    'material.core',
+    'material.components.content'
+  ])
   .factory('$mdSticky', MdSticky);
 
-/*
+/**
  * @ngdoc service
  * @name $mdSticky
  * @module material.components.sticky
@@ -13507,7 +13508,6 @@ angular.module('material.components.sticky', [
  *     when the user starts scrolling past the original element.
  *     If not provided, it will use the result of `element.clone()`.
  */
-
 function MdSticky($document, $mdConstant, $$rAF, $mdUtil) {
 
   var browserStickySupport = checkStickySupport();
@@ -13614,7 +13614,6 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil) {
       setCurrentItem(item);
     }
 
-
     /***************
      * Private
      ***************/
@@ -13638,7 +13637,6 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil) {
         item.clone.css('margin-right', '0');
       }
     }
-
 
     // As we scroll, push in and select the correct sticky element.
     function onScroll() {
@@ -13700,55 +13698,55 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil) {
         translate(self.current, scrollTop);
       }
     }
-     
-   function setCurrentItem(item) {
-     if (self.current === item) return;
-     // Deactivate currently active item
-     if (self.current) {
-       translate(self.current, null);
-       setStickyState(self.current, null);
-     }
 
-     // Activate new item if given
-     if (item) {
-       setStickyState(item, 'active');
-     }
+    function setCurrentItem(item) {
+      if (self.current === item) return;
+      // Deactivate currently active item
+      if (self.current) {
+        translate(self.current, null);
+        setStickyState(self.current, null);
+      }
 
-     self.current = item;
-     var index = self.items.indexOf(item);
-     // If index === -1, index + 1 = 0. It works out.
-     self.next = self.items[index + 1];
-     self.prev = self.items[index - 1];
-     setStickyState(self.next, 'next');
-     setStickyState(self.prev, 'prev');
-   }
+      // Activate new item if given
+      if (item) {
+        setStickyState(item, 'active');
+      }
 
-   function setStickyState(item, state) {
-     if (!item || item.state === state) return;
-     if (item.state) {
-       item.clone.attr('sticky-prev-state', item.state);
-       item.element.attr('sticky-prev-state', item.state);
-     }
-     item.clone.attr('sticky-state', state);
-     item.element.attr('sticky-state', state);
-     item.state = state;
-   }
+      self.current = item;
+      var index = self.items.indexOf(item);
+      // If index === -1, index + 1 = 0. It works out.
+      self.next = self.items[index + 1];
+      self.prev = self.items[index - 1];
+      setStickyState(self.next, 'next');
+      setStickyState(self.prev, 'prev');
+    }
 
-   function translate(item, amount) {
-     if (!item) return;
-     if (amount === null || amount === undefined) {
-       if (item.translateY) {
-         item.translateY = null;
-         item.clone.css($mdConstant.CSS.TRANSFORM, '');
-       }
-     } else {
-       item.translateY = amount;
-       item.clone.css(
-         $mdConstant.CSS.TRANSFORM, 
-         'translate3d(' + item.left + 'px,' + amount + 'px,0)'
-       );
-     }
-   }
+    function setStickyState(item, state) {
+      if (!item || item.state === state) return;
+      if (item.state) {
+        item.clone.attr('sticky-prev-state', item.state);
+        item.element.attr('sticky-prev-state', item.state);
+      }
+      item.clone.attr('sticky-state', state);
+      item.element.attr('sticky-state', state);
+      item.state = state;
+    }
+
+    function translate(item, amount) {
+      if (!item) return;
+      if (amount === null || amount === undefined) {
+        if (item.translateY) {
+          item.translateY = null;
+          item.clone.css($mdConstant.CSS.TRANSFORM, '');
+        }
+      } else {
+        item.translateY = amount;
+        item.clone.css(
+          $mdConstant.CSS.TRANSFORM,
+          'translate3d(' + item.left + 'px,' + amount + 'px,0)'
+        );
+      }
+    }
   }
 
   // Function to check for browser sticky support
@@ -13824,10 +13822,11 @@ MdSticky.$inject = ["$document", "$mdConstant", "$$rAF", "$mdUtil"];
  *  > To improve the visual grouping of content, use the system color for your subheaders.
  *
  */
-angular.module('material.components.subheader', [
-  'material.core',
-  'material.components.sticky'
-])
+angular
+  .module('material.components.subheader', [
+    'material.core',
+    'material.components.sticky'
+  ])
   .directive('mdSubheader', MdSubheaderDirective);
 
 /**
