@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-97a8f6d
+ * v0.10.1-master-5e6aa68
  */
 goog.provide('ng.material.components.sticky');
 goog.require('ng.material.components.content');
@@ -213,7 +213,7 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil) {
         }
 
         // If the next item is close to the current one, pull the current one down into view
-        if (self.next && scrollTop >= self.next.top - self.current.height) {
+        if (self.next && self.current && (scrollTop >= (self.next.top - self.current.height))) {
           translate(self.current, scrollTop + (self.next.top - scrollTop - self.current.height));
           return;
         }
