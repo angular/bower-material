@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-76bc8b9
+ * v0.10.1-master-97a8f6d
  */
 goog.provide('ng.material.core');
 goog.require('ng.material.animate');
@@ -2740,7 +2740,8 @@ function InterimElementProvider() {
           element.addClass(className + "-" + attr[directive].replace(/\s+/g, "-"));
         }
 
-        element.removeAttr(className);
+        // Remove deprecated layout attribute selector
+        // element.removeAttr(className);
       }
     }
 
@@ -2767,7 +2768,9 @@ function InterimElementProvider() {
      */
     function attributeToClass(scope, element) {
       element.addClass(className);
-      element.removeAttr(className);
+
+      // Remove deprecated layout attribute selector
+      // element.removeAttr(className);
     }
   }
 })();

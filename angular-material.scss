@@ -1729,34 +1729,6 @@ md-checkbox {
   }
 }
 
-md-content {
-
-  display: block;
-  position: relative;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-
-  &[md-scroll-y] {
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-  &[md-scroll-x] {
-    overflow-x: auto;
-    overflow-y: hidden;
-  }
-  &[md-scroll-xy] {
-  }
-
-  // For iOS allow disabling of momentum scrolling
-  // @see issue #2640.
-
-  &.autoScroll {
-    -webkit-overflow-scrolling: auto;
-  }
-}
-
-
-
 $chip-font-size: rem(1.6) !default;
 $chip-height: rem(3.2) !default;
 $chip-padding: 0 rem(1.2) 0 rem(1.2) !default;
@@ -1947,6 +1919,34 @@ $contact-chip-name-width: rem(12) !default;
     border: none;
   }
 }
+
+
+md-content {
+
+  display: block;
+  position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &[md-scroll-y] {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  &[md-scroll-x] {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  &[md-scroll-xy] {
+  }
+
+  // For iOS allow disabling of momentum scrolling
+  // @see issue #2640.
+
+  &.autoScroll {
+    -webkit-overflow-scrolling: auto;
+  }
+}
+
 
 
 /** Styles for mdCalendar. */

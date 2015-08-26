@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-76bc8b9
+ * v0.10.1-master-97a8f6d
  */
 html, body {
   height: 100%;
@@ -3360,20 +3360,6 @@ md-checkbox {
       direction: ltr;
       unicode-bidi: bidi-override; }
 
-md-content {
-  display: block;
-  position: relative;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch; }
-  md-content[md-scroll-y] {
-    overflow-y: auto;
-    overflow-x: hidden; }
-  md-content[md-scroll-x] {
-    overflow-x: auto;
-    overflow-y: hidden; }
-  md-content.autoScroll {
-    -webkit-overflow-scrolling: auto; }
-
 .md-contact-chips .md-chips .md-chip {
   padding: 0 25px 0 0; }
   .md-contact-chips .md-chips .md-chip .md-contact-avatar {
@@ -3508,6 +3494,20 @@ md-content {
     border: 1px solid #fff; }
   .md-chip-input-container md-autocomplete {
     border: none; } }
+
+md-content {
+  display: block;
+  position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; }
+  md-content[md-scroll-y] {
+    overflow-y: auto;
+    overflow-x: hidden; }
+  md-content[md-scroll-x] {
+    overflow-x: auto;
+    overflow-y: hidden; }
+  md-content.autoScroll {
+    -webkit-overflow-scrolling: auto; }
 
 /** Styles for mdCalendar. */
 md-calendar {
