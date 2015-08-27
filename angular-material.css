@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-9ac7496
+ * v0.10.1-master-e26a275
  */
 html, body {
   height: 100%;
@@ -6660,9 +6660,7 @@ md-sidenav {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    /* this is required as of 1.3x to properly
-       apply all styling in a show/hide animation */
-    transition: 0s all; }
+    transition: 0.2s ease-in all; }
   md-sidenav.md-closed-add.md-closed-add-active, md-sidenav.md-closed-remove.md-closed-remove-active {
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
   md-sidenav.md-locked-open-add, md-sidenav.md-locked-open-remove {
