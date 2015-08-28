@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-b22b00f
+ * v0.10.1-master-a2cb6cf
  */
 html, body {
   height: 100%;
@@ -2799,14 +2799,13 @@ md-autocomplete {
     border: 1px solid #fff; } }
 
 md-backdrop {
-  z-index: 50;
-  opacity: 1;
-  transition: background-color 450ms cubic-bezier(0.55, 0, 0.55, 0.2);
+  transition: opacity 450ms;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
-  right: 0; }
+  right: 0;
+  z-index: 50; }
   md-backdrop.md-menu-backdrop {
     position: fixed !important;
     z-index: 98; }
@@ -2821,8 +2820,17 @@ md-backdrop {
     z-index: 59; }
   md-backdrop.md-click-catcher {
     position: absolute; }
-  md-backdrop.md-opaque.ng-leave {
-    transition: background-color 400ms linear; }
+  md-backdrop.md-opaque {
+    opacity: .48; }
+    md-backdrop.md-opaque.ng-enter {
+      opacity: 0; }
+    md-backdrop.md-opaque.ng-enter.md-opaque.ng-enter-active {
+      opacity: .48; }
+    md-backdrop.md-opaque.ng-leave {
+      opacity: .48;
+      transition: opacity 400ms; }
+    md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
+      opacity: 0; }
 
 md-bottom-sheet {
   position: absolute;
