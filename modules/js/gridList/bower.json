@@ -1,7 +1,7 @@
 {
   "name": "angular-material-gridList",
-  "version": "0.10.1-master-f2e6b16",
+  "version": "0.10.1-master-703f2c8",
   "dependencies": {
-    "angular-material-core": "0.10.1-master-f2e6b16"
+    "angular-material-core": "0.10.1-master-703f2c8"
   }
 }
