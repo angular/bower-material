@@ -1,7 +1,7 @@
 {
   "name": "angular-material-progressLinear",
-  "version": "0.10.1-master-22c34ba",
+  "version": "0.10.1-master-b22b00f",
   "dependencies": {
-    "angular-material-core": "0.10.1-master-22c34ba"
+    "angular-material-core": "0.10.1-master-b22b00f"
   }
 }
