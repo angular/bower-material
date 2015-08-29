@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-703f2c8
+ * v0.10.1-master-8157dec
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -38,7 +38,9 @@ angular.module('material.components.progressCircular', [
  * @param {string} md-mode Select from one of two modes: determinate and indeterminate.
  * @param {number=} value In determinate mode, this number represents the percentage of the
  *     circular progress. Default: 0
- * @param {number=} md-diameter This specifies the diamter of the circular progress. Default: 48
+ * @param {number=} md-diameter This specifies the diamter of the circular progress. The value
+ * may be a percentage (eg '25%') or a pixel-size value (eg '48'). If this attribute is
+ * not present then a default value of '48px' is assumed.
  *
  * @usage
  * <hljs lang="html">
@@ -52,6 +54,9 @@ angular.module('material.components.progressCircular', [
  * </hljs>
  */
 function MdProgressCircularDirective($mdConstant, $mdTheming) {
+  var DEFAULT_PROGRESS_SIZE = 100;
+  var DEFAULT_SCALING = 0.5;
+
   return {
     restrict: 'E',
     template:
@@ -84,16 +89,30 @@ function MdProgressCircularDirective($mdConstant, $mdTheming) {
   function postLink(scope, element, attr) {
     $mdTheming(element);
     var circle = element[0];
-
-    // Scale the progress circle based on the default diameter.
-    var diameter = attr.mdDiameter || 48;
-    var scale = diameter / 48;
-    circle.style[$mdConstant.CSS.TRANSFORM] = 'scale(' + scale + ')';
+    circle.style[$mdConstant.CSS.TRANSFORM] = 'scale(' + getDiameterRatio() + ')';
 
     attr.$observe('value', function(value) {
       var percentValue = clamp(value);
       element.attr('aria-valuenow', percentValue);
     });
+
+    /**
+     * We will scale the progress circle based on the default diameter.
+     *
+     * Determine the diameter percentage (defaults to 100%)
+     * May be express as float, percentage, or integer
+     */
+    function getDiameterRatio() {
+      if ( !attr.mdDiameter ) return DEFAULT_SCALING;
+
+      var match = /([0-9]*)%/.exec(attr.mdDiameter);
+      var value = match && match[1]/100;
+
+      value = Math.max(0, value || parseFloat(attr.mdDiameter));
+
+      // should return ratio; DEFAULT_PROGRESS_SIZE === 100px is default size
+      return  (value > 1) ? value / DEFAULT_PROGRESS_SIZE : value;
+    }
   }
 
   /**
