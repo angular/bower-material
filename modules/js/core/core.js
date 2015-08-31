@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-4e048ff
+ * v0.10.1-master-7967b9f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3215,6 +3215,7 @@ InkRippleCtrl.prototype.bindEvents = function () {
  * @param event {MouseEvent}
  */
 InkRippleCtrl.prototype.handleMousedown = function (event) {
+  // When jQuery is loaded, we have to get the original event
   if (event.hasOwnProperty('originalEvent')) event = event.originalEvent;
   this.mousedown = true;
   if (this.options.center) {
