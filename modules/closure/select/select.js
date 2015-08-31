@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-b96adbf
+ * v0.10.1-master-925301f
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -1073,7 +1073,7 @@ function SelectProvider($$interimElementProvider) {
                 });
                 ev.preventDefault();
               }
-              checkCloseMenu();
+              checkCloseMenu(ev);
               break;
             case keyCodes.TAB:
             case keyCodes.ESCAPE:
@@ -1137,7 +1137,7 @@ function SelectProvider($$interimElementProvider) {
            */
           function mouseOnScrollbar() {
             var clickOnScrollbar = false;
-            if(ev.currentTarget.children.length > 0) {
+            if(ev && (ev.currentTarget.children.length > 0)) {
               var child = ev.currentTarget.children[0];
               var hasScrollbar = child.scrollHeight > child.clientHeight;
               if (hasScrollbar && child.children.length > 0) {
