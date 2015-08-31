@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-925301f
+ * v0.10.1-master-303ab0d
  */
 html, body {
   height: 100%;
@@ -227,7 +227,8 @@ select, button, textarea, input {
   display: -webkit-flex;
   display: -moz-flex;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  height: inherit; }
 
 .layout-column {
   -ms-flex-direction: column;
