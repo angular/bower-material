@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-8157dec
+ * v0.10.1-master-1e6d166
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -94,6 +94,11 @@ function MdProgressCircularDirective($mdConstant, $mdTheming) {
     attr.$observe('value', function(value) {
       var percentValue = clamp(value);
       element.attr('aria-valuenow', percentValue);
+    });
+
+    var spinnerWrapper =  angular.element(element.children()[0]);
+    attr.$observe('mdMode',function(mode){
+      spinnerWrapper[mode ? 'removeClass' : 'addClass']('ng-hide');
     });
 
     /**
