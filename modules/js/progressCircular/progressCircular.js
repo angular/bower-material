@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-b1f7dc4
+ * v0.10.1-master-8dd83eb
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -35,7 +35,9 @@ angular.module('material.components.progressCircular', [
  * not necessary to expose what's happening behind the scenes and how long it will take, use an
  * indeterminate indicator.
  *
- * @param {string} md-mode Select from one of two modes: determinate and indeterminate.
+ * @param {string} md-mode Select from one of two modes: **'determinate'** and **'indeterminate'**.<br/>
+ * Note: if the `md-mode` value is undefined or not 1 of the two (2) valid modes, then `.ng-hide`
+ * will be auto-applied as a style to the component.
  * @param {number=} value In determinate mode, this number represents the percentage of the
  *     circular progress. Default: 0
  * @param {number=} md-diameter This specifies the diamter of the circular progress. The value
