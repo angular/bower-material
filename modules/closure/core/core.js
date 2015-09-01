@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-303ab0d
+ * v0.10.1-master-b1f7dc4
  */
 goog.provide('ng.material.core');
 goog.require('ng.material.animate');
@@ -4528,6 +4528,9 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
           css[key] = value + 'px';
         } else {
           switch (key) {
+            case 'transition':
+              convertToVendor(key, $mdConstant.CSS.TRANSITION, value);
+              break;
             case 'transform':
               convertToVendor(key, $mdConstant.CSS.TRANSFORM, value);
               break;
