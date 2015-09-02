@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-rc1-master-32ab2eb
+ * v0.11.0-rc1-master-391479b
  */
 goog.provide('ng.material.components.toolbar');
 goog.require('ng.material.components.content');
@@ -77,7 +77,9 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
 
       $mdTheming(element);
 
-      setupScrollShrink();
+      if (angular.isDefined(attr.mdScrollShrink)) {
+        setupScrollShrink();
+      }
 
       function setupScrollShrink() {
 
@@ -109,7 +111,7 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
         // If the scope is destroyed (which could happen with ng-if), make sure
         // to disable scroll shrinking again
 
-        scope.$on('$destroy', disableScrollShrink );
+        scope.$on('$destroy', disableScrollShrink);
 
         /**
          *
@@ -124,9 +126,15 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
             onMdContentLoad(null, closestContent);
           }
 
-          // Disable only if the attribute's expression evaluates to false
+          // Evaluate the expression
+          shrinkWithScroll = scope.$eval(shrinkWithScroll);
 
-         if ( shrinkWithScroll )  disableScrollShrink = enableScrollShrink();
+          // Disable only if the attribute's expression evaluates to false
+          if (shrinkWithScroll === false) {
+            disableScrollShrink();
+          } else {
+            disableScrollShrink = enableScrollShrink();
+          }
         }
 
         /**
@@ -179,7 +187,7 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
          *
          */
         function enableScrollShrink() {
-          if ( !contentElement )     return angular.noop;           // no md-content
+          if (!contentElement)     return angular.noop;           // no md-content
 
           contentElement.on('scroll', debouncedContentScroll);
           contentElement.attr('scroll-shrink', 'true');

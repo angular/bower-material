@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-rc1-master-32ab2eb
+ * v0.11.0-rc1-master-391479b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13724,7 +13724,6 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil) {
     contentEl.on('$scroll', onScroll);
 
     var self;
-    var stickyBaseoffset = contentEl.prop('offsetTop');
     return self = {
       prev: null,
       current: null, //the currently stickied item
@@ -13740,7 +13739,6 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil) {
     // Add an element and its sticky clone to this content's sticky collection
     function add(element, stickyClone) {
       stickyClone.addClass('md-sticky-clone');
-      stickyClone.css('top', stickyBaseoffset + 'px');
 
       var item = {
         element: element,
@@ -14681,7 +14679,9 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
 
       $mdTheming(element);
 
-      setupScrollShrink();
+      if (angular.isDefined(attr.mdScrollShrink)) {
+        setupScrollShrink();
+      }
 
       function setupScrollShrink() {
 
@@ -14713,7 +14713,7 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
         // If the scope is destroyed (which could happen with ng-if), make sure
         // to disable scroll shrinking again
 
-        scope.$on('$destroy', disableScrollShrink );
+        scope.$on('$destroy', disableScrollShrink);
 
         /**
          *
@@ -14728,9 +14728,15 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
             onMdContentLoad(null, closestContent);
           }
 
-          // Disable only if the attribute's expression evaluates to false
+          // Evaluate the expression
+          shrinkWithScroll = scope.$eval(shrinkWithScroll);
 
-         if ( shrinkWithScroll )  disableScrollShrink = enableScrollShrink();
+          // Disable only if the attribute's expression evaluates to false
+          if (shrinkWithScroll === false) {
+            disableScrollShrink();
+          } else {
+            disableScrollShrink = enableScrollShrink();
+          }
         }
 
         /**
@@ -14783,7 +14789,7 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
          *
          */
         function enableScrollShrink() {
-          if ( !contentElement )     return angular.noop;           // no md-content
+          if (!contentElement)     return angular.noop;           // no md-content
 
           contentElement.on('scroll', debouncedContentScroll);
           contentElement.attr('scroll-shrink', 'true');
