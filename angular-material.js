@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-rc1-master-7c4fc72
+ * v0.11.0-rc1-master-ffbcff3
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -8156,7 +8156,7 @@ function MdDialogProvider($$interimElementProvider) {
       function wrapSimpleContent() {
         if ( controller ) {
           var HTML_END_TAG = /<\/[\w-]*>/gm;
-          var content = controller.content;
+          var content = controller.content || "";
 
           var hasHTML = HTML_END_TAG.test(content);
           if (!hasHTML) {
