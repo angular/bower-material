@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-rc1-master-ffbcff3
+ * v0.11.0-rc1-master-d74f93a
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -106,12 +106,12 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $rootElement, 
     if (attr.mdOnOpen) {
 
       // Show progress indicator while loading async
+      // Use ng-hide for `display:none` so the indicator does not interfere with the options list
       element
         .find('md-content')
         .prepend(angular.element(
           '<div>' +
-          ' <md-progress-circular md-mode="indeterminate" ng-hide="$$loadingAsyncDone">' +
-          ' </md-progress-circular>' +
+          ' <md-progress-circular md-mode="{{progressMode}}" ng-hide="$$loadingAsyncDone"></md-progress-circular>' +
           '</div>'
         ));
 
@@ -1003,10 +1003,12 @@ function SelectProvider($$interimElementProvider) {
       function watchAsyncLoad() {
         if (opts.loadingAsync && !opts.isRemoved) {
           scope.$$loadingAsyncDone = false;
+          scope.progressMode = 'indeterminate';
 
           $q.when(opts.loadingAsync)
             .then(function() {
               scope.$$loadingAsyncDone = true;
+              scope.progressMode = '';
               delete opts.loadingAsync;
             }).then(function() {
               $$rAF(positionAndFocusMenu);

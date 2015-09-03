@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-rc1-master-ffbcff3
+ * v0.11.0-rc1-master-d74f93a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -10873,9 +10873,13 @@ angular.module('material.components.progressCircular', [
  * not necessary to expose what's happening behind the scenes and how long it will take, use an
  * indeterminate indicator.
  *
- * @param {string} md-mode Select from one of two modes: **'determinate'** and **'indeterminate'**.<br/>
- * Note: if the `md-mode` value is undefined or not 1 of the two (2) valid modes, then `.ng-hide`
+ * @param {string} md-mode Select from one of two modes: **'determinate'** and **'indeterminate'**.
+ *
+ * Note: if the `md-mode` value is set as undefined or specified as not 1 of the two (2) valid modes, then `.ng-hide`
  * will be auto-applied as a style to the component.
+ *
+ * Note: if not configured, the `md-mode="indeterminate"` will be auto injected as an attribute.
+ * If `value=""` is also specified, however, then `md-mode="determinate"` would be auto-injected instead.
  * @param {number=} value In determinate mode, this number represents the percentage of the
  *     circular progress. Default: 0
  * @param {number=} md-diameter This specifies the diamter of the circular progress. The value
@@ -10893,7 +10897,7 @@ angular.module('material.components.progressCircular', [
  * <md-progress-circular md-mode="indeterminate"></md-progress-circular>
  * </hljs>
  */
-function MdProgressCircularDirective($mdConstant, $mdTheming, $mdUtil) {
+function MdProgressCircularDirective($mdTheming, $mdUtil, $log) {
   var DEFAULT_PROGRESS_SIZE = 100;
   var DEFAULT_SCALING = 0.5;
 
@@ -10934,43 +10938,68 @@ function MdProgressCircularDirective($mdConstant, $mdTheming, $mdUtil) {
   function postLink(scope, element, attr) {
     $mdTheming(element);
 
-    var circle = element[0];
+    var circle = element;
     var spinnerWrapper =  angular.element(element.children()[0]);
-
     var lastMode, toVendorCSS = $mdUtil.dom.animator.toCss;
 
-    // Update size/scaling of the progress indicator
-    // Watch the "value" and "md-mode" attributes
+    updateScale();
+    validateMode();
+    watchAttributes();
 
-    circle.style[$mdConstant.CSS.TRANSFORM] = 'scale(' + getDiameterRatio() + ')';
+    /**
+     * Watch the value and md-mode attributes
+     */
+    function watchAttributes() {
+     attr.$observe('value', function(value) {
+           var percentValue = clamp(value);
+           element.attr('aria-valuenow', percentValue);
 
-    attr.$observe('value', function(value) {
-      var percentValue = clamp(value);
-      element.attr('aria-valuenow', percentValue);
+           if (mode() == MODE_DETERMINATE) {
+             animateIndicator(percentValue);
+           }
+         });
+     attr.$observe('mdMode',function(mode){
+       switch( mode ) {
+         case MODE_DETERMINATE:
+         case MODE_INDETERMINATE:
+           spinnerWrapper.removeClass('ng-hide');
+           spinnerWrapper.removeClass( lastMode );
+           spinnerWrapper.addClass( lastMode = "md-mode-" + mode );
+           break;
+         default:
+           spinnerWrapper.removeClass( lastMode );
+           spinnerWrapper.addClass('ng-hide');
+           lastMode = undefined;
+           break;
+       }
+     });
+    }
 
-      if (attr.mdMode == "determinate") {
-        animateIndicator(percentValue);
+    /**
+     * Update size/scaling of the progress indicator
+     * Watch the "value" and "md-mode" attributes
+     */
+    function updateScale() {
+      circle.css(toVendorCSS({
+        transform : $mdUtil.supplant('scale( {0} )',[getDiameterRatio()])
+      }));
+    }
+
+    /**
+     * Auto-defaults the mode to either `determinate` or `indeterminate` mode; if not specified
+     */
+    function validateMode() {
+      if ( angular.isUndefined(attr.mdMode) ) {
+        var hasValue = angular.isDefined(attr.value);
+        var mode = hasValue ? MODE_DETERMINATE : MODE_INDETERMINATE;
+        var info = "Auto-adding the missing md-mode='{0}' to the ProgressCircular element";
+
+        $log.debug( $mdUtil.supplant(info, [mode]) );
+
+        element.attr("md-mode",mode);
+        attr['mdMode'] = mode;
       }
-    });
-
-    attr.$observe('mdMode',function(mode){
-      switch( mode ) {
-        case MODE_DETERMINATE:
-        case MODE_INDETERMINATE:
-          spinnerWrapper.removeClass('ng-hide');
-
-          // Inject class selector instead of attribute selector
-          // (@see layout.js changes for IE performance issues)
-
-          if ( lastMode ) spinnerWrapper.removeClass( lastMode );
-               lastMode = "md-mode-" + mode;
-          if ( lastMode ) spinnerWrapper.addClass( lastMode );
-
-          break;
-        default:
-          spinnerWrapper.addClass('ng-hide');
-      }
-    });
+    }
 
     var leftC, rightC, gap;
 
@@ -10983,6 +11012,8 @@ function MdProgressCircularDirective($mdConstant, $mdTheming, $mdUtil) {
      * - use attribute selectors which had poor performances in IE
      */
     function animateIndicator(value) {
+      if ( !mode() ) return;
+
       leftC  = leftC  || angular.element(element[0].querySelector('.md-left > .md-half-circle'));
       rightC = rightC || angular.element(element[0].querySelector('.md-right > .md-half-circle'));
       gap    = gap    || angular.element(element[0].querySelector('.md-gap'));
@@ -10993,7 +11024,7 @@ function MdProgressCircularDirective($mdConstant, $mdTheming, $mdUtil) {
         }),
         leftStyles = removeEmptyValues({
           transition: (value <= 50) ? "transform 0.1s linear" : "",
-          transform: $mdUtil.supplant("rotate({0}deg)", [value <= 50 ? 135 : ((((value - 50) / 50) * 180) + 135)])
+          transform: $mdUtil.supplant("rotate({0}deg)", [value <= 50 ? 135 : (((value - 50) / 50 * 180) + 135)])
         }),
         rightStyles = removeEmptyValues({
           transition: (value >= 50) ? "transform 0.1s linear" : "",
@@ -11021,6 +11052,25 @@ function MdProgressCircularDirective($mdConstant, $mdTheming, $mdUtil) {
       // should return ratio; DEFAULT_PROGRESS_SIZE === 100px is default size
       return  (value > 1) ? value / DEFAULT_PROGRESS_SIZE : value;
     }
+
+    /**
+     * Is the md-mode a valid option?
+     */
+    function mode() {
+      var value = attr.mdMode;
+      if ( value ) {
+        switch(value) {
+          case MODE_DETERMINATE :
+          case MODE_INDETERMINATE :
+            break;
+          default:
+            value = undefined;
+            break;
+        }
+      }
+      return value;
+    }
+
   }
 
   /**
@@ -11042,7 +11092,7 @@ function MdProgressCircularDirective($mdConstant, $mdTheming, $mdUtil) {
     return target;
   }
 }
-MdProgressCircularDirective.$inject = ["$mdConstant", "$mdTheming", "$mdUtil"];
+MdProgressCircularDirective.$inject = ["$mdTheming", "$mdUtil", "$log"];
 
 })();
 (function(){
@@ -11065,15 +11115,33 @@ angular.module('material.components.progressLinear', [
  * @restrict E
  *
  * @description
- * The linear progress directive is used to make loading content in your app as delightful and painless as possible by minimizing the amount of visual change a user sees before they can view and interact with content. Each operation should only be represented by one activity indicator—for example, one refresh operation should not display both a refresh bar and an activity circle.
+ * The linear progress directive is used to make loading content
+ * in your app as delightful and painless as possible by minimizing
+ * the amount of visual change a user sees before they can view
+ * and interact with content.
  *
- * For operations where the percentage of the operation completed can be determined, use a determinate indicator. They give users a quick sense of how long an operation will take.
+ * Each operation should only be represented by one activity indicator
+ * For example: one refresh operation should not display both a
+ * refresh bar and an activity circle.
  *
- * For operations where the user is asked to wait a moment while something finishes up, and it’s not necessary to expose what's happening behind the scenes and how long it will take, use an indeterminate indicator.
+ * For operations where the percentage of the operation completed
+ * can be determined, use a determinate indicator. They give users
+ * a quick sense of how long an operation will take.
+ *
+ * For operations where the user is asked to wait a moment while
+ * something finishes up, and it’s not necessary to expose what's
+ * happening behind the scenes and how long it will take, use an
+ * indeterminate indicator.
  *
  * @param {string} md-mode Select from one of four modes: determinate, indeterminate, buffer or query.
+ *
+ * Note: if the `md-mode` value is set as undefined or specified as 1 of the four (4) valid modes, then `.ng-hide`
+ * will be auto-applied as a style to the component.
+ *
+ * Note: if not configured, the `md-mode="indeterminate"` will be auto injected as an attribute. If `value=""` is also specified, however,
+ * then `md-mode="determinate"` would be auto-injected instead.
  * @param {number=} value In determinate and buffer modes, this number represents the percentage of the primary progress bar. Default: 0
- * @param {number=} md-buffer-value In the buffer mode, this number represents the precentage of the secondary progress bar. Default: 0
+ * @param {number=} md-buffer-value In the buffer mode, this number represents the percentage of the secondary progress bar. Default: 0
  *
  * @usage
  * <hljs lang="html">
@@ -11088,7 +11156,11 @@ angular.module('material.components.progressLinear', [
  * <md-progress-linear md-mode="query"></md-progress-linear>
  * </hljs>
  */
-function MdProgressLinearDirective($$rAF, $mdConstant, $mdTheming) {
+function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
+  var MODE_DETERMINATE = "determinate",
+      MODE_INDETERMINATE = "indeterminate",
+      MODE_BUFFER = "buffer",
+      MODE_QUERY = "query";
 
   return {
     restrict: 'E',
@@ -11109,61 +11181,108 @@ function MdProgressLinearDirective($$rAF, $mdConstant, $mdTheming) {
   }
   function postLink(scope, element, attr) {
     $mdTheming(element);
-    var bar1Style = element[0].querySelector('.md-bar1').style,
-      bar2Style = element[0].querySelector('.md-bar2').style,
-      container = angular.element(element[0].querySelector('.md-container'));
+    var lastMode, toVendorCSS = $mdUtil.dom.animator.toCss;
+    var bar1 = angular.element(element[0].querySelector('.md-bar1')),
+        bar2 = angular.element(element[0].querySelector('.md-bar2')),
+        container = angular.element(element[0].querySelector('.md-container'));
 
-    attr.$observe('value', function(value) {
-      if (attr.mdMode == 'query') {
-        return;
+    validateMode();
+    watchAttributes();
+
+    /**
+     * Watch the value, md-buffer-value, and md-mode attributes
+     */
+    function watchAttributes() {
+      attr.$observe('value', function(value) {
+        var percentValue = clamp(value);
+        element.attr('aria-valuenow', percentValue);
+
+        if (mode() != MODE_QUERY) animateIndicator(bar2, percentValue);
+      });
+
+      attr.$observe('mdBufferValue', function(value) {
+        animateIndicator(bar1, clamp(value));
+      });
+
+      attr.$observe('mdMode',function(mode){
+        switch( mode ) {
+          case MODE_QUERY:
+          case MODE_BUFFER:
+          case MODE_DETERMINATE:
+          case MODE_INDETERMINATE:
+            container.removeClass('ng-hide');
+            container.removeClass( lastMode );
+            container.addClass( lastMode = "md-mode-" + mode );
+            break;
+          default:
+            container.removeClass( lastMode );
+            container.addClass('ng-hide');
+            lastMode = undefined;
+            break;
+        }
+      });
+    }
+
+    /**
+     * Auto-defaults the mode to either `determinate` or `indeterminate` mode; if not specified
+     */
+    function validateMode() {
+      if ( angular.isUndefined(attr.mdMode) ) {
+        var hasValue = angular.isDefined(attr.value);
+        var mode = hasValue ? MODE_DETERMINATE : MODE_INDETERMINATE;
+        var info = "Auto-adding the missing md-mode='{0}' to the ProgressLinear element";
+
+        $log.debug( $mdUtil.supplant(info, [mode]) );
+
+        element.attr("md-mode",mode);
+        attr['mdMode'] = mode;
       }
+    }
 
-      var clamped = clamp(value);
-      element.attr('aria-valuenow', clamped);
-      bar2Style[$mdConstant.CSS.TRANSFORM] = transforms[clamped];
-    });
+    /**
+     * Is the md-mode a valid option?
+     */
+    function mode() {
+      var value = attr.mdMode;
+      if ( value ) {
+        switch(value) {
+          case MODE_DETERMINATE:
+          case MODE_INDETERMINATE:
+          case MODE_BUFFER:
+          case MODE_QUERY:
+            break;
+          default:
+            value = undefined;
+            break;
+        }
+      }
+      return value;
+    }
 
-    attr.$observe('mdBufferValue', function(value) {
-      bar1Style[$mdConstant.CSS.TRANSFORM] = transforms[clamp(value)];
-    });
+    /**
+     * Manually set CSS to animate the Determinate indicator based on the specified
+     * percentage value (0-100).
+     */
+    function animateIndicator(target, value) {
+      if ( !mode() ) return;
 
-    $$rAF(function() {
-      container.addClass('md-ready');
-    });
+      var to = $mdUtil.supplant("translateX({0}%) scale({1},1)", [ (value-100)/2, value/100 ]);
+      var styles = toVendorCSS({ transform : to });
+      angular.element(target).css( styles );
+    }
   }
 
+  /**
+   * Clamps the value to be between 0 and 100.
+   * @param {number} value The value to clamp.
+   * @returns {number}
+   */
   function clamp(value) {
-    if (value > 100) {
-      return 100;
-    }
-
-    if (value < 0) {
-      return 0;
-    }
-
-    return Math.ceil(value || 0);
+    return Math.max(0, Math.min(value || 0, 100));
   }
 }
-MdProgressLinearDirective.$inject = ["$$rAF", "$mdConstant", "$mdTheming"];
+MdProgressLinearDirective.$inject = ["$mdTheming", "$mdUtil", "$log"];
 
-
-// **********************************************************
-// Private Methods
-// **********************************************************
-var transforms = (function() {
-  var values = new Array(101);
-  for(var i = 0; i < 101; i++){
-    values[i] = makeTransform(i);
-  }
-
-  return values;
-
-  function makeTransform(value){
-    var scale = value/100;
-    var translateX = (value-100)/2;
-    return 'translateX(' + translateX.toString() + '%) scale(' + scale.toString() + ', 1)';
-  }
-})();
 
 })();
 (function(){
@@ -11575,12 +11694,12 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $rootElement, 
     if (attr.mdOnOpen) {
 
       // Show progress indicator while loading async
+      // Use ng-hide for `display:none` so the indicator does not interfere with the options list
       element
         .find('md-content')
         .prepend(angular.element(
           '<div>' +
-          ' <md-progress-circular md-mode="indeterminate" ng-hide="$$loadingAsyncDone">' +
-          ' </md-progress-circular>' +
+          ' <md-progress-circular md-mode="{{progressMode}}" ng-hide="$$loadingAsyncDone"></md-progress-circular>' +
           '</div>'
         ));
 
@@ -12472,10 +12591,12 @@ function SelectProvider($$interimElementProvider) {
       function watchAsyncLoad() {
         if (opts.loadingAsync && !opts.isRemoved) {
           scope.$$loadingAsyncDone = false;
+          scope.progressMode = 'indeterminate';
 
           $q.when(opts.loadingAsync)
             .then(function() {
               scope.$$loadingAsyncDone = true;
+              scope.progressMode = '';
               delete opts.loadingAsync;
             }).then(function() {
               $$rAF(positionAndFocusMenu);

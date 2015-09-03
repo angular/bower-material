@@ -1,8 +1,8 @@
 {
   "name": "angular-material-menu",
-  "version": "0.11.0-rc1-master-ffbcff3",
+  "version": "0.11.0-rc1-master-d74f93a",
   "dependencies": {
-    "angular-material-core": "0.11.0-rc1-master-ffbcff3",
-    "angular-material-backdrop": "0.11.0-rc1-master-ffbcff3"
+    "angular-material-core": "0.11.0-rc1-master-d74f93a",
+    "angular-material-backdrop": "0.11.0-rc1-master-d74f93a"
   }
 }
