@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-rc1-master-94cf9d7
+ * v0.11.0-rc1-master-78315bb
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -55,7 +55,7 @@ var DELETE_HINT_TEMPLATE = '\
  * ngInject
  */
 function MdChip($mdTheming, $mdUtil) {
-  convertTemplates();
+  var hintTemplate = $mdUtil.processTemplate(DELETE_HINT_TEMPLATE);
 
   return {
     restrict: 'E',
@@ -65,7 +65,7 @@ function MdChip($mdTheming, $mdUtil) {
 
   function compile(element, attr) {
     // Append the delete template
-    element.append($mdUtil.processTemplate(DELETE_HINT_TEMPLATE));
+    element.append($mdUtil.processTemplate(hintTemplate));
 
     return function postLink(scope, element, attr, ctrl) {
       element.addClass('md-chip');
@@ -76,10 +76,6 @@ function MdChip($mdTheming, $mdUtil) {
             ctrl.selectedChip = -1;
           });
     };
-  }
-
-  function convertTemplates() {
-    DELETE_HINT_TEMPLATE = $mdUtil.processTemplate(DELETE_HINT_TEMPLATE);
   }
 }
 MdChip.$inject = ["$mdTheming", "$mdUtil"];
