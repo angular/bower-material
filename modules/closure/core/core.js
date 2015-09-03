@@ -2,13 +2,13 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-rc1-master-391479b
+ * v0.11.0-rc1-master-34607c7
  */
 goog.provide('ng.material.core');
-goog.require('ng.material.animate');
 
 
-goog.require('ng.material.layout');
+
+
 goog.require('ng.ngAnimate');
 /**
  * Initialization function that validates environment
@@ -17,8 +17,8 @@ goog.require('ng.ngAnimate');
 angular
   .module('material.core', [
     'ngAnimate',
-    'material.animate',
-    'material.layout',
+    'material.core.animate',
+    'material.core.layout',
     'material.core.gestures',
     'material.core.theming'
   ])
@@ -2576,19 +2576,6 @@ function InterimElementProvider() {
       }
     };
 
-    /**
-     * Replace `{{` and `}}` in a string (usually a template) with the actual start-/endSymbols used
-     * for interpolation. This allows pre-defined templates (for components such as dialog, toast etc)
-     * to continue to work in apps that use custom interpolation start-/endSymbols.
-     *
-     * @param {string} text The text in which to replace `{{` / `}}`
-     * @returns {string} The modified string using the actual interpolation start-/endSymbols
-     */
-    function replaceInterpolationSymbols(text) {
-      if (!text || !angular.isString(text)) return text;
-      return text.replace(/\{\{/g, startSymbol).replace(/}}/g, endSymbol);
-    }
-
   }
 
 }
@@ -2635,7 +2622,7 @@ function InterimElementProvider() {
      *  }
      *  ```
      */
-    angular.module('material.layout', [ 'ng' ])
+    angular.module('material.core.layout', [ 'ng' ])
 
       // Attribute directives with optional value(s)
 
@@ -4615,7 +4602,7 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
 "use strict";
 
 if (angular.version.minor >= 4) {
-  angular.module('material.animate', []);
+  angular.module('material.core.animate', []);
 } else {
 (function() {
 
@@ -4750,7 +4737,7 @@ if (angular.version.minor >= 4) {
   }];
 
   angular
-    .module('material.animate', [])
+    .module('material.core.animate', [])
     .factory('$$forceReflow', $$ForceReflowFactory)
     .factory('$$AnimateRunner', $$AnimateRunnerFactory)
     .factory('$$rAFMutex', $$rAFMutexFactory)
