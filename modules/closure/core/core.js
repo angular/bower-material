@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-rc2-master-8b210c3
+ * v0.11.0-rc2-master-e8b60de
  */
 goog.provide('ng.material.core');
 
@@ -2720,6 +2720,7 @@ function InterimElementProvider() {
     function attributeWithObserve(className, addDirectiveAsClass) {
       return function() {
         return {
+            restrict : 'A',
             compile: function(element, attr) {
               attributeValueToClass(null, element, attr);
 
@@ -2783,6 +2784,7 @@ function InterimElementProvider() {
     function attributeWithoutValue(className) {
       return function() {
         return {
+          restrict : 'A',
           compile: function(element, attr) {
             attributeToClass(null, element);
 
