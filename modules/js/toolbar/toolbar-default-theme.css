@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-rc2-master-e8b60de
+ * v0.11.0-rc2-master-b522cb7
  */
 md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {
   background-color: '{{primary-color}}';
