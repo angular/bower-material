@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-rc2-master-218bb93
+ * v0.11.0-rc2-master-8b210c3
  */
 goog.provide('ng.material.components.virtualRepeat');
 goog.require('ng.material.core');
