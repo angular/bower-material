@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-46c7b18
+ * v0.11.0-master-a5d84c3
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -646,23 +646,50 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      *  </md-list>
      * </md-bottom-sheet>
      *</hljs>
-     *
      **/
     findFocusTarget: function(containerEl, attributeVal) {
-      var elToFocus, items = containerEl[0].querySelectorAll(attributeVal || '[md-autofocus]');
+      var AUTO_FOCUS = '[md-autofocus]';
+      var elToFocus;
 
-      // Find the last child element with the focus attribute
-      items.length && angular.forEach(items, function(it) {
-        it = angular.element(it);
+      elToFocus = scanForFocusable(containerEl, attributeVal || AUTO_FOCUS);
 
-        // If the expression evaluates to FALSE, then it is not focusable target
-        var focusExpression = it[0].getAttribute('md-autofocus');
-        var isFocusable = focusExpression ? (it.scope().$eval(focusExpression) !== false ) : true;
+      if ( !elToFocus && attributeVal != AUTO_FOCUS) {
+        // Scan for deprecated attribute
+        elToFocus = scanForFocusable(containerEl, '[md-auto-focus]');
 
-        if (isFocusable) elToFocus = it;
-      });
+        if ( !elToFocus ) {
+          // Scan for fallback to 'universal' API
+          elToFocus = scanForFocusable(containerEl, AUTO_FOCUS);
+        }
+      }
 
       return elToFocus;
+
+      /**
+       * Can target and nested children for specified Selector (attribute)
+       * whose value may be an expression that evaluates to True/False.
+       */
+      function scanForFocusable(target, selector) {
+        var elFound, items = target[0].querySelectorAll(selector);
+
+        // Find the last child element with the focus attribute
+        if ( items && items.length ){
+          var EXP_ATTR = /\s*\[?([\-a-z]*)\]?\s*/i;
+          var matches = EXP_ATTR.exec(selector);
+          var attribute = matches ? matches[1] : null;
+
+          items.length && angular.forEach(items, function(it) {
+            it = angular.element(it);
+
+            // If the expression evaluates to FALSE, then it is not focusable target
+            var focusExpression = it[0].getAttribute(attribute);
+            var isFocusable = focusExpression ? (it.scope().$eval(focusExpression) !== false ) : true;
+
+            if (isFocusable) elFound = it;
+          });
+        }
+        return elFound;
+      }
     },
 
     // Disables scroll around the passed element.
@@ -710,11 +737,10 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
         // (arrow keys, spacebar, tab, etc).
         function disableKeyNav(e) {
           //-- temporarily removed this logic, will possibly re-add at a later date
-          return;
-          if (!element[0].contains(e.target)) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-          }
+          //if (!element[0].contains(e.target)) {
+          //  e.preventDefault();
+          //  e.stopImmediatePropagation();
+          //}
         }
 
         function preventDefault(e) {
@@ -997,16 +1023,58 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     /**
      * Functional equivalent for $element.filter(‘md-bottom-sheet’)
      * useful with interimElements where the element and its container are important...
+     *
+     * @param {[]} elements to scan
+     * @param {string} name of node to find (e.g. 'md-dialog')
+     * @param {boolean=} optional flag to allow deep scans; defaults to 'false'.
      */
-    extractElementByName: function(element, nodeName) {
-      for (var i = 0, len = element.length; i < len; i++) {
-        if (element[i].nodeName.toLowerCase() === nodeName) {
-          return angular.element(element[i]);
-        }
+    extractElementByName: function(element, nodeName, scanDeep, warnNotFound) {
+      var found = scanTree(element);
+      if (!found && !!warnNotFound) {
+        $log.warn( $mdUtil.supplant("Unable to find node '{0}' in element.",[nodeName]) );
       }
 
-      $log.warn( $mdUtil.supplant("Unable to find node '{0}' in element.",[nodeName]) );
-      return element;
+      return angular.element(found || element);
+
+      /**
+       * Breadth-First tree scan for element with matching `nodeName`
+       */
+      function scanTree(element) {
+        return scanLevel(element) || (!!scanDeep ? scanChildren(element) : null);
+      }
+
+      /**
+       * Case-insensitive scan of current elements only (do not descend).
+       */
+      function scanLevel(element) {
+        if ( element ) {
+          for (var i = 0, len = element.length; i < len; i++) {
+            if (element[i].nodeName.toLowerCase() === nodeName) {
+              return element[i];
+            }
+          }
+        }
+        return null;
+      }
+
+      /**
+       * Scan children of specified node
+       */
+      function scanChildren(element) {
+        var found;
+        if ( element ) {
+          for (var i = 0, len = element.length; i < len; i++) {
+            var target = element[i];
+            if ( !found ) {
+              for (var j = 0, numChild = target.childNodes.length; j < numChild; j++) {
+                found = found || scanTree([target.childNodes[j]]);
+              }
+            }
+          }
+        }
+        return found;
+      }
+
     },
 
     /**
@@ -4999,7 +5067,7 @@ if (angular.version.minor >= 4) {
 
       function parseMaxTime(str) {
         var maxValue = 0;
-        var values = str.split(/\s*,\s*/);
+        var values = (str || "").split(/\s*,\s*/);
         forEach(values, function(value) {
           // it's always safe to consider only second values and omit `ms` values since
           // getComputedStyle will always handle the conversion for us
@@ -13166,7 +13234,7 @@ function SidenavFocusDirective() {
  * By default, upon opening it will slide out on top of the main content area.
  *
  * For keyboard and screen reader accessibility, focus is sent to the sidenav wrapper by default.
- * It can be overridden with the `md-sidenav-focus` directive on the child element you want focused.
+ * It can be overridden with the `md-autofocus` directive on the child element you want focused.
  *
  * @usage
  * <hljs lang="html">
@@ -13189,7 +13257,7 @@ function SidenavFocusDirective() {
  *       <md-input-container>
  *         <label for="testInput">Test input</label>
  *         <input id="testInput" type="text"
- *                ng-model="data" md-sidenav-focus>
+ *                ng-model="data" md-autofocus>
  *       </md-input-container>
  *     </form>
  *   </md-sidenav>
@@ -14743,7 +14811,7 @@ function MdToastProvider($$interimElementProvider) {
     function onShow(scope, element, options) {
       activeToastContent = options.content;
 
-      element = $mdUtil.extractElementByName(element, 'md-toast');
+      element = $mdUtil.extractElementByName(element, 'md-toast', true);
       options.onSwipe = function(ev, gesture) {
         //Add swipeleft/swiperight class to element so it can animate correctly
         element.addClass('md-' + ev.type.replace('$md.',''));
