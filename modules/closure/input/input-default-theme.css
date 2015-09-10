@@ -2,13 +2,21 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-a5d84c3
+ * v0.11.0-master-85dceef
  */
 md-input-container.md-THEME_NAME-theme .md-input {
+  /* Firefox 19+ */
+  /* Firefox 18- */
   color: '{{foreground-1}}';
   border-color: '{{foreground-4}}';
   text-shadow: '{{foreground-shadow}}'; }
-  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder, md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder {
+  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder {
+    color: '{{foreground-3}}'; }
+  md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder {
+    color: '{{foreground-3}}'; }
+  md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder {
+    color: '{{foreground-3}}'; }
+  md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder {
     color: '{{foreground-3}}'; }
 md-input-container.md-THEME_NAME-theme > md-icon {
   color: '{{foreground-1}}'; }
