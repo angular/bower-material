@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-f3ad525
+ * v0.11.0-master-316b4c8
  */
 goog.provide('ng.material.components.switch');
 goog.require('ng.material.components.checkbox');
@@ -145,7 +145,7 @@ function MdSwitch(mdCheckboxDirective, $mdTheming, $mdUtil, $document, $mdConsta
 
         // We changed if there is no distance (this is a click a click),
         // or if the drag distance is >50% of the total.
-        var isChanged = ngModel.$viewValue ? drag.translate < 0.5 : drag.translate > 0.5;
+        var isChanged = ngModel.$viewValue ? drag.translate > 0.5 : drag.translate < 0.5;
         if (isChanged) {
           applyModelValue(!ngModel.$viewValue);
         }
