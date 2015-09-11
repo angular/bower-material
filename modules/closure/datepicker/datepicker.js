@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-9d1f9da
+ * v0.11.0-master-9253039
  */
 goog.provide('ng.material.components.datepicker');
 goog.require('ng.material.components.icon');
@@ -1485,10 +1485,6 @@ goog.require('ng.material.core');
     this.$$rAF(function() {
       calendarPane.classList.add('md-pane-open');
     });
-  };
-
-  DatePickerCtrl.prototype.positionCalendarPane = function() {
-
   };
 
   /** Detach the floating calendar pane from the document. */
