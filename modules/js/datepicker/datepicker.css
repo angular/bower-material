@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-5551699
+ * v0.11.0-master-9d1f9da
  */
 /** Styles for mdCalendar. */
 md-calendar {
@@ -194,6 +194,9 @@ md-datepicker[disabled] .md-datepicker-triangle-button {
   margin-left: 24px;
   height: 40px; }
 .md-datepicker-open .md-datepicker-triangle-button {
+  display: none; }
+
+.md-datepicker-pos-adjusted .md-datepicker-input-mask {
   display: none; }
 
 .md-datepicker-calendar-pane .md-calendar {
