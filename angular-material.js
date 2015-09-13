@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-708f6ca
+ * v0.11.0-master-8147112
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1034,7 +1034,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     extractElementByName: function(element, nodeName, scanDeep, warnNotFound) {
       var found = scanTree(element);
       if (!found && !!warnNotFound) {
-        $log.warn( $mdUtil.supplant("Unable to find node '{0}' in element.",[nodeName]) );
+        $log.warn( $mdUtil.supplant("Unable to find node '{0}' in element '{1}'.",[nodeName, element[0].outerHTM]) );
       }
 
       return angular.element(found || element);
@@ -14802,7 +14802,7 @@ function MdToastDirective() {
  *   - `position` - `{string=}`: Where to place the toast. Available: any combination
  *     of 'bottom', 'left', 'top', 'right', 'fit'. Default: 'bottom left'.
  *   - `controller` - `{string=}`: The controller to associate with this toast.
- *     The controller will be injected the local `$hideToast`, which is a function
+ *     The controller will be injected the local `$mdToast.hide( )`, which is a function
  *     used to hide the toast.
  *   - `locals` - `{string=}`: An object containing key/value pairs. The keys will
  *     be used as names of values to inject into the controller. For example,

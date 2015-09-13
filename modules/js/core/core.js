@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-708f6ca
+ * v0.11.0-master-8147112
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1010,7 +1010,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     extractElementByName: function(element, nodeName, scanDeep, warnNotFound) {
       var found = scanTree(element);
       if (!found && !!warnNotFound) {
-        $log.warn( $mdUtil.supplant("Unable to find node '{0}' in element.",[nodeName]) );
+        $log.warn( $mdUtil.supplant("Unable to find node '{0}' in element '{1}'.",[nodeName, element[0].outerHTM]) );
       }
 
       return angular.element(found || element);
