@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-dfef4fd
+ * v0.11.0-master-255179d
  */
 goog.provide('ng.material.core');
 
@@ -3335,7 +3335,7 @@ InkRippleCtrl.prototype.clearTimeout = function () {
 InkRippleCtrl.prototype.isRippleAllowed = function () {
   var element = this.$element[0];
   do {
-    if (element.tagName && element.tagName !== 'BODY') break;
+    if (!element.tagName || element.tagName === 'BODY') break;
     if (element && element.hasAttribute && element.hasAttribute('disabled')) return false;
   } while (element = element.parentNode);
   return true;
