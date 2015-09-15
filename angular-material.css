@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-afc0963
+ * v0.11.0-master-e80c621
  */
 html, body {
   height: 100%;
@@ -2879,7 +2879,8 @@ md-calendar {
 
 .md-calendar-month-label {
   height: 44px;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 500;
   padding: 0 0 0 24px; }
 
 .md-calendar-day-header {
@@ -2971,7 +2972,6 @@ md-datepicker {
   position: absolute;
   right: 0;
   left: 120px;
-  background: white;
   height: 100%; }
 
 .md-datepicker-calendar {
@@ -2992,7 +2992,7 @@ md-datepicker {
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid rgba(0, 0, 0, 0.2); }
+  border-top: 5px solid; }
 
 .md-datepicker-triangle-button {
   position: absolute;
