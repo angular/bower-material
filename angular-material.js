@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-df81827
+ * v0.11.0-master-bda85e2
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -8408,7 +8408,7 @@ function MdDialogProvider($$interimElementProvider) {
       // the DOM element.
       if ( angular.isString(options.parent) ) {
         var simpleSelector = options.parent,
-            container = $document[0].querySelectorAll(selector);
+            container = $document[0].querySelectorAll(simpleSelector);
         options.parent = container.length ? container[0] : null;
       }
       // If we have a reference to a raw dom element, always wrap it in jqLite
