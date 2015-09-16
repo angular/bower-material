@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-dfa4dc6
+ * v0.11.0-master-86d876b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -79,7 +79,7 @@ angular.module('material.components.select', [
  *   </md-input-container>
  * </hljs>
  */
-function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $rootElement, $compile, $parse) {
+function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $parse) {
   return {
     restrict: 'E',
     require: ['^?mdInputContainer', 'mdSelect', 'ngModel', '?^form'],
@@ -290,7 +290,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $rootElement, 
       });
 
       attr.$observe('disabled', function(disabled) {
-        if (typeof disabled == "string") {
+        if (angular.isString(disabled)) {
           disabled = true;
         }
         // Prevent click event being registered twice
@@ -400,7 +400,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $rootElement, 
     };
   }
 }
-SelectDirective.$inject = ["$mdSelect", "$mdUtil", "$mdTheming", "$mdAria", "$rootElement", "$compile", "$parse"];
+SelectDirective.$inject = ["$mdSelect", "$mdUtil", "$mdTheming", "$mdAria", "$compile", "$parse"];
 
 function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
 

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-dfa4dc6
+ * v0.11.0-master-86d876b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -107,10 +107,13 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       $viewChangeListeners: []
     };
 
-    var isDisabledParsed = attr.ngDisabled && $parse(attr.ngDisabled);
-    var isDisabledGetter = isDisabledParsed ?
-      function() { return isDisabledParsed(scope.$parent); } :
-      angular.noop;
+    var isDisabledGetter = angular.noop;
+    if (attr.disabled != null) {
+      isDisabledGetter = function() { return true; };
+    } else if (attr.ngDisabled) {
+      isDisabledGetter = angular.bind(null, $parse(attr.ngDisabled), scope.$parent);
+    }
+
     var thumb = angular.element(element[0].querySelector('.md-thumb'));
     var thumbText = angular.element(element[0].querySelector('.md-thumb-text'));
     var thumbContainer = thumb.parent();
@@ -148,7 +151,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       ngModelRender();
       redrawTicks();
     }
-    setTimeout(updateAll);
+    setTimeout(updateAll, 0);
 
     var debouncedUpdateAll = $$rAF.throttle(updateAll);
     angular.element($window).on('resize', debouncedUpdateAll);
@@ -315,7 +318,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     function onPressDown(ev) {
       if (isDisabledGetter()) return;
 
-      element.addClass('active');
+      element.addClass('md-active');
       element[0].focus();
       refreshSliderDimensions();
 
@@ -329,7 +332,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     function onPressUp(ev) {
       if (isDisabledGetter()) return;
 
-      element.removeClass('dragging active');
+      element.removeClass('md-dragging md-active');
 
       var exactVal = percentToValue( positionToPercent( ev.pointer.x ));
       var closestVal = minMaxValidator( stepValidator(exactVal) );
@@ -343,7 +346,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       isDragging = true;
       ev.stopPropagation();
 
-      element.addClass('dragging');
+      element.addClass('md-dragging');
       setSliderFromEvent(ev);
     }
     function onDrag(ev) {

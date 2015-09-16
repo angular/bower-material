@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-dfa4dc6
+ * v0.11.0-master-86d876b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -11913,7 +11913,7 @@ angular.module('material.components.select', [
  *   </md-input-container>
  * </hljs>
  */
-function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $rootElement, $compile, $parse) {
+function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $parse) {
   return {
     restrict: 'E',
     require: ['^?mdInputContainer', 'mdSelect', 'ngModel', '?^form'],
@@ -12124,7 +12124,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $rootElement, 
       });
 
       attr.$observe('disabled', function(disabled) {
-        if (typeof disabled == "string") {
+        if (angular.isString(disabled)) {
           disabled = true;
         }
         // Prevent click event being registered twice
@@ -12234,7 +12234,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $rootElement, 
     };
   }
 }
-SelectDirective.$inject = ["$mdSelect", "$mdUtil", "$mdTheming", "$mdAria", "$rootElement", "$compile", "$parse"];
+SelectDirective.$inject = ["$mdSelect", "$mdUtil", "$mdTheming", "$mdAria", "$compile", "$parse"];
 
 function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
 
@@ -13701,10 +13701,13 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       $viewChangeListeners: []
     };
 
-    var isDisabledParsed = attr.ngDisabled && $parse(attr.ngDisabled);
-    var isDisabledGetter = isDisabledParsed ?
-      function() { return isDisabledParsed(scope.$parent); } :
-      angular.noop;
+    var isDisabledGetter = angular.noop;
+    if (attr.disabled != null) {
+      isDisabledGetter = function() { return true; };
+    } else if (attr.ngDisabled) {
+      isDisabledGetter = angular.bind(null, $parse(attr.ngDisabled), scope.$parent);
+    }
+
     var thumb = angular.element(element[0].querySelector('.md-thumb'));
     var thumbText = angular.element(element[0].querySelector('.md-thumb-text'));
     var thumbContainer = thumb.parent();
@@ -13742,7 +13745,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       ngModelRender();
       redrawTicks();
     }
-    setTimeout(updateAll);
+    setTimeout(updateAll, 0);
 
     var debouncedUpdateAll = $$rAF.throttle(updateAll);
     angular.element($window).on('resize', debouncedUpdateAll);
@@ -13909,7 +13912,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     function onPressDown(ev) {
       if (isDisabledGetter()) return;
 
-      element.addClass('active');
+      element.addClass('md-active');
       element[0].focus();
       refreshSliderDimensions();
 
@@ -13923,7 +13926,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     function onPressUp(ev) {
       if (isDisabledGetter()) return;
 
-      element.removeClass('dragging active');
+      element.removeClass('md-dragging md-active');
 
       var exactVal = percentToValue( positionToPercent( ev.pointer.x ));
       var closestVal = minMaxValidator( stepValidator(exactVal) );
@@ -13937,7 +13940,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       isDragging = true;
       ev.stopPropagation();
 
-      element.addClass('dragging');
+      element.addClass('md-dragging');
       setSliderFromEvent(ev);
     }
     function onDrag(ev) {
@@ -14546,12 +14549,12 @@ angular.module('material.components.switch', [
  *
  * </hljs>
  */
-function MdSwitch(mdCheckboxDirective, $mdTheming, $mdUtil, $document, $mdConstant, $parse, $$rAF, $mdGesture) {
+function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdGesture) {
   var checkboxDirective = mdCheckboxDirective[0];
 
   return {
     restrict: 'E',
-    priority:210, // Run before ngAria
+    priority: 210, // Run before ngAria
     transclude: true,
     template:
       '<div class="md-container">' +
@@ -14560,20 +14563,26 @@ function MdSwitch(mdCheckboxDirective, $mdTheming, $mdUtil, $document, $mdConsta
           '<div class="md-thumb" md-ink-ripple md-ink-ripple-checkbox></div>' +
         '</div>'+
       '</div>' +
-      '<div ng-transclude class="md-label">' +
-      '</div>',
+      '<div ng-transclude class="md-label"></div>',
     require: '?ngModel',
-    compile: compile
+    compile: mdSwitchCompile
   };
 
-  function compile(element, attr) {
+  function mdSwitchCompile(element, attr) {
     var checkboxLink = checkboxDirective.compile(element, attr);
-    // no transition on initial load
+    // No transition on initial load.
     element.addClass('md-dragging');
 
     return function (scope, element, attr, ngModel) {
       ngModel = ngModel || $mdUtil.fakeNgModel();
-      var disabledGetter = $parse(attr.ngDisabled);
+
+      var disabledGetter = null;
+      if (attr.disabled != null) {
+        disabledGetter = function() { return true; };
+      } else if (attr.ngDisabled) {
+        disabledGetter = $parse(attr.ngDisabled);
+      }
+
       var thumbContainer = angular.element(element[0].querySelector('.md-thumb-container'));
       var switchContainer = angular.element(element[0].querySelector('.md-container'));
 
@@ -14584,7 +14593,7 @@ function MdSwitch(mdCheckboxDirective, $mdTheming, $mdUtil, $document, $mdConsta
 
       checkboxLink(scope, element, attr, ngModel);
 
-      if (angular.isDefined(attr.ngDisabled)) {
+      if (disabledGetter) {
         scope.$watch(disabledGetter, function(isDisabled) {
           element.attr('tabindex', isDisabled ? -1 : 0);
         });
@@ -14599,14 +14608,12 @@ function MdSwitch(mdCheckboxDirective, $mdTheming, $mdUtil, $document, $mdConsta
 
       var drag;
       function onDragStart(ev) {
-        // Don't go if ng-disabled===true
-        if (disabledGetter(scope)) return;
+        // Don't go if the switch is disabled.
+        if (disabledGetter && disabledGetter(scope)) return;
         ev.stopPropagation();
 
         element.addClass('md-dragging');
-        drag = {
-          width: thumbContainer.prop('offsetWidth')
-        };
+        drag = {width: thumbContainer.prop('offsetWidth')};
         element.removeClass('transition');
       }
 
@@ -14654,7 +14661,7 @@ function MdSwitch(mdCheckboxDirective, $mdTheming, $mdUtil, $document, $mdConsta
 
 
 }
-MdSwitch.$inject = ["mdCheckboxDirective", "$mdTheming", "$mdUtil", "$document", "$mdConstant", "$parse", "$$rAF", "$mdGesture"];
+MdSwitch.$inject = ["mdCheckboxDirective", "$mdUtil", "$mdConstant", "$parse", "$$rAF", "$mdGesture"];
 
 })();
 (function(){
