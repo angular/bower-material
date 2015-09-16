@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-77a34bd
+ * v0.11.0-master-8849213
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -938,17 +938,13 @@ function MdAutocompleteItemScopeDirective($compile, $mdUtil) {
   };
 
   function postLink(scope, element, attr) {
-    var newScope = scope.$mdAutocompleteCtrl.parent.$new();
-    var relevantVariables = ['item', '$index'];
+    var ctrl     = scope.$mdAutocompleteCtrl;
+    var newScope = ctrl.parent.$new();
+    var itemName = ctrl.itemName;
 
     // Watch for changes to our scope's variables and copy them to the new scope
-    angular.forEach(relevantVariables, function(variable){
-      scope.$watch(variable, function(value) {
-        $mdUtil.nextTick(function() {
-          newScope[variable] = value;
-        });
-      });
-    });
+    watchVariable('$index', '$index');
+    watchVariable('item', itemName);
 
     // Recompile the contents with the new/modified scope
     $compile(element.contents())(newScope);
@@ -957,6 +953,18 @@ function MdAutocompleteItemScopeDirective($compile, $mdUtil) {
     if (attr.hasOwnProperty('mdAutocompleteReplace')) {
       element.after(element.contents());
       element.remove();
+    }
+
+    /**
+     * Creates a watcher for variables that are copied from the parent scope
+     * @param variable
+     * @param alias
+     */
+    function watchVariable (variable, alias) {
+      $mdUtil.nextTick(function () {
+        newScope[alias] = scope[variable];
+        scope.$watch(variable, function (value) { newScope[alias] = value; });
+      });
     }
   }
 }
