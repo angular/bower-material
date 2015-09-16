@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-3d0b418
+ * v0.11.0-master-77a34bd
  */
 goog.provide('ng.material.components.bottomSheet');
 goog.require('ng.material.components.backdrop');
@@ -21,11 +21,20 @@ angular
   .directive('mdBottomSheet', MdBottomSheetDirective)
   .provider('$mdBottomSheet', MdBottomSheetProvider);
 
-function MdBottomSheetDirective() {
+/* ngInject */
+function MdBottomSheetDirective($mdBottomSheet) {
   return {
-    restrict: 'E'
+    restrict: 'E',
+    link : function postLink(scope, element, attr) {
+      // When navigation force destroys an interimElement, then
+      // listen and $destroy() that interim instance...
+      scope.$on('$destroy', function() {
+        $mdBottomSheet.destroy();
+      });
+    }
   };
 }
+MdBottomSheetDirective.$inject = ["$mdBottomSheet"];
 
 
 /**

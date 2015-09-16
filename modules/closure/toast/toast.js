@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-3d0b418
+ * v0.11.0-master-77a34bd
  */
 goog.provide('ng.material.components.toast');
 goog.require('ng.material.components.button');
@@ -20,11 +20,20 @@ angular.module('material.components.toast', [
   .directive('mdToast', MdToastDirective)
   .provider('$mdToast', MdToastProvider);
 
-function MdToastDirective() {
+/* ngInject */
+function MdToastDirective($mdToast) {
   return {
-    restrict: 'E'
+    restrict: 'E',
+    link: function postLink(scope, element, attr) {
+      // When navigation force destroys an interimElement, then
+      // listen and $destroy() that interim instance...
+      scope.$on('$destroy', function() {
+        $mdToast.destroy();
+      });
+    }
   };
 }
+MdToastDirective.$inject = ["$mdToast"];
 
 /**
  * @ngdoc service
@@ -264,7 +273,7 @@ function MdToastProvider($$interimElementProvider) {
       element.off(SWIPE_EVENTS, options.onSwipe);
       options.parent.removeClass(options.openClass);
 
-      return $animate.leave(element);
+      return (options.$destroy == true) ? element.remove() : $animate.leave(element);
     }
 
     function toastOpenClass(position) {

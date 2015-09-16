@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-3d0b418
+ * v0.11.0-master-77a34bd
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -19,7 +19,7 @@ angular
   .directive('mdDialog', MdDialogDirective)
   .provider('$mdDialog', MdDialogProvider);
 
-function MdDialogDirective($$rAF, $mdTheming) {
+function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
   return {
     restrict: 'E',
     link: function(scope, element, attr) {
@@ -34,14 +34,24 @@ function MdDialogDirective($$rAF, $mdTheming) {
           //-- delayed image loading may impact scroll height, check after images are loaded
           angular.element(images).on('load', addOverflowClass);
         }
+
+        scope.$on('$destroy', function() {
+          $mdDialog.destroy();
+        });
+
+        /**
+         *
+         */
         function addOverflowClass() {
           element.toggleClass('md-content-overflow', content.scrollHeight > content.clientHeight);
         }
+
+
       });
     }
   };
 }
-MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
+MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
 
 /**
  * @ngdoc service
@@ -542,16 +552,30 @@ function MdDialogProvider($$interimElementProvider) {
     function onRemove(scope, element, options) {
       options.deactivateListeners();
       options.unlockScreenReader();
+      options.hideBackdrop(options.$destroy);
 
-      options.hideBackdrop();
+      // For navigation $destroy events, do a quick, non-animated removal,
+      // but for normal closes (from clicks, etc) animate the removal
 
-      return dialogPopOut(element, options)
-        .finally(function() {
-          angular.element($document[0].body).removeClass('md-dialog-is-showing');
-          element.remove();
+      return !!options.$destroy ? detachAndClean() : animateRemoval().then( detachAndClean );
 
-          options.origin.focus();
-        });
+      /**
+       * For normal closes, animate the removal.
+       * For forced closes (like $destroy events), skip the animations
+       */
+      function animateRemoval() {
+        return dialogPopOut(element, options);
+      }
+
+      /**
+       * Detach the element
+       */
+      function detachAndClean() {
+        angular.element($document[0].body).removeClass('md-dialog-is-showing');
+        element.remove();
+
+        if (!options.$destroy) options.origin.focus();
+      }
     }
 
     /**
@@ -673,10 +697,12 @@ function MdDialogProvider($$interimElementProvider) {
       /**
        * Hide modal backdrop element...
        */
-      options.hideBackdrop = function hideBackdrop() {
+      options.hideBackdrop = function hideBackdrop($destroy) {
         if (options.backdrop) {
-          $animate.leave(options.backdrop);
+          if ( !!$destroy ) options.backdrop.remove();
+          else              $animate.leave(options.backdrop);
         }
+
         if (options.disableParentScroll) {
           options.restoreScroll();
           delete options.restoreScroll;
@@ -767,7 +793,6 @@ function MdDialogProvider($$interimElementProvider) {
 
       var isFixed = $window.getComputedStyle($document[0].body).position == 'fixed';
       var backdrop = options.backdrop ? $window.getComputedStyle(options.backdrop[0]) : null;
-
       var height = backdrop ? Math.min($document[0].body.clientHeight, Math.ceil(Math.abs(parseInt(backdrop.height, 10)))) : 0;
 
       container.css({

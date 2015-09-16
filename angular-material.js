@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-3d0b418
+ * v0.11.0-master-77a34bd
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2107,7 +2107,7 @@ angular.module('material.core')
 
 function InterimElementProvider() {
   createInterimElementProvider.$get = InterimElementFactory;
-  InterimElementFactory.$inject = ["$document", "$q", "$rootScope", "$timeout", "$rootElement", "$animate", "$mdUtil", "$mdCompiler", "$mdTheming", "$log"];
+  InterimElementFactory.$inject = ["$document", "$q", "$$q", "$rootScope", "$timeout", "$rootElement", "$animate", "$mdUtil", "$mdCompiler", "$mdTheming", "$log"];
   return createInterimElementProvider;
 
   /**
@@ -2198,8 +2198,13 @@ function InterimElementProvider() {
       var publicService = {
         hide: interimElementService.hide,
         cancel: interimElementService.cancel,
-        show: showInterimElement
+        show: showInterimElement,
+
+        // Special internal method to destroy an interim element without animations
+        // used when navigation changes causes a $scope.$destroy() action
+        destroy : destroyInterimElement
       };
+
 
       defaultMethods = providerConfig.methods || [];
       // This must be invoked after the publicService is initialized
@@ -2260,9 +2265,11 @@ function InterimElementProvider() {
           //
           // @example `$mdToast.simple('hello')` // sets options.content to hello
           //                                     // because argOption === 'content'
-          if (arguments.length && definition.argOption && !angular.isObject(arg) &&
-              !angular.isArray(arg)) {
+          if (arguments.length && definition.argOption &&
+              !angular.isObject(arg) && !angular.isArray(arg))  {
+
             return (new Preset())[definition.argOption](arg);
+
           } else {
             return new Preset(arg);
           }
@@ -2272,6 +2279,9 @@ function InterimElementProvider() {
 
       return publicService;
 
+      /**
+       *
+       */
       function showInterimElement(opts) {
         // opts is either a preset which stores its options on an _options field,
         // or just an object made up of options
@@ -2281,6 +2291,17 @@ function InterimElementProvider() {
         return interimElementService.show(
           angular.extend({}, defaultOptions, opts)
         );
+      }
+
+      /**
+       *  Special method to hide and destroy an interimElement WITHOUT
+       *  any 'leave` or hide animations ( an immediate force hide/remove )
+       *
+       *  NOTE: This calls the onRemove() subclass method for each component...
+       *  which must have code to respond to `options.$destroy == true`
+       */
+      function destroyInterimElement(opts) {
+          return interimElementService.destroy(opts);
       }
 
       /**
@@ -2301,7 +2322,7 @@ function InterimElementProvider() {
   }
 
   /* @ngInject */
-  function InterimElementFactory($document, $q, $rootScope, $timeout, $rootElement, $animate,
+  function InterimElementFactory($document, $q, $$q, $rootScope, $timeout, $rootElement, $animate,
                                  $mdUtil, $mdCompiler, $mdTheming, $log ) {
     return function createInterimElementService() {
       var SHOW_CANCELLED = false;
@@ -2323,7 +2344,8 @@ function InterimElementProvider() {
       return service = {
         show: show,
         hide: hide,
-        cancel: cancel
+        cancel: cancel,
+        destroy : destroy
       };
 
       /*
@@ -2341,7 +2363,7 @@ function InterimElementProvider() {
        */
       function show(options) {
         options = options || {};
-        var interimElement = new InterimElement(options);
+        var interimElement = new InterimElement(options || {});
         var hideExisting = !options.skipHide && stack.length ? service.hide() : $q.when(true);
 
         // This hide()s only the current interim element before showing the next, new one
@@ -2353,7 +2375,8 @@ function InterimElementProvider() {
           interimElement
             .show()
             .catch(function( reason ) {
-              // $log.error("InterimElement.show() error: " + reason );
+              //$log.error("InterimElement.show() error: " + reason );
+              return reason;
             });
 
         });
@@ -2393,9 +2416,10 @@ function InterimElementProvider() {
 
         function closeElement(interim) {
           interim
-            .remove(reason || SHOW_CLOSED, false)
+            .remove(reason || SHOW_CLOSED, false, options || { })
             .catch(function( reason ) {
-              // $log.error("InterimElement.hide() error: " + reason );
+              //$log.error("InterimElement.hide() error: " + reason );
+              return reason;
             });
           return interim.deferred.promise;
         }
@@ -2413,17 +2437,28 @@ function InterimElementProvider() {
        * @returns Promise that will be resolved after the element has been removed.
        *
        */
-      function cancel(reason) {
+      function cancel(reason, options) {
         var interim = stack.shift();
         if ( !interim ) return $q.when(reason || SHOW_CANCELLED);
 
         interim
-          .remove(reason || SHOW_CANCELLED, true)
+          .remove(reason || SHOW_CANCELLED, true, options || { })
           .catch(function( reason ) {
-            // $log.error("InterimElement.cancel() error: " + reason );
+            //$log.error("InterimElement.cancel() error: " + reason );
+            return reason;
           });
 
         return interim.deferred.promise;
+      }
+
+      /*
+       * Special method to quick-remove the interim element without animations
+       */
+      function destroy() {
+        var interim = stack.shift();
+
+        return interim ? interim.remove(SHOW_CANCELLED, false, {'$destroy':true}) :
+               $q.when(SHOW_CANCELLED);
       }
 
 
@@ -2475,39 +2510,44 @@ function InterimElementProvider() {
          * - perform the transition-out, and
          * - perform optional clean up scope.
          */
-        function transitionOutAndRemove(response, isCancelled) {
+        function transitionOutAndRemove(response, isCancelled, opts) {
+          options = angular.merge(options || {}, opts || {});
           options.cancelAutoHide && options.cancelAutoHide();
+          options.element.triggerHandler('$mdInterimElementRemove');
 
-          return $q(function(resolve, reject){
+          if ( options.$destroy === true ) {
 
-            $q.when(showAction).finally(function(){
-              options.element.triggerHandler('$mdInterimElementRemove');
-              hideElement(options.element, options).then( function() {
+            return hideElement(options.element, options);
 
-                (isCancelled && rejectAll(response)) || resolveAll();
+          } else {
 
-              }, rejectAll );
+            $q.when(showAction)
+                .finally(function() {
+                  hideElement(options.element, options).then(function() {
 
-            });
+                    (isCancelled && rejectAll(response)) || resolveAll(response);
 
-            function resolveAll() {
-              // The `show()` returns a promise that will be resolved when the interim
-              // element is hidden or cancelled...
-              self.deferred.resolve(response);
+                  }, rejectAll);
+                });
 
-              // Now resolve the `.hide()` promise itself (optional)
-              resolve(response);
-            }
+            return self.deferred.promise;
+          }
 
-            function rejectAll(fault) {
-              // Force the '$md<xxx>.show()' promise to reject
-              self.deferred.reject(fault);
 
-              // Continue rejection propagation
-              reject(fault);
-            }
+          /**
+           * The `show()` returns a promise that will be resolved when the interim
+           * element is hidden or cancelled...
+           */
+          function resolveAll(response) {
+            self.deferred.resolve(response);
+          }
 
-          });
+          /**
+           * Force the '$md<xxx>.show()' promise to reject
+           */
+          function rejectAll(fault) {
+            self.deferred.reject(fault);
+          }
         }
 
         /**
@@ -2660,21 +2700,32 @@ function InterimElementProvider() {
         function hideElement(element, options) {
           var announceRemoving = options.onRemoving || angular.noop;
 
-          return $q(function (resolve, reject) {
+          return $$q(function (resolve, reject) {
             try {
               // Start transitionIn
-              var action = $q.when(element ? options.onRemove(options.scope, element, options) : true);
+              var action = $$q.when( options.onRemove(options.scope, element, options) || true );
 
               // Trigger callback *before* the remove operation starts
               announceRemoving(element, action);
 
-              // Wait until transition-out is done
-              action.then(function () {
+              if ( options.$destroy == true ) {
 
-                !options.preserveScope && options.scope.$destroy();
+                // For $destroy, onRemove should be synchronous
                 resolve(element);
 
-              }, reject );
+              } else {
+
+                // Wait until transition-out is done
+                action.then(function () {
+
+                  if (!options.preserveScope && options.scope ) {
+                    options.scope.$destroy();
+                  }
+
+                  resolve(element);
+
+                }, reject );
+              }
 
             } catch(e) {
               reject(e.message);
@@ -5290,11 +5341,20 @@ angular
   .directive('mdBottomSheet', MdBottomSheetDirective)
   .provider('$mdBottomSheet', MdBottomSheetProvider);
 
-function MdBottomSheetDirective() {
+/* @ngInject */
+function MdBottomSheetDirective($mdBottomSheet) {
   return {
-    restrict: 'E'
+    restrict: 'E',
+    link : function postLink(scope, element, attr) {
+      // When navigation force destroys an interimElement, then
+      // listen and $destroy() that interim instance...
+      scope.$on('$destroy', function() {
+        $mdBottomSheet.destroy();
+      });
+    }
   };
 }
+MdBottomSheetDirective.$inject = ["$mdBottomSheet"];
 
 
 /**
@@ -7849,7 +7909,7 @@ angular
   .directive('mdDialog', MdDialogDirective)
   .provider('$mdDialog', MdDialogProvider);
 
-function MdDialogDirective($$rAF, $mdTheming) {
+function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
   return {
     restrict: 'E',
     link: function(scope, element, attr) {
@@ -7864,14 +7924,24 @@ function MdDialogDirective($$rAF, $mdTheming) {
           //-- delayed image loading may impact scroll height, check after images are loaded
           angular.element(images).on('load', addOverflowClass);
         }
+
+        scope.$on('$destroy', function() {
+          $mdDialog.destroy();
+        });
+
+        /**
+         *
+         */
         function addOverflowClass() {
           element.toggleClass('md-content-overflow', content.scrollHeight > content.clientHeight);
         }
+
+
       });
     }
   };
 }
-MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
+MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
 
 /**
  * @ngdoc service
@@ -8372,16 +8442,30 @@ function MdDialogProvider($$interimElementProvider) {
     function onRemove(scope, element, options) {
       options.deactivateListeners();
       options.unlockScreenReader();
+      options.hideBackdrop(options.$destroy);
 
-      options.hideBackdrop();
+      // For navigation $destroy events, do a quick, non-animated removal,
+      // but for normal closes (from clicks, etc) animate the removal
 
-      return dialogPopOut(element, options)
-        .finally(function() {
-          angular.element($document[0].body).removeClass('md-dialog-is-showing');
-          element.remove();
+      return !!options.$destroy ? detachAndClean() : animateRemoval().then( detachAndClean );
 
-          options.origin.focus();
-        });
+      /**
+       * For normal closes, animate the removal.
+       * For forced closes (like $destroy events), skip the animations
+       */
+      function animateRemoval() {
+        return dialogPopOut(element, options);
+      }
+
+      /**
+       * Detach the element
+       */
+      function detachAndClean() {
+        angular.element($document[0].body).removeClass('md-dialog-is-showing');
+        element.remove();
+
+        if (!options.$destroy) options.origin.focus();
+      }
     }
 
     /**
@@ -8503,10 +8587,12 @@ function MdDialogProvider($$interimElementProvider) {
       /**
        * Hide modal backdrop element...
        */
-      options.hideBackdrop = function hideBackdrop() {
+      options.hideBackdrop = function hideBackdrop($destroy) {
         if (options.backdrop) {
-          $animate.leave(options.backdrop);
+          if ( !!$destroy ) options.backdrop.remove();
+          else              $animate.leave(options.backdrop);
         }
+
         if (options.disableParentScroll) {
           options.restoreScroll();
           delete options.restoreScroll;
@@ -8597,7 +8683,6 @@ function MdDialogProvider($$interimElementProvider) {
 
       var isFixed = $window.getComputedStyle($document[0].body).position == 'fixed';
       var backdrop = options.backdrop ? $window.getComputedStyle(options.backdrop[0]) : null;
-
       var height = backdrop ? Math.min($document[0].body.clientHeight, Math.ceil(Math.abs(parseInt(backdrop.height, 10)))) : 0;
 
       container.css({
@@ -12019,7 +12104,6 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
     attr.tabindex = attr.tabindex || '0';
 
     return function postLink(scope, element, attr, ctrls) {
-      var isOpen;
       var isDisabled;
 
       var containerCtrl = ctrls[0];
@@ -12191,19 +12275,22 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
       element.attr(ariaAttrs);
 
       scope.$on('$destroy', function() {
-        if (isOpen) {
-          $mdSelect.hide().finally(function() {
-            selectContainer.remove();
+        $mdSelect
+          .destroy()
+          .finally(function() {
+            if ( selectContainer ) {
+              selectContainer.remove();
+            }
+
+            if (containerCtrl) {
+              containerCtrl.setFocused(false);
+              containerCtrl.setHasValue(false);
+              containerCtrl.input = null;
+            }
           });
-        } else {
-          selectContainer.remove();
-        }
-        if (containerCtrl) {
-          containerCtrl.setFocused(false);
-          containerCtrl.setHasValue(false);
-          containerCtrl.input = null;
-        }
       });
+
+
 
       function inputCheckValue() {
         // The select counts as having a value if one or more options are selected,
@@ -12220,7 +12307,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         selectScope = scope.$new();
         $mdTheming.inherit(selectContainer, element);
         if (element.attr('md-container-class')) {
-          selectContainer[0].setAttribute('class', selectContainer[0].getAttribute('class') + ' ' + element.attr('md-container-class'));
+          var value = selectContainer[0].getAttribute('class') + ' ' + element.attr('md-container-class');
+          selectContainer[0].setAttribute('class', value);
         }
         selectContainer = $compile(selectContainer)(selectScope);
         selectMenuCtrl = selectContainer.find('md-select-menu').controller('mdSelectMenu');
@@ -12249,7 +12337,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
       }
 
       function openSelect() {
-        scope.$apply('isOpen = true');
+        selectScope.isOpen = true;
 
         $mdSelect.show({
           scope: selectScope,
@@ -12260,7 +12348,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
           hasBackdrop: true,
           loadingAsync: attr.mdOnOpen ? scope.$eval(attr.mdOnOpen) || true : false
         }).then(function() {
-          isOpen = false;
+          selectScope.isOpen = false;
         });
       }
     };
@@ -12663,38 +12751,42 @@ function SelectProvider($$interimElementProvider) {
      * Interim-element onRemove logic....
      */
     function onRemove(scope, element, opts) {
+      opts = opts || { };
       opts.cleanupInteraction();
       opts.cleanupResizing();
       opts.hideBackdrop();
 
-      return $animateCss(element, {addClass: 'md-leave'})
-         .start()
-         .then(function(response) {
+      // For navigation $destroy events, do a quick, non-animated removal,
+      // but for normal closes (from clicks, etc) animate the removal
 
-           configureAria(opts.target, false);
-           element.removeClass('md-active');
+      return  (opts.$destroy === true) ? detachAndClean() : animateRemoval().then( detachAndClean );
 
-           announceClosed(opts);
-           detachElement(element, opts);
+      /**
+       * For normal closes (eg clicks), animate the removal.
+       * For forced closes (like $destroy events from navigation),
+       * skip the animations
+       */
+      function animateRemoval() {
+        return $animateCss(element, {addClass: 'md-leave'}).start();
+      }
 
-           return response;
-         })
-         .finally(function() {
-           opts.restoreFocus && opts.target.focus();
-         });
+      /**
+       * Detach the element and cleanup prior changes
+       */
+      function detachAndClean() {
+        configureAria(opts.target, false);
 
-      // If we want to ignore leave animations (and remove immediately):
-      //
-      //     configureAria(opts.target, false);
-      //
-      //     element.addClass('md-leave');
-      //     element.removeClass('md-active');
-      //
-      //     announceClosed(opts);
-      //     detachElement(element, opts);
-      //     opts.restoreFocus && opts.target.focus();
-      //
-      //     return $q.when(true);
+        element.attr('opacity', 0);
+        element.removeClass('md-active');
+        detachElement(element, opts);
+
+        announceClosed(opts);
+
+        if (!opts.$destroy && opts.restoreFocus) {
+          opts.target.focus();
+        }
+      }
+
     }
 
     /**
@@ -12792,14 +12884,10 @@ function SelectProvider($$interimElementProvider) {
          * Hide modal backdrop element...
          */
         return function hideBackdrop() {
-          if (options.backdrop) {
-            // Override duration to immediately remove invisible backdrop
-            $animate.leave(options.backdrop, {duration: 0});
-          }
-          if (options.disableParentScroll) {
-            options.restoreScroll();
-            delete options.restoreScroll;
-          }
+          if (options.backdrop) options.backdrop.remove();
+          if (options.disableParentScroll) options.restoreScroll();
+
+          delete options.restoreScroll;
         }
       }
 
@@ -13045,7 +13133,7 @@ function SelectProvider($$interimElementProvider) {
     }
 
     /**
-     * Use browser to remove this element without triggering a $destory event
+     * Use browser to remove this element without triggering a $destroy event
      */
     function detachElement(element, opts) {
       if (element[0].parentNode === opts.parent[0]) {
@@ -14744,11 +14832,20 @@ angular.module('material.components.toast', [
   .directive('mdToast', MdToastDirective)
   .provider('$mdToast', MdToastProvider);
 
-function MdToastDirective() {
+/* @ngInject */
+function MdToastDirective($mdToast) {
   return {
-    restrict: 'E'
+    restrict: 'E',
+    link: function postLink(scope, element, attr) {
+      // When navigation force destroys an interimElement, then
+      // listen and $destroy() that interim instance...
+      scope.$on('$destroy', function() {
+        $mdToast.destroy();
+      });
+    }
   };
 }
+MdToastDirective.$inject = ["$mdToast"];
 
 /**
  * @ngdoc service
@@ -14988,7 +15085,7 @@ function MdToastProvider($$interimElementProvider) {
       element.off(SWIPE_EVENTS, options.onSwipe);
       options.parent.removeClass(options.openClass);
 
-      return $animate.leave(element);
+      return (options.$destroy == true) ? element.remove() : $animate.leave(element);
     }
 
     function toastOpenClass(position) {
@@ -19341,7 +19438,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout) {
       preserveElement: self.isInMenuBar || self.nestedMenus.length > 0,
       parent: self.isInMenuBar ? $element : 'body'
     });
-  }
+  };
 
   // Expose a open function to the child scope for html to use
   $scope.$mdOpenMenu = this.open;
@@ -19374,6 +19471,10 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout) {
     this.containerProxy && this.containerProxy(ev);
   };
 
+  this.destroy = function() {
+    return $mdMenu.destroy();
+  };
+
   // Use the $mdMenu interim element service to close the menu contents
   this.close = function closeMenu(skipFocus, closeOpts) {
     if ( !self.isOpen ) return;
@@ -19381,12 +19482,13 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout) {
 
     $scope.$emit('$mdMenuClose', $element);
     $mdMenu.hide(null, closeOpts);
+
     if (!skipFocus) {
       var el = self.restoreFocusTo || $element.find('button')[0];
       if (el instanceof angular.element) el = el[0];
       el.focus();
     }
-  }
+  };
 
   /**
    * Build a nice object out of our string attribute which specifies the
@@ -19627,8 +19729,11 @@ function MenuDirective($mdUtil) {
     mdMenuCtrl.init(menuContainer, { isInMenuBar: isInMenuBar });
 
     scope.$on('$destroy', function() {
-      menuContainer.remove();
-      mdMenuCtrl.close();
+      mdMenuCtrl
+        .destroy()
+        .finally(function(){
+          menuContainer.remove();
+        });
     });
 
   }
@@ -19656,7 +19761,7 @@ angular
 function MenuProvider($$interimElementProvider) {
   var MENU_EDGE_MARGIN = 8;
 
-  menuDefaultOptions.$inject = ["$mdUtil", "$mdTheming", "$mdConstant", "$document", "$window", "$q", "$$rAF", "$animateCss", "$animate", "$timeout"];
+  menuDefaultOptions.$inject = ["$mdUtil", "$mdTheming", "$mdConstant", "$document", "$window", "$q", "$$rAF", "$animateCss", "$animate"];
   return $$interimElementProvider('$mdMenu')
     .setDefaults({
       methods: ['target'],
@@ -19664,7 +19769,7 @@ function MenuProvider($$interimElementProvider) {
     });
 
   /* @ngInject */
-  function menuDefaultOptions($mdUtil, $mdTheming, $mdConstant, $document, $window, $q, $$rAF, $animateCss, $animate, $timeout) {
+  function menuDefaultOptions($mdUtil, $mdTheming, $mdConstant, $document, $window, $q, $$rAF, $animateCss, $animate) {
     var animator = $mdUtil.dom.animator;
 
     return {
@@ -19705,14 +19810,8 @@ function MenuProvider($$interimElementProvider) {
        * Hide and destroys the backdrop created by showBackdrop()
        */
       return function hideBackdrop() {
-        if (options.backdrop) {
-          // Override duration to immediately remove invisible backdrop
-          options.backdrop.off('click');
-          $animate.leave(options.backdrop, {duration:0});
-        }
-        if (options.disableParentScroll) {
-          options.restoreScroll();
-        }
+        if (options.backdrop) options.backdrop.remove();
+        if (options.disableParentScroll) options.restoreScroll();
       };
     }
 
@@ -19725,14 +19824,28 @@ function MenuProvider($$interimElementProvider) {
       opts.cleanupResizing();
       opts.hideBackdrop();
 
-      return $animateCss(element, {addClass: 'md-leave'})
-        .start()
-        .then(function() {
-          element.removeClass('md-active');
+      // For navigation $destroy events, do a quick, non-animated removal,
+      // but for normal closes (from clicks, etc) animate the removal
 
-          detachElement(element, opts);
-          opts.alreadyOpen = false;
-        });
+      return (opts.$destroy === true) ? detachAndClean() : animateRemoval().then( detachAndClean );
+
+      /**
+       * For normal closes, animate the removal.
+       * For forced closes (like $destroy events), skip the animations
+       */
+      function animateRemoval() {
+        return $animateCss(element, {addClass: 'md-leave'}).start();
+      }
+
+      /**
+       * Detach the element
+       */
+      function detachAndClean() {
+        element.removeClass('md-active');
+        detachElement(element, opts);
+        opts.alreadyOpen = false;
+      }
+
     }
 
     /**
@@ -20003,7 +20116,7 @@ function MenuProvider($$interimElementProvider) {
     }
 
     /**
-     * Use browser to remove this element without triggering a $destory event
+     * Use browser to remove this element without triggering a $destroy event
      */
     function detachElement(element, opts) {
       if (!opts.preserveElement) {
