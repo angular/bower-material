@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-86d876b
+ * v0.11.0-master-416dc4c
  */
 html, body {
   height: 100%;
@@ -3024,11 +3024,11 @@ md-datepicker[disabled] .md-datepicker-triangle-button {
   display: none; }
 
 .md-datepicker-calendar-pane .md-calendar {
-  -webkit-transform: translateY(150px);
-          transform: translateY(150px);
-  transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  transition-delay: 0.1s; }
+  -webkit-transform: translateY(-85px);
+          transform: translateY(-85px);
+  transition: -webkit-transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition-delay: 0.125s; }
 .md-datepicker-calendar-pane.md-pane-open .md-calendar {
   -webkit-transform: translateY(0);
           transform: translateY(0); }
