@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-416dc4c
+ * v0.11.0-master-3d0b418
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -20,7 +20,8 @@ angular.module('material.components.input', [
   .directive('input', inputTextareaDirective)
   .directive('textarea', inputTextareaDirective)
   .directive('mdMaxlength', mdMaxlengthDirective)
-  .directive('placeholder', placeholderDirective);
+  .directive('placeholder', placeholderDirective)
+  .directive('ngMessages', ngMessagesDirective);
 
 /**
  * @ngdoc directive
@@ -78,6 +79,9 @@ function mdInputContainerDirective($mdTheming, $parse) {
     };
     self.setHasValue = function(hasValue) {
       $element.toggleClass('md-input-has-value', !!hasValue);
+    };
+    self.setHasMessages = function(hasMessages) {
+      $element.toggleClass('md-input-has-messages', !!hasMessages);
     };
     self.setInvalid = function(isInvalid) {
       $element.toggleClass('md-input-invalid', !!isInvalid);
@@ -353,11 +357,12 @@ function mdMaxlengthDirective($animate) {
     var ngModelCtrl = ctrls[0];
     var containerCtrl = ctrls[1];
     var charCountEl = angular.element('<div class="md-char-counter">');
+    var input = angular.element(containerCtrl.element[0].querySelector('[md-maxlength]'));
 
     // Stop model from trimming. This makes it so whitespace
     // over the maxlength still counts as invalid.
     attr.$set('ngTrim', 'false');
-    containerCtrl.element.append(charCountEl);
+    input.after(charCountEl);
 
     ngModelCtrl.$formatters.push(renderCharCount);
     ngModelCtrl.$viewChangeListeners.push(renderCharCount);
@@ -369,8 +374,7 @@ function mdMaxlengthDirective($animate) {
       maxlength = value;
       if (angular.isNumber(value) && value > 0) {
         if (!charCountEl.parent().length) {
-          $animate.enter(charCountEl, containerCtrl.element,
-                         angular.element(containerCtrl.element[0].lastElementChild));
+          $animate.enter(charCountEl, containerCtrl.element, input);
         }
         renderCharCount();
       } else {
@@ -422,5 +426,29 @@ function placeholderDirective($log) {
   }
 }
 placeholderDirective.$inject = ["$log"];
+
+function ngMessagesDirective() {
+  return {
+    restrict: 'EA',
+    link: postLink,
+
+    // This is optional because we don't want target *all* ngMessage instances, just those inside of
+    // mdInputContainer.
+    require: '^^?mdInputContainer'
+  };
+
+  function postLink(scope, element, attr, inputContainer) {
+    // If we are not a child of an input container, don't do anything
+    if (!inputContainer) return;
+
+    // Tell our parent input container we have messages so we can set the proper classes
+    inputContainer.setHasMessages(true);
+
+    // When destroyed, inform our input container
+    scope.$on('$destroy', function() {
+      inputContainer.setHasMessages(false);
+    });
+  }
+}
 
 })(window, window.angular);
