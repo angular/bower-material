@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-d75d021
+ * v0.11.0-master-bfb8dac
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2471,7 +2471,7 @@ function InterimElementProvider() {
          * - perform optional clean up scope.
          */
         function transitionOutAndRemove(response, isCancelled, opts) {
-          options = angular.merge(options || {}, opts || {});
+          options = angular.extend(options || {}, opts || {});
           options.cancelAutoHide && options.cancelAutoHide();
           options.element.triggerHandler('$mdInterimElementRemove');
 
