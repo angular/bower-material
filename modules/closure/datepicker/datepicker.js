@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-fb04d07
+ * v0.11.0-master-ca8bca9
  */
 goog.provide('ng.material.components.datepicker');
 goog.require('ng.material.components.icon');
@@ -1393,9 +1393,13 @@ goog.require('ng.material.core');
     if (this.$attrs['ngDisabled']) {
       // The expression is to be evaluated against the directive element's scope and not
       // the directive's isolate scope.
-      this.$element.scope().$watch(this.$attrs['ngDisabled'], function(isDisabled) {
-        self.setDisabled(isDisabled);
-      });
+      var scope = this.$mdUtil.validateScope(this.$element) ? this.$element.scope() : null;
+
+      if ( scope ) {
+        scope.$watch(this.$attrs['ngDisabled'], function(isDisabled) {
+          self.setDisabled(isDisabled);
+        });
+      }
     }
 
     Object.defineProperty(this, 'placeholder', {
