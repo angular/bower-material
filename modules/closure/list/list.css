@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-09bd5a3
+ * v0.11.0-master-84b04ca
  */
 md-list {
   display: block;
@@ -133,13 +133,19 @@ md-list-item.md-2-line, md-list-item.md-2-line > .md-no-style, md-list-item.md-3
       font-weight: 400;
       letter-spacing: 0.01em;
       margin: 0 0 6px 0;
-      line-height: 0.75em; }
+      line-height: 0.75em;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis; }
     md-list-item.md-2-line .md-list-item-text h4, md-list-item.md-2-line > .md-no-style .md-list-item-text h4, md-list-item.md-3-line .md-list-item-text h4, md-list-item.md-3-line > .md-no-style .md-list-item-text h4 {
       font-size: 14px;
       letter-spacing: 0.01em;
       margin: 10px 0 5px 0;
       font-weight: 400;
-      line-height: 0.75em; }
+      line-height: 0.75em;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis; }
     md-list-item.md-2-line .md-list-item-text p, md-list-item.md-2-line > .md-no-style .md-list-item-text p, md-list-item.md-3-line .md-list-item-text p, md-list-item.md-3-line > .md-no-style .md-list-item-text p {
       font-size: 14px;
       font-weight: 500;
