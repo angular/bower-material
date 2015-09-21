@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-b37ac3a
+ * v0.11.0-master-9313a4a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -90,10 +90,13 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
   }
   function postLink(scope, element, attr) {
     $mdTheming(element);
+
     var lastMode, toVendorCSS = $mdUtil.dom.animator.toCss;
     var bar1 = angular.element(element[0].querySelector('.md-bar1')),
         bar2 = angular.element(element[0].querySelector('.md-bar2')),
         container = angular.element(element[0].querySelector('.md-container'));
+
+    element.attr('md-mode', mode());
 
     validateMode();
     watchAttributes();
@@ -151,7 +154,7 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
      * Is the md-mode a valid option?
      */
     function mode() {
-      var value = attr.mdMode;
+      var value = (attr.mdMode || "").trim();
       if ( value ) {
         switch(value) {
           case MODE_DETERMINATE:
