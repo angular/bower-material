@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-84b04ca
+ * v0.11.0-master-3516a85
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -8947,6 +8947,9 @@ MdDividerDirective.$inject = ["$mdTheming"];
         angular.forEach(eventTypes, function(eventType) {
           $element.off(eventType, parseEvents);
         });
+        // remove any attached keyboard handlers in case element is removed while
+        // speed dial is open
+        disableKeyboard();
       });
     }
 
@@ -9213,6 +9216,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
   }
   FabController.$inject = ["$scope", "$element", "$animate", "$mdUtil", "$mdConstant"];
 })();
+
 })();
 (function(){
 "use strict";
