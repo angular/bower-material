@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-bf82512
+ * v0.11.0-master-65abc82
  */
 goog.provide('ng.material.components.datepicker');
 goog.require('ng.material.components.icon');
@@ -1787,7 +1787,9 @@ goog.require('ng.material.core');
      * @param {Date} date
      */
     function setDateTimeToMidnight(date) {
-      date.setHours(0, 0, 0, 0);
+      if (isValidDate(date)) {
+        date.setHours(0, 0, 0, 0);
+      }
     }
 
     /**

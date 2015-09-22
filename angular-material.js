@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-bf82512
+ * v0.11.0-master-65abc82
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -7961,7 +7961,9 @@ function iosScrollFix(node) {
      * @param {Date} date
      */
     function setDateTimeToMidnight(date) {
-      date.setHours(0, 0, 0, 0);
+      if (isValidDate(date)) {
+        date.setHours(0, 0, 0, 0);
+      }
     }
 
     /**
