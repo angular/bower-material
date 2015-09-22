@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-65abc82
+ * v0.11.0-master-64fb803
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1418,9 +1418,7 @@
     this.calendarButton.disabled = isDisabled;
   };
 
-  /**
-   * Resizes the input element based on the size of its content.
-   */
+  /** Resizes the input element based on the size of its content. */
   DatePickerCtrl.prototype.resizeInputElement = function() {
     this.inputElement.size = this.inputElement.value.length + EXTRA_INPUT_SIZE;
   };
@@ -1453,6 +1451,7 @@
   /** Position and attach the floating calendar to the document. */
   DatePickerCtrl.prototype.attachCalendarPane = function() {
     var calendarPane = this.calendarPane;
+    calendarPane.style.transform = '';
     this.$element.addClass('md-datepicker-open');
 
     var elementRect = this.inputContainer.getBoundingClientRect();
@@ -1464,7 +1463,22 @@
     var paneLeft = elementRect.left - bodyRect.left;
 
     // If the right edge of the pane would be off the screen and shifting it left by the
-    // difference would not go past the left edge of the screen.
+    // difference would not go past the left edge of the screen. If the calendar pane is too
+    // big to fit on the screen at all, move it to the left of the screen and scale the entire
+    // element down to fit.
+    if (paneLeft + CALENDAR_PANE_WIDTH > bodyRect.right) {
+      if (bodyRect.right - CALENDAR_PANE_WIDTH > 0) {
+        paneLeft = bodyRect.right - CALENDAR_PANE_WIDTH;
+      } else {
+        paneLeft = 0;
+        var scale = bodyRect.width / CALENDAR_PANE_WIDTH;
+        calendarPane.style.transform = 'scale(' + scale + ')';
+      }
+
+      calendarPane.classList.add('md-datepicker-pos-adjusted');
+    }
+
+
     if (paneLeft + CALENDAR_PANE_WIDTH > bodyRect.right &&
         bodyRect.right - CALENDAR_PANE_WIDTH > 0) {
       paneLeft = bodyRect.right - CALENDAR_PANE_WIDTH;
@@ -1481,7 +1495,7 @@
 
     calendarPane.style.left = paneLeft + 'px';
     calendarPane.style.top = paneTop + 'px';
-    document.body.appendChild(this.calendarPane);
+    document.body.appendChild(calendarPane);
 
     // The top of the calendar pane is a transparent box that shows the text input underneath.
     // Since the pane is floating, though, the page underneath the pane *adjacent* to the input is
