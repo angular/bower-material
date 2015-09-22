@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-4f84137
+ * v0.11.0-master-9a27597
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -938,7 +938,7 @@ function MdAutocompleteItemScopeDirective($compile, $mdUtil) {
   };
 
   function postLink(scope, element, attr) {
-    var ctrl     = scope.$mdAutocompleteCtrl;
+    var ctrl = scope.$mdAutocompleteCtrl;
     var newScope = ctrl.parent.$new();
     var itemName = ctrl.itemName;
 
@@ -960,10 +960,13 @@ function MdAutocompleteItemScopeDirective($compile, $mdUtil) {
      * @param variable
      * @param alias
      */
-    function watchVariable (variable, alias) {
-      $mdUtil.nextTick(function () {
-        newScope[alias] = scope[variable];
-        scope.$watch(variable, function (value) { newScope[alias] = value; });
+    function watchVariable(variable, alias) {
+      newScope[alias] = scope[variable];
+
+      scope.$watch(variable, function(value) {
+        $mdUtil.nextTick(function() {
+          newScope[alias] = value;
+        });
       });
     }
   }
