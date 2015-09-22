@@ -1,7 +1,7 @@
 {
   "name": "angular-material-content",
-  "version": "0.11.0-master-1a0fc6b",
+  "version": "0.11.0-master-4a16038",
   "dependencies": {
-    "angular-material-core": "0.11.0-master-1a0fc6b"
+    "angular-material-core": "0.11.0-master-4a16038"
   }
 }
