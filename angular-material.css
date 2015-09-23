@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-64fb803
+ * v0.11.0-master-968aa23
  */
 html, body {
   height: 100%;
@@ -4824,8 +4824,8 @@ md-input-container {
           -ms-flex: none !important;
               flex: none !important; }
   md-input-container .md-char-counter {
-    position: absolute;
-    right: 0;
+    position: relative;
+    text-align: right;
     -webkit-order: 3;
         -ms-flex-order: 3;
             order: 3; }
@@ -4835,6 +4835,10 @@ md-input-container {
         -ms-flex-order: 4;
             order: 4;
     min-height: 24px; }
+    md-input-container ng-messages .md-char-counter, md-input-container data-ng-messages .md-char-counter, md-input-container x-ng-messages .md-char-counter, md-input-container [ng-messages] .md-char-counter, md-input-container [data-ng-messages] .md-char-counter, md-input-container [x-ng-messages] .md-char-counter {
+      position: absolute;
+      top: 0;
+      right: 0; }
   md-input-container ng-message, md-input-container data-ng-message, md-input-container x-ng-message, md-input-container [ng-message], md-input-container [data-ng-message], md-input-container [x-ng-message], md-input-container [ng-message-exp], md-input-container [data-ng-message-exp], md-input-container [x-ng-message-exp], md-input-container .md-char-counter {
     font-size: 12px;
     line-height: 14px;
