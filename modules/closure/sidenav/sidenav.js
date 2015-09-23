@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-5bb3505
+ * v0.11.0-master-1a99821
  */
 goog.provide('ng.material.components.sidenav');
 goog.require('ng.material.components.backdrop');
@@ -259,7 +259,7 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $animate, 
       sidenavCtrl.destroy();
     });
 
-    scope.$on('$destroy', backdrop.remove );
+    scope.$on('$destroy', angular.bind(backdrop, backdrop.remove));
     scope.$watch(isLocked, updateIsLocked);
     scope.$watch('isOpen', updateIsOpen);
 
