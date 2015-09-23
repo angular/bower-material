@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-bc4100a
+ * v0.11.0-master-30f334a
  */
 html, body {
   height: 100%;
@@ -4955,7 +4955,7 @@ md-list-item, md-list-item .md-list-item-inner {
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-  min-height: 64px; }
+  min-height: 48px; }
   md-list-item > div.md-primary > md-icon, md-list-item > div.md-secondary > md-icon, md-list-item > md-icon:first-child, md-list-item > md-icon.md-secondary, md-list-item .md-list-item-inner > div.md-primary > md-icon, md-list-item .md-list-item-inner > div.md-secondary > md-icon, md-list-item .md-list-item-inner > md-icon:first-child, md-list-item .md-list-item-inner > md-icon.md-secondary {
     width: 24px;
     margin-top: 16px;

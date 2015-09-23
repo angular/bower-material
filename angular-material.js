@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-bc4100a
+ * v0.11.0-master-30f334a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3078,7 +3078,7 @@ function InterimElementProvider() {
       // Perform a read-once (1x) check for the `md-css-only` class on the BODY
 
       if ( angular.isUndefined(disablePostLinks) ) {
-        var body = document.body;
+        var body = document && document.body;
         if (body) disablePostLinks = body.classList.contains('md-css-only');
       }
 
