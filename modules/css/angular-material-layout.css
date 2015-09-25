@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-ea9890f
+ * v0.11.0-master-f04f094
  */
 /*
 *
@@ -373,97 +373,97 @@
       -ms-flex-align: end;
           align-items: flex-end; }
 
-.flex-order--9 {
+.flex-order, .flex-order--9, .flex-order-sm--9, .flex-order-gt-sm--9, .flex-order-md--9, .flex-order-gt-md--9, .flex-order-lg--9, .flex-order-gt-lg--9 {
   -webkit-order: -9;
       -ms-flex-order: -9;
           order: -9; }
 
-.flex-order--8 {
+.flex-order--8, .flex-order-sm--8, .flex-order-gt-sm--8, .flex-order-md--8, .flex-order-gt-md--8, .flex-order-lg--8, .flex-order-gt-lg--8 {
   -webkit-order: -8;
       -ms-flex-order: -8;
           order: -8; }
 
-.flex-order--7 {
+.flex-order--7, .flex-order-sm--7, .flex-order-gt-sm--7, .flex-order-md--7, .flex-order-gt-md--7, .flex-order-lg--7, .flex-order-gt-lg--7 {
   -webkit-order: -7;
       -ms-flex-order: -7;
           order: -7; }
 
-.flex-order--6 {
+.flex-order--6, .flex-order-sm--6, .flex-order-gt-sm--6, .flex-order-md--6, .flex-order-gt-md--6, .flex-order-lg--6, .flex-order-gt-lg--6 {
   -webkit-order: -6;
       -ms-flex-order: -6;
           order: -6; }
 
-.flex-order--5 {
+.flex-order--5, .flex-order-sm--5, .flex-order-gt-sm--5, .flex-order-md--5, .flex-order-gt-md--5, .flex-order-lg--5, .flex-order-gt-lg--5 {
   -webkit-order: -5;
       -ms-flex-order: -5;
           order: -5; }
 
-.flex-order--4 {
+.flex-order--4, .flex-order-sm--4, .flex-order-gt-sm--4, .flex-order-md--4, .flex-order-gt-md--4, .flex-order-lg--4, .flex-order-gt-lg--4 {
   -webkit-order: -4;
       -ms-flex-order: -4;
           order: -4; }
 
-.flex-order--3 {
+.flex-order--3, .flex-order-sm--3, .flex-order-gt-sm--3, .flex-order-md--3, .flex-order-gt-md--3, .flex-order-lg--3, .flex-order-gt-lg--3 {
   -webkit-order: -3;
       -ms-flex-order: -3;
           order: -3; }
 
-.flex-order--2 {
+.flex-order--2, .flex-order-sm--2, .flex-order-gt-sm--2, .flex-order-md--2, .flex-order-gt-md--2, .flex-order-lg--2, .flex-order-gt-lg--2 {
   -webkit-order: -2;
       -ms-flex-order: -2;
           order: -2; }
 
-.flex-order--1 {
+.flex-order--1, .flex-order-sm--1, .flex-order-gt-sm--1, .flex-order-md--1, .flex-order-gt-md--1, .flex-order-lg--1, .flex-order-gt-lg--1 {
   -webkit-order: -1;
       -ms-flex-order: -1;
           order: -1; }
 
-.flex-order-0 {
+.flex-order-0, .flex-order-sm-0, .flex-order-gt-sm-0, .flex-order-md-0, .flex-order-gt-md-0, .flex-order-lg-0, .flex-order-gt-lg-0 {
   -webkit-order: 0;
       -ms-flex-order: 0;
           order: 0; }
 
-.flex-order-1 {
+.flex-order-1, .flex-order-sm-1, .flex-order-gt-sm-1, .flex-order-md-1, .flex-order-gt-md-1, .flex-order-lg-1, .flex-order-gt-lg-1 {
   -webkit-order: 1;
       -ms-flex-order: 1;
           order: 1; }
 
-.flex-order-2 {
+.flex-order-2, .flex-order-sm-2, .flex-order-gt-sm-2, .flex-order-md-2, .flex-order-gt-md-2, .flex-order-lg-2, .flex-order-gt-lg-2 {
   -webkit-order: 2;
       -ms-flex-order: 2;
           order: 2; }
 
-.flex-order-3 {
+.flex-order-3, .flex-order-sm-3, .flex-order-gt-sm-3, .flex-order-md-3, .flex-order-gt-md-3, .flex-order-lg-3, .flex-order-gt-lg-3 {
   -webkit-order: 3;
       -ms-flex-order: 3;
           order: 3; }
 
-.flex-order-4 {
+.flex-order-4, .flex-order-sm-4, .flex-order-gt-sm-4, .flex-order-md-4, .flex-order-gt-md-4, .flex-order-lg-4, .flex-order-gt-lg-4 {
   -webkit-order: 4;
       -ms-flex-order: 4;
           order: 4; }
 
-.flex-order-5 {
+.flex-order-5, .flex-order-sm-5, .flex-order-gt-sm-5, .flex-order-md-5, .flex-order-gt-md-5, .flex-order-lg-5, .flex-order-gt-lg-5 {
   -webkit-order: 5;
       -ms-flex-order: 5;
           order: 5; }
 
-.flex-order-6 {
+.flex-order-6, .flex-order-sm-6, .flex-order-gt-sm-6, .flex-order-md-6, .flex-order-gt-md-6, .flex-order-lg-6, .flex-order-gt-lg-6 {
   -webkit-order: 6;
       -ms-flex-order: 6;
           order: 6; }
 
-.flex-order-7 {
+.flex-order-7, .flex-order-sm-7, .flex-order-gt-sm-7, .flex-order-md-7, .flex-order-gt-md-7, .flex-order-lg-7, .flex-order-gt-lg-7 {
   -webkit-order: 7;
       -ms-flex-order: 7;
           order: 7; }
 
-.flex-order-8 {
+.flex-order-8, .flex-order-sm-8, .flex-order-gt-sm-8, .flex-order-md-8, .flex-order-gt-md-8, .flex-order-lg-8, .flex-order-gt-lg-8 {
   -webkit-order: 8;
       -ms-flex-order: 8;
           order: 8; }
 
-.flex-order-9 {
+.flex-order-9, .flex-order-sm-9, .flex-order-gt-sm-9, .flex-order-md-9, .flex-order-gt-md-9, .flex-order-lg-9, .flex-order-gt-lg-9 {
   -webkit-order: 9;
       -ms-flex-order: 9;
           order: 9; }
