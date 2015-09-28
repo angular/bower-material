@@ -1,8 +1,8 @@
 {
   "name": "angular-material-menuBar",
-  "version": "0.11.1-master-eacca5e",
+  "version": "0.11.1-master-b1b2c06",
   "dependencies": {
-    "angular-material-core": "0.11.1-master-eacca5e",
-    "angular-material-menu": "0.11.1-master-eacca5e"
+    "angular-material-core": "0.11.1-master-b1b2c06",
+    "angular-material-menu": "0.11.1-master-b1b2c06"
   }
 }

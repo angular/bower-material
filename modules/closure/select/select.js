@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.1-master-eacca5e
+ * v0.11.1-master-b1b2c06
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -205,6 +205,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         syncLabelText();
         inputCheckValue();
       };
+
+      attr.$observe('placeholder', ngModelCtrl.$render);
 
       mdSelectCtrl.setLabelText = function(text) {
         mdSelectCtrl.setIsPlaceholder(!text);
