@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.1-master-8aeb760
+ * v0.11.1-master-f636bcc
  */
 html, body {
   height: 100%;
@@ -472,7 +472,12 @@ select, button, textarea, input {
       -ms-flex: 1 1 0%;
           flex: 1 1 0%; }
 
-.flex, .flex-initial, [flex="initial"] {
+.flex-grow, [flex="grow"] {
+  -webkit-flex: 1 1 100%;
+      -ms-flex: 1 1 100%;
+          flex: 1 1 100%; }
+
+.flex-initial, [flex="initial"] {
   -webkit-flex: 0 1 auto;
       -ms-flex: 0 1 auto;
           flex: 0 1 auto; }
@@ -1011,7 +1016,11 @@ select, button, textarea, input {
     -webkit-flex: 1 1 0%;
         -ms-flex: 1 1 0%;
             flex: 1 1 0%; }
-  .flex-sm, .flex-sm-initial, [flex-sm="initial"] {
+  .flex-sm-grow, [flex-sm="grow"] {
+    -webkit-flex: 1 1 100%;
+        -ms-flex: 1 1 100%;
+            flex: 1 1 100%; }
+  .flex-sm-initial, [flex-sm="initial"] {
     -webkit-flex: 0 1 auto;
         -ms-flex: 0 1 auto;
             flex: 0 1 auto; }
@@ -1434,7 +1443,11 @@ select, button, textarea, input {
     -webkit-flex: 1 1 0%;
         -ms-flex: 1 1 0%;
             flex: 1 1 0%; }
-  .flex-gt-sm, .flex-gt-sm-initial, [flex-gt-sm="initial"] {
+  .flex-gt-sm-grow, [flex-gt-sm="grow"] {
+    -webkit-flex: 1 1 100%;
+        -ms-flex: 1 1 100%;
+            flex: 1 1 100%; }
+  .flex-gt-sm-initial, [flex-gt-sm="initial"] {
     -webkit-flex: 0 1 auto;
         -ms-flex: 0 1 auto;
             flex: 0 1 auto; }
@@ -1865,7 +1878,11 @@ select, button, textarea, input {
     -webkit-flex: 1 1 0%;
         -ms-flex: 1 1 0%;
             flex: 1 1 0%; }
-  .flex-md, .flex-md-initial, [flex-md="initial"] {
+  .flex-md-grow, [flex-md="grow"] {
+    -webkit-flex: 1 1 100%;
+        -ms-flex: 1 1 100%;
+            flex: 1 1 100%; }
+  .flex-md-initial, [flex-md="initial"] {
     -webkit-flex: 0 1 auto;
         -ms-flex: 0 1 auto;
             flex: 0 1 auto; }
@@ -2288,7 +2305,11 @@ select, button, textarea, input {
     -webkit-flex: 1 1 0%;
         -ms-flex: 1 1 0%;
             flex: 1 1 0%; }
-  .flex-gt-md, .flex-gt-md-initial, [flex-gt-md="initial"] {
+  .flex-gt-md-grow, [flex-gt-md="grow"] {
+    -webkit-flex: 1 1 100%;
+        -ms-flex: 1 1 100%;
+            flex: 1 1 100%; }
+  .flex-gt-md-initial, [flex-gt-md="initial"] {
     -webkit-flex: 0 1 auto;
         -ms-flex: 0 1 auto;
             flex: 0 1 auto; }
@@ -2719,7 +2740,11 @@ select, button, textarea, input {
     -webkit-flex: 1 1 0%;
         -ms-flex: 1 1 0%;
             flex: 1 1 0%; }
-  .flex-lg, .flex-lg-initial, [flex-lg="initial"] {
+  .flex-lg-grow, [flex-lg="grow"] {
+    -webkit-flex: 1 1 100%;
+        -ms-flex: 1 1 100%;
+            flex: 1 1 100%; }
+  .flex-lg-initial, [flex-lg="initial"] {
     -webkit-flex: 0 1 auto;
         -ms-flex: 0 1 auto;
             flex: 0 1 auto; }
@@ -3150,7 +3175,11 @@ select, button, textarea, input {
     -webkit-flex: 1 1 0%;
         -ms-flex: 1 1 0%;
             flex: 1 1 0%; }
-  .flex-gt-lg, .flex-gt-lg-initial, [flex-gt-lg="initial"] {
+  .flex-gt-lg-grow, [flex-gt-lg="grow"] {
+    -webkit-flex: 1 1 100%;
+        -ms-flex: 1 1 100%;
+            flex: 1 1 100%; }
+  .flex-gt-lg-initial, [flex-gt-lg="initial"] {
     -webkit-flex: 0 1 auto;
         -ms-flex: 0 1 auto;
             flex: 0 1 auto; }
