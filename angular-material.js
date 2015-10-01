@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.1-master-cd63f69
+ * v0.11.1-master-b1fb32c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2820,13 +2820,8 @@ function InterimElementProvider() {
            * Do NOT remove the original layout Attribute selectors
            * after translation injection; or the media breakpoints will not fire
            */
-          removeAttributes : true,
+          removeAttributes : true
 
-          /**
-           * Special internal flag used to optimize
-           * noop(s) for the directive postLinks below
-           */
-          enablePostLinks : undefined
         };
       })
 
@@ -2939,11 +2934,9 @@ function InterimElementProvider() {
         return {
             restrict : 'A',
             compile: function(element, attr) {
-              var injected = injectLayoutSpecifier(element, attr);
-              var enabled = isPostLinkEnabled($document[0]);
-
               // Use for postLink to account for transforms after ng-transclude.
-              if ( !injected && enabled ) {
+
+              if ( !injectLayoutSpecifier(element, attr) ) {
                 attributeValueToClass(null, element, attr);
                 return attributeValueToClass;
               }
@@ -3055,7 +3048,6 @@ function InterimElementProvider() {
         return {
           restrict : 'A',
           compile: function(element, attrs) {
-            if ( !isPostLinkEnabled($document[0]) ) return angular.noop;
 
             attributeToClass(null, element);
 
@@ -3091,35 +3083,6 @@ function InterimElementProvider() {
         return angular.noop;
       }];
 
-    }
-
-    /**
-     * Scan the body element. If it has a class 'md-css-only', then do NOT
-     * postLink process the directives for Attribute selectors.
-     * (recall that postlink injects Class selectors based on attribute selector settings)
-     *
-     * Instead the Layout CSS for Attributes is used:
-     * e.g
-     *       .md-css-only [layout=row] {
-     *          flex-direction: row;
-     *          -webkit-flex-direction: row;
-     *       }
-     *
-     * Note: this means that 'md-css-only' will not work for IE (due to performance issues)
-     * In these cases, the Layout translators (directives) should be enabled and the
-     * `angular-material.[min.]js` must be loaded.
-     */
-    function isPostLinkEnabled(document) {
-      var enablePostLinks = $$mdLayout.enablePostLinks;
-
-      // Perform a read-once (1x) check for the `md-css-only` class on the BODY
-
-      if ( angular.isUndefined(enablePostLinks) ) {
-        var body = document && document.body;
-        if (body) enablePostLinks = !body.classList.contains('md-css-only');
-      }
-
-      return $$mdLayout.enablePostLinks = enablePostLinks;
     }
 
 })();

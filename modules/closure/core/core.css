@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.1-master-cd63f69
+ * v0.11.1-master-b1fb32c
  */
 html, body {
   height: 100%;
@@ -465,9 +465,9 @@ select, button, textarea, input {
   box-sizing: border-box; }
 
 .flex {
-  -webkit-flex: 1 1 0%;
-      -ms-flex: 1 1 0%;
-          flex: 1 1 0%; }
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1; }
 
 .flex-grow {
   -webkit-flex: 1 1 100%;
@@ -1131,9 +1131,9 @@ select, button, textarea, input {
   .flex-sm {
     box-sizing: border-box; }
   .flex-sm {
-    -webkit-flex: 1 1 0%;
-        -ms-flex: 1 1 0%;
-            flex: 1 1 0%; }
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
   .flex-sm-grow {
     -webkit-flex: 1 1 100%;
         -ms-flex: 1 1 100%;
@@ -1681,9 +1681,9 @@ select, button, textarea, input {
   .flex-gt-sm {
     box-sizing: border-box; }
   .flex-gt-sm {
-    -webkit-flex: 1 1 0%;
-        -ms-flex: 1 1 0%;
-            flex: 1 1 0%; }
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
   .flex-gt-sm-grow {
     -webkit-flex: 1 1 100%;
         -ms-flex: 1 1 100%;
@@ -2235,9 +2235,9 @@ select, button, textarea, input {
   .flex-md {
     box-sizing: border-box; }
   .flex-md {
-    -webkit-flex: 1 1 0%;
-        -ms-flex: 1 1 0%;
-            flex: 1 1 0%; }
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
   .flex-md-grow {
     -webkit-flex: 1 1 100%;
         -ms-flex: 1 1 100%;
@@ -2785,9 +2785,9 @@ select, button, textarea, input {
   .flex-gt-md {
     box-sizing: border-box; }
   .flex-gt-md {
-    -webkit-flex: 1 1 0%;
-        -ms-flex: 1 1 0%;
-            flex: 1 1 0%; }
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
   .flex-gt-md-grow {
     -webkit-flex: 1 1 100%;
         -ms-flex: 1 1 100%;
@@ -3339,9 +3339,9 @@ select, button, textarea, input {
   .flex-lg {
     box-sizing: border-box; }
   .flex-lg {
-    -webkit-flex: 1 1 0%;
-        -ms-flex: 1 1 0%;
-            flex: 1 1 0%; }
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
   .flex-lg-grow {
     -webkit-flex: 1 1 100%;
         -ms-flex: 1 1 100%;
@@ -3891,9 +3891,9 @@ select, button, textarea, input {
   .flex-gt-lg {
     box-sizing: border-box; }
   .flex-gt-lg {
-    -webkit-flex: 1 1 0%;
-        -ms-flex: 1 1 0%;
-            flex: 1 1 0%; }
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
   .flex-gt-lg-grow {
     -webkit-flex: 1 1 100%;
         -ms-flex: 1 1 100%;
