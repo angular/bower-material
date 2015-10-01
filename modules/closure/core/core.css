@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.1-master-77c050a
+ * v0.11.1-master-b1974bb
  */
 html, body {
   height: 100%;
@@ -474,6 +474,7 @@ select, button, textarea, input {
           flex: 0 0 auto; }
 
 .flex-0 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 0%;
       -ms-flex: 0 0 0%;
           flex: 0 0 0%; }
@@ -493,6 +494,7 @@ select, button, textarea, input {
   max-height: 0%; }
 
 .flex-5 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 5%;
       -ms-flex: 0 0 5%;
           flex: 0 0 5%; }
@@ -512,6 +514,7 @@ select, button, textarea, input {
   max-height: 5%; }
 
 .flex-10 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 10%;
       -ms-flex: 0 0 10%;
           flex: 0 0 10%; }
@@ -531,6 +534,7 @@ select, button, textarea, input {
   max-height: 10%; }
 
 .flex-15 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 15%;
       -ms-flex: 0 0 15%;
           flex: 0 0 15%; }
@@ -550,6 +554,7 @@ select, button, textarea, input {
   max-height: 15%; }
 
 .flex-20 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 20%;
       -ms-flex: 0 0 20%;
           flex: 0 0 20%; }
@@ -569,6 +574,7 @@ select, button, textarea, input {
   max-height: 20%; }
 
 .flex-25 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 25%;
       -ms-flex: 0 0 25%;
           flex: 0 0 25%; }
@@ -588,6 +594,7 @@ select, button, textarea, input {
   max-height: 25%; }
 
 .flex-30 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 30%;
       -ms-flex: 0 0 30%;
           flex: 0 0 30%; }
@@ -607,6 +614,7 @@ select, button, textarea, input {
   max-height: 30%; }
 
 .flex-35 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 35%;
       -ms-flex: 0 0 35%;
           flex: 0 0 35%; }
@@ -626,6 +634,7 @@ select, button, textarea, input {
   max-height: 35%; }
 
 .flex-40 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 40%;
       -ms-flex: 0 0 40%;
           flex: 0 0 40%; }
@@ -645,6 +654,7 @@ select, button, textarea, input {
   max-height: 40%; }
 
 .flex-45 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 45%;
       -ms-flex: 0 0 45%;
           flex: 0 0 45%; }
@@ -664,6 +674,7 @@ select, button, textarea, input {
   max-height: 45%; }
 
 .flex-50 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 50%;
       -ms-flex: 0 0 50%;
           flex: 0 0 50%; }
@@ -683,6 +694,7 @@ select, button, textarea, input {
   max-height: 50%; }
 
 .flex-55 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 55%;
       -ms-flex: 0 0 55%;
           flex: 0 0 55%; }
@@ -702,6 +714,7 @@ select, button, textarea, input {
   max-height: 55%; }
 
 .flex-60 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 60%;
       -ms-flex: 0 0 60%;
           flex: 0 0 60%; }
@@ -721,6 +734,7 @@ select, button, textarea, input {
   max-height: 60%; }
 
 .flex-65 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 65%;
       -ms-flex: 0 0 65%;
           flex: 0 0 65%; }
@@ -740,6 +754,7 @@ select, button, textarea, input {
   max-height: 65%; }
 
 .flex-70 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 70%;
       -ms-flex: 0 0 70%;
           flex: 0 0 70%; }
@@ -759,6 +774,7 @@ select, button, textarea, input {
   max-height: 70%; }
 
 .flex-75 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 75%;
       -ms-flex: 0 0 75%;
           flex: 0 0 75%; }
@@ -778,6 +794,7 @@ select, button, textarea, input {
   max-height: 75%; }
 
 .flex-80 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 80%;
       -ms-flex: 0 0 80%;
           flex: 0 0 80%; }
@@ -797,6 +814,7 @@ select, button, textarea, input {
   max-height: 80%; }
 
 .flex-85 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 85%;
       -ms-flex: 0 0 85%;
           flex: 0 0 85%; }
@@ -816,6 +834,7 @@ select, button, textarea, input {
   max-height: 85%; }
 
 .flex-90 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 90%;
       -ms-flex: 0 0 90%;
           flex: 0 0 90%; }
@@ -835,6 +854,7 @@ select, button, textarea, input {
   max-height: 90%; }
 
 .flex-95 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 95%;
       -ms-flex: 0 0 95%;
           flex: 0 0 95%; }
@@ -854,6 +874,7 @@ select, button, textarea, input {
   max-height: 95%; }
 
 .flex-100 {
+  box-sizing: border-box;
   -webkit-flex: 0 0 100%;
       -ms-flex: 0 0 100%;
           flex: 0 0 100%; }
@@ -1138,6 +1159,7 @@ select, button, textarea, input {
         -ms-flex: 0 0 auto;
             flex: 0 0 auto; }
   .flex-sm-0 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 0%;
         -ms-flex: 0 0 0%;
             flex: 0 0 0%; }
@@ -1154,6 +1176,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 0%; }
   .flex-sm-5 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 5%;
         -ms-flex: 0 0 5%;
             flex: 0 0 5%; }
@@ -1170,6 +1193,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 5%; }
   .flex-sm-10 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 10%;
         -ms-flex: 0 0 10%;
             flex: 0 0 10%; }
@@ -1186,6 +1210,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 10%; }
   .flex-sm-15 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 15%;
         -ms-flex: 0 0 15%;
             flex: 0 0 15%; }
@@ -1202,6 +1227,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 15%; }
   .flex-sm-20 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 20%;
         -ms-flex: 0 0 20%;
             flex: 0 0 20%; }
@@ -1218,6 +1244,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 20%; }
   .flex-sm-25 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 25%;
         -ms-flex: 0 0 25%;
             flex: 0 0 25%; }
@@ -1234,6 +1261,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 25%; }
   .flex-sm-30 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 30%;
         -ms-flex: 0 0 30%;
             flex: 0 0 30%; }
@@ -1250,6 +1278,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 30%; }
   .flex-sm-35 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 35%;
         -ms-flex: 0 0 35%;
             flex: 0 0 35%; }
@@ -1266,6 +1295,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 35%; }
   .flex-sm-40 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 40%;
         -ms-flex: 0 0 40%;
             flex: 0 0 40%; }
@@ -1282,6 +1312,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 40%; }
   .flex-sm-45 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 45%;
         -ms-flex: 0 0 45%;
             flex: 0 0 45%; }
@@ -1298,6 +1329,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 45%; }
   .flex-sm-50 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 50%;
         -ms-flex: 0 0 50%;
             flex: 0 0 50%; }
@@ -1314,6 +1346,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 50%; }
   .flex-sm-55 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 55%;
         -ms-flex: 0 0 55%;
             flex: 0 0 55%; }
@@ -1330,6 +1363,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 55%; }
   .flex-sm-60 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 60%;
         -ms-flex: 0 0 60%;
             flex: 0 0 60%; }
@@ -1346,6 +1380,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 60%; }
   .flex-sm-65 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 65%;
         -ms-flex: 0 0 65%;
             flex: 0 0 65%; }
@@ -1362,6 +1397,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 65%; }
   .flex-sm-70 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 70%;
         -ms-flex: 0 0 70%;
             flex: 0 0 70%; }
@@ -1378,6 +1414,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 70%; }
   .flex-sm-75 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 75%;
         -ms-flex: 0 0 75%;
             flex: 0 0 75%; }
@@ -1394,6 +1431,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 75%; }
   .flex-sm-80 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 80%;
         -ms-flex: 0 0 80%;
             flex: 0 0 80%; }
@@ -1410,6 +1448,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 80%; }
   .flex-sm-85 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 85%;
         -ms-flex: 0 0 85%;
             flex: 0 0 85%; }
@@ -1426,6 +1465,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 85%; }
   .flex-sm-90 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 90%;
         -ms-flex: 0 0 90%;
             flex: 0 0 90%; }
@@ -1442,6 +1482,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 90%; }
   .flex-sm-95 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 95%;
         -ms-flex: 0 0 95%;
             flex: 0 0 95%; }
@@ -1458,6 +1499,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 95%; }
   .flex-sm-100 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 100%;
         -ms-flex: 0 0 100%;
             flex: 0 0 100%; }
@@ -1688,6 +1730,7 @@ select, button, textarea, input {
         -ms-flex: 0 0 auto;
             flex: 0 0 auto; }
   .flex-gt-sm-0 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 0%;
         -ms-flex: 0 0 0%;
             flex: 0 0 0%; }
@@ -1704,6 +1747,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 0%; }
   .flex-gt-sm-5 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 5%;
         -ms-flex: 0 0 5%;
             flex: 0 0 5%; }
@@ -1720,6 +1764,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 5%; }
   .flex-gt-sm-10 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 10%;
         -ms-flex: 0 0 10%;
             flex: 0 0 10%; }
@@ -1736,6 +1781,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 10%; }
   .flex-gt-sm-15 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 15%;
         -ms-flex: 0 0 15%;
             flex: 0 0 15%; }
@@ -1752,6 +1798,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 15%; }
   .flex-gt-sm-20 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 20%;
         -ms-flex: 0 0 20%;
             flex: 0 0 20%; }
@@ -1768,6 +1815,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 20%; }
   .flex-gt-sm-25 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 25%;
         -ms-flex: 0 0 25%;
             flex: 0 0 25%; }
@@ -1784,6 +1832,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 25%; }
   .flex-gt-sm-30 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 30%;
         -ms-flex: 0 0 30%;
             flex: 0 0 30%; }
@@ -1800,6 +1849,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 30%; }
   .flex-gt-sm-35 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 35%;
         -ms-flex: 0 0 35%;
             flex: 0 0 35%; }
@@ -1816,6 +1866,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 35%; }
   .flex-gt-sm-40 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 40%;
         -ms-flex: 0 0 40%;
             flex: 0 0 40%; }
@@ -1832,6 +1883,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 40%; }
   .flex-gt-sm-45 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 45%;
         -ms-flex: 0 0 45%;
             flex: 0 0 45%; }
@@ -1848,6 +1900,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 45%; }
   .flex-gt-sm-50 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 50%;
         -ms-flex: 0 0 50%;
             flex: 0 0 50%; }
@@ -1864,6 +1917,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 50%; }
   .flex-gt-sm-55 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 55%;
         -ms-flex: 0 0 55%;
             flex: 0 0 55%; }
@@ -1880,6 +1934,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 55%; }
   .flex-gt-sm-60 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 60%;
         -ms-flex: 0 0 60%;
             flex: 0 0 60%; }
@@ -1896,6 +1951,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 60%; }
   .flex-gt-sm-65 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 65%;
         -ms-flex: 0 0 65%;
             flex: 0 0 65%; }
@@ -1912,6 +1968,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 65%; }
   .flex-gt-sm-70 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 70%;
         -ms-flex: 0 0 70%;
             flex: 0 0 70%; }
@@ -1928,6 +1985,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 70%; }
   .flex-gt-sm-75 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 75%;
         -ms-flex: 0 0 75%;
             flex: 0 0 75%; }
@@ -1944,6 +2002,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 75%; }
   .flex-gt-sm-80 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 80%;
         -ms-flex: 0 0 80%;
             flex: 0 0 80%; }
@@ -1960,6 +2019,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 80%; }
   .flex-gt-sm-85 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 85%;
         -ms-flex: 0 0 85%;
             flex: 0 0 85%; }
@@ -1976,6 +2036,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 85%; }
   .flex-gt-sm-90 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 90%;
         -ms-flex: 0 0 90%;
             flex: 0 0 90%; }
@@ -1992,6 +2053,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 90%; }
   .flex-gt-sm-95 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 95%;
         -ms-flex: 0 0 95%;
             flex: 0 0 95%; }
@@ -2008,6 +2070,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 95%; }
   .flex-gt-sm-100 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 100%;
         -ms-flex: 0 0 100%;
             flex: 0 0 100%; }
@@ -2242,6 +2305,7 @@ select, button, textarea, input {
         -ms-flex: 0 0 auto;
             flex: 0 0 auto; }
   .flex-md-0 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 0%;
         -ms-flex: 0 0 0%;
             flex: 0 0 0%; }
@@ -2258,6 +2322,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 0%; }
   .flex-md-5 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 5%;
         -ms-flex: 0 0 5%;
             flex: 0 0 5%; }
@@ -2274,6 +2339,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 5%; }
   .flex-md-10 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 10%;
         -ms-flex: 0 0 10%;
             flex: 0 0 10%; }
@@ -2290,6 +2356,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 10%; }
   .flex-md-15 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 15%;
         -ms-flex: 0 0 15%;
             flex: 0 0 15%; }
@@ -2306,6 +2373,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 15%; }
   .flex-md-20 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 20%;
         -ms-flex: 0 0 20%;
             flex: 0 0 20%; }
@@ -2322,6 +2390,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 20%; }
   .flex-md-25 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 25%;
         -ms-flex: 0 0 25%;
             flex: 0 0 25%; }
@@ -2338,6 +2407,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 25%; }
   .flex-md-30 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 30%;
         -ms-flex: 0 0 30%;
             flex: 0 0 30%; }
@@ -2354,6 +2424,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 30%; }
   .flex-md-35 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 35%;
         -ms-flex: 0 0 35%;
             flex: 0 0 35%; }
@@ -2370,6 +2441,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 35%; }
   .flex-md-40 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 40%;
         -ms-flex: 0 0 40%;
             flex: 0 0 40%; }
@@ -2386,6 +2458,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 40%; }
   .flex-md-45 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 45%;
         -ms-flex: 0 0 45%;
             flex: 0 0 45%; }
@@ -2402,6 +2475,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 45%; }
   .flex-md-50 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 50%;
         -ms-flex: 0 0 50%;
             flex: 0 0 50%; }
@@ -2418,6 +2492,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 50%; }
   .flex-md-55 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 55%;
         -ms-flex: 0 0 55%;
             flex: 0 0 55%; }
@@ -2434,6 +2509,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 55%; }
   .flex-md-60 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 60%;
         -ms-flex: 0 0 60%;
             flex: 0 0 60%; }
@@ -2450,6 +2526,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 60%; }
   .flex-md-65 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 65%;
         -ms-flex: 0 0 65%;
             flex: 0 0 65%; }
@@ -2466,6 +2543,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 65%; }
   .flex-md-70 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 70%;
         -ms-flex: 0 0 70%;
             flex: 0 0 70%; }
@@ -2482,6 +2560,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 70%; }
   .flex-md-75 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 75%;
         -ms-flex: 0 0 75%;
             flex: 0 0 75%; }
@@ -2498,6 +2577,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 75%; }
   .flex-md-80 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 80%;
         -ms-flex: 0 0 80%;
             flex: 0 0 80%; }
@@ -2514,6 +2594,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 80%; }
   .flex-md-85 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 85%;
         -ms-flex: 0 0 85%;
             flex: 0 0 85%; }
@@ -2530,6 +2611,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 85%; }
   .flex-md-90 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 90%;
         -ms-flex: 0 0 90%;
             flex: 0 0 90%; }
@@ -2546,6 +2628,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 90%; }
   .flex-md-95 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 95%;
         -ms-flex: 0 0 95%;
             flex: 0 0 95%; }
@@ -2562,6 +2645,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 95%; }
   .flex-md-100 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 100%;
         -ms-flex: 0 0 100%;
             flex: 0 0 100%; }
@@ -2792,6 +2876,7 @@ select, button, textarea, input {
         -ms-flex: 0 0 auto;
             flex: 0 0 auto; }
   .flex-gt-md-0 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 0%;
         -ms-flex: 0 0 0%;
             flex: 0 0 0%; }
@@ -2808,6 +2893,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 0%; }
   .flex-gt-md-5 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 5%;
         -ms-flex: 0 0 5%;
             flex: 0 0 5%; }
@@ -2824,6 +2910,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 5%; }
   .flex-gt-md-10 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 10%;
         -ms-flex: 0 0 10%;
             flex: 0 0 10%; }
@@ -2840,6 +2927,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 10%; }
   .flex-gt-md-15 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 15%;
         -ms-flex: 0 0 15%;
             flex: 0 0 15%; }
@@ -2856,6 +2944,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 15%; }
   .flex-gt-md-20 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 20%;
         -ms-flex: 0 0 20%;
             flex: 0 0 20%; }
@@ -2872,6 +2961,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 20%; }
   .flex-gt-md-25 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 25%;
         -ms-flex: 0 0 25%;
             flex: 0 0 25%; }
@@ -2888,6 +2978,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 25%; }
   .flex-gt-md-30 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 30%;
         -ms-flex: 0 0 30%;
             flex: 0 0 30%; }
@@ -2904,6 +2995,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 30%; }
   .flex-gt-md-35 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 35%;
         -ms-flex: 0 0 35%;
             flex: 0 0 35%; }
@@ -2920,6 +3012,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 35%; }
   .flex-gt-md-40 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 40%;
         -ms-flex: 0 0 40%;
             flex: 0 0 40%; }
@@ -2936,6 +3029,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 40%; }
   .flex-gt-md-45 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 45%;
         -ms-flex: 0 0 45%;
             flex: 0 0 45%; }
@@ -2952,6 +3046,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 45%; }
   .flex-gt-md-50 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 50%;
         -ms-flex: 0 0 50%;
             flex: 0 0 50%; }
@@ -2968,6 +3063,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 50%; }
   .flex-gt-md-55 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 55%;
         -ms-flex: 0 0 55%;
             flex: 0 0 55%; }
@@ -2984,6 +3080,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 55%; }
   .flex-gt-md-60 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 60%;
         -ms-flex: 0 0 60%;
             flex: 0 0 60%; }
@@ -3000,6 +3097,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 60%; }
   .flex-gt-md-65 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 65%;
         -ms-flex: 0 0 65%;
             flex: 0 0 65%; }
@@ -3016,6 +3114,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 65%; }
   .flex-gt-md-70 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 70%;
         -ms-flex: 0 0 70%;
             flex: 0 0 70%; }
@@ -3032,6 +3131,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 70%; }
   .flex-gt-md-75 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 75%;
         -ms-flex: 0 0 75%;
             flex: 0 0 75%; }
@@ -3048,6 +3148,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 75%; }
   .flex-gt-md-80 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 80%;
         -ms-flex: 0 0 80%;
             flex: 0 0 80%; }
@@ -3064,6 +3165,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 80%; }
   .flex-gt-md-85 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 85%;
         -ms-flex: 0 0 85%;
             flex: 0 0 85%; }
@@ -3080,6 +3182,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 85%; }
   .flex-gt-md-90 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 90%;
         -ms-flex: 0 0 90%;
             flex: 0 0 90%; }
@@ -3096,6 +3199,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 90%; }
   .flex-gt-md-95 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 95%;
         -ms-flex: 0 0 95%;
             flex: 0 0 95%; }
@@ -3112,6 +3216,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 95%; }
   .flex-gt-md-100 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 100%;
         -ms-flex: 0 0 100%;
             flex: 0 0 100%; }
@@ -3346,6 +3451,7 @@ select, button, textarea, input {
         -ms-flex: 0 0 auto;
             flex: 0 0 auto; }
   .flex-lg-0 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 0%;
         -ms-flex: 0 0 0%;
             flex: 0 0 0%; }
@@ -3362,6 +3468,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 0%; }
   .flex-lg-5 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 5%;
         -ms-flex: 0 0 5%;
             flex: 0 0 5%; }
@@ -3378,6 +3485,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 5%; }
   .flex-lg-10 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 10%;
         -ms-flex: 0 0 10%;
             flex: 0 0 10%; }
@@ -3394,6 +3502,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 10%; }
   .flex-lg-15 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 15%;
         -ms-flex: 0 0 15%;
             flex: 0 0 15%; }
@@ -3410,6 +3519,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 15%; }
   .flex-lg-20 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 20%;
         -ms-flex: 0 0 20%;
             flex: 0 0 20%; }
@@ -3426,6 +3536,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 20%; }
   .flex-lg-25 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 25%;
         -ms-flex: 0 0 25%;
             flex: 0 0 25%; }
@@ -3442,6 +3553,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 25%; }
   .flex-lg-30 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 30%;
         -ms-flex: 0 0 30%;
             flex: 0 0 30%; }
@@ -3458,6 +3570,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 30%; }
   .flex-lg-35 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 35%;
         -ms-flex: 0 0 35%;
             flex: 0 0 35%; }
@@ -3474,6 +3587,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 35%; }
   .flex-lg-40 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 40%;
         -ms-flex: 0 0 40%;
             flex: 0 0 40%; }
@@ -3490,6 +3604,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 40%; }
   .flex-lg-45 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 45%;
         -ms-flex: 0 0 45%;
             flex: 0 0 45%; }
@@ -3506,6 +3621,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 45%; }
   .flex-lg-50 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 50%;
         -ms-flex: 0 0 50%;
             flex: 0 0 50%; }
@@ -3522,6 +3638,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 50%; }
   .flex-lg-55 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 55%;
         -ms-flex: 0 0 55%;
             flex: 0 0 55%; }
@@ -3538,6 +3655,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 55%; }
   .flex-lg-60 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 60%;
         -ms-flex: 0 0 60%;
             flex: 0 0 60%; }
@@ -3554,6 +3672,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 60%; }
   .flex-lg-65 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 65%;
         -ms-flex: 0 0 65%;
             flex: 0 0 65%; }
@@ -3570,6 +3689,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 65%; }
   .flex-lg-70 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 70%;
         -ms-flex: 0 0 70%;
             flex: 0 0 70%; }
@@ -3586,6 +3706,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 70%; }
   .flex-lg-75 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 75%;
         -ms-flex: 0 0 75%;
             flex: 0 0 75%; }
@@ -3602,6 +3723,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 75%; }
   .flex-lg-80 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 80%;
         -ms-flex: 0 0 80%;
             flex: 0 0 80%; }
@@ -3618,6 +3740,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 80%; }
   .flex-lg-85 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 85%;
         -ms-flex: 0 0 85%;
             flex: 0 0 85%; }
@@ -3634,6 +3757,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 85%; }
   .flex-lg-90 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 90%;
         -ms-flex: 0 0 90%;
             flex: 0 0 90%; }
@@ -3650,6 +3774,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 90%; }
   .flex-lg-95 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 95%;
         -ms-flex: 0 0 95%;
             flex: 0 0 95%; }
@@ -3666,6 +3791,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 95%; }
   .flex-lg-100 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 100%;
         -ms-flex: 0 0 100%;
             flex: 0 0 100%; }
@@ -3898,6 +4024,7 @@ select, button, textarea, input {
         -ms-flex: 0 0 auto;
             flex: 0 0 auto; }
   .flex-gt-lg-0 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 0%;
         -ms-flex: 0 0 0%;
             flex: 0 0 0%; }
@@ -3914,6 +4041,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 0%; }
   .flex-gt-lg-5 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 5%;
         -ms-flex: 0 0 5%;
             flex: 0 0 5%; }
@@ -3930,6 +4058,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 5%; }
   .flex-gt-lg-10 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 10%;
         -ms-flex: 0 0 10%;
             flex: 0 0 10%; }
@@ -3946,6 +4075,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 10%; }
   .flex-gt-lg-15 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 15%;
         -ms-flex: 0 0 15%;
             flex: 0 0 15%; }
@@ -3962,6 +4092,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 15%; }
   .flex-gt-lg-20 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 20%;
         -ms-flex: 0 0 20%;
             flex: 0 0 20%; }
@@ -3978,6 +4109,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 20%; }
   .flex-gt-lg-25 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 25%;
         -ms-flex: 0 0 25%;
             flex: 0 0 25%; }
@@ -3994,6 +4126,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 25%; }
   .flex-gt-lg-30 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 30%;
         -ms-flex: 0 0 30%;
             flex: 0 0 30%; }
@@ -4010,6 +4143,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 30%; }
   .flex-gt-lg-35 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 35%;
         -ms-flex: 0 0 35%;
             flex: 0 0 35%; }
@@ -4026,6 +4160,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 35%; }
   .flex-gt-lg-40 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 40%;
         -ms-flex: 0 0 40%;
             flex: 0 0 40%; }
@@ -4042,6 +4177,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 40%; }
   .flex-gt-lg-45 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 45%;
         -ms-flex: 0 0 45%;
             flex: 0 0 45%; }
@@ -4058,6 +4194,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 45%; }
   .flex-gt-lg-50 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 50%;
         -ms-flex: 0 0 50%;
             flex: 0 0 50%; }
@@ -4074,6 +4211,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 50%; }
   .flex-gt-lg-55 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 55%;
         -ms-flex: 0 0 55%;
             flex: 0 0 55%; }
@@ -4090,6 +4228,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 55%; }
   .flex-gt-lg-60 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 60%;
         -ms-flex: 0 0 60%;
             flex: 0 0 60%; }
@@ -4106,6 +4245,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 60%; }
   .flex-gt-lg-65 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 65%;
         -ms-flex: 0 0 65%;
             flex: 0 0 65%; }
@@ -4122,6 +4262,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 65%; }
   .flex-gt-lg-70 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 70%;
         -ms-flex: 0 0 70%;
             flex: 0 0 70%; }
@@ -4138,6 +4279,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 70%; }
   .flex-gt-lg-75 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 75%;
         -ms-flex: 0 0 75%;
             flex: 0 0 75%; }
@@ -4154,6 +4296,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 75%; }
   .flex-gt-lg-80 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 80%;
         -ms-flex: 0 0 80%;
             flex: 0 0 80%; }
@@ -4170,6 +4313,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 80%; }
   .flex-gt-lg-85 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 85%;
         -ms-flex: 0 0 85%;
             flex: 0 0 85%; }
@@ -4186,6 +4330,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 85%; }
   .flex-gt-lg-90 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 90%;
         -ms-flex: 0 0 90%;
             flex: 0 0 90%; }
@@ -4202,6 +4347,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 90%; }
   .flex-gt-lg-95 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 95%;
         -ms-flex: 0 0 95%;
             flex: 0 0 95%; }
@@ -4218,6 +4364,7 @@ select, button, textarea, input {
     max-width: 100%;
     max-height: 95%; }
   .flex-gt-lg-100 {
+    box-sizing: border-box;
     -webkit-flex: 0 0 100%;
         -ms-flex: 0 0 100%;
             flex: 0 0 100%; }
