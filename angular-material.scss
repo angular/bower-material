@@ -1725,153 +1725,6 @@ md-card {
 }
 
 
-$checkbox-width: 18px !default;
-$checkbox-height: $checkbox-width !default;
-$checkbox-margin: 8px !default;
-$checkbox-border-radius: 2px !default;
-$checkbox-border-width: 2px !default;
-$checkbox-text-margin: 10px !default;
-$checkbox-top-left: 12px !default;
-
-md-checkbox {
-  box-sizing: border-box;
-  display: block;
-  margin: $checkbox-margin;
-  white-space: nowrap;
-  cursor: pointer;
-  outline: none;
-  user-select: none;
-  @include rtl(padding-left, $checkbox-width, 0);
-  @include rtl(padding-right, 0, $checkbox-width);
-  position: relative;
-  line-height: $checkbox-width + $checkbox-margin;
-  min-width: $checkbox-width;
-  min-height: $checkbox-width;
-
-  &.md-focused:not([disabled]) {
-    .md-container:before {
-      left: -8px;
-      top: -8px;
-      right: -8px;
-      bottom: -8px;
-    }
-
-    &:not(.md-checked) {
-      .md-container:before {
-        background-color: rgba(0, 0, 0, 0.12);
-      }
-    }
-  }
-
-  .md-container {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-
-    box-sizing: border-box;
-    display: inline-block;
-
-    width: $checkbox-width;
-    height: $checkbox-height;
-    @include rtl(left, 0, auto);
-    @include rtl(right, auto, 0);
-
-    &:before {
-      box-sizing: border-box;
-      background-color: transparent;
-      border-radius: 50%;
-      content: '';
-      position: absolute;
-      display: block;
-      height: auto;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      transition: all 0.5s;
-      width: auto;
-    }
-
-    &:after {
-      box-sizing: border-box;
-      content: '';
-      position: absolute;
-      top: -10px;
-      right: -10px;
-      bottom: -10px;
-      left: -10px;
-    }
-
-    .md-ripple-container {
-      position: absolute;
-      display: block;
-      width: auto;
-      height: auto;
-      left: -15px;
-      top: -15px;
-      right: -15px;
-      bottom: -15px;
-    }
-  }
-
-  &.md-align-top-left > div.md-container {
-    top: $checkbox-top-left;
-  }
-
-  // unchecked
-  .md-icon {
-    box-sizing: border-box;
-    transition: 240ms;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: $checkbox-width;
-    height: $checkbox-height;
-    border-width: $checkbox-border-width;
-    border-style: solid;
-    border-radius: $checkbox-border-radius;
-  }
-
-  &.md-checked .md-icon {
-    border: none;
-  }
-
-  // disabled
-  &[disabled] {
-    cursor: no-drop;
-  }
-
-
-  &.md-checked .md-icon:after {
-    box-sizing: border-box;
-    transform: rotate(45deg);
-    position: absolute;
-    left: $checkbox-width / 3;
-    top: $checkbox-width / 9;
-    display: table;
-    width: $checkbox-width / 3;
-    height: $checkbox-width * 2 / 3;
-    border-width: $checkbox-border-width;
-    border-style: solid;
-    border-top: 0;
-    border-left: 0;
-    content: '';
-  }
-
-  .md-label {
-    box-sizing: border-box;
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
-    white-space: normal;
-    user-select: text;
-
-    @include rtl(margin-left, $checkbox-text-margin, 0);
-    @include rtl(margin-right, 0, $checkbox-text-margin);
-
-  }
-}
-
 $chip-font-size: rem(1.6) !default;
 $chip-height: rem(3.2) !default;
 $chip-padding: 0 rem(1.2) 0 rem(1.2) !default;
@@ -2063,6 +1916,153 @@ $contact-chip-name-width: rem(12) !default;
   }
 }
 
+
+$checkbox-width: 18px !default;
+$checkbox-height: $checkbox-width !default;
+$checkbox-margin: 8px !default;
+$checkbox-border-radius: 2px !default;
+$checkbox-border-width: 2px !default;
+$checkbox-text-margin: 10px !default;
+$checkbox-top-left: 12px !default;
+
+md-checkbox {
+  box-sizing: border-box;
+  display: block;
+  margin: $checkbox-margin;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  @include rtl(padding-left, $checkbox-width, 0);
+  @include rtl(padding-right, 0, $checkbox-width);
+  position: relative;
+  line-height: $checkbox-width + $checkbox-margin;
+  min-width: $checkbox-width;
+  min-height: $checkbox-width;
+
+  &.md-focused:not([disabled]) {
+    .md-container:before {
+      left: -8px;
+      top: -8px;
+      right: -8px;
+      bottom: -8px;
+    }
+
+    &:not(.md-checked) {
+      .md-container:before {
+        background-color: rgba(0, 0, 0, 0.12);
+      }
+    }
+  }
+
+  .md-container {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+    box-sizing: border-box;
+    display: inline-block;
+
+    width: $checkbox-width;
+    height: $checkbox-height;
+    @include rtl(left, 0, auto);
+    @include rtl(right, auto, 0);
+
+    &:before {
+      box-sizing: border-box;
+      background-color: transparent;
+      border-radius: 50%;
+      content: '';
+      position: absolute;
+      display: block;
+      height: auto;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      transition: all 0.5s;
+      width: auto;
+    }
+
+    &:after {
+      box-sizing: border-box;
+      content: '';
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      bottom: -10px;
+      left: -10px;
+    }
+
+    .md-ripple-container {
+      position: absolute;
+      display: block;
+      width: auto;
+      height: auto;
+      left: -15px;
+      top: -15px;
+      right: -15px;
+      bottom: -15px;
+    }
+  }
+
+  &.md-align-top-left > div.md-container {
+    top: $checkbox-top-left;
+  }
+
+  // unchecked
+  .md-icon {
+    box-sizing: border-box;
+    transition: 240ms;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: $checkbox-width;
+    height: $checkbox-height;
+    border-width: $checkbox-border-width;
+    border-style: solid;
+    border-radius: $checkbox-border-radius;
+  }
+
+  &.md-checked .md-icon {
+    border: none;
+  }
+
+  // disabled
+  &[disabled] {
+    cursor: no-drop;
+  }
+
+
+  &.md-checked .md-icon:after {
+    box-sizing: border-box;
+    transform: rotate(45deg);
+    position: absolute;
+    left: $checkbox-width / 3;
+    top: $checkbox-width / 9;
+    display: table;
+    width: $checkbox-width / 3;
+    height: $checkbox-width * 2 / 3;
+    border-width: $checkbox-border-width;
+    border-style: solid;
+    border-top: 0;
+    border-left: 0;
+    content: '';
+  }
+
+  .md-label {
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    white-space: normal;
+    user-select: text;
+
+    @include rtl(margin-left, $checkbox-text-margin, 0);
+    @include rtl(margin-right, 0, $checkbox-text-margin);
+
+  }
+}
 
 md-content {
 
@@ -2931,6 +2931,241 @@ md-icon {
 //  -moz-osx-font-smoothing:grayscale;
 //}
 
+$list-h3-margin: 0 0 0px 0 !default;
+$list-h4-margin: 3px 0 1px 0 !default;
+$list-h4-font-weight: 400 !default;
+$list-header-line-height: 1.2em !default;
+$list-p-margin: 0 0 0 0 !default;
+$list-p-line-height: 1.6em !default;
+
+$list-padding-top: $baseline-grid !default;
+$list-padding-right: 0px !default;
+$list-padding-left: 0px !default;
+$list-padding-bottom: $baseline-grid !default;
+
+$item-padding-top: 0px !default;
+$item-padding-right: 0px !default;
+$item-padding-left: 0px !default;
+$item-padding-bottom: 0px !default;
+$list-item-padding-vertical: 0px !default;
+$list-item-padding-horizontal: $baseline-grid * 2 !default;
+$list-item-primary-width: $baseline-grid * 7 !default;
+$list-item-primary-avatar-width: $baseline-grid * 5 !default;
+$list-item-primary-icon-width: $baseline-grid * 3 !default;
+$list-item-secondary-left-margin: $baseline-grid * 2 !default;
+$list-item-secondary-button-width: $baseline-grid * 6 !default;
+$list-item-inset-divider-offset: 12 * $baseline-grid !default;
+$list-item-height: 6 * $baseline-grid !default;
+$list-item-two-line-height: 9 * $baseline-grid !default;
+$list-item-three-line-height: 11 * $baseline-grid !default;
+
+md-list {
+  display: block;
+  padding: $list-padding-top $list-padding-right $list-padding-bottom $list-padding-left;
+
+  .md-subheader {
+    font-size: $body-font-size-base;
+    font-weight: 500;
+    letter-spacing: 0.010em;
+    line-height: $list-header-line-height;
+  }
+}
+
+md-list-item {
+  &.md-proxy-focus.md-focused .md-no-style {
+    transition: background-color 0.15s linear;
+  }
+  &.md-no-proxy,
+  .md-no-style {
+    position: relative;
+    padding: $list-item-padding-vertical $list-item-padding-horizontal;
+    flex: 1;
+    
+    &.md-button {
+      font-size: inherit;
+      height: inherit;
+      text-align: left;
+      text-transform: none;
+      width: 100%;
+      white-space: normal;
+      flex-direction: inherit;
+      align-items: inherit;
+    }
+    &:focus {
+      outline: none
+    }
+  }
+  &.md-with-secondary {
+    position: relative;
+  }
+  &.md-clickable:hover {
+    cursor: pointer;
+  }
+
+  md-divider {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    &[md-inset] {
+      left: $list-item-inset-divider-offset;
+      width: calc(100% - #{$list-item-inset-divider-offset});
+      margin: 0;
+    }
+  }
+}
+
+md-list-item, md-list-item .md-list-item-inner {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: $list-item-height;
+
+  // Layout for controls in primary or secondary divs, or auto-infered first child
+  & > div.md-primary > md-icon,
+  & > div.md-secondary > md-icon,
+  & > md-icon:first-child, 
+  > md-icon.md-secondary {
+    width: $list-item-primary-icon-width;
+    margin-top: 16px;
+    margin-bottom: 12px;
+    box-sizing: content-box;
+  }
+  & > div.md-primary > md-checkbox,
+  & > div.md-secondary > md-checkbox,
+  & > md-checkbox:first-child,
+  md-checkbox.md-secondary {
+    align-self: center;
+    .md-label { display: none; }
+  }
+
+  & > md-icon:first-child {
+    margin-right: $list-item-primary-width - $list-item-primary-icon-width;
+  }
+  & > md-checkbox:first-child {
+    width: 3 * $baseline-grid;
+    margin-left: 3px;
+    margin-right: 29px;
+  }
+  & > .md-avatar:first-child {
+    width: $list-item-primary-avatar-width;
+    height: $list-item-primary-avatar-width;
+    margin-top: $baseline-grid;
+    margin-bottom: $baseline-grid;
+    margin-right: $list-item-primary-width - $list-item-primary-avatar-width;
+    border-radius: 50%;
+    box-sizing: content-box;
+  }
+
+  md-checkbox.md-secondary,
+  md-switch.md-secondary {
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  button.md-button.md-secondary-container {
+    background-color: transparent;
+    align-self: center;
+    border-radius: 50%;
+    margin: 0px;
+    min-width: 0px;
+    .md-ripple,
+    .md-ripple-container {
+      border-radius: 50%;
+    }
+  }
+
+  .md-secondary-container,
+  .md-secondary {
+    margin-left: $list-item-secondary-left-margin;
+    position: absolute;
+    right: $list-item-padding-horizontal;
+    top: 50%;
+    transform: translate3d(0, -50%, 0);
+  }
+
+  & > .md-button.md-secondary-container > .md-secondary {
+    margin-left: 0px;
+    position: static;
+  }
+
+  & > p, & > .md-list-item-inner > p {
+    flex: 1;
+    margin: 0;
+  }
+}
+
+
+md-list-item.md-2-line,
+md-list-item.md-2-line > .md-no-style,
+md-list-item.md-3-line,
+md-list-item.md-3-line > .md-no-style {
+  align-items: flex-start;
+  justify-content: center;
+
+  .md-list-item-text {
+    flex: 1;
+    margin: auto;
+    text-overflow: ellipsis;
+
+    &.md-offset {
+      margin-left: $list-item-primary-width;
+    }
+
+    h3 {
+      font-size: $subhead-font-size-base;
+      font-weight: 400;
+      letter-spacing: 0.010em;
+      margin: $list-h3-margin;
+      line-height: $list-header-line-height;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    h4 {
+      font-size: $body-font-size-base;
+      letter-spacing: 0.010em;
+      margin: $list-h4-margin;
+      font-weight: $list-h4-font-weight;
+      line-height: $list-header-line-height;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    p {
+      font-size: $body-font-size-base;
+      font-weight: 500;
+      letter-spacing: 0.010em;
+      margin: $list-p-margin;
+      line-height: $list-p-line-height;
+    }
+  }
+}
+
+md-list-item.md-2-line,
+md-list-item.md-2-line > .md-no-style {
+  height: $list-item-two-line-height;
+  > .md-avatar:first-child {
+    margin-top: $baseline-grid * 1.5;
+  }
+  > md-icon:first-child {
+    align-self: flex-start;
+  }
+  .md-list-item-text {
+    flex: 1;
+  }
+}
+
+md-list-item.md-3-line,
+md-list-item.md-3-line > .md-no-style {
+  height: $list-item-three-line-height;
+  > md-icon:first-child, 
+  > .md-avatar:first-child {
+    margin-top: $baseline-grid * 2;
+  }
+}
+
 $input-container-padding: 2px !default;
 
 $input-label-default-offset: 24px !default;
@@ -3243,241 +3478,6 @@ md-input-container.md-icon-float {
 @media screen and (-ms-high-contrast: active) {
   md-input-container.md-default-theme > md-icon {
     fill: #fff;
-  }
-}
-
-$list-h3-margin: 0 0 0px 0 !default;
-$list-h4-margin: 3px 0 1px 0 !default;
-$list-h4-font-weight: 400 !default;
-$list-header-line-height: 1.2em !default;
-$list-p-margin: 0 0 0 0 !default;
-$list-p-line-height: 1.6em !default;
-
-$list-padding-top: $baseline-grid !default;
-$list-padding-right: 0px !default;
-$list-padding-left: 0px !default;
-$list-padding-bottom: $baseline-grid !default;
-
-$item-padding-top: 0px !default;
-$item-padding-right: 0px !default;
-$item-padding-left: 0px !default;
-$item-padding-bottom: 0px !default;
-$list-item-padding-vertical: 0px !default;
-$list-item-padding-horizontal: $baseline-grid * 2 !default;
-$list-item-primary-width: $baseline-grid * 7 !default;
-$list-item-primary-avatar-width: $baseline-grid * 5 !default;
-$list-item-primary-icon-width: $baseline-grid * 3 !default;
-$list-item-secondary-left-margin: $baseline-grid * 2 !default;
-$list-item-secondary-button-width: $baseline-grid * 6 !default;
-$list-item-inset-divider-offset: 12 * $baseline-grid !default;
-$list-item-height: 6 * $baseline-grid !default;
-$list-item-two-line-height: 9 * $baseline-grid !default;
-$list-item-three-line-height: 11 * $baseline-grid !default;
-
-md-list {
-  display: block;
-  padding: $list-padding-top $list-padding-right $list-padding-bottom $list-padding-left;
-
-  .md-subheader {
-    font-size: $body-font-size-base;
-    font-weight: 500;
-    letter-spacing: 0.010em;
-    line-height: $list-header-line-height;
-  }
-}
-
-md-list-item {
-  &.md-proxy-focus.md-focused .md-no-style {
-    transition: background-color 0.15s linear;
-  }
-  &.md-no-proxy,
-  .md-no-style {
-    position: relative;
-    padding: $list-item-padding-vertical $list-item-padding-horizontal;
-    flex: 1;
-    
-    &.md-button {
-      font-size: inherit;
-      height: inherit;
-      text-align: left;
-      text-transform: none;
-      width: 100%;
-      white-space: normal;
-      flex-direction: inherit;
-      align-items: inherit;
-    }
-    &:focus {
-      outline: none
-    }
-  }
-  &.md-with-secondary {
-    position: relative;
-  }
-  &.md-clickable:hover {
-    cursor: pointer;
-  }
-
-  md-divider {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    &[md-inset] {
-      left: $list-item-inset-divider-offset;
-      width: calc(100% - #{$list-item-inset-divider-offset});
-      margin: 0;
-    }
-  }
-}
-
-md-list-item, md-list-item .md-list-item-inner {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  min-height: $list-item-height;
-
-  // Layout for controls in primary or secondary divs, or auto-infered first child
-  & > div.md-primary > md-icon,
-  & > div.md-secondary > md-icon,
-  & > md-icon:first-child, 
-  > md-icon.md-secondary {
-    width: $list-item-primary-icon-width;
-    margin-top: 16px;
-    margin-bottom: 12px;
-    box-sizing: content-box;
-  }
-  & > div.md-primary > md-checkbox,
-  & > div.md-secondary > md-checkbox,
-  & > md-checkbox:first-child,
-  md-checkbox.md-secondary {
-    align-self: center;
-    .md-label { display: none; }
-  }
-
-  & > md-icon:first-child {
-    margin-right: $list-item-primary-width - $list-item-primary-icon-width;
-  }
-  & > md-checkbox:first-child {
-    width: 3 * $baseline-grid;
-    margin-left: 3px;
-    margin-right: 29px;
-  }
-  & > .md-avatar:first-child {
-    width: $list-item-primary-avatar-width;
-    height: $list-item-primary-avatar-width;
-    margin-top: $baseline-grid;
-    margin-bottom: $baseline-grid;
-    margin-right: $list-item-primary-width - $list-item-primary-avatar-width;
-    border-radius: 50%;
-    box-sizing: content-box;
-  }
-
-  md-checkbox.md-secondary,
-  md-switch.md-secondary {
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-
-  button.md-button.md-secondary-container {
-    background-color: transparent;
-    align-self: center;
-    border-radius: 50%;
-    margin: 0px;
-    min-width: 0px;
-    .md-ripple,
-    .md-ripple-container {
-      border-radius: 50%;
-    }
-  }
-
-  .md-secondary-container,
-  .md-secondary {
-    margin-left: $list-item-secondary-left-margin;
-    position: absolute;
-    right: $list-item-padding-horizontal;
-    top: 50%;
-    transform: translate3d(0, -50%, 0);
-  }
-
-  & > .md-button.md-secondary-container > .md-secondary {
-    margin-left: 0px;
-    position: static;
-  }
-
-  & > p, & > .md-list-item-inner > p {
-    flex: 1;
-    margin: 0;
-  }
-}
-
-
-md-list-item.md-2-line,
-md-list-item.md-2-line > .md-no-style,
-md-list-item.md-3-line,
-md-list-item.md-3-line > .md-no-style {
-  align-items: flex-start;
-  justify-content: center;
-
-  .md-list-item-text {
-    flex: 1;
-    margin: auto;
-    text-overflow: ellipsis;
-
-    &.md-offset {
-      margin-left: $list-item-primary-width;
-    }
-
-    h3 {
-      font-size: $subhead-font-size-base;
-      font-weight: 400;
-      letter-spacing: 0.010em;
-      margin: $list-h3-margin;
-      line-height: $list-header-line-height;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-    h4 {
-      font-size: $body-font-size-base;
-      letter-spacing: 0.010em;
-      margin: $list-h4-margin;
-      font-weight: $list-h4-font-weight;
-      line-height: $list-header-line-height;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-    p {
-      font-size: $body-font-size-base;
-      font-weight: 500;
-      letter-spacing: 0.010em;
-      margin: $list-p-margin;
-      line-height: $list-p-line-height;
-    }
-  }
-}
-
-md-list-item.md-2-line,
-md-list-item.md-2-line > .md-no-style {
-  height: $list-item-two-line-height;
-  > .md-avatar:first-child {
-    margin-top: $baseline-grid * 1.5;
-  }
-  > md-icon:first-child {
-    align-self: flex-start;
-  }
-  .md-list-item-text {
-    flex: 1;
-  }
-}
-
-md-list-item.md-3-line,
-md-list-item.md-3-line > .md-no-style {
-  height: $list-item-three-line-height;
-  > md-icon:first-child, 
-  > .md-avatar:first-child {
-    margin-top: $baseline-grid * 2;
   }
 }
 
@@ -4840,23 +4840,6 @@ md-slider {
 }
 
 
-.md-sticky-clone {
-  z-index: 2;
-  top: 0;
-  left: 0;
-  right: 0;
-  position: absolute !important;
-
-  transform: translate3d(-9999px,-9999px,0);
-
-  &[sticky-state="active"] {
-    transform: translate3d(0, 0, 0);
-    &:not(.md-sticky-no-effect) .md-subheader-inner {
-      animation: subheaderStickyHoverIn 0.3s ease-out both;
-    }
-  }
-}
-
 $subheader-line-height: 1em !default;
 $subheader-font-size: rem(1.4) !default;
 $subheader-padding: ($baseline-grid * 2) 0px ($baseline-grid * 2) ($baseline-grid * 2) !default;
@@ -5355,6 +5338,23 @@ md-tab {
 md-toolbar + md-tabs {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+.md-sticky-clone {
+  z-index: 2;
+  top: 0;
+  left: 0;
+  right: 0;
+  position: absolute !important;
+
+  transform: translate3d(-9999px,-9999px,0);
+
+  &[sticky-state="active"] {
+    transform: translate3d(0, 0, 0);
+    &:not(.md-sticky-no-effect) .md-subheader-inner {
+      animation: subheaderStickyHoverIn 0.3s ease-out both;
+    }
+  }
 }
 
 // See height set globally, depended on by buttons
