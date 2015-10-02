@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-e269dea
+ * v0.11.2-master-281bc52
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -626,7 +626,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   }
 
   function notFoundVisible () {
-    return !ctrl.matches.length && !ctrl.loading && ctrl.scope.searchText && hasFocus && !ctrl.scope.selectedItem;
+    return !ctrl.matches.length && !ctrl.loading && ctrl.scope.searchText >= getMinLength() && hasFocus && !ctrl.scope.selectedItem;
   }
 
   /**
