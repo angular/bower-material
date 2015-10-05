@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-01b7af3
+ * v0.11.2-master-b8eabd3
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -836,11 +836,15 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
         newHeight     = contentHeight + tabsHeight,
         currentHeight = $element.prop('offsetHeight');
 
+    // Adjusts calculations for when the buttons are bottom-aligned since this relies on absolute
+    // positioning.  This should probably be cleaned up if a cleaner solution is possible.
     if ($element.attr('md-align-tabs') === 'bottom') {
       currentHeight -= tabsHeight;
       newHeight -= tabsHeight;
+      // Need to include bottom border in these calculations
+      if ($element.attr('md-border-bottom') !== undefined) ++currentHeight;
     }
-    if ($element.attr('md-border-bottom') !== undefined) ++currentHeight;
+
     if (currentHeight === newHeight) return;
 
     // Lock during animation so the user can't change tabs
