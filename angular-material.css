@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-b8eabd3
+ * v0.11.2-master-9dd2e35
  */
 html, body {
   height: 100%;
@@ -8388,7 +8388,7 @@ md-tooltip {
   .md-virtual-repeat-container .md-virtual-repeat-sizer {
     box-sizing: border-box;
     height: 1px;
-    display: inline-block;
+    display: block;
     margin: 0;
     padding: 0;
     width: 1px; }
@@ -8398,7 +8398,7 @@ md-tooltip {
     margin: 0;
     padding: 0;
     position: absolute;
-    right: 16px;
+    right: 0;
     top: 0; }
 
 .md-virtual-repeat-container.md-orient-horizontal .md-virtual-repeat-scroller {
