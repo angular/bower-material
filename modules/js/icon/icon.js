@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-71674b0
+ * v0.11.2-master-4326490
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -760,7 +760,7 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
     *  Define the Icon class
     */
    function Icon(el, config) {
-     if (el.tagName != 'svg') {
+     if (el && el.tagName != 'svg') {
        el = angular.element('<svg xmlns="http://www.w3.org/2000/svg">').append(el)[0];
      }
 
