@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-a544d21
+ * v0.11.2-master-db99d5a
  */
 .md-select-menu-container {
   position: fixed;
@@ -31,7 +31,7 @@
     transition-duration: 250ms; }
 
 md-input-container > md-select {
-  margin: auto 0 0 0;
+  margin: 0;
   -webkit-order: 2;
       -ms-flex-order: 2;
           order: 2; }
