@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-bb8fd26
+ * v0.11.2-master-460e3ab
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -396,7 +396,7 @@ function mdMaxlengthDirective($animate) {
 
     ngModelCtrl.$formatters.push(renderCharCount);
     ngModelCtrl.$viewChangeListeners.push(renderCharCount);
-    element.on('input keydown', function() {
+    element.on('input keydown keyup', function() {
       renderCharCount(); //make sure it's called with no args
     });
 
