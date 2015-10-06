@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-bbbc475
+ * v0.11.2-master-b6836d6
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -133,7 +133,7 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
             .addListener(invalidateLayout);
       }
       return $mdMedia.watchResponsiveAttributes(
-          ['md-cols', 'md-row-height'], attrs, layoutIfMediaMatch);
+          ['md-cols', 'md-row-height', 'md-gutter'], attrs, layoutIfMediaMatch);
     }
 
     function unwatchMedia() {
@@ -328,14 +328,12 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
     }
 
     function getGridStyle(colCount, rowCount, gutter, rowMode, rowHeight) {
-      var style = {
-        height: '',
-        paddingBottom: ''
-      };
+      var style = {};
 
       switch(rowMode) {
         case 'fixed':
           style.height = DIMENSION({ unit: rowHeight, span: rowCount, gutter: gutter });
+          style.paddingBottom = '';
           break;
 
         case 'ratio':
@@ -345,6 +343,7 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
               vShare = hShare * (1 / rowHeight),
               vUnit = UNIT({ share: vShare, gutterShare: hGutterShare, gutter: gutter });
 
+          style.height = '';
           style.paddingBottom = DIMENSION({ unit: vUnit, span: rowCount, gutter: gutter});
           break;
 
@@ -358,7 +357,7 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
 
     function getTileElements() {
       return [].filter.call(element.children(), function(ele) {
-        return ele.tagName == 'MD-GRID-TILE';
+        return ele.tagName == 'MD-GRID-TILE' && !ele.$$mdDestroyed;
       });
     }
 
@@ -735,6 +734,9 @@ function GridTileDirective($mdMedia) {
     // Tile registration/deregistration
     gridCtrl.invalidateTiles();
     scope.$on('$destroy', function() {
+      // Mark the tile as destroyed so it is no longer considered in layout,
+      // even if the DOM element sticks around (like during a leave animation)
+      element.$$mdDestroyed = true;
       unwatchAttrs();
       gridCtrl.invalidateLayout();
     });
