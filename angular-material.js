@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-e113774
+ * v0.11.2-master-ed80df7
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -21958,7 +21958,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   }
 
   function updatePagingWidth() {
-    var width = 0;
+    var width = 1;
     angular.forEach(elements.dummies, function (element) { width += element.offsetWidth; });
     angular.element(elements.paging).css('width', width + 'px');
   }
