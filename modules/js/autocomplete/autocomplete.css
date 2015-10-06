@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-82160e1
+ * v0.11.2-master-7429700
  */
 @-webkit-keyframes md-autocomplete-list-out {
   0% {
@@ -97,24 +97,28 @@ md-autocomplete {
     height: 40px; }
     md-autocomplete md-autocomplete-wrap.md-menu-showing {
       z-index: 51; }
-    md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate {
+    md-autocomplete md-autocomplete-wrap md-progress-linear {
       position: absolute;
-      top: 20px;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      transition: none; }
-      md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate .md-container {
-        transition: none;
-        height: 3px; }
-      md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-enter {
-        transition: opacity 0.15s linear; }
-        md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-enter.ng-enter-active {
-          opacity: 1; }
-      md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-leave {
-        transition: opacity 0.15s linear; }
-        md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-leave.ng-leave-active {
-          opacity: 0; }
+      bottom: -2px;
+      left: 0; }
+      md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        transition: none; }
+        md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate .md-container {
+          transition: none;
+          height: 3px; }
+        md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-enter {
+          transition: opacity 0.15s linear; }
+          md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-enter.ng-enter-active {
+            opacity: 1; }
+        md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-leave {
+          transition: opacity 0.15s linear; }
+          md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-leave.ng-leave-active {
+            opacity: 0; }
   md-autocomplete input:not(.md-input) {
     font-size: 14px;
     box-sizing: border-box;
@@ -199,7 +203,6 @@ md-autocomplete {
   list-style: none;
   padding: 0; }
   .md-autocomplete-suggestions li {
-    cursor: pointer;
     font-size: 14px;
     overflow: hidden;
     padding: 0 15px;
@@ -211,6 +214,8 @@ md-autocomplete {
     text-overflow: ellipsis; }
     .md-autocomplete-suggestions li:focus {
       outline: none; }
+    .md-autocomplete-suggestions li:not(.md-not-found-wrapper) {
+      cursor: pointer; }
 
 @media screen and (-ms-high-contrast: active) {
   md-autocomplete, .md-autocomplete-suggestions {
