@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-f03aca6
+ * v0.11.2-master-39efc85
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2654,11 +2654,14 @@ function InterimElementProvider() {
          * optional auto-Hide
          */
         function showElement(element, options, controller) {
+          // Trigger onShowing callback before the `show()` starts
+          var notifyShowing = options.onShowing || angular.noop;
           // Trigger onComplete callback when the `show()` finishes
           var notifyComplete = options.onComplete || angular.noop;
 
           return $q(function (resolve, reject) {
             try {
+              notifyShowing(options.scope, element, options);
 
               // Start transitionIn
               $q.when(options.onShow(options.scope, element, options, controller))
