@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-7429700
+ * v0.11.2-master-22f50de
  */
 goog.provide('ng.material.components.bottomSheet');
 goog.require('ng.material.components.backdrop');
@@ -93,9 +93,10 @@ MdBottomSheetDirective.$inject = ["$mdBottomSheet"];
  *   be used as names of values to inject into the controller. For example,
  *   `locals: {three: 3}` would inject `three` into the controller with the value
  *   of 3.
- *   - `targetEvent` - `{DOMClickEvent=}`: A click's event object. When passed in as an option,
- *   the location of the click will be used as the starting point for the opening animation
- *   of the the dialog.
+ *   - `clickOutsideToClose` - `{boolean=}`: Whether the user can click outside the bottom sheet to
+ *     close it. Default true.
+ *   - `escapeToClose` - `{boolean=}`: Whether the user can press escape to close the bottom sheet.
+ *     Default true.
  *   - `resolve` - `{object=}`: Similar to locals, except it takes promises as values
  *   and the bottom sheet will not open until the promises resolve.
  *   - `controllerAs` - `{string=}`: An alias to assign the controller to on the scope.
@@ -141,7 +142,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
   bottomSheetDefaults.$inject = ["$animate", "$mdConstant", "$mdUtil", "$mdTheming", "$mdBottomSheet", "$rootElement", "$mdGesture"];
   return $$interimElementProvider('$mdBottomSheet')
     .setDefaults({
-      methods: ['disableParentScroll', 'escapeToClose', 'targetEvent'],
+      methods: ['disableParentScroll', 'escapeToClose', 'clickOutsideToClose'],
       options: bottomSheetDefaults
     });
 
@@ -151,10 +152,10 @@ function MdBottomSheetProvider($$interimElementProvider) {
 
     return {
       themable: true,
-      targetEvent: null,
       onShow: onShow,
       onRemove: onRemove,
       escapeToClose: true,
+      clickOutsideToClose: true,
       disableParentScroll: true
     };
 
@@ -165,9 +166,13 @@ function MdBottomSheetProvider($$interimElementProvider) {
 
       // Add a backdrop that will close on click
       backdrop = $mdUtil.createBackdrop(scope, "md-bottom-sheet-backdrop md-opaque");
-      backdrop.on('click', function() {
-        $mdUtil.nextTick($mdBottomSheet.cancel,true);
-      });
+
+      if (options.clickOutsideToClose) {
+        backdrop.on('click', function() {
+          $mdUtil.nextTick($mdBottomSheet.cancel,true);
+        });
+      }
+
       $mdTheming.inherit(backdrop, options.parent);
 
       $animate.enter(backdrop, options.parent, null);
@@ -175,8 +180,6 @@ function MdBottomSheetProvider($$interimElementProvider) {
       var bottomSheet = new BottomSheet(element, options.parent);
       options.bottomSheet = bottomSheet;
 
-      // Give up focus on calling item
-      options.targetEvent && angular.element(options.targetEvent.target).blur();
       $mdTheming.inherit(bottomSheet.element, options.parent);
 
       if (options.disableParentScroll) {
@@ -216,9 +219,6 @@ function MdBottomSheetProvider($$interimElementProvider) {
         }
 
         bottomSheet.cleanup();
-
-        // Restore focus
-        options.targetEvent && angular.element(options.targetEvent.target).focus();
       });
     }
 
