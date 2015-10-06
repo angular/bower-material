@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-ed80df7
+ * v0.11.2-master-9ae9501
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -736,7 +736,7 @@ function GridTileDirective($mdMedia) {
     scope.$on('$destroy', function() {
       // Mark the tile as destroyed so it is no longer considered in layout,
       // even if the DOM element sticks around (like during a leave animation)
-      element.$$mdDestroyed = true;
+      element[0].$$mdDestroyed = true;
       unwatchAttrs();
       gridCtrl.invalidateLayout();
     });
