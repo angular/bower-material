@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-546eb84
+ * v0.11.2-master-bbbc475
  */
 html, body {
   height: 100%;
@@ -5689,6 +5689,7 @@ md-fab-speed-dial {
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
+  z-index: 20;
   /*
    * Handle the animations
    */ }
@@ -5716,6 +5717,12 @@ md-fab-speed-dial {
     bottom: auto;
     left: 20px;
     position: absolute; }
+  md-fab-speed-dial:not(.md-hover-full) {
+    pointer-events: none; }
+    md-fab-speed-dial:not(.md-hover-full) md-fab-trigger, md-fab-speed-dial:not(.md-hover-full) .md-fab-action-item {
+      pointer-events: auto; }
+    md-fab-speed-dial:not(.md-hover-full).md-is-open {
+      pointer-events: auto; }
   md-fab-speed-dial .md-css-variables {
     z-index: 20; }
   md-fab-speed-dial.md-is-open .md-fab-action-item {
