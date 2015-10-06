@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-39efc85
+ * v0.11.2-master-23e18e1
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -8711,16 +8711,16 @@ function MdDialogProvider($$interimElementProvider) {
           }
         };
 
-        // Add keyup listeners
-        element.on('keyup', keyHandlerFn);
-        target.on('keyup', keyHandlerFn);
+        // Add keydown listeners
+        element.on('keydown', keyHandlerFn);
+        target.on('keydown', keyHandlerFn);
         window.on('resize', onWindowResize);
 
         // Queue remove listeners function
         removeListeners.push(function() {
 
-          element.off('keyup', keyHandlerFn);
-          target.off('keyup', keyHandlerFn);
+          element.off('keydown', keyHandlerFn);
+          target.off('keydown', keyHandlerFn);
           window.off('resize', onWindowResize);
 
         });
