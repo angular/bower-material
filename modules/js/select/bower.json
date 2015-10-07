@@ -1,8 +1,8 @@
 {
   "name": "angular-material-select",
-  "version": "0.11.2-master-1146155",
+  "version": "0.11.2-master-88282d1",
   "dependencies": {
-    "angular-material-core": "0.11.2-master-1146155",
-    "angular-material-backdrop": "0.11.2-master-1146155"
+    "angular-material-core": "0.11.2-master-88282d1",
+    "angular-material-backdrop": "0.11.2-master-88282d1"
   }
 }

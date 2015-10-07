@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-1146155
+ * v0.11.2-master-88282d1
  */
 md-input-container {
   display: -webkit-flex;
@@ -102,6 +102,7 @@ md-input-container {
     line-height: 26px;
     -ms-flex-preferred-size: 26px;
     border-radius: 0;
+    border-style: solid;
     width: auto; }
     md-input-container .md-input:focus {
       outline: none; }
