@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-6eb5069
+ * v0.11.2-master-ea3ba08
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -21268,6 +21268,7 @@ function MenuItemDirective() {
  * @param {boolean=} disabled If present, disabled tab selection.
  * @param {expression=} md-on-deselect Expression to be evaluated after the tab has been de-selected.
  * @param {expression=} md-on-select Expression to be evaluated after the tab has been selected.
+ * @param {boolean=} md-active When true, sets the active tab.  Note: There can only be one active tab at a time.
  *
  *
  * @usage
