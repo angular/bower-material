@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-88282d1
+ * v0.11.2-master-3bc3668
  */
 md-tabs.md-THEME_NAME-theme md-tabs-wrapper {
   background-color: transparent;
@@ -14,9 +14,9 @@ md-tabs.md-THEME_NAME-theme md-ink-bar {
   background: '{{accent-color}}'; }
 md-tabs.md-THEME_NAME-theme .md-tab {
   color: '{{foreground-2}}'; }
-  md-tabs.md-THEME_NAME-theme .md-tab[disabled] {
+  md-tabs.md-THEME_NAME-theme .md-tab[disabled], md-tabs.md-THEME_NAME-theme .md-tab[disabled] md-icon {
     color: '{{foreground-3}}'; }
-  md-tabs.md-THEME_NAME-theme .md-tab.md-active, md-tabs.md-THEME_NAME-theme .md-tab.md-focused {
+  md-tabs.md-THEME_NAME-theme .md-tab.md-active, md-tabs.md-THEME_NAME-theme .md-tab.md-active md-icon, md-tabs.md-THEME_NAME-theme .md-tab.md-focused, md-tabs.md-THEME_NAME-theme .md-tab.md-focused md-icon {
     color: '{{primary-color}}'; }
   md-tabs.md-THEME_NAME-theme .md-tab.md-focused {
     background: '{{primary-color-0.1}}'; }
