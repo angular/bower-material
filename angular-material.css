@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-315ea48
+ * v0.11.2-master-8cc6b84
  */
 html, body {
   height: 100%;
@@ -8125,7 +8125,7 @@ md-toast {
   border-radius: 2px;
   font-size: 14px;
   cursor: default;
-  height: auto;
+  height: 0px;
   max-height: 168px;
   max-width: 100%;
   overflow: hidden;
