@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-2478f1d
+ * v0.11.2-master-1aa95f9
  */
 html, body {
   height: 100%;
@@ -439,6 +439,10 @@ select, button, textarea, input {
       -ms-flex-align: center;
           align-items: center;
   max-width: 100%; }
+
+.layout-align-center-center > *, .layout-align-start-center > *, .layout-align-end-center > *, .layout-align-space-between-center > *, .layout-align-space-around-center > * {
+  max-width: 100%;
+  box-sizing: border-box; }
 
 .layout-align-center-end, .layout-align-start-end, .layout-align-end-end, .layout-align-space-between-end, .layout-align-space-around-end {
   -webkit-align-items: flex-end;
@@ -1250,6 +1254,9 @@ select, button, textarea, input {
         -ms-flex-align: center;
             align-items: center;
     max-width: 100%; }
+  .layout-align-sm-center-center > *, .layout-align-sm-start-center > *, .layout-align-sm-end-center > *, .layout-align-sm-space-between-center > *, .layout-align-sm-space-around-center > * {
+    max-width: 100%;
+    box-sizing: border-box; }
   .layout-align-sm-center-end, .layout-align-sm-start-end, .layout-align-sm-end-end, .layout-align-sm-space-between-end, .layout-align-sm-space-around-end {
     -webkit-align-items: flex-end;
         -ms-flex-align: end;
@@ -1940,6 +1947,9 @@ select, button, textarea, input {
         -ms-flex-align: center;
             align-items: center;
     max-width: 100%; }
+  .layout-align-gt-sm-center-center > *, .layout-align-gt-sm-start-center > *, .layout-align-gt-sm-end-center > *, .layout-align-gt-sm-space-between-center > *, .layout-align-gt-sm-space-around-center > * {
+    max-width: 100%;
+    box-sizing: border-box; }
   .layout-align-gt-sm-center-end, .layout-align-gt-sm-start-end, .layout-align-gt-sm-end-end, .layout-align-gt-sm-space-between-end, .layout-align-gt-sm-space-around-end {
     -webkit-align-items: flex-end;
         -ms-flex-align: end;
@@ -2634,6 +2644,9 @@ select, button, textarea, input {
         -ms-flex-align: center;
             align-items: center;
     max-width: 100%; }
+  .layout-align-md-center-center > *, .layout-align-md-start-center > *, .layout-align-md-end-center > *, .layout-align-md-space-between-center > *, .layout-align-md-space-around-center > * {
+    max-width: 100%;
+    box-sizing: border-box; }
   .layout-align-md-center-end, .layout-align-md-start-end, .layout-align-md-end-end, .layout-align-md-space-between-end, .layout-align-md-space-around-end {
     -webkit-align-items: flex-end;
         -ms-flex-align: end;
@@ -3324,6 +3337,9 @@ select, button, textarea, input {
         -ms-flex-align: center;
             align-items: center;
     max-width: 100%; }
+  .layout-align-gt-md-center-center > *, .layout-align-gt-md-start-center > *, .layout-align-gt-md-end-center > *, .layout-align-gt-md-space-between-center > *, .layout-align-gt-md-space-around-center > * {
+    max-width: 100%;
+    box-sizing: border-box; }
   .layout-align-gt-md-center-end, .layout-align-gt-md-start-end, .layout-align-gt-md-end-end, .layout-align-gt-md-space-between-end, .layout-align-gt-md-space-around-end {
     -webkit-align-items: flex-end;
         -ms-flex-align: end;
@@ -4018,6 +4034,9 @@ select, button, textarea, input {
         -ms-flex-align: center;
             align-items: center;
     max-width: 100%; }
+  .layout-align-lg-center-center > *, .layout-align-lg-start-center > *, .layout-align-lg-end-center > *, .layout-align-lg-space-between-center > *, .layout-align-lg-space-around-center > * {
+    max-width: 100%;
+    box-sizing: border-box; }
   .layout-align-lg-center-end, .layout-align-lg-start-end, .layout-align-lg-end-end, .layout-align-lg-space-between-end, .layout-align-lg-space-around-end {
     -webkit-align-items: flex-end;
         -ms-flex-align: end;
@@ -4710,6 +4729,9 @@ select, button, textarea, input {
         -ms-flex-align: center;
             align-items: center;
     max-width: 100%; }
+  .layout-align-gt-lg-center-center > *, .layout-align-gt-lg-start-center > *, .layout-align-gt-lg-end-center > *, .layout-align-gt-lg-space-between-center > *, .layout-align-gt-lg-space-around-center > * {
+    max-width: 100%;
+    box-sizing: border-box; }
   .layout-align-gt-lg-center-end, .layout-align-gt-lg-start-end, .layout-align-gt-lg-end-end, .layout-align-gt-lg-space-between-end, .layout-align-gt-lg-space-around-end {
     -webkit-align-items: flex-end;
         -ms-flex-align: end;
