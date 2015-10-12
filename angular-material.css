@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-48f88e0
+ * v0.11.2-master-ad1b78b
  */
 html, body {
   height: 100%;
@@ -343,76 +343,76 @@ select, button, textarea, input {
       -ms-flex-order: 19;
           order: 19; }
 
-.offset-0 {
+.offset-0, .flex-offset-0 {
   margin-left: 0%; }
 
-.offset-5 {
+.offset-5, .flex-offset-5 {
   margin-left: 5%; }
 
-.offset-10 {
+.offset-10, .flex-offset-10 {
   margin-left: 10%; }
 
-.offset-15 {
+.offset-15, .flex-offset-15 {
   margin-left: 15%; }
 
-.offset-20 {
+.offset-20, .flex-offset-20 {
   margin-left: 20%; }
 
-.offset-25 {
+.offset-25, .flex-offset-25 {
   margin-left: 25%; }
 
-.offset-30 {
+.offset-30, .flex-offset-30 {
   margin-left: 30%; }
 
-.offset-35 {
+.offset-35, .flex-offset-35 {
   margin-left: 35%; }
 
-.offset-40 {
+.offset-40, .flex-offset-40 {
   margin-left: 40%; }
 
-.offset-45 {
+.offset-45, .flex-offset-45 {
   margin-left: 45%; }
 
-.offset-50 {
+.offset-50, .flex-offset-50 {
   margin-left: 50%; }
 
-.offset-55 {
+.offset-55, .flex-offset-55 {
   margin-left: 55%; }
 
-.offset-60 {
+.offset-60, .flex-offset-60 {
   margin-left: 60%; }
 
-.offset-65 {
+.offset-65, .flex-offset-65 {
   margin-left: 65%; }
 
-.offset-70 {
+.offset-70, .flex-offset-70 {
   margin-left: 70%; }
 
-.offset-75 {
+.offset-75, .flex-offset-75 {
   margin-left: 75%; }
 
-.offset-80 {
+.offset-80, .flex-offset-80 {
   margin-left: 80%; }
 
-.offset-85 {
+.offset-85, .flex-offset-85 {
   margin-left: 85%; }
 
-.offset-90 {
+.offset-90, .flex-offset-90 {
   margin-left: 90%; }
 
-.offset-95 {
+.offset-95, .flex-offset-95 {
   margin-left: 95%; }
 
-.offset-33 {
+.offset-33, .flex-offset-33 {
   margin-left: 33%; }
 
-.offset-34 {
+.offset-34, .flex-offset-34 {
   margin-left: 34%; }
 
-.offset-66 {
+.offset-66, .flex-offset-66 {
   margin-left: 66%; }
 
-.offset-67 {
+.offset-67, .flex-offset-67 {
   margin-left: 67%; }
 
 .layout-align-center, .layout-align-center-center, .layout-align-center-start, .layout-align-center-end {
@@ -1191,53 +1191,53 @@ select, button, textarea, input {
     -webkit-order: 19;
         -ms-flex-order: 19;
             order: 19; }
-  .offset-sm-0 {
+  .offset-sm-0, .flex-offset-sm-0 {
     margin-left: 0%; }
-  .offset-sm-5 {
+  .offset-sm-5, .flex-offset-sm-5 {
     margin-left: 5%; }
-  .offset-sm-10 {
+  .offset-sm-10, .flex-offset-sm-10 {
     margin-left: 10%; }
-  .offset-sm-15 {
+  .offset-sm-15, .flex-offset-sm-15 {
     margin-left: 15%; }
-  .offset-sm-20 {
+  .offset-sm-20, .flex-offset-sm-20 {
     margin-left: 20%; }
-  .offset-sm-25 {
+  .offset-sm-25, .flex-offset-sm-25 {
     margin-left: 25%; }
-  .offset-sm-30 {
+  .offset-sm-30, .flex-offset-sm-30 {
     margin-left: 30%; }
-  .offset-sm-35 {
+  .offset-sm-35, .flex-offset-sm-35 {
     margin-left: 35%; }
-  .offset-sm-40 {
+  .offset-sm-40, .flex-offset-sm-40 {
     margin-left: 40%; }
-  .offset-sm-45 {
+  .offset-sm-45, .flex-offset-sm-45 {
     margin-left: 45%; }
-  .offset-sm-50 {
+  .offset-sm-50, .flex-offset-sm-50 {
     margin-left: 50%; }
-  .offset-sm-55 {
+  .offset-sm-55, .flex-offset-sm-55 {
     margin-left: 55%; }
-  .offset-sm-60 {
+  .offset-sm-60, .flex-offset-sm-60 {
     margin-left: 60%; }
-  .offset-sm-65 {
+  .offset-sm-65, .flex-offset-sm-65 {
     margin-left: 65%; }
-  .offset-sm-70 {
+  .offset-sm-70, .flex-offset-sm-70 {
     margin-left: 70%; }
-  .offset-sm-75 {
+  .offset-sm-75, .flex-offset-sm-75 {
     margin-left: 75%; }
-  .offset-sm-80 {
+  .offset-sm-80, .flex-offset-sm-80 {
     margin-left: 80%; }
-  .offset-sm-85 {
+  .offset-sm-85, .flex-offset-sm-85 {
     margin-left: 85%; }
-  .offset-sm-90 {
+  .offset-sm-90, .flex-offset-sm-90 {
     margin-left: 90%; }
-  .offset-sm-95 {
+  .offset-sm-95, .flex-offset-sm-95 {
     margin-left: 95%; }
-  .offset-sm-33 {
+  .offset-sm-33, .flex-offset-sm-33 {
     margin-left: 33%; }
-  .offset-sm-34 {
+  .offset-sm-34, .flex-offset-sm-34 {
     margin-left: 34%; }
-  .offset-sm-66 {
+  .offset-sm-66, .flex-offset-sm-66 {
     margin-left: 66%; }
-  .offset-sm-67 {
+  .offset-sm-67, .flex-offset-sm-67 {
     margin-left: 67%; }
   .layout-align-sm-center, .layout-align-sm-center-center, .layout-align-sm-center-start, .layout-align-sm-center-end {
     -webkit-justify-content: center;
@@ -1888,53 +1888,53 @@ select, button, textarea, input {
     -webkit-order: 19;
         -ms-flex-order: 19;
             order: 19; }
-  .offset-gt-sm-0 {
+  .offset-gt-sm-0, .flex-offset-gt-sm-0 {
     margin-left: 0%; }
-  .offset-gt-sm-5 {
+  .offset-gt-sm-5, .flex-offset-gt-sm-5 {
     margin-left: 5%; }
-  .offset-gt-sm-10 {
+  .offset-gt-sm-10, .flex-offset-gt-sm-10 {
     margin-left: 10%; }
-  .offset-gt-sm-15 {
+  .offset-gt-sm-15, .flex-offset-gt-sm-15 {
     margin-left: 15%; }
-  .offset-gt-sm-20 {
+  .offset-gt-sm-20, .flex-offset-gt-sm-20 {
     margin-left: 20%; }
-  .offset-gt-sm-25 {
+  .offset-gt-sm-25, .flex-offset-gt-sm-25 {
     margin-left: 25%; }
-  .offset-gt-sm-30 {
+  .offset-gt-sm-30, .flex-offset-gt-sm-30 {
     margin-left: 30%; }
-  .offset-gt-sm-35 {
+  .offset-gt-sm-35, .flex-offset-gt-sm-35 {
     margin-left: 35%; }
-  .offset-gt-sm-40 {
+  .offset-gt-sm-40, .flex-offset-gt-sm-40 {
     margin-left: 40%; }
-  .offset-gt-sm-45 {
+  .offset-gt-sm-45, .flex-offset-gt-sm-45 {
     margin-left: 45%; }
-  .offset-gt-sm-50 {
+  .offset-gt-sm-50, .flex-offset-gt-sm-50 {
     margin-left: 50%; }
-  .offset-gt-sm-55 {
+  .offset-gt-sm-55, .flex-offset-gt-sm-55 {
     margin-left: 55%; }
-  .offset-gt-sm-60 {
+  .offset-gt-sm-60, .flex-offset-gt-sm-60 {
     margin-left: 60%; }
-  .offset-gt-sm-65 {
+  .offset-gt-sm-65, .flex-offset-gt-sm-65 {
     margin-left: 65%; }
-  .offset-gt-sm-70 {
+  .offset-gt-sm-70, .flex-offset-gt-sm-70 {
     margin-left: 70%; }
-  .offset-gt-sm-75 {
+  .offset-gt-sm-75, .flex-offset-gt-sm-75 {
     margin-left: 75%; }
-  .offset-gt-sm-80 {
+  .offset-gt-sm-80, .flex-offset-gt-sm-80 {
     margin-left: 80%; }
-  .offset-gt-sm-85 {
+  .offset-gt-sm-85, .flex-offset-gt-sm-85 {
     margin-left: 85%; }
-  .offset-gt-sm-90 {
+  .offset-gt-sm-90, .flex-offset-gt-sm-90 {
     margin-left: 90%; }
-  .offset-gt-sm-95 {
+  .offset-gt-sm-95, .flex-offset-gt-sm-95 {
     margin-left: 95%; }
-  .offset-gt-sm-33 {
+  .offset-gt-sm-33, .flex-offset-gt-sm-33 {
     margin-left: 33%; }
-  .offset-gt-sm-34 {
+  .offset-gt-sm-34, .flex-offset-gt-sm-34 {
     margin-left: 34%; }
-  .offset-gt-sm-66 {
+  .offset-gt-sm-66, .flex-offset-gt-sm-66 {
     margin-left: 66%; }
-  .offset-gt-sm-67 {
+  .offset-gt-sm-67, .flex-offset-gt-sm-67 {
     margin-left: 67%; }
   .layout-align-gt-sm-center, .layout-align-gt-sm-center-center, .layout-align-gt-sm-center-start, .layout-align-gt-sm-center-end {
     -webkit-justify-content: center;
@@ -2589,53 +2589,53 @@ select, button, textarea, input {
     -webkit-order: 19;
         -ms-flex-order: 19;
             order: 19; }
-  .offset-md-0 {
+  .offset-md-0, .flex-offset-md-0 {
     margin-left: 0%; }
-  .offset-md-5 {
+  .offset-md-5, .flex-offset-md-5 {
     margin-left: 5%; }
-  .offset-md-10 {
+  .offset-md-10, .flex-offset-md-10 {
     margin-left: 10%; }
-  .offset-md-15 {
+  .offset-md-15, .flex-offset-md-15 {
     margin-left: 15%; }
-  .offset-md-20 {
+  .offset-md-20, .flex-offset-md-20 {
     margin-left: 20%; }
-  .offset-md-25 {
+  .offset-md-25, .flex-offset-md-25 {
     margin-left: 25%; }
-  .offset-md-30 {
+  .offset-md-30, .flex-offset-md-30 {
     margin-left: 30%; }
-  .offset-md-35 {
+  .offset-md-35, .flex-offset-md-35 {
     margin-left: 35%; }
-  .offset-md-40 {
+  .offset-md-40, .flex-offset-md-40 {
     margin-left: 40%; }
-  .offset-md-45 {
+  .offset-md-45, .flex-offset-md-45 {
     margin-left: 45%; }
-  .offset-md-50 {
+  .offset-md-50, .flex-offset-md-50 {
     margin-left: 50%; }
-  .offset-md-55 {
+  .offset-md-55, .flex-offset-md-55 {
     margin-left: 55%; }
-  .offset-md-60 {
+  .offset-md-60, .flex-offset-md-60 {
     margin-left: 60%; }
-  .offset-md-65 {
+  .offset-md-65, .flex-offset-md-65 {
     margin-left: 65%; }
-  .offset-md-70 {
+  .offset-md-70, .flex-offset-md-70 {
     margin-left: 70%; }
-  .offset-md-75 {
+  .offset-md-75, .flex-offset-md-75 {
     margin-left: 75%; }
-  .offset-md-80 {
+  .offset-md-80, .flex-offset-md-80 {
     margin-left: 80%; }
-  .offset-md-85 {
+  .offset-md-85, .flex-offset-md-85 {
     margin-left: 85%; }
-  .offset-md-90 {
+  .offset-md-90, .flex-offset-md-90 {
     margin-left: 90%; }
-  .offset-md-95 {
+  .offset-md-95, .flex-offset-md-95 {
     margin-left: 95%; }
-  .offset-md-33 {
+  .offset-md-33, .flex-offset-md-33 {
     margin-left: 33%; }
-  .offset-md-34 {
+  .offset-md-34, .flex-offset-md-34 {
     margin-left: 34%; }
-  .offset-md-66 {
+  .offset-md-66, .flex-offset-md-66 {
     margin-left: 66%; }
-  .offset-md-67 {
+  .offset-md-67, .flex-offset-md-67 {
     margin-left: 67%; }
   .layout-align-md-center, .layout-align-md-center-center, .layout-align-md-center-start, .layout-align-md-center-end {
     -webkit-justify-content: center;
@@ -3286,53 +3286,53 @@ select, button, textarea, input {
     -webkit-order: 19;
         -ms-flex-order: 19;
             order: 19; }
-  .offset-gt-md-0 {
+  .offset-gt-md-0, .flex-offset-gt-md-0 {
     margin-left: 0%; }
-  .offset-gt-md-5 {
+  .offset-gt-md-5, .flex-offset-gt-md-5 {
     margin-left: 5%; }
-  .offset-gt-md-10 {
+  .offset-gt-md-10, .flex-offset-gt-md-10 {
     margin-left: 10%; }
-  .offset-gt-md-15 {
+  .offset-gt-md-15, .flex-offset-gt-md-15 {
     margin-left: 15%; }
-  .offset-gt-md-20 {
+  .offset-gt-md-20, .flex-offset-gt-md-20 {
     margin-left: 20%; }
-  .offset-gt-md-25 {
+  .offset-gt-md-25, .flex-offset-gt-md-25 {
     margin-left: 25%; }
-  .offset-gt-md-30 {
+  .offset-gt-md-30, .flex-offset-gt-md-30 {
     margin-left: 30%; }
-  .offset-gt-md-35 {
+  .offset-gt-md-35, .flex-offset-gt-md-35 {
     margin-left: 35%; }
-  .offset-gt-md-40 {
+  .offset-gt-md-40, .flex-offset-gt-md-40 {
     margin-left: 40%; }
-  .offset-gt-md-45 {
+  .offset-gt-md-45, .flex-offset-gt-md-45 {
     margin-left: 45%; }
-  .offset-gt-md-50 {
+  .offset-gt-md-50, .flex-offset-gt-md-50 {
     margin-left: 50%; }
-  .offset-gt-md-55 {
+  .offset-gt-md-55, .flex-offset-gt-md-55 {
     margin-left: 55%; }
-  .offset-gt-md-60 {
+  .offset-gt-md-60, .flex-offset-gt-md-60 {
     margin-left: 60%; }
-  .offset-gt-md-65 {
+  .offset-gt-md-65, .flex-offset-gt-md-65 {
     margin-left: 65%; }
-  .offset-gt-md-70 {
+  .offset-gt-md-70, .flex-offset-gt-md-70 {
     margin-left: 70%; }
-  .offset-gt-md-75 {
+  .offset-gt-md-75, .flex-offset-gt-md-75 {
     margin-left: 75%; }
-  .offset-gt-md-80 {
+  .offset-gt-md-80, .flex-offset-gt-md-80 {
     margin-left: 80%; }
-  .offset-gt-md-85 {
+  .offset-gt-md-85, .flex-offset-gt-md-85 {
     margin-left: 85%; }
-  .offset-gt-md-90 {
+  .offset-gt-md-90, .flex-offset-gt-md-90 {
     margin-left: 90%; }
-  .offset-gt-md-95 {
+  .offset-gt-md-95, .flex-offset-gt-md-95 {
     margin-left: 95%; }
-  .offset-gt-md-33 {
+  .offset-gt-md-33, .flex-offset-gt-md-33 {
     margin-left: 33%; }
-  .offset-gt-md-34 {
+  .offset-gt-md-34, .flex-offset-gt-md-34 {
     margin-left: 34%; }
-  .offset-gt-md-66 {
+  .offset-gt-md-66, .flex-offset-gt-md-66 {
     margin-left: 66%; }
-  .offset-gt-md-67 {
+  .offset-gt-md-67, .flex-offset-gt-md-67 {
     margin-left: 67%; }
   .layout-align-gt-md-center, .layout-align-gt-md-center-center, .layout-align-gt-md-center-start, .layout-align-gt-md-center-end {
     -webkit-justify-content: center;
@@ -3987,53 +3987,53 @@ select, button, textarea, input {
     -webkit-order: 19;
         -ms-flex-order: 19;
             order: 19; }
-  .offset-lg-0 {
+  .offset-lg-0, .flex-offset-lg-0 {
     margin-left: 0%; }
-  .offset-lg-5 {
+  .offset-lg-5, .flex-offset-lg-5 {
     margin-left: 5%; }
-  .offset-lg-10 {
+  .offset-lg-10, .flex-offset-lg-10 {
     margin-left: 10%; }
-  .offset-lg-15 {
+  .offset-lg-15, .flex-offset-lg-15 {
     margin-left: 15%; }
-  .offset-lg-20 {
+  .offset-lg-20, .flex-offset-lg-20 {
     margin-left: 20%; }
-  .offset-lg-25 {
+  .offset-lg-25, .flex-offset-lg-25 {
     margin-left: 25%; }
-  .offset-lg-30 {
+  .offset-lg-30, .flex-offset-lg-30 {
     margin-left: 30%; }
-  .offset-lg-35 {
+  .offset-lg-35, .flex-offset-lg-35 {
     margin-left: 35%; }
-  .offset-lg-40 {
+  .offset-lg-40, .flex-offset-lg-40 {
     margin-left: 40%; }
-  .offset-lg-45 {
+  .offset-lg-45, .flex-offset-lg-45 {
     margin-left: 45%; }
-  .offset-lg-50 {
+  .offset-lg-50, .flex-offset-lg-50 {
     margin-left: 50%; }
-  .offset-lg-55 {
+  .offset-lg-55, .flex-offset-lg-55 {
     margin-left: 55%; }
-  .offset-lg-60 {
+  .offset-lg-60, .flex-offset-lg-60 {
     margin-left: 60%; }
-  .offset-lg-65 {
+  .offset-lg-65, .flex-offset-lg-65 {
     margin-left: 65%; }
-  .offset-lg-70 {
+  .offset-lg-70, .flex-offset-lg-70 {
     margin-left: 70%; }
-  .offset-lg-75 {
+  .offset-lg-75, .flex-offset-lg-75 {
     margin-left: 75%; }
-  .offset-lg-80 {
+  .offset-lg-80, .flex-offset-lg-80 {
     margin-left: 80%; }
-  .offset-lg-85 {
+  .offset-lg-85, .flex-offset-lg-85 {
     margin-left: 85%; }
-  .offset-lg-90 {
+  .offset-lg-90, .flex-offset-lg-90 {
     margin-left: 90%; }
-  .offset-lg-95 {
+  .offset-lg-95, .flex-offset-lg-95 {
     margin-left: 95%; }
-  .offset-lg-33 {
+  .offset-lg-33, .flex-offset-lg-33 {
     margin-left: 33%; }
-  .offset-lg-34 {
+  .offset-lg-34, .flex-offset-lg-34 {
     margin-left: 34%; }
-  .offset-lg-66 {
+  .offset-lg-66, .flex-offset-lg-66 {
     margin-left: 66%; }
-  .offset-lg-67 {
+  .offset-lg-67, .flex-offset-lg-67 {
     margin-left: 67%; }
   .layout-align-lg-center, .layout-align-lg-center-center, .layout-align-lg-center-start, .layout-align-lg-center-end {
     -webkit-justify-content: center;
@@ -4686,53 +4686,53 @@ select, button, textarea, input {
     -webkit-order: 19;
         -ms-flex-order: 19;
             order: 19; }
-  .offset-gt-lg-0 {
+  .offset-gt-lg-0, .flex-offset-gt-lg-0 {
     margin-left: 0%; }
-  .offset-gt-lg-5 {
+  .offset-gt-lg-5, .flex-offset-gt-lg-5 {
     margin-left: 5%; }
-  .offset-gt-lg-10 {
+  .offset-gt-lg-10, .flex-offset-gt-lg-10 {
     margin-left: 10%; }
-  .offset-gt-lg-15 {
+  .offset-gt-lg-15, .flex-offset-gt-lg-15 {
     margin-left: 15%; }
-  .offset-gt-lg-20 {
+  .offset-gt-lg-20, .flex-offset-gt-lg-20 {
     margin-left: 20%; }
-  .offset-gt-lg-25 {
+  .offset-gt-lg-25, .flex-offset-gt-lg-25 {
     margin-left: 25%; }
-  .offset-gt-lg-30 {
+  .offset-gt-lg-30, .flex-offset-gt-lg-30 {
     margin-left: 30%; }
-  .offset-gt-lg-35 {
+  .offset-gt-lg-35, .flex-offset-gt-lg-35 {
     margin-left: 35%; }
-  .offset-gt-lg-40 {
+  .offset-gt-lg-40, .flex-offset-gt-lg-40 {
     margin-left: 40%; }
-  .offset-gt-lg-45 {
+  .offset-gt-lg-45, .flex-offset-gt-lg-45 {
     margin-left: 45%; }
-  .offset-gt-lg-50 {
+  .offset-gt-lg-50, .flex-offset-gt-lg-50 {
     margin-left: 50%; }
-  .offset-gt-lg-55 {
+  .offset-gt-lg-55, .flex-offset-gt-lg-55 {
     margin-left: 55%; }
-  .offset-gt-lg-60 {
+  .offset-gt-lg-60, .flex-offset-gt-lg-60 {
     margin-left: 60%; }
-  .offset-gt-lg-65 {
+  .offset-gt-lg-65, .flex-offset-gt-lg-65 {
     margin-left: 65%; }
-  .offset-gt-lg-70 {
+  .offset-gt-lg-70, .flex-offset-gt-lg-70 {
     margin-left: 70%; }
-  .offset-gt-lg-75 {
+  .offset-gt-lg-75, .flex-offset-gt-lg-75 {
     margin-left: 75%; }
-  .offset-gt-lg-80 {
+  .offset-gt-lg-80, .flex-offset-gt-lg-80 {
     margin-left: 80%; }
-  .offset-gt-lg-85 {
+  .offset-gt-lg-85, .flex-offset-gt-lg-85 {
     margin-left: 85%; }
-  .offset-gt-lg-90 {
+  .offset-gt-lg-90, .flex-offset-gt-lg-90 {
     margin-left: 90%; }
-  .offset-gt-lg-95 {
+  .offset-gt-lg-95, .flex-offset-gt-lg-95 {
     margin-left: 95%; }
-  .offset-gt-lg-33 {
+  .offset-gt-lg-33, .flex-offset-gt-lg-33 {
     margin-left: 33%; }
-  .offset-gt-lg-34 {
+  .offset-gt-lg-34, .flex-offset-gt-lg-34 {
     margin-left: 34%; }
-  .offset-gt-lg-66 {
+  .offset-gt-lg-66, .flex-offset-gt-lg-66 {
     margin-left: 66%; }
-  .offset-gt-lg-67 {
+  .offset-gt-lg-67, .flex-offset-gt-lg-67 {
     margin-left: 67%; }
   .layout-align-gt-lg-center, .layout-align-gt-lg-center-center, .layout-align-gt-lg-center-start, .layout-align-gt-lg-center-end {
     -webkit-justify-content: center;
