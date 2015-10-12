@@ -547,15 +547,8 @@ input {
 
 
 @mixin flex-order-for-name($sizes:null) {
-
-
   @if $sizes == null {
     $sizes : '';
-
-    //  .flex-order {
-    //    order: 0;
-    //  }
-    //
 
     .flex-order {
      order : 0;
@@ -570,39 +563,15 @@ input {
       @if $s != '' { $suffix : '#{$s}-#{$i}'; }
       @else        { $suffix : '#{$i}';       }
 
-      $order : $order + '.flex-order-#{$suffix}';
+      $order : '.flex-order-#{$suffix}';
     }
 
-    //   .flex-order-0, [order="0"] {
-    //   order: 0;
-    //   }
-    //
-    //   .flex-order-1, [order="1"] {
-    //     order: 1;
-    //   }
-    //
-    //  .flex-order-sm-0, [order-sm="0"] {
-    //    order: 0;
-    //  }
-    //
-    //  .flex-order-sm-1, [order-sm="1"] {
-    //    order: 1;
-    //  }
-    //
     #{$order} {
       order: #{$i};
     }
   }
 }
 @mixin offset-for-name($sizes:null) {
-
-  //  .offset-sm-0, [offset-sm="0"] {
-  //    margin-left: 0%;
-  //  }
-  //
-  //  .offset-sm-5, [offset-sm="5"] {
-  //    margin-left: 5%;
-  //  }
   @if $sizes == null { $sizes : ''; }
 
   @for $i from 0 through 19 {
@@ -613,7 +582,7 @@ input {
       @if $s != '' { $suffix : '#{$s}-#{$i * 5}'; }
       @else        { $suffix : '#{$i * 5}';       }
 
-      $offsets : $offsets + '.offset-#{$suffix}';
+      $offsets : '.offset-#{$suffix}';
     }
 
     #{$offsets} {
@@ -621,47 +590,39 @@ input {
     }
   }
 
-  $offsets : '';
   @each $i in 33, 34 {
+    $offsets : '';
     $suffix : '';
 
     @each $s in $sizes {
       @if $s != '' {  $suffix : '#{$s}-#{$i}';   }
       @else        {  $suffix : '#{$i}';         }
 
-      $offsets : $offsets + '.offset-#{$suffix}';
+      $offsets : '.offset-#{$suffix} ';
+    }
+
+    #{$offsets} {
+      margin-left: #{$i+'%'};
     }
   }
 
-  //  .offset-sm-33, [offset-sm="33"], .offset-sm-34, [offset-sm="34"] {
-  //    margin-left: 33%;
-  //  }
-  //
-  #{$offsets} {
-    margin-left: 33%;
-  }
-
-  $offsets : '';
   @each $i in 66, 67 {
+    $offsets : '';
     $suffix : '';
 
     @each $s in $sizes {
       @if $s != '' {  $suffix : '#{$s}-#{$i}';   }
       @else        {  $suffix : '#{$i}';         }
 
-      $offsets : $offsets + '.offset-#{$suffix}';
+      $offsets : '.offset-#{$suffix} ';
+    }
+
+    #{$offsets} {
+      margin-left: #{$i+'%'};
     }
   }
-
-  //  .offset-sm-66, [offset-sm="66"], .offset-sm-67, [offset-sm="67"] {
-  //    margin-left: 67%;
-  //  }
-  //
-  #{$offsets} {
-    margin-left: 67%;
-  }
-
 }
+
 @mixin layout-for-name($name: null) {
   @if $name == null { $name : '';          }
   @if $name != ''   { $name : '-#{$name}'; }
@@ -677,6 +638,7 @@ input {
   .layout#{$name}-column {  flex-direction: column;  }
   .layout#{$name}-row    {  flex-direction: row;     }
 }
+
 @mixin flex-properties-for-name($name: null) {
   $flexName: 'flex';
   @if $name != null {
@@ -732,8 +694,8 @@ input {
     > .#{$flexName}-66   , > .#{$flexName}-66     {  flex: 0 0 66%;  max-width: 100%;  max-height: 66%; box-sizing: border-box; }
     > .#{$flexName}-67   , > .#{$flexName}-67     {  flex: 0 0 67%;  max-width: 100%;  max-height: 67%; box-sizing: border-box; }
   }
-
 }
+
 @mixin layout-align-for-name($suffix: null) {
 
   // Alignment attributes for layout containers' children
@@ -831,6 +793,7 @@ input {
     align-items: flex-end;
   }
 }
+
 @mixin layout-padding-margin() {
 
   .layout-padding > .flex-sm,   .layout-padding > .flex-lt-md {

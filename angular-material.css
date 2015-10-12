@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-53f2588
+ * v0.11.2-master-202bb0d
  */
 html, body {
   height: 100%;
@@ -403,10 +403,16 @@ select, button, textarea, input {
 .offset-95 {
   margin-left: 95%; }
 
-.offset-33.offset-34 {
+.offset-33 {
   margin-left: 33%; }
 
-.offset-66.offset-67 {
+.offset-34 {
+  margin-left: 34%; }
+
+.offset-66 {
+  margin-left: 66%; }
+
+.offset-67 {
   margin-left: 67%; }
 
 .layout-align-center, .layout-align-center-center, .layout-align-center-start, .layout-align-center-end {
@@ -1225,9 +1231,13 @@ select, button, textarea, input {
     margin-left: 90%; }
   .offset-sm-95 {
     margin-left: 95%; }
-  .offset-sm-33.offset-sm-34 {
+  .offset-sm-33 {
     margin-left: 33%; }
-  .offset-sm-66.offset-sm-67 {
+  .offset-sm-34 {
+    margin-left: 34%; }
+  .offset-sm-66 {
+    margin-left: 66%; }
+  .offset-sm-67 {
     margin-left: 67%; }
   .layout-align-sm-center, .layout-align-sm-center-center, .layout-align-sm-center-start, .layout-align-sm-center-end {
     -webkit-justify-content: center;
@@ -1918,9 +1928,13 @@ select, button, textarea, input {
     margin-left: 90%; }
   .offset-gt-sm-95 {
     margin-left: 95%; }
-  .offset-gt-sm-33.offset-gt-sm-34 {
+  .offset-gt-sm-33 {
     margin-left: 33%; }
-  .offset-gt-sm-66.offset-gt-sm-67 {
+  .offset-gt-sm-34 {
+    margin-left: 34%; }
+  .offset-gt-sm-66 {
+    margin-left: 66%; }
+  .offset-gt-sm-67 {
     margin-left: 67%; }
   .layout-align-gt-sm-center, .layout-align-gt-sm-center-center, .layout-align-gt-sm-center-start, .layout-align-gt-sm-center-end {
     -webkit-justify-content: center;
@@ -2615,9 +2629,13 @@ select, button, textarea, input {
     margin-left: 90%; }
   .offset-md-95 {
     margin-left: 95%; }
-  .offset-md-33.offset-md-34 {
+  .offset-md-33 {
     margin-left: 33%; }
-  .offset-md-66.offset-md-67 {
+  .offset-md-34 {
+    margin-left: 34%; }
+  .offset-md-66 {
+    margin-left: 66%; }
+  .offset-md-67 {
     margin-left: 67%; }
   .layout-align-md-center, .layout-align-md-center-center, .layout-align-md-center-start, .layout-align-md-center-end {
     -webkit-justify-content: center;
@@ -3308,9 +3326,13 @@ select, button, textarea, input {
     margin-left: 90%; }
   .offset-gt-md-95 {
     margin-left: 95%; }
-  .offset-gt-md-33.offset-gt-md-34 {
+  .offset-gt-md-33 {
     margin-left: 33%; }
-  .offset-gt-md-66.offset-gt-md-67 {
+  .offset-gt-md-34 {
+    margin-left: 34%; }
+  .offset-gt-md-66 {
+    margin-left: 66%; }
+  .offset-gt-md-67 {
     margin-left: 67%; }
   .layout-align-gt-md-center, .layout-align-gt-md-center-center, .layout-align-gt-md-center-start, .layout-align-gt-md-center-end {
     -webkit-justify-content: center;
@@ -4005,9 +4027,13 @@ select, button, textarea, input {
     margin-left: 90%; }
   .offset-lg-95 {
     margin-left: 95%; }
-  .offset-lg-33.offset-lg-34 {
+  .offset-lg-33 {
     margin-left: 33%; }
-  .offset-lg-66.offset-lg-67 {
+  .offset-lg-34 {
+    margin-left: 34%; }
+  .offset-lg-66 {
+    margin-left: 66%; }
+  .offset-lg-67 {
     margin-left: 67%; }
   .layout-align-lg-center, .layout-align-lg-center-center, .layout-align-lg-center-start, .layout-align-lg-center-end {
     -webkit-justify-content: center;
@@ -4700,9 +4726,13 @@ select, button, textarea, input {
     margin-left: 90%; }
   .offset-gt-lg-95 {
     margin-left: 95%; }
-  .offset-gt-lg-33.offset-gt-lg-34 {
+  .offset-gt-lg-33 {
     margin-left: 33%; }
-  .offset-gt-lg-66.offset-gt-lg-67 {
+  .offset-gt-lg-34 {
+    margin-left: 34%; }
+  .offset-gt-lg-66 {
+    margin-left: 66%; }
+  .offset-gt-lg-67 {
     margin-left: 67%; }
   .layout-align-gt-lg-center, .layout-align-gt-lg-center-center, .layout-align-gt-lg-center-start, .layout-align-gt-lg-center-end {
     -webkit-justify-content: center;
