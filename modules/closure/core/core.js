@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-ad1b78b
+ * v0.11.2-master-af45a22
  */
 goog.provide('ng.material.core');
 
@@ -2832,13 +2832,6 @@ function InterimElementProvider() {
     .directive('flexOrderLg', attributeWithObserve('flex-order-lg'))
     .directive('flexOrderGtLg', attributeWithObserve('flex-order-gt-lg'))
 
-    .directive('offset', attributeWithObserve('flex-offset'))
-    .directive('offsetSm', attributeWithObserve('flex-offset-sm'))
-    .directive('offsetGtSm', attributeWithObserve('flex-offset-gt-sm'))
-    .directive('offsetMd', attributeWithObserve('flex-offset-md'))
-    .directive('offsetGtMd', attributeWithObserve('flex-offset-gt-md'))
-    .directive('offsetLg', attributeWithObserve('flex-offset-lg'))
-    .directive('offsetGtLg', attributeWithObserve('flex-offset-gt-lg'))
     .directive('flexOffset', attributeWithObserve('flex-offset'))
     .directive('flexOffsetSm', attributeWithObserve('flex-offset-sm'))
     .directive('flexOffsetGtSm', attributeWithObserve('flex-offset-gt-sm'))
