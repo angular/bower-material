@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.3-master-f9d5cf8
+ * v0.11.3-master-88d2a09
  */
 goog.provide('ng.material.components.fabTrigger');
 goog.require('ng.material.core');
