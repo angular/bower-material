@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.3-master-233e3bb
+ * v0.11.3-master-f9d5cf8
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -4566,7 +4566,7 @@ function parseRules(theme, colorType, rules) {
     // Don't apply a selector rule to the default theme, making it easier to override
     // styles of the base-component
     if (theme.name == 'default') {
-      newRule = newRule.replace(/((\w|-)+)\.md-default-theme((\.|\w|-|:|\(|\)|\[|\]|"|'|=)*)/g, '$&, $1$3');
+      newRule = newRule.replace(/((\w|\.|-)+)\.md-default-theme((\.|\w|-|:|\(|\)|\[|\]|"|'|=)*)/g, '$&, $1$3');
     }
     generatedRules.push(newRule);
   });
