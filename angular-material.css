@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.3-master-f54275a
+ * v0.11.3-master-9b918cb
  */
 html, body {
   height: 100%;
@@ -7075,9 +7075,9 @@ md-list-item.md-proxy-focus.md-focused .md-no-style {
 md-list-item.md-no-proxy, md-list-item .md-no-style {
   position: relative;
   padding: 0px 16px;
-  -webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1; }
+  -webkit-flex: 1 1 auto;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto; }
   md-list-item.md-no-proxy.md-button, md-list-item .md-no-style.md-button {
     font-size: inherit;
     height: inherit;
