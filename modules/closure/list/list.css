@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.3-master-5da3c45
+ * v0.11.3-master-c04ec2d
  */
 md-list {
   display: block;
@@ -60,7 +60,8 @@ md-list-item, md-list-item .md-list-item-inner {
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-  min-height: 48px; }
+  min-height: 48px;
+  height: auto; }
   md-list-item > div.md-primary > md-icon:not(.md-avatar-icon), md-list-item > div.md-secondary > md-icon:not(.md-avatar-icon), md-list-item > md-icon:first-child:not(.md-avatar-icon), md-list-item > md-icon.md-secondary:not(.md-avatar-icon), md-list-item .md-list-item-inner > div.md-primary > md-icon:not(.md-avatar-icon), md-list-item .md-list-item-inner > div.md-secondary > md-icon:not(.md-avatar-icon), md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon), md-list-item .md-list-item-inner > md-icon.md-secondary:not(.md-avatar-icon) {
     width: 24px;
     margin-top: 16px;
@@ -160,7 +161,10 @@ md-list-item.md-2-line, md-list-item.md-2-line > .md-no-style, md-list-item.md-3
       line-height: 1.6em; }
 
 md-list-item.md-2-line, md-list-item.md-2-line > .md-no-style {
-  height: 72px; }
+  height: auto;
+  min-height: 72px; }
+  md-list-item.md-2-line.md-long-text, md-list-item.md-2-line > .md-no-style.md-long-text {
+    margin: 1.6em; }
   md-list-item.md-2-line > .md-avatar, md-list-item.md-2-line .md-avatar-icon, md-list-item.md-2-line > .md-no-style > .md-avatar, md-list-item.md-2-line > .md-no-style .md-avatar-icon {
     margin-top: 12px; }
   md-list-item.md-2-line > md-icon:first-child, md-list-item.md-2-line > .md-no-style > md-icon:first-child {
@@ -173,6 +177,9 @@ md-list-item.md-2-line, md-list-item.md-2-line > .md-no-style {
             flex: 1; }
 
 md-list-item.md-3-line, md-list-item.md-3-line > .md-no-style {
-  height: 88px; }
+  height: auto;
+  min-height: 88px; }
+  md-list-item.md-3-line.md-long-text, md-list-item.md-3-line > .md-no-style.md-long-text {
+    margin: 1.6em; }
   md-list-item.md-3-line > md-icon:first-child, md-list-item.md-3-line > .md-avatar, md-list-item.md-3-line > .md-no-style > md-icon:first-child, md-list-item.md-3-line > .md-no-style > .md-avatar {
     margin-top: 16px; }
