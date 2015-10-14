@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.4-master-da35154
+ * v0.11.4-master-2017127
  */
 goog.provide('ng.material.components.tooltip');
 goog.require('ng.material.core');
@@ -126,7 +126,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
      function getNearestContentElement () {
        var current = element.parent()[0];
        // Look for the nearest parent md-content, stopping at the rootElement.
-       while (current && current !== $rootElement[0] && current !== document.body) {
+       while (current && current !== $rootElement[0] && current !== document.body && current.nodeName !== 'MD-CONTENT') {
          current = current.parentNode;
        }
        return current;
