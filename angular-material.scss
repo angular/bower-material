@@ -1666,8 +1666,10 @@ md-card {
   }
 
   md-card-content {
+    display: block;
     padding: $card-padding;
   }
+
   .md-actions {
     margin: 0;
 
