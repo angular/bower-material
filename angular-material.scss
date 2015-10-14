@@ -3291,6 +3291,9 @@ md-list {
 }
 
 md-list-item {
+  // Ensure nested dividers are properly positioned
+  position: relative;
+
   &.md-proxy-focus.md-focused .md-no-style {
     transition: background-color 0.15s linear;
   }
