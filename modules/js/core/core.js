@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.4-master-7251684
+ * v0.11.4-master-87d6230
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1373,7 +1373,7 @@ function mdCompilerService($q, $http, $injector, $compile, $controller, $templat
     return $q.all(resolve).then(function(locals) {
 
       var compiledData;
-      var template = transformTemplate(locals.$template);
+      var template = transformTemplate(locals.$template, options);
       var element = options.element || angular.element('<div>').html(template.trim()).contents();
       var linkFn = $compile(element);
 

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.4-master-7251684
+ * v0.11.4-master-87d6230
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1405,7 +1405,7 @@ function mdCompilerService($q, $http, $injector, $compile, $controller, $templat
     return $q.all(resolve).then(function(locals) {
 
       var compiledData;
-      var template = transformTemplate(locals.$template);
+      var template = transformTemplate(locals.$template, options);
       var element = options.element || angular.element('<div>').html(template.trim()).contents();
       var linkFn = $compile(element);
 
@@ -8588,6 +8588,9 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
  *   - `templateUrl` - `{string=}`: The url of a template that will be used as the content
  *   of the dialog.
  *   - `template` - `{string=}`: Same as templateUrl, except this is an actual template string.
+ *   - `autoWrap` - `{boolean=}`: Whether or not to automatically wrap the template with a
+ *     `<md-dialog>` tag if one is not provided. Defaults to true. Can be disabled if you provide a
+ *     custom dialog directive.
  *   - `targetEvent` - `{DOMClickEvent=}`: A click's event object. When passed in as an option,
  *     the location of the click will be used as the starting point for the opening animation
  *     of the the dialog.
@@ -8629,7 +8632,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
  *     starting.
  *   - `onComplete` `{function=}`: Callback function used to announce when the show() action is
  *     finished.
- *   - `onRemoving` `{function=} Callback function used to announce the close/hide() action is
+ *   - `onRemoving` `{function=}`: Callback function used to announce the close/hide() action is
  *     starting. This allows developers to run custom animations in parallel the close animations.
  *
  * @returns {promise} A promise that can be resolved with `$mdDialog.hide()` or
@@ -8726,15 +8729,19 @@ function MdDialogProvider($$interimElementProvider) {
       openFrom: null,
       focusOnOpen: true,
       disableParentScroll: true,
-      transformTemplate: function(template) {
+      autoWrap: true,
+      transformTemplate: function(template, options) {
         return '<div class="md-dialog-container">' + validatedTemplate(template) + '</div>';
 
         /**
          * The specified template should contain a <md-dialog> wrapper element....
          */
         function validatedTemplate(template) {
-          template || ""
-          return /<\/md-dialog>/g.test(template) ? template : "<md-dialog>" + template + "</md-dialog>";
+          if (options.autoWrap && !/<\/md-dialog>/g.test(template)) {
+            return '<md-dialog>' + (template || '') + '</md-dialog>';
+          } else {
+            return template || '';
+          }
         }
       }
     };
@@ -22670,4 +22677,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "0.11.4-master-7251684"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "0.11.4-master-87d6230"}};
