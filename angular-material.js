@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.12.0-rc1-master-7f82fe4
+ * v0.12.0-rc1-master-9025f4d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3147,8 +3147,10 @@ function InterimElementProvider() {
     return function updateClassFn(newValue) {
       var value = validateAttributeValue(className, newValue || "");
       if ( angular.isDefined(value) ) {
-        element.removeClass(lastClass);
-        lastClass = !value ? className : className + "-" + value.replace(WHITESPACE, "-")
+        if (lastClass) { 
+          element.removeClass(lastClass);
+        }
+        lastClass = !value ? className : className + "-" + value.replace(WHITESPACE, "-");
         element.addClass(lastClass);
       }
     };
@@ -22677,4 +22679,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "0.12.0-rc1-master-7f82fe4"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "0.12.0-rc1-master-9025f4d"}};
