@@ -1174,65 +1174,6 @@ md-autocomplete {
   }
 }
 
-// !!Important - Theme-based Background-color can be configured in backdrop-theme.scss
-//             - Animate background-color opacityy only for `.md-opaque` styles
-
-md-backdrop {
-  transition: opacity 450ms;
-
-  position: absolute;
-  top:0;
-  bottom:0;
-  left: 0;
-  right: 0;
-
-  z-index: $z-index-backdrop;
-
-  &.md-menu-backdrop {
-    position: fixed !important;
-    z-index: $z-index-menu - 1;
-  }
-  &.md-select-backdrop {
-    z-index: $z-index-dialog + 1;
-    transition-duration: 0;
-  }
-  &.md-dialog-backdrop {
-    z-index: $z-index-dialog - 1;
-  }
-  &.md-bottom-sheet-backdrop {
-    z-index: $z-index-bottom-sheet - 1;
-  }
-  &.md-sidenav-backdrop {
-    z-index: $z-index-sidenav - 1;
-  }
-
-
-  &.md-click-catcher {
-    position: absolute;
-  }
-
-  &.md-opaque {
-
-    opacity: .48;
-
-    &.ng-enter {
-      opacity: 0;
-    }
-    &.ng-enter.md-opaque.ng-enter-active {
-      opacity: .48;
-    }
-    &.ng-leave {
-      opacity: .48;
-      transition: opacity 400ms;
-    }
-    &.ng-leave.md-opaque.ng-leave-active {
-      opacity: 0;
-    }
-  }
-
-}
-
-
 $bottom-sheet-horizontal-padding: 2 * $baseline-grid !default;
 $bottom-sheet-vertical-padding: 1 * $baseline-grid !default;
 $bottom-sheet-icon-after-margin: 4 * $baseline-grid !default;
@@ -1418,6 +1359,65 @@ md-bottom-sheet {
     border: 1px solid #fff;
   }
 }
+
+// !!Important - Theme-based Background-color can be configured in backdrop-theme.scss
+//             - Animate background-color opacityy only for `.md-opaque` styles
+
+md-backdrop {
+  transition: opacity 450ms;
+
+  position: absolute;
+  top:0;
+  bottom:0;
+  left: 0;
+  right: 0;
+
+  z-index: $z-index-backdrop;
+
+  &.md-menu-backdrop {
+    position: fixed !important;
+    z-index: $z-index-menu - 1;
+  }
+  &.md-select-backdrop {
+    z-index: $z-index-dialog + 1;
+    transition-duration: 0;
+  }
+  &.md-dialog-backdrop {
+    z-index: $z-index-dialog - 1;
+  }
+  &.md-bottom-sheet-backdrop {
+    z-index: $z-index-bottom-sheet - 1;
+  }
+  &.md-sidenav-backdrop {
+    z-index: $z-index-sidenav - 1;
+  }
+
+
+  &.md-click-catcher {
+    position: absolute;
+  }
+
+  &.md-opaque {
+
+    opacity: .48;
+
+    &.ng-enter {
+      opacity: 0;
+    }
+    &.ng-enter.md-opaque.ng-enter-active {
+      opacity: .48;
+    }
+    &.ng-leave {
+      opacity: .48;
+      transition: opacity 400ms;
+    }
+    &.ng-leave.md-opaque.ng-leave-active {
+      opacity: 0;
+    }
+  }
+
+}
+
 
 $button-border-radius: 3px !default;
 $button-fab-border-radius: 50% !default;
@@ -2536,6 +2536,130 @@ md-divider {
   }
 }
 
+$button-fab-width: rem(5.600) !default;
+$icon-button-margin: rem(0.600) !default;
+
+md-fab-toolbar {
+  $icon-delay: 200ms;
+
+  // Include the top/left/bottom/right fab positions
+  @include fab-all-positions();
+
+  display: block;
+
+  /*
+   * Closed styling
+   */
+  .md-fab-toolbar-wrapper {
+    display: block;
+    position: relative;
+    overflow: hidden;
+
+    // Account for the size of the trigger plus it's margin/shadow
+    height: $button-fab-width + ($icon-button-margin * 2);
+  }
+
+  md-fab-trigger {
+    position: absolute;
+    z-index: $z-index-fab;
+
+    button {
+      overflow: visible !important;
+    }
+
+    .md-fab-toolbar-background {
+      display: block;
+      position: absolute;
+      z-index: $z-index-fab + 1;
+
+      opacity: 1;
+      transition: $swift-ease-in;
+    }
+
+    md-icon {
+      position: relative;
+      z-index: $z-index-fab + 2;
+
+      opacity: 1;
+
+      // Hide the icon very quickly
+      transition: all $icon-delay ease-in;
+    }
+  }
+
+  &.md-left {
+    md-fab-trigger {
+      right: 0;
+    }
+
+    .md-toolbar-tools {
+      flex-direction: row-reverse;
+
+      > .md-button:first-child {
+        margin-right: 0.6rem;
+      }
+
+      > .md-button:first-child {
+        margin-left: -0.8rem;
+      }
+
+
+      > .md-button:last-child {
+        margin-right: 8px;
+      }
+
+    }
+  }
+
+  &.md-right {
+    md-fab-trigger {
+      left: 0;
+    }
+
+    .md-toolbar-tools {
+      flex-direction: row;
+    }
+  }
+
+  md-toolbar {
+    background-color: transparent !important;
+    pointer-events: none;
+    z-index: $z-index-fab + 3;
+
+    .md-toolbar-tools {
+      // Fix some spacing issues with the icons and the trigger
+      padding: 0 20px;
+      margin-top: 3px;
+    }
+
+    .md-fab-action-item {
+      opacity: 0;
+      transform: scale(0);
+      transition: $swift-ease-in;
+
+      // Cut the action item's animation time in half since we delay it in the JS
+      transition-duration: $swift-ease-in-duration / 2;
+    }
+  }
+
+  /*
+   * Hover styling
+   */
+  &.md-is-open {
+    md-fab-trigger > button {
+      box-shadow: none;
+
+      md-icon {
+        opacity: 0;
+      }
+    }
+
+    .md-fab-action-item {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
 md-fab-speed-dial {
   position: relative;
   display: flex;
@@ -2661,130 +2785,6 @@ md-fab-speed-dial {
   }
 }
 
-$button-fab-width: rem(5.600) !default;
-$icon-button-margin: rem(0.600) !default;
-
-md-fab-toolbar {
-  $icon-delay: 200ms;
-
-  // Include the top/left/bottom/right fab positions
-  @include fab-all-positions();
-
-  display: block;
-
-  /*
-   * Closed styling
-   */
-  .md-fab-toolbar-wrapper {
-    display: block;
-    position: relative;
-    overflow: hidden;
-
-    // Account for the size of the trigger plus it's margin/shadow
-    height: $button-fab-width + ($icon-button-margin * 2);
-  }
-
-  md-fab-trigger {
-    position: absolute;
-    z-index: $z-index-fab;
-
-    button {
-      overflow: visible !important;
-    }
-
-    .md-fab-toolbar-background {
-      display: block;
-      position: absolute;
-      z-index: $z-index-fab + 1;
-
-      opacity: 1;
-      transition: $swift-ease-in;
-    }
-
-    md-icon {
-      position: relative;
-      z-index: $z-index-fab + 2;
-
-      opacity: 1;
-
-      // Hide the icon very quickly
-      transition: all $icon-delay ease-in;
-    }
-  }
-
-  &.md-left {
-    md-fab-trigger {
-      right: 0;
-    }
-
-    .md-toolbar-tools {
-      flex-direction: row-reverse;
-
-      > .md-button:first-child {
-        margin-right: 0.6rem;
-      }
-
-      > .md-button:first-child {
-        margin-left: -0.8rem;
-      }
-
-
-      > .md-button:last-child {
-        margin-right: 8px;
-      }
-
-    }
-  }
-
-  &.md-right {
-    md-fab-trigger {
-      left: 0;
-    }
-
-    .md-toolbar-tools {
-      flex-direction: row;
-    }
-  }
-
-  md-toolbar {
-    background-color: transparent !important;
-    pointer-events: none;
-    z-index: $z-index-fab + 3;
-
-    .md-toolbar-tools {
-      // Fix some spacing issues with the icons and the trigger
-      padding: 0 20px;
-      margin-top: 3px;
-    }
-
-    .md-fab-action-item {
-      opacity: 0;
-      transform: scale(0);
-      transition: $swift-ease-in;
-
-      // Cut the action item's animation time in half since we delay it in the JS
-      transition-duration: $swift-ease-in-duration / 2;
-    }
-  }
-
-  /*
-   * Hover styling
-   */
-  &.md-is-open {
-    md-fab-trigger > button {
-      box-shadow: none;
-
-      md-icon {
-        opacity: 0;
-      }
-    }
-
-    .md-fab-action-item {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-}
 md-grid-list {
   box-sizing: border-box;
   display: block;
@@ -2923,6 +2923,261 @@ md-icon {
 //  -webkit-font-smoothing:antialiased;
 //  -moz-osx-font-smoothing:grayscale;
 //}
+
+$list-h3-margin: 0 0 0px 0 !default;
+$list-h4-margin: 3px 0 1px 0 !default;
+$list-h4-font-weight: 400 !default;
+$list-header-line-height: 1.2em !default;
+$list-p-margin: 0 0 0 0 !default;
+$list-p-line-height: 1.6em !default;
+
+$list-padding-top: $baseline-grid !default;
+$list-padding-right: 0px !default;
+$list-padding-left: 0px !default;
+$list-padding-bottom: $baseline-grid !default;
+
+$item-padding-top: 0px !default;
+$item-padding-right: 0px !default;
+$item-padding-left: 0px !default;
+$item-padding-bottom: 0px !default;
+$list-item-padding-vertical: 0px !default;
+$list-item-padding-horizontal: $baseline-grid * 2 !default;
+$list-item-primary-width: $baseline-grid * 7 !default;
+$list-item-primary-avatar-width: $baseline-grid * 5 !default;
+$list-item-primary-icon-width: $baseline-grid * 3 !default;
+$list-item-secondary-left-margin: $baseline-grid * 2 !default;
+$list-item-secondary-button-width: $baseline-grid * 6 !default;
+$list-item-inset-divider-offset: 12 * $baseline-grid !default;
+$list-item-height: 6 * $baseline-grid !default;
+$list-item-two-line-height: 9 * $baseline-grid !default;
+$list-item-three-line-height: 11 * $baseline-grid !default;
+
+md-list {
+  display: block;
+  padding: $list-padding-top $list-padding-right $list-padding-bottom $list-padding-left;
+
+  .md-subheader {
+    font-size: $body-font-size-base;
+    font-weight: 500;
+    letter-spacing: 0.010em;
+    line-height: $list-header-line-height;
+  }
+}
+
+md-list-item {
+  // Ensure nested dividers are properly positioned
+  position: relative;
+
+  &.md-proxy-focus.md-focused .md-no-style {
+    transition: background-color 0.15s linear;
+  }
+  &.md-no-proxy,
+  .md-no-style {
+    position: relative;
+    padding: $list-item-padding-vertical $list-item-padding-horizontal;
+    flex: 1 1 auto;
+    
+    &.md-button {
+      font-size: inherit;
+      height: inherit;
+      text-align: left;
+      text-transform: none;
+      width: 100%;
+      white-space: normal;
+      flex-direction: inherit;
+      align-items: inherit;
+    }
+    &:focus {
+      outline: none
+    }
+  }
+  &.md-with-secondary {
+    position: relative;
+  }
+  &.md-clickable:hover {
+    cursor: pointer;
+  }
+
+  md-divider {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    &[md-inset] {
+      left: $list-item-inset-divider-offset;
+      width: calc(100% - #{$list-item-inset-divider-offset});
+      margin: 0;
+    }
+  }
+}
+
+md-list-item, md-list-item .md-list-item-inner {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: $list-item-height;
+  height:auto;
+
+  // Layout for controls in primary or secondary divs, or auto-infered first child
+  & > div.md-primary > md-icon:not(.md-avatar-icon),
+  & > div.md-secondary > md-icon:not(.md-avatar-icon),
+  & > md-icon:first-child:not(.md-avatar-icon),
+  > md-icon.md-secondary:not(.md-avatar-icon) {
+    width: $list-item-primary-icon-width;
+    margin-top: 16px;
+    margin-bottom: 12px;
+    box-sizing: content-box;
+  }
+  & > div.md-primary > md-checkbox,
+  & > div.md-secondary > md-checkbox,
+  & > md-checkbox:first-child,
+  md-checkbox.md-secondary {
+    align-self: center;
+    .md-label { display: none; }
+  }
+
+  & > md-icon:first-child:not(.md-avatar-icon) {
+    margin-right: $list-item-primary-width - $list-item-primary-icon-width;
+  }
+  & > md-checkbox:first-child {
+    width: 3 * $baseline-grid;
+    margin-left: 3px;
+    margin-right: 29px;
+  }
+  & > .md-avatar, .md-avatar-icon {
+    margin-top: $baseline-grid;
+    margin-bottom: $baseline-grid;
+    margin-right: $list-item-primary-width - $list-item-primary-avatar-width;
+    border-radius: 50%;
+    box-sizing: content-box;
+  }
+  & > .md-avatar {
+    width: $list-item-primary-avatar-width;
+    height: $list-item-primary-avatar-width;
+  }
+  & > .md-avatar-icon {
+    padding: 8px;
+  }
+
+  md-checkbox.md-secondary,
+  md-switch.md-secondary {
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  button.md-button.md-secondary-container {
+    background-color: transparent;
+    align-self: center;
+    border-radius: 50%;
+    margin: 0px;
+    min-width: 0px;
+    .md-ripple,
+    .md-ripple-container {
+      border-radius: 50%;
+    }
+  }
+
+  .md-secondary-container,
+  .md-secondary {
+    margin-left: $list-item-secondary-left-margin;
+    position: absolute;
+    right: $list-item-padding-horizontal;
+    top: 50%;
+    transform: translate3d(0, -50%, 0);
+  }
+
+  & > .md-button.md-secondary-container > .md-secondary {
+    margin-left: 0px;
+    position: static;
+  }
+
+  & > p, & > .md-list-item-inner > p {
+    flex: 1;
+    margin: 0;
+  }
+}
+
+
+md-list-item.md-2-line,
+md-list-item.md-2-line > .md-no-style,
+md-list-item.md-3-line,
+md-list-item.md-3-line > .md-no-style {
+  align-items: flex-start;
+  justify-content: center;
+
+  .md-list-item-text {
+    flex: 1;
+    margin: auto;
+    text-overflow: ellipsis;
+
+    &.md-offset {
+      margin-left: $list-item-primary-width;
+    }
+
+    h3 {
+      font-size: $subhead-font-size-base;
+      font-weight: 400;
+      letter-spacing: 0.010em;
+      margin: $list-h3-margin;
+      line-height: $list-header-line-height;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    h4 {
+      font-size: $body-font-size-base;
+      letter-spacing: 0.010em;
+      margin: $list-h4-margin;
+      font-weight: $list-h4-font-weight;
+      line-height: $list-header-line-height;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    p {
+      font-size: $body-font-size-base;
+      font-weight: 500;
+      letter-spacing: 0.010em;
+      margin: $list-p-margin;
+      line-height: $list-p-line-height;
+    }
+  }
+}
+
+md-list-item.md-2-line,
+md-list-item.md-2-line > .md-no-style {
+  height:auto;
+  min-height: $list-item-two-line-height;
+  &.md-long-text {
+      margin:1.6em;
+    }
+
+  > .md-avatar, .md-avatar-icon {
+    margin-top: $baseline-grid * 1.5;
+  }
+  > md-icon:first-child {
+    align-self: flex-start;
+  }
+  .md-list-item-text {
+    flex: 1;
+  }
+}
+
+md-list-item.md-3-line,
+md-list-item.md-3-line > .md-no-style {
+  height:auto;
+  min-height: $list-item-three-line-height;
+
+  &.md-long-text {
+    margin:1.6em;
+  }
+
+  > md-icon:first-child,
+  > .md-avatar {
+    margin-top: $baseline-grid * 2;
+  }
+}
 
 $input-container-padding: 2px !default;
 
@@ -3249,261 +3504,6 @@ md-input-container.md-icon-right {
 @media screen and (-ms-high-contrast: active) {
   md-input-container.md-default-theme > md-icon {
     fill: #fff;
-  }
-}
-
-$list-h3-margin: 0 0 0px 0 !default;
-$list-h4-margin: 3px 0 1px 0 !default;
-$list-h4-font-weight: 400 !default;
-$list-header-line-height: 1.2em !default;
-$list-p-margin: 0 0 0 0 !default;
-$list-p-line-height: 1.6em !default;
-
-$list-padding-top: $baseline-grid !default;
-$list-padding-right: 0px !default;
-$list-padding-left: 0px !default;
-$list-padding-bottom: $baseline-grid !default;
-
-$item-padding-top: 0px !default;
-$item-padding-right: 0px !default;
-$item-padding-left: 0px !default;
-$item-padding-bottom: 0px !default;
-$list-item-padding-vertical: 0px !default;
-$list-item-padding-horizontal: $baseline-grid * 2 !default;
-$list-item-primary-width: $baseline-grid * 7 !default;
-$list-item-primary-avatar-width: $baseline-grid * 5 !default;
-$list-item-primary-icon-width: $baseline-grid * 3 !default;
-$list-item-secondary-left-margin: $baseline-grid * 2 !default;
-$list-item-secondary-button-width: $baseline-grid * 6 !default;
-$list-item-inset-divider-offset: 12 * $baseline-grid !default;
-$list-item-height: 6 * $baseline-grid !default;
-$list-item-two-line-height: 9 * $baseline-grid !default;
-$list-item-three-line-height: 11 * $baseline-grid !default;
-
-md-list {
-  display: block;
-  padding: $list-padding-top $list-padding-right $list-padding-bottom $list-padding-left;
-
-  .md-subheader {
-    font-size: $body-font-size-base;
-    font-weight: 500;
-    letter-spacing: 0.010em;
-    line-height: $list-header-line-height;
-  }
-}
-
-md-list-item {
-  // Ensure nested dividers are properly positioned
-  position: relative;
-
-  &.md-proxy-focus.md-focused .md-no-style {
-    transition: background-color 0.15s linear;
-  }
-  &.md-no-proxy,
-  .md-no-style {
-    position: relative;
-    padding: $list-item-padding-vertical $list-item-padding-horizontal;
-    flex: 1 1 auto;
-    
-    &.md-button {
-      font-size: inherit;
-      height: inherit;
-      text-align: left;
-      text-transform: none;
-      width: 100%;
-      white-space: normal;
-      flex-direction: inherit;
-      align-items: inherit;
-    }
-    &:focus {
-      outline: none
-    }
-  }
-  &.md-with-secondary {
-    position: relative;
-  }
-  &.md-clickable:hover {
-    cursor: pointer;
-  }
-
-  md-divider {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    &[md-inset] {
-      left: $list-item-inset-divider-offset;
-      width: calc(100% - #{$list-item-inset-divider-offset});
-      margin: 0;
-    }
-  }
-}
-
-md-list-item, md-list-item .md-list-item-inner {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  min-height: $list-item-height;
-  height:auto;
-
-  // Layout for controls in primary or secondary divs, or auto-infered first child
-  & > div.md-primary > md-icon:not(.md-avatar-icon),
-  & > div.md-secondary > md-icon:not(.md-avatar-icon),
-  & > md-icon:first-child:not(.md-avatar-icon),
-  > md-icon.md-secondary:not(.md-avatar-icon) {
-    width: $list-item-primary-icon-width;
-    margin-top: 16px;
-    margin-bottom: 12px;
-    box-sizing: content-box;
-  }
-  & > div.md-primary > md-checkbox,
-  & > div.md-secondary > md-checkbox,
-  & > md-checkbox:first-child,
-  md-checkbox.md-secondary {
-    align-self: center;
-    .md-label { display: none; }
-  }
-
-  & > md-icon:first-child:not(.md-avatar-icon) {
-    margin-right: $list-item-primary-width - $list-item-primary-icon-width;
-  }
-  & > md-checkbox:first-child {
-    width: 3 * $baseline-grid;
-    margin-left: 3px;
-    margin-right: 29px;
-  }
-  & > .md-avatar, .md-avatar-icon {
-    margin-top: $baseline-grid;
-    margin-bottom: $baseline-grid;
-    margin-right: $list-item-primary-width - $list-item-primary-avatar-width;
-    border-radius: 50%;
-    box-sizing: content-box;
-  }
-  & > .md-avatar {
-    width: $list-item-primary-avatar-width;
-    height: $list-item-primary-avatar-width;
-  }
-  & > .md-avatar-icon {
-    padding: 8px;
-  }
-
-  md-checkbox.md-secondary,
-  md-switch.md-secondary {
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-
-  button.md-button.md-secondary-container {
-    background-color: transparent;
-    align-self: center;
-    border-radius: 50%;
-    margin: 0px;
-    min-width: 0px;
-    .md-ripple,
-    .md-ripple-container {
-      border-radius: 50%;
-    }
-  }
-
-  .md-secondary-container,
-  .md-secondary {
-    margin-left: $list-item-secondary-left-margin;
-    position: absolute;
-    right: $list-item-padding-horizontal;
-    top: 50%;
-    transform: translate3d(0, -50%, 0);
-  }
-
-  & > .md-button.md-secondary-container > .md-secondary {
-    margin-left: 0px;
-    position: static;
-  }
-
-  & > p, & > .md-list-item-inner > p {
-    flex: 1;
-    margin: 0;
-  }
-}
-
-
-md-list-item.md-2-line,
-md-list-item.md-2-line > .md-no-style,
-md-list-item.md-3-line,
-md-list-item.md-3-line > .md-no-style {
-  align-items: flex-start;
-  justify-content: center;
-
-  .md-list-item-text {
-    flex: 1;
-    margin: auto;
-    text-overflow: ellipsis;
-
-    &.md-offset {
-      margin-left: $list-item-primary-width;
-    }
-
-    h3 {
-      font-size: $subhead-font-size-base;
-      font-weight: 400;
-      letter-spacing: 0.010em;
-      margin: $list-h3-margin;
-      line-height: $list-header-line-height;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-    h4 {
-      font-size: $body-font-size-base;
-      letter-spacing: 0.010em;
-      margin: $list-h4-margin;
-      font-weight: $list-h4-font-weight;
-      line-height: $list-header-line-height;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-    p {
-      font-size: $body-font-size-base;
-      font-weight: 500;
-      letter-spacing: 0.010em;
-      margin: $list-p-margin;
-      line-height: $list-p-line-height;
-    }
-  }
-}
-
-md-list-item.md-2-line,
-md-list-item.md-2-line > .md-no-style {
-  height:auto;
-  min-height: $list-item-two-line-height;
-  &.md-long-text {
-      margin:1.6em;
-    }
-
-  > .md-avatar, .md-avatar-icon {
-    margin-top: $baseline-grid * 1.5;
-  }
-  > md-icon:first-child {
-    align-self: flex-start;
-  }
-  .md-list-item-text {
-    flex: 1;
-  }
-}
-
-md-list-item.md-3-line,
-md-list-item.md-3-line > .md-no-style {
-  height:auto;
-  min-height: $list-item-three-line-height;
-
-  &.md-long-text {
-    margin:1.6em;
-  }
-
-  > md-icon:first-child,
-  > .md-avatar {
-    margin-top: $baseline-grid * 2;
   }
 }
 
