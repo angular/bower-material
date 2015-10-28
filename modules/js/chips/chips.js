@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc1-master-b22863e
+ * v1.0.0-rc1-master-2b0c80b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -127,7 +127,7 @@ function MdChipRemove ($timeout) {
     // Child elements aren't available until after a $timeout tick as they are hidden by an
     // `ng-if`. see http://goo.gl/zIWfuw
     $timeout(function() {
-      element.attr({ tabindex: -1, ariaHidden: true });
+      element.attr({ tabindex: -1, 'aria-hidden': true });
       element.find('button').attr('tabindex', '-1');
     });
   }
@@ -586,7 +586,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
    *
    * @description
    * `<md-chips>` is an input component for building lists of strings or objects. The list items are
-   * displayed as 'chips'. This component can make use of an `<input>` element or an
+   * displayed as 'chips'. This component can make use of an `<input>` element or an 
    * `<md-autocomplete>` element.
    *
    * ### Custom templates
@@ -819,7 +819,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
         mdChipsCtrl.chipInputTemplate    = chipInputTemplate;
 
         element
-            .attr({ ariaHidden: true, tabindex: -1 })
+            .attr({ 'aria-hidden': true, tabindex: -1 })
             .on('focus', function () { mdChipsCtrl.onFocus(); });
 
         if (attr.ngModel) {
