@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc1-master-6b18ad1
+ * v1.0.0-rc1-master-bfc40ff
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -21501,9 +21501,6 @@ function MenuItemDirective() {
  * Please note that if you use `<md-tab-label>`, your content **MUST** be wrapped in the `<md-tab-body>` tag.  This
  * is to define a clear separation between the tab content and the tab label.
  *
- * If a tab **label** has been identified, then any **non-**`<md-tab-label>` markup
- * will be considered tab content and will be transcluded to the internal `<div class="md-tabs-content">` container.
- *
  * This container is used by the TabsController to show/hide the active tab's content view. This synchronization is
  * automatically managed by the internal TabsController whenever the tab selection changes. Selection changes can
  * be initiated via data binding changes, programmatic invocation, or user gestures.
@@ -22682,4 +22679,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc1-master-6b18ad1"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc1-master-bfc40ff"}};
