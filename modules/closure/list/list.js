@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc1-master-71fc3cc
+ * v1.0.0-rc1-master-b22863e
  */
 goog.provide('ng.material.components.list');
 goog.require('ng.material.core');
@@ -62,6 +62,8 @@ mdListDirective.$inject = ["$mdTheming"];
  *
  * @description
  * The `<md-list-item>` directive is a container intended for row items in a `<md-list>` container.
+ * The `md-2-line` and `md-3-line` classes can be added to a `<md-list-item>` 
+ * to increase the height with 22px and 40px respectively.
  *
  * ## CSS
  * `.md-avatar` - class for image avatars
