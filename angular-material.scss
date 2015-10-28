@@ -1699,16 +1699,23 @@ $checkbox-border-width: 2px !default;
 $checkbox-text-margin: 10px !default;
 $checkbox-top-left: 12px !default;
 
+.md-inline-form {
+  md-checkbox {
+    margin: 19px 0 18px;
+  }
+}
+
 md-checkbox {
   box-sizing: border-box;
-  display: block;
+  display: inline-block;
   margin: $checkbox-margin;
   white-space: nowrap;
   cursor: pointer;
   outline: none;
   user-select: none;
-  @include rtl(padding-left, $checkbox-width, 0);
-  @include rtl(padding-right, 0, $checkbox-width);
+  padding: 2px;
+  @include rtl(padding-left, $checkbox-width, 2px);
+  @include rtl(padding-right, 2px, $checkbox-width);
   position: relative;
   line-height: $checkbox-width + $checkbox-margin;
   min-width: $checkbox-width;
@@ -2223,10 +2230,16 @@ $md-datepicker-open-animation-duration: 0.2s;
 md-datepicker {
   // Don't let linebreaks happen between the open icon-button and the input.
   white-space: nowrap;
+  overflow: hidden;
+}
+
+.md-inline-form {
+  md-datepicker {
+    margin-top: 8px;
+  }
 }
 
 // The calendar icon button used to open the calendar pane.
-// Need absurd specificty to override md-button.md-icon-button.
 .md-datepicker-button {
   display: inline-block;
   box-sizing: border-box;
@@ -2946,16 +2959,21 @@ $input-error-height: 24px !default;
 
 $icon-offset : 36px !default;
 
-$icon-float-top: -16px !default;
 $icon-float-focused-top: -8px !default;
 
 md-input-container {
-  display: flex;
+  display: inline-block;
   position: relative;
-  flex-direction: column;
-
   padding: $input-container-padding;
-  padding-bottom: $input-container-padding + $input-error-height;
+  margin: 18px 0;
+
+  &.md-block {
+    display: block;
+  }
+
+  &.md-has-icon {
+    padding-left: $icon-offset;
+  }
 
   // When we have ng-messages, remove the input error height from our bottom padding, since the
   // ng-messages wrapper has a min-height of 1 error (so we don't adjust height as often; see below)
@@ -2968,7 +2986,6 @@ md-input-container {
     top: 5px;
     left: 2px;
     + input {
-          margin-left: $icon-offset;
     }
   }
 
@@ -3009,8 +3026,8 @@ md-input-container {
   }
 
   label {
-    position: relative;
-    top: -2px;
+    position: absolute;
+    bottom: 100%;
   }
 
 
@@ -3032,9 +3049,6 @@ md-input-container {
     opacity: 0;
     transition-property: opacity, transform;
     transform: translate3d(0, $input-placeholder-offset + $baseline-grid * 0.75, 0);
-    &.md-static {
-      position: static;
-    }
   }
   &.md-input-focused .md-placeholder {
     opacity: 1;
@@ -3080,7 +3094,8 @@ md-input-container {
     border-style: solid; // Firefox fix
 
     // Fix number inputs in Firefox to be full-width
-    width: auto;
+    width: 100%;
+    box-sizing: border-box;
 
     &:focus {
       outline: none;
@@ -3201,34 +3216,21 @@ md-input-container {
 
 md-input-container.md-icon-float {
 
-  margin-top : $icon-float-top;
   transition : margin-top 0.5s $swift-ease-out-timing-function ;
 
 
   > label  {
       pointer-events:none;
       position:absolute;
-      margin-left: $icon-offset;
   }
 
   > md-icon {
-    top: 26px;
+    top: 2px;
     left: 2px;
-    + input,
-    + textarea {
-          margin-left: $icon-offset;
-    }
-  }
-
-  > input,
-  > textarea {
-    padding-top : $input-line-height - $input-container-padding;
   }
 
   &.md-input-focused,
   &.md-input-has-value {
-
-    margin-top: $icon-float-focused-top;
 
     label {
         transform: translate3d(0,$input-label-float-offset,0) scale($input-label-float-scale);
@@ -4232,6 +4234,20 @@ md-radio-group {
   }
 }
 
+.md-inline-form {
+  md-radio-group {
+    margin: 18px 0 19px;
+    md-radio-button {
+      display: inline-block;
+      height: 30px;
+      padding: 2px;
+      box-sizing: border-box;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+}
+
 @media screen and (-ms-high-contrast: active) {
   md-radio-button.md-default-theme .md-on {
     background-color: #fff;
@@ -4960,16 +4976,26 @@ $switch-height: $baseline-grid * 3 !default;
 $switch-bar-height: 14px !default;
 $switch-thumb-size: 20px !default;
 
+.md-inline-form {
+  md-switch {
+    margin-top: 18px;
+    margin-bottom: 19px;
+  }
+}
+
 md-switch {
-
-  display: flex;
-  align-items: center;
-
+  display: inline-block;
   margin: 15px;
   white-space: nowrap;
   cursor: pointer;
   outline: none;
   user-select: none;
+  height: 30px;
+  line-height: 28px;
+
+  &.md-block {
+    display: block;
+  }
 
   .md-container {
     cursor: grab;
@@ -4978,6 +5004,8 @@ md-switch {
     position: relative;
     user-select: none;
     margin-right: 8px;
+    margin-top: (30 - $switch-height) / 2;
+    float: left;
   }
 
   // If the user moves his mouse off the switch, stil display grabbing cursor
@@ -5006,6 +5034,7 @@ md-switch {
   .md-label {
     border-color: transparent;
     border-width: 0;
+    float: left;
   }
 
   .md-bar {

@@ -2,29 +2,26 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc1-master-6db3fa0
+ * v1.0.0-rc1-master-17797f0
  */
 md-input-container {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+  display: inline-block;
   position: relative;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
   padding: 2px;
-  padding-bottom: 26px;
+  margin: 18px 0;
   /*
    * The .md-input class is added to the input/textarea
    */ }
+  md-input-container.md-block {
+    display: block; }
+  md-input-container.md-has-icon {
+    padding-left: 36px; }
   md-input-container.md-input-has-messages {
     padding-bottom: 2px; }
   md-input-container > md-icon {
     position: absolute;
     top: 5px;
     left: 2px; }
-    md-input-container > md-icon + input {
-      margin-left: 36px; }
   md-input-container textarea, md-input-container input[type="text"], md-input-container input[type="password"], md-input-container input[type="datetime"], md-input-container input[type="datetime-local"], md-input-container input[type="date"], md-input-container input[type="month"], md-input-container input[type="time"], md-input-container input[type="week"], md-input-container input[type="number"], md-input-container input[type="email"], md-input-container input[type="url"], md-input-container input[type="search"], md-input-container input[type="tel"], md-input-container input[type="color"] {
     /* remove default appearance from all input/textarea */
     -moz-appearance: none;
@@ -38,8 +35,8 @@ md-input-container {
     min-height: 26px;
     -ms-flex-preferred-size: auto; }
   md-input-container label {
-    position: relative;
-    top: -2px; }
+    position: absolute;
+    bottom: 100%; }
   md-input-container label:not(.md-no-float), md-input-container .md-placeholder {
     -webkit-order: 1;
         -ms-flex-order: 1;
@@ -76,8 +73,6 @@ md-input-container {
     transition-property: opacity, transform;
     -webkit-transform: translate3d(0, 30px, 0);
             transform: translate3d(0, 30px, 0); }
-    md-input-container .md-placeholder.md-static {
-      position: static; }
   md-input-container.md-input-focused .md-placeholder {
     opacity: 1;
     -webkit-transform: translate3d(0, 24px, 0);
@@ -103,7 +98,8 @@ md-input-container {
     -ms-flex-preferred-size: 26px;
     border-radius: 0;
     border-style: solid;
-    width: auto; }
+    width: 100%;
+    box-sizing: border-box; }
     md-input-container .md-input:focus {
       outline: none; }
     md-input-container .md-input:invalid {
@@ -163,26 +159,18 @@ md-input-container {
     margin-bottom: -1px; }
 
 md-input-container.md-icon-float {
-  margin-top: -16px;
   transition: margin-top 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); }
   md-input-container.md-icon-float > label {
     pointer-events: none;
-    position: absolute;
-    margin-left: 36px; }
+    position: absolute; }
   md-input-container.md-icon-float > md-icon {
-    top: 26px;
+    top: 2px;
     left: 2px; }
-    md-input-container.md-icon-float > md-icon + input, md-input-container.md-icon-float > md-icon + textarea {
-      margin-left: 36px; }
-  md-input-container.md-icon-float > input, md-input-container.md-icon-float > textarea {
-    padding-top: 24px; }
-  md-input-container.md-icon-float.md-input-focused, md-input-container.md-icon-float.md-input-has-value {
-    margin-top: -8px; }
-    md-input-container.md-icon-float.md-input-focused label, md-input-container.md-icon-float.md-input-has-value label {
-      -webkit-transform: translate3d(0, 6px, 0) scale(0.75);
-              transform: translate3d(0, 6px, 0) scale(0.75);
-      transition: -webkit-transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.5s;
-      transition: transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.5s; }
+  md-input-container.md-icon-float.md-input-focused label, md-input-container.md-icon-float.md-input-has-value label {
+    -webkit-transform: translate3d(0, 6px, 0) scale(0.75);
+            transform: translate3d(0, 6px, 0) scale(0.75);
+    transition: -webkit-transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.5s;
+    transition: transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.5s; }
 
 md-input-container.md-icon-right input {
   margin-right: 36px; }
