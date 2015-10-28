@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc1-master-32c0fe1
+ * v1.0.0-rc1-master-309cef5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -273,6 +273,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * When the user's mouse leaves the menu, blur events may hide the menu again.
    */
   function onListLeave () {
+    if (!hasFocus) elements.input.focus();
     noBlur = false;
     ctrl.hidden = shouldHide();
   }
@@ -380,8 +381,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * Handles input blur event, determines if the dropdown should hide.
    */
   function blur () {
+    hasFocus = false;
     if (!noBlur) {
-      hasFocus = false;
       ctrl.hidden = shouldHide();
     }
   }
@@ -518,11 +519,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * @returns {boolean}
    */
   function shouldHide () {
-    if ((ctrl.loading && !hasMatches()) || hasSelection() || !hasFocus) {
-      return true;
-    }
-
-    return !shouldShow();
+    return (ctrl.loading && !hasMatches() || hasSelection() || !hasFocus) || !shouldShow();
   }
 
   /**
@@ -926,15 +923,15 @@ function MdAutocomplete () {
           <md-virtual-repeat-container\
               md-auto-shrink\
               md-auto-shrink-min="1"\
+              ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
+              ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
+              ng-mouseup="$mdAutocompleteCtrl.mouseUp()"\
               ng-hide="$mdAutocompleteCtrl.hidden"\
               class="md-autocomplete-suggestions-container md-whiteframe-z1"\
               role="presentation">\
             <ul class="md-autocomplete-suggestions"\
                 ng-class="::menuClass"\
-                id="ul-{{$mdAutocompleteCtrl.id}}"\
-                ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
-                ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
-                ng-mouseup="$mdAutocompleteCtrl.mouseUp()">\
+                id="ul-{{$mdAutocompleteCtrl.id}}">\
               <li md-virtual-repeat="item in $mdAutocompleteCtrl.matches"\
                   ng-class="{ selected: $index === $mdAutocompleteCtrl.index }"\
                   ng-click="$mdAutocompleteCtrl.select($index)"\
