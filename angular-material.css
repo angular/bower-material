@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc1-master-86efe1e
+ * v1.0.0-rc1-master-32c0fe1
  */
 html, body {
   height: 100%;
@@ -6586,6 +6586,9 @@ md-fab-speed-dial {
           align-items: center;
   z-index: 20;
   /*
+   * Hide some graphics glitches if switching animation types
+   */
+  /*
    * Handle the animations
    */ }
   md-fab-speed-dial.md-fab-bottom-right {
@@ -6621,7 +6624,6 @@ md-fab-speed-dial {
   md-fab-speed-dial .md-css-variables {
     z-index: 20; }
   md-fab-speed-dial.md-is-open .md-fab-action-item {
-    visibility: visible;
     -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center; }
@@ -6631,7 +6633,6 @@ md-fab-speed-dial {
     display: flex;
     height: auto; }
     md-fab-speed-dial md-fab-actions .md-fab-action-item {
-      visibility: hidden;
       transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-fab-speed-dial.md-down {
     -webkit-flex-direction: column;
@@ -6697,6 +6698,8 @@ md-fab-speed-dial {
               order: 2; }
       md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item {
         transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
+  md-fab-speed-dial.md-fling-remove .md-fab-action-item > *, md-fab-speed-dial.md-scale-remove .md-fab-action-item > * {
+    visibility: hidden; }
   md-fab-speed-dial.md-scale .md-fab-action-item {
     opacity: 0;
     -webkit-transform: scale(0.1);
