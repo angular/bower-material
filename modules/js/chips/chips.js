@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc1-master-c577566
+ * v1.0.0-rc1-master-03db13d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -356,13 +356,27 @@ MdChipsCtrl.prototype.getAdjacentChipIndex = function(index) {
  * call out to the md-on-append method, if provided
  * @param newChip
  */
-MdChipsCtrl.prototype.appendChip = function(newChip) {
-  if (this.useOnAppend && this.onAppend) {
-    newChip = this.onAppend({'$chip': newChip});
-  }
-  if (this.items.indexOf(newChip) + 1) return;
-  this.items.push(newChip);
-};
+ MdChipsCtrl.prototype.appendChip = function(newChip) {
+
+   // If useOnAppend and onAppend function is provided call it.
+   if (this.useOnAppend && this.onAppend) {
+     newChip = this.onAppend({'$chip': newChip});
+   }
+
+   // If items contains identical object to newChip do not append
+   if(angular.isObject(newChip)){
+     var identical = this.items.some(function(item){
+       return angular.equals(newChip, item);
+     });
+     if(identical) return;
+   }
+
+   // If items contains newChip do not append
+   if (this.items.indexOf(newChip) + 1) return;
+
+   //add newChip to items
+   this.items.push(newChip);
+ };
 
 /**
  * Sets whether to use the md-on-append expression. This expression is
