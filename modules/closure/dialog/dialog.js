@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc1-master-4205be7
+ * v1.0.0-rc1-master-e8cfce2
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -36,7 +36,7 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
         }
 
         scope.$on('$destroy', function() {
-          $mdDialog.destroy();
+          $mdDialog.destroy(element);
         });
 
         /**
