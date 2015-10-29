@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc1-master-f5166dd
+ * v1.0.0-rc1-master-d3d5f3f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -15919,7 +15919,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       delay: '=?mdDelay',
       visible: '=?mdVisible',
       autohide: '=?mdAutohide',
-      direction: '=?mdDirection'    // only expect raw or interpolated string value; not expression
+      direction: '@?mdDirection'    // only expect raw or interpolated string value; not expression
     },
     link: postLink
   };
@@ -22746,4 +22746,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc1-master-f5166dd"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc1-master-d3d5f3f"}};
