@@ -35,7 +35,7 @@ jspm install angular-material=github:angular/bower-material@master;
 jspm inspect;
 ```
 
-Now you can use `require('angular-material')` when installing with npm or jsmp and using Browserify or Webpack.
+Now you can use `require('angular-material')` when installing with **npm** or **jspm**, or when using Browserify or Webpack.
 
 ### bower
 
