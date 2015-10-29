@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc1-master-36aa6bc
+ * v1.0.0-rc1-master-a8537e6
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -5649,6 +5649,11 @@ angular
         // so let's wait until $animate is done...
         var parent = element.parent()[0];
         if (parent) {
+
+          if ( parent.nodeName == 'BODY' ) {
+            element.css({position : 'fixed'});
+          }
+
           var styles = $window.getComputedStyle(parent);
           if (styles.position == 'static') {
             // backdrop uses position:absolute and will not work properly with parent position:static (default)
@@ -22782,4 +22787,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc1-master-36aa6bc"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc1-master-a8537e6"}};
