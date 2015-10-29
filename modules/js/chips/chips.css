@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc1-master-4649b93
+ * v1.0.0-rc1-master-3bf6eb3
  */
 .md-contact-chips .md-chips .md-chip {
   padding: 0 25px 0 0; }
@@ -45,7 +45,7 @@
     clear: both; }
   .md-chips:not(.md-readonly) {
     cursor: text; }
-    .md-chips:not(.md-readonly) .md-chip {
+    .md-chips:not(.md-readonly) .md-chip:not(.md-readonly) {
       padding-right: 22px; }
   .md-chips .md-chip {
     cursor: default;
@@ -96,7 +96,7 @@
     display: block;
     line-height: 32px;
     margin: 8px 8px 0 0;
-    padding: 0 12px 0 12px;
+    padding: 0;
     float: left; }
     .md-chips .md-chip-input-container input:not([type]), .md-chips .md-chip-input-container input[type="email"], .md-chips .md-chip-input-container input[type="number"], .md-chips .md-chip-input-container input[type="tel"], .md-chips .md-chip-input-container input[type="url"], .md-chips .md-chip-input-container input[type="text"] {
       border: 0;
