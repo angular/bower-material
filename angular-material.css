@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc1-master-17797f0
+ * v1.0.0-rc1-master-4649b93
  */
 html, body {
   height: 100%;
@@ -1031,22 +1031,22 @@ select, button, textarea, input {
       -ms-flex-direction: row;
           flex-direction: row; }
 
-.layout-padding > .flex-sm, .layout-padding > .flex-lt-md {
+.layout-padding-sm > *, .layout-padding > .flex-sm {
   padding: 4px; }
 
-.layout-padding, .layout-padding > .flex, .layout-padding > .flex-gt-sm, .layout-padding > .flex-md, .layout-padding > .flex-lt-lg {
+.layout-padding, .layout-padding-gt-sm, .layout-padding-md, .layout-padding > *, .layout-padding-gt-sm > *, .layout-padding-md > *, .layout-padding > .flex, .layout-padding > .flex-gt-sm, .layout-padding > .flex-md {
   padding: 8px; }
 
-.layout-padding > .flex-gt-md, .layout-padding > .flex-lg {
+.layout-padding-gt-md > *, .layout-padding-lg > *, .layout-padding-gt-lg > *, .layout-padding > .flex-gt-md, .layout-padding > .flex-lg, .layout-padding > .flex-lg, .layout-padding > .flex-gt-lg {
   padding: 16px; }
 
-.layout-margin > .flex-sm, .layout-margin > .flex-lt-md {
+.layout-margin-sm > *, .layout-margin > .flex-sm {
   margin: 4px; }
 
-.layout-margin, .layout-margin > .flex, .layout-margin > .flex-gt-sm, .layout-margin > .flex-md, .layout-margin > .flex-lt-lg {
+.layout-margin, .layout-margin-gt-sm, .layout-margin-md, .layout-margin > *, .layout-margin-gt-sm > *, .layout-margin-md > *, .layout-margin > .flex, .layout-margin > .flex-gt-sm, .layout-margin > .flex-md {
   margin: 8px; }
 
-.layout-margin > .flex-gt-md, .layout-margin > .flex-lg {
+.layout-margin-gt-md > *, .layout-margin-lg > *, .layout-margin-gt-lg > *, .layout-margin > .flex-gt-md, .layout-margin > .flex-lg, .layout-margin > .flex-gt-lg {
   margin: 16px; }
 
 .layout-wrap {
