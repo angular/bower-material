@@ -2,13 +2,13 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc1-master-3bf6eb3
+ * v1.0.0-rc1-master-f5166dd
  */
 .md-select-menu-container {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 99;
+  z-index: 90;
   opacity: 0; }
   .md-select-menu-container:not(.md-clickable) {
     pointer-events: none; }

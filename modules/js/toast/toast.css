@@ -2,14 +2,14 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc1-master-3bf6eb3
+ * v1.0.0-rc1-master-f5166dd
  */
 md-toast {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   position: absolute;
-  z-index: 90;
+  z-index: 105;
   box-sizing: border-box;
   -webkit-align-items: center;
       -ms-flex-align: center;
