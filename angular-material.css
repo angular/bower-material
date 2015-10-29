@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc1-master-d3d5f3f
+ * v1.0.0-rc1-master-4205be7
  */
 html, body {
   height: 100%;
@@ -5657,43 +5657,6 @@ button.md-button::-moz-focus-inner {
   .md-button.md-raised, .md-button.md-fab {
     border: 1px solid #fff; } }
 
-md-card {
-  box-sizing: border-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  margin: 8px;
-  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12); }
-  md-card > img, md-card > :not(md-card-content) img {
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex: 0 0 auto;
-        -ms-flex: 0 0 auto;
-            flex: 0 0 auto;
-    width: 100%;
-    height: auto; }
-  md-card md-card-content {
-    display: block;
-    padding: 16px; }
-  md-card .md-actions {
-    margin: 0; }
-    md-card .md-actions .md-button {
-      margin-bottom: 8px;
-      margin-top: 8px;
-      margin-right: 4px;
-      margin-left: 4px; }
-  md-card md-card-footer {
-    margin-top: auto;
-    padding: 16px; }
-
-@media screen and (-ms-high-contrast: active) {
-  md-card {
-    border: 1px solid #fff; } }
-
 .md-inline-form md-checkbox {
   margin: 19px 0 18px; }
 
@@ -6029,6 +5992,43 @@ md-content {
     overflow-y: hidden; }
   md-content.autoScroll {
     -webkit-overflow-scrolling: auto; }
+
+md-card {
+  box-sizing: border-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: 8px;
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12); }
+  md-card > img, md-card > :not(md-card-content) img {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex: 0 0 auto;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
+    width: 100%;
+    height: auto; }
+  md-card md-card-content {
+    display: block;
+    padding: 16px; }
+  md-card .md-actions {
+    margin: 0; }
+    md-card .md-actions .md-button {
+      margin-bottom: 8px;
+      margin-top: 8px;
+      margin-right: 4px;
+      margin-left: 4px; }
+  md-card md-card-footer {
+    margin-top: auto;
+    padding: 16px; }
+
+@media screen and (-ms-high-contrast: active) {
+  md-card {
+    border: 1px solid #fff; } }
 
 /** Styles for mdCalendar. */
 md-calendar {

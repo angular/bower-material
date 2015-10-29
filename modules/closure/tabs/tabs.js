@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc1-master-d3d5f3f
+ * v1.0.0-rc1-master-4205be7
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -849,8 +849,6 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
       // Need to include bottom border in these calculations
       if ($element.attr('md-border-bottom') !== undefined) ++currentHeight;
     }
-
-    if (currentHeight === newHeight) return;
 
     // Lock during animation so the user can't change tabs
     locked = true;
