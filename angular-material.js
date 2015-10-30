@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-c99541f
+ * v1.0.0-rc2-master-b4d7733
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -7843,7 +7843,7 @@ function iosScrollFix(node) {
       // the directive's isolate scope.
       var scope = this.$mdUtil.validateScope(this.$element) ? this.$element.scope() : null;
 
-      if ( scope ) {
+      if (scope) {
         scope.$watch(this.$attrs['ngDisabled'], function(isDisabled) {
           self.setDisabled(isDisabled);
         });
@@ -7874,11 +7874,11 @@ function iosScrollFix(node) {
   DatePickerCtrl.prototype.setErrorFlags = function() {
     if (this.dateUtil.isValidDate(this.date)) {
       if (this.dateUtil.isValidDate(this.minDate)) {
-        this.ngModelCtrl.$error['mindate'] = this.date < this.minDate;
+        this.ngModelCtrl.$setValidity('mindate', this.date >= this.minDate);
       }
 
       if (this.dateUtil.isValidDate(this.maxDate)) {
-        this.ngModelCtrl.$error['maxdate'] = this.date > this.maxDate;
+        this.ngModelCtrl.$setValidity('maxdate', this.date <= this.maxDate);
       }
     }
   };
@@ -22796,4 +22796,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-c99541f"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-b4d7733"}};
