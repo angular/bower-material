@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-31b26b0
+ * v1.0.0-rc2-master-ee98b70
  */
 html, body {
   height: 100%;
@@ -6749,6 +6749,7 @@ md-input-container {
     padding-right: 2px;
     border-width: 0 0 1px 0;
     line-height: 26px;
+    height: 30px;
     -ms-flex-preferred-size: 26px;
     border-radius: 0;
     border-style: solid;
