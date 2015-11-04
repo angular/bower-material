@@ -1,8 +1,8 @@
 {
   "name": "angular-material-subheader",
-  "version": "1.0.0-rc2-master-06c60af",
+  "version": "1.0.0-rc2-master-5004a2a",
   "dependencies": {
-    "angular-material-core": "1.0.0-rc2-master-06c60af",
-    "angular-material-sticky": "1.0.0-rc2-master-06c60af"
+    "angular-material-core": "1.0.0-rc2-master-5004a2a",
+    "angular-material-sticky": "1.0.0-rc2-master-5004a2a"
   }
 }
