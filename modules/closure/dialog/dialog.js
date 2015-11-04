@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-9693204
+ * v1.0.0-rc2-master-f7b7476
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -68,7 +68,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
  * - The dialog is always given an isolate scope.
  * - The dialog's template must have an outer `<md-dialog>` element.
  *   Inside, use an `<md-dialog-content>` element for the dialog's content, and use
- *   an element with class `md-actions` for the dialog's actions.
+ *   an `<md-dialog-actions>` element for the dialog's actions.
  * - Dialogs must cover the entire application to keep interactions inside of them.
  * Use the `parent` option to change where dialogs are appended.
  *
@@ -149,11 +149,11 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
  *            '      </md-item>'+
  *            '    </md-list>'+
  *            '  </md-dialog-content>' +
- *            '  <div class="md-actions">' +
+ *            '  <md-dialog-actions>' +
  *            '    <md-button ng-click="closeDialog()" class="md-primary">' +
  *            '      Close Dialog' +
  *            '    </md-button>' +
- *            '  </div>' +
+ *            '  </md-dialog-actions>' +
  *            '</md-dialog>',
  *          locals: {
  *            items: $scope.items
@@ -228,11 +228,11 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
  *
  *             '  <md-dialog-content>Hello {{ employee }}!</md-dialog-content>' +
  *
- *             '  <div class="md-actions">' +
+ *             '  <md-dialog-actions>' +
  *             '    <md-button ng-click="closeDialog()" class="md-primary">' +
  *             '      Close Greeting' +
  *             '    </md-button>' +
- *             '  </div>' +
+ *             '  </md-dialog-actions>' +
  *             '</md-dialog>',
  *           controller: 'GreetingController',
  *           onComplete: afterShowAnimation,
@@ -421,7 +421,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
 function MdDialogProvider($$interimElementProvider) {
 
   advancedDialogOptions.$inject = ["$mdDialog", "$mdTheming"];
-  dialogDefaultOptions.$inject = ["$mdDialog", "$mdAria", "$mdUtil", "$mdConstant", "$animate", "$document", "$window", "$rootElement"];
+  dialogDefaultOptions.$inject = ["$mdDialog", "$mdAria", "$mdUtil", "$mdConstant", "$animate", "$document", "$window", "$rootElement", "$log"];
   return $$interimElementProvider('$mdDialog')
     .setDefaults({
       methods: ['disableParentScroll', 'hasBackdrop', 'clickOutsideToClose', 'escapeToClose', 'targetEvent', 'closeTo', 'openFrom', 'parent'],
@@ -441,19 +441,19 @@ function MdDialogProvider($$interimElementProvider) {
     return {
       template: [
         '<md-dialog md-theme="{{ dialog.theme }}" aria-label="{{ dialog.ariaLabel }}" ng-class="dialog.css">',
-        ' <md-dialog-content class="md-dialog-content" role="document" tabIndex="-1">',
-        '   <h2 class="md-title">{{ dialog.title }}</h2>',
-        '   <div class="md-dialog-content-body" md-template="::dialog.mdContent"></div>',
-        ' </md-dialog-content>',
-        ' <div class="md-actions">',
-        '   <md-button ng-if="dialog.$type == \'confirm\'"' +
-        '     ng-click="dialog.abort()" class="md-primary">',
-        '     {{ dialog.cancel }}',
-        '   </md-button>',
-        '   <md-button ng-click="dialog.hide()" class="md-primary" md-autofocus="dialog.$type!=\'confirm\'">',
-        '     {{ dialog.ok }}',
-        '   </md-button>',
-        ' </div>',
+        '  <md-dialog-content class="md-dialog-content" role="document" tabIndex="-1">',
+        '    <h2 class="md-title">{{ dialog.title }}</h2>',
+        '    <div class="md-dialog-content-body" md-template="::dialog.mdContent"></div>',
+        '  </md-dialog-content>',
+        '  <md-dialog-actions>',
+        '    <md-button ng-if="dialog.$type == \'confirm\'"' +
+        '               ng-click="dialog.abort()" class="md-primary">',
+        '      {{ dialog.cancel }}',
+        '    </md-button>',
+        '    <md-button ng-click="dialog.hide()" class="md-primary" md-autofocus="dialog.$type!=\'confirm\'">',
+        '      {{ dialog.ok }}',
+        '    </md-button>',
+        '  </md-dialog-actions>',
         '</md-dialog>'
       ].join('').replace(/\s\s+/g, ''),
       controller: function mdDialogCtrl() {
@@ -471,7 +471,7 @@ function MdDialogProvider($$interimElementProvider) {
   }
 
   /* ngInject */
-  function dialogDefaultOptions($mdDialog, $mdAria, $mdUtil, $mdConstant, $animate, $document, $window, $rootElement) {
+  function dialogDefaultOptions($mdDialog, $mdAria, $mdUtil, $mdConstant, $animate, $document, $window, $rootElement, $log) {
     return {
       hasBackdrop: true,
       isolateScope: true,
@@ -517,8 +517,20 @@ function MdDialogProvider($$interimElementProvider) {
         .then(function() {
           activateListeners(element, options);
           lockScreenReader(element, options);
+          warnDeprecatedActions();
           focusOnOpen();
         });
+
+      /**
+       * Check to see if they used the deprecated .md-actions class and log a warning
+       */
+      function warnDeprecatedActions() {
+        var badActions = element[0].querySelectorAll('.md-actions');
+
+        if (badActions.length > 0) {
+          $log.warn('Using a class of md-actions is deprected, please use <md-dialog-actions>.');
+        }
+      }
 
       /**
        * For alerts, focus on content... otherwise focus on
@@ -526,19 +538,24 @@ function MdDialogProvider($$interimElementProvider) {
        */
       function focusOnOpen() {
         if (options.focusOnOpen) {
-          var target = $mdUtil.findFocusTarget(element) || findCloseButton();
+          var target = $mdUtil.findFocusTarget(element) || findCloseButtonOrWarn();
           target.focus();
         }
 
         /**
-         *  If no element with class dialog-close, try to find the last
-         *  button child in md-actions and assume it is a close button
+         * If no element with class dialog-close, try to find the last
+         * button child in md-actions and assume it is a close button.
+         *
+         * If we find no actions at all, log a warning to the console.
          */
-        function findCloseButton() {
+        function findCloseButtonOrWarn() {
           var closeButton = element[0].querySelector('.dialog-close');
           if (!closeButton) {
-            var actionButtons = element[0].querySelectorAll('.md-actions button');
+            var actionButtons = element[0].querySelectorAll('.md-actions button, md-dialog-actions button');
             closeButton = actionButtons[actionButtons.length - 1];
+            if (actionButtons.length === 0) {
+              $log.warn('At least one action button is required for <md-dialog-actions>.');
+            }
           }
           return angular.element(closeButton);
         }
@@ -655,7 +672,6 @@ function MdDialogProvider($$interimElementProvider) {
             // If we have a reference to a raw dom element, always wrap it in jqLite
             return angular.element(element || defaultElement);
           }
-
 
         }
 
@@ -857,7 +873,6 @@ function MdDialogProvider($$interimElementProvider) {
      * Ensure the dialog container fill-stretches to the viewport
      */
     function stretchDialogContainerToViewport(container, options) {
-
       var isFixed = $window.getComputedStyle($document[0].body).position == 'fixed';
       var backdrop = options.backdrop ? $window.getComputedStyle(options.backdrop[0]) : null;
       var height = backdrop ? Math.min($document[0].body.clientHeight, Math.ceil(Math.abs(parseInt(backdrop.height, 10)))) : 0;
@@ -874,7 +889,6 @@ function MdDialogProvider($$interimElementProvider) {
      *  Dialog open and pop-in animation
      */
     function dialogPopIn(container, options) {
-
       // Add the `md-dialog-container` to the DOM
       options.parent.append(container);
       stretchDialogContainerToViewport(container, options);

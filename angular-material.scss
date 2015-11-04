@@ -1702,7 +1702,7 @@ md-card {
     padding: $card-padding;
   }
 
-  .md-actions {
+  .md-actions, md-card-actions {
     margin: 0;
 
     .md-button {
@@ -2537,7 +2537,7 @@ md-dialog {
     }
   }
 
-  .md-actions {
+  .md-actions, md-dialog-actions {
     display: flex;
     order: 2;
     box-sizing: border-box;
@@ -2556,9 +2556,11 @@ md-dialog {
       margin-top: $baseline-grid;
     }
   }
-  &.md-content-overflow .md-actions {
-    border-top-width: 1px;
-    border-top-style: solid;
+  &.md-content-overflow {
+    .md-actions, md-dialog-actions {
+      border-top-width: 1px;
+      border-top-style: solid;
+    }
   }
 
 }
