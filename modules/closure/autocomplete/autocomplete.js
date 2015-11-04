@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-6879c6f
+ * v1.0.0-rc2-master-fbf45fd
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -722,7 +722,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * results first, then forwards the process to `fetchResults` if necessary.
    */
   function handleQuery () {
-    var searchText = $scope.searchText,
+    var searchText = $scope.searchText || '',
         term       = searchText.toLowerCase();
     //-- if results are cached, pull in cached results
     if (!$scope.noCache && cache[ term ]) {

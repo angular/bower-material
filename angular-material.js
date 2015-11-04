@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-6879c6f
+ * v1.0.0-rc2-master-fbf45fd
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -17799,7 +17799,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * results first, then forwards the process to `fetchResults` if necessary.
    */
   function handleQuery () {
-    var searchText = $scope.searchText,
+    var searchText = $scope.searchText || '',
         term       = searchText.toLowerCase();
     //-- if results are cached, pull in cached results
     if (!$scope.noCache && cache[ term ]) {
@@ -22824,4 +22824,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-6879c6f"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-fbf45fd"}};
