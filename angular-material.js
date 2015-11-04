@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-e778cdd
+ * v1.0.0-rc2-master-ead4d02
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -20263,8 +20263,8 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout) {
           self.currentlyOpenMenu.close(true, { closeTo: closeTo });
         } else if (nestedMenu && !nestedMenu.isOpen && nestedMenu.open) {
           self.isAlreadyOpening = true;
-          nestedMenu.open();
         }
+        nestedMenu.open();
       }, nestedMenu ? 100 : 250);
       var focusableTarget = event.currentTarget.querySelector('button:not([disabled])');
       focusableTarget && focusableTarget.focus();
@@ -22873,4 +22873,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-e778cdd"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-ead4d02"}};
