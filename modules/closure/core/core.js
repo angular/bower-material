@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-5004a2a
+ * v1.0.0-rc2-master-6879c6f
  */
 goog.provide('ng.material.core');
 
@@ -3108,7 +3108,10 @@ function InterimElementProvider() {
       updateFn(getNormalizedAttrValue(className, attrs, ""));
       scope.$on("$destroy", function() { unwatch() });
 
-      if (config.removeAttributes) element.removeAttr(className);
+
+      if (config.removeAttributes && (element[0].nodeName != "#comment")) {
+        element.removeAttr(className);
+      }
     }
   }
 
