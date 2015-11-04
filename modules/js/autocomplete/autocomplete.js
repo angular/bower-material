@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-fbf45fd
+ * v1.0.0-rc2-master-9693204
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -906,9 +906,8 @@ function MdAutocomplete () {
           leftover        = element.html(),
           tabindex        = attr.tabindex;
 
-      if (noItemsTemplate) {
-        hasNotFoundTemplate = true;
-      }
+      // Set our variable for the link function above which runs later
+      hasNotFoundTemplate = noItemsTemplate ? true : false;
 
       if (attr.hasOwnProperty('tabindex')) {
         element.attr('tabindex', '-1');

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-fbf45fd
+ * v1.0.0-rc2-master-9693204
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -17988,9 +17988,8 @@ function MdAutocomplete () {
           leftover        = element.html(),
           tabindex        = attr.tabindex;
 
-      if (noItemsTemplate) {
-        hasNotFoundTemplate = true;
-      }
+      // Set our variable for the link function above which runs later
+      hasNotFoundTemplate = noItemsTemplate ? true : false;
 
       if (attr.hasOwnProperty('tabindex')) {
         element.attr('tabindex', '-1');
@@ -22824,4 +22823,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-fbf45fd"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-9693204"}};
