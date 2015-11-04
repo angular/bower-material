@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-27d1867
+ * v1.0.0-rc2-master-71976be
  */
 goog.provide('ng.material.components.datepicker');
 goog.require('ng.material.components.icon');
@@ -1351,8 +1351,15 @@ goog.require('ng.material.core');
 
     var self = this;
     ngModelCtrl.$render = function() {
-      self.date = self.ngModelCtrl.$viewValue;
-      self.inputElement.value = self.dateLocale.formatDate(self.date);
+      var value = self.ngModelCtrl.$viewValue;
+
+      if (value && !(value instanceof Date)) {
+        throw Error('The ng-model for md-datepicker must be a Date instance. ' +
+            'Currently the model is a: ' + (typeof value));
+      }
+
+      self.date = value;
+      self.inputElement.value = self.dateLocale.formatDate(value);
       self.resizeInputElement();
       self.setErrorFlags();
     };
