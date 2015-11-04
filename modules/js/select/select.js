@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-ead4d02
+ * v1.0.0-rc2-master-27c65fd
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -78,6 +78,52 @@ angular.module('material.components.select', [
  *       <md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>
  *     </md-select>
  *   </md-input-container>
+ * </hljs>
+ *
+ * ## Selects and object equality
+ * When using a `md-select` to pick from a list of objects, it is important to realize how javascript handles
+ * equality. Consider the following example:
+ * <hljs lang="js">
+ * angular.controller('MyCtrl', function($scope) {
+ *   $scope.users = [
+ *     { id: 1, name: 'Bob' },
+ *     { id: 2, name: 'Alice' },
+ *     { id: 3, name: 'Steve' }
+ *   ];
+ *   $scope.selectedUser = { id: 1, name: 'Bob' };
+ * });
+ * </hljs>
+ * <hljs lang="html">
+ * <div ng-controller="MyCtrl">
+ *   <md-select ng-model="selectedUser">
+ *     <md-option ng-value="user" ng-repeat="user in users">{{ user.name }}</md-option>
+ *   </md-select>
+ * </div>
+ * </hljs>
+ *
+ * At first one might expect that the select should be populated with "Bob" as the selected user. However,
+ * this is not true. To determine whether something is selected, 
+ * `ngModelController` is looking at whether `$scope.selectedUser == (any user in $scope.users);`;
+ * 
+ * Javascript's `==` operator does not check for deep equality (ie. that all properties
+ * on the object are the same), but instead whether the objects are *the same object in memory*.
+ * In this case, we have two instances of identical objects, but they exist in memory as unique
+ * entities. Because of this, the select will have no value populated for a selected user.
+ *
+ * To get around this, `ngModelController` provides a `track by` option that allows us to specify a different
+ * expression which will be used for the equality operator. As such, we can update our `html` to
+ * make use of this by specifying the `ng-model-options="{trackBy: '$value.id'}"` on the `md-select`
+ * element. This converts our equality expression to be 
+ * `$scope.selectedUser.id == (any id in $scope.users.map(function(u) { return u.id; }));`
+ * which results in Bob being selected as desired.
+ *
+ * Working HTML:
+ * <hljs lang="html">
+ * <div ng-controller="MyCtrl">
+ *   <md-select ng-model="selectedUser" ng-model-options="{trackBy: '$value.id'}">
+ *     <md-option ng-value="user" ng-repeat="user in users">{{ user.name }}</md-option>
+ *   </md-select>
+ * </div>
  * </hljs>
  */
 function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $parse) {
