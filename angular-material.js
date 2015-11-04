@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-bb83931
+ * v1.0.0-rc2-master-cba5fa7
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13088,11 +13088,11 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
     // and values matching every option's controller.
     self.options = {};
 
-    $scope.$watch(function() {
+    $scope.$watchCollection(function() {
       return self.options;
     }, function() {
       self.ngModel.$render();
-    }, true);
+    });
 
     var deregisterCollectionWatch;
     var defaultIsEmpty;
@@ -13239,6 +13239,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
         }
       }
       self.ngModel.$setViewValue(self.isMultiple ? values : values[0]);
+      self.ngModel.$render();
     };
 
     function renderMultiple() {
@@ -22858,4 +22859,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-bb83931"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-cba5fa7"}};
