@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-0018fe9
+ * v1.0.0-rc2-master-65e15bf
  */
 html, body {
   height: 100%;
@@ -8723,8 +8723,6 @@ md-tab-content {
   left: 0;
   right: 0;
   bottom: 0;
-  -webkit-transform: translateX(0);
-          transform: translateX(0);
   transition: -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
   transition: transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
   overflow: auto; }
