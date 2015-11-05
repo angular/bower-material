@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-65b2454
+ * v1.0.0-rc2-master-2a76887
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -385,7 +385,6 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $animate, 
      */
     function close(ev) {
       ev.preventDefault();
-      ev.stopPropagation();
 
       return sidenavCtrl.close();
     }
