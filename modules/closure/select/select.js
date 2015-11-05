@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-41671e2
+ * v1.0.0-rc2-master-f31d255
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -1166,6 +1166,7 @@ function SelectProvider($$interimElementProvider) {
               break;
             case keyCodes.TAB:
             case keyCodes.ESCAPE:
+              ev.stopPropagation();
               ev.preventDefault();
               opts.restoreFocus = true;
               $mdUtil.nextTick($mdSelect.hide, true);

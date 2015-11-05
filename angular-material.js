@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-41671e2
+ * v1.0.0-rc2-master-f31d255
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13765,6 +13765,7 @@ function SelectProvider($$interimElementProvider) {
               break;
             case keyCodes.TAB:
             case keyCodes.ESCAPE:
+              ev.stopPropagation();
               ev.preventDefault();
               opts.restoreFocus = true;
               $mdUtil.nextTick($mdSelect.hide, true);
@@ -22923,4 +22924,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-41671e2"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-f31d255"}};
