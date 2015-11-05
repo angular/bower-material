@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-a17d9be
+ * v1.0.0-rc2-master-d59bd5e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -751,7 +751,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
         var scrollOffset = $mdUtil.scrollTop(body);
         var clientWidth = body.clientWidth;
 
-        if (body.scrollHeight > body.clientHeight) {
+        if (body.scrollHeight > body.clientHeight + 1) {
           applyStyles(body, {
             position: 'fixed',
             width: '100%',

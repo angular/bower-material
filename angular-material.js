@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-a17d9be
+ * v1.0.0-rc2-master-d59bd5e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -775,7 +775,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
         var scrollOffset = $mdUtil.scrollTop(body);
         var clientWidth = body.clientWidth;
 
-        if (body.scrollHeight > body.clientHeight) {
+        if (body.scrollHeight > body.clientHeight + 1) {
           applyStyles(body, {
             position: 'fixed',
             width: '100%',
@@ -22924,4 +22924,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-a17d9be"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-d59bd5e"}};
