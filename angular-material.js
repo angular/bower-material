@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-cedb116
+ * v1.0.0-rc2-master-d69d6d0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -17681,9 +17681,9 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
         select(ctrl.index);
         break;
       case $mdConstant.KEY_CODE.ENTER:
+        if (ctrl.hidden || ctrl.loading || ctrl.index < 0 || ctrl.matches.length < 1) return;
         event.stopPropagation();
         event.preventDefault();
-        if (ctrl.hidden || ctrl.loading || ctrl.index < 0 || ctrl.matches.length < 1) return;
         select(ctrl.index);
         break;
       case $mdConstant.KEY_CODE.ESCAPE:
@@ -18663,8 +18663,30 @@ function MdChipsCtrl ($scope, $mdConstant, $log, $element, $timeout) {
    * Whether to use the onAppend expression to transform the chip buffer
    * before appending it to the list.
    * @type {boolean}
+   *
+   *
+   * @deprecated Will remove in 1.0.
    */
   this.useOnAppend = false;
+
+  /**
+   * Whether to use the transformChip expression to transform the chip buffer
+   * before appending it to the list.
+   * @type {boolean}
+   */
+  this.useTransformChip = false;
+
+  /**
+   * Whether to use the onAdd expression to notify of chip additions.
+   * @type {boolean}
+   */
+  this.useOnAdd = false;
+
+  /**
+   * Whether to use the onRemove expression to notify of chip removals.
+   * @type {boolean}
+   */
+  this.useOnRemove = false;
 
   /**
    * Whether to use the onSelect expression to notify the component's user
@@ -18683,6 +18705,11 @@ MdChipsCtrl.$inject = ["$scope", "$mdConstant", "$log", "$element", "$timeout"];
  */
 MdChipsCtrl.prototype.inputKeydown = function(event) {
   var chipBuffer = this.getChipBuffer();
+
+  // If we have an autocomplete, and it handled the event, we have nothing to do
+  if (this.hasAutocomplete && event.isDefaultPrevented && event.isDefaultPrevented()) {
+    return;
+  }
 
   switch (event.keyCode) {
     case this.$mdConstant.KEY_CODE.ENTER:
@@ -18780,30 +18807,40 @@ MdChipsCtrl.prototype.getAdjacentChipIndex = function(index) {
 
 /**
  * Append the contents of the buffer to the chip list. This method will first
- * call out to the md-on-append method, if provided
+ * call out to the md-transform-chip method, if provided.
+ *
  * @param newChip
  */
- MdChipsCtrl.prototype.appendChip = function(newChip) {
+MdChipsCtrl.prototype.appendChip = function(newChip) {
+  if (this.useTransformChip && this.transformChip) {
+    var transformedChip = this.transformChip({'$chip': newChip});
 
-   // If useOnAppend and onAppend function is provided call it.
-   if (this.useOnAppend && this.onAppend) {
-     newChip = this.onAppend({'$chip': newChip});
-   }
+    // Check to make sure the chip is defined before assigning it, otherwise, we'll just assume
+    // they want the string version.
+    if (angular.isDefined(transformedChip)) {
+      newChip = transformedChip;
+    }
+  }
 
-   // If items contains identical object to newChip do not append
-   if(angular.isObject(newChip)){
-     var identical = this.items.some(function(item){
-       return angular.equals(newChip, item);
-     });
-     if(identical) return;
-   }
+  // If items contains an identical object to newChip, do not append
+  if (angular.isObject(newChip)){
+    var identical = this.items.some(function(item){
+      return angular.equals(newChip, item);
+    });
+    if(identical) return;
+  }
 
-   // If items contains newChip do not append
-   if (this.items.indexOf(newChip) + 1) return;
+  // Check for a null (but not undefined), or existing chip and cancel appending
+  if (newChip == null || this.items.indexOf(newChip) + 1) return;
 
-   //add newChip to items
-   this.items.push(newChip);
- };
+  // Append the new chip onto our list
+  var index = this.items.push(newChip);
+
+  // If they provide the md-on-add attribute, notify them of the chip addition
+  if (this.useOnAdd && this.onAdd) {
+    this.onAdd({ '$chip': newChip, '$index': index });
+  }
+};
 
 /**
  * Sets whether to use the md-on-append expression. This expression is
@@ -18811,9 +18848,39 @@ MdChipsCtrl.prototype.getAdjacentChipIndex = function(index) {
  * {@code onAppend}. Due to the nature of directive scope bindings, the
  * controller cannot know on its own/from the scope whether an expression was
  * actually provided.
+ *
+ * @deprecated
+ *
+ * TODO: Remove deprecated md-on-append functionality in 1.0
  */
 MdChipsCtrl.prototype.useOnAppendExpression = function() {
-  this.useOnAppend = true;
+  this.$log.warn("md-on-append is deprecated; please use md-transform-chip or md-on-add instead");
+  if (!this.useTransformChip || !this.transformChip) {
+    this.useTransformChip = true;
+    this.transformChip = this.onAppend;
+  }
+};
+
+/**
+ * Sets whether to use the md-transform-chip expression. This expression is
+ * bound to scope and controller in {@code MdChipsDirective} as
+ * {@code transformChip}. Due to the nature of directive scope bindings, the
+ * controller cannot know on its own/from the scope whether an expression was
+ * actually provided.
+ */
+MdChipsCtrl.prototype.useTransformChipExpression = function() {
+  this.useTransformChip = true;
+};
+
+/**
+ * Sets whether to use the md-on-add expression. This expression is
+ * bound to scope and controller in {@code MdChipsDirective} as
+ * {@code onAdd}. Due to the nature of directive scope bindings, the
+ * controller cannot know on its own/from the scope whether an expression was
+ * actually provided.
+ */
+MdChipsCtrl.prototype.useOnAddExpression = function() {
+  this.useOnAdd = true;
 };
 
 /**
@@ -19089,11 +19156,18 @@ MdChipsCtrl.prototype.hasFocus = function () {
    *    displayed when there is at least on item in the list
    * @param {boolean=} readonly Disables list manipulation (deleting or adding list items), hiding
    *    the input and delete buttons
-   * @param {expression} md-on-append An expression that when called expects you to return an object
-   *    representation of the chip input string.
+   * @param {expression} md-transform-chip An expression of form `myFunction($chip)` that when called
+   *    expects one of the following return values:
+   *    - an object representing the `$chip` input string
+   *    - `undefined` to simply add the `$chip` input string, or
+   *    - `null` to prevent the chip from being appended
+   * @param {expression=} md-on-add An expression which will be called when a chip has been
+   *    added.
    * @param {expression=} md-on-remove An expression which will be called when a chip has been
    *    removed.
    * @param {expression=} md-on-select An expression which will be called when a chip is selected.
+   * @param {boolean} md-require-match If true, and the chips template contains an autocomplete,
+   *    only allow selection of pre-defined chips (i.e. you cannot add new ones).
    * @param {string=} delete-hint A string read by screen readers instructing users that pressing
    *    the delete key will remove the chip.
    * @param {string=} delete-button-label A label for the delete button. Also hidden and read by
@@ -19189,7 +19263,9 @@ MdChipsCtrl.prototype.hasFocus = function () {
         readonly: '=readonly',
         placeholder: '@',
         secondaryPlaceholder: '@',
+        transformChip: '&mdTransformChip',
         onAppend: '&mdOnAppend',
+        onAdd: '&mdOnAdd',
         onRemove: '&mdOnRemove',
         onSelect: '&mdOnSelect',
         deleteHint: '@',
@@ -19270,9 +19346,19 @@ MdChipsCtrl.prototype.hasFocus = function () {
         if (attr.ngModel) {
           mdChipsCtrl.configureNgModel(element.controller('ngModel'));
 
+          // If an `md-transform-chip` attribute was set, tell the controller to use the expression
+          // before appending chips.
+          if (attrs.mdTransformChip) mdChipsCtrl.useTransformChipExpression();
+
           // If an `md-on-append` attribute was set, tell the controller to use the expression
           // when appending chips.
+          //
+          // DEPRECATED: Will remove in official 1.0 release
           if (attrs.mdOnAppend) mdChipsCtrl.useOnAppendExpression();
+
+          // If an `md-on-add` attribute was set, tell the controller to use the expression
+          // when adding chips.
+          if (attrs.mdOnAdd) mdChipsCtrl.useOnAddExpression();
 
           // If an `md-on-remove` attribute was set, tell the controller to use the expression
           // when removing chips.
@@ -22992,4 +23078,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-cedb116"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-d69d6d0"}};

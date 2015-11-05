@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-cedb116
+ * v1.0.0-rc2-master-d69d6d0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -434,9 +434,9 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
         select(ctrl.index);
         break;
       case $mdConstant.KEY_CODE.ENTER:
+        if (ctrl.hidden || ctrl.loading || ctrl.index < 0 || ctrl.matches.length < 1) return;
         event.stopPropagation();
         event.preventDefault();
-        if (ctrl.hidden || ctrl.loading || ctrl.index < 0 || ctrl.matches.length < 1) return;
         select(ctrl.index);
         break;
       case $mdConstant.KEY_CODE.ESCAPE:
