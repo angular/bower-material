@@ -2,14 +2,14 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-ce2f28d
+ * v1.0.0-rc2-master-0690e1b
  */
 md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {
   background-color: '{{primary-color}}';
   color: '{{primary-contrast}}'; }
   md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-icon {
     color: '{{primary-contrast}}'; }
-  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) .md-button {
+  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) .md-button:not(.md-raised) {
     color: '{{primary-contrast}}'; }
   md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent {
     background-color: '{{accent-color}}';
