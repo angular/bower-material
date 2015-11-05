@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-e5fa785
+ * v1.0.0-rc2-master-bd65bf7
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -282,7 +282,7 @@ function MdToastProvider($$interimElementProvider) {
 
     function onRemove(scope, element, options) {
       element.off(SWIPE_EVENTS, options.onSwipe);
-      options.parent.removeClass(options.openClass);
+      if (options.openClass) options.parent.removeClass(options.openClass);
 
       return (options.$destroy == true) ? element.remove() : $animate.leave(element);
     }

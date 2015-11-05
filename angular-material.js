@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-e5fa785
+ * v1.0.0-rc2-master-bd65bf7
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -6409,7 +6409,7 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
         if(ngModelCtrl.$viewValue) {
           element.addClass(CHECKED_CSS);
         } else {
-          element.removeClass(CHECKED_CSS);
+          if (CHECKED_CSS) element.removeClass(CHECKED_CSS);
         }
       }
     };
@@ -11984,11 +11984,11 @@ function MdProgressCircularDirective($mdTheming, $mdUtil, $log) {
          case MODE_DETERMINATE:
          case MODE_INDETERMINATE:
            spinnerWrapper.removeClass('ng-hide');
-           spinnerWrapper.removeClass( lastMode );
+           if (lastMode) spinnerWrapper.removeClass(lastMode);
            spinnerWrapper.addClass( lastMode = "md-mode-" + mode );
            break;
          default:
-           spinnerWrapper.removeClass( lastMode );
+           if (lastMode) spinnerWrapper.removeClass( lastMode );
            spinnerWrapper.addClass('ng-hide');
            lastMode = undefined;
            break;
@@ -12238,7 +12238,7 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
             container.addClass( lastMode = "md-mode-" + mode );
             break;
           default:
-            container.removeClass( lastMode );
+            if (lastMode) container.removeClass( lastMode );
             container.addClass('ng-hide');
             lastMode = undefined;
             break;
@@ -12616,7 +12616,7 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
 
       } else {
         markParentAsChecked(false);
-        element.removeClass(CHECKED_CSS);
+        if (CHECKED_CSS) element.removeClass(CHECKED_CSS);
       }
 
       /**
@@ -12624,7 +12624,7 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
        */
       function markParentAsChecked(addClass ) {
         if ( element.parent()[0].nodeName != "MD-RADIO-GROUP") {
-          element.parent()[ !!addClass ? 'addClass' : 'removeClass'](CHECKED_CSS);
+          if (CHECKED_CSS) element.parent()[ !!addClass ? 'addClass' : 'removeClass'](CHECKED_CSS);
         }
 
       }
@@ -15889,7 +15889,7 @@ function MdToastProvider($$interimElementProvider) {
 
     function onRemove(scope, element, options) {
       element.off(SWIPE_EVENTS, options.onSwipe);
-      options.parent.removeClass(options.openClass);
+      if (options.openClass) options.parent.removeClass(options.openClass);
 
       return (options.$destroy == true) ? element.remove() : $animate.leave(element);
     }
@@ -23078,4 +23078,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-e5fa785"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-bd65bf7"}};

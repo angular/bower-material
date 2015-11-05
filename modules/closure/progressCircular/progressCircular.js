@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-e5fa785
+ * v1.0.0-rc2-master-bd65bf7
  */
 goog.provide('ng.material.components.progressCircular');
 goog.require('ng.material.core');
@@ -126,11 +126,11 @@ function MdProgressCircularDirective($mdTheming, $mdUtil, $log) {
          case MODE_DETERMINATE:
          case MODE_INDETERMINATE:
            spinnerWrapper.removeClass('ng-hide');
-           spinnerWrapper.removeClass( lastMode );
+           if (lastMode) spinnerWrapper.removeClass(lastMode);
            spinnerWrapper.addClass( lastMode = "md-mode-" + mode );
            break;
          default:
-           spinnerWrapper.removeClass( lastMode );
+           if (lastMode) spinnerWrapper.removeClass( lastMode );
            spinnerWrapper.addClass('ng-hide');
            lastMode = undefined;
            break;
