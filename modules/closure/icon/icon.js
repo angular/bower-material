@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-d59bd5e
+ * v1.0.0-rc2-master-6887665
  */
 goog.provide('ng.material.components.icon');
 goog.require('ng.material.core');
@@ -39,7 +39,7 @@ angular
  * your icons instead of text. Benefits include a straightforward way to bundle everything into a
  * single HTTP request, simple scaling, easy color changing, and more.
  *
- * `md-icon` let's you consume an icon font by letting you reference specific icons in that font
+ * `md-icon` lets you consume an icon font by letting you reference specific icons in that font
  * by name rather than character code.
  *
  * ### SVG
@@ -49,7 +49,7 @@ angular
  *
  * `md-icon` makes it easier to use SVG icons by *inlining* the SVG into an `<svg>` element in the
  * document. The most straightforward way of referencing an SVG icon is via URL, just like a
- * traditional `<img>`. `$mdIconProvider`, as a convenience, let's you _name_ an icon so you can
+ * traditional `<img>`. `$mdIconProvider`, as a convenience, lets you _name_ an icon so you can
  * reference it by name instead of URL throughout your templates.
  *
  * Additionally, you may not want to make separate HTTP requests for every icon, so you can bundle
