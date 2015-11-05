@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-2a76887
+ * v1.0.0-rc2-master-cedb116
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3668,6 +3668,21 @@ function InkRippleCtrl ($scope, $element, rippleOptions, $window, $timeout, $mdU
 }
 InkRippleCtrl.$inject = ["$scope", "$element", "rippleOptions", "$window", "$timeout", "$mdUtil"];
 
+
+/**
+ * Either remove or unlock any remaining ripples when the user mouses off of the element (either by
+ * mouseup or mouseleave event)
+ */
+function autoCleanup (self, cleanupFn) {
+
+  if ( self.mousedown || self.lastRipple ) {
+    self.mousedown = false;
+    self.$mdUtil.nextTick( angular.bind(self, cleanupFn), false);
+  }
+
+}
+
+
 /**
  * Returns the color that the ripple should be (either based on CSS or hard-coded)
  * @returns {string}
@@ -3761,25 +3776,10 @@ InkRippleCtrl.prototype.handleMousedown = function (event) {
 
 /**
  * Either remove or unlock any remaining ripples when the user mouses off of the element (either by
- * mouseup or mouseleave event)
- */
-InkRippleCtrl.prototype._handleRemoval = function (cb) {
-  if ( this.mousedown || this.lastRipple ) {
-    this.mousedown = false;
-    this.$mdUtil.nextTick(function () {
-      cb();
-    }, false);
-  }
-};
-
-/**
- * Either remove or unlock any remaining ripples when the user mouses off of the element (either by
  * mouseup, touchend or mouseleave event)
  */
 InkRippleCtrl.prototype.handleMouseup = function () {
-  var ctrl = this;
-
-  ctrl._handleRemoval(angular.bind(ctrl, ctrl.clearRipples));
+  autoCleanup(this, this.clearRipples);
 };
 
 /**
@@ -3787,9 +3787,7 @@ InkRippleCtrl.prototype.handleMouseup = function () {
  * touchmove)
  */
 InkRippleCtrl.prototype.handleTouchmove = function () {
-  var ctrl = this;
-
-  ctrl._handleRemoval(angular.bind(ctrl, ctrl.deleteRipples));
+  autoCleanup(this, this.deleteRipples);
 };
 
 /**
@@ -3903,7 +3901,7 @@ InkRippleCtrl.prototype.setColor = function (color) {
 };
 
 /**
- * Either kicks off the fade-out animation or queues the element for removal on mouseup
+ * After fadeIn finishes, either kicks off the fade-out animation or queues the element for removal on mouseup
  * @param ripple
  */
 InkRippleCtrl.prototype.fadeInComplete = function (ripple) {
@@ -6578,6 +6576,7 @@ function iosScrollFix(node) {
       scope: {
         minDate: '=mdMinDate',
         maxDate: '=mdMaxDate',
+        dateFilter: '=mdDateFilter',
       },
       require: ['ngModel', 'mdCalendar'],
       controller: CalendarCtrl,
@@ -7184,8 +7183,7 @@ function iosScrollFix(node) {
 
       var cellText = this.dateLocale.dates[opt_date.getDate()];
 
-      if (this.dateUtil.isDateWithinRange(opt_date,
-          this.calendarCtrl.minDate, this.calendarCtrl.maxDate)) {
+      if (this.isDateEnabled(opt_date)) {
         // Add a indicator for select, hover, and focus states.
         var selectionIndicator = document.createElement('span');
         cell.appendChild(selectionIndicator);
@@ -7205,7 +7203,19 @@ function iosScrollFix(node) {
 
     return cell;
   };
-
+  
+  /**
+   * Check whether date is in range and enabled
+   * @param {Date=} opt_date
+   * @return {boolean} Whether the date is enabled.
+   */
+  CalendarMonthCtrl.prototype.isDateEnabled = function(opt_date) {
+    return this.dateUtil.isDateWithinRange(opt_date, 
+          this.calendarCtrl.minDate, this.calendarCtrl.maxDate) && 
+          (!angular.isFunction(this.calendarCtrl.dateFilter)
+           || this.calendarCtrl.dateFilter(opt_date));
+  }
+  
   /**
    * Builds a `tr` element for the calendar grid.
    * @param rowNumber The week number within the month.
@@ -7645,6 +7655,7 @@ function iosScrollFix(node) {
    * @param {expression=} ng-change Expression evaluated when the model value changes.
    * @param {Date=} md-min-date Expression representing a min date (inclusive).
    * @param {Date=} md-max-date Expression representing a max date (inclusive).
+   * @param {(function(Date): boolean)=} md-date-filter Function expecting a date and returning a boolean whether it can be selected or not.
    * @param {boolean=} disabled Whether the datepicker is disabled.
    * @param {boolean=} required Whether a value is required for the datepicker.
    *
@@ -7696,6 +7707,7 @@ function iosScrollFix(node) {
             '<div class="md-datepicker-calendar">' +
               '<md-calendar role="dialog" aria-label="{{::ctrl.dateLocale.msgCalendar}}" ' +
                   'md-min-date="ctrl.minDate" md-max-date="ctrl.maxDate"' +
+                  'md-date-filter="ctrl.dateFilter"' +
                   'ng-model="ctrl.date" ng-if="ctrl.isCalendarOpen">' +
               '</md-calendar>' +
             '</div>' +
@@ -7704,7 +7716,8 @@ function iosScrollFix(node) {
       scope: {
         minDate: '=mdMinDate',
         maxDate: '=mdMaxDate',
-        placeholder: '@mdPlaceholder'
+        placeholder: '@mdPlaceholder',
+        dateFilter: '=mdDateFilter'
       },
       controller: DatePickerCtrl,
       controllerAs: 'ctrl',
@@ -7978,6 +7991,10 @@ function iosScrollFix(node) {
       if (this.dateUtil.isValidDate(this.maxDate)) {
         this.ngModelCtrl.$setValidity('maxdate', this.date <= this.maxDate);
       }
+      
+      if (angular.isFunction(this.dateFilter)) {
+        this.ngModelCtrl.$setValidity('filtered', this.dateFilter(this.date));
+      }
     }
   };
 
@@ -7999,8 +8016,8 @@ function iosScrollFix(node) {
       this.date = null;
       this.inputContainer.classList.remove(INVALID_CLASS);
     } else if (this.dateUtil.isValidDate(parsedDate) &&
-        this.dateLocale.isDateComplete(inputString) &&
-        this.dateUtil.isDateWithinRange(parsedDate, this.minDate, this.maxDate)) {
+        this.dateLocale.isDateComplete(inputString) && 
+        this.isDateEnabled(parsedDate)) {
       this.ngModelCtrl.$setViewValue(parsedDate);
       this.date = parsedDate;
       this.inputContainer.classList.remove(INVALID_CLASS);
@@ -8009,7 +8026,17 @@ function iosScrollFix(node) {
       this.inputContainer.classList.toggle(INVALID_CLASS, inputString);
     }
   };
-
+  
+  /**
+   * Check whether date is in range and enabled
+   * @param {Date=} opt_date
+   * @return {boolean} Whether the date is enabled.
+   */
+  DatePickerCtrl.prototype.isDateEnabled = function(opt_date) {
+    return this.dateUtil.isDateWithinRange(opt_date, this.minDate, this.maxDate) && 
+          (!angular.isFunction(this.dateFilter) || this.dateFilter(opt_date));
+  }
+  
   /** Position and attach the floating calendar to the document. */
   DatePickerCtrl.prototype.attachCalendarPane = function() {
     var calendarPane = this.calendarPane;
@@ -22965,4 +22992,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-2a76887"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-cedb116"}};
