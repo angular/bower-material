@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-f30dd8c
+ * v1.0.0-rc2-master-65b2454
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3736,8 +3736,8 @@ InkRippleCtrl.prototype._parseColor = function parseColor (color, multiplier) {
  */
 InkRippleCtrl.prototype.bindEvents = function () {
   this.$element.on('mousedown', angular.bind(this, this.handleMousedown));
-  this.$element.on('mouseup', angular.bind(this, this.handleMouseup));
-  this.$element.on('mouseleave', angular.bind(this, this.handleMouseup));
+  this.$element.on('mouseup touchend mouseleave', angular.bind(this, this.handleMouseup));
+  this.$element.on('touchmove', angular.bind(this, this.handleTouchmove));
 };
 
 /**
@@ -3763,18 +3763,46 @@ InkRippleCtrl.prototype.handleMousedown = function (event) {
  * Either remove or unlock any remaining ripples when the user mouses off of the element (either by
  * mouseup or mouseleave event)
  */
-InkRippleCtrl.prototype.handleMouseup = function () {
+InkRippleCtrl.prototype._handleRemoval = function (cb) {
   if ( this.mousedown || this.lastRipple ) {
-    var ctrl       = this;
     this.mousedown = false;
     this.$mdUtil.nextTick(function () {
-      ctrl.clearRipples();
+      cb();
     }, false);
   }
 };
 
 /**
+ * Either remove or unlock any remaining ripples when the user mouses off of the element (either by
+ * mouseup, touchend or mouseleave event)
+ */
+InkRippleCtrl.prototype.handleMouseup = function () {
+  var ctrl = this;
+
+  ctrl._handleRemoval(angular.bind(ctrl, ctrl.clearRipples));
+};
+
+/**
+ * Either remove or unlock any remaining ripples when the user mouses off of the element (by
+ * touchmove)
+ */
+InkRippleCtrl.prototype.handleTouchmove = function () {
+  var ctrl = this;
+
+  ctrl._handleRemoval(angular.bind(ctrl, ctrl.deleteRipples));
+};
+
+/**
  * Cycles through all ripples and attempts to remove them.
+ */
+InkRippleCtrl.prototype.deleteRipples = function () {
+  for (var i = 0; i < this.ripples.length; i++) {
+    this.ripples[ i ].remove();
+  }
+};
+
+/**
+ * Cycles through all ripples and attempts to remove them with fade.
  * Depending on logic within `fadeInComplete`, some removals will be postponed.
  */
 InkRippleCtrl.prototype.clearRipples = function () {
@@ -22938,4 +22966,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-f30dd8c"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-65b2454"}};
