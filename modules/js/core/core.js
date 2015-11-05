@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-65e15bf
+ * v1.0.0-rc2-master-f30dd8c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3691,7 +3691,7 @@ InkRippleCtrl.prototype.handleMousedown = function (event) {
   if (this.options.center) {
     this.createRipple(this.container.prop('clientWidth') / 2, this.container.prop('clientWidth') / 2);
   } else {
-    this.createRipple(event.layerX, event.layerY);
+    this.createRipple(event.offsetX, event.offsetY);
   }
 };
 
