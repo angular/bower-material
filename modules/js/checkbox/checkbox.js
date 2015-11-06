@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-3c9ba38
+ * v1.0.0-rc2-master-6dd783f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -176,7 +176,7 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
         if(ngModelCtrl.$viewValue) {
           element.addClass(CHECKED_CSS);
         } else {
-          if (CHECKED_CSS) element.removeClass(CHECKED_CSS);
+          element.removeClass(CHECKED_CSS);
         }
       }
     };

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-3c9ba38
+ * v1.0.0-rc2-master-6dd783f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -312,7 +312,7 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
 
       } else {
         markParentAsChecked(false);
-        if (CHECKED_CSS) element.removeClass(CHECKED_CSS);
+        element.removeClass(CHECKED_CSS);
       }
 
       /**
@@ -320,7 +320,7 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
        */
       function markParentAsChecked(addClass ) {
         if ( element.parent()[0].nodeName != "MD-RADIO-GROUP") {
-          if (CHECKED_CSS) element.parent()[ !!addClass ? 'addClass' : 'removeClass'](CHECKED_CSS);
+          element.parent()[ !!addClass ? 'addClass' : 'removeClass'](CHECKED_CSS);
         }
 
       }

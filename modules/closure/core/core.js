@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-3c9ba38
+ * v1.0.0-rc2-master-6dd783f
  */
 goog.provide('ng.material.core');
 
@@ -3183,9 +3183,7 @@ function InterimElementProvider() {
     return function updateClassFn(newValue) {
       var value = validateAttributeValue(className, newValue || "");
       if ( angular.isDefined(value) ) {
-        if (lastClass) { 
-          element.removeClass(lastClass);
-        }
+        if (lastClass) element.removeClass(lastClass);
         lastClass = !value ? className : className + "-" + value.replace(WHITESPACE, "-");
         element.addClass(lastClass);
       }

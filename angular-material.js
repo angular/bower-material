@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-3c9ba38
+ * v1.0.0-rc2-master-6dd783f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3224,9 +3224,7 @@ function InterimElementProvider() {
     return function updateClassFn(newValue) {
       var value = validateAttributeValue(className, newValue || "");
       if ( angular.isDefined(value) ) {
-        if (lastClass) { 
-          element.removeClass(lastClass);
-        }
+        if (lastClass) element.removeClass(lastClass);
         lastClass = !value ? className : className + "-" + value.replace(WHITESPACE, "-");
         element.addClass(lastClass);
       }
@@ -6409,7 +6407,7 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
         if(ngModelCtrl.$viewValue) {
           element.addClass(CHECKED_CSS);
         } else {
-          if (CHECKED_CSS) element.removeClass(CHECKED_CSS);
+          element.removeClass(CHECKED_CSS);
         }
       }
     };
@@ -12622,7 +12620,7 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
 
       } else {
         markParentAsChecked(false);
-        if (CHECKED_CSS) element.removeClass(CHECKED_CSS);
+        element.removeClass(CHECKED_CSS);
       }
 
       /**
@@ -12630,7 +12628,7 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
        */
       function markParentAsChecked(addClass ) {
         if ( element.parent()[0].nodeName != "MD-RADIO-GROUP") {
-          if (CHECKED_CSS) element.parent()[ !!addClass ? 'addClass' : 'removeClass'](CHECKED_CSS);
+          element.parent()[ !!addClass ? 'addClass' : 'removeClass'](CHECKED_CSS);
         }
 
       }
@@ -23084,4 +23082,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-3c9ba38"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-6dd783f"}};
