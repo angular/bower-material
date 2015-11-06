@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-61411a3
+ * v1.0.0-rc2-master-5ae3d4c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -17643,7 +17643,10 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * @param forceBlur
    */
   function doBlur(forceBlur) {
-    if (forceBlur) noBlur = false;
+    if (forceBlur) {
+      noBlur = false;
+      hasFocus = false;
+    }
     elements.input.blur();
   }
 
@@ -17681,6 +17684,9 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
         updateMessages();
         break;
       case $mdConstant.KEY_CODE.TAB:
+        // If we hit tab, assume that we've left the list so it will close
+        onListLeave();
+
         if (ctrl.hidden || ctrl.loading || ctrl.index < 0 || ctrl.matches.length < 1) return;
         select(ctrl.index);
         break;
@@ -23083,4 +23089,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-61411a3"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-5ae3d4c"}};
