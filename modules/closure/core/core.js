@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-fbcc3ac
+ * v1.0.0-rc2-master-2e2aaa8
  */
 goog.provide('ng.material.core');
 
@@ -3703,7 +3703,8 @@ InkRippleCtrl.prototype._parseColor = function parseColor (color, multiplier) {
  */
 InkRippleCtrl.prototype.bindEvents = function () {
   this.$element.on('mousedown', angular.bind(this, this.handleMousedown));
-  this.$element.on('mouseup touchend mouseleave', angular.bind(this, this.handleMouseup));
+  this.$element.on('mouseup touchend', angular.bind(this, this.handleMouseup));
+  this.$element.on('mouseleave', angular.bind(this, this.handleMouseup));
   this.$element.on('touchmove', angular.bind(this, this.handleTouchmove));
 };
 

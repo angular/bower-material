@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-fbcc3ac
+ * v1.0.0-rc2-master-2e2aaa8
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3764,7 +3764,8 @@ InkRippleCtrl.prototype._parseColor = function parseColor (color, multiplier) {
  */
 InkRippleCtrl.prototype.bindEvents = function () {
   this.$element.on('mousedown', angular.bind(this, this.handleMousedown));
-  this.$element.on('mouseup touchend mouseleave', angular.bind(this, this.handleMouseup));
+  this.$element.on('mouseup touchend', angular.bind(this, this.handleMouseup));
+  this.$element.on('mouseleave', angular.bind(this, this.handleMouseup));
   this.$element.on('touchmove', angular.bind(this, this.handleTouchmove));
 };
 
@@ -23114,4 +23115,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-fbcc3ac"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-2e2aaa8"}};
