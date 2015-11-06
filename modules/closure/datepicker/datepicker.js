@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-bd65bf7
+ * v1.0.0-rc2-master-3c9ba38
  */
 goog.provide('ng.material.components.datepicker');
 goog.require('ng.material.components.icon');
@@ -1461,15 +1461,19 @@ goog.require('ng.material.core');
    * Sets the custom ngModel.$error flags to be consumed by ngMessages. Flags are:
    *   - mindate: whether the selected date is before the minimum date.
    *   - maxdate: whether the selected flag is after the maximum date.
+   *
+   * @param {Date=} opt_date Date to check. If not given, defaults to the datepicker's model value.
    */
-  DatePickerCtrl.prototype.setErrorFlags = function() {
-    if (this.dateUtil.isValidDate(this.date)) {
+  DatePickerCtrl.prototype.setErrorFlags = function(opt_date) {
+    var date = opt_date || this.date;
+
+    if (this.dateUtil.isValidDate(date)) {
       if (this.dateUtil.isValidDate(this.minDate)) {
-        this.ngModelCtrl.$setValidity('mindate', this.date >= this.minDate);
+        this.ngModelCtrl.$setValidity('mindate', date >= this.minDate);
       }
 
       if (this.dateUtil.isValidDate(this.maxDate)) {
-        this.ngModelCtrl.$setValidity('maxdate', this.date <= this.maxDate);
+        this.ngModelCtrl.$setValidity('maxdate', date <= this.maxDate);
       }
       
       if (angular.isFunction(this.dateFilter)) {
@@ -1500,9 +1504,11 @@ goog.require('ng.material.core');
         this.isDateEnabled(parsedDate)) {
       this.ngModelCtrl.$setViewValue(parsedDate);
       this.date = parsedDate;
+      this.setErrorFlags();
       this.inputContainer.classList.remove(INVALID_CLASS);
     } else {
       // If there's an input string, it's an invalid date.
+      this.setErrorFlags(parsedDate);
       this.inputContainer.classList.toggle(INVALID_CLASS, inputString);
     }
   };
