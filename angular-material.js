@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc2-master-94d8e6d
+ * v1.0.0-rc2-master-4debec5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -15788,7 +15788,7 @@ MdToastDirective.$inject = ["$mdToast"];
   *     active before automatically closing.  Set to 0 or false to have the toast stay open until
   *     closed manually. Default: 3000.
   *   - `position` - `{string=}`: Where to place the toast. Available: any combination
-  *     of 'bottom', 'left', 'top', 'right', 'fit'. Default: 'bottom left'.
+  *     of 'bottom', 'left', 'top', 'right'. Default: 'bottom left'.
   *   - `controller` - `{string=}`: The controller to associate with this toast.
   *     The controller will be injected the local `$mdToast.hide( )`, which is a function
   *     used to hide the toast.
@@ -23116,4 +23116,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-94d8e6d"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc2-master-4debec5"}};
