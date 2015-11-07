@@ -11,9 +11,9 @@
   },
   "jspm": {
     "dependencies": {
-      "angular": "npm:angular@^1.4.7",
-      "angular-animate": "npm:angular-animate@^1.4.7",
-      "angular-aria": "npm:angular-aria@^1.4.7",
+      "angular": "github:angular/bower-angular@^1.4.7",
+      "angular-animate": "github:angular/bower-angular-animate@^1.4.7",
+      "angular-aria": "github:angular/bower-angular-aria@^1.4.7",
       "css": "systemjs/plugin-css@^0.1.9"
     },
     "shim": {
