@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc3-master-1ae16cb
+ * v1.0.0-rc3-master-818652d
  */
 html, body {
   height: 100%;
@@ -7106,6 +7106,7 @@ md-menu-item {
     font-size: 15px;
     text-transform: none;
     font-weight: 400;
+    text-align: left;
     text-align: start;
     height: 100%;
     padding-left: 16px;
@@ -7114,9 +7115,9 @@ md-menu-item {
     -webkit-align-items: baseline;
         -ms-flex-align: baseline;
             align-items: baseline;
-    -webkit-align-content: left;
-        -ms-flex-line-pack: left;
-            align-content: left;
+    -webkit-align-content: flex-start;
+        -ms-flex-line-pack: start;
+            align-content: flex-start;
     width: 100%; }
     md-menu-item > .md-button md-icon {
       margin: auto 16px auto 0; }
