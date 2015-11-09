@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc3-master-6bf98aa
+ * v1.0.0-rc3-master-2760f67
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -12926,10 +12926,12 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
 
       if (attr.name && formCtrl) {
         var selectEl = element.parent()[0].querySelector('select[name=".' + attr.name + '"]');
-        var controller = angular.element(selectEl).controller();
-        if (controller) {
-          formCtrl.$removeControl(controller);
-        }
+        $mdUtil.nextTick(function() {
+          var controller = angular.element(selectEl).controller('ngModel');
+          if (controller) {
+            formCtrl.$removeControl(controller);
+          }
+        });
       }
 
       if (formCtrl) {
@@ -23138,4 +23140,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc3-master-6bf98aa"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc3-master-2760f67"}};
