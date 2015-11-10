@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc3-master-87216d3
+ * v1.0.0-rc3-master-89d285f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -191,6 +191,10 @@ MdToastDirective.$inject = ["$mdToast"];
   * @name $mdToast#cancel
   *
   * @description
+  * `DEPRECATED` - The promise returned from opening a toast is used only to notify about the closing of the toast.
+  * As such, there isn't any reason to also allow that promise to be rejected,
+  * since it's not clear what the difference between resolve and reject would be.
+  *
   * Hide the existing toast and reject the promise returned from
   * `$mdToast.show()`.
   *
