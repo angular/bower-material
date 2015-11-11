@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc3-master-c7c5358
+ * v1.0.0-rc3-master-bd01415
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -20509,8 +20509,8 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
     while (deregisterScopeListeners.length) {
       deregisterScopeListeners.shift()();
     }
-    menuItems.off('mouseenter', self.handleMenuItemHover);
-    menuItems.off('mouseleave', self.handleMenuMouseLeave);
+    menuItems && menuItems.off('mouseenter', self.handleMenuItemHover);
+    menuItems && menuItems.off('mouseleave', self.handleMenuMouseLeave);
   };
 
   this.handleMenuItemHover = function(event) {
@@ -23171,4 +23171,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc3-master-c7c5358"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc3-master-bd01415"}};

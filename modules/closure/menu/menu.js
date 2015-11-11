@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc3-master-c7c5358
+ * v1.0.0-rc3-master-bd01415
  */
 goog.provide('ng.material.components.menu');
 goog.require('ng.material.components.backdrop');
@@ -77,8 +77,8 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
     while (deregisterScopeListeners.length) {
       deregisterScopeListeners.shift()();
     }
-    menuItems.off('mouseenter', self.handleMenuItemHover);
-    menuItems.off('mouseleave', self.handleMenuMouseLeave);
+    menuItems && menuItems.off('mouseenter', self.handleMenuItemHover);
+    menuItems && menuItems.off('mouseleave', self.handleMenuMouseLeave);
   };
 
   this.handleMenuItemHover = function(event) {
