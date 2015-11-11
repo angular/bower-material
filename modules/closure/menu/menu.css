@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc3-master-bd01415
+ * v1.0.0-rc3-master-3ab6aa3
  */
 .md-open-menu-container {
   position: fixed;
@@ -15,6 +15,8 @@
     margin-top: 4px;
     margin-bottom: 4px;
     height: 1px;
+    min-height: 1px;
+    max-height: 1px;
     width: 100%; }
   .md-open-menu-container md-menu-content > * {
     opacity: 0; }
