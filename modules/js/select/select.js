@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc3-master-89d285f
+ * v1.0.0-rc3-master-a3a0f48
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -341,8 +341,9 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
             ngModelCtrl.$render = function() {
               originalRender();
               syncLabelText();
+              inputCheckValue();
             };
-            selectMenuCtrl.refreshViewValue();
+            ngModelCtrl.$render();
           }
         });
       });
