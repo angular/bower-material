@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc3-master-3ab6aa3
+ * v1.0.0-rc3-master-667a05f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -26,7 +26,7 @@ angular
 /**
  * ngInject
  */
-function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $rootScope) {
+function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $rootScope, $q) {
 
   var menuContainer;
   var self = this;
@@ -168,7 +168,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
   };
 
   this.destroy = function() {
-    return $mdMenu.destroy();
+    return self.isOpen ? $mdMenu.destroy() : $q.when(false);
   };
 
   // Use the $mdMenu interim element service to close the menu contents
@@ -227,7 +227,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
     }
   };
 }
-MenuController.$inject = ["$mdMenu", "$attrs", "$element", "$scope", "$mdUtil", "$timeout", "$rootScope"];
+MenuController.$inject = ["$mdMenu", "$attrs", "$element", "$scope", "$mdUtil", "$timeout", "$rootScope", "$q"];
 
 /**
  * @ngdoc directive
