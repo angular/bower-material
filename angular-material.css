@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc3-master-2eb1bc1
+ * v1.0.0-rc3-master-44d1636
  */
 html, body {
   height: 100%;
@@ -5175,6 +5175,11 @@ md-autocomplete {
       position: absolute;
       bottom: -2px;
       left: 0; }
+      md-autocomplete md-autocomplete-wrap md-progress-linear.md-inline {
+        bottom: 40px;
+        right: 2px;
+        left: 2px;
+        width: auto; }
       md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate {
         position: absolute;
         top: 0;
