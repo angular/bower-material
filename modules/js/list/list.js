@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc3-master-e7c85cf
+ * v1.0.0-rc3-master-b52f254
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -240,7 +240,9 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
           if (proxies.length || hasClick) {
             $element.addClass('md-clickable');
 
-            ctrl.attachRipple($scope, angular.element($element[0].querySelector('.md-no-style')));
+            if (!hasClick) {
+              ctrl.attachRipple($scope, angular.element($element[0].querySelector('.md-no-style')));
+            }
           }
         }
 
