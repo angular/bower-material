@@ -1,7 +1,7 @@
 {
   "name": "angular-material-progressCircular",
-  "version": "1.0.0-rc3-master-6a56450",
+  "version": "1.0.0-rc4-master-9d52697",
   "dependencies": {
-    "angular-material-core": "1.0.0-rc3-master-6a56450"
+    "angular-material-core": "1.0.0-rc4-master-9d52697"
   }
 }
