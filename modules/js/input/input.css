@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc3-master-617ab2c
+ * v1.0.0-rc3-master-1a2035b
  */
 md-input-container {
   display: inline-block;
@@ -114,13 +114,18 @@ md-input-container {
     position: absolute;
     right: 2px;
     bottom: 7px; }
+  md-input-container.md-input-invalid ng-messages, md-input-container.md-input-invalid data-ng-messages, md-input-container.md-input-invalid x-ng-messages, md-input-container.md-input-invalid [ng-messages], md-input-container.md-input-invalid [data-ng-messages], md-input-container.md-input-invalid [x-ng-messages] {
+    opacity: 1; }
   md-input-container ng-messages, md-input-container data-ng-messages, md-input-container x-ng-messages, md-input-container [ng-messages], md-input-container [data-ng-messages], md-input-container [x-ng-messages] {
     position: relative;
     -webkit-order: 4;
         -ms-flex-order: 4;
             order: 4;
     min-height: 24px;
-    overflow: hidden; }
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-duration: 0.26667s;
+    opacity: 0; }
     md-input-container ng-messages .md-char-counter, md-input-container data-ng-messages .md-char-counter, md-input-container x-ng-messages .md-char-counter, md-input-container [ng-messages] .md-char-counter, md-input-container [data-ng-messages] .md-char-counter, md-input-container [x-ng-messages] .md-char-counter {
       position: absolute;
       top: 0;
