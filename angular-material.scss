@@ -1210,65 +1210,6 @@ md-autocomplete {
   }
 }
 
-// !!Important - Theme-based Background-color can be configured in backdrop-theme.scss
-//             - Animate background-color opacityy only for `.md-opaque` styles
-
-md-backdrop {
-  transition: opacity 450ms;
-
-  position: absolute;
-  top:0;
-  bottom:0;
-  left: 0;
-  right: 0;
-
-  z-index: $z-index-backdrop;
-
-  &.md-menu-backdrop {
-    position: fixed !important;
-    z-index: $z-index-menu - 1;
-  }
-  &.md-select-backdrop {
-    z-index: $z-index-dialog + 1;
-    transition-duration: 0;
-  }
-  &.md-dialog-backdrop {
-    z-index: $z-index-dialog - 1;
-  }
-  &.md-bottom-sheet-backdrop {
-    z-index: $z-index-bottom-sheet - 1;
-  }
-  &.md-sidenav-backdrop {
-    z-index: $z-index-sidenav - 1;
-  }
-
-
-  &.md-click-catcher {
-    position: absolute;
-  }
-
-  &.md-opaque {
-
-    opacity: .48;
-
-    &.ng-enter {
-      opacity: 0;
-    }
-    &.ng-enter.md-opaque.ng-enter-active {
-      opacity: .48;
-    }
-    &.ng-leave {
-      opacity: .48;
-      transition: opacity 400ms;
-    }
-    &.ng-leave.md-opaque.ng-leave-active {
-      opacity: 0;
-    }
-  }
-
-}
-
-
 $bottom-sheet-horizontal-padding: 2 * $baseline-grid !default;
 $bottom-sheet-vertical-padding: 1 * $baseline-grid !default;
 $bottom-sheet-icon-after-margin: 4 * $baseline-grid !default;
@@ -1454,6 +1395,112 @@ md-bottom-sheet {
     border: 1px solid #fff;
   }
 }
+
+// !!Important - Theme-based Background-color can be configured in backdrop-theme.scss
+//             - Animate background-color opacityy only for `.md-opaque` styles
+
+md-backdrop {
+  transition: opacity 450ms;
+
+  position: absolute;
+  top:0;
+  bottom:0;
+  left: 0;
+  right: 0;
+
+  z-index: $z-index-backdrop;
+
+  &.md-menu-backdrop {
+    position: fixed !important;
+    z-index: $z-index-menu - 1;
+  }
+  &.md-select-backdrop {
+    z-index: $z-index-dialog + 1;
+    transition-duration: 0;
+  }
+  &.md-dialog-backdrop {
+    z-index: $z-index-dialog - 1;
+  }
+  &.md-bottom-sheet-backdrop {
+    z-index: $z-index-bottom-sheet - 1;
+  }
+  &.md-sidenav-backdrop {
+    z-index: $z-index-sidenav - 1;
+  }
+
+
+  &.md-click-catcher {
+    position: absolute;
+  }
+
+  &.md-opaque {
+
+    opacity: .48;
+
+    &.ng-enter {
+      opacity: 0;
+    }
+    &.ng-enter.md-opaque.ng-enter-active {
+      opacity: .48;
+    }
+    &.ng-leave {
+      opacity: .48;
+      transition: opacity 400ms;
+    }
+    &.ng-leave.md-opaque.ng-leave-active {
+      opacity: 0;
+    }
+  }
+
+}
+
+
+$card-padding: 16px !default;
+$card-box-shadow: $whiteframe-shadow-1dp !default;
+
+md-card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  margin: $baseline-grid;
+
+  box-shadow: $card-box-shadow;
+
+  > img,
+  > :not(md-card-content) img {
+    display: flex;
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+  }
+
+  md-card-content {
+    display: block;
+    padding: $card-padding;
+  }
+
+  .md-actions, md-card-actions {
+    margin: 0;
+
+    .md-button {
+      margin-bottom: $baseline-grid;
+      margin-top: $baseline-grid;
+      margin-right: $baseline-grid * .5;
+      margin-left: $baseline-grid * .5;
+    }
+  }
+  md-card-footer {
+    margin-top: auto;
+    padding: $card-padding;
+  }
+}
+
+@media screen and (-ms-high-contrast: active) {
+  md-card {
+    border: 1px solid #fff;
+  }
+}
+
 
 $button-border-radius: 3px !default;
 $button-fab-border-radius: 50% !default;
@@ -1686,53 +1733,6 @@ button.md-button::-moz-focus-inner {
     border: 1px solid #fff;
   }
 }
-
-$card-padding: 16px !default;
-$card-box-shadow: $whiteframe-shadow-1dp !default;
-
-md-card {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  margin: $baseline-grid;
-
-  box-shadow: $card-box-shadow;
-
-  > img,
-  > :not(md-card-content) img {
-    display: flex;
-    flex: 0 0 auto;
-    width: 100%;
-    height: auto;
-  }
-
-  md-card-content {
-    display: block;
-    padding: $card-padding;
-  }
-
-  .md-actions, md-card-actions {
-    margin: 0;
-
-    .md-button {
-      margin-bottom: $baseline-grid;
-      margin-top: $baseline-grid;
-      margin-right: $baseline-grid * .5;
-      margin-left: $baseline-grid * .5;
-    }
-  }
-  md-card-footer {
-    margin-top: auto;
-    padding: $card-padding;
-  }
-}
-
-@media screen and (-ms-high-contrast: active) {
-  md-card {
-    border: 1px solid #fff;
-  }
-}
-
 
 $checkbox-width: 18px !default;
 $checkbox-height: $checkbox-width !default;
@@ -2934,63 +2934,6 @@ md-grid-list {
 }
 
 
-$icon-size: rem(2.4);
-
-md-icon {
-  margin: auto;
-  background-repeat: no-repeat no-repeat;
-  display: inline-block;
-  vertical-align: middle;
-  fill: currentColor;
-  height: $icon-size;
-  width: $icon-size;
-
-  svg {
-    pointer-events: none;
-  }
-
-  &[md-font-icon] {
-    line-height: 1;
-    width: auto;
-  }
-}
-
-//
-//@font-face {
-//  font-family:"material";
-//  src:url("/dist/material-font/material.eot");
-//  font-weight:normal;
-//  font-style:normal;
-//}
-//
-//@font-face {
-//  font-family:"material";
-//  src:url("/dist/material-font/material.eot");
-//  src:url("/dist/material-font/material.eot?#iefix") format("embedded-opentype"),
-//    url("/dist/material-font/material.woff") format("woff"),
-//    url("/dist/material-font/material.ttf") format("truetype"),
-//    url("/dist/material-font/material.svg?#material") format("svg");
-//  font-weight:normal;
-//  font-style:normal;
-//}
-//
-///* Bootstrap Overrides */
-//[class^="icon-"]:before,
-//[class*=" icon-"]:before {
-//  font-family:"material";
-//  display:inline-block;
-//  vertical-align:middle;
-//  line-height:1;
-//  font-weight:normal;
-//  font-style:normal;
-//  speak:none;
-//  text-decoration:inherit;
-//  text-transform:none;
-//  text-rendering:optimizeLegibility;
-//  -webkit-font-smoothing:antialiased;
-//  -moz-osx-font-smoothing:grayscale;
-//}
-
 $input-container-padding: 2px !default;
 
 $input-label-default-offset: 24px !default;
@@ -3316,6 +3259,158 @@ md-input-container.md-icon-right {
   }
 }
 
+$menu-border-radius: 2px;
+$max-visible-items: 6;
+$menu-item-height: 6 * $baseline-grid;
+$dense-menu-item-height: 4 * $baseline-grid;
+$max-menu-height: 2 * $baseline-grid + $max-visible-items * $menu-item-height;
+$max-dense-menu-height: 2 * $baseline-grid + $max-visible-items * $dense-menu-item-height;
+
+.md-open-menu-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: $z-index-menu;
+  opacity: 0;
+  border-radius: $menu-border-radius;
+
+  md-menu-divider {
+    margin-top: $baseline-grid / 2;
+    margin-bottom: $baseline-grid / 2;
+    height: 1px;
+    min-height: 1px;
+    max-height: 1px;
+    width: 100%;
+  }
+
+  md-menu-content > * {
+    opacity: 0;
+  }
+
+  // Don't let the user click something until it's animated
+  &:not(.md-clickable) {
+    pointer-events: none;
+  }
+
+  // enter: menu scales in, then list fade in.
+  &.md-active {
+    opacity: 1;
+    transition: $swift-ease-out;
+    transition-duration: 200ms;
+    > md-menu-content > * {
+      opacity: 1;
+      transition: $swift-ease-in;
+      transition-duration: 200ms;
+      transition-delay: 100ms;
+    }
+  }
+  // leave: the container fades out
+  &.md-leave {
+    opacity: 0;
+    transition: $swift-ease-in;
+    transition-duration: 250ms;
+  }
+}
+
+md-menu-content {
+  display: flex;
+  flex-direction: column;
+  padding: $baseline-grid 0;
+  max-height: $max-menu-height;
+  overflow-y: auto;
+  &.md-dense {
+    max-height: $max-dense-menu-height;
+    md-menu-item {
+      height: $dense-menu-item-height;
+      min-height: 0px;
+    }
+  }
+}
+
+md-menu-item {
+  display: flex;
+  flex-direction: row;
+  min-height: $menu-item-height;
+  height: $menu-item-height;
+  align-content: center;
+  justify-content: flex-start;
+
+  > * {
+    width: 100%;
+    margin: auto 0;
+    padding-left: 2*$baseline-grid;
+    padding-right: 2*$baseline-grid;
+  }
+
+  > a.md-button {
+    display: flex;
+  }
+
+  > .md-button {
+    border-radius: 0;
+    margin: auto 0;
+    font-size: (2*$baseline-grid) - 1;
+    text-transform: none;
+    font-weight: 400;
+    text-align: left;
+    text-align: start;
+    height: 100%;
+    padding-left: 2*$baseline-grid;
+    padding-right: 2*$baseline-grid;
+    display: inline-block;
+    align-items: baseline;
+    align-content: flex-start;
+    width:100%;
+    md-icon {
+      margin: auto 2*$baseline-grid auto 0;
+    }
+    p {
+      display:inline-block;
+      margin: auto;
+    }
+    span {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+    .md-ripple-container {
+      border-radius: inherit;
+    }
+  }
+}
+
+.md-menu {
+  padding: $baseline-grid 0;
+}
+
+md-toolbar {
+  .md-menu {
+    height: auto;
+    margin: auto;
+    padding: 0;
+  }
+}
+
+@media (max-width: $layout-breakpoint-sm - 1) {
+  md-menu-content {
+    min-width: 112px;
+  }
+  @for $i from 3 through 7 {
+    md-menu-content[width="#{$i}"] {
+      min-width: $i * 56px;
+    }
+  }
+}
+@media (min-width: $layout-breakpoint-sm) {
+  md-menu-content {
+    min-width: 96px;
+  }
+  @for $i from 3 through 7 {
+    md-menu-content[width="#{$i}"] {
+      min-width: $i * 64px;
+    }
+  }
+}
+
 $list-h3-margin: 0 0 0px 0 !default;
 $list-h4-margin: 3px 0 1px 0 !default;
 $list-h4-font-weight: 400 !default;
@@ -3588,157 +3683,62 @@ md-list-item.md-3-line > .md-no-style {
   }
 }
 
-$menu-border-radius: 2px;
-$max-visible-items: 6;
-$menu-item-height: 6 * $baseline-grid;
-$dense-menu-item-height: 4 * $baseline-grid;
-$max-menu-height: 2 * $baseline-grid + $max-visible-items * $menu-item-height;
-$max-dense-menu-height: 2 * $baseline-grid + $max-visible-items * $dense-menu-item-height;
+$icon-size: rem(2.4);
 
-.md-open-menu-container {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: $z-index-menu;
-  opacity: 0;
-  border-radius: $menu-border-radius;
+md-icon {
+  margin: auto;
+  background-repeat: no-repeat no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+  fill: currentColor;
+  height: $icon-size;
+  width: $icon-size;
 
-  md-menu-divider {
-    margin-top: $baseline-grid / 2;
-    margin-bottom: $baseline-grid / 2;
-    height: 1px;
-    min-height: 1px;
-    max-height: 1px;
-    width: 100%;
-  }
-
-  md-menu-content > * {
-    opacity: 0;
-  }
-
-  // Don't let the user click something until it's animated
-  &:not(.md-clickable) {
+  svg {
     pointer-events: none;
   }
 
-  // enter: menu scales in, then list fade in.
-  &.md-active {
-    opacity: 1;
-    transition: $swift-ease-out;
-    transition-duration: 200ms;
-    > md-menu-content > * {
-      opacity: 1;
-      transition: $swift-ease-in;
-      transition-duration: 200ms;
-      transition-delay: 100ms;
-    }
-  }
-  // leave: the container fades out
-  &.md-leave {
-    opacity: 0;
-    transition: $swift-ease-in;
-    transition-duration: 250ms;
+  &[md-font-icon] {
+    line-height: 1;
+    width: auto;
   }
 }
 
-md-menu-content {
-  display: flex;
-  flex-direction: column;
-  padding: $baseline-grid 0;
-  max-height: $max-menu-height;
-  overflow-y: auto;
-  &.md-dense {
-    max-height: $max-dense-menu-height;
-    md-menu-item {
-      height: $dense-menu-item-height;
-      min-height: 0px;
-    }
-  }
-}
-
-md-menu-item {
-  display: flex;
-  flex-direction: row;
-  min-height: $menu-item-height;
-  height: $menu-item-height;
-  align-content: center;
-  justify-content: flex-start;
-
-  > * {
-    width: 100%;
-    margin: auto 0;
-    padding-left: 2*$baseline-grid;
-    padding-right: 2*$baseline-grid;
-  }
-
-  > a.md-button {
-    display: flex;
-  }
-
-  > .md-button {
-    border-radius: 0;
-    margin: auto 0;
-    font-size: (2*$baseline-grid) - 1;
-    text-transform: none;
-    font-weight: 400;
-    text-align: left;
-    text-align: start;
-    height: 100%;
-    padding-left: 2*$baseline-grid;
-    padding-right: 2*$baseline-grid;
-    display: inline-block;
-    align-items: baseline;
-    align-content: flex-start;
-    width:100%;
-    md-icon {
-      margin: auto 2*$baseline-grid auto 0;
-    }
-    p {
-      display:inline-block;
-      margin: auto;
-    }
-    span {
-      margin-top: auto;
-      margin-bottom: auto;
-    }
-    .md-ripple-container {
-      border-radius: inherit;
-    }
-  }
-}
-
-.md-menu {
-  padding: $baseline-grid 0;
-}
-
-md-toolbar {
-  .md-menu {
-    height: auto;
-    margin: auto;
-    padding: 0;
-  }
-}
-
-@media (max-width: $layout-breakpoint-sm - 1) {
-  md-menu-content {
-    min-width: 112px;
-  }
-  @for $i from 3 through 7 {
-    md-menu-content[width="#{$i}"] {
-      min-width: $i * 56px;
-    }
-  }
-}
-@media (min-width: $layout-breakpoint-sm) {
-  md-menu-content {
-    min-width: 96px;
-  }
-  @for $i from 3 through 7 {
-    md-menu-content[width="#{$i}"] {
-      min-width: $i * 64px;
-    }
-  }
-}
+//
+//@font-face {
+//  font-family:"material";
+//  src:url("/dist/material-font/material.eot");
+//  font-weight:normal;
+//  font-style:normal;
+//}
+//
+//@font-face {
+//  font-family:"material";
+//  src:url("/dist/material-font/material.eot");
+//  src:url("/dist/material-font/material.eot?#iefix") format("embedded-opentype"),
+//    url("/dist/material-font/material.woff") format("woff"),
+//    url("/dist/material-font/material.ttf") format("truetype"),
+//    url("/dist/material-font/material.svg?#material") format("svg");
+//  font-weight:normal;
+//  font-style:normal;
+//}
+//
+///* Bootstrap Overrides */
+//[class^="icon-"]:before,
+//[class*=" icon-"]:before {
+//  font-family:"material";
+//  display:inline-block;
+//  vertical-align:middle;
+//  line-height:1;
+//  font-weight:normal;
+//  font-style:normal;
+//  speak:none;
+//  text-decoration:inherit;
+//  text-transform:none;
+//  text-rendering:optimizeLegibility;
+//  -webkit-font-smoothing:antialiased;
+//  -moz-osx-font-smoothing:grayscale;
+//}
 
 md-toolbar.md-menu-toolbar {
   h2.md-toolbar-tools {
@@ -4203,140 +4203,6 @@ md-progress-linear {
 
 
 
-$radio-width: 16px !default;
-$radio-height: $radio-width !default;
-$radio-text-margin: 10px !default;
-$radio-top-left: -15px !default;
-
-md-radio-button,
-.md-switch-thumb { // Used in switch
-  box-sizing: border-box;
-  display: block;
-  margin: 15px;
-  white-space: nowrap;
-  cursor: pointer;
-
-  .md-container {
-    box-sizing: border-box;
-    position: relative;
-    top: 4px;
-    display: inline-block;
-    width: $radio-width;
-    height: $radio-width;
-    cursor: pointer;
-
-    .md-ripple-container {
-      position: absolute;
-      display: block;
-      width: $radio-width * 3;
-      height: $radio-width * 3;
-      left: -$radio-width;
-      top: -$radio-width;
-    }
-
-    &:before {
-      box-sizing: border-box;
-      background-color: transparent;
-      border-radius: 50%;
-      content: '';
-      position: absolute;
-      display: block;
-      height: auto;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      transition: all 0.5s;
-      width: auto;
-    }
-  }
-
-  &.md-align-top-left > div.md-container {
-     top: $radio-top-left;
-   }
-
-  .md-off {
-    box-sizing: border-box;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: $radio-width;
-    height: $radio-width;
-    border-style: solid;
-    border-width: 2px;
-    border-radius: 50%;
-    transition: border-color ease 0.28s;
-  }
-
-  .md-on {
-    box-sizing: border-box;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: $radio-width;
-    height: $radio-width;
-    border-radius: 50%;
-    transition: transform ease 0.28s;
-    transform: scale(0);
-  }
-
-  &.md-checked .md-on {
-    transform: scale(0.50);
-  }
-
-  .md-label {
-    box-sizing: border-box;
-    position: relative;
-    display: inline-block;
-
-    @include rtl(margin-left, $radio-text-margin, 0);
-    @include rtl(margin-right, 0, $radio-text-margin);
-
-    vertical-align: middle;
-    white-space: normal;
-    pointer-events: none;
-    width: auto;
-  }
-
-  .circle {
-    border-radius: 50%;
-  }
-
-}
-md-radio-group {
-  &:focus {
-    outline: none;
-  }
-  &.md-focused {
-    .md-checked .md-container:before {
-      left: -8px;
-      top: -8px;
-      right: -8px;
-      bottom: -8px;
-    }
-  }
-}
-
-.md-inline-form {
-  md-radio-group {
-    margin: 18px 0 19px;
-    md-radio-button {
-      display: inline-block;
-      height: 30px;
-      padding: 2px;
-      box-sizing: border-box;
-      margin-top: 0;
-      margin-bottom: 0;
-    }
-  }
-}
-
-@media screen and (-ms-high-contrast: active) {
-  md-radio-button.md-default-theme .md-on {
-    background-color: #fff;
-  }
-}
-
 $select-option-height: 48px;
 $select-option-padding: 16px;
 $select-container-padding: 16px;
@@ -4556,6 +4422,140 @@ md-optgroup {
   }
   md-select-menu {
     border: 1px solid #fff;
+  }
+}
+
+$radio-width: 16px !default;
+$radio-height: $radio-width !default;
+$radio-text-margin: 10px !default;
+$radio-top-left: -15px !default;
+
+md-radio-button,
+.md-switch-thumb { // Used in switch
+  box-sizing: border-box;
+  display: block;
+  margin: 15px;
+  white-space: nowrap;
+  cursor: pointer;
+
+  .md-container {
+    box-sizing: border-box;
+    position: relative;
+    top: 4px;
+    display: inline-block;
+    width: $radio-width;
+    height: $radio-width;
+    cursor: pointer;
+
+    .md-ripple-container {
+      position: absolute;
+      display: block;
+      width: $radio-width * 3;
+      height: $radio-width * 3;
+      left: -$radio-width;
+      top: -$radio-width;
+    }
+
+    &:before {
+      box-sizing: border-box;
+      background-color: transparent;
+      border-radius: 50%;
+      content: '';
+      position: absolute;
+      display: block;
+      height: auto;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      transition: all 0.5s;
+      width: auto;
+    }
+  }
+
+  &.md-align-top-left > div.md-container {
+     top: $radio-top-left;
+   }
+
+  .md-off {
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: $radio-width;
+    height: $radio-width;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 50%;
+    transition: border-color ease 0.28s;
+  }
+
+  .md-on {
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: $radio-width;
+    height: $radio-width;
+    border-radius: 50%;
+    transition: transform ease 0.28s;
+    transform: scale(0);
+  }
+
+  &.md-checked .md-on {
+    transform: scale(0.50);
+  }
+
+  .md-label {
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+
+    @include rtl(margin-left, $radio-text-margin, 0);
+    @include rtl(margin-right, 0, $radio-text-margin);
+
+    vertical-align: middle;
+    white-space: normal;
+    pointer-events: none;
+    width: auto;
+  }
+
+  .circle {
+    border-radius: 50%;
+  }
+
+}
+md-radio-group {
+  &:focus {
+    outline: none;
+  }
+  &.md-focused {
+    .md-checked .md-container:before {
+      left: -8px;
+      top: -8px;
+      right: -8px;
+      bottom: -8px;
+    }
+  }
+}
+
+.md-inline-form {
+  md-radio-group {
+    margin: 18px 0 19px;
+    md-radio-button {
+      display: inline-block;
+      height: 30px;
+      padding: 2px;
+      box-sizing: border-box;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+}
+
+@media screen and (-ms-high-contrast: active) {
+  md-radio-button.md-default-theme .md-on {
+    background-color: #fff;
   }
 }
 
