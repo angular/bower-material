@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc3-master-44d1636
+ * v1.0.0-rc3-master-1d29ef9
  */
 goog.provide('ng.material.components.datepicker');
 goog.require('ng.material.components.icon');
