@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc3-master-fb6f81a
+ * v1.0.0-rc3-master-2eb1bc1
  */
 html, body {
   height: 100%;
@@ -6667,7 +6667,6 @@ md-input-container {
   position: relative;
   padding: 2px;
   margin: 18px 0;
-  overflow: hidden;
   /*
    * The .md-input class is added to the input/textarea
    */ }
@@ -6759,8 +6758,7 @@ md-input-container {
     border-radius: 0;
     border-style: solid;
     width: 100%;
-    box-sizing: border-box;
-    float: left; }
+    box-sizing: border-box; }
     md-input-container .md-input:focus {
       outline: none; }
     md-input-container .md-input:invalid {
