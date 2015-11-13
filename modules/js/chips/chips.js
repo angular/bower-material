@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc3-master-b52f254
+ * v1.0.0-rc3-master-5f5ae45
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -271,9 +271,9 @@ function MdChipsCtrl ($scope, $mdConstant, $log, $element, $timeout) {
 MdChipsCtrl.$inject = ["$scope", "$mdConstant", "$log", "$element", "$timeout"];
 
 /**
- * Handles the keydown event on the input element: <enter> appends the
- * buffer to the chip list, while backspace removes the last chip in the list
- * if the current buffer is empty.
+ * Handles the keydown event on the input element: by default <enter> appends
+ * the buffer to the chip list, while backspace removes the last chip in the
+ * list if the current buffer is empty.
  * @param event
  */
 MdChipsCtrl.prototype.inputKeydown = function(event) {
@@ -284,19 +284,25 @@ MdChipsCtrl.prototype.inputKeydown = function(event) {
     return;
   }
 
-  switch (event.keyCode) {
-    case this.$mdConstant.KEY_CODE.ENTER:
-      if ((this.hasAutocomplete && this.requireMatch) || !chipBuffer) break;
-      event.preventDefault();
-      this.appendChip(chipBuffer);
-      this.resetChipBuffer();
-      break;
-    case this.$mdConstant.KEY_CODE.BACKSPACE:
-      if (chipBuffer) break;
-      event.preventDefault();
-      event.stopPropagation();
-      if (this.items.length) this.selectAndFocusChipSafe(this.items.length - 1);
-      break;
+  if (event.keyCode === this.$mdConstant.KEY_CODE.BACKSPACE) {
+    if (chipBuffer) return;
+    event.preventDefault();
+    event.stopPropagation();
+    if (this.items.length) this.selectAndFocusChipSafe(this.items.length - 1);
+    return;
+  }
+
+  // By default <enter> appends the buffer to the chip list.
+  if (!this.separatorKeys || this.separatorKeys.length < 1) {
+    this.separatorKeys = [this.$mdConstant.KEY_CODE.ENTER];
+  }
+
+  // Support additional separator key codes in an array of `md-separator-keys`.
+  if (this.separatorKeys.indexOf(event.keyCode) !== -1) {
+    if ((this.hasAutocomplete && this.requireMatch) || !chipBuffer) return;
+    event.preventDefault();
+    this.appendChip(chipBuffer);
+    this.resetChipBuffer();
   }
 };
 
@@ -741,6 +747,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
    *    the delete key will remove the chip.
    * @param {string=} delete-button-label A label for the delete button. Also hidden and read by
    *    screen readers.
+   * @param {expression=} md-separator-keys An array of key codes used to separate chips.
    *
    * @usage
    * <hljs lang="html">
@@ -839,6 +846,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
         onSelect: '&mdOnSelect',
         deleteHint: '@',
         deleteButtonLabel: '@',
+        separatorKeys: '=?mdSeparatorKeys',
         requireMatch: '=?mdRequireMatch'
       }
     };

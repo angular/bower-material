@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc3-master-b52f254
+ * v1.0.0-rc3-master-5f5ae45
  */
 goog.provide('ng.material.core');
 
@@ -113,6 +113,7 @@ function MdConstantFactory($sniffer) {
 
   return {
     KEY_CODE: {
+      COMMA: 188,
       ENTER: 13,
       ESCAPE: 27,
       SPACE: 32,
