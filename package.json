@@ -19,7 +19,7 @@
     "shim": {
       "angular-material": {
         "deps": [
-          "./angular-material.css!"
+          "angular"
         ]
       }
     },
