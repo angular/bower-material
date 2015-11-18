@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-9d52697
+ * v1.0.0-rc4-master-2ab1d2d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -17588,8 +17588,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    */
   function configureWatchers () {
     var wait = parseInt($scope.delay, 10) || 0;
-    $attrs.$observe('disabled', function (value) { ctrl.isDisabled = value; });
-    $attrs.$observe('required', function (value) { ctrl.isRequired = value !== null; });
+    $attrs.$observe('disabled', function (value) { ctrl.isDisabled = !!value; });
+    $attrs.$observe('required', function (value) { ctrl.isRequired = !!value; });
     $scope.$watch('searchText', wait ? $mdUtil.debounce(handleSearchText, wait) : handleSearchText);
     $scope.$watch('selectedItem', selectedItemChange);
     angular.element($window).on('resize', positionDropdown);
@@ -23302,4 +23302,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc4-master-9d52697"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc4-master-2ab1d2d"}};
