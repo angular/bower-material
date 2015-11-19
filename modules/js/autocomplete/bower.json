@@ -1,9 +1,9 @@
 {
   "name": "angular-material-autocomplete",
-  "version": "1.0.0-rc4-master-2ab1d2d",
+  "version": "1.0.0-rc4-master-4306331",
   "dependencies": {
-    "angular-material-core": "1.0.0-rc4-master-2ab1d2d",
-    "angular-material-icon": "1.0.0-rc4-master-2ab1d2d",
-    "angular-material-virtualRepeat": "1.0.0-rc4-master-2ab1d2d"
+    "angular-material-core": "1.0.0-rc4-master-4306331",
+    "angular-material-icon": "1.0.0-rc4-master-4306331",
+    "angular-material-virtualRepeat": "1.0.0-rc4-master-4306331"
   }
 }
