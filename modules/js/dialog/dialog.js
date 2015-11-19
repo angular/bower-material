@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-4306331
+ * v1.0.0-rc4-master-b9dae8d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -199,7 +199,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
  *     function showAlert() {
  *       alert = $mdDialog.alert()
  *         .title('Attention, ' + $scope.userName)
- *         .content('This is an example of how easy dialogs can be!')
+ *         .textContent('This is an example of how easy dialogs can be!')
  *         .ok('Close');
  *
  *       $mdDialog

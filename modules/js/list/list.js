@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-4306331
+ * v1.0.0-rc4-master-b9dae8d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -160,7 +160,7 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
         tEl[0].setAttribute('tabindex', '-1');
         tEl.append(container);
 
-        if (secondaryItem && secondaryItem.hasAttribute('ng-click')) {
+        if (secondaryItem && !isButton(secondaryItem) && secondaryItem.hasAttribute('ng-click')) {
           $mdAria.expect(secondaryItem, 'aria-label');
           var buttonWrapper = angular.element('<md-button class="md-secondary-container md-icon-button">');
           buttonWrapper.attr('ng-click', secondaryItem.getAttribute('ng-click'));
@@ -184,6 +184,12 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
 
       function isProxiedElement(el) {
         return proxiedTypes.indexOf(el.nodeName.toLowerCase()) != -1;
+      }
+
+      function isButton(el) {
+        var nodeName = el.nodeName.toUpperCase();
+
+        return nodeName == "MD-BUTTON" || nodeName == "BUTTON";
       }
 
       return postLink;

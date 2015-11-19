@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-4306331
+ * v1.0.0-rc4-master-b9dae8d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -8715,7 +8715,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
  *     function showAlert() {
  *       alert = $mdDialog.alert()
  *         .title('Attention, ' + $scope.userName)
- *         .content('This is an example of how easy dialogs can be!')
+ *         .textContent('This is an example of how easy dialogs can be!')
  *         .ok('Close');
  *
  *       $mdDialog
@@ -11782,7 +11782,7 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
         tEl[0].setAttribute('tabindex', '-1');
         tEl.append(container);
 
-        if (secondaryItem && secondaryItem.hasAttribute('ng-click')) {
+        if (secondaryItem && !isButton(secondaryItem) && secondaryItem.hasAttribute('ng-click')) {
           $mdAria.expect(secondaryItem, 'aria-label');
           var buttonWrapper = angular.element('<md-button class="md-secondary-container md-icon-button">');
           buttonWrapper.attr('ng-click', secondaryItem.getAttribute('ng-click'));
@@ -11806,6 +11806,12 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
 
       function isProxiedElement(el) {
         return proxiedTypes.indexOf(el.nodeName.toLowerCase()) != -1;
+      }
+
+      function isButton(el) {
+        var nodeName = el.nodeName.toUpperCase();
+
+        return nodeName == "MD-BUTTON" || nodeName == "BUTTON";
       }
 
       return postLink;
@@ -23302,4 +23308,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc4-master-4306331"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc4-master-b9dae8d"}};
