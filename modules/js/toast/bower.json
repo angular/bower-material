@@ -1,8 +1,8 @@
 {
   "name": "angular-material-toast",
-  "version": "1.0.0-rc4-master-4f3c5d9",
+  "version": "1.0.0-rc4-master-f780beb",
   "dependencies": {
-    "angular-material-core": "1.0.0-rc4-master-4f3c5d9",
-    "angular-material-button": "1.0.0-rc4-master-4f3c5d9"
+    "angular-material-core": "1.0.0-rc4-master-f780beb",
+    "angular-material-button": "1.0.0-rc4-master-f780beb"
   }
 }
