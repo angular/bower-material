@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-1eeafee
+ * v1.0.0-rc4-master-ee4ab18
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1332,6 +1332,8 @@ function SelectProvider($$interimElementProvider) {
 
       if (contentNode.offsetWidth > maxWidth) {
         contentNode.style['max-width'] = maxWidth + 'px';
+      } else {
+        contentNode.style.maxWidth = null;
       }
       if (shouldOpenAroundTarget) {
         contentNode.style['min-width'] = targetRect.width + 'px';
@@ -1394,7 +1396,7 @@ function SelectProvider($$interimElementProvider) {
         transformOrigin = (centeredRect.left + targetRect.width / 2) + 'px ' +
           (centeredRect.top + centeredRect.height / 2 - contentNode.scrollTop) + 'px 0px';
 
-        minWidth = targetRect.width + centeredRect.paddingLeft + centeredRect.paddingRight;
+        minWidth = Math.min(targetRect.width + centeredRect.paddingLeft + centeredRect.paddingRight, maxWidth);
       }
 
       // Keep left and top within the window
