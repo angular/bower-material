@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-badc1ef
+ * v1.0.0-rc4-master-4f3c5d9
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13067,6 +13067,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         $mdAria.expect(element, 'aria-label', labelText);
       }
 
+      scope.$watch(selectMenuCtrl.selectedLabels, syncLabelText);
+
       function syncLabelText() {
         if (selectContainer) {
           selectMenuCtrl = selectMenuCtrl || selectContainer.find('md-select-menu').controller('mdSelectMenu');
@@ -23314,4 +23316,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc4-master-badc1ef"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc4-master-4f3c5d9"}};

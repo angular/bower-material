@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-badc1ef
+ * v1.0.0-rc4-master-4f3c5d9
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -314,6 +314,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         }
         $mdAria.expect(element, 'aria-label', labelText);
       }
+
+      scope.$watch(selectMenuCtrl.selectedLabels, syncLabelText);
 
       function syncLabelText() {
         if (selectContainer) {
