@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-ee4ab18
+ * v1.0.0-rc4-master-badc1ef
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -740,6 +740,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
           body.setAttribute('style', restoreBodyStyle);
           htmlNode.setAttribute('style', restoreHtmlStyle);
           body.scrollTop = scrollOffset;
+          htmlNode.scrollTop = scrollOffset;
         };
       }
 

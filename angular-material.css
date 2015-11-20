@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-ee4ab18
+ * v1.0.0-rc4-master-badc1ef
  */
 html, body {
   height: 100%;
@@ -6653,6 +6653,20 @@ md-grid-list {
   md-grid-tile-footer {
     border-top: 1px solid #fff; } }
 
+md-icon {
+  margin: auto;
+  background-repeat: no-repeat no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+  fill: currentColor;
+  height: 24px;
+  width: 24px; }
+  md-icon svg {
+    pointer-events: none; }
+  md-icon[md-font-icon] {
+    line-height: 1;
+    width: auto; }
+
 md-input-container {
   display: inline-block;
   position: relative;
@@ -6840,20 +6854,6 @@ md-input-container.md-icon-right input {
 @media screen and (-ms-high-contrast: active) {
   md-input-container.md-default-theme > md-icon {
     fill: #fff; } }
-
-md-icon {
-  margin: auto;
-  background-repeat: no-repeat no-repeat;
-  display: inline-block;
-  vertical-align: middle;
-  fill: currentColor;
-  height: 24px;
-  width: 24px; }
-  md-icon svg {
-    pointer-events: none; }
-  md-icon[md-font-icon] {
-    line-height: 1;
-    width: auto; }
 
 md-list {
   display: block;
