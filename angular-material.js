@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-b2b4c93
+ * v1.0.0-rc4-master-eb94d64
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -16172,6 +16172,12 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
 
         attr.$observe('mdScrollShrink', onChangeScrollShrink);
 
+        // If the toolbar has ngShow or ngHide we need to update height immediately as it changed
+        // and not wait for $mdUtil.debounce to happen
+
+        if (attr.ngShow) { scope.$watch(attr.ngShow, updateToolbarHeight); }
+        if (attr.ngHide) { scope.$watch(attr.ngHide, updateToolbarHeight); }
+
         // If the scope is destroyed (which could happen with ng-if), make sure
         // to disable scroll shrinking again
 
@@ -23315,4 +23321,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc4-master-b2b4c93"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc4-master-eb94d64"}};
