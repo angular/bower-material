@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-b8d3519
+ * v1.0.0-rc4-master-462da45
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -15822,16 +15822,17 @@ MdToastDirective.$inject = ["$mdToast"];
   */
 
 /**
-  * @ngdoc method
-  * @name $mdToast#showSimple
-  *
-  * @description
-  * Convenience method which builds and shows a simple toast.
-  *
-  * @returns {promise} A promise that can be resolved with `$mdToast.hide()` or
-  * rejected with `$mdToast.cancel()`.
-  *
-  */
+ * @ngdoc method
+ * @name $mdToast#showSimple
+ * 
+ * @param {string} message The message to display inside the toast
+ * @description
+ * Convenience method which builds and shows a simple toast.
+ *
+ * @returns {promise} A promise that can be resolved with `$mdToast.hide()` or
+ * rejected with `$mdToast.cancel()`.
+ *
+ */
 
  /**
   * @ngdoc method
@@ -23323,4 +23324,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc4-master-b8d3519"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc4-master-462da45"}};
