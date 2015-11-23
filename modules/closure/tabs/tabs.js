@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-8051e98
+ * v1.0.0-rc4-master-a120a35
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -739,7 +739,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
 
   function updatePagingWidth() {
     var width = 1;
-    angular.forEach(getElements().dummies, function (element) { width += element.offsetWidth; });
+    angular.forEach(getElements().dummies, function (element) { width += element.offsetWidth + 1; });
     angular.element(elements.paging).css('width', width + 'px');
   }
 

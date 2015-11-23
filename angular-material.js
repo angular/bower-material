@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-8051e98
+ * v1.0.0-rc4-master-a120a35
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -8827,6 +8827,9 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
  *     module to be loaded. HTML is not run through Angular's compiler.
  * - $mdDialogPreset#ok(string) - Sets the alert "Okay" button text.
  * - $mdDialogPreset#theme(string) - Sets the theme of the alert dialog.
+ * - $mdDialogPreset#targetEvent(DOMClickEvent=) - A click's event object. When passed in as an option,
+ *     the location of the click will be used as the starting point for the opening animation
+ *     of the the dialog.
  *
  */
 
@@ -8849,6 +8852,9 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
  * - $mdDialogPreset#ok(string) - Sets the confirm "Okay" button text.
  * - $mdDialogPreset#cancel(string) - Sets the confirm "Cancel" button text.
  * - $mdDialogPreset#theme(string) - Sets the theme of the confirm dialog.
+ * - $mdDialogPreset#targetEvent(DOMClickEvent=) - A click's event object. When passed in as an option,
+ *     the location of the click will be used as the starting point for the opening animation
+ *     of the the dialog.
  *
  */
 
@@ -22836,7 +22842,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
 
   function updatePagingWidth() {
     var width = 1;
-    angular.forEach(getElements().dummies, function (element) { width += element.offsetWidth; });
+    angular.forEach(getElements().dummies, function (element) { width += element.offsetWidth + 1; });
     angular.element(elements.paging).css('width', width + 'px');
   }
 
@@ -23309,4 +23315,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc4-master-8051e98"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc4-master-a120a35"}};
