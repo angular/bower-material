@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-7a87dda
+ * v1.0.0-rc4-master-7cb035d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2886,12 +2886,6 @@ function InterimElementProvider() {
     enabled: true,
 
     /**
-     * After translation to classname equivalents, remove the
-     * original Layout attribute
-     */
-    removeAttributes : true,
-
-    /**
      * List of mediaQuery breakpoints and associated suffixes
      *
      *   [
@@ -3125,11 +3119,6 @@ function InterimElementProvider() {
 
       updateFn(getNormalizedAttrValue(className, attrs, ""));
       scope.$on("$destroy", function() { unwatch() });
-
-
-      if (config.removeAttributes && (element[0].nodeName != "#comment")) {
-        element.removeAttr(className);
-      }
     }
   }
 
@@ -3171,11 +3160,6 @@ function InterimElementProvider() {
      */
     function translateToCssClass(scope, element) {
       element.addClass(className);
-
-      if (config.removeAttributes) {
-        // After link-phase, remove deprecated layout attribute selector
-        element.removeAttr(className);
-      }
     }
   }
 
@@ -23335,4 +23319,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc4-master-7a87dda"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc4-master-7cb035d"}};
