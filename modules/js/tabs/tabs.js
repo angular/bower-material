@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-7d8bc2d
+ * v1.0.0-rc4-master-20ba8a5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -95,8 +95,8 @@ function MdTab () {
     require:  '^?mdTabs',
     terminal: true,
     compile:  function (element, attr) {
-      var label = element.find('md-tab-label'),
-          body  = element.find('md-tab-body');
+      var label = firstChild(element, 'md-tab-label'),
+          body  = firstChild(element, 'md-tab-body');
 
       if (label.length == 0) {
         label = angular.element('<md-tab-label></md-tab-label>');
@@ -125,8 +125,8 @@ function MdTab () {
   function postLink (scope, element, attr, ctrl) {
     if (!ctrl) return;
     var index = ctrl.getTabElementIndex(element),
-        body  = element.find('md-tab-body').eq(0).remove(),
-        label = element.find('md-tab-label').eq(0).remove(),
+        body  = firstChild(element, 'md-tab-body').remove(),
+        label = firstChild(element, 'md-tab-label').remove(),
         data  = ctrl.insertTab({
           scope:    scope,
           parent:   scope.$parent,
@@ -151,7 +151,15 @@ function MdTab () {
         }
     );
     scope.$on('$destroy', function () { ctrl.removeTab(data); });
+  }
 
+  function firstChild (element, tagName) {
+    var children = element[0].children;
+    for (var i = 0, len = children.length; i < len; i++) {
+      var child = children[i];
+      if (child.tagName === tagName.toUpperCase()) return angular.element(child);
+    }
+    return angular.element();
   }
 }
 
