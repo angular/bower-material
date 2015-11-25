@@ -1,10 +1,10 @@
 {
   "name": "angular-material-fabToolbar",
-  "version": "1.0.0-rc4-master-20ba8a5",
+  "version": "1.0.0-rc4-master-5e5e6cd",
   "dependencies": {
-    "angular-material-core": "1.0.0-rc4-master-20ba8a5",
-    "angular-material-fabShared": "1.0.0-rc4-master-20ba8a5",
-    "angular-material-fabTrigger": "1.0.0-rc4-master-20ba8a5",
-    "angular-material-fabActions": "1.0.0-rc4-master-20ba8a5"
+    "angular-material-core": "1.0.0-rc4-master-5e5e6cd",
+    "angular-material-fabShared": "1.0.0-rc4-master-5e5e6cd",
+    "angular-material-fabTrigger": "1.0.0-rc4-master-5e5e6cd",
+    "angular-material-fabActions": "1.0.0-rc4-master-5e5e6cd"
   }
 }

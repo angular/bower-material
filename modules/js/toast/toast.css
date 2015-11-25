@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-20ba8a5
+ * v1.0.0-rc4-master-5e5e6cd
  */
 md-toast {
   display: -webkit-flex;
@@ -29,7 +29,11 @@ md-toast {
   -webkit-transform: translate3d(0, 0, 0) rotateZ(0deg);
           transform: translate3d(0, 0, 0) rotateZ(0deg);
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  /* Transition differently when swiping */ }
+  /* Transition differently when swiping */
+  /*
+   * When the toast doesn't take up the whole screen,
+   * make it rotate when the user swipes it away
+   */ }
   md-toast.md-capsule {
     border-radius: 24px; }
   md-toast.ng-leave-active {
@@ -51,18 +55,19 @@ md-toast {
     opacity: 0;
     -webkit-transform: translate3d(0, 100%, 0);
             transform: translate3d(0, 100%, 0); }
+    md-toast.ng-leave.ng-leave-active.md-swipeup {
+      -webkit-transform: translate3d(0, -50%, 0);
+              transform: translate3d(0, -50%, 0); }
+    md-toast.ng-leave.ng-leave-active.md-swipedown {
+      -webkit-transform: translate3d(0, 50%, 0);
+              transform: translate3d(0, 50%, 0); }
     md-toast.ng-leave.ng-leave-active.md-top {
       -webkit-transform: translate3d(0, -100%, 0);
               transform: translate3d(0, -100%, 0); }
-    md-toast.ng-leave.ng-leave-active.md-swipeleft {
-      -webkit-transform: translate3d(-100%, 0%, 0);
-              transform: translate3d(-100%, 0%, 0); }
-    md-toast.ng-leave.ng-leave-active.md-swiperight {
-      -webkit-transform: translate3d(100%, 0%, 0);
-              transform: translate3d(100%, 0%, 0); }
   md-toast .md-action {
     line-height: 19px;
     margin-left: 24px;
+    margin-right: 0;
     cursor: pointer;
     text-transform: uppercase;
     float: right; }
@@ -78,17 +83,20 @@ md-toast {
     min-width: 0;
     border-radius: 0;
     bottom: 0; }
-    md-toast.md-top {
-      bottom: auto;
-      top: 0; } }
+    md-toast.ng-leave.ng-leave-active.md-swipeup {
+      -webkit-transform: translate3d(0, -50%, 0);
+              transform: translate3d(0, -50%, 0); }
+    md-toast.ng-leave.ng-leave-active.md-swipedown {
+      -webkit-transform: translate3d(0, 50%, 0);
+              transform: translate3d(0, 50%, 0); } }
 
 @media (min-width: 600px) {
   md-toast {
     min-width: 288px;
     /*
-     * When the toast doesn't take up the whole screen,
-     * make it rotate when the user swipes it away
-     */ }
+   * When the toast doesn't take up the whole screen,
+   * make it rotate when the user swipes it away
+   */ }
     md-toast.md-bottom {
       bottom: 8px; }
     md-toast.md-left {
@@ -98,17 +106,11 @@ md-toast {
     md-toast.md-top {
       top: 8px; }
     md-toast.ng-leave.ng-leave-active.md-swipeleft {
-      -webkit-transform: translate3d(-100%, 25%, 0) rotateZ(-15deg);
-              transform: translate3d(-100%, 25%, 0) rotateZ(-15deg); }
+      -webkit-transform: translate3d(-50%, 0, 0);
+              transform: translate3d(-50%, 0, 0); }
     md-toast.ng-leave.ng-leave-active.md-swiperight {
-      -webkit-transform: translate3d(100%, 25%, 0) rotateZ(15deg);
-              transform: translate3d(100%, 25%, 0) rotateZ(15deg); }
-    md-toast.ng-leave.ng-leave-active.md-top.md-swipeleft {
-      -webkit-transform: translate3d(-100%, 0, 0) rotateZ(-15deg);
-              transform: translate3d(-100%, 0, 0) rotateZ(-15deg); }
-    md-toast.ng-leave.ng-leave-active.md-top.md-swiperight {
-      -webkit-transform: translate3d(100%, 0, 0) rotateZ(15deg);
-              transform: translate3d(100%, 0, 0) rotateZ(15deg); } }
+      -webkit-transform: translate3d(50%, 0, 0);
+              transform: translate3d(50%, 0, 0); } }
 
 @media (min-width: 1200px) {
   md-toast {

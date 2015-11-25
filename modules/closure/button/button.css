@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-20ba8a5
+ * v1.0.0-rc4-master-5e5e6cd
  */
 button.md-button::-moz-focus-inner {
   border: 0; }
@@ -78,8 +78,9 @@ button.md-button::-moz-focus-inner {
     border-radius: 50%;
     background-clip: padding-box;
     overflow: hidden;
-    transition: 0.2s linear;
-    transition-property: background-color, box-shadow; }
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    transition-property: background-color, box-shadow, -webkit-transform;
+    transition-property: background-color, box-shadow, transform; }
     .md-button.md-fab.md-fab-bottom-right {
       top: auto;
       right: 20px;
@@ -126,6 +127,7 @@ button.md-button::-moz-focus-inner {
     -webkit-mask-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC'); }
 
 .md-toast-open-top .md-button.md-fab-top-left, .md-toast-open-top .md-button.md-fab-top-right {
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   -webkit-transform: translate3d(0, 42px, 0);
           transform: translate3d(0, 42px, 0); }
   .md-toast-open-top .md-button.md-fab-top-left:not([disabled]).md-focused, .md-toast-open-top .md-button.md-fab-top-left:not([disabled]):hover, .md-toast-open-top .md-button.md-fab-top-right:not([disabled]).md-focused, .md-toast-open-top .md-button.md-fab-top-right:not([disabled]):hover {
@@ -133,6 +135,7 @@ button.md-button::-moz-focus-inner {
             transform: translate3d(0, 41px, 0); }
 
 .md-toast-open-bottom .md-button.md-fab-bottom-left, .md-toast-open-bottom .md-button.md-fab-bottom-right {
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   -webkit-transform: translate3d(0, -42px, 0);
           transform: translate3d(0, -42px, 0); }
   .md-toast-open-bottom .md-button.md-fab-bottom-left:not([disabled]).md-focused, .md-toast-open-bottom .md-button.md-fab-bottom-left:not([disabled]):hover, .md-toast-open-bottom .md-button.md-fab-bottom-right:not([disabled]).md-focused, .md-toast-open-bottom .md-button.md-fab-bottom-right:not([disabled]):hover {

@@ -1587,8 +1587,8 @@ button.md-button::-moz-focus-inner {
     background-clip: padding-box;
     overflow: hidden;
 
-    transition: 0.2s linear;
-    transition-property: background-color, box-shadow;
+    transition: $swift-ease-in;
+    transition-property: background-color, box-shadow, transform;
     .md-ripple-container {
       border-radius: $button-fab-border-radius;
       background-clip: padding-box;
@@ -1632,6 +1632,7 @@ button.md-button::-moz-focus-inner {
 .md-toast-open-top {
   .md-button.md-fab-top-left,
   .md-button.md-fab-top-right {
+    transition: $swift-ease-out;
     transform: translate3d(0, $button-fab-toast-offset, 0);
     &:not([disabled]) {
       &.md-focused,
@@ -1645,6 +1646,7 @@ button.md-button::-moz-focus-inner {
 .md-toast-open-bottom {
   .md-button.md-fab-bottom-left,
   .md-button.md-fab-bottom-right {
+    transition: $swift-ease-out;
     transform: translate3d(0, -$button-fab-toast-offset, 0);
     &:not([disabled]) {
       &.md-focused,
@@ -2604,6 +2606,13 @@ md-divider {
   }
 }
 
+.layout-row {
+  & > md-divider {
+    border-top-width: 0;
+    border-right-width: 1px;
+    border-right-style: solid;
+  }
+}
 md-fab-speed-dial {
   position: relative;
   display: flex;
@@ -5573,23 +5582,29 @@ md-toast {
       opacity: 1;
     }
   }
+  /*
+   * When the toast doesn't take up the whole screen,
+   * make it rotate when the user swipes it away
+   */
   &.ng-leave.ng-leave-active {
     opacity: 0;
     transform: translate3d(0, 100%, 0);
+
+    &.md-swipeup {
+      transform: translate3d(0, -50%, 0);
+    }
+    &.md-swipedown {
+      transform: translate3d(0, 50%, 0);
+    }
     &.md-top {
       transform: translate3d(0, -100%, 0);
-    }
-    &.md-swipeleft {
-      transform: translate3d(-100%, 0%, 0);
-    }
-    &.md-swiperight {
-      transform: translate3d(100%, 0%, 0);
     }
   }
 
   .md-action {
     line-height: 19px;
     margin-left: 24px;
+    margin-right: 0;
     cursor: pointer;
     text-transform: uppercase;
     float: right;
@@ -5609,9 +5624,14 @@ md-toast {
     min-width: 0;
     border-radius: 0;
     bottom: 0;
-    &.md-top {
-      bottom: auto;
-      top: 0;
+
+    &.ng-leave.ng-leave-active {
+      &.md-swipeup {
+        transform: translate3d(0, -50%, 0);
+      }
+      &.md-swipedown {
+        transform: translate3d(0, 50%, 0);
+      }
     }
   }
 }
@@ -5632,23 +5652,15 @@ md-toast {
     }
 
     /*
-     * When the toast doesn't take up the whole screen,
-     * make it rotate when the user swipes it away
-     */
+   * When the toast doesn't take up the whole screen,
+   * make it rotate when the user swipes it away
+   */
     &.ng-leave.ng-leave-active {
       &.md-swipeleft {
-        transform: translate3d(-100%, 25%, 0) rotateZ(-15deg);
+        transform: translate3d(-50%, 0, 0);
       }
       &.md-swiperight {
-        transform: translate3d(100%, 25%, 0) rotateZ(15deg);
-      }
-      &.md-top {
-        &.md-swipeleft {
-          transform: translate3d(-100%, 0, 0) rotateZ(-15deg);
-        }
-        &.md-swiperight {
-          transform: translate3d(100%, 0, 0) rotateZ(15deg);
-        }
+        transform: translate3d(50%, 0, 0);
       }
     }
   }
