@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-5e5e6cd
+ * v1.0.0-rc5
  */
 button.md-button::-moz-focus-inner {
   border: 0; }
@@ -55,12 +55,11 @@ button.md-button::-moz-focus-inner {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
   .md-button.md-icon-button {
     margin: 0 6px;
-    height: 48px;
+    height: 40px;
     min-width: 0;
-    line-height: 48px;
-    padding-left: 0;
-    padding-right: 0;
-    width: 48px;
+    line-height: 24px;
+    padding: 8px;
+    width: 40px;
     border-radius: 50%; }
     .md-button.md-icon-button .md-ripple-container {
       border-radius: 50%;

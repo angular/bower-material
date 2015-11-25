@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-5e5e6cd
+ * v1.0.0-rc5
  */
 md-list {
   display: block;
@@ -83,7 +83,8 @@ md-list-item, md-list-item .md-list-item-inner {
   md-list-item > md-checkbox, md-list-item .md-list-item-inner > md-checkbox {
     width: 24px;
     margin-left: 3px;
-    margin-right: 29px; }
+    margin-right: 29px;
+    margin-top: 16px; }
   md-list-item .md-avatar, md-list-item .md-avatar-icon, md-list-item .md-list-item-inner .md-avatar, md-list-item .md-list-item-inner .md-avatar-icon {
     margin-top: 8px;
     margin-bottom: 8px;

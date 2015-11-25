@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-5e5e6cd
+ * v1.0.0-rc5
  */
 md-input-container {
   display: inline-block;
@@ -20,6 +20,8 @@ md-input-container {
     display: block; }
   md-input-container.md-has-icon {
     padding-left: 36px; }
+    md-input-container.md-has-icon > label {
+      left: 36px; }
   md-input-container.md-input-has-messages {
     padding-bottom: 2px; }
   md-input-container > md-icon {
@@ -40,7 +42,8 @@ md-input-container {
     -ms-flex-preferred-size: auto; }
   md-input-container label {
     position: absolute;
-    bottom: 100%; }
+    bottom: 100%;
+    left: 0; }
   md-input-container label:not(.md-no-float), md-input-container .md-placeholder {
     -webkit-order: 1;
         -ms-flex-order: 1;

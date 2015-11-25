@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-5e5e6cd
+ * v1.0.0-rc5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -125,7 +125,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     } else {
       styles.top       = (top - offset) + 'px';
       styles.bottom    = 'auto';
-      styles.maxHeight = Math.min(MAX_HEIGHT, root.bottom - hrect.bottom - MENU_PADDING) + 'px';
+      styles.maxHeight = Math.min(MAX_HEIGHT, root.bottom + $mdUtil.scrollTop() - hrect.bottom - MENU_PADDING) + 'px';
     }
 
     elements.$.scrollContainer.css(styles);

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-5e5e6cd
+ * v1.0.0-rc5
  */
 .md-inline-form md-checkbox {
   margin: 19px 0 18px; }
@@ -20,7 +20,60 @@ md-checkbox {
           user-select: none;
   position: relative;
   min-width: 20px;
-  min-height: 20px; }
+  min-height: 20px;
+  margin-left: inherit;
+  margin-right: 16px; }
+  html[dir=rtl] md-checkbox {
+    margin-left: 16px;
+    unicode-bidi: embed; }
+  body[dir=rtl] md-checkbox {
+    margin-left: 16px;
+    unicode-bidi: embed; }
+  md-checkbox bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  md-checkbox bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
+  html[dir=rtl] md-checkbox {
+    margin-right: inherit;
+    unicode-bidi: embed; }
+  body[dir=rtl] md-checkbox {
+    margin-right: inherit;
+    unicode-bidi: embed; }
+  md-checkbox bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  md-checkbox bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
+  md-checkbox:last-of-type {
+    margin-left: inherit;
+    margin-right: 0; }
+    html[dir=rtl] md-checkbox:last-of-type {
+      margin-left: 0;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-checkbox:last-of-type {
+      margin-left: 0;
+      unicode-bidi: embed; }
+    md-checkbox:last-of-type bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-checkbox:last-of-type bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
+    html[dir=rtl] md-checkbox:last-of-type {
+      margin-right: inherit;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-checkbox:last-of-type {
+      margin-right: inherit;
+      unicode-bidi: embed; }
+    md-checkbox:last-of-type bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-checkbox:last-of-type bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
   md-checkbox.md-focused:not([disabled]) .md-container:before {
     left: -8px;
     top: -8px;
