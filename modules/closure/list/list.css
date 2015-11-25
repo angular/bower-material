@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-7564a34
+ * v1.0.0-rc4-master-7d8bc2d
  */
 md-list {
   display: block;
@@ -72,28 +72,28 @@ md-list-item, md-list-item .md-list-item-inner {
     margin-top: 16px;
     margin-bottom: 12px;
     box-sizing: content-box; }
-  md-list-item > div.md-primary > md-checkbox, md-list-item > div.md-secondary > md-checkbox, md-list-item > md-checkbox:first-child, md-list-item md-checkbox.md-secondary, md-list-item .md-list-item-inner > div.md-primary > md-checkbox, md-list-item .md-list-item-inner > div.md-secondary > md-checkbox, md-list-item .md-list-item-inner > md-checkbox:first-child, md-list-item .md-list-item-inner md-checkbox.md-secondary {
+  md-list-item > div.md-primary > md-checkbox, md-list-item > div.md-secondary > md-checkbox, md-list-item > md-checkbox, md-list-item md-checkbox.md-secondary, md-list-item .md-list-item-inner > div.md-primary > md-checkbox, md-list-item .md-list-item-inner > div.md-secondary > md-checkbox, md-list-item .md-list-item-inner > md-checkbox, md-list-item .md-list-item-inner md-checkbox.md-secondary {
     -webkit-align-self: center;
         -ms-flex-item-align: center;
             align-self: center; }
-    md-list-item > div.md-primary > md-checkbox .md-label, md-list-item > div.md-secondary > md-checkbox .md-label, md-list-item > md-checkbox:first-child .md-label, md-list-item md-checkbox.md-secondary .md-label, md-list-item .md-list-item-inner > div.md-primary > md-checkbox .md-label, md-list-item .md-list-item-inner > div.md-secondary > md-checkbox .md-label, md-list-item .md-list-item-inner > md-checkbox:first-child .md-label, md-list-item .md-list-item-inner md-checkbox.md-secondary .md-label {
+    md-list-item > div.md-primary > md-checkbox .md-label, md-list-item > div.md-secondary > md-checkbox .md-label, md-list-item > md-checkbox .md-label, md-list-item md-checkbox.md-secondary .md-label, md-list-item .md-list-item-inner > div.md-primary > md-checkbox .md-label, md-list-item .md-list-item-inner > div.md-secondary > md-checkbox .md-label, md-list-item .md-list-item-inner > md-checkbox .md-label, md-list-item .md-list-item-inner md-checkbox.md-secondary .md-label {
       display: none; }
   md-list-item > md-icon:first-child:not(.md-avatar-icon), md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
     margin-right: 32px; }
-  md-list-item > md-checkbox:first-child, md-list-item .md-list-item-inner > md-checkbox:first-child {
+  md-list-item > md-checkbox, md-list-item .md-list-item-inner > md-checkbox {
     width: 24px;
     margin-left: 3px;
     margin-right: 29px; }
-  md-list-item > .md-avatar, md-list-item .md-avatar-icon, md-list-item .md-list-item-inner > .md-avatar, md-list-item .md-list-item-inner .md-avatar-icon {
+  md-list-item .md-avatar, md-list-item .md-avatar-icon, md-list-item .md-list-item-inner .md-avatar, md-list-item .md-list-item-inner .md-avatar-icon {
     margin-top: 8px;
     margin-bottom: 8px;
     margin-right: 16px;
     border-radius: 50%;
     box-sizing: content-box; }
-  md-list-item > .md-avatar, md-list-item .md-list-item-inner > .md-avatar {
+  md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar {
     width: 40px;
     height: 40px; }
-  md-list-item > .md-avatar-icon, md-list-item .md-list-item-inner > .md-avatar-icon {
+  md-list-item .md-avatar-icon, md-list-item .md-list-item-inner .md-avatar-icon {
     padding: 8px; }
   md-list-item md-checkbox.md-secondary, md-list-item md-switch.md-secondary, md-list-item .md-list-item-inner md-checkbox.md-secondary, md-list-item .md-list-item-inner md-switch.md-secondary {
     margin-top: 0;
