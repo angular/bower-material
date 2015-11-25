@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-d423a65
+ * v1.0.0-rc4-master-7564a34
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -567,7 +567,7 @@ function MdDialogProvider($$interimElementProvider) {
        */
       function focusOnOpen() {
         if (options.focusOnOpen) {
-          var target = $mdUtil.findFocusTarget(element) || findCloseButtonOrWarn();
+          var target = $mdUtil.findFocusTarget(element) || findCloseButton();
           target.focus();
         }
 
@@ -577,14 +577,11 @@ function MdDialogProvider($$interimElementProvider) {
          *
          * If we find no actions at all, log a warning to the console.
          */
-        function findCloseButtonOrWarn() {
+        function findCloseButton() {
           var closeButton = element[0].querySelector('.dialog-close');
           if (!closeButton) {
             var actionButtons = element[0].querySelectorAll('.md-actions button, md-dialog-actions button');
             closeButton = actionButtons[actionButtons.length - 1];
-            if (actionButtons.length === 0) {
-              $log.warn('At least one action button is required for <md-dialog-actions>.');
-            }
           }
           return angular.element(closeButton);
         }
