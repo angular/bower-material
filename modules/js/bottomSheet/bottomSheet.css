@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-55cc93f
+ * v1.0.0-rc5-master-76c6299
  */
 md-bottom-sheet {
   position: absolute;
@@ -35,7 +35,7 @@ md-bottom-sheet {
     transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-bottom-sheet .md-subheader {
     background-color: transparent;
-    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
     line-height: 56px;
     padding: 0;
     white-space: nowrap; }
@@ -97,7 +97,7 @@ md-bottom-sheet {
               -ms-flex: 1 1 33.33333%;
                   flex: 1 1 33.33333%;
           max-width: 33.33333%; }
-          md-bottom-sheet.md-grid md-list-item:nth-of-type(3n+1) {
+          md-bottom-sheet.md-grid md-list-item:nth-of-type(3n + 1) {
             -webkit-align-items: flex-start;
                 -ms-flex-align: start;
                     align-items: flex-start; }

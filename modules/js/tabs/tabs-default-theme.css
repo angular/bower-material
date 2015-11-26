@@ -2,16 +2,19 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-55cc93f
+ * v1.0.0-rc5-master-76c6299
  */
 md-tabs.md-THEME_NAME-theme md-tabs-wrapper {
   background-color: transparent;
   border-color: '{{foreground-4}}'; }
+
 md-tabs.md-THEME_NAME-theme .md-paginator md-icon {
   color: '{{primary-color}}'; }
+
 md-tabs.md-THEME_NAME-theme md-ink-bar {
   color: '{{accent-color}}';
   background: '{{accent-color}}'; }
+
 md-tabs.md-THEME_NAME-theme .md-tab {
   color: '{{foreground-2}}'; }
   md-tabs.md-THEME_NAME-theme .md-tab[disabled], md-tabs.md-THEME_NAME-theme .md-tab[disabled] md-icon {
@@ -22,6 +25,7 @@ md-tabs.md-THEME_NAME-theme .md-tab {
     background: '{{primary-color-0.1}}'; }
   md-tabs.md-THEME_NAME-theme .md-tab .md-ripple-container {
     color: '{{accent-100}}'; }
+
 md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper {
   background-color: '{{accent-color}}'; }
   md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {
@@ -33,6 +37,7 @@ md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper {
   md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {
     color: '{{primary-600-1}}';
     background: '{{primary-600-1}}'; }
+
 md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper {
   background-color: '{{primary-color}}'; }
   md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {
@@ -41,6 +46,7 @@ md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper {
       color: '{{primary-contrast}}'; }
     md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {
       background: '{{primary-contrast-0.1}}'; }
+
 md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper {
   background-color: '{{warn-color}}'; }
   md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-55cc93f
+ * v1.0.0-rc5-master-76c6299
  */
 .md-inline-form md-switch {
   margin-top: 18px;
@@ -90,7 +90,8 @@ md-switch {
             user-select: none;
     margin-right: 8px;
     float: left; }
-  md-switch:not([disabled]) .md-dragging, md-switch:not([disabled]).md-dragging .md-container {
+  md-switch:not([disabled]) .md-dragging,
+  md-switch:not([disabled]).md-dragging .md-container {
     cursor: -webkit-grabbing;
     cursor: grabbing; }
   md-switch.md-focused:not([disabled]) .md-thumb:before {
@@ -154,11 +155,14 @@ md-switch {
       top: -20px;
       right: -20px;
       bottom: -20px; }
-  md-switch:not(.md-dragging) .md-bar, md-switch:not(.md-dragging) .md-thumb-container, md-switch:not(.md-dragging) .md-thumb {
+  md-switch:not(.md-dragging) .md-bar,
+  md-switch:not(.md-dragging) .md-thumb-container,
+  md-switch:not(.md-dragging) .md-thumb {
     transition: all 0.08s linear;
     transition-property: -webkit-transform, background-color;
     transition-property: transform, background-color; }
-  md-switch:not(.md-dragging) .md-bar, md-switch:not(.md-dragging) .md-thumb {
+  md-switch:not(.md-dragging) .md-bar,
+  md-switch:not(.md-dragging) .md-thumb {
     transition-delay: 0.05s; }
 
 @media screen and (-ms-high-contrast: active) {

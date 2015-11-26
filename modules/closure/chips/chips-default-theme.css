@@ -2,12 +2,13 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-55cc93f
+ * v1.0.0-rc5-master-76c6299
  */
 md-chips.md-THEME_NAME-theme .md-chips {
   box-shadow: 0 1px '{{background-300}}'; }
   md-chips.md-THEME_NAME-theme .md-chips.md-focused {
     box-shadow: 0 2px '{{primary-color}}'; }
+
 md-chips.md-THEME_NAME-theme .md-chip {
   background: '{{background-300}}';
   color: '{{background-800}}'; }
@@ -16,6 +17,7 @@ md-chips.md-THEME_NAME-theme .md-chip {
     color: '{{primary-contrast}}'; }
     md-chips.md-THEME_NAME-theme .md-chip.md-focused md-icon {
       color: '{{primary-contrast}}'; }
+
 md-chips.md-THEME_NAME-theme md-chip-remove .md-button md-icon path {
   fill: '{{background-500}}'; }
 

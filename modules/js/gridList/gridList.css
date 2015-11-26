@@ -2,13 +2,16 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-55cc93f
+ * v1.0.0-rc5-master-76c6299
  */
 md-grid-list {
   box-sizing: border-box;
   display: block;
   position: relative; }
-  md-grid-list md-grid-tile, md-grid-list md-grid-tile > figure, md-grid-list md-grid-tile-header, md-grid-list md-grid-tile-footer {
+  md-grid-list md-grid-tile,
+  md-grid-list md-grid-tile > figure,
+  md-grid-list md-grid-tile-header,
+  md-grid-list md-grid-tile-footer {
     box-sizing: border-box; }
   md-grid-list md-grid-tile {
     display: block;
@@ -31,7 +34,8 @@ md-grid-list {
       left: 0;
       padding: 0;
       margin: 0; }
-    md-grid-list md-grid-tile md-grid-tile-header, md-grid-list md-grid-tile md-grid-tile-footer {
+    md-grid-list md-grid-tile md-grid-tile-header,
+    md-grid-list md-grid-tile md-grid-tile-footer {
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
@@ -48,12 +52,17 @@ md-grid-list {
       position: absolute;
       left: 0;
       right: 0; }
-      md-grid-list md-grid-tile md-grid-tile-header h3, md-grid-list md-grid-tile md-grid-tile-header h4, md-grid-list md-grid-tile md-grid-tile-footer h3, md-grid-list md-grid-tile md-grid-tile-footer h4 {
+      md-grid-list md-grid-tile md-grid-tile-header h3,
+      md-grid-list md-grid-tile md-grid-tile-header h4,
+      md-grid-list md-grid-tile md-grid-tile-footer h3,
+      md-grid-list md-grid-tile md-grid-tile-footer h4 {
         font-weight: 400;
         margin: 0 0 0 16px; }
-      md-grid-list md-grid-tile md-grid-tile-header h3, md-grid-list md-grid-tile md-grid-tile-footer h3 {
+      md-grid-list md-grid-tile md-grid-tile-header h3,
+      md-grid-list md-grid-tile md-grid-tile-footer h3 {
         font-size: 14px; }
-      md-grid-list md-grid-tile md-grid-tile-header h4, md-grid-list md-grid-tile md-grid-tile-footer h4 {
+      md-grid-list md-grid-tile md-grid-tile-header h4,
+      md-grid-list md-grid-tile md-grid-tile-footer h4 {
         font-size: 12px; }
     md-grid-list md-grid-tile md-grid-tile-header {
       top: 0; }

@@ -2,33 +2,29 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-55cc93f
+ * v1.0.0-rc5-master-76c6299
  */
 @-webkit-keyframes subheaderStickyHoverIn {
   0% {
     box-shadow: 0 0 0 0 transparent; }
-
   100% {
     box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); } }
 
 @keyframes subheaderStickyHoverIn {
   0% {
     box-shadow: 0 0 0 0 transparent; }
-
   100% {
     box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); } }
 
 @-webkit-keyframes subheaderStickyHoverOut {
   0% {
     box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); }
-
   100% {
     box-shadow: 0 0 0 0 transparent; } }
 
 @keyframes subheaderStickyHoverOut {
   0% {
     box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); }
-
   100% {
     box-shadow: 0 0 0 0 transparent; } }
 
