@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4-master-5e5e6cd
+ * v1.0.0-rc5-master-55cc93f
  */
 md-radio-button {
   box-sizing: border-box;
@@ -137,6 +137,62 @@ md-radio-button {
 
 md-radio-group md-radio-button:not(:first-child) {
   margin-top: 16px; }
+md-radio-group.layout-row md-radio-button {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: inherit;
+  margin-right: 16px; }
+  html[dir=rtl] md-radio-group.layout-row md-radio-button {
+    margin-left: 16px;
+    unicode-bidi: embed; }
+  body[dir=rtl] md-radio-group.layout-row md-radio-button {
+    margin-left: 16px;
+    unicode-bidi: embed; }
+  md-radio-group.layout-row md-radio-button bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  md-radio-group.layout-row md-radio-button bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
+  html[dir=rtl] md-radio-group.layout-row md-radio-button {
+    margin-right: inherit;
+    unicode-bidi: embed; }
+  body[dir=rtl] md-radio-group.layout-row md-radio-button {
+    margin-right: inherit;
+    unicode-bidi: embed; }
+  md-radio-group.layout-row md-radio-button bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  md-radio-group.layout-row md-radio-button bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
+  md-radio-group.layout-row md-radio-button:last-of-type {
+    margin-left: inherit;
+    margin-right: 0; }
+    html[dir=rtl] md-radio-group.layout-row md-radio-button:last-of-type {
+      margin-left: 0;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-radio-group.layout-row md-radio-button:last-of-type {
+      margin-left: 0;
+      unicode-bidi: embed; }
+    md-radio-group.layout-row md-radio-button:last-of-type bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-radio-group.layout-row md-radio-button:last-of-type bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
+    html[dir=rtl] md-radio-group.layout-row md-radio-button:last-of-type {
+      margin-right: inherit;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-radio-group.layout-row md-radio-button:last-of-type {
+      margin-right: inherit;
+      unicode-bidi: embed; }
+    md-radio-group.layout-row md-radio-button:last-of-type bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-radio-group.layout-row md-radio-button:last-of-type bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
 md-radio-group:focus {
   outline: none; }
 md-radio-group.md-focused .md-checked .md-container:before {
