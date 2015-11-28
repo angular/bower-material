@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-76c6299
+ * v1.0.0-rc5-master-3d65dea
  */
 md-sidenav {
   box-sizing: border-box;
@@ -77,7 +77,7 @@ md-sidenav {
     -webkit-transform: translate3d(0%, 0, 0);
             transform: translate3d(0%, 0, 0); }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 960px) {
   md-sidenav {
     max-width: 400px; } }
 
