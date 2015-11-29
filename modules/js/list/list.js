@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-c633ad8
+ * v1.0.0-rc5-master-db458cb
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -246,7 +246,7 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
           }
         }
         function computeClickable() {
-          if (proxies.length || hasClick) {
+          if (proxies.length == 1 || hasClick) {
             $element.addClass('md-clickable');
 
             if (!hasClick) {
@@ -273,7 +273,7 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
         $element.off('click');
         $element.off('keypress');
 
-        if (proxies.length && firstChild) {
+        if (proxies.length == 1 && firstChild) {
           $element.children().eq(0).on('click', function(e) {
             var parentButton = $mdUtil.getClosest(e.target, 'BUTTON');
             if (!parentButton && firstChild.contains(e.target)) {
