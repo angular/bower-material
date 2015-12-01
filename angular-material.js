@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-adb2281
+ * v1.0.0-rc5-master-4b24259
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -9202,15 +9202,18 @@ function MdDialogProvider($$interimElementProvider) {
   dialogDefaultOptions.$inject = ["$mdDialog", "$mdAria", "$mdUtil", "$mdConstant", "$animate", "$document", "$window", "$rootElement", "$log", "$injector"];
   return $$interimElementProvider('$mdDialog')
     .setDefaults({
-      methods: ['disableParentScroll', 'hasBackdrop', 'clickOutsideToClose', 'escapeToClose', 'targetEvent', 'closeTo', 'openFrom', 'parent', 'fullscreen'],
+      methods: ['disableParentScroll', 'hasBackdrop', 'clickOutsideToClose', 'escapeToClose',
+          'targetEvent', 'closeTo', 'openFrom', 'parent', 'fullscreen'],
       options: dialogDefaultOptions
     })
     .addPreset('alert', {
-      methods: ['title', 'htmlContent', 'textContent', 'ariaLabel', 'ok', 'theme', 'css'],
+      methods: ['title', 'htmlContent', 'textContent', 'content', 'ariaLabel', 'ok', 'theme',
+          'css'],
       options: advancedDialogOptions
     })
     .addPreset('confirm', {
-      methods: ['title', 'htmlContent', 'textContent', 'ariaLabel', 'ok', 'cancel', 'theme', 'css'],
+      methods: ['title', 'htmlContent', 'textContent', 'content', 'ariaLabel', 'ok', 'cancel',
+          'theme', 'css'],
       options: advancedDialogOptions
     });
 
@@ -9288,7 +9291,8 @@ function MdDialogProvider($$interimElementProvider) {
     function beforeShow(scope, element, options, controller) {
       if (controller) {
         controller.mdHtmlContent = controller.htmlContent || options.htmlContent || '';
-        controller.mdTextContent = controller.textContent || options.textContent || '';
+        controller.mdTextContent = controller.textContent || options.textContent ||
+            controller.content || options.content || '';
 
         if (controller.mdHtmlContent && !$injector.has('$sanitize')) {
           throw Error('The ngSanitize module must be loaded in order to use htmlContent.');
@@ -23672,4 +23676,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc5-master-adb2281"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc5-master-4b24259"}};
