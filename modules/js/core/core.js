@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-f73e503
+ * v1.0.0-rc5-master-adb2281
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2963,6 +2963,8 @@ function InterimElementProvider() {
   var config = {
     /**
      * Enable directive attribute-to-class conversions
+     * Developers can use `<body md-layout-css />` to quickly
+     * disable the Layout directivees and prohibit the injection of Layout classnames
      */
     enabled: true,
 
@@ -3115,7 +3117,9 @@ function InterimElementProvider() {
     .directive('hideLtMd', warnAttrNotSupported('hide-lt-md'))
     .directive('hideLtLg', warnAttrNotSupported('hide-lt-lg'))
     .directive('showLtMd', warnAttrNotSupported('show-lt-md'))
-    .directive('showLtLg', warnAttrNotSupported('show-lt-lg'));
+    .directive('showLtLg', warnAttrNotSupported('show-lt-lg'))
+
+    .directive('ngCloak',  buildCloakInterceptor('ng-cloak'));
 
   /**
    * Special directive that will disable ALL Layout conversions of layout
@@ -3157,6 +3161,31 @@ function InterimElementProvider() {
   //
   // *********************************************************************************
 
+  /**
+   * Tail-hook ngCloak to delay the uncloaking while Layout transformers
+   * finish processing. Eliminates flicker with Material.Layoouts
+   */
+  function buildCloakInterceptor(className) {
+    return [ '$timeout', function($timeout){
+      return {
+        restrict : 'A',
+        priority : -10,   // run after normal ng-cloak
+        compile  : function( element ) {
+          if (!config.enabled) return angular.noop;
+
+          // Re-add the cloak
+          element.addClass(className);
+
+          return function( scope, element ) {
+            // Wait while layout injectors configure, then uncload
+            $timeout( function(){
+              element.removeClass(className);
+            }, 10, false);
+          };
+        }
+      };
+    }];
+  }
 
   /**
    * Creates a directive registration function where a possible dynamic attribute
