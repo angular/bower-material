@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-fd33d41
+ * v1.0.0-rc5-master-5d34eff
  */
 html, body {
   height: 100%;
@@ -9253,6 +9253,8 @@ md-checkbox {
     cursor: text; }
     .md-chips:not(.md-readonly) .md-chip:not(.md-readonly) {
       padding-right: 22px; }
+      .md-chips:not(.md-readonly) .md-chip:not(.md-readonly) .md-chip-content {
+        padding-right: 4px; }
   .md-chips .md-chip {
     cursor: default;
     border-radius: 16px;
@@ -9267,7 +9269,6 @@ md-checkbox {
     position: relative; }
     .md-chips .md-chip .md-chip-content {
       display: block;
-      padding-right: 4px;
       float: left;
       white-space: nowrap;
       max-width: 100%;
