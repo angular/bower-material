@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-fbb1192
+ * v1.0.0-rc5-master-fd33d41
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3177,7 +3177,9 @@ function InterimElementProvider() {
           element.addClass(className);
 
           return function( scope, element ) {
-            // Wait while layout injectors configure, then uncload
+            // Wait while layout injectors configure, then uncloak
+            // NOTE: $rAF does not delay enough... and this is a 1x-only event,
+            //       $timeout is acceptable.
             $timeout( function(){
               element.removeClass(className);
             }, 10, false);
