@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-097b799
+ * v1.0.0-rc5-master-6b1d758
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2981,7 +2981,7 @@ function InterimElementProvider() {
     /**
      * Enable directive attribute-to-class conversions
      * Developers can use `<body md-layout-css />` to quickly
-     * disable the Layout directivees and prohibit the injection of Layout classnames
+     * disable the Layout directives and prohibit the injection of Layout classNames
      */
     enabled: true,
 
@@ -3139,15 +3139,6 @@ function InterimElementProvider() {
     };
   }
 
-  // *********************************************************************************
-  //
-  // These functions create registration functions for ngMaterial Layout attribute directives
-  // This provides easy translation to switch ngMaterial attribute selectors to
-  // CLASS selectors and directives; which has huge performance implications
-  // for IE Browsers
-  //
-  // *********************************************************************************
-
   /**
    * Tail-hook ngCloak to delay the uncloaking while Layout transformers
    * finish processing. Eliminates flicker with Material.Layoouts
@@ -3175,6 +3166,16 @@ function InterimElementProvider() {
       };
     }];
   }
+
+
+  // *********************************************************************************
+  //
+  // These functions create registration functions for ngMaterial Layout attribute directives
+  // This provides easy translation to switch ngMaterial attribute selectors to
+  // CLASS selectors and directives; which has huge performance implications
+  // for IE Browsers
+  //
+  // *********************************************************************************
 
   /**
    * Creates a directive registration function where a possible dynamic attribute
@@ -3393,14 +3394,16 @@ function InterimElementProvider() {
     return found;
   }
 
-  function extractAlignAxis(value) {
+  function extractAlignAxis(config) {
+    config = (config || "");
+
     var axis = {
       main : "start",
       cross: "stretch"
-    };
+    }, values;
 
-    var values = (value || "").toLowerCase().trim().replace(WHITESPACE, "-").split("-");
-    if ( values.length == 3 ) {
+    values = (config || "").toLowerCase().trim().replace(WHITESPACE, "-").split("-");
+    if ( values[0] === "space" ) {
       values = [ values[0]+"-"+values[1],values[2] ];
     }
 
