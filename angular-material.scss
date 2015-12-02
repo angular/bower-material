@@ -5941,6 +5941,11 @@ md-toast {
   }
 }
 
+
+// While animating, set the toast parent's overflow to hidden so scrollbars do not appear
+.md-toast-animating {
+  overflow: hidden !important;
+}
 // Standard/Desktop Heights
 $toolbar-tools-height: 64px !default;
 $toolbar-height: 64px !default;

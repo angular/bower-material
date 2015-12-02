@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-5d34eff
+ * v1.0.0-rc5-master-605a173
  */
 md-input-container.md-THEME_NAME-theme .md-input {
   color: '{{foreground-1}}';
@@ -23,7 +23,7 @@ md-input-container.md-THEME_NAME-theme ng-messages :not(.md-char-counter), md-in
 md-input-container.md-THEME_NAME-theme ng-message :not(.md-char-counter), md-input-container.md-THEME_NAME-theme data-ng-message :not(.md-char-counter), md-input-container.md-THEME_NAME-theme x-ng-message :not(.md-char-counter),
 md-input-container.md-THEME_NAME-theme [ng-message] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [data-ng-message] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [x-ng-message] :not(.md-char-counter),
 md-input-container.md-THEME_NAME-theme [ng-message-exp] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [data-ng-message-exp] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [x-ng-message-exp] :not(.md-char-counter) {
-  color: '{{warn-500}}'; }
+  color: '{{warn-A700}}'; }
 
 md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-has-value label {
   color: '{{foreground-2}}'; }
@@ -44,22 +44,22 @@ md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.m
   color: '{{accent-500}}'; }
 
 md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn .md-input {
-  border-color: '{{warn-500}}'; }
+  border-color: '{{warn-A700}}'; }
 
 md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn label {
-  color: '{{warn-500}}'; }
+  color: '{{warn-A700}}'; }
 
 md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input {
-  border-color: '{{warn-500}}'; }
+  border-color: '{{warn-A700}}'; }
 
 md-input-container.md-THEME_NAME-theme.md-input-invalid.md-input-focused label {
-  color: '{{warn-500}}'; }
+  color: '{{warn-A700}}'; }
 
 md-input-container.md-THEME_NAME-theme.md-input-invalid ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid data-ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid x-ng-message,
 md-input-container.md-THEME_NAME-theme.md-input-invalid [ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [data-ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [x-ng-message],
 md-input-container.md-THEME_NAME-theme.md-input-invalid [ng-message-exp], md-input-container.md-THEME_NAME-theme.md-input-invalid [data-ng-message-exp], md-input-container.md-THEME_NAME-theme.md-input-invalid [x-ng-message-exp],
 md-input-container.md-THEME_NAME-theme.md-input-invalid .md-char-counter {
-  color: '{{warn-500}}'; }
+  color: '{{warn-A700}}'; }
 
 md-input-container.md-THEME_NAME-theme .md-input[disabled],
 md-input-container.md-THEME_NAME-theme .md-input [disabled] {
