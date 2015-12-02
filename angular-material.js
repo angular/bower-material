@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-4b24259
+ * v1.0.0-rc5-master-037e376
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -16277,7 +16277,9 @@ function MdToastProvider($$interimElementProvider) {
         var opts = {
           template: [
             '<md-toast md-theme="{{ toast.theme }}" ng-class="{\'md-capsule\': toast.capsule}">',
-              '<span flex>{{ toast.content }}</span>',
+              '<span flex role="alert" aria-relevant="all" aria-atomic="true">' +
+                '{{ toast.content }}' +
+              '</span>',
               '<md-button class="md-action" ng-if="toast.action" ng-click="toast.resolve()" ng-class="{\'md-highlight\': toast.highlightAction}">',
                 '{{ toast.action }}',
               '</md-button>',
@@ -23676,4 +23678,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc5-master-4b24259"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc5-master-037e376"}};

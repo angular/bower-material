@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-4b24259
+ * v1.0.0-rc5-master-037e376
  */
 goog.provide('ng.material.components.toast');
 goog.require('ng.material.components.button');
@@ -223,7 +223,9 @@ function MdToastProvider($$interimElementProvider) {
         var opts = {
           template: [
             '<md-toast md-theme="{{ toast.theme }}" ng-class="{\'md-capsule\': toast.capsule}">',
-              '<span flex>{{ toast.content }}</span>',
+              '<span flex role="alert" aria-relevant="all" aria-atomic="true">' +
+                '{{ toast.content }}' +
+              '</span>',
               '<md-button class="md-action" ng-if="toast.action" ng-click="toast.resolve()" ng-class="{\'md-highlight\': toast.highlightAction}">',
                 '{{ toast.action }}',
               '</md-button>',
