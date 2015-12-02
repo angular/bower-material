@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-67e50f6
+ * v1.0.0-rc5-master-08b5af5
  */
 html, body {
   height: 100%;
@@ -9448,10 +9448,11 @@ md-datepicker {
   white-space: nowrap;
   overflow: hidden;
   padding-right: 18px;
-  margin-right: -18px; }
+  margin-right: -18px;
+  vertical-align: middle; }
 
 .md-inline-form md-datepicker {
-  margin-top: 8px; }
+  margin-top: 12px; }
 
 .md-datepicker-button {
   display: inline-block;
@@ -10020,6 +10021,7 @@ md-input-container {
   position: relative;
   padding: 2px;
   margin: 18px 0;
+  vertical-align: middle;
   /*
    * The .md-input class is added to the input/textarea
    */ }

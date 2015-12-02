@@ -2515,11 +2515,13 @@ md-datepicker {
   // Leave room for the down-triangle button to "overflow" it's parent without modifying scrollLeft
   padding-right: $md-datepicker-triangle-button-width / 2;
   margin-right: -$md-datepicker-triangle-button-width / 2;
+
+  vertical-align: middle;
 }
 
 .md-inline-form {
   md-datepicker {
-    margin-top: 8px;
+    margin-top: 12px;
   }
 }
 
@@ -3265,6 +3267,7 @@ md-input-container {
   position: relative;
   padding: $input-container-padding;
   margin: 18px 0;
+  vertical-align: middle;
 
   &.md-block {
     display: block;
