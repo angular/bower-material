@@ -1083,7 +1083,7 @@ md-autocomplete {
   min-width: 190px;
   &[disabled] {
     input {
-      cursor: not-allowed;
+      cursor: default;
     }
   }
   &[md-floating-label] {
@@ -2086,7 +2086,7 @@ md-checkbox {
 
   // disabled
   &[disabled] {
-    cursor: no-drop;
+    cursor: default;
   }
 
 
@@ -4482,6 +4482,15 @@ md-radio-button {
   cursor: pointer;
   position: relative;
 
+  // disabled
+  &[disabled] {
+    cursor: default;
+
+    .md-container {
+      cursor: default;
+    }
+  }
+
   .md-container {
     position: absolute;
     top: 50%;
@@ -4810,6 +4819,10 @@ md-option {
   display: flex;
   align-items: center;
   width: auto;
+
+  &[disabled] {
+    cursor: default;
+  }
 
   &:focus {
     outline: none;
@@ -5377,6 +5390,14 @@ md-switch {
   &:last-of-type {
     @include rtl(margin-left, inherit, 0);
     @include rtl(margin-right, 0, inherit);
+  }
+  
+  &[disabled] {
+    cursor: default;
+
+    .md-container {
+      cursor: default;
+    }
   }
 
   .md-container {
