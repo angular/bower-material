@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-ba23a4d
+ * v1.0.0-rc5-master-503fa9d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3469,14 +3469,15 @@ function InterimElementProvider() {
   }
 
   function extractAlignAxis(config) {
-    config = (config || "");
-
     var axis = {
       main : "start",
       cross: "stretch"
     }, values;
 
-    values = (config || "").toLowerCase().trim().replace(WHITESPACE, "-").split("-");
+    config = (config || "");
+    if ( config.indexOf("-") == 0 ) config = "none" + config;
+
+    values = config.toLowerCase().trim().replace(WHITESPACE, "-").split("-");
     if ( values[0] === "space" ) {
       values = [ values[0]+"-"+values[1],values[2] ];
     }
@@ -23817,4 +23818,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc5-master-ba23a4d"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc5-master-503fa9d"}};
