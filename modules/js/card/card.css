@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-b3177f2
+ * v1.0.0-rc6-master-cdc9719
  */
 md-card {
   box-sizing: border-box;
@@ -102,8 +102,10 @@ md-card {
   md-card md-card-content {
     display: block;
     padding: 16px; }
-    md-card md-card-content > p {
-      margin: 0; }
+    md-card md-card-content > p:first-child {
+      margin-top: 0; }
+    md-card md-card-content > p:last-child {
+      margin-bottom: 0; }
     md-card md-card-content .md-media-xl {
       height: 240px;
       width: 240px; }
