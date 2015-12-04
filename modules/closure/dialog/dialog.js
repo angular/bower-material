@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc6-master-b4ef302
+ * v1.0.0-rc6-master-1938945
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -157,7 +157,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
  *     function showAlert() {
  *       alert = $mdDialog.alert({
  *         title: 'Attention',
- *         content: 'This is an example of how easy dialogs can be!',
+ *         textContent: 'This is an example of how easy dialogs can be!',
  *         ok: 'Close'
  *       });
  *
