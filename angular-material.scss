@@ -562,7 +562,7 @@ input {
     }
   }
 
-  @for $i from 0 through 19 {
+  @for $i from -20 through 20 {
     $order : '';
     $suffix : '';
 
@@ -578,6 +578,7 @@ input {
     }
   }
 }
+
 @mixin offset-for-name($sizes:null) {
   @if $sizes == null { $sizes : ''; }
 
@@ -974,12 +975,15 @@ input {
 }
 
 @media (min-width: $layout-breakpoint-xs) and (max-width: $layout-breakpoint-sm - 1) {
-  // SMALL SCREEN
-  .hide-sm, .hide {
-    &:not(.show-sm):not(.show) {
+  .hide, .hide-gt-xs {
+    &:not(.show-gt-xs):not(.show-sm):not(.show) {
       display: none;
     }
   }
+  .hide-sm:not(.show-sm):not(.show) {
+    display: none;
+  }
+
   @include layouts_for_breakpoint(sm);
 }
 
@@ -991,8 +995,8 @@ input {
 
 @media (min-width: $layout-breakpoint-sm) and (max-width: $layout-breakpoint-md - 1) {
   // MEDIUM SCREEN
-  .hide, .hide-gt-sm {
-    &:not(.show-gt-sm):not(.show-md):not(.show) {
+  .hide, .hide-gt-xs, .hide-gt-sm {
+    &:not(.show-gt-xs):not(.show-gt-sm):not(.show-md):not(.show) {
       display: none;
     }
   }
@@ -1009,35 +1013,33 @@ input {
 
 @media (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg - 1) {
   // LARGE SCREEN
-  .hide, .hide-gt-sm, .hide-gt-md {
-      &:not(.show-gt-sm):not(.show-gt-md):not(.show-lg):not(.show) {
-        display: none;
-      }
-    }
-    .hide-lg:not(.show-lg):not(.show) {
+  .hide,.hide-gt-xs, .hide-gt-sm, .hide-gt-md {
+    &:not(.show-gt-xs):not(.show-gt-sm):not(.show-gt-md):not(.show-lg):not(.show) {
       display: none;
     }
+  }
+  .hide-lg:not(.show-lg):not(.show) {
+    display: none;
+  }
 
   @include layouts_for_breakpoint(lg);
 }
 
 @media (min-width: $layout-breakpoint-lg) {
+  @include layouts_for_breakpoint(gt-lg);
+  @include layouts_for_breakpoint(xl);
+
   // BIGGER THAN LARGE SCREEN
-  .hide-gt-sm, .hide-gt-md, .hide-gt-lg, .hide {
-    &:not(.show-gt-sm):not(.show-gt-md):not(.show-gt-lg):not(.show-xl):not(.show) {
+  .hide, .hide-gt-xs, .hide-gt-sm, .hide-gt-md, .hide-gt-lg {
+    &:not(.show-gt-xs):not(.show-gt-sm):not(.show-gt-md):not(.show-gt-lg):not(.show-xl):not(.show) {
       display: none;
     }
   }
-  .hide-xl:not(.show-xl):not(.show) {
+  .hide-xl:not(.show-xl):not(.show-gt-lg):not(.show) {
     display: none;
   }
 
-
-  // BIGGER THAN LARGE SCREEN
-  @include layouts_for_breakpoint(gt-lg);
-  @include layouts_for_breakpoint(xl);
 }
-
 
 $autocomplete-option-height: 48px;
 $input-container-padding: 2px !default;
@@ -1222,6 +1224,7 @@ md-autocomplete {
       }
     }
   }
+  // IE Only
   @media screen and (-ms-high-contrast: active) {
     $border-color: #fff;
 
@@ -1271,6 +1274,7 @@ md-autocomplete {
   }
 }
 
+// IE Only
 @media screen and (-ms-high-contrast: active) {
   md-autocomplete,
   .md-autocomplete-suggestions {
@@ -1464,11 +1468,11 @@ md-bottom-sheet {
         @include grid-items-per-row(3, true);
       }
 
-      @media screen and (min-width: $layout-breakpoint-sm) and (max-width: $layout-breakpoint-md) {
+      @media screen and (min-width: $layout-breakpoint-sm) and (max-width: $layout-breakpoint-md - 1) {
         @include grid-items-per-row(4);
       }
 
-      @media screen and (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg) {
+      @media screen and (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg - 1) {
         @include grid-items-per-row(6);
       }
 
@@ -1517,6 +1521,7 @@ md-bottom-sheet {
   }
 }
 
+// IE only
 @media screen and (-ms-high-contrast: active) {
   md-bottom-sheet {
     border: 1px solid #fff;
@@ -1749,6 +1754,7 @@ button.md-button::-moz-focus-inner {
     border-radius: 0px 2px 2px 0px;
   }
 }
+// IE only
 @media screen and (-ms-high-contrast: active) {
   .md-button.md-raised,
   .md-button.md-fab {
@@ -2311,6 +2317,7 @@ $contact-chip-name-width: rem(12) !default;
     }
   }
 }
+// IE only
 @media screen and (-ms-high-contrast: active) {
   .md-chip-input-container,
   md-chip {
@@ -2828,13 +2835,14 @@ md-dialog {
   }
 }
 
-@media (max-width: $layout-breakpoint-sm) {
+@media (max-width: $layout-breakpoint-sm - 1) {
   md-dialog.md-dialog-fullscreen {
     min-height: 100%;
     min-width: 100%;
     border-radius: 0;
   }
 }
+
 md-divider {
   display: block;
   border-top-width: 1px;
@@ -3997,6 +4005,7 @@ md-toolbar {
     }
   }
 }
+
 @media (min-width: $layout-breakpoint-sm) {
   md-menu-content {
     min-width: 96px;
@@ -4007,6 +4016,7 @@ md-toolbar {
     }
   }
 }
+
 
 md-toolbar.md-menu-toolbar {
   h2.md-toolbar-tools {
@@ -5906,7 +5916,7 @@ md-toast {
   }
 }
 
-@media (max-width: $layout-breakpoint-sm) {
+@media (max-width: $layout-breakpoint-sm - 1) {
   md-toast {
     left: 0;
     right: 0;
@@ -5976,6 +5986,7 @@ md-toast {
 .md-toast-animating {
   overflow: hidden !important;
 }
+
 // Standard/Desktop Heights
 $toolbar-tools-height: 64px !default;
 $toolbar-height: 64px !default;
@@ -6110,8 +6121,7 @@ md-toolbar {
 }
 
 // Handle mobile portrait
-@media only screen and (min-width: 0) and (max-width: $layout-breakpoint-sm) and
-  (orientation: portrait) {
+@media only screen and (min-width: 0) and (max-width: $layout-breakpoint-sm - 1) and (orientation: portrait) {
   md-toolbar {
     min-height: $toolbar-height-mobile-portrait;
   }
@@ -6123,8 +6133,7 @@ md-toolbar {
 }
 
 // Handle mobile landscape
-@media only screen and (min-width: 0) and (max-width: $layout-breakpoint-sm) and
-  (orientation: landscape) {
+@media only screen and (min-width: 0) and (max-width: $layout-breakpoint-sm - 1) and (orientation: landscape) {
   md-toolbar {
     min-height: $toolbar-height-mobile-landscape;
   }
