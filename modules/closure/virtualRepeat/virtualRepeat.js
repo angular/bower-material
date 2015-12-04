@@ -2,16 +2,18 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc6-master-cdc9719
+ * v1.0.0-rc6-master-b4ef302
  */
 goog.provide('ng.material.components.virtualRepeat');
+goog.require('ng.material.components.showHide');
 goog.require('ng.material.core');
 /**
  * @ngdoc module
  * @name material.components.virtualRepeat
  */
 angular.module('material.components.virtualRepeat', [
-  'material.core'
+  'material.core',
+  'material.components.showHide'
 ])
 .directive('mdVirtualRepeatContainer', VirtualRepeatContainerDirective)
 .directive('mdVirtualRepeat', VirtualRepeatDirective);
