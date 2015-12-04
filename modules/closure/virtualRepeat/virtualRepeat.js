@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc6-master-1938945
+ * v1.0.0-rc6-master-1771b29
  */
 goog.provide('ng.material.components.virtualRepeat');
 goog.require('ng.material.components.showHide');
@@ -216,14 +216,15 @@ VirtualRepeatContainerController.prototype.sizeScroller_ = function(size) {
   var dimension =  this.isHorizontal() ? 'width' : 'height';
   var crossDimension = this.isHorizontal() ? 'height' : 'width';
 
+  // Clear any existing dimensions.
+  this.sizer.innerHTML = '';
+
   // If the size falls within the browser's maximum explicit size for a single element, we can
   // set the size and be done. Otherwise, we have to create children that add up the the desired
   // size.
   if (size < MAX_ELEMENT_SIZE) {
     this.sizer.style[dimension] = size + 'px';
   } else {
-    // Clear any existing dimensions.
-    this.sizer.innerHTML = '';
     this.sizer.style[dimension] = 'auto';
     this.sizer.style[crossDimension] = 'auto';
 
