@@ -1,7 +1,7 @@
 {
   "name": "angular-material-fabTrigger",
-  "version": "1.0.0-rc6-master-992d9b5",
+  "version": "1.0.0-rc6-master-d0b7bac",
   "dependencies": {
-    "angular-material-core": "1.0.0-rc6-master-992d9b5"
+    "angular-material-core": "1.0.0-rc6-master-d0b7bac"
   }
 }
