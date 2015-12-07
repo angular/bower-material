@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc6-master-c668ba4
+ * v1.0.0-rc6-master-3d32c2e
  */
 html, body {
   height: 100%;
@@ -673,6 +673,12 @@ input {
   -webkit-flex: 0 0 auto;
       -ms-flex: 0 0 auto;
           flex: 0 0 auto;
+  box-sizing: border-box; }
+
+.flex-noshrink {
+  -webkit-flex: 1 0 auto;
+      -ms-flex: 1 0 auto;
+          flex: 1 0 auto;
   box-sizing: border-box; }
 
 .flex-0 {
@@ -1682,6 +1688,11 @@ input {
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
     box-sizing: border-box; }
+  .flex-xs-noshrink {
+    -webkit-flex: 1 0 auto;
+        -ms-flex: 1 0 auto;
+            flex: 1 0 auto;
+    box-sizing: border-box; }
   .flex-xs-0 {
     -webkit-flex: 1 1 0%;
         -ms-flex: 1 1 0%;
@@ -2542,6 +2553,11 @@ input {
     -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
+    box-sizing: border-box; }
+  .flex-gt-xs-noshrink {
+    -webkit-flex: 1 0 auto;
+        -ms-flex: 1 0 auto;
+            flex: 1 0 auto;
     box-sizing: border-box; }
   .flex-gt-xs-0 {
     -webkit-flex: 1 1 0%;
@@ -3408,6 +3424,11 @@ input {
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
     box-sizing: border-box; }
+  .flex-sm-noshrink {
+    -webkit-flex: 1 0 auto;
+        -ms-flex: 1 0 auto;
+            flex: 1 0 auto;
+    box-sizing: border-box; }
   .flex-sm-0 {
     -webkit-flex: 1 1 0%;
         -ms-flex: 1 1 0%;
@@ -4268,6 +4289,11 @@ input {
     -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
+    box-sizing: border-box; }
+  .flex-gt-sm-noshrink {
+    -webkit-flex: 1 0 auto;
+        -ms-flex: 1 0 auto;
+            flex: 1 0 auto;
     box-sizing: border-box; }
   .flex-gt-sm-0 {
     -webkit-flex: 1 1 0%;
@@ -5134,6 +5160,11 @@ input {
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
     box-sizing: border-box; }
+  .flex-md-noshrink {
+    -webkit-flex: 1 0 auto;
+        -ms-flex: 1 0 auto;
+            flex: 1 0 auto;
+    box-sizing: border-box; }
   .flex-md-0 {
     -webkit-flex: 1 1 0%;
         -ms-flex: 1 1 0%;
@@ -5994,6 +6025,11 @@ input {
     -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
+    box-sizing: border-box; }
+  .flex-gt-md-noshrink {
+    -webkit-flex: 1 0 auto;
+        -ms-flex: 1 0 auto;
+            flex: 1 0 auto;
     box-sizing: border-box; }
   .flex-gt-md-0 {
     -webkit-flex: 1 1 0%;
@@ -6860,6 +6896,11 @@ input {
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
     box-sizing: border-box; }
+  .flex-lg-noshrink {
+    -webkit-flex: 1 0 auto;
+        -ms-flex: 1 0 auto;
+            flex: 1 0 auto;
+    box-sizing: border-box; }
   .flex-lg-0 {
     -webkit-flex: 1 1 0%;
         -ms-flex: 1 1 0%;
@@ -7721,6 +7762,11 @@ input {
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
     box-sizing: border-box; }
+  .flex-gt-lg-noshrink {
+    -webkit-flex: 1 0 auto;
+        -ms-flex: 1 0 auto;
+            flex: 1 0 auto;
+    box-sizing: border-box; }
   .flex-gt-lg-0 {
     -webkit-flex: 1 1 0%;
         -ms-flex: 1 1 0%;
@@ -8579,6 +8625,11 @@ input {
     -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
+    box-sizing: border-box; }
+  .flex-xl-noshrink {
+    -webkit-flex: 1 0 auto;
+        -ms-flex: 1 0 auto;
+            flex: 1 0 auto;
     box-sizing: border-box; }
   .flex-xl-0 {
     -webkit-flex: 1 1 0%;
