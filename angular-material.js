@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc6-master-cae51a6
+ * v1.0.0-rc6-master-c668ba4
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -16597,6 +16597,8 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
   var translateY = angular.bind(null, $mdUtil.supplant, 'translate3d(0,{0}px,0)');
 
   return {
+    template: '',
+
     restrict: 'E',
 
     link: function(scope, element, attr) {
@@ -23820,4 +23822,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc6-master-cae51a6"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc6-master-c668ba4"}};
