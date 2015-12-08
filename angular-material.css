@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc6-master-eb1695a
+ * v1.0.0-rc6-master-a2ec660
  */
 html, body {
   height: 100%;
@@ -3087,7 +3087,7 @@ input {
 @media (min-width: 600px) and (max-width: 959px) {
   .hide:not(.show-gt-xs):not(.show-sm):not(.show), .hide-gt-xs:not(.show-gt-xs):not(.show-sm):not(.show) {
     display: none; }
-  .hide-sm:not(.show-sm):not(.show) {
+  .hide-sm:not(.show-gt-xs):not(.show-sm):not(.show) {
     display: none; }
   .flex-order-sm--20 {
     -webkit-order: -20;
@@ -4823,7 +4823,7 @@ input {
 @media (min-width: 960px) and (max-width: 1279px) {
   .hide:not(.show-gt-xs):not(.show-gt-sm):not(.show-md):not(.show), .hide-gt-xs:not(.show-gt-xs):not(.show-gt-sm):not(.show-md):not(.show), .hide-gt-sm:not(.show-gt-xs):not(.show-gt-sm):not(.show-md):not(.show) {
     display: none; }
-  .hide-md:not(.show-md):not(.show) {
+  .hide-md:not(.show-md):not(.show-gt-sm):not(.show-gt-xs):not(.show) {
     display: none; }
   .flex-order-md--20 {
     -webkit-order: -20;
@@ -6559,7 +6559,7 @@ input {
 @media (min-width: 1280px) and (max-width: 1919px) {
   .hide:not(.show-gt-xs):not(.show-gt-sm):not(.show-gt-md):not(.show-lg):not(.show), .hide-gt-xs:not(.show-gt-xs):not(.show-gt-sm):not(.show-gt-md):not(.show-lg):not(.show), .hide-gt-sm:not(.show-gt-xs):not(.show-gt-sm):not(.show-gt-md):not(.show-lg):not(.show), .hide-gt-md:not(.show-gt-xs):not(.show-gt-sm):not(.show-gt-md):not(.show-lg):not(.show) {
     display: none; }
-  .hide-lg:not(.show-lg):not(.show) {
+  .hide-lg:not(.show-lg):not(.show-gt-md):not(.show-gt-sm):not(.show-gt-xs):not(.show) {
     display: none; }
   .flex-order-lg--20 {
     -webkit-order: -20;
@@ -9157,7 +9157,7 @@ input {
             flex-direction: row; }
   .hide:not(.show-gt-xs):not(.show-gt-sm):not(.show-gt-md):not(.show-gt-lg):not(.show-xl):not(.show), .hide-gt-xs:not(.show-gt-xs):not(.show-gt-sm):not(.show-gt-md):not(.show-gt-lg):not(.show-xl):not(.show), .hide-gt-sm:not(.show-gt-xs):not(.show-gt-sm):not(.show-gt-md):not(.show-gt-lg):not(.show-xl):not(.show), .hide-gt-md:not(.show-gt-xs):not(.show-gt-sm):not(.show-gt-md):not(.show-gt-lg):not(.show-xl):not(.show), .hide-gt-lg:not(.show-gt-xs):not(.show-gt-sm):not(.show-gt-md):not(.show-gt-lg):not(.show-xl):not(.show) {
     display: none; }
-  .hide-xl:not(.show-xl):not(.show-gt-lg):not(.show) {
+  .hide-xl:not(.show-xl):not(.show-gt-lg):not(.show-gt-md):not(.show-gt-sm):not(.show-gt-xs):not(.show) {
     display: none; } }
 
 @-webkit-keyframes md-autocomplete-list-out {
