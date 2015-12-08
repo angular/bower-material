@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc6-master-db72b39
+ * v1.0.0-rc6-master-9d72659
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -16848,9 +16848,10 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
 
     var parent        = $mdUtil.getParentWithPointerEvents(element),
         content       = angular.element(element[0].getElementsByClassName('md-content')[0]),
-        current       = $mdUtil.getNearestContentElement(element),
-        tooltipParent = angular.element(current || document.body),
+        tooltipParent = angular.element(document.body),
         debouncedOnResize = $$rAF.throttle(function () { updatePosition(); });
+
+    if ($animate.pin) $animate.pin(element, parent);
 
     // Initialize element
 
@@ -16858,8 +16859,8 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     manipulateElement();
     bindEvents();
 
-    // Default origin transform point is 'left top'
-    // positionTooltip() is always relative to top left
+    // Default origin transform point is 'center top'
+    // positionTooltip() is always relative to center top
     updateContentOrigin();
 
     configureWatchers();
@@ -16871,7 +16872,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     }
 
     function updateContentOrigin() {
-      var origin = 'left top';
+      var origin = 'center top';
       switch (scope.direction) {
         case 'left'  : origin =  'right center';  break;
         case 'right' : origin =  'left center';   break;
@@ -16927,7 +16928,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
         });
 
         attributeObserver.observe(parent[0], { attributes: true});
-      };
+      }
 
       // Store whether the element was focused when the window loses focus.
       var windowBlurHandler = function() {
@@ -16935,11 +16936,17 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       };
       var elementFocusedOnWindowBlur = false;
 
+      function windowScrollHandler() {
+        setVisible(false);
+      }
+      
       ngWindow.on('blur', windowBlurHandler);
       ngWindow.on('resize', debouncedOnResize);
+      document.addEventListener('scroll', windowScrollHandler, true);
       scope.$on('$destroy', function() {
         ngWindow.off('blur', windowBlurHandler);
         ngWindow.off('resize', debouncedOnResize);
+        document.removeEventListener('scroll', windowScrollHandler, true);
         attributeObserver && attributeObserver.disconnect();
       });
 
@@ -23897,4 +23904,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc6-master-db72b39"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc6-master-9d72659"}};

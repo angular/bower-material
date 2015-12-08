@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc6-master-db72b39
+ * v1.0.0-rc6-master-9d72659
  */
 md-tooltip {
   position: absolute;
@@ -44,7 +44,9 @@ md-tooltip {
     md-tooltip .md-content.md-show, md-tooltip .md-content.md-show-add-active {
       -webkit-transform: scale(1);
               transform: scale(1);
-      opacity: 1; }
+      opacity: 1;
+      -webkit-transform-origin: center top;
+              transform-origin: center top; }
     md-tooltip .md-content.md-show-remove {
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       transition-duration: .2s; }
