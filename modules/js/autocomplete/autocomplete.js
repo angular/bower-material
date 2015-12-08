@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc6-master-36efd3f
+ * v1.0.0-rc6-master-88ba1fd
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1052,42 +1052,72 @@ angular
 function MdAutocompleteItemScopeDirective($compile, $mdUtil) {
   return {
     restrict: 'AE',
-    link: postLink,
-    terminal: true
+    compile: compile,
+    terminal: true,
+    transclude: 'element'
   };
 
-  function postLink(scope, element, attr) {
-    var ctrl = scope.$mdAutocompleteCtrl;
-    var newScope = ctrl.parent.$new();
-    var itemName = ctrl.itemName;
+  function compile(tElement, tAttr, transclude) {
+    return function postLink(scope, element, attr) {
+      var ctrl = scope.$mdAutocompleteCtrl;
+      var newScope = ctrl.parent.$new();
+      var itemName = ctrl.itemName;
 
-    // Watch for changes to our scope's variables and copy them to the new scope
-    watchVariable('$index', '$index');
-    watchVariable('item', itemName);
+      // Watch for changes to our scope's variables and copy them to the new scope
+      watchVariable('$index', '$index');
+      watchVariable('item', itemName);
 
-    // Recompile the contents with the new/modified scope
-    $compile(element.contents())(newScope);
+      // Ensure that $digest calls on our scope trigger $digest on newScope.
+      connectScopes();
 
-    // Replace it if required
-    if (attr.hasOwnProperty('mdAutocompleteReplace')) {
-      element.after(element.contents());
-      element.remove();
-    }
-
-    /**
-     * Creates a watcher for variables that are copied from the parent scope
-     * @param variable
-     * @param alias
-     */
-    function watchVariable(variable, alias) {
-      newScope[alias] = scope[variable];
-
-      scope.$watch(variable, function(value) {
-        $mdUtil.nextTick(function() {
-          newScope[alias] = value;
-        });
+      // Link the element against newScope.
+      transclude(newScope, function(clone) {
+        element.after(clone);
       });
-    }
+
+      /**
+       * Creates a watcher for variables that are copied from the parent scope
+       * @param variable
+       * @param alias
+       */
+      function watchVariable(variable, alias) {
+        newScope[alias] = scope[variable];
+
+        scope.$watch(variable, function(value) {
+          $mdUtil.nextTick(function() {
+            newScope[alias] = value;
+          });
+        });
+      }
+
+      /**
+       * Creates watchers on scope and newScope that ensure that for any
+       * $digest of scope, newScope is also $digested.
+       */
+      function connectScopes() {
+        var scopeDigesting = false;
+        var newScopeDigesting = false;
+
+        scope.$watch(function() {
+          if (newScopeDigesting || scopeDigesting) {
+            return;
+          }
+
+          scopeDigesting = true;
+          scope.$$postDigest(function() {
+            if (!newScopeDigesting) {
+              newScope.$digest();
+            }
+
+            scopeDigesting = newScopeDigesting = false;
+          });
+        });
+
+        newScope.$watch(function() {
+          newScopeDigesting = true;
+        });
+      }
+    };
   }
 }
 MdAutocompleteItemScopeDirective.$inject = ["$compile", "$mdUtil"];
@@ -1117,7 +1147,7 @@ function MdHighlightCtrl ($scope, $element, $attrs) {
 
           $element.html(text.replace(regex, '<span class="highlight">$&</span>'));
         }, true);
-    $element.on('$destroy', function () { watcher(); });
+    $element.on('$destroy', watcher);
   }
 
   function sanitize (term) {
