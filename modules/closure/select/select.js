@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc6-master-1013423
+ * v1.0.0-rc6-master-eb1695a
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -256,6 +256,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         inputCheckValue();
       };
 
+
       attr.$observe('placeholder', ngModelCtrl.$render);
 
 
@@ -395,6 +396,10 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
       if (!element[0].hasAttribute('id')) {
         ariaAttrs.id = 'select_' + $mdUtil.nextUid();
       }
+
+      var containerId = 'select_container_' + $mdUtil.nextUid();
+      selectContainer.attr('id', containerId);
+      ariaAttrs['aria-owns'] = containerId;
       element.attr(ariaAttrs);
 
       scope.$on('$destroy', function() {
@@ -428,6 +433,9 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         }
         selectMenuCtrl = selectContainer.find('md-select-menu').controller('mdSelectMenu');
         selectMenuCtrl.init(ngModelCtrl, attr.ngModel);
+        element.on('$destroy', function() {
+          selectContainer.remove();
+        });
       }
 
       function handleKeypress(e) {
@@ -451,7 +459,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         }
       }
 
-      function openSelect(e) {
+      function openSelect() {
         selectScope.isOpen = true;
         element.attr('aria-expanded', 'true');
 
@@ -461,8 +469,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
           skipCompile: true,
           element: selectContainer,
           target: element[0],
+          selectCtrl: mdSelectCtrl,
           preserveElement: true,
-          parent: element,
           hasBackdrop: true,
           loadingAsync: attr.mdOnOpen ? scope.$eval(attr.mdOnOpen) || true : false
         }).finally(function() {
@@ -1262,7 +1270,7 @@ function SelectProvider($$interimElementProvider) {
      * trigger the [optional] user-defined expression
      */
     function announceClosed(opts) {
-      var mdSelect = opts.selectEl.controller('mdSelect');
+      var mdSelect = opts.selectCtrl;
       if (mdSelect) {
         var menuController = opts.selectEl.controller('mdSelectMenu');
         mdSelect.setLabelText(menuController.selectedLabels());
@@ -1277,7 +1285,7 @@ function SelectProvider($$interimElementProvider) {
     function calculateMenuPositions(scope, element, opts) {
       var 
         containerNode = element[0],
-        targetNode = opts.target[0].children[1], // target the label
+        targetNode = opts.target[0].children[0], // target the label
         parentNode = $document[0].body,
         selectNode = opts.selectEl[0],
         contentNode = opts.contentEl[0],
@@ -1385,7 +1393,7 @@ function SelectProvider($$interimElementProvider) {
       } else {
         left = (targetRect.left + centeredRect.left - centeredRect.paddingLeft) + 2;
         top = Math.floor(targetRect.top + targetRect.height / 2 - centeredRect.height / 2 -
-            centeredRect.top + contentNode.scrollTop) + 5;
+            centeredRect.top + contentNode.scrollTop) + 4;
 
         transformOrigin = (centeredRect.left + targetRect.width / 2) + 'px ' +
           (centeredRect.top + centeredRect.height / 2 - contentNode.scrollTop) + 'px 0px';

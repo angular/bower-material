@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc6-master-1013423
+ * v1.0.0-rc6-master-eb1695a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13401,6 +13401,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         inputCheckValue();
       };
 
+
       attr.$observe('placeholder', ngModelCtrl.$render);
 
 
@@ -13540,6 +13541,10 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
       if (!element[0].hasAttribute('id')) {
         ariaAttrs.id = 'select_' + $mdUtil.nextUid();
       }
+
+      var containerId = 'select_container_' + $mdUtil.nextUid();
+      selectContainer.attr('id', containerId);
+      ariaAttrs['aria-owns'] = containerId;
       element.attr(ariaAttrs);
 
       scope.$on('$destroy', function() {
@@ -13573,6 +13578,9 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         }
         selectMenuCtrl = selectContainer.find('md-select-menu').controller('mdSelectMenu');
         selectMenuCtrl.init(ngModelCtrl, attr.ngModel);
+        element.on('$destroy', function() {
+          selectContainer.remove();
+        });
       }
 
       function handleKeypress(e) {
@@ -13596,7 +13604,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         }
       }
 
-      function openSelect(e) {
+      function openSelect() {
         selectScope.isOpen = true;
         element.attr('aria-expanded', 'true');
 
@@ -13606,8 +13614,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
           skipCompile: true,
           element: selectContainer,
           target: element[0],
+          selectCtrl: mdSelectCtrl,
           preserveElement: true,
-          parent: element,
           hasBackdrop: true,
           loadingAsync: attr.mdOnOpen ? scope.$eval(attr.mdOnOpen) || true : false
         }).finally(function() {
@@ -14407,7 +14415,7 @@ function SelectProvider($$interimElementProvider) {
      * trigger the [optional] user-defined expression
      */
     function announceClosed(opts) {
-      var mdSelect = opts.selectEl.controller('mdSelect');
+      var mdSelect = opts.selectCtrl;
       if (mdSelect) {
         var menuController = opts.selectEl.controller('mdSelectMenu');
         mdSelect.setLabelText(menuController.selectedLabels());
@@ -14422,7 +14430,7 @@ function SelectProvider($$interimElementProvider) {
     function calculateMenuPositions(scope, element, opts) {
       var 
         containerNode = element[0],
-        targetNode = opts.target[0].children[1], // target the label
+        targetNode = opts.target[0].children[0], // target the label
         parentNode = $document[0].body,
         selectNode = opts.selectEl[0],
         contentNode = opts.contentEl[0],
@@ -14530,7 +14538,7 @@ function SelectProvider($$interimElementProvider) {
       } else {
         left = (targetRect.left + centeredRect.left - centeredRect.paddingLeft) + 2;
         top = Math.floor(targetRect.top + targetRect.height / 2 - centeredRect.height / 2 -
-            centeredRect.top + contentNode.scrollTop) + 5;
+            centeredRect.top + contentNode.scrollTop) + 4;
 
         transformOrigin = (centeredRect.left + targetRect.width / 2) + 'px ' +
           (centeredRect.top + centeredRect.height / 2 - contentNode.scrollTop) + 'px 0px';
@@ -21128,7 +21136,9 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
     menuContainer = setMenuContainer;
     // Default element for ARIA attributes has the ngClick or ngMouseenter expression
     triggerElement = $element[0].querySelector('[ng-click],[ng-mouseenter]');
+    triggerElement.setAttribute('aria-expanded', 'false');
 
+    this.isInMenuBar = opts.isInMenuBar;
     this.nestedMenus = $mdUtil.nodesToArray(menuContainer[0].querySelectorAll('.md-nested-menu'));
 
     menuContainer.on('$mdInterimElementRemove', function() {
@@ -21213,6 +21223,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
     self.enableHoverListener();
     self.isOpen = true;
     triggerElement = triggerElement || (ev ? ev.target : $element[0]);
+    triggerElement.setAttribute('aria-expanded', 'true');
     $scope.$emit('$mdMenuOpen', $element);
     $mdMenu.show({
       scope: $scope,
@@ -21221,8 +21232,9 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
       element: menuContainer,
       target: triggerElement,
       preserveElement: true,
-      parent: $element
+      parent: 'body'
     }).finally(function() {
+      triggerElement.setAttribute('aria-expanded', 'false');
       self.disableHoverListener();
     });
   };
@@ -21232,14 +21244,12 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
 
   $scope.$watch(function() { return self.isOpen; }, function(isOpen) {
     if (isOpen) {
-      triggerElement.setAttribute('aria-expanded', 'true');
       menuContainer.attr('aria-hidden', 'false');
       $element[0].classList.add('md-open');
       angular.forEach(self.nestedMenus, function(el) {
         el.classList.remove('md-open');
       });
     } else {
-      triggerElement && triggerElement.setAttribute('aria-expanded', 'false');
       menuContainer.attr('aria-hidden', 'true');
       $element[0].classList.remove('md-open');
     }
@@ -21532,6 +21542,10 @@ function MenuDirective($mdUtil) {
     }
     menuContainer.append(menuContents);
 
+    element.on('$destroy', function() {
+      menuContainer.remove();
+    });
+
     element.append(menuContainer);
     menuContainer[0].style.display = 'none';
     mdMenuCtrl.init(menuContainer, { isInMenuBar: isInMenuBar });
@@ -21673,11 +21687,8 @@ function MenuProvider($$interimElementProvider) {
        * Place the menu into the DOM and call positioning related functions
        */
       function showMenu() {
-        if (!opts.preserveElement) {
-          opts.parent.append(element);
-        } else {
-          element[0].style.display = '';
-        }
+        opts.parent.append(element);
+        element[0].style.display = '';
 
         return $q(function(resolve) {
           var position = calculateMenuPosition(element, opts);
@@ -21787,13 +21798,13 @@ function MenuProvider($$interimElementProvider) {
               handled = true;
               break;
             case $mdConstant.KEY_CODE.UP_ARROW:
-              if (!focusMenuItem(ev, opts.menuContentEl, opts, -1)) {
+              if (!focusMenuItem(ev, opts.menuContentEl, opts, -1) && !opts.nestLevel) {
                 opts.mdMenuCtrl.triggerContainerProxy(ev);
               }
               handled = true;
               break;
             case $mdConstant.KEY_CODE.DOWN_ARROW:
-              if (!focusMenuItem(ev, opts.menuContentEl, opts, 1)) {
+              if (!focusMenuItem(ev, opts.menuContentEl, opts, 1) && !opts.nestLevel) {
                 opts.mdMenuCtrl.triggerContainerProxy(ev);
               }
               handled = true;
@@ -21840,7 +21851,7 @@ function MenuProvider($$interimElementProvider) {
             if ((hasAnyAttribute(target, ['ng-click', 'ng-href', 'ui-sref']) ||
                 target.nodeName == 'BUTTON' || target.nodeName == 'MD-BUTTON') && !hasAnyAttribute(target, ['md-prevent-menu-close'])) {
               var closestMenu = $mdUtil.getClosest(target, 'MD-MENU');
-              if (!target.hasAttribute('disabled') && (closestMenu == opts.parent[0])) {
+              if (!target.hasAttribute('disabled') && (!closestMenu || closestMenu == opts.parent[0])) {
                 close();
               }
               break;
@@ -22118,18 +22129,16 @@ MenuBarController.prototype.init = function() {
       el[0].classList.remove('md-open');
     }
 
-    if (opts.closeAll) {
-      if ($element[0].contains(el[0])) {
-        var parentMenu = el[0];
-        while (parentMenu && rootMenus.indexOf(parentMenu) == -1) {
-          parentMenu = $mdUtil.getClosest(parentMenu, 'MD-MENU', true);
-        }
-        if (parentMenu) {
-          if (!opts.skipFocus) parentMenu.querySelector('button:not([disabled])').focus();
-          self.currentlyOpenMenu = undefined;
-          self.disableOpenOnHover();
-          self.setKeyboardMode(true);
-        }
+    if ($element[0].contains(el[0])) {
+      var parentMenu = el[0];
+      while (parentMenu && rootMenus.indexOf(parentMenu) == -1) {
+        parentMenu = $mdUtil.getClosest(parentMenu, 'MD-MENU', true);
+      }
+      if (parentMenu) {
+        if (!opts.skipFocus) parentMenu.querySelector('button:not([disabled])').focus();
+        self.currentlyOpenMenu = undefined;
+        self.disableOpenOnHover();
+        self.setKeyboardMode(true);
       }
     }
   }));
@@ -22503,11 +22512,27 @@ MenuItemController.prototype.init = function(ngModel) {
     this.mode  = $attrs.type;
     this.iconEl = $element[0].children[0];
     this.buttonEl = $element[0].children[1];
-    if (ngModel) this.initClickListeners();
+    if (ngModel) {
+      // Clear ngAria set attributes
+      this.initClickListeners();
+    }
   }
 };
 
+// ngAria auto sets attributes on a menu-item with a ngModel.
+// We don't want this because our content (buttons) get the focus
+// and set their own aria attributes appropritately. Having both
+// breaks NVDA / JAWS. This undeoes ngAria's attrs.
+MenuItemController.prototype.clearNgAria = function() {
+  var el = this.$element[0];
+  var clearAttrs = ['role', 'tabindex', 'aria-invalid', 'aria-checked'];
+  angular.forEach(clearAttrs, function(attr) {
+    el.removeAttribute(attr);
+  });
+};
+
 MenuItemController.prototype.initClickListeners = function() {
+  var self = this;
   var ngModel = this.ngModel;
   var $scope = this.$scope;
   var $attrs = this.$attrs;
@@ -22516,7 +22541,7 @@ MenuItemController.prototype.initClickListeners = function() {
 
   this.handleClick = angular.bind(this, this.handleClick);
 
-  var icon = this.iconEl
+  var icon = this.iconEl;
   var button = angular.element(this.buttonEl);
   var handleClick = this.handleClick;
 
@@ -22524,12 +22549,13 @@ MenuItemController.prototype.initClickListeners = function() {
   setDisabled($attrs.disabled);
 
   ngModel.$render = function render() {
+    self.clearNgAria();
     if (isSelected()) {
       icon.style.display = '';
-      $element.attr('aria-checked', 'true');
+      button.attr('aria-checked', 'true');
     } else {
       icon.style.display = 'none';
-      $element.attr('aria-checked', 'false');
+      button.attr('aria-checked', 'false');
     }
   };
 
@@ -22583,6 +22609,7 @@ angular
 function MenuItemDirective() {
   return {
     require: ['mdMenuItem', '?ngModel'],
+    priority: 210, // ensure that our post link runs after ngAria
     compile: function(templateEl, templateAttrs) {
       if (templateAttrs.type == 'checkbox' || templateAttrs.type == 'radio') {
         var text = templateEl[0].textContent;
@@ -23839,4 +23866,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc6-master-1013423"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc6-master-eb1695a"}};
