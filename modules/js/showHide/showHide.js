@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc7-master-2ab3075
+ * v1.0.0-rc7-master-2f18bb4
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -28,15 +28,19 @@ function createDirective(name, targetValue) {
       restrict: 'A',
       multiElement: true,
       link: function($scope, $element, $attr) {
-        $scope.$watch($attr[name], function(value) {
-          if (!!value === targetValue) {
-            $mdUtil.nextTick(function() {
-              $scope.$broadcast('$md-resize');
-            });
-            $mdUtil.dom.animator.waitTransitionEnd($element).then(function() {
-              $scope.$broadcast('$md-resize');
-            });
-          }
+        var unregister = $scope.$on('$md-resize-enable', function() {
+          unregister();
+
+          $scope.$watch($attr[name], function(value) {
+            if (!!value === targetValue) {
+              $mdUtil.nextTick(function() {
+                $scope.$broadcast('$md-resize');
+              });
+              $mdUtil.dom.animator.waitTransitionEnd($element).then(function() {
+                $scope.$broadcast('$md-resize');
+              });
+            }
+          });
         });
       }
     };
