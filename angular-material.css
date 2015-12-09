@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc7
+ * v1.0.0-rc7-master-2ab3075
  */
 html, body {
   height: 100%;
@@ -12723,6 +12723,8 @@ md-select {
   -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1; }
+  .md-select-value .md-text {
+    display: inline; }
   .md-select-value *:first-child {
     -webkit-flex: 1 0 auto;
         -ms-flex: 1 0 auto;
