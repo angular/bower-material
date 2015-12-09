@@ -1,6 +1,6 @@
 {
   "name": "angular-material",
-  "version": "1.0.0-rc6-master-f56976b",
+  "version": "1.0.0-rc7",
   "main": "index",
   "format": "cjs",
   "registry": "github",
@@ -18,7 +18,7 @@
     },
     "shim": {
       "angular-material": {
-        "deps": [ ]
+        "deps": []
       }
     },
     "peerDependencies": {}
