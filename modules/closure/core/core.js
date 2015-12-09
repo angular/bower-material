@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc6-master-9d72659
+ * v1.0.0-rc6-master-f56976b
  */
 goog.provide('ng.material.core');
 
@@ -1122,6 +1122,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      *
      * @param el Element to start walking the DOM from
      * @param tagName Tag name to find closest to el, such as 'form'
+     * @param onlyParent Only start checking from the parent element, not `el`.
      */
     getClosest: function getClosest(el, tagName, onlyParent) {
       if (el instanceof angular.element) el = el[0];

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc6-master-9d72659
+ * v1.0.0-rc6-master-f56976b
  */
 goog.provide('ng.material.components.virtualRepeat');
 goog.require('ng.material.components.showHide');
@@ -263,7 +263,8 @@ VirtualRepeatContainerController.prototype.sizeScroller_ = function(size) {
 VirtualRepeatContainerController.prototype.autoShrink_ = function(size) {
   var shrinkSize = Math.max(size, this.autoShrinkMin * this.repeater.getItemSize());
   if (this.autoShrink && shrinkSize !== this.size) {
-    if (shrinkSize < (this.originalSize || this.size)) {
+    var currentSize = this.originalSize || this.size;
+    if (!currentSize || shrinkSize < currentSize) {
       if (!this.originalSize) {
         this.originalSize = this.size;
       }

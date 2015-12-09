@@ -1,9 +1,9 @@
 {
   "name": "angular-material-datepicker",
-  "version": "1.0.0-rc6-master-9d72659",
+  "version": "1.0.0-rc6-master-f56976b",
   "dependencies": {
-    "angular-material-core": "1.0.0-rc6-master-9d72659",
-    "angular-material-icon": "1.0.0-rc6-master-9d72659",
-    "angular-material-virtualRepeat": "1.0.0-rc6-master-9d72659"
+    "angular-material-core": "1.0.0-rc6-master-f56976b",
+    "angular-material-icon": "1.0.0-rc6-master-f56976b",
+    "angular-material-virtualRepeat": "1.0.0-rc6-master-f56976b"
   }
 }
