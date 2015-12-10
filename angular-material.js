@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc7-master-cfdd7cf
+ * v1.0.0-rc7-master-8d7ec06
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -9453,8 +9453,13 @@ function MdDialogProvider($$interimElementProvider) {
       options.hideBackdrop(options.$destroy);
 
       // Remove the focus traps that we added earlier for keeping focus within the dialog.
-      topFocusTrap.parentNode.removeChild(topFocusTrap);
-      bottomFocusTrap.parentNode.removeChild(bottomFocusTrap);
+      if (topFocusTrap && topFocusTrap.parentNode) {
+        topFocusTrap.parentNode.removeChild(topFocusTrap);
+      }
+
+      if (bottomFocusTrap && bottomFocusTrap.parentNode) {
+        bottomFocusTrap.parentNode.removeChild(bottomFocusTrap);
+      }
 
       // For navigation $destroy events, do a quick, non-animated removal,
       // but for normal closes (from clicks, etc) animate the removal
@@ -24179,4 +24184,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc7-master-cfdd7cf"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc7-master-8d7ec06"}};
