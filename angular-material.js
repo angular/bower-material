@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc7-master-f376178
+ * v1.0.0-rc7-master-ea60dd3
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -16569,6 +16569,9 @@ MdToastDirective.$inject = ["$mdToast"];
   *     have an outer `md-toast` element.
   *   - `template` - `{string=}`: Same as templateUrl, except this is an actual
   *     template string.
+  *   - `autoWrap` - `{boolean=}`: Whether or not to automatically wrap the template content with a
+  *     `<div class="md-toast-content">` if one is not provided. Defaults to true. Can be disabled if you provide a
+  *     custom toast directive.
   *   - `scope` - `{object=}`: the scope to link the template / controller to. If none is specified, it will create a new child scope.
   *     This scope will be destroyed when the toast is removed unless `preserveScope` is set to true.
   *   - `preserveScope` - `{boolean=}`: whether to preserve the scope when the element is removed. Default is false
@@ -16691,7 +16694,28 @@ function MdToastProvider($$interimElementProvider) {
       onRemove: onRemove,
       position: 'bottom left',
       themable: true,
-      hideDelay: 3000
+      hideDelay: 3000,
+      autoWrap: true,
+      transformTemplate: function(template, options) {
+        var shouldAddWrapper = options.autoWrap && template && !/md-toast-content/g.test(template);
+
+        if (shouldAddWrapper) {
+          // Root element of template will be <md-toast>. We need to wrap all of its content inside of
+          // of <div class="md-toast-content">. All templates provided here should be static, developer-controlled
+          // content (meaning we're not attempting to guard against XSS).
+          var parsedTemplate = angular.element(template);
+          var wrappedContent = '<div class="md-toast-content">' + parsedTemplate.html() + '</div>';
+
+          parsedTemplate.empty().append(wrappedContent);
+
+          // Underlying interimElement expects a template string.
+          return parsedTemplate[0].outerHTML;
+        }
+
+        return shouldAddWrapper ?
+            '<div class="md-toast-content">' + template + '</div>' :
+            template || '';
+      }
     };
 
     function onShow(scope, element, options) {
@@ -24131,4 +24155,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc7-master-f376178"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc7-master-ea60dd3"}};
