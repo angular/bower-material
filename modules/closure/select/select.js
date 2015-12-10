@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc7-master-a4ea9de
+ * v1.0.0-rc7-master-3040fd2
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -426,7 +426,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         selectContainer = angular.element(
           element[0].querySelector('.md-select-menu-container')
         );
-        selectScope = selectContainer.scope();
+        selectScope = scope;
         if (element.attr('md-container-class')) {
           var value = selectContainer[0].getAttribute('class') + ' ' + element.attr('md-container-class');
           selectContainer[0].setAttribute('class', value);
