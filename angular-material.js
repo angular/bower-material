@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc7-master-86ec22a
+ * v1.0.0-rc7-master-62af938
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -21500,7 +21500,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
         self.currentlyOpenMenu = undefined;
       }
     }));
-    menuItems = angular.element($mdUtil.nodesToArray(menuContainer[0].querySelectorAll('md-menu-item')));
+    menuItems = angular.element($mdUtil.nodesToArray(menuContainer[0].children[0].children));
     menuItems.on('mouseenter', self.handleMenuItemHover);
     menuItems.on('mouseleave', self.handleMenuItemMouseLeave);
   };
@@ -21529,8 +21529,8 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
         self.currentlyOpenMenu.close(true, { closeTo: closeTo });
       } else if (nestedMenu && !nestedMenu.isOpen && nestedMenu.open) {
         self.isAlreadyOpening = true;
+        nestedMenu.open();
       }
-      nestedMenu && nestedMenu.open();
     }, nestedMenu ? 100 : 250);
     var focusableTarget = event.currentTarget.querySelector('button:not([disabled])');
     focusableTarget && focusableTarget.focus();
@@ -24199,4 +24199,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc7-master-86ec22a"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc7-master-62af938"}};

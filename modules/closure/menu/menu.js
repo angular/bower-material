@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc7-master-86ec22a
+ * v1.0.0-rc7-master-62af938
  */
 goog.provide('ng.material.components.menu');
 goog.require('ng.material.components.backdrop');
@@ -76,7 +76,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
         self.currentlyOpenMenu = undefined;
       }
     }));
-    menuItems = angular.element($mdUtil.nodesToArray(menuContainer[0].querySelectorAll('md-menu-item')));
+    menuItems = angular.element($mdUtil.nodesToArray(menuContainer[0].children[0].children));
     menuItems.on('mouseenter', self.handleMenuItemHover);
     menuItems.on('mouseleave', self.handleMenuItemMouseLeave);
   };
@@ -105,8 +105,8 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
         self.currentlyOpenMenu.close(true, { closeTo: closeTo });
       } else if (nestedMenu && !nestedMenu.isOpen && nestedMenu.open) {
         self.isAlreadyOpening = true;
+        nestedMenu.open();
       }
-      nestedMenu && nestedMenu.open();
     }, nestedMenu ? 100 : 250);
     var focusableTarget = event.currentTarget.querySelector('button:not([disabled])');
     focusableTarget && focusableTarget.focus();
