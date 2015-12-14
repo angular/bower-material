@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc7-master-80a8929
+ * v1.0.0-rc7-master-1d71928
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -11786,7 +11786,10 @@ function inputTextareaDirective($mdUtil, $window, $mdAria) {
     }
 
     var isErrorGetter = containerCtrl.isErrorGetter || function() {
-      return ngModelCtrl.$invalid && (ngModelCtrl.$touched || ngModelCtrl.$$parentForm.$submitted);
+      return ngModelCtrl.$invalid && (
+        ngModelCtrl.$touched ||
+        (ngModelCtrl.$$parentForm && ngModelCtrl.$$parentForm.$submitted)
+      );
     };
 
     scope.$watch(isErrorGetter, containerCtrl.setInvalid);
@@ -24188,4 +24191,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc7-master-80a8929"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc7-master-1d71928"}};
