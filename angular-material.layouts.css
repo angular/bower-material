@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.1-master-a687bfc
+ * v1.0.1-master-8ef798f
  */
 /*
 *
@@ -304,9 +304,9 @@
   margin-left: calc(200% / 3); }
 
 [layout-align] {
-  -webkit-justify-content: start;
+  -webkit-justify-content: flex-start;
       -ms-flex-pack: start;
-          justify-content: start;
+          justify-content: flex-start;
   -webkit-align-content: stretch;
       -ms-flex-line-pack: stretch;
           align-content: stretch;
@@ -1347,9 +1347,9 @@
   [flex-offset-xs="66"] {
     margin-left: calc(200% / 3); }
   [layout-align-xs] {
-    -webkit-justify-content: start;
+    -webkit-justify-content: flex-start;
         -ms-flex-pack: start;
-            justify-content: start;
+            justify-content: flex-start;
     -webkit-align-content: stretch;
         -ms-flex-line-pack: stretch;
             align-content: stretch;
@@ -2244,9 +2244,9 @@
   [flex-offset-gt-xs="66"] {
     margin-left: calc(200% / 3); }
   [layout-align-gt-xs] {
-    -webkit-justify-content: start;
+    -webkit-justify-content: flex-start;
         -ms-flex-pack: start;
-            justify-content: start;
+            justify-content: flex-start;
     -webkit-align-content: stretch;
         -ms-flex-line-pack: stretch;
             align-content: stretch;
@@ -3145,9 +3145,9 @@
   [flex-offset-sm="66"] {
     margin-left: calc(200% / 3); }
   [layout-align-sm] {
-    -webkit-justify-content: start;
+    -webkit-justify-content: flex-start;
         -ms-flex-pack: start;
-            justify-content: start;
+            justify-content: flex-start;
     -webkit-align-content: stretch;
         -ms-flex-line-pack: stretch;
             align-content: stretch;
@@ -4042,9 +4042,9 @@
   [flex-offset-gt-sm="66"] {
     margin-left: calc(200% / 3); }
   [layout-align-gt-sm] {
-    -webkit-justify-content: start;
+    -webkit-justify-content: flex-start;
         -ms-flex-pack: start;
-            justify-content: start;
+            justify-content: flex-start;
     -webkit-align-content: stretch;
         -ms-flex-line-pack: stretch;
             align-content: stretch;
@@ -4943,9 +4943,9 @@
   [flex-offset-md="66"] {
     margin-left: calc(200% / 3); }
   [layout-align-md] {
-    -webkit-justify-content: start;
+    -webkit-justify-content: flex-start;
         -ms-flex-pack: start;
-            justify-content: start;
+            justify-content: flex-start;
     -webkit-align-content: stretch;
         -ms-flex-line-pack: stretch;
             align-content: stretch;
@@ -5840,9 +5840,9 @@
   [flex-offset-gt-md="66"] {
     margin-left: calc(200% / 3); }
   [layout-align-gt-md] {
-    -webkit-justify-content: start;
+    -webkit-justify-content: flex-start;
         -ms-flex-pack: start;
-            justify-content: start;
+            justify-content: flex-start;
     -webkit-align-content: stretch;
         -ms-flex-line-pack: stretch;
             align-content: stretch;
@@ -6741,9 +6741,9 @@
   [flex-offset-lg="66"] {
     margin-left: calc(200% / 3); }
   [layout-align-lg] {
-    -webkit-justify-content: start;
+    -webkit-justify-content: flex-start;
         -ms-flex-pack: start;
-            justify-content: start;
+            justify-content: flex-start;
     -webkit-align-content: stretch;
         -ms-flex-line-pack: stretch;
             align-content: stretch;
@@ -7638,9 +7638,9 @@
   [flex-offset-gt-lg="66"] {
     margin-left: calc(200% / 3); }
   [layout-align-gt-lg] {
-    -webkit-justify-content: start;
+    -webkit-justify-content: flex-start;
         -ms-flex-pack: start;
-            justify-content: start;
+            justify-content: flex-start;
     -webkit-align-content: stretch;
         -ms-flex-line-pack: stretch;
             align-content: stretch;
@@ -8533,9 +8533,9 @@
   [flex-offset-xl="66"] {
     margin-left: calc(200% / 3); }
   [layout-align-xl] {
-    -webkit-justify-content: start;
+    -webkit-justify-content: flex-start;
         -ms-flex-pack: start;
-            justify-content: start;
+            justify-content: flex-start;
     -webkit-align-content: stretch;
         -ms-flex-line-pack: stretch;
             align-content: stretch;
