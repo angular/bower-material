@@ -2,5 +2,5 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.1-master-a69c20b
+ * v1.0.1-master-68cc0bc
  */md-toast.md-THEME_NAME-theme .md-toast-content{background-color:#323232;color:'{{background-50}}'}md-toast.md-THEME_NAME-theme .md-toast-content .md-button{color:'{{background-50}}'}md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight{color:'{{primary-A200}}'}md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-accent{color:'{{accent-A200}}'}md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-warn{color:'{{warn-A200}}'}
