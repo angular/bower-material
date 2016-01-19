@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.2-master-5716340
+ * v1.0.2-master-689a34d
  */
 .md-dialog-is-showing {
   max-height: 100%; }
@@ -42,13 +42,13 @@ md-dialog {
   md-dialog.md-transition-in {
     opacity: 1;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    -webkit-transform: translate3d(0, 0, 0) scale(1);
-            transform: translate3d(0, 0, 0) scale(1); }
+    -webkit-transform: translate(0, 0) scale(1);
+            transform: translate(0, 0) scale(1); }
   md-dialog.md-transition-out {
     opacity: 0;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    -webkit-transform: translate3d(0, 100%, 0) scale(0.2);
-            transform: translate3d(0, 100%, 0) scale(0.2); }
+    -webkit-transform: translate(0, 100%) scale(0.2);
+            transform: translate(0, 100%) scale(0.2); }
   md-dialog > form {
     display: -webkit-flex;
     display: -ms-flexbox;
