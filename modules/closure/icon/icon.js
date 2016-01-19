@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.2-master-ef71080
+ * v1.0.2-master-bf78b0c
  */
 goog.provide('ng.material.components.icon');
 goog.require('ng.material.core');
@@ -789,19 +789,14 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
          }, function(val, attr) {
            this.element.setAttribute(attr, val);
          }, this);
-
-         angular.forEach({
-           'pointer-events' : 'none',
-           'display' : 'block'
-         }, function(val, style) {
-           this.element.style[style] = val;
-         }, this);
    }
 
    /**
     * Clone the Icon DOM element.
     */
    function cloneSVG(){
+     // If the element or any of its children have a style attribute, then a CSP policy without
+     // 'unsafe-inline' in the style-src directive, will result in a violation.
      return this.element.cloneNode(true);
    }
 

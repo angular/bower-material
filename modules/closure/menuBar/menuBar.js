@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.2-master-ef71080
+ * v1.0.2-master-bf78b0c
  */
 goog.provide('ng.material.components.menuBar');
 goog.require('ng.material.components.menu');
@@ -128,7 +128,7 @@ MenuBarController.prototype.disableOpenOnHover = function() {
   this.openOnHoverEnabled = false;
   var parentToolbar;
   if (parentToolbar = this.parentToolbar) {
-    parentToolbar.setAttribute('style', parentToolbar.dataset.mdRestoreStyle || '');
+    parentToolbar.style.cssText = parentToolbar.dataset.mdRestoreStyle || '';
   }
   angular
     .element(this.getMenus())

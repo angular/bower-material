@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.2-master-ef71080
+ * v1.0.2-master-bf78b0c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -846,9 +846,9 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
         element = angular.element(element || body)[0];
         var zIndex = 50;
         var scrollMask = angular.element(
-          '<div class="md-scroll-mask" style="z-index: ' + zIndex + '">' +
+          '<div class="md-scroll-mask">' +
           '  <div class="md-scroll-mask-bar"></div>' +
-          '</div>');
+          '</div>').css('z-index', zIndex);
         element.appendChild(scrollMask[0]);
 
         scrollMask.on('wheel', preventDefault);
@@ -883,8 +883,8 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
       // position
       function disableBodyScroll() {
         var htmlNode = body.parentNode;
-        var restoreHtmlStyle = htmlNode.getAttribute('style') || '';
-        var restoreBodyStyle = body.getAttribute('style') || '';
+        var restoreHtmlStyle = htmlNode.style.cssText || '';
+        var restoreBodyStyle = body.style.cssText || '';
         var scrollOffset = $mdUtil.scrollTop(body);
         var clientWidth = body.clientWidth;
 
@@ -903,8 +903,8 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
         if (body.clientWidth < clientWidth) applyStyles(body, {overflow: 'hidden'});
 
         return function restoreScroll() {
-          body.setAttribute('style', restoreBodyStyle);
-          htmlNode.setAttribute('style', restoreHtmlStyle);
+          body.style.cssText = restoreBodyStyle;
+          htmlNode.style.cssText = restoreHtmlStyle;
           body.scrollTop = scrollOffset;
           htmlNode.scrollTop = scrollOffset;
         };
@@ -922,7 +922,15 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     },
     floatingScrollbars: function() {
       if (this.floatingScrollbars.cached === undefined) {
-        var tempNode = angular.element('<div style="width: 100%; z-index: -1; position: absolute; height: 35px; overflow-y: scroll"><div style="height: 60px;"></div></div>');
+        var tempNode = angular.element('<div><div></div></div>').css({
+          width: '100%',
+          'z-index': -1,
+          position: 'absolute',
+          height: '35px',
+          'overflow-y': 'scroll'
+        });
+        tempNode.children().css('height', '60px');
+
         $document[0].body.appendChild(tempNode[0]);
         this.floatingScrollbars.cached = (tempNode[0].offsetWidth == tempNode[0].childNodes[0].offsetWidth);
         tempNode.remove();
@@ -15564,7 +15572,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
 
       var numSteps = Math.floor( (max - min) / step );
       if (!tickCanvas) {
-        tickCanvas = angular.element('<canvas style="position:absolute;">');
+        tickCanvas = angular.element('<canvas>').css('position', 'absolute');
         tickContainer.append(tickCanvas);
 
         var trackTicksStyle = $window.getComputedStyle(tickContainer[0]);
@@ -21490,19 +21498,14 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
          }, function(val, attr) {
            this.element.setAttribute(attr, val);
          }, this);
-
-         angular.forEach({
-           'pointer-events' : 'none',
-           'display' : 'block'
-         }, function(val, style) {
-           this.element.style[style] = val;
-         }, this);
    }
 
    /**
     * Clone the Icon DOM element.
     */
    function cloneSVG(){
+     // If the element or any of its children have a style attribute, then a CSP policy without
+     // 'unsafe-inline' in the style-src directive, will result in a violation.
      return this.element.cloneNode(true);
    }
 
@@ -22589,7 +22592,7 @@ MenuBarController.prototype.disableOpenOnHover = function() {
   this.openOnHoverEnabled = false;
   var parentToolbar;
   if (parentToolbar = this.parentToolbar) {
-    parentToolbar.setAttribute('style', parentToolbar.dataset.mdRestoreStyle || '');
+    parentToolbar.style.cssText = parentToolbar.dataset.mdRestoreStyle || '';
   }
   angular
     .element(this.getMenus())
@@ -23416,6 +23419,9 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
 
   function handleMaxTabWidth (newWidth, oldWidth) {
     if (newWidth !== oldWidth) {
+      angular.forEach(elements.tabs, function(tab) {
+        tab.style.maxWidth = newWidth + 'px';
+      });
       $mdUtil.nextTick(ctrl.updateInkBarStyles);
     }
   }
@@ -24153,7 +24159,6 @@ function MdTabs () {
               '<md-tab-item ' +
                   'tabindex="-1" ' +
                   'class="md-tab" ' +
-                  'style="max-width: {{ $mdTabsCtrl.maxTabWidth + \'px\' }}" ' +
                   'ng-repeat="tab in $mdTabsCtrl.tabs" ' +
                   'role="tab" ' +
                   'aria-controls="tab-content-{{::tab.id}}" ' +
@@ -24271,4 +24276,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.2-master-ef71080"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.2-master-bf78b0c"}};

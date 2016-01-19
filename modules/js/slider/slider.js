@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.2-master-ef71080
+ * v1.0.2-master-bf78b0c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -206,7 +206,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
 
       var numSteps = Math.floor( (max - min) / step );
       if (!tickCanvas) {
-        tickCanvas = angular.element('<canvas style="position:absolute;">');
+        tickCanvas = angular.element('<canvas>').css('position', 'absolute');
         tickContainer.append(tickCanvas);
 
         var trackTicksStyle = $window.getComputedStyle(tickContainer[0]);

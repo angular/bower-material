@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.2-master-ef71080
+ * v1.0.2-master-bf78b0c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -370,6 +370,9 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
 
   function handleMaxTabWidth (newWidth, oldWidth) {
     if (newWidth !== oldWidth) {
+      angular.forEach(elements.tabs, function(tab) {
+        tab.style.maxWidth = newWidth + 'px';
+      });
       $mdUtil.nextTick(ctrl.updateInkBarStyles);
     }
   }
@@ -1103,7 +1106,6 @@ function MdTabs () {
               '<md-tab-item ' +
                   'tabindex="-1" ' +
                   'class="md-tab" ' +
-                  'style="max-width: {{ $mdTabsCtrl.maxTabWidth + \'px\' }}" ' +
                   'ng-repeat="tab in $mdTabsCtrl.tabs" ' +
                   'role="tab" ' +
                   'aria-controls="tab-content-{{::tab.id}}" ' +

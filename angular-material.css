@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.2-master-ef71080
+ * v1.0.2-master-bf78b0c
  */
 html, body {
   height: 100%;
@@ -11061,7 +11061,8 @@ md-icon {
   height: 24px;
   width: 24px; }
   md-icon svg {
-    pointer-events: none; }
+    pointer-events: none;
+    display: block; }
   md-icon[md-font-icon] {
     line-height: 1;
     width: auto; }
