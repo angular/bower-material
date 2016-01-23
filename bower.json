@@ -1,6 +1,6 @@
 {
   "name": "angular-material-ehs",
-  "version": "1.0.3ehs",
+  "version": "1.0.4",
   "ignore": [],
   "dependencies": {
     "angular": "^1.4.8",
