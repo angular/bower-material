@@ -26,13 +26,13 @@ npm list;
 
 ```shell
 # To install latest formal release
-jspm install angular-material;
+jspm install angular-material
 
 # To install from HEAD of master
-jspm install angular-material=github:angular/bower-material@master;
+jspm install angular-material=github:angular/bower-material@master
 
 # To view all installed package versions
-jspm inspect;
+jspm inspect
 ```
 
 Now you can use `require('angular-material')` when installing with **npm** or **jspm**, or when using Browserify or Webpack.
