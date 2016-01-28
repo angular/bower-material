@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.3-master-b3ffa6f
+ * v1.0.3-master-fed0b0f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -15729,9 +15729,6 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
      * @param percent 0-1
      */
     function setSliderPercent(percent) {
-
-        percent = clamp(percent);
-
         var percentStr = (percent * 100) + '%';
 
         activeTrack.css('width', percentStr);
@@ -15819,15 +15816,6 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       var closestVal = minMaxValidator( stepValidator(exactVal) );
       setSliderPercent( positionToPercent(x) );
       thumbText.text( closestVal );
-    }
-
-    /**
-    * Clamps the value to be between 0 and 1.
-    * @param {number} value The value to clamp.
-    * @returns {number}
-    */
-    function clamp(value) {
-      return Math.max(0, Math.min(value || 0, 1));
     }
 
     /**
@@ -24353,4 +24341,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.3-master-b3ffa6f"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.3-master-fed0b0f"}};
