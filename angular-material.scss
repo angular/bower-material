@@ -3304,14 +3304,14 @@ $input-container-padding: 2px !default;
 
 $input-label-default-offset: 24px !default;
 $input-label-default-scale: 1.0 !default;
-$input-label-float-offset: 6px !default;
+$input-label-float-offset: 8px !default;
 $input-label-float-scale: 0.75 !default;
 
 $input-placeholder-offset: $input-label-default-offset !default;
 
 $input-border-width-default: 1px !default;
 $input-border-width-focused: 2px !default;
-$input-line-height: 26px !default;
+$input-line-height: 28px !default;
 $input-padding-top: 2px !default;
 
 $input-error-font-size: 12px !default;
@@ -4716,6 +4716,7 @@ md-radio-group {
   }
 }
 
+$select-label-height: 26px;
 $select-option-height: 48px;
 $select-option-padding: 16px;
 $select-container-padding: 16px;
@@ -4819,7 +4820,7 @@ md-select {
   position: relative;
   box-sizing: content-box;
   min-width: 8 * $baseline-grid;
-  min-height: 26px;
+  min-height: $select-label-height + 2px;
   flex-grow: 1;
 
   .md-text {
@@ -4832,6 +4833,7 @@ md-select {
     white-space: nowrap;
     overflow: hidden;
     transform: translate3d(0, 2px, 0);
+    height: $select-label-height;
   }
 
   .md-select-icon {
@@ -4847,7 +4849,7 @@ md-select {
     display: block;
     content: '\25BC';
     position: relative;
-    top: 2px;
+    top: -1px;
     speak: none;
     transform: scaleY(0.6) scaleX(1);
   }

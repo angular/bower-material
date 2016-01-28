@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.3-master-14480b1
+ * v1.0.3-master-c19eec4
  */
 .md-select-menu-container {
   position: fixed;
@@ -76,7 +76,7 @@ md-select {
   position: relative;
   box-sizing: content-box;
   min-width: 64px;
-  min-height: 26px;
+  min-height: 28px;
   -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1; }
@@ -90,7 +90,8 @@ md-select {
     white-space: nowrap;
     overflow: hidden;
     -webkit-transform: translate3d(0, 2px, 0);
-            transform: translate3d(0, 2px, 0); }
+            transform: translate3d(0, 2px, 0);
+    height: 26px; }
   .md-select-value .md-select-icon {
     display: block;
     -webkit-align-items: flex-end;
@@ -105,7 +106,7 @@ md-select {
     display: block;
     content: '\25BC';
     position: relative;
-    top: 2px;
+    top: -1px;
     speak: none;
     -webkit-transform: scaleY(0.6) scaleX(1);
             transform: scaleY(0.6) scaleX(1); }
