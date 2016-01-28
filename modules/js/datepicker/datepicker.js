@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.3-master-c19eec4
+ * v1.0.3-master-d963dca
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1441,7 +1441,7 @@
     if (this.$attrs['ngDisabled']) {
       // The expression is to be evaluated against the directive element's scope and not
       // the directive's isolate scope.
-      var scope = this.$mdUtil.validateScope(this.$element) ? this.$element.scope() : null;
+      var scope = this.$scope.$parent;
 
       if (scope) {
         scope.$watch(this.$attrs['ngDisabled'], function(isDisabled) {
