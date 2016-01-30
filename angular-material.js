@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-00152a2
+ * v1.0.4-master-7417b3b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3153,6 +3153,7 @@ function InterimElementProvider() {
       .directive('ngCloak'      ,  buildCloakInterceptor('ng-cloak'))
 
       .directive('layoutWrap'   , attributeWithoutValue('layout-wrap'))
+      .directive('layoutNowrap' , attributeWithoutValue('layout-nowrap'))
       .directive('layoutNoWrap' , attributeWithoutValue('layout-no-wrap'))
       .directive('layoutFill'   , attributeWithoutValue('layout-fill'))
 
@@ -3454,6 +3455,7 @@ function InterimElementProvider() {
         case 'layout-margin'  :
         case 'layout-fill'    :
         case 'layout-wrap'    :
+        case 'layout-nowrap'  :
         case 'layout-no-wrap' :
           value = '';
           break;
@@ -24417,4 +24419,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.4-master-00152a2"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.4-master-7417b3b"}};
