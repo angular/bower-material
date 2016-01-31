@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-a8343df
+ * v1.0.4-master-3f41ae2
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -4498,8 +4498,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#00e676',
     'A700': '#00c853',
     'contrastDefaultColor': 'dark',
-    'contrastLightColors': '600 700 800 900',
-    'contrastStrongLightColors': '600 700'
+    'contrastLightColors': '500 600 700 800 900',
+    'contrastStrongLightColors': '500 600 700'
   },
   'light-green': {
     '50': '#f1f8e9',
@@ -4665,8 +4665,8 @@ angular.module('material.core.theming.palette', [])
     'A400': '#78909c',
     'A700': '#455a64',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 300',
-    'contrastStrongLightColors': '400 500'
+    'contrastDarkColors': '50 100 200 300 700',
+    'contrastStrongLightColors': '400 500 700'
   }
 });
 
@@ -24419,4 +24419,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.4-master-a8343df"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.4-master-3f41ae2"}};
