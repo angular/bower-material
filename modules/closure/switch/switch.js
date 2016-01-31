@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-4d535e2
+ * v1.0.4-master-19966a3
  */
 goog.provide('ng.material.components.switch');
 goog.require('ng.material.components.checkbox');
