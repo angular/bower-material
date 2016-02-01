@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-6dd6d96
+ * v1.0.4-master-5871c93
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -7070,7 +7070,7 @@ function iosScrollFix(node) {
 
     /**
      * The selected date. Keep track of this separately from the ng-model value so that we
-     * can know, when the ng-model value changes, what the previous value was before its updated
+     * can know, when the ng-model value changes, what the previous value was before it's updated
      * in the component's UI.
      *
      * @type {Date}
@@ -7181,7 +7181,7 @@ function iosScrollFix(node) {
     // Keyboard interaction.
     this.$element.on('keydown', angular.bind(this, this.handleKeyEvent));
   };
-  
+
   /*** User input handling ***/
 
   /**
@@ -20789,7 +20789,7 @@ angular
  * returns  a list of possible contacts. The user can select one of these and add it to the list of
  * chips.
  *
- * You may also use the `md-highlight-text` directive along with it's parameters to control the
+ * You may also use the `md-highlight-text` directive along with its parameters to control the
  * appearance of the matched text inside of the contacts' autocomplete popup.
  *
  * @param {string=|object=} ng-model A model to bind the list of items to
@@ -24280,6 +24280,7 @@ MdTabsController.$inject = ["$scope", "$element", "$window", "$mdConstant", "$md
  * @param {string=}  md-align-tabs Attribute to indicate position of tab buttons: `bottom` or `top`; default is `top`
  * @param {string=} md-stretch-tabs Attribute to indicate whether or not to stretch tabs: `auto`, `always`, or `never`; default is `auto`
  * @param {boolean=} md-dynamic-height When enabled, the tab wrapper will resize based on the contents of the selected tab
+ * @param {boolean=} md-border-bottom If present, shows a solid `1px` border between the tabs and their content
  * @param {boolean=} md-center-tabs When enabled, tabs will be centered provided there is no need for pagination
  * @param {boolean=} md-no-pagination When enabled, pagination will remain off
  * @param {boolean=} md-swipe-content When enabled, swipe gestures will be enabled for the content area to jump between tabs
@@ -24474,4 +24475,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.4-master-6dd6d96"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.4-master-5871c93"}};

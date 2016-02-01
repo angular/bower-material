@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-6dd6d96
+ * v1.0.4-master-5871c93
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -1029,6 +1029,7 @@ MdTabsController.$inject = ["$scope", "$element", "$window", "$mdConstant", "$md
  * @param {string=}  md-align-tabs Attribute to indicate position of tab buttons: `bottom` or `top`; default is `top`
  * @param {string=} md-stretch-tabs Attribute to indicate whether or not to stretch tabs: `auto`, `always`, or `never`; default is `auto`
  * @param {boolean=} md-dynamic-height When enabled, the tab wrapper will resize based on the contents of the selected tab
+ * @param {boolean=} md-border-bottom If present, shows a solid `1px` border between the tabs and their content
  * @param {boolean=} md-center-tabs When enabled, tabs will be centered provided there is no need for pagination
  * @param {boolean=} md-no-pagination When enabled, pagination will remain off
  * @param {boolean=} md-swipe-content When enabled, swipe gestures will be enabled for the content area to jump between tabs
