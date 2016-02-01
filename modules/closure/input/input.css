@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-f6c93b8
+ * v1.0.4-master-1f99795
  */
 md-input-container {
   display: inline-block;
@@ -123,6 +123,10 @@ md-input-container {
     md-input-container label:not(.md-container-ignore) bdo[dir=ltr] {
       direction: ltr;
       unicode-bidi: bidi-override; }
+    md-input-container label:not(.md-container-ignore).md-required:after {
+      content: ' *';
+      font-size: 13px;
+      vertical-align: top; }
   md-input-container label:not(.md-no-float):not(.md-container-ignore),
   md-input-container .md-placeholder {
     -webkit-order: 1;

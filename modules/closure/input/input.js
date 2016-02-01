@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-f6c93b8
+ * v1.0.4-master-1f99795
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -160,6 +160,7 @@ function labelDirective() {
  * @param {string=} placeholder An alternative approach to using aria-label when the label is not
  *   PRESENT. The placeholder text is copied to the aria-label attribute.
  * @param md-no-autogrow {boolean=} When present, textareas will not grow automatically.
+ * @param md-no-asterisk {boolean=} When present, asterisk will not be appended to required inputs label
  * @param md-detect-hidden {boolean=} When present, textareas will be sized properly when they are
  *   revealed after being hidden. This is off by default for performance reasons because it
  *   guarantees a reflow every digest cycle.
@@ -260,6 +261,9 @@ function inputTextareaDirective($mdUtil, $window, $mdAria) {
     var hasNgModel = !!ctrls[1];
     var ngModelCtrl = ctrls[1] || $mdUtil.fakeNgModel();
     var isReadonly = angular.isDefined(attr.readonly);
+    var isRequired = angular.isDefined(attr.required);
+    var mdNoAsterisk = angular.isDefined(attr.mdNoAsterisk);
+
 
     if (!containerCtrl) return;
     if (containerCtrl.input) {
@@ -274,6 +278,8 @@ function inputTextareaDirective($mdUtil, $window, $mdAria) {
 
     if (!containerCtrl.label) {
       $mdAria.expect(element, 'aria-label', element.attr('placeholder'));
+    } else if (isRequired && !mdNoAsterisk) {
+      containerCtrl.label.addClass('md-required');
     }
 
     element.addClass('md-input');
