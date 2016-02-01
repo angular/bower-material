@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-9ace8ec
+ * v1.0.4-master-453f5ff
  */
 goog.provide('ng.material.core');
 
@@ -3411,7 +3411,7 @@ function InterimElementProvider() {
         case 'layout-fill'    :
         case 'layout-wrap'    :
         case 'layout-nowrap'  :
-        case 'layout-no-wrap' :
+        case 'layout-nowrap' :
           value = '';
           break;
       }

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-9ace8ec
+ * v1.0.4-master-453f5ff
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3456,7 +3456,7 @@ function InterimElementProvider() {
         case 'layout-fill'    :
         case 'layout-wrap'    :
         case 'layout-nowrap'  :
-        case 'layout-no-wrap' :
+        case 'layout-nowrap' :
           value = '';
           break;
       }
@@ -24465,4 +24465,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.4-master-9ace8ec"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.4-master-453f5ff"}};
