@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-5871c93
+ * v1.0.4-master-2b1af61
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -174,7 +174,7 @@
 
     /**
      * The selected date. Keep track of this separately from the ng-model value so that we
-     * can know, when the ng-model value changes, what the previous value was before it's updated
+     * can know, when the ng-model value changes, what the previous value was before its updated
      * in the component's UI.
      *
      * @type {Date}
@@ -285,7 +285,7 @@
     // Keyboard interaction.
     this.$element.on('keydown', angular.bind(this, this.handleKeyEvent));
   };
-
+  
   /*** User input handling ***/
 
   /**
