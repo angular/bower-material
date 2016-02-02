@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-4fb92e3
+ * v1.0.4-master-5792502
  */
 md-input-container.md-THEME_NAME-theme .md-input {
   color: '{{foreground-1}}';
@@ -22,7 +22,7 @@ md-input-container.md-THEME_NAME-theme .md-placeholder {
 md-input-container.md-THEME_NAME-theme label.md-required:after {
   color: '{{warn-A700}}'; }
 
-md-input-container.md-THEME_NAME-theme:not(.md-input-focused) label.md-required:after {
+md-input-container.md-THEME_NAME-theme:not(.md-input-focused):not(.md-input-invalid) label.md-required:after {
   color: '{{foreground-2}}'; }
 
 md-input-container.md-THEME_NAME-theme ng-messages :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [ng-messages] :not(.md-char-counter),
@@ -58,7 +58,7 @@ md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.m
 md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input {
   border-color: '{{warn-A700}}'; }
 
-md-input-container.md-THEME_NAME-theme.md-input-invalid.md-input-focused label {
+md-input-container.md-THEME_NAME-theme.md-input-invalid label {
   color: '{{warn-A700}}'; }
 
 md-input-container.md-THEME_NAME-theme.md-input-invalid ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid data-ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid x-ng-message,
