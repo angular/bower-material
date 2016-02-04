@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-179dc19
+ * v1.0.4-master-7778a9c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -11708,6 +11708,9 @@ angular.module('material.components.input', [
  * </hljs>
  */
 function mdInputContainerDirective($mdTheming, $parse) {
+
+  var INPUT_TAGS = ['INPUT', 'TEXTAREA', 'MD-SELECT'];
+
   ContainerCtrl.$inject = ["$scope", "$element", "$attrs", "$animate"];
   return {
     restrict: 'E',
@@ -11726,8 +11729,8 @@ function mdInputContainerDirective($mdTheming, $parse) {
       var next = icons[0].nextElementSibling;
       var previous = icons[0].previousElementSibling;
 
-      element.addClass(next && next.tagName === 'INPUT' ? 'md-icon-left' :
-                       previous && previous.tagName === 'INPUT' ? 'md-icon-right' : '');
+      element.addClass(next && INPUT_TAGS.indexOf(next.tagName) != -1 ? 'md-icon-left' :
+                       previous &&  INPUT_TAGS.indexOf(previous.tagName) != -1 ? 'md-icon-right' : '');
     }
     // In case there are two icons we apply both icon classes
     else if (icons.length == 2) {
@@ -24586,4 +24589,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.4-master-179dc19"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.4-master-7778a9c"}};
