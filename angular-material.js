@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-03caf58
+ * v1.0.4-master-bc55ac9
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -24080,7 +24080,9 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   function updatePagingWidth() {
     var width = 1;
     angular.forEach(getElements().dummies, function (element) {
-      width += Math.ceil(element.offsetWidth);
+      // uses `getBoundingClientRect().width` rather than `offsetWidth` to include decimal values
+      // when calculating the total width
+      width += Math.ceil(element.getBoundingClientRect().width);
     });
     angular.element(elements.paging).css('width', width + 'px');
   }
@@ -24556,4 +24558,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.4-master-03caf58"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.4-master-bc55ac9"}};
