@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-9c8c6b0
+ * v1.0.4-master-9b9e4a5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -83,10 +83,8 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
   // **********************************************************
 
   function compile (tElement, tAttrs) {
-    tElement.attr({
-      tabIndex: 0,
-      role: 'slider'
-    });
+    if (!tAttrs.tabindex) tElement.attr('tabindex', 0);
+    tElement.attr('role', 'slider');
 
     $mdAria.expect(tElement, 'aria-label');
 
