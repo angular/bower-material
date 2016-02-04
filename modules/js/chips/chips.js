@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-a43da4d
+ * v1.0.4-master-dfd4ba2
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -351,7 +351,7 @@ MdChipsCtrl.prototype.getPlaceholder = function() {
   // Allow `secondary-placeholder` to be blank.
   var useSecondary = (this.items.length &&
       (this.secondaryPlaceholder == '' || this.secondaryPlaceholder));
-  return useSecondary ? this.placeholder : this.secondaryPlaceholder;
+  return useSecondary ? this.secondaryPlaceholder : this.placeholder;
 };
 
 /**
