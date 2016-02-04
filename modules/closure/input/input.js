@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-1f54bf6
+ * v1.0.4-master-f1b9917
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -43,7 +43,7 @@ angular.module('material.components.input', [
  *
  * @param md-is-error {expression=} When the given expression evaluates to true, the input container
  *   will go into error state. Defaults to erroring if the input has been touched and is invalid.
- * @param md-no-float {boolean=} When present, placeholders will not be converted to floating
+ * @param md-no-float {boolean=} When present, `placeholder` attributes on the input will not be converted to floating
  *   labels.
  *
  * @usage
@@ -57,6 +57,15 @@ angular.module('material.components.input', [
  * <md-input-container>
  *   <label>Description</label>
  *   <textarea ng-model="user.description"></textarea>
+ * </md-input-container>
+ *
+ * </hljs>
+ *
+ * <h3>When disabling floating labels</h3>
+ * <hljs lang="html">
+ *
+ * <md-input-container md-no-float>
+ *   <input type="text" placeholder="Non-Floating Label">
  * </md-input-container>
  *
  * </hljs>
