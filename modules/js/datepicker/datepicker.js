@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-c9fe226
+ * v1.0.4-master-2e7edda
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -843,7 +843,7 @@
    * The `$mdDateLocaleProvider` is the provider that creates the `$mdDateLocale` service.
    * This provider that allows the user to specify messages, formatters, and parsers for date
    * internationalization. The `$mdDateLocale` service itself is consumed by Angular Material
-   * components that that deal with dates.
+   * components that deal with dates.
    *
    * @property {(Array<string>)=} months Array of month names (in order).
    * @property {(Array<string>)=} shortMonths Array of abbreviated month names.
