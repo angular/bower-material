@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-9b9e4a5
+ * v1.0.4-master-47f3700
  */
 md-toolbar {
   box-sizing: border-box;
@@ -16,7 +16,9 @@ md-toolbar {
   z-index: 2;
   font-size: 20px;
   min-height: 64px;
-  width: 100%; }
+  width: 100%;
+  transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+  transition-property: background-color, fill, color; }
   md-toolbar.md-whiteframe-z1-add, md-toolbar.md-whiteframe-z1-remove {
     transition: box-shadow 0.5s linear; }
   md-toolbar md-toolbar-filler {
@@ -80,6 +82,9 @@ md-toolbar {
   .md-toolbar-tools .md-button {
     margin-top: 0;
     margin-bottom: 0; }
+    .md-toolbar-tools .md-button, .md-toolbar-tools .md-button.md-icon-button md-icon {
+      transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+      transition-property: background-color, fill, color; }
   .md-toolbar-tools > .md-button:first-child {
     margin-left: -8px; }
   .md-toolbar-tools > .md-button:last-child {
