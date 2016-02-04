@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-1a852bc
+ * v1.0.4-master-83829a7
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.components.autocomplete');
@@ -351,7 +351,7 @@ MdChipsCtrl.prototype.getPlaceholder = function() {
   // Allow `secondary-placeholder` to be blank.
   var useSecondary = (this.items.length &&
       (this.secondaryPlaceholder == '' || this.secondaryPlaceholder));
-  return useSecondary ? this.secondaryPlaceholder : this.placeholder;
+  return useSecondary ? this.placeholder : this.secondaryPlaceholder;
 };
 
 /**

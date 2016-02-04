@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-1a852bc
+ * v1.0.4-master-83829a7
  */
 html, body {
   height: 100%;
@@ -2065,7 +2065,7 @@ md-input-container {
       unicode-bidi: bidi-override; }
   md-input-container > md-icon {
     position: absolute;
-    top: 8px;
+    top: 5px;
     left: 2px;
     right: auto; }
     html[dir=rtl] md-input-container > md-icon {
@@ -2477,7 +2477,7 @@ md-input-container {
       pointer-events: none;
       position: absolute; }
     md-input-container.md-icon-float > md-icon {
-      top: 8px;
+      top: 2px;
       left: 2px;
       right: auto; }
       html[dir=rtl] md-input-container.md-icon-float > md-icon {
