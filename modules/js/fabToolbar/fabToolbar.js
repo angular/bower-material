@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-a6f3676
+ * v1.0.5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -93,7 +93,7 @@
       },
 
       bindToController: true,
-      controller: 'MdFabController',
+      controller: 'FabController',
       controllerAs: 'vm',
 
       link: link

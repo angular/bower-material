@@ -543,6 +543,16 @@ input {
 *
 */
 
+@-moz-document url-prefix() {
+  .layout-fill {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+    height: 100%;
+  }
+}
+
+
 @mixin flex-order-for-name($sizes:null) {
   @if $sizes == null {
     $sizes : '';
@@ -653,12 +663,10 @@ input {
   // Do not use unitless flex-basis values in the flex shorthand because IE 10-11 will error.
   // Also use 0% instead of 0px since minifiers will often convert 0px to 0 (which is unitless and will have the same problem).
   // Safari, however, fails with flex-basis : 0% and requires flex-basis : 0px
-  @if $name != '-print' {
-    @media screen\0 {
-        .#{$flexName} {
-          flex: 1 1 0%;
-        }
-    }
+  @media screen\0 {
+      .#{$flexName} {
+        flex: 1 1 0%;
+      }
   }
 
 
@@ -954,6 +962,115 @@ input {
     @include flex-properties-for-name($name);
     @include layout-for-name($name);
 }
+
+/*
+ *  Apply Mixins to create Layout/Flexbox styles
+ *
+ */
+
+
+@include layouts_for_breakpoint();
+@include layout-padding-margin();
+
+
+
+/**
+ * `hide-gt-sm show-gt-lg` should hide from 600px to 1200px
+ * `show-md hide-gt-sm` should show from 0px to 960px and hide at >960px
+ * `hide-gt-md show-gt-sm` should show everywhere (show overrides hide)`
+ *
+ *  hide means hide everywhere
+ *  Sizes:
+ *         $layout-breakpoint-xs:     600px !default;
+ *         $layout-breakpoint-sm:     960px !default;
+ *         $layout-breakpoint-md:     1280px !default;
+ *         $layout-breakpoint-lg:     1920px !default;
+ */
+
+
+@media (max-width: $layout-breakpoint-xs - 1) {
+  // Xtra-SMALL  SCREEN
+  .hide-xs, .hide {
+    &:not(.show-xs):not(.show) {
+      display: none;
+    }
+  }
+  @include layouts_for_breakpoint(xs);
+}
+
+@media (min-width: $layout-breakpoint-xs) {
+  // BIGGER THAN Xtra-SMALL SCREEN
+  @include layouts_for_breakpoint(gt-xs);
+
+}
+
+@media (min-width: $layout-breakpoint-xs) and (max-width: $layout-breakpoint-sm - 1) {
+  .hide, .hide-gt-xs {
+    &:not(.show-gt-xs):not(.show-sm):not(.show) {
+      display: none;
+    }
+  }
+  .hide-sm:not(.show-gt-xs):not(.show-sm):not(.show) {
+    display: none;
+  }
+
+  @include layouts_for_breakpoint(sm);
+}
+
+@media (min-width: $layout-breakpoint-sm) {
+  // BIGGER THAN SMALL SCREEN
+  @include layouts_for_breakpoint(gt-sm);
+
+}
+
+@media (min-width: $layout-breakpoint-sm) and (max-width: $layout-breakpoint-md - 1) {
+  // MEDIUM SCREEN
+  .hide, .hide-gt-xs, .hide-gt-sm {
+    &:not(.show-gt-xs):not(.show-gt-sm):not(.show-md):not(.show) {
+      display: none;
+    }
+  }
+  .hide-md:not(.show-md):not(.show-gt-sm):not(.show-gt-xs):not(.show) {
+    display: none;
+  }
+  @include layouts_for_breakpoint(md);
+}
+
+@media (min-width: $layout-breakpoint-md) {
+  // BIGGER THAN MEDIUM SCREEN
+  @include layouts_for_breakpoint(gt-md);
+}
+
+@media (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg - 1) {
+  // LARGE SCREEN
+  .hide,.hide-gt-xs, .hide-gt-sm, .hide-gt-md {
+    &:not(.show-gt-xs):not(.show-gt-sm):not(.show-gt-md):not(.show-lg):not(.show) {
+      display: none;
+    }
+  }
+  .hide-lg:not(.show-lg):not(.show-gt-md):not(.show-gt-sm):not(.show-gt-xs):not(.show) {
+    display: none;
+  }
+
+  @include layouts_for_breakpoint(lg);
+}
+
+@media (min-width: $layout-breakpoint-lg) {
+  @include layouts_for_breakpoint(gt-lg);
+  @include layouts_for_breakpoint(xl);
+
+  // BIGGER THAN LARGE SCREEN
+  .hide, .hide-gt-xs, .hide-gt-sm, .hide-gt-md, .hide-gt-lg {
+    &:not(.show-gt-xs):not(.show-gt-sm):not(.show-gt-md):not(.show-gt-lg):not(.show-xl):not(.show) {
+      display: none;
+    }
+  }
+  .hide-xl:not(.show-xl):not(.show-gt-lg):not(.show-gt-md):not(.show-gt-sm):not(.show-gt-xs):not(.show) {
+    display: none;
+  }
+
+}
+
 
 $autocomplete-option-height: 48px;
 $input-container-padding: 2px !default;
@@ -1378,19 +1495,19 @@ md-bottom-sheet {
         }
       }
       
-      @media (max-width: $layout-breakpoint-sm) {
+      @media screen and (max-width: $layout-breakpoint-sm) {
         @include grid-items-per-row(3, true);
       }
 
-      @media (min-width: $layout-breakpoint-sm) and (max-width: $layout-breakpoint-md - 1) {
+      @media screen and (min-width: $layout-breakpoint-sm) and (max-width: $layout-breakpoint-md - 1) {
         @include grid-items-per-row(4);
       }
 
-      @media (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg - 1) {
+      @media screen and (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg - 1) {
         @include grid-items-per-row(6);
       }
 
-      @media (min-width: $layout-breakpoint-lg) {
+      @media screen and (min-width: $layout-breakpoint-lg) {
         @include grid-items-per-row(7);
       }
 
@@ -1557,6 +1674,7 @@ button.md-button::-moz-focus-inner {
 
     z-index: $z-index-fab;
 
+    line-height: $button-fab-line-height;
     min-width: 0;
     width: $button-fab-width;
     height: $button-fab-height;
@@ -1742,7 +1860,7 @@ md-card {
     display: flex;
     flex: 0 0 auto;
     width: 100%;
-    height: 100% !important;
+    height: auto;
   }
 
   md-card-title {
@@ -2267,10 +2385,6 @@ md-content {
   &.autoScroll {
     -webkit-overflow-scrolling: auto;
   }
-
-  @media print {
-    overflow: visible !important;
-  }
 }
 
 
@@ -2717,11 +2831,6 @@ md-dialog {
     .md-dialog-content-body {
       width:100%;
     }
-
-    .md-prompt-input-container {
-      width: 100%;
-      box-sizing: border-box;
-    }
   }
 
   .md-actions, md-dialog-actions {
@@ -2777,12 +2886,7 @@ md-divider {
   }
 }
 
-.layout-row,
-.layout-xs-row, .layout-gt-xs-row,
-.layout-sm-row, .layout-gt-sm-row,
-.layout-md-row, .layout-gt-md-row,
-.layout-lg-row, .layout-gt-lg-row,
-.layout-xl-row {
+.layout-row {
   & > md-divider {
     border-top-width: 0;
     border-right-width: 1px;
@@ -3203,7 +3307,6 @@ $input-label-default-offset: 24px !default;
 $input-label-default-scale: 1.0 !default;
 $input-label-float-offset: 6px !default;
 $input-label-float-scale: 0.75 !default;
-$input-label-float-width: $input-container-padding + 16px;
 
 $input-placeholder-offset: $input-label-default-offset !default;
 
@@ -3218,8 +3321,6 @@ $input-error-line-height: $input-error-font-size + 2px;
 $error-padding-top: ($input-error-height - $input-error-line-height) / 2;
 
 $icon-offset: 36px !default;
-
-$icon-top-offset: ($icon-offset - $input-padding-top - $input-border-width-focused) / 4;
 
 $icon-float-focused-top: -8px !default;
 
@@ -3247,7 +3348,7 @@ md-input-container {
 
   > md-icon {
     position: absolute;
-    top: $icon-top-offset;
+    top: 5px;
     @include rtl(left, 2px, auto);
     @include rtl(right, auto, 2px);
   }
@@ -3293,20 +3394,10 @@ md-input-container {
     bottom: 100%;
     @include rtl(left, 0, auto);
     @include rtl(right, auto, 0);
-
-    &.md-required:after {
-      content: ' *';
-      font-size: 13px;
-      vertical-align: top;
-    }
   }
 
   label:not(.md-no-float):not(.md-container-ignore),
   .md-placeholder {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 100%;
     order: 1;
     pointer-events: none;
     -webkit-font-smoothing: antialiased;
@@ -3314,7 +3405,7 @@ md-input-container {
     @include rtl(padding-right, 0, $input-container-padding + 1px);
     z-index: 1;
     transform: translate3d(0, $input-label-default-offset + 4, 0) scale($input-label-default-scale);
-    transition: transform $swift-ease-out-duration $swift-ease-out-timing-function;
+    transition: transform $swift-ease-out-timing-function 0.25s;
 
     @include rtl(transform-origin, left top, right top);
   }
@@ -3474,9 +3565,6 @@ md-input-container {
   &.md-input-has-value {
     label:not(.md-no-float) {
       transform: translate3d(0, $input-label-float-offset, 0) scale($input-label-float-scale);
-      transition: transform $swift-ease-out-timing-function $swift-ease-out-duration,
-                  width $swift-ease-out-timing-function $swift-ease-out-duration;
-      width: calc((100% - #{$input-label-float-width}) / #{$input-label-float-scale});
     }
   }
 
@@ -3509,7 +3597,7 @@ md-input-container {
 
   &.md-icon-float {
 
-    transition: margin-top $swift-ease-out-duration $swift-ease-out-timing-function;
+    transition: margin-top 0.5s $swift-ease-out-timing-function;
 
     > label {
       pointer-events: none;
@@ -3517,32 +3605,20 @@ md-input-container {
     }
 
     > md-icon {
-      top: $icon-top-offset;
+      top: 2px;
       @include rtl(left, 2px, auto);
       @include rtl(right, auto, 2px);
     }
 
-  }
-
-  &.md-icon-left,
-  &.md-icon-right {
-    > label {
-      &:not(.md-no-float):not(.md-container-ignore),
-      .md-placeholder {
-        width: calc(100% - #{$icon-offset} - #{$input-label-float-width});
-      }
-    }
-
     &.md-input-focused,
-    &.md-input-has-placeholder,
     &.md-input-has-value {
-      > label {
-        &:not(.md-no-float):not(.md-container-ignore),
-        .md-placeholder {
-          width: calc((100% - #{$icon-offset} - #{$input-label-float-width}) / #{$input-label-float-scale});
-        }
+
+      label {
+        transform: translate3d(0, $input-label-float-offset, 0) scale($input-label-float-scale);
+        transition: transform $swift-ease-out-timing-function 0.5s;
       }
     }
+
   }
 
   // icon offset should have higher priority as normal label
@@ -3570,24 +3646,6 @@ md-input-container {
   &.md-icon-left.md-icon-right {
     padding-left: $icon-offset;
     padding-right: $icon-offset;
-
-    > label {
-      &:not(.md-no-float):not(.md-container-ignore),
-      .md-placeholder {
-        width: calc(100% - (#{$icon-offset} * 2));
-      }
-    }
-
-    &.md-input-focused,
-    &.md-input-has-placeholder,
-    &.md-input-has-value {
-      > label {
-        &:not(.md-no-float):not(.md-container-ignore),
-        .md-placeholder {
-          width: calc((100% - (#{$icon-offset} * 2)) / #{$input-label-float-scale});
-        }
-      }
-    }
   }
 }
 
@@ -3644,33 +3702,6 @@ md-list-item {
   &.md-proxy-focus.md-focused .md-no-style {
     transition: background-color 0.15s linear;
   }
-
-  &.md-button-wrap {
-    position: relative;
-
-    > .md-button:first-child {
-      padding: 0;
-      margin: 0;
-      font-weight: 400;
-      background-color: inherit;
-      text-align: left;
-      border: medium none;
-
-      > .md-button:first-child {
-        height: 100%;
-        position: absolute;
-        margin: 0;
-        padding: 0;
-      }
-
-      .md-list-item-inner {
-        padding: 0 16px;
-      }
-
-    }
-
-  }
-
   &.md-no-proxy,
   .md-no-style {
     position: relative;
@@ -4634,23 +4665,13 @@ md-radio-button {
 }
 
 md-radio-group {
-  &.layout-column,
-  &.layout-xs-column, &.layout-gt-xs-column,
-  &.layout-sm-column, &.layout-gt-sm-column,
-  &.layout-md-column, &.layout-gt-md-column,
-  &.layout-lg-column, &.layout-gt-lg-column,
-  &.layout-xl-column {
-    md-radio-button {
-      margin-bottom: $radio-margin;
+  md-radio-button {
+    &:not(:first-child) {
+      margin-top: $radio-margin;
     }
   }
 
-  &.layout-row,
-  &.layout-xs-row, &.layout-gt-xs-row,
-  &.layout-sm-row, &.layout-gt-sm-row,
-  &.layout-md-row, &.layout-gt-md-row,
-  &.layout-lg-row, &.layout-gt-lg-row,
-  &.layout-xl-row {
+  &.layout-row {
     md-radio-button {
       margin-top: 0;
       margin-bottom: 0;
@@ -5021,13 +5042,13 @@ md-sidenav {
   }
 }
 
-@media (min-width: $layout-breakpoint-xs) {
+@media screen and (min-width: $layout-breakpoint-xs) {
   md-sidenav {
     max-width: $sidenav-desktop-width;
   }
 }
 
-@media (max-width: $sidenav-desktop-width + $sidenav-min-space) {
+@media screen and (max-width: $sidenav-desktop-width + $sidenav-min-space) {
   md-sidenav {
     width: calc(100% - #{$sidenav-min-space});
     min-width: calc(100% - #{$sidenav-min-space});
@@ -6107,9 +6128,6 @@ md-toolbar {
   min-height: $baseline-grid * 8;
   width: 100%;
 
-  transition: $swift-ease-in-out;
-  transition-property: background-color, fill, color;
-
   &.md-whiteframe-z1-add, &.md-whiteframe-z1-remove {
     transition: box-shadow $swift-ease-in-out-duration linear;
   }
@@ -6191,11 +6209,6 @@ md-toolbar {
   .md-button {
     margin-top: 0;
     margin-bottom: 0;
-
-    &, &.md-icon-button md-icon {
-      transition: $swift-ease-in-out;
-      transition-property: background-color, fill, color;
-    }
   }
   &> .md-button:first-child {
     margin-left: $icon-button-margin-offset;
@@ -6217,7 +6230,7 @@ md-toolbar {
 }
 
 // Handle mobile portrait
-@media (min-width: 0) and (max-width: $layout-breakpoint-sm - 1) and (orientation: portrait) {
+@media only screen and (min-width: 0) and (max-width: $layout-breakpoint-sm - 1) and (orientation: portrait) {
   md-toolbar {
     min-height: $toolbar-height-mobile-portrait;
   }
@@ -6229,7 +6242,7 @@ md-toolbar {
 }
 
 // Handle mobile landscape
-@media (min-width: 0) and (max-width: $layout-breakpoint-sm - 1) and (orientation: landscape) {
+@media only screen and (min-width: 0) and (max-width: $layout-breakpoint-sm - 1) and (orientation: landscape) {
   md-toolbar {
     min-height: $toolbar-height-mobile-landscape;
   }
@@ -6260,7 +6273,7 @@ md-tooltip {
 
   font-weight: 500;
   font-size: $tooltip-fontsize-sm;
-  @media (min-width: $layout-breakpoint-sm) {
+  @media screen and (min-width: $layout-breakpoint-sm) {
     font-size: $tooltip-fontsize-lg;
   }
 
@@ -6276,7 +6289,7 @@ md-tooltip {
     line-height: $tooltip-height-sm;
     padding-left: $tooltip-lr-padding-sm;
     padding-right: $tooltip-lr-padding-sm;
-    @media (min-width: $layout-breakpoint-sm) {
+    @media screen and (min-width: $layout-breakpoint-sm) {
       height: $tooltip-height-lg;
       line-height: $tooltip-height-lg;
       padding-left: $tooltip-lr-padding-lg;
@@ -6447,251 +6460,5 @@ $virtual-repeat-scrollbar-width: 16px;
 @media screen and (-ms-high-contrast: active) {
   md-whiteframe {
     border: 1px solid #fff;
-  }
-}
-
-/*
-*
-*  Adaptive Print settings with Breakpoint Aliases\
-*
-*/
-
-// General printing Rules resets to default Layout API
-@media print {
-
-  // Override layout API settings to use defaults when printing.
-
-  @include layouts_for_breakpoint();
-  @include layout-padding-margin();
-
-  // NOTE: the PRINT layouts will be the same as the default (no-aliase) layouts
-  // @include layouts_for_breakpoint(print);
-
-  .hide-print:not(.show-print):not(.show) {
-    display: none !important;
-  }
-}
-
-
-@media print and (max-width: $layout-breakpoint-xs - 1) {
-  // Xtra-SMALL  SCREEN
-  .hide-print-xs, .hide-print {
-    &:not(.show-xs):not(.show) {
-      display: none !important;
-    }
-  }
-  @include layouts_for_breakpoint(xs);
-}
-
-@media print and (min-width: $layout-breakpoint-xs) {
-  // BIGGER THAN Xtra-SMALL SCREEN
-  @include layouts_for_breakpoint(gt-xs);
-
-}
-
-@media print and (min-width: $layout-breakpoint-xs) and (max-width: $layout-breakpoint-sm - 1) {
-  .hide-print, .hide-print-gt-xs {
-    &:not(.show-gt-xs):not(.show-sm):not(.show) {
-      display: none !important;
-    }
-  }
-  .hide-print-sm:not(.show-print-gt-xs):not(.show-print-sm):not(.show-print) {
-    display: none !important;
-  }
-
-  @include layouts_for_breakpoint(sm);
-}
-
-@media print and (min-width: $layout-breakpoint-sm) {
-  // BIGGER THAN SMALL SCREEN
-  @include layouts_for_breakpoint(gt-sm);
-
-}
-
-@media print and (min-width: $layout-breakpoint-sm) and (max-width: $layout-breakpoint-md - 1) {
-  // MEDIUM SCREEN
-  .hide-print, .hide-print-gt-xs, .hide-print-gt-sm {
-    &:not(.show-print-gt-xs):not(.show-print-gt-sm):not(.show-print-md):not(.show-print) {
-      display: none !important;
-    }
-  }
-  .hide-print-md:not(.show-print-md):not(.show-print-gt-sm):not(.show-print-gt-xs):not(.show-print) {
-    display: none !important;
-  }
-  @include layouts_for_breakpoint(md);
-}
-
-@media print and (min-width: $layout-breakpoint-md) {
-  // BIGGER THAN MEDIUM SCREEN
-  @include layouts_for_breakpoint(gt-md);
-}
-
-@media print and (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg - 1) {
-  // LARGE SCREEN
-  .hide-print,.hide-print-gt-xs, .hide-print-gt-sm, .hide-print-gt-md {
-    &:not(.show-print-gt-xs):not(.show-print-gt-sm):not(.show-print-gt-md):not(.show-print-lg):not(.show-print) {
-      display: none !important;
-    }
-  }
-  .hide-print-lg:not(.show-print-lg):not(.show-print-gt-md):not(.show-print-gt-sm):not(.show-print-gt-xs):not(.show-print) {
-    display: none !important;
-  }
-
-  @include layouts_for_breakpoint(lg);
-}
-
-@media print and (min-width: $layout-breakpoint-lg) {
-  @include layouts_for_breakpoint(gt-lg);
-  @include layouts_for_breakpoint(xl);
-
-  // BIGGER THAN LARGE SCREEN
-  .hide-print, .hide-print-gt-xs, .hide-print-gt-sm, .hide-print-gt-md, .hide-print-gt-lg {
-    &:not(.show-print-gt-xs):not(.show-print-gt-sm):not(.show-print-gt-md):not(.show-print-gt-lg):not(.show-print-xl):not(.show-print) {
-      display: none !important;
-    }
-  }
-  .hide-print-xl:not(.show-print-xl):not(.show-print-gt-lg):not(.show-print-gt-md):not(.show-print-gt-sm):not(.show-print-gt-xs):not(.show-print) {
-    display: none !important;
-  }
-
-}
-
-/*
-*
-*  Responsive attributes
-*
-*  References:
-*  1) https://scotch.io/tutorials/a-visual-guide-to-css3-flexbox-properties#flex
-*  2) https://css-tricks.com/almanac/properties/f/flex/
-*  3) https://css-tricks.com/snippets/css/a-guide-to-flexbox/
-*  4) https://github.com/philipwalton/flexbugs#3-min-height-on-a-flex-container-wont-apply-to-its-flex-items
-*  5) http://godban.com.ua/projects/flexgrid
-*
-*
-*/
-
-@-moz-document url-prefix() {
-  .layout-fill {
-    margin: 0;
-    width: 100%;
-    min-height: 100%;
-    height: 100%;
-  }
-}
-
-
-/*
- *  Apply Mixins to create Layout/Flexbox styles
- *
- */
-
-
-@include layouts_for_breakpoint();
-@include layout-padding-margin();
-
-
-
-/**
- * `hide-gt-sm show-gt-lg` should hide from 600px to 1200px
- * `show-md hide-gt-sm` should show from 0px to 960px and hide at >960px
- * `hide-gt-md show-gt-sm` should show everywhere (show overrides hide)`
- *
- *  hide means hide everywhere
- *  Sizes:
- *         $layout-breakpoint-xs:     600px !default;
- *         $layout-breakpoint-sm:     960px !default;
- *         $layout-breakpoint-md:     1280px !default;
- *         $layout-breakpoint-lg:     1920px !default;
- */
-
-
-@media (max-width: $layout-breakpoint-xs - 1) {
-  // Xtra-SMALL  SCREEN
-  .hide-xs, .hide {
-    &:not(.show-xs):not(.show) {
-      display: none;
-    }
-  }
-  @include layouts_for_breakpoint(xs);
-}
-
-@media (min-width: $layout-breakpoint-xs) {
-  // BIGGER THAN Xtra-SMALL SCREEN
-  @include layouts_for_breakpoint(gt-xs);
-
-}
-
-@media (min-width: $layout-breakpoint-xs) and (max-width: $layout-breakpoint-sm - 1) {
-  .hide, .hide-gt-xs {
-    &:not(.show-gt-xs):not(.show-sm):not(.show) {
-      display: none;
-    }
-  }
-  .hide-sm:not(.show-gt-xs):not(.show-sm):not(.show) {
-    display: none;
-  }
-
-  @include layouts_for_breakpoint(sm);
-}
-
-@media (min-width: $layout-breakpoint-sm) {
-  // BIGGER THAN SMALL SCREEN
-  @include layouts_for_breakpoint(gt-sm);
-
-}
-
-@media (min-width: $layout-breakpoint-sm) and (max-width: $layout-breakpoint-md - 1) {
-  // MEDIUM SCREEN
-  .hide, .hide-gt-xs, .hide-gt-sm {
-    &:not(.show-gt-xs):not(.show-gt-sm):not(.show-md):not(.show) {
-      display: none;
-    }
-  }
-  .hide-md:not(.show-md):not(.show-gt-sm):not(.show-gt-xs):not(.show) {
-    display: none;
-  }
-  @include layouts_for_breakpoint(md);
-}
-
-@media (min-width: $layout-breakpoint-md) {
-  // BIGGER THAN MEDIUM SCREEN
-  @include layouts_for_breakpoint(gt-md);
-}
-
-@media (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg - 1) {
-  // LARGE SCREEN
-  .hide,.hide-gt-xs, .hide-gt-sm, .hide-gt-md {
-    &:not(.show-gt-xs):not(.show-gt-sm):not(.show-gt-md):not(.show-lg):not(.show) {
-      display: none;
-    }
-  }
-  .hide-lg:not(.show-lg):not(.show-gt-md):not(.show-gt-sm):not(.show-gt-xs):not(.show) {
-    display: none;
-  }
-
-  @include layouts_for_breakpoint(lg);
-}
-
-@media (min-width: $layout-breakpoint-lg) {
-  @include layouts_for_breakpoint(gt-lg);
-  @include layouts_for_breakpoint(xl);
-
-  // BIGGER THAN LARGE SCREEN
-  .hide, .hide-gt-xs, .hide-gt-sm, .hide-gt-md, .hide-gt-lg {
-    &:not(.show-gt-xs):not(.show-gt-sm):not(.show-gt-md):not(.show-gt-lg):not(.show-xl):not(.show) {
-      display: none;
-    }
-  }
-  .hide-xl:not(.show-xl):not(.show-gt-lg):not(.show-gt-md):not(.show-gt-sm):not(.show-gt-xs):not(.show) {
-    display: none;
-  }
-
-}
-
-// General printing Rules
-@media print {
-
-  .hide-print:not(.show-print):not(.show) {
-    display: none !important;
   }
 }

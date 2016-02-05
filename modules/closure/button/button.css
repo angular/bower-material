@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-a6f3676
+ * v1.0.5
  */
 button.md-button::-moz-focus-inner {
   border: 0; }
@@ -68,6 +68,7 @@ button.md-button::-moz-focus-inner {
       -webkit-mask-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC"); }
   .md-button.md-fab {
     z-index: 20;
+    line-height: 56px;
     min-width: 0;
     width: 56px;
     height: 56px;
