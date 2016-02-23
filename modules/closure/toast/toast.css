@@ -2,8 +2,11 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-437a308
+ * v1.0.5-master-30b370d
  */
+.md-toast-text {
+  padding: 0 6px; }
+
 md-toast {
   position: absolute;
   z-index: 105;
@@ -29,15 +32,33 @@ md-toast {
     max-height: 168px;
     max-width: 100%;
     min-height: 48px;
-    padding-left: 24px;
-    padding-right: 24px;
+    padding: 0 18px;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
     border-radius: 2px;
     font-size: 14px;
     overflow: hidden;
     -webkit-transform: translate3d(0, 0, 0) rotateZ(0deg);
             transform: translate3d(0, 0, 0) rotateZ(0deg);
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+            justify-content: flex-start; }
+    html[dir=rtl] md-toast .md-toast-content {
+      -webkit-justify-content: flex-end;
+          -ms-flex-pack: end;
+              justify-content: flex-end;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-toast .md-toast-content {
+      -webkit-justify-content: flex-end;
+          -ms-flex-pack: end;
+              justify-content: flex-end;
+      unicode-bidi: embed; }
+    md-toast .md-toast-content bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-toast .md-toast-content bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
   md-toast.md-capsule {
     border-radius: 24px; }
     md-toast.md-capsule .md-toast-content {
@@ -79,8 +100,34 @@ md-toast {
     cursor: pointer;
     text-transform: uppercase;
     float: right; }
-    md-toast .md-action.md-button {
-      min-width: 0; }
+  md-toast .md-button {
+    min-width: 0;
+    margin-right: 0;
+    margin-left: 12px; }
+    html[dir=rtl] md-toast .md-button {
+      margin-right: 12px;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-toast .md-button {
+      margin-right: 12px;
+      unicode-bidi: embed; }
+    md-toast .md-button bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-toast .md-button bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
+    html[dir=rtl] md-toast .md-button {
+      margin-left: 0;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-toast .md-button {
+      margin-left: 0;
+      unicode-bidi: embed; }
+    md-toast .md-button bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-toast .md-button bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
 
 @media (max-width: 959px) {
   md-toast {
@@ -90,7 +137,8 @@ md-toast {
     max-width: 100%;
     min-width: 0;
     border-radius: 0;
-    bottom: 0; }
+    bottom: 0;
+    padding: 0; }
     md-toast.ng-leave.ng-leave-active.md-swipeup .md-toast-content {
       -webkit-transform: translate3d(0, -50%, 0);
               transform: translate3d(0, -50%, 0); }
