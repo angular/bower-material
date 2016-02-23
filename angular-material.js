@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-30b370d
+ * v1.0.5-master-6c42ac7
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -16015,7 +16015,9 @@ angular
  * @description
  * The `$mdSticky`service provides a mixin to make elements sticky.
  *
- * By default the `$mdSticky` service compiles the cloned element in the same scope as the actual element lives.
+ * By default the `$mdSticky` service compiles the cloned element, when not specified through the `elementClone`
+ * parameter, in the same scope as the actual element lives.
+ *
  *
  * <h3>Notes</h3>
  * When using an element which is containing a compiled directive, which changed its DOM structure during compilation,
@@ -16059,7 +16061,7 @@ angular
  *   - `element`: The element that will be 'sticky'
  *   - `elementClone`: A clone of the element, that will be shown
  *     when the user starts scrolling past the original element.
- *     If not provided, it will use the result of `element.clone()`.
+ *     If not provided, it will use the result of `element.clone()` and compiles it in the given scope.
  */
 function MdSticky($document, $mdConstant, $$rAF, $mdUtil, $compile) {
 
@@ -16085,9 +16087,8 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil, $compile) {
         contentCtrl.$element.data('$$sticky', $$sticky);
       }
 
-      // Compile our clone element in the given scope if the stickyClone has no scope predefined.
-      var cloneElement = stickyClone && stickyClone.scope && stickyClone.scope() ?
-          stickyClone : $compile(stickyClone || element.clone())(scope);
+      // Compile our cloned element, when cloned in this service, into the given scope.
+      var cloneElement = stickyClone || $compile(element.clone())(scope);
 
       var deregister = $$sticky.add(element, cloneElement);
       scope.$on('$destroy', deregister);
@@ -24664,4 +24665,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-30b370d"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-6c42ac7"}};
