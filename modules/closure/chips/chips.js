@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-99c9b60
+ * v1.0.5-master-263f644
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.components.autocomplete');
@@ -1097,7 +1097,8 @@ angular
  * @param {string=} secondary-placeholder Placeholder text that will be forwarded to the input,
  *    displayed when there is at least on item in the list
  * @param {expression} md-contacts An expression expected to return contacts matching the search
- *    test, `$query`.
+ *    test, `$query`. If this expression involves a promise, a loading bar is displayed while
+ *    waiting for it to resolve.
  * @param {string} md-contact-name The field name of the contact object representing the
  *    contact's name.
  * @param {string} md-contact-email The field name of the contact object representing the
@@ -1106,9 +1107,8 @@ angular
  *    contact's image.
  *
  *
- * // The following attribute has been removed but may come back.
  * @param {expression=} filter-selected Whether to filter selected contacts from the list of
- *    suggestions shown in the autocomplete.
+ *    suggestions shown in the autocomplete. This attribute has been removed but may come back.
  *
  *
  *
