@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-19551e4
+ * v1.0.5-master-528a439
  */
 md-list {
   display: block;
@@ -54,7 +54,8 @@ md-list-item {
       -webkit-align-items: inherit;
           -ms-flex-align: inherit;
               align-items: inherit;
-      border-radius: 0; }
+      border-radius: 0;
+      margin: 0; }
       md-list-item.md-no-proxy.md-button > .md-ripple-container,
       md-list-item .md-no-style.md-button > .md-ripple-container {
         border-radius: 0; }
