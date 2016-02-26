@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-263f644
+ * v1.0.5-master-48968d0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -14414,7 +14414,7 @@ function OptionDirective($mdButtonInkRipple, $mdUtil) {
       setOptionValue(attr.value);
     } else {
       scope.$watch(function() {
-        return element.text();
+        return element.text().trim();
       }, setOptionValue);
     }
 
@@ -24671,4 +24671,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-263f644"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-48968d0"}};
