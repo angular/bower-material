@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-0627d9e
+ * v1.0.5-master-72f8dfd
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -22034,7 +22034,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
         nestedMenu.open();
       }
     }, nestedMenu ? 100 : 250);
-    var focusableTarget = event.currentTarget.querySelector('.md-button:not([disabled])');
+    var focusableTarget = event.currentTarget.querySelector('button:not([disabled])');
     focusableTarget && focusableTarget.focus();
   };
 
@@ -24724,4 +24724,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-0627d9e"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-72f8dfd"}};
