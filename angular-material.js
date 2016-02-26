@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-70489c2
+ * v1.0.5-master-e6176fb
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -11709,7 +11709,15 @@ angular.module('material.components.input', [
  */
 function mdInputContainerDirective($mdTheming, $parse) {
 
-  var INPUT_TAGS = ['INPUT', 'TEXTAREA', 'MD-SELECT'];
+  var INPUT_TAGS = ['INPUT', 'TEXTAREA', 'SELECT', 'MD-SELECT'];
+
+  var LEFT_SELECTORS = INPUT_TAGS.reduce(function(selectors, isel) {
+    return selectors.concat(['md-icon ~ ' + isel, '.md-icon ~ ' + isel]);
+  }, []).join(",");
+
+  var RIGHT_SELECTORS = INPUT_TAGS.reduce(function(selectors, isel) {
+    return selectors.concat([isel + ' ~ md-icon', isel + ' ~ .md-icon']);
+  }, []).join(",");
 
   ContainerCtrl.$inject = ["$scope", "$element", "$attrs", "$animate"];
   return {
@@ -11721,21 +11729,12 @@ function mdInputContainerDirective($mdTheming, $parse) {
   function postLink(scope, element) {
     $mdTheming(element);
 
-    var iconElements = element.find('md-icon');
-    var icons = iconElements.length ? iconElements : element[0].getElementsByClassName('md-icon');
+    // Check for both a left & right icon
+    var leftIcon = element[0].querySelector(LEFT_SELECTORS);
+    var rightIcon = element[0].querySelector(RIGHT_SELECTORS);
 
-    // Incase there's one icon we want to identify where the icon is (right or left) and apply the related class
-    if (icons.length == 1) {
-      var next = icons[0].nextElementSibling;
-      var previous = icons[0].previousElementSibling;
-
-      element.addClass(next && INPUT_TAGS.indexOf(next.tagName) != -1 ? 'md-icon-left' :
-                       previous &&  INPUT_TAGS.indexOf(previous.tagName) != -1 ? 'md-icon-right' : '');
-    }
-    // In case there are two icons we apply both icon classes
-    else if (icons.length == 2) {
-      element.addClass('md-icon-left md-icon-right');
-    }
+    if (leftIcon) { element.addClass('md-icon-left'); }
+    if (rightIcon) { element.addClass('md-icon-right'); }
   }
 
   function ContainerCtrl($scope, $element, $attrs, $animate) {
@@ -11922,8 +11921,7 @@ function inputTextareaDirective($mdUtil, $window, $mdAria) {
 
     // Add an error spacer div after our input to provide space for the char counter and any ng-messages
     var errorsSpacer = angular.element('<div class="md-errors-spacer">');
-    // element.after appending the div before the icon (if exist) which cause a problem with calculating which class to apply
-    element.parent().append(errorsSpacer);
+    element.after(errorsSpacer);
 
     if (!containerCtrl.label) {
       $mdAria.expect(element, 'aria-label', element.attr('placeholder'));
@@ -24704,4 +24702,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-70489c2"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-e6176fb"}};
