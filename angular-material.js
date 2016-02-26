@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-6e685c3
+ * v1.0.5-master-0627d9e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -9675,7 +9675,7 @@ function MdDialogProvider($$interimElementProvider) {
       };
 
       if (options.escapeToClose) {
-        var target = options.parent;
+        var parentTarget = options.parent;
         var keyHandlerFn = function(ev) {
           if (ev.keyCode === $mdConstant.KEY_CODE.ESCAPE) {
             ev.stopPropagation();
@@ -9687,13 +9687,13 @@ function MdDialogProvider($$interimElementProvider) {
 
         // Add keydown listeners
         element.on('keydown', keyHandlerFn);
-        target.on('keydown', keyHandlerFn);
+        parentTarget.on('keydown', keyHandlerFn);
 
         // Queue remove listeners function
         removeListeners.push(function() {
 
           element.off('keydown', keyHandlerFn);
-          target.off('keydown', keyHandlerFn);
+          parentTarget.off('keydown', keyHandlerFn);
 
         });
       }
@@ -22034,7 +22034,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
         nestedMenu.open();
       }
     }, nestedMenu ? 100 : 250);
-    var focusableTarget = event.currentTarget.querySelector('button:not([disabled])');
+    var focusableTarget = event.currentTarget.querySelector('.md-button:not([disabled])');
     focusableTarget && focusableTarget.focus();
   };
 
@@ -24724,4 +24724,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-6e685c3"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-0627d9e"}};

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-6e685c3
+ * v1.0.5-master-0627d9e
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -787,7 +787,7 @@ function MdDialogProvider($$interimElementProvider) {
       };
 
       if (options.escapeToClose) {
-        var target = options.parent;
+        var parentTarget = options.parent;
         var keyHandlerFn = function(ev) {
           if (ev.keyCode === $mdConstant.KEY_CODE.ESCAPE) {
             ev.stopPropagation();
@@ -799,13 +799,13 @@ function MdDialogProvider($$interimElementProvider) {
 
         // Add keydown listeners
         element.on('keydown', keyHandlerFn);
-        target.on('keydown', keyHandlerFn);
+        parentTarget.on('keydown', keyHandlerFn);
 
         // Queue remove listeners function
         removeListeners.push(function() {
 
           element.off('keydown', keyHandlerFn);
-          target.off('keydown', keyHandlerFn);
+          parentTarget.off('keydown', keyHandlerFn);
 
         });
       }
