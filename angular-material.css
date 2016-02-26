@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-48968d0
+ * v1.0.5-master-8499d02
  */
 html, body {
   height: 100%;
@@ -2832,7 +2832,8 @@ md-list-item.md-3-line > .md-no-style {
         -ms-flex: 1;
             flex: 1;
     margin: auto;
-    text-overflow: ellipsis; }
+    text-overflow: ellipsis;
+    overflow: hidden; }
     md-list-item.md-2-line .md-list-item-text.md-offset,
     md-list-item.md-2-line > .md-no-style .md-list-item-text.md-offset,
     md-list-item.md-3-line .md-list-item-text.md-offset,
