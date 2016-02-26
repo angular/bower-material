@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-7803395
+ * v1.0.5-master-96cfa74
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -19600,8 +19600,9 @@ function MdAutocomplete () {
       inputId:          '@?mdInputId'
     },
     link: function(scope, element, attrs, controller) {
-      controller.hasNotFound = element.hasNotFoundTemplate;
-      delete element.hasNotFoundTemplate;
+      // Retrieve the state of using a md-not-found template by using our attribute, which will
+      // be added to the element in the template function.
+      controller.hasNotFound = !!element.attr('md-has-not-found');
     },
     template:     function (element, attr) {
       var noItemsTemplate = getNoItemsTemplate(),
@@ -19609,8 +19610,10 @@ function MdAutocomplete () {
           leftover        = element.html(),
           tabindex        = attr.tabindex;
 
-      // Set our variable for the link function above which runs later
-      element.hasNotFoundTemplate = !!noItemsTemplate;
+      // Set our attribute for the link function above which runs later.
+      // We will set an attribute, because otherwise the stored variables will be trashed when
+      // removing the element is hidden while retrieving the template. For example when using ngIf.
+      if (noItemsTemplate) element.attr('md-has-not-found', true);
 
       // Always set our tabindex of the autocomplete directive to -1, because our input
       // will hold the actual tabindex.
@@ -24702,4 +24705,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-7803395"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-96cfa74"}};
