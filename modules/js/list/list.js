@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-32ba92f
+ * v1.0.5-master-db763bc
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -147,10 +147,15 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
           tEl.addClass('md-proxy-focus');
         } else {
           // Element which holds the default list-item content.
-          container = angular.element('<div class="md-button md-no-style"><div class="md-list-item-inner"></div></div>');
+          container = angular.element(
+            '<button class="md-button md-no-style"><div class="md-list-item-inner"></div></button>'
+          );
 
           // Button which shows ripple and executes primary action.
-          var buttonWrap = angular.element('<md-button class="md-no-style" md-no-focus-style></md-button>');
+          var buttonWrap = angular.element(
+            '<md-button class="md-no-style" md-no-focus-style></md-button>'
+          );
+
           buttonWrap[0].setAttribute('aria-label', tEl[0].textContent);
           copyAttributes(tEl[0], buttonWrap[0]);
 
@@ -236,7 +241,8 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
 
         var proxies    = [],
             firstChild = $element[0].firstElementChild,
-            hasClick   = firstChild && hasClickEvent(firstChild);
+            hasClick   = firstChild && firstChild.firstElementChild &&
+                         hasClickEvent(firstChild.firstElementChild);
 
         computeProxies();
         computeClickable();
