@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-72f8dfd
+ * v1.0.5-master-4b9f93d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -111,7 +111,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
         nestedMenu.open();
       }
     }, nestedMenu ? 100 : 250);
-    var focusableTarget = event.currentTarget.querySelector('button:not([disabled])');
+    var focusableTarget = event.currentTarget.querySelector('.md-button:not([disabled])');
     focusableTarget && focusableTarget.focus();
   };
 

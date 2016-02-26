@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-72f8dfd
+ * v1.0.5-master-4b9f93d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -19512,6 +19512,8 @@ angular
  *     `md-input-container`
  * @param {string=} md-input-name The name attribute given to the input element to be used with
  *     FormController
+ * @param {string=} md-select-on-focus When present the inputs text will be automatically selected
+ *     on focus.
  * @param {string=} md-input-id An ID to be added to the input element
  * @param {number=} md-input-minlength The minimum length for the input's value for validation
  * @param {number=} md-input-maxlength The maximum length for the input's value for validation
@@ -19697,6 +19699,7 @@ function MdAutocomplete () {
                   ng-blur="$mdAutocompleteCtrl.blur()"\
                   ng-focus="$mdAutocompleteCtrl.focus()"\
                   aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
+                  ' + (attr.mdSelectOnFocus != null ? 'md-select-on-focus=""' : '') + '\
                   aria-label="{{floatingLabel}}"\
                   aria-autocomplete="list"\
                   aria-haspopup="true"\
@@ -19720,6 +19723,7 @@ function MdAutocomplete () {
                 ng-focus="$mdAutocompleteCtrl.focus()"\
                 placeholder="{{placeholder}}"\
                 aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
+                ' + (attr.mdSelectOnFocus != null ? 'md-select-on-focus=""' : '') + '\
                 aria-label="{{placeholder}}"\
                 aria-autocomplete="list"\
                 aria-haspopup="true"\
@@ -22034,7 +22038,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
         nestedMenu.open();
       }
     }, nestedMenu ? 100 : 250);
-    var focusableTarget = event.currentTarget.querySelector('button:not([disabled])');
+    var focusableTarget = event.currentTarget.querySelector('.md-button:not([disabled])');
     focusableTarget && focusableTarget.focus();
   };
 
@@ -24724,4 +24728,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-72f8dfd"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-4b9f93d"}};
