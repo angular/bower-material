@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-1efe816
+ * v1.0.5-master-20a4c2f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -143,7 +143,7 @@ function labelDirective() {
     restrict: 'E',
     require: '^?mdInputContainer',
     link: function(scope, element, attr, containerCtrl) {
-      if (!containerCtrl || attr.mdNoFloat || element.hasClass('md-container-ignore')) return;
+      if (!containerCtrl || attr.mdNoFloat || element.hasClass('_md-container-ignore')) return;
 
       containerCtrl.label = element;
       scope.$on('$destroy', function() {

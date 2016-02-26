@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-1efe816
+ * v1.0.5-master-20a4c2f
  */
 goog.provide('ng.material.components.sticky');
 goog.require('ng.material.components.content');
@@ -137,7 +137,7 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil, $compile) {
      ***************/
     // Add an element and its sticky clone to this content's sticky collection
     function add(element, stickyClone) {
-      stickyClone.addClass('md-sticky-clone');
+      stickyClone.addClass('_md-sticky-clone');
 
       var item = {
         element: element,

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-1efe816
+ * v1.0.5-master-20a4c2f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -992,7 +992,7 @@ function MdAutocomplete () {
           </md-virtual-repeat-container>\
         </md-autocomplete-wrap>\
         <aria-status\
-            class="md-visually-hidden"\
+            class="_md-visually-hidden"\
             role="status"\
             aria-live="assertive">\
           <p ng-repeat="message in $mdAutocompleteCtrl.messages track by $index" ng-if="message">{{message}}</p>\
@@ -1070,7 +1070,7 @@ function MdAutocomplete () {
                 ng-if="$mdAutocompleteCtrl.scope.searchText && !$mdAutocompleteCtrl.isDisabled"\
                 ng-click="$mdAutocompleteCtrl.clear()">\
               <md-icon md-svg-icon="md-close"></md-icon>\
-              <span class="md-visually-hidden">Clear</span>\
+              <span class="_md-visually-hidden">Clear</span>\
             </button>\
                 ';
         }

@@ -284,7 +284,7 @@ body {
   padding: 10px;
 }
 
-button.md-no-style {
+button._md-no-style {
   font-weight: normal;
   background-color: inherit;
   text-align: left;
@@ -334,7 +334,7 @@ input {
   }
 }
 
-.md-visually-hidden {
+._md-visually-hidden {
   border: 0;
   clip: rect(0 0 0 0);
   height: 1px;
@@ -1193,26 +1193,26 @@ md-backdrop {
 
   z-index: $z-index-backdrop;
 
-  &.md-menu-backdrop {
+  &._md-menu-backdrop {
     position: fixed !important;
     z-index: $z-index-menu - 1;
   }
-  &.md-select-backdrop {
+  &._md-select-backdrop {
     z-index: $z-index-dialog + 1;
     transition-duration: 0;
   }
-  &.md-dialog-backdrop {
+  &._md-dialog-backdrop {
     z-index: $z-index-dialog - 1;
   }
-  &.md-bottom-sheet-backdrop {
+  &._md-bottom-sheet-backdrop {
     z-index: $z-index-bottom-sheet - 1;
   }
-  &.md-sidenav-backdrop {
+  &._md-sidenav-backdrop {
     z-index: $z-index-sidenav - 1;
   }
 
 
-  &.md-click-catcher {
+  &._md-click-catcher {
     position: absolute;
   }
 
@@ -1312,11 +1312,6 @@ md-bottom-sheet {
       align-items: center;
       height: $bottom-sheet-list-item-height;
 
-      div.md-icon-container {
-        display: inline-block;
-        height: 3 * $baseline-grid;
-        margin-right: $bottom-sheet-icon-after-margin;
-      }
     }
   }
 
@@ -1393,14 +1388,6 @@ md-bottom-sheet {
         flex-direction: column;
         align-items: center;
         width: 10 * $baseline-grid;
-      }
-
-      .md-icon-container {
-        display: inline-block;
-        box-sizing: border-box;
-        height: 6 * $baseline-grid;
-        width: 6 * $baseline-grid;
-        margin: 0 0;
       }
 
       .md-grid-text {
@@ -1595,7 +1582,7 @@ button.md-button::-moz-focus-inner {
   }
 }
 
-.md-toast-open-top {
+._md-toast-open-top {
   .md-button.md-fab-top-left,
   .md-button.md-fab-top-right {
     transition: $swift-ease-out;
@@ -1609,7 +1596,7 @@ button.md-button::-moz-focus-inner {
   }
 }
 
-.md-toast-open-bottom {
+._md-toast-open-bottom {
   .md-button.md-fab-bottom-left,
   .md-button.md-fab-bottom-right {
     transition: $swift-ease-out;
@@ -1627,30 +1614,30 @@ button.md-button::-moz-focus-inner {
   display: flex;
   flex: 1;
   width: 100%;
-}
 
-.md-button-group > .md-button {
-  flex: 1;
+  & > .md-button {
+    flex: 1;
 
-  display: block;
+    display: block;
 
-  overflow: hidden;
+    overflow: hidden;
 
-  width: 0;
+    width: 0;
 
-  border-width: 1px 0px 1px 1px;
-  border-radius: 0;
+    border-width: 1px 0px 1px 1px;
+    border-radius: 0;
 
-  text-align: center;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
-  &:first-child {
-    border-radius: 2px 0px 0px 2px;
-  }
-  &:last-child {
-    border-right-width: 1px;
-    border-radius: 0px 2px 2px 0px;
+    &:first-child {
+      border-radius: 2px 0px 0px 2px;
+    }
+    &:last-child {
+      border-right-width: 1px;
+      border-radius: 0px 2px 2px 0px;
+    }
   }
 }
 // IE only
@@ -1909,7 +1896,7 @@ md-checkbox {
   }
 
   &.md-focused:not([disabled]) {
-    .md-container:before {
+    ._md-container:before {
       left: -8px;
       top: -8px;
       right: -8px;
@@ -1917,13 +1904,13 @@ md-checkbox {
     }
 
     &:not(.md-checked) {
-      .md-container:before {
+      ._md-container:before {
         background-color: rgba(0, 0, 0, 0.12);
       }
     }
   }
 
-  .md-container {
+  ._md-container {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -1974,12 +1961,12 @@ md-checkbox {
     }
   }
 
-  &.md-align-top-left > div.md-container {
+  &.md-align-top-left > div._md-container {
     top: $checkbox-top;
   }
 
   // unchecked
-  .md-icon {
+  ._md-icon {
     box-sizing: border-box;
     transition: 240ms;
     position: absolute;
@@ -1992,7 +1979,7 @@ md-checkbox {
     border-radius: $checkbox-border-radius;
   }
 
-  &.md-checked .md-icon {
+  &.md-checked ._md-icon {
     border: none;
   }
 
@@ -2002,7 +1989,7 @@ md-checkbox {
   }
 
 
-  &.md-checked .md-icon:after {
+  &.md-checked ._md-icon:after {
     box-sizing: border-box;
     transform: rotate(45deg);
     position: absolute;
@@ -2018,7 +2005,7 @@ md-checkbox {
     content: '';
   }
 
-  .md-label {
+  ._md-label {
     box-sizing: border-box;
     position: relative;
     display: inline-block;
@@ -2100,7 +2087,7 @@ $contact-chip-name-width: rem(12) !default;
     .md-chip:not(.md-readonly) {
       padding-right: $chip-remove-padding-right;
 
-      .md-chip-content {
+      ._md-chip-content {
         padding-right:rem(0.4);
       }
     }
@@ -2119,7 +2106,7 @@ $contact-chip-name-width: rem(12) !default;
     max-width: 100%;
     position: relative;
 
-    .md-chip-content {
+    ._md-chip-content {
       display: block;
       float: left;
       white-space: nowrap;
@@ -2130,12 +2117,12 @@ $contact-chip-name-width: rem(12) !default;
         outline: none;
       }
     }
-    .md-chip-remove-container {
+    ._md-chip-remove-container {
       position: absolute;
       right: 0;
       line-height: $chip-remove-line-height;
     }
-    .md-chip-remove {
+    ._md-chip-remove {
       text-align: center;
       width: $chip-height;
       height: $chip-height;
@@ -2156,7 +2143,7 @@ $contact-chip-name-width: rem(12) !default;
       }
     }
   }
-  .md-chip-input-container {
+  ._md-chip-input-container {
     display: block;
     line-height: $chip-height;
     margin: $chip-margin;
@@ -2219,11 +2206,11 @@ $contact-chip-name-width: rem(12) !default;
 }
 // IE only
 @media screen and (-ms-high-contrast: active) {
-  .md-chip-input-container,
+  ._md-chip-input-container,
   md-chip {
     border: 1px solid #fff;
   }
-  .md-chip-input-container md-autocomplete {
+  ._md-chip-input-container md-autocomplete {
     border: none;
   }
 }
@@ -2250,7 +2237,7 @@ md-content {
   // For iOS allow disabling of momentum scrolling
   // @see issue #2640.
 
-  &.autoScroll {
+  &.md-no-momentum {
     -webkit-overflow-scrolling: auto;
   }
 
@@ -2622,7 +2609,7 @@ $dialog-padding: $baseline-grid * 3;
 .md-dialog-is-showing {
   max-height: 100%;
 }
-.md-dialog-container {
+._md-dialog-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -2637,12 +2624,12 @@ $dialog-padding: $baseline-grid * 3;
 
 md-dialog {
 
-  &.md-transition-in {
+  &._md-transition-in {
     opacity: 1;
     transition: $swift-ease-out;
     transform: translate(0,0) scale(1.0);
   }
-  &.md-transition-out {
+  &._md-transition-out {
     opacity: 0;
     transition: $swift-ease-out;
     transform: translate(0,100%) scale(0.2);
@@ -2686,21 +2673,9 @@ md-dialog {
 
     .md-subheader {
       margin: 0;
-
-      &.sticky-clone {
-        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16);
-      }
-    }
-    &.sticky-container {
-      padding: 0;
-
-      &> div {
-        padding: $dialog-padding;
-        padding-top: 0;
-      }
     }
 
-    .md-dialog-content-body {
+    ._md-dialog-content-body {
       width:100%;
     }
 
@@ -2802,7 +2777,7 @@ md-fab-speed-dial {
     }
   }
 
-  .md-css-variables {
+  ._md-css-variables {
     z-index: $z-index-fab;
   }
 
@@ -2902,7 +2877,7 @@ md-fab-speed-dial {
   }
 
   // For the initial animation, set the duration to be instant
-  &.md-fling.md-animations-waiting {
+  &.md-fling._md-animations-waiting {
     .md-fab-action-item {
       opacity: 0;
       transition-duration: 0s;
@@ -2934,7 +2909,7 @@ md-fab-toolbar {
   /*
    * Closed styling
    */
-  .md-fab-toolbar-wrapper {
+  ._md-fab-toolbar-wrapper {
     display: block;
     position: relative;
     overflow: hidden;
@@ -2951,7 +2926,7 @@ md-fab-toolbar {
       overflow: visible !important;
     }
 
-    .md-fab-toolbar-background {
+    ._md-fab-toolbar-background {
       display: block;
       position: absolute;
       z-index: $z-index-fab + 1;
@@ -3274,7 +3249,7 @@ md-input-container {
     -ms-flex-preferred-size: auto; //IE fix
   }
 
-  label:not(.md-container-ignore) {
+  label:not(._md-container-ignore) {
     position: absolute;
     bottom: 100%;
     @include rtl(left, 0, auto);
@@ -3287,8 +3262,8 @@ md-input-container {
     }
   }
 
-  label:not(.md-no-float):not(.md-container-ignore),
-  .md-placeholder {
+  label:not(.md-no-float):not(._md-container-ignore),
+  ._md-placeholder {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -3304,19 +3279,19 @@ md-input-container {
 
     @include rtl(transform-origin, left top, right top);
   }
-  .md-placeholder {
+  ._md-placeholder {
     position: absolute;
     top: 0;
     opacity: 0;
     transition-property: opacity, transform;
     transform: translate3d(0, $input-placeholder-offset + $baseline-grid * 0.75, 0);
   }
-  &.md-input-focused .md-placeholder {
+  &.md-input-focused ._md-placeholder {
     opacity: 1;
     transform: translate3d(0, $input-placeholder-offset, 0);
   }
   // Placeholder should immediately disappear when the user starts typing
-  &.md-input-has-value .md-placeholder {
+  &.md-input-has-value ._md-placeholder {
     transition: none;
     opacity: 0;
   }
@@ -3513,7 +3488,7 @@ md-input-container {
   &.md-icon-left,
   &.md-icon-right {
     > label {
-      &:not(.md-no-float):not(.md-container-ignore),
+      &:not(.md-no-float):not(._md-container-ignore),
       .md-placeholder {
         width: calc(100% - #{$icon-offset} - #{$input-label-float-width});
       }
@@ -3523,7 +3498,7 @@ md-input-container {
     &.md-input-has-placeholder,
     &.md-input-has-value {
       > label {
-        &:not(.md-no-float):not(.md-container-ignore),
+        &:not(.md-no-float):not(._md-container-ignore),
         .md-placeholder {
           width: calc((100% - #{$icon-offset} - #{$input-label-float-width}) / #{$input-label-float-scale});
         }
@@ -3558,7 +3533,7 @@ md-input-container {
     padding-right: $icon-offset;
 
     > label {
-      &:not(.md-no-float):not(.md-container-ignore),
+      &:not(.md-no-float):not(._md-container-ignore),
       .md-placeholder {
         width: calc(100% - (#{$icon-offset} * 2));
       }
@@ -3568,7 +3543,7 @@ md-input-container {
     &.md-input-has-placeholder,
     &.md-input-has-value {
       > label {
-        &:not(.md-no-float):not(.md-container-ignore),
+        &:not(.md-no-float):not(._md-container-ignore),
         .md-placeholder {
           width: calc((100% - (#{$icon-offset} * 2)) / #{$input-label-float-scale});
         }
@@ -3627,11 +3602,11 @@ md-list-item {
   // Ensure nested dividers are properly positioned
   position: relative;
 
-  &.md-proxy-focus.md-focused .md-no-style {
+  &._md-proxy-focus.md-focused ._md-no-style {
     transition: background-color 0.15s linear;
   }
 
-  &.md-button-wrap {
+  &._md-button-wrap {
     position: relative;
 
     > .md-button:first-child {
@@ -3652,9 +3627,7 @@ md-list-item {
         height: 100%;
       }
 
-      .md-list-item-inner {
-        width: 100%;
-        height: 100%;
+      ._md-list-item-inner {
         padding: 0 16px;
       }
 
@@ -3662,8 +3635,8 @@ md-list-item {
 
   }
 
-  &.md-no-proxy,
-  .md-no-style {
+  &._md-no-proxy,
+  ._md-no-style {
     position: relative;
     padding: $list-item-padding-vertical $list-item-padding-horizontal;
     flex: 1 1 auto;
@@ -3708,7 +3681,7 @@ md-list-item {
   }
 }
 
-md-list-item, md-list-item .md-list-item-inner {
+md-list-item, md-list-item ._md-list-item-inner {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -3771,7 +3744,7 @@ md-list-item, md-list-item .md-list-item-inner {
     margin-right: -6px;
   }
 
-  button.md-button.md-secondary-container {
+  button.md-button._md-secondary-container {
     background-color: transparent;
     align-self: center;
     border-radius: 50%;
@@ -3788,7 +3761,7 @@ md-list-item, md-list-item .md-list-item-inner {
     }
   }
 
-  .md-secondary-container,
+  ._md-secondary-container,
   .md-secondary {
     position: absolute;
     top: 50%;
@@ -3797,12 +3770,12 @@ md-list-item, md-list-item .md-list-item-inner {
     transform: translate3d(0, -50%, 0);
   }
 
-  & > .md-button.md-secondary-container > .md-secondary {
+  & > .md-button._md-secondary-container > .md-secondary {
     margin-left: 0;
     position: static;
   }
 
-  & > p, & > .md-list-item-inner > p {
+  & > p, & > ._md-list-item-inner > p {
     flex: 1;
     margin: 0;
   }
@@ -3810,9 +3783,9 @@ md-list-item, md-list-item .md-list-item-inner {
 
 
 md-list-item.md-2-line,
-md-list-item.md-2-line > .md-no-style,
+md-list-item.md-2-line > ._md-no-style,
 md-list-item.md-3-line,
-md-list-item.md-3-line > .md-no-style {
+md-list-item.md-3-line > ._md-no-style {
   align-items: flex-start;
   justify-content: center;
 
@@ -3857,7 +3830,7 @@ md-list-item.md-3-line > .md-no-style {
 }
 
 md-list-item.md-2-line,
-md-list-item.md-2-line > .md-no-style {
+md-list-item.md-2-line > ._md-no-style {
   height:auto;
   min-height: $list-item-two-line-height;
   &.md-long-text {
@@ -3876,7 +3849,7 @@ md-list-item.md-2-line > .md-no-style {
 }
 
 md-list-item.md-3-line,
-md-list-item.md-3-line > .md-no-style {
+md-list-item.md-3-line > ._md-no-style {
   height:auto;
   min-height: $list-item-three-line-height;
 
@@ -3897,7 +3870,7 @@ $dense-menu-item-height: 4 * $baseline-grid;
 $max-menu-height: 2 * $baseline-grid + $max-visible-items * $menu-item-height;
 $max-dense-menu-height: 2 * $baseline-grid + $max-visible-items * $dense-menu-item-height;
 
-.md-open-menu-container {
+._md-open-menu-container {
   position: fixed;
   left: 0;
   top: 0;
@@ -3919,12 +3892,12 @@ $max-dense-menu-height: 2 * $baseline-grid + $max-visible-items * $dense-menu-it
   }
 
   // Don't let the user click something until it's animated
-  &:not(.md-clickable) {
+  &:not(._md-clickable) {
     pointer-events: none;
   }
 
   // enter: menu scales in, then list fade in.
-  &.md-active {
+  &._md-active {
     opacity: 1;
     transition: $swift-ease-out;
     transition-duration: 200ms;
@@ -3936,7 +3909,7 @@ $max-dense-menu-height: 2 * $baseline-grid + $max-visible-items * $dense-menu-it
     }
   }
   // leave: the container fades out
-  &.md-leave {
+  &._md-leave {
     opacity: 0;
     transition: $swift-ease-in;
     transition-duration: 250ms;
@@ -4072,12 +4045,12 @@ md-menu-bar {
     height: 5 * $baseline-grid;
   }
 
-  md-backdrop.md-menu-backdrop {
+  md-backdrop._md-menu-backdrop {
     z-index: -2;
   }
 }
 
-md-menu-content.md-menu-bar-menu.md-dense {
+md-menu-content._md-menu-bar-menu.md-dense {
   max-height: none;
   padding: 2 * $baseline-grid 0;
   md-menu-item.md-indent {
@@ -4158,18 +4131,18 @@ md-progress-circular {
 
   z-index: $z-index-progress-circular; // Used to fix a Chrome bug with spinner animation
 
-  .md-spinner-wrapper {
+  ._md-spinner-wrapper {
     display:block;
     position: absolute;
     overflow: hidden;
     top: 50%;
     left: 50%;
 
-    .md-inner {
+    ._md-inner {
        width: $progress-circular-size;
        height: $progress-circular-size;
        position: relative;
-       .md-gap {
+       ._md-gap {
          position: absolute;
          left: $progress-circular-size * 0.5 - 1;
          right: $progress-circular-size * 0.5 - 1;
@@ -4179,13 +4152,13 @@ md-progress-circular {
          border-top-style: solid;
          box-sizing: border-box;
        }
-       .md-left, .md-right {
+       ._md-left, ._md-right {
          position: absolute;
          top: 0;
          height: $progress-circular-size;
          width: $progress-circular-size * 0.50;
          overflow: hidden;
-         .md-half-circle {
+         ._md-half-circle {
            position: absolute;
            top: 0;
            width: $progress-circular-size;
@@ -4197,16 +4170,16 @@ md-progress-circular {
            border-radius: 50%;
          }
        }
-       .md-left {
+       ._md-left {
          left: 0;
-         .md-half-circle {
+         ._md-half-circle {
            left: 0;
            border-right-color: transparent;
          }
        }
-       .md-right {
+       ._md-right {
          right: 0;
-         .md-half-circle {
+         ._md-half-circle {
            right: 0;
            border-left-color: transparent;
          }
@@ -4215,42 +4188,42 @@ md-progress-circular {
   }
 
 
-  .md-mode-indeterminate .md-spinner-wrapper {
+  ._md-mode-indeterminate ._md-spinner-wrapper {
     animation: outer-rotate $progress-circular-outer-duration linear infinite;
-    .md-inner {
+    ._md-inner {
       animation: sporadic-rotate $progress-circular-sporadic-duration $progress-circular-ease-in-out infinite;
-      .md-left, .md-right {
-        .md-half-circle {
+      ._md-left, ._md-right {
+        ._md-half-circle {
           animation-iteration-count: infinite;
           animation-duration: ($progress-circular-duration * 0.25);
           animation-timing-function: $progress-circular-ease-in-out;
         }
       }
-      .md-left {
-        .md-half-circle {
+      ._md-left {
+        ._md-half-circle {
           animation-name: left-wobble;
         }
       }
-      .md-right {
-        .md-half-circle {
+      ._md-right {
+        ._md-half-circle {
           animation-name: right-wobble;
         }
       }
     }
   }
 
-  md-progress-circular.ng-hide {
-    .md-spinner-wrapper  {
+  &.ng-hide {
+    ._md-spinner-wrapper  {
       animation: none;
-      .md-inner {
+      ._md-inner {
         animation: none;
-        .md-left {
-          .md-half-circle {
+        ._md-left {
+          ._md-half-circle {
             animation-name: none;
           }
         }
-        .md-right {
-          .md-half-circle {
+        ._md-right {
+          ._md-half-circle {
             animation-name: none;
           }
         }
@@ -4258,17 +4231,17 @@ md-progress-circular {
     }
   }
 
-  .md-spinner-wrapper.ng-hide {
+  ._md-spinner-wrapper.ng-hide {
     animation: none;
-    .md-inner {
+    ._md-inner {
       animation: none;
-      .md-left {
-        .md-half-circle {
+      ._md-left {
+        ._md-half-circle {
           animation-name: none;
         }
       }
-      .md-right {
-        .md-half-circle {
+      ._md-right {
+        ._md-half-circle {
           animation-name: none;
         }
       }
@@ -4316,7 +4289,7 @@ md-progress-linear {
   padding-top: 0 !important;
   margin-bottom: 0 !important;
 
-  .md-container {
+  ._md-container {
     display:block;
     position: relative;
     overflow: hidden;
@@ -4326,7 +4299,7 @@ md-progress-linear {
 
     transform: translate(0, 0) scale(1, 1);
 
-    .md-bar {
+    ._md-bar {
       position: absolute;
 
       left: 0;
@@ -4337,7 +4310,7 @@ md-progress-linear {
       height: $progress-linear-bar-height;
     }
 
-    .md-dashed:before {
+    ._md-dashed:before {
       content: "";
       display: none;
       position: absolute;
@@ -4351,7 +4324,7 @@ md-progress-linear {
       background-position: 0px -23px;
     }
 
-    .md-bar1, .md-bar2 {
+    ._md-bar1, ._md-bar2 {
 
       // Just set the transition information here.
       // Note: the actual transform values are calculated in JS
@@ -4363,28 +4336,28 @@ md-progress-linear {
     // Animations for modes: Determinate, InDeterminate, and Query
     // ************************************************************
 
-    &.md-mode-query {
-        .md-bar1 {
+    &._md-mode-query {
+        ._md-bar1 {
           display: none;
         }
-        .md-bar2 {
+        ._md-bar2 {
           transition: all 0.2s linear;
           animation: query .8s infinite cubic-bezier(0.390, 0.575, 0.565, 1.000);
         }
       }
 
-    &.md-mode-determinate {
-      .md-bar1 {
+    &._md-mode-determinate {
+      ._md-bar1 {
         display: none;
       }
     }
 
-    &.md-mode-indeterminate {
-      .md-bar1 {
+    &._md-mode-indeterminate {
+      ._md-bar1 {
         animation: md-progress-linear-indeterminate-scale-1 4s infinite,
                    md-progress-linear-indeterminate-1 4s infinite;
       }
-      .md-bar2 {
+      ._md-bar2 {
         animation: md-progress-linear-indeterminate-scale-2 4s infinite,
                    md-progress-linear-indeterminate-2 4s infinite;
       }
@@ -4393,10 +4366,10 @@ md-progress-linear {
     &.ng-hide {
       animation: none;
 
-      .md-bar1 {
+      ._md-bar1 {
         animation-name: none;
       }
-      .md-bar2 {
+      ._md-bar2 {
         animation-name: none;
       }
     }
@@ -4404,12 +4377,12 @@ md-progress-linear {
 
   // Special animations for the `buffer` mode
 
-  .md-container.md-mode-buffer {
+  ._md-container._md-mode-buffer {
     background-color: transparent !important;
 
     transition: all 0.2s linear;
 
-    .md-dashed:before {
+    ._md-dashed:before {
       display: block;
       animation: buffer 3s infinite linear;
     }
@@ -4528,12 +4501,12 @@ md-radio-button {
   &[disabled] {
     cursor: default;
 
-    .md-container {
+    ._md-container {
       cursor: default;
     }
   }
 
-  .md-container {
+  ._md-container {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -4573,11 +4546,11 @@ md-radio-button {
     }
   }
 
-  &.md-align-top-left > div.md-container {
+  &.md-align-top-left > div._md-container {
      top: $radio-top-left;
    }
 
-  .md-off {
+  ._md-off {
     box-sizing: border-box;
     position: absolute;
     top: 0;
@@ -4590,7 +4563,7 @@ md-radio-button {
     transition: border-color ease 0.28s;
   }
 
-  .md-on {
+  ._md-on {
     box-sizing: border-box;
     position: absolute;
     top: 0;
@@ -4602,11 +4575,11 @@ md-radio-button {
     transform: scale(0);
   }
 
-  &.md-checked .md-on {
+  &.md-checked ._md-on {
     transform: scale(0.50);
   }
 
-  .md-label {
+  ._md-label {
     box-sizing: border-box;
     position: relative;
     display: inline-block;
@@ -4619,11 +4592,6 @@ md-radio-button {
     pointer-events: none;
     width: auto;
   }
-
-  .circle {
-    border-radius: 50%;
-  }
-
 }
 
 md-radio-group {
@@ -4660,7 +4628,7 @@ md-radio-group {
     outline: none;
   }
   &.md-focused {
-    .md-checked .md-container:before {
+    .md-checked ._md-container:before {
       left: -8px;
       top: -8px;
       right: -8px;
@@ -4684,7 +4652,7 @@ md-radio-group {
 }
 
 @media screen and (-ms-high-contrast: active) {
-  md-radio-button.md-default-theme .md-on {
+  md-radio-button.md-default-theme ._md-on {
     background-color: #fff;
   }
 }
@@ -4696,7 +4664,7 @@ $select-container-transition-duration: 350ms;
 
 $select-max-visible-options: 5;
 
-.md-select-menu-container {
+._md-select-menu-container {
   position: fixed;
   left: 0;
   top: 0;
@@ -4705,7 +4673,7 @@ $select-max-visible-options: 5;
   display: none;
 
   // Don't let the user select a new choice while it's animating
-  &:not(.md-clickable) {
+  &:not(._md-clickable) {
     pointer-events: none;
   }
 
@@ -4716,7 +4684,7 @@ $select-max-visible-options: 5;
 
 
   // enter: md-select scales in, then options fade in.
-  &.md-active {
+  &._md-active {
     display: block;
     opacity: 1;
     md-select-menu {
@@ -4732,7 +4700,7 @@ $select-max-visible-options: 5;
   }
 
   // leave: the container fades out
-  &.md-leave {
+  &._md-leave {
     opacity: 0;
     transition: $swift-ease-in;
     transition-duration: 250ms;
@@ -4747,7 +4715,7 @@ md-input-container > md-select {
 md-select {
   display: flex;
   margin: 2.5*$baseline-grid 0 3*$baseline-grid + 2 0;
-  &[disabled] .md-select-value {
+  &[disabled] ._md-select-value {
     background-position: 0 bottom;
     // This background-size is coordinated with a linear-gradient set in select-theme.scss
     // to create a dotted line under the input.
@@ -4766,13 +4734,13 @@ md-select {
       cursor: pointer
     }
     &.ng-invalid.ng-dirty {
-      .md-select-value {
+      ._md-select-value {
         border-bottom: 2px solid;
         padding-bottom: 0;
       }
     }
     &:focus {
-      .md-select-value {
+      ._md-select-value {
         border-bottom-width: 2px;
         border-bottom-style: solid;
         padding-bottom: 0;
@@ -4782,7 +4750,7 @@ md-select {
 }
 
 
-.md-select-value {
+._md-select-value {
   display: flex;
   align-items: center;
   padding: 2px 2px 1px;
@@ -4795,7 +4763,7 @@ md-select {
   min-height: 26px;
   flex-grow: 1;
 
-  .md-text {
+  ._md-text {
     display: inline;
   }
 
@@ -4807,7 +4775,7 @@ md-select {
     transform: translate3d(0, 2px, 0);
   }
 
-  .md-select-icon {
+  ._md-select-icon {
     display: block;
     align-items: flex-end;
     text-align: end;
@@ -4816,7 +4784,7 @@ md-select {
     transform: translate3d(0, 1px, 0);
   }
 
-  .md-select-icon:after {
+  ._md-select-icon:after {
     display: block;
     content: '\25BC';
     position: relative;
@@ -4825,7 +4793,7 @@ md-select {
     transform: scaleY(0.6) scaleX(1);
   }
 
-  &.md-select-placeholder {
+  &._md-select-placeholder {
     display: flex;
     order: 1;
     pointer-events: none;
@@ -4842,7 +4810,7 @@ md-select-menu {
     flex-direction: column-reverse;
   }
 
-  &:not(.md-overflow) {
+  &:not(._md-overflow) {
     md-content {
       padding-top: $baseline-grid;
       padding-bottom: $baseline-grid;
@@ -4884,7 +4852,7 @@ md-option {
     outline: none;
   }
 
-  .md-text {
+  ._md-text {
     @include not-selectable();
     width: auto;
     white-space: nowrap;
@@ -4912,7 +4880,7 @@ md-optgroup {
 }
 
 @media screen and (-ms-high-contrast: active) {
-  .md-select-backdrop {
+  ._md-select-backdrop {
     background-color: transparent;
   }
   md-select-menu {
@@ -4939,50 +4907,50 @@ md-sidenav {
     list-style: none;
   }
 
-  &.md-closed {
+  &._md-closed {
     display: none;
   }
-  &.md-closed-add,
-  &.md-closed-remove {
+  &._md-closed-add,
+  &._md-closed-remove {
     display: flex;
     transition: 0.2s ease-in all;
   }
 
-  &.md-closed-add.md-closed-add-active,
-  &.md-closed-remove.md-closed-remove-active {
+  &._md-closed-add._md-closed-add-active,
+  &._md-closed-remove._md-closed-remove-active {
     transition: $swift-ease-out;
   }
 
-  &.md-locked-open-add,
-  &.md-locked-open-remove {
+  &._md-locked-open-add,
+  &._md-locked-open-remove {
     position: static;
     display: flex;
     transform: translate3d(0, 0, 0);
   }
 
-  &.md-locked-open,
-  &.md-locked-open.md-closed,
-  &.md-locked-open.md-closed.md-sidenav-left,
-  &.md-locked-open.md-closed.md-sidenav-right,
-  &.md-locked-open-remove.md-closed {
+  &._md-locked-open,
+  &._md-locked-open._md-closed,
+  &._md-locked-open._md-closed.md-sidenav-left,
+  &._md-locked-open._md-closed.md-sidenav-right,
+  &._md-locked-open-remove._md-closed {
     position: static;
     display: flex;
     transform: translate3d(0, 0, 0);
   }
-  &.md-locked-open-remove-active {
+  &._md-locked-open-remove-active {
     transition: width $swift-ease-in-duration $swift-ease-in-timing-function,
                 min-width $swift-ease-in-duration $swift-ease-in-timing-function;
     width: 0;
     min-width: 0;
   }
 
-  &.md-closed.md-locked-open-add {
+  &._md-closed._md-locked-open-add {
     width: 0;
     min-width: 0;
     transform: translate3d(0%, 0, 0);
   }
 
-  &.md-closed.md-locked-open-add-active {
+  &._md-closed._md-locked-open-add-active {
     transition: width $swift-ease-in-duration $swift-ease-in-timing-function,
                 min-width $swift-ease-in-duration $swift-ease-in-timing-function;
     width: $sidenav-mobile-width;
@@ -4992,7 +4960,7 @@ md-sidenav {
 
   @extend .md-sidenav-left;
 }
-.md-sidenav-backdrop.md-locked-open {
+.md-sidenav-backdrop._md-locked-open {
   display: none;
 }
 
@@ -5000,7 +4968,7 @@ md-sidenav {
   left: 0;
   top: 0;
   transform: translate3d(0%, 0, 0);
-  &.md-closed {
+  &._md-closed {
     transform: translate3d(-100%, 0, 0);
   }
 }
@@ -5009,7 +4977,7 @@ md-sidenav {
   left: 100%;
   top: 0;
   transform: translate3d(-100%, 0, 0);
-  &.md-closed {
+  &._md-closed {
     transform: translate3d(0%, 0, 0);
   }
 }
@@ -5098,35 +5066,35 @@ md-slider {
     box-sizing: border-box;
   }
 
-  .md-slider-wrapper {
+  ._md-slider-wrapper {
     position: relative;
   }
 
   /**
    * Track
    */
-  .md-track-container {
+  ._md-track-container {
     width: 100%;
     position: absolute;
     top: ($slider-height / 2) - ($slider-track-height) / 2;
     height: $slider-track-height;
   }
-  .md-track {
+  ._md-track {
     position: absolute;
     left: 0;
     right: 0;
     height: 100%;
   }
-  .md-track-fill {
+  ._md-track-fill {
     transition: width 0.05s linear;
   }
-  .md-track-ticks {
+  ._md-track-ticks {
     position: absolute;
     left: 0;
     right: 0;
     height: 100%;
   }
-  .md-track-ticks canvas {
+  ._md-track-ticks canvas {
     // Restrict the width of the canvas so that ticks are rendered correctly
     // when parent elements are resized. Else, the position of the ticks might
     // be incorrect as we only update the canvas width attribute on window resize.
@@ -5136,14 +5104,14 @@ md-slider {
   /**
    * Slider thumb
    */
-  .md-thumb-container {
+  ._md-thumb-container {
     position: absolute;
     left: 0;
     top: 50%;
     transform: translate3d(-50%,-50%,0);
     transition: left 0.1s linear;
   }
-  .md-thumb {
+  ._md-thumb {
     z-index: 1;
 
     // Positioning the outer area of the thumb 6px bigger than it needs to be keeps
@@ -5170,7 +5138,7 @@ md-slider {
   }
 
   /* The sign that's focused in discrete mode */
-  .md-sign {
+  ._md-sign {
 
     /* Center the children (slider-thumb-text) */
     display: flex;
@@ -5204,7 +5172,7 @@ md-slider {
       transition: all 0.2s ease-in-out;
     }
 
-    .md-thumb-text {
+    ._md-thumb-text {
       z-index: 1;
       font-size: 12px;
       font-weight: bold;
@@ -5214,20 +5182,20 @@ md-slider {
   /**
    * The border/background that comes in when focused in non-discrete mode
    */
-  .md-focus-thumb {
+  ._md-focus-thumb {
     @include slider-thumb-position($slider-focus-thumb-width, $slider-focus-thumb-height);
     display: none;
     opacity: 0;
     background-color: #C0C0C0;
     animation: sliderFocusThumb 0.4s linear;
   }
-  .md-focus-ring {
+  ._md-focus-ring {
     @include slider-thumb-position($slider-focus-thumb-width, $slider-focus-thumb-height);
     transform: scale(0);
     transition: all 0.2s linear;
     opacity: 0.26;
   }
-  .md-disabled-thumb {
+  ._md-disabled-thumb {
     @include slider-thumb-position(
       $slider-thumb-width + $slider-thumb-disabled-border * 2,
       $slider-thumb-height + $slider-thumb-disabled-border * 2
@@ -5238,13 +5206,13 @@ md-slider {
     display: none;
   }
 
-  &.md-min {
-    .md-thumb {
+  &._md-min {
+    ._md-thumb {
       &:after {
         background-color: white;
       }
     }
-    .md-sign {
+    ._md-sign {
       opacity: 0;
     }
   }
@@ -5254,36 +5222,36 @@ md-slider {
   }
 
   /* Don't animate left/right while panning */
-  &.md-dragging {
-    .md-thumb-container,
-    .md-track-fill {
+  &._md-dragging {
+    ._md-thumb-container,
+    ._md-track-fill {
       transition: none;
     }
   }
 
   &:not([md-discrete]) {
     /* Hide the sign and ticks in non-discrete mode */
-    .md-track-ticks,
-    .md-sign {
+    ._md-track-ticks,
+    ._md-sign {
       display: none;
     }
 
     &:not([disabled]) {
       &:hover {
-        .md-thumb {
+        ._md-thumb {
           transform: scale($slider-thumb-hover-scale);
         }
       }
 
       &:focus,
-      &.md-active {
-        .md-focus-thumb {
+      &._md-active {
+        ._md-focus-thumb {
           display: block;
         }
-        .md-focus-ring {
+        ._md-focus-ring {
           transform: scale(1);
         }
-        .md-thumb {
+        ._md-thumb {
           transform: scale($slider-thumb-focus-scale);
         }
       }
@@ -5292,16 +5260,16 @@ md-slider {
 
   &[md-discrete] {
     /* Hide the focus thumb in discrete mode */
-    .md-focus-thumb,
-    .md-focus-ring {
+    ._md-focus-thumb,
+    ._md-focus-ring {
       display: none;
     }
 
     &:not([disabled]) {
       &:focus,
-      &.md-active {
-        .md-sign,
-        .md-sign:after {
+      &._md-active {
+        ._md-sign,
+        ._md-sign:after {
           opacity: 1;
           transform: translate3d(0,0,0) scale(1.0);
         }
@@ -5310,29 +5278,29 @@ md-slider {
   }
 
   &[disabled] {
-    .md-track-fill {
+    ._md-track-fill {
       display: none;
     }
-    .md-sign {
+    ._md-sign {
       display: none;
     }
-    .md-thumb {
+    ._md-thumb {
       transform: scale($slider-thumb-disabled-scale);
     }
-    .md-disabled-thumb {
+    ._md-disabled-thumb {
       display: block;
     }
   }
 }
 
 @media screen and (-ms-high-contrast: active) {
-  md-slider.md-default-theme .md-track {
+  md-slider.md-default-theme ._md-track {
     border-bottom: 1px solid #fff;
   }
 }
 
 
-.md-sticky-clone {
+._md-sticky-clone {
   z-index: 2;
   top: 0;
   left: 0;
@@ -5343,7 +5311,7 @@ md-slider {
 
   &[sticky-state="active"] {
     transform: translate3d(0, 0, 0);
-    &:not(.md-sticky-no-effect) .md-subheader-inner {
+    &:not(.md-sticky-no-effect) ._md-subheader-inner {
       animation: subheaderStickyHoverIn 0.3s ease-out both;
     }
   }
@@ -5373,7 +5341,7 @@ $subheader-sticky-shadow: 0px 2px 4px 0 rgba(0,0,0,0.16) !default;
   }
 }
 
-.md-subheader-wrapper {
+._md-subheader-wrapper {
 
   &:not(.md-sticky-no-effect) {
     .md-subheader {
@@ -5390,7 +5358,7 @@ $subheader-sticky-shadow: 0px 2px 4px 0 rgba(0,0,0,0.16) !default;
       margin-top: -2px;
     }
 
-    &:not(.md-sticky-clone)[sticky-prev-state="active"] .md-subheader-inner:after {
+    &:not(.md-sticky-clone)[sticky-prev-state="active"] ._md-subheader-inner:after {
       animation: subheaderStickyHoverOut 0.3s ease-out both;
     }
   }
@@ -5405,12 +5373,12 @@ $subheader-sticky-shadow: 0px 2px 4px 0 rgba(0,0,0,0.16) !default;
   margin: $subheader-margin;
   position: relative;
 
-  .md-subheader-inner {
+  ._md-subheader-inner {
     display: block;
     padding: $subheader-padding;
   }
 
-  .md-subheader-content {
+  ._md-subheader-content {
     display: block;
     z-index: 1;
     position: relative;
@@ -5452,12 +5420,12 @@ md-switch {
   &[disabled] {
     cursor: default;
 
-    .md-container {
+    ._md-container {
       cursor: default;
     }
   }
 
-  .md-container {
+  ._md-container {
     cursor: grab;
     width: $switch-width;
     height: $switch-height;
@@ -5469,14 +5437,14 @@ md-switch {
 
   // If the user moves his mouse off the switch, stil display grabbing cursor
   &:not([disabled]) {
-    .md-dragging,
-    &.md-dragging .md-container {
+    ._md-dragging,
+    &._md-dragging ._md-container {
       cursor: grabbing;
     }
   }
 
   &.md-focused:not([disabled]) {
-    .md-thumb:before {
+    ._md-thumb:before {
       left: -8px;
       top: -8px;
       right: -8px;
@@ -5484,19 +5452,19 @@ md-switch {
     }
 
     &:not(.md-checked) {
-      .md-thumb:before {
+      ._md-thumb:before {
         background-color: rgba(0, 0, 0, 0.12);
       }
     }
   }
 
-  .md-label {
+  ._md-label {
     border-color: transparent;
     border-width: 0;
     float: left;
   }
 
-  .md-bar {
+  ._md-bar {
     left: 1px;
     width: $switch-width - 2px;
     top: $switch-height / 2 - $switch-bar-height / 2;
@@ -5505,7 +5473,7 @@ md-switch {
     position: absolute;
   }
 
-  .md-thumb-container {
+  ._md-thumb-container {
     top: $switch-height / 2 - $switch-thumb-size / 2;
     left: 0;
     width: $switch-width - $switch-thumb-size;
@@ -5513,11 +5481,11 @@ md-switch {
     transform: translate3d(0,0,0);
     z-index: 1;
   }
-  &.md-checked .md-thumb-container {
+  &.md-checked ._md-thumb-container {
     transform: translate3d(100%,0,0);
   }
 
-  .md-thumb {
+  ._md-thumb {
     position: absolute;
     margin: 0;
     left: 0;
@@ -5555,15 +5523,15 @@ md-switch {
     }
   }
 
-  &:not(.md-dragging) {
-    .md-bar,
-    .md-thumb-container,
-    .md-thumb {
+  &:not(._md-dragging) {
+    ._md-bar,
+    ._md-thumb-container,
+    ._md-thumb {
       transition: $swift-linear;
       transition-property: transform, background-color;
     }
-    .md-bar,
-    .md-thumb {
+    ._md-bar,
+    ._md-thumb {
       transition-delay: 0.05s;
     }
   }
@@ -5571,13 +5539,13 @@ md-switch {
 }
 
 @media screen and (-ms-high-contrast: active) {
-  md-switch.md-default-theme .md-bar {
+  md-switch.md-default-theme ._md-bar {
     background-color: #666;
   }
-  md-switch.md-default-theme.md-checked .md-bar {
+  md-switch.md-default-theme.md-checked ._md-bar {
     background-color: #9E9E9E;
   }
-  md-switch.md-default-theme .md-thumb {
+  md-switch.md-default-theme ._md-thumb {
     background-color: #fff;
   }
 }
@@ -5935,10 +5903,10 @@ md-toast {
   }
 
   /* Transition differently when swiping */
-  &.md-swipeleft,
-  &.md-swiperight,
-  &.md-swipeup,
-  &.md-swipedown {
+  &._md-swipeleft,
+  &._md-swiperight,
+  &._md-swipeup,
+  &._md-swipedown {
     .md-toast-content {
       transition: $swift-ease-out;
     }
@@ -5949,7 +5917,7 @@ md-toast {
     .md-toast-content {
       transform: translate3d(0, 100%, 0);
     }
-    &.md-top {
+    &._md-top {
       .md-toast-content {
         transform: translate3d(0, -100%, 0);
       }
@@ -5971,17 +5939,17 @@ md-toast {
       transform: translate3d(0, 100%, 0);
     }
 
-    &.md-swipeup {
+    &._md-swipeup {
       .md-toast-content {
         transform: translate3d(0, -50%, 0);
       }
     }
-    &.md-swipedown {
+    &._md-swipedown {
       .md-toast-content {
         transform: translate3d(0, 50%, 0);
       }
     }
-    &.md-top {
+    &._md-top {
       .md-toast-content {
         transform: translate3d(0, -100%, 0);
       }
@@ -6016,12 +5984,12 @@ md-toast {
     padding: 0;
 
     &.ng-leave.ng-leave-active {
-      &.md-swipeup {
+      &._md-swipeup {
         .md-toast-content {
           transform: translate3d(0, -50%, 0);
         }
       }
-      &.md-swipedown {
+      &._md-swipedown {
         .md-toast-content {
           transform: translate3d(0, 50%, 0);
         }
@@ -6033,16 +6001,16 @@ md-toast {
 @media (min-width: $layout-breakpoint-sm) {
   md-toast {
     min-width: 288px + $toast-margin * 2;
-    &.md-bottom {
+    &._md-bottom {
       bottom: 0;
     }
-    &.md-left {
+    &._md-left {
       left: 0;
     }
-    &.md-right {
+    &._md-right {
       right: 0;
     }
-    &.md-top {
+    &._md-top {
       top: 0;
     }
 
@@ -6051,12 +6019,12 @@ md-toast {
    * make it rotate when the user swipes it away
    */
     &.ng-leave.ng-leave-active {
-      &.md-swipeleft {
+      &._md-swipeleft {
         .md-toast-content {
           transform: translate3d(-50%, 0, 0);
         }
       }
-      &.md-swiperight {
+      &._md-swiperight {
         .md-toast-content {
           transform: translate3d(50%, 0, 0);
         }
@@ -6081,7 +6049,7 @@ md-toast {
 
 
 // While animating, set the toast parent's overflow to hidden so scrollbars do not appear
-.md-toast-animating {
+._md-toast-animating {
   overflow: hidden !important;
 }
 
@@ -6274,7 +6242,7 @@ md-tooltip {
     font-size: $tooltip-fontsize-lg;
   }
 
-  .md-content {
+  ._md-content {
     position: relative;
     white-space: nowrap;
     overflow: hidden;
@@ -6292,32 +6260,32 @@ md-tooltip {
       padding-left: $tooltip-lr-padding-lg;
       padding-right: $tooltip-lr-padding-lg;
     }
-    &.md-show-add {
+    &._md-show-add {
       transition: $swift-ease-out;
       transition-duration: .2s;
       transform: scale(0);
       opacity: 0;
     }
-    &.md-show, &.md-show-add-active {
+    &._md-show, &._md-show-add-active {
       transform: scale(1);
       opacity: 1;
       transform-origin: center top;
     }
-    &.md-show-remove {
+    &._md-show-remove {
       transition: $swift-ease-out;
       transition-duration: .2s;
-      &.md-show-remove-active {
+      &._md-show-remove-active {
         transform: scale(0);
         opacity: 0;
       }
     }
   }
 
-  &.md-hide {
+  &._md-hide {
     transition: $swift-ease-in;
   }
 
-  &.md-show {
+  &._md-show {
     transition: $swift-ease-out;
     pointer-events: auto;
     will-change: opacity, height, width;

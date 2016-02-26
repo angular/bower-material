@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-1efe816
+ * v1.0.5-master-20a4c2f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -165,7 +165,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
       element = $mdUtil.extractElementByName(element, 'md-bottom-sheet');
 
       // Add a backdrop that will close on click
-      backdrop = $mdUtil.createBackdrop(scope, "md-bottom-sheet-backdrop md-opaque");
+      backdrop = $mdUtil.createBackdrop(scope, "_md-bottom-sheet-backdrop md-opaque");
 
       if (options.clickOutsideToClose) {
         backdrop.on('click', function() {
