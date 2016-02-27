@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-20a4c2f
+ * v1.0.5-master-08bf4f9
  */
 .md-virtual-repeat-container {
   box-sizing: border-box;
@@ -43,5 +43,25 @@
 
 .md-virtual-repeat-container.md-orient-horizontal .md-virtual-repeat-offsetter {
   bottom: 16px;
-  right: auto;
   white-space: nowrap; }
+  html[dir=ltr] .md-virtual-repeat-container.md-orient-horizontal .md-virtual-repeat-offsetter {
+    right: auto;
+    unicode-bidi: embed; }
+  body[dir=ltr] .md-virtual-repeat-container.md-orient-horizontal .md-virtual-repeat-offsetter {
+    right: auto;
+    unicode-bidi: embed; }
+  html[dir=rtl] .md-virtual-repeat-container.md-orient-horizontal .md-virtual-repeat-offsetter {
+    left: auto;
+    unicode-bidi: embed; }
+  body[dir=rtl] .md-virtual-repeat-container.md-orient-horizontal .md-virtual-repeat-offsetter {
+    left: auto;
+    unicode-bidi: embed; }
+  html:not([dir]) body:not([dir]) .md-virtual-repeat-container.md-orient-horizontal .md-virtual-repeat-offsetter {
+    right: auto;
+    unicode-bidi: embed; }
+  .md-virtual-repeat-container.md-orient-horizontal .md-virtual-repeat-offsetter bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  .md-virtual-repeat-container.md-orient-horizontal .md-virtual-repeat-offsetter bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }

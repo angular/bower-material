@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-20a4c2f
+ * v1.0.5-master-08bf4f9
  */
 goog.provide('ng.material.components.sticky');
 goog.require('ng.material.components.content');
@@ -196,15 +196,25 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil, $compile) {
       var current = item.element[0];
       item.top = 0;
       item.left = 0;
+      item.right = 0;
       while (current && current !== contentEl[0]) {
         item.top += current.offsetTop;
         item.left += current.offsetLeft;
+        item.right += current.offsetParent.offsetWidth - current.offsetWidth - current.offsetLeft; //Compute offsetRight
         current = current.offsetParent;
       }
       item.height = item.element.prop('offsetHeight');
-      item.clone.css('margin-left', item.left + 'px');
-      if ($mdUtil.floatingScrollbars()) {
-        item.clone.css('margin-right', '0');
+      var ltr = !($document[0].dir == 'rtl' || $document[0].body.dir == 'rtl');
+      if(ltr) {
+        item.clone.css('margin-left', item.left + 'px');
+        if ($mdUtil.floatingScrollbars()) {
+          item.clone.css('margin-right', '0');
+        }
+      } else {
+        item.clone.css('margin-right', item.right + 'px');
+        if ($mdUtil.floatingScrollbars()) {
+          item.clone.css('margin-left', '0');
+        }
       }
     }
 
@@ -311,10 +321,18 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil, $compile) {
         }
       } else {
         item.translateY = amount;
-        item.clone.css(
-          $mdConstant.CSS.TRANSFORM,
-          'translate3d(' + item.left + 'px,' + amount + 'px,0)'
-        );
+        var ltr = !($document[0].dir == 'rtl' || $document[0].body.dir == 'rtl');
+        if(ltr) {
+          item.clone.css(
+              $mdConstant.CSS.TRANSFORM,
+              'translate3d(' + item.left + 'px,' + amount + 'px,0)'
+          );
+        } else {
+          item.clone.css(
+              $mdConstant.CSS.TRANSFORM,
+              'translateY(' + amount + 'px)'
+          );
+        }
       }
     }
   }

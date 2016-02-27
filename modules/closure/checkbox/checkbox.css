@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-20a4c2f
+ * v1.0.5-master-08bf4f9
  */
 .md-inline-form md-checkbox {
   margin: 19px 0 18px; }
@@ -20,60 +20,91 @@ md-checkbox {
           user-select: none;
   position: relative;
   min-width: 20px;
-  min-height: 20px;
-  margin-left: inherit;
-  margin-right: 16px; }
-  html[dir=rtl] md-checkbox {
-    margin-left: 16px;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-checkbox {
-    margin-left: 16px;
-    unicode-bidi: embed; }
-  md-checkbox bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-checkbox bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
-  html[dir=rtl] md-checkbox {
-    margin-right: inherit;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-checkbox {
-    margin-right: inherit;
-    unicode-bidi: embed; }
-  md-checkbox bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-checkbox bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
-  md-checkbox:last-of-type {
+  min-height: 20px; }
+  html[dir=ltr] md-checkbox {
     margin-left: inherit;
-    margin-right: 0; }
-    html[dir=rtl] md-checkbox:last-of-type {
-      margin-left: 0;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-checkbox:last-of-type {
-      margin-left: 0;
-      unicode-bidi: embed; }
-    md-checkbox:last-of-type bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-checkbox:last-of-type bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
-    html[dir=rtl] md-checkbox:last-of-type {
-      margin-right: inherit;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-checkbox:last-of-type {
-      margin-right: inherit;
-      unicode-bidi: embed; }
-    md-checkbox:last-of-type bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-checkbox:last-of-type bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
+    unicode-bidi: embed; }
+  body[dir=ltr] md-checkbox {
+    margin-left: inherit;
+    unicode-bidi: embed; }
+  html[dir=rtl] md-checkbox {
+    margin-left: 16px;
+    unicode-bidi: embed; }
+  body[dir=rtl] md-checkbox {
+    margin-left: 16px;
+    unicode-bidi: embed; }
+  html:not([dir]) body:not([dir]) md-checkbox {
+    margin-left: inherit;
+    unicode-bidi: embed; }
+  md-checkbox bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  md-checkbox bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
+  html[dir=ltr] md-checkbox {
+    margin-right: 16px;
+    unicode-bidi: embed; }
+  body[dir=ltr] md-checkbox {
+    margin-right: 16px;
+    unicode-bidi: embed; }
+  html[dir=rtl] md-checkbox {
+    margin-right: inherit;
+    unicode-bidi: embed; }
+  body[dir=rtl] md-checkbox {
+    margin-right: inherit;
+    unicode-bidi: embed; }
+  html:not([dir]) body:not([dir]) md-checkbox {
+    margin-right: 16px;
+    unicode-bidi: embed; }
+  md-checkbox bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  md-checkbox bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
+  html[dir=ltr] md-checkbox:last-of-type {
+    margin-left: inherit;
+    unicode-bidi: embed; }
+  body[dir=ltr] md-checkbox:last-of-type {
+    margin-left: inherit;
+    unicode-bidi: embed; }
+  html[dir=rtl] md-checkbox:last-of-type {
+    margin-left: 0;
+    unicode-bidi: embed; }
+  body[dir=rtl] md-checkbox:last-of-type {
+    margin-left: 0;
+    unicode-bidi: embed; }
+  html:not([dir]) body:not([dir]) md-checkbox:last-of-type {
+    margin-left: inherit;
+    unicode-bidi: embed; }
+  md-checkbox:last-of-type bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  md-checkbox:last-of-type bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
+  html[dir=ltr] md-checkbox:last-of-type {
+    margin-right: 0;
+    unicode-bidi: embed; }
+  body[dir=ltr] md-checkbox:last-of-type {
+    margin-right: 0;
+    unicode-bidi: embed; }
+  html[dir=rtl] md-checkbox:last-of-type {
+    margin-right: inherit;
+    unicode-bidi: embed; }
+  body[dir=rtl] md-checkbox:last-of-type {
+    margin-right: inherit;
+    unicode-bidi: embed; }
+  html:not([dir]) body:not([dir]) md-checkbox:last-of-type {
+    margin-right: 0;
+    unicode-bidi: embed; }
+  md-checkbox:last-of-type bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  md-checkbox:last-of-type bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
   md-checkbox.md-focused:not([disabled]) ._md-container:before {
     left: -8px;
     top: -8px;
@@ -89,14 +120,21 @@ md-checkbox {
     box-sizing: border-box;
     display: inline-block;
     width: 20px;
-    height: 20px;
-    left: 0;
-    right: auto; }
+    height: 20px; }
+    html[dir=ltr] md-checkbox ._md-container {
+      left: 0;
+      unicode-bidi: embed; }
+    body[dir=ltr] md-checkbox ._md-container {
+      left: 0;
+      unicode-bidi: embed; }
     html[dir=rtl] md-checkbox ._md-container {
       left: auto;
       unicode-bidi: embed; }
     body[dir=rtl] md-checkbox ._md-container {
       left: auto;
+      unicode-bidi: embed; }
+    html:not([dir]) body:not([dir]) md-checkbox ._md-container {
+      left: 0;
       unicode-bidi: embed; }
     md-checkbox ._md-container bdo[dir=rtl] {
       direction: rtl;
@@ -104,11 +142,20 @@ md-checkbox {
     md-checkbox ._md-container bdo[dir=ltr] {
       direction: ltr;
       unicode-bidi: bidi-override; }
+    html[dir=ltr] md-checkbox ._md-container {
+      right: auto;
+      unicode-bidi: embed; }
+    body[dir=ltr] md-checkbox ._md-container {
+      right: auto;
+      unicode-bidi: embed; }
     html[dir=rtl] md-checkbox ._md-container {
       right: 0;
       unicode-bidi: embed; }
     body[dir=rtl] md-checkbox ._md-container {
       right: 0;
+      unicode-bidi: embed; }
+    html:not([dir]) body:not([dir]) md-checkbox ._md-container {
+      right: auto;
       unicode-bidi: embed; }
     md-checkbox ._md-container bdo[dir=rtl] {
       direction: rtl;
@@ -188,14 +235,21 @@ md-checkbox {
     -webkit-user-select: text;
        -moz-user-select: text;
         -ms-user-select: text;
-            user-select: text;
-    margin-left: 30px;
-    margin-right: 0; }
+            user-select: text; }
+    html[dir=ltr] md-checkbox ._md-label {
+      margin-left: 30px;
+      unicode-bidi: embed; }
+    body[dir=ltr] md-checkbox ._md-label {
+      margin-left: 30px;
+      unicode-bidi: embed; }
     html[dir=rtl] md-checkbox ._md-label {
       margin-left: 0;
       unicode-bidi: embed; }
     body[dir=rtl] md-checkbox ._md-label {
       margin-left: 0;
+      unicode-bidi: embed; }
+    html:not([dir]) body:not([dir]) md-checkbox ._md-label {
+      margin-left: 30px;
       unicode-bidi: embed; }
     md-checkbox ._md-label bdo[dir=rtl] {
       direction: rtl;
@@ -203,11 +257,20 @@ md-checkbox {
     md-checkbox ._md-label bdo[dir=ltr] {
       direction: ltr;
       unicode-bidi: bidi-override; }
+    html[dir=ltr] md-checkbox ._md-label {
+      margin-right: 0;
+      unicode-bidi: embed; }
+    body[dir=ltr] md-checkbox ._md-label {
+      margin-right: 0;
+      unicode-bidi: embed; }
     html[dir=rtl] md-checkbox ._md-label {
       margin-right: 30px;
       unicode-bidi: embed; }
     body[dir=rtl] md-checkbox ._md-label {
       margin-right: 30px;
+      unicode-bidi: embed; }
+    html:not([dir]) body:not([dir]) md-checkbox ._md-label {
+      margin-right: 0;
       unicode-bidi: embed; }
     md-checkbox ._md-label bdo[dir=rtl] {
       direction: rtl;

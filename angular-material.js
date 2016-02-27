@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-20a4c2f
+ * v1.0.5-master-08bf4f9
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -16260,15 +16260,25 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil, $compile) {
       var current = item.element[0];
       item.top = 0;
       item.left = 0;
+      item.right = 0;
       while (current && current !== contentEl[0]) {
         item.top += current.offsetTop;
         item.left += current.offsetLeft;
+        item.right += current.offsetParent.offsetWidth - current.offsetWidth - current.offsetLeft; //Compute offsetRight
         current = current.offsetParent;
       }
       item.height = item.element.prop('offsetHeight');
-      item.clone.css('margin-left', item.left + 'px');
-      if ($mdUtil.floatingScrollbars()) {
-        item.clone.css('margin-right', '0');
+      var ltr = !($document[0].dir == 'rtl' || $document[0].body.dir == 'rtl');
+      if(ltr) {
+        item.clone.css('margin-left', item.left + 'px');
+        if ($mdUtil.floatingScrollbars()) {
+          item.clone.css('margin-right', '0');
+        }
+      } else {
+        item.clone.css('margin-right', item.right + 'px');
+        if ($mdUtil.floatingScrollbars()) {
+          item.clone.css('margin-left', '0');
+        }
       }
     }
 
@@ -16375,10 +16385,18 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil, $compile) {
         }
       } else {
         item.translateY = amount;
-        item.clone.css(
-          $mdConstant.CSS.TRANSFORM,
-          'translate3d(' + item.left + 'px,' + amount + 'px,0)'
-        );
+        var ltr = !($document[0].dir == 'rtl' || $document[0].body.dir == 'rtl');
+        if(ltr) {
+          item.clone.css(
+              $mdConstant.CSS.TRANSFORM,
+              'translate3d(' + item.left + 'px,' + amount + 'px,0)'
+          );
+        } else {
+          item.clone.css(
+              $mdConstant.CSS.TRANSFORM,
+              'translateY(' + amount + 'px)'
+          );
+        }
       }
     }
   }
@@ -18148,7 +18166,15 @@ VirtualRepeatContainerController.prototype.resetScroll = function() {
 
 
 VirtualRepeatContainerController.prototype.handleScroll_ = function() {
-  var offset = this.isHorizontal() ? this.scroller.scrollLeft : this.scroller.scrollTop;
+  var doc = angular.element(document)[0];
+  var ltr = doc.dir != 'rtl' && doc.body.dir != 'rtl';
+  if(!ltr && !this.maxSize) {
+    this.scroller.scrollLeft = this.scrollSize;
+    this.maxSize = this.scroller.scrollLeft;
+  }
+  var offset = this.isHorizontal() ?
+      (ltr?this.scroller.scrollLeft : this.maxSize - this.scroller.scrollLeft)
+      : this.scroller.scrollTop;
   if (offset === this.scrollOffset || offset > this.scrollSize - this.size) return;
 
   var itemSize = this.repeater.getItemSize();
@@ -18157,7 +18183,7 @@ VirtualRepeatContainerController.prototype.handleScroll_ = function() {
   var numItems = Math.max(0, Math.floor(offset / itemSize) - NUM_EXTRA);
 
   var transform = (this.isHorizontal() ? 'translateX(' : 'translateY(') +
-                  (numItems * itemSize) + 'px)';
+      (!this.isHorizontal() || ltr ? (numItems * itemSize) : - (numItems * itemSize))  + 'px)';
 
   this.scrollOffset = offset;
   this.offsetter.style.webkitTransform = transform;
@@ -22927,9 +22953,14 @@ function MenuProvider($$interimElementProvider) {
           throw new Error('Invalid target mode "' + positionMode.top + '" specified for md-menu on Y axis.');
       }
 
+      var rtl = $document[0].dir == 'rtl' || $document[0].body.dir == 'rtl';
       switch (positionMode.left) {
         case 'target':
           position.left = existingOffsets.left + originNodeRect.left - alignTargetRect.left;
+          transformOrigin += rtl ? 'right'  : 'left';
+          break;
+        case 'target-left':
+          position.left = originNodeRect.left;
           transformOrigin += 'left';
           break;
         case 'target-right':
@@ -22937,13 +22968,18 @@ function MenuProvider($$interimElementProvider) {
           transformOrigin += 'right';
           break;
         case 'cascade':
-          var willFitRight = (originNodeRect.right + openMenuNodeRect.width) < bounds.right;
+          var willFitRight = rtl ? (originNodeRect.left - openMenuNodeRect.width) < bounds.left : (originNodeRect.right + openMenuNodeRect.width) < bounds.right;
           position.left = willFitRight ? originNodeRect.right - originNode.style.left : originNodeRect.left - originNode.style.left - openMenuNodeRect.width;
           transformOrigin += willFitRight ? 'left' : 'right';
           break;
         case 'left':
-          position.left = originNodeRect.left;
-          transformOrigin += 'left';
+          if(rtl) {
+            position.left = originNodeRect.right - openMenuNodeRect.width;
+            transformOrigin += 'right';
+          } else {
+            position.left = originNodeRect.left;
+            transformOrigin += 'left';
+          }
           break;
         default:
           throw new Error('Invalid target mode "' + positionMode.left + '" specified for md-menu on X axis.');
@@ -24817,4 +24853,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-20a4c2f"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-08bf4f9"}};
