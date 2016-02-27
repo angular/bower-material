@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-38f6651
+ * v1.0.5-master-5cf32d0
  */
 goog.provide('ng.material.components.sticky');
 goog.require('ng.material.components.content');
@@ -200,7 +200,9 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil, $compile) {
       while (current && current !== contentEl[0]) {
         item.top += current.offsetTop;
         item.left += current.offsetLeft;
-        item.right += current.offsetParent.offsetWidth - current.offsetWidth - current.offsetLeft; //Compute offsetRight
+        if ( current.offsetParent ){
+          item.right += current.offsetParent.offsetWidth - current.offsetWidth - current.offsetLeft; //Compute offsetRight
+        }
         current = current.offsetParent;
       }
       item.height = item.element.prop('offsetHeight');

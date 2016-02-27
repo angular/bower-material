@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-38f6651
+ * v1.0.5-master-5cf32d0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -16265,7 +16265,9 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil, $compile) {
       while (current && current !== contentEl[0]) {
         item.top += current.offsetTop;
         item.left += current.offsetLeft;
-        item.right += current.offsetParent.offsetWidth - current.offsetWidth - current.offsetLeft; //Compute offsetRight
+        if ( current.offsetParent ){
+          item.right += current.offsetParent.offsetWidth - current.offsetWidth - current.offsetLeft; //Compute offsetRight
+        }
         current = current.offsetParent;
       }
       item.height = item.element.prop('offsetHeight');
@@ -24854,4 +24856,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-38f6651"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-5cf32d0"}};
