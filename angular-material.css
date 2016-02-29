@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-5cf32d0
+ * v1.0.5-master-557eea8
  */
 html, body {
   height: 100%;
@@ -8027,8 +8027,7 @@ md-tooltip {
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-0,
   .layout-column > .flex-0 {
     -webkit-flex: 1 1 0%;
@@ -9356,8 +9355,7 @@ md-tooltip {
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-xs-0,
   .layout-xs-column > .flex-xs-0 {
     -webkit-flex: 1 1 0%;
@@ -10627,8 +10625,7 @@ md-tooltip {
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-gt-xs-0,
   .layout-gt-xs-column > .flex-gt-xs-0 {
     -webkit-flex: 1 1 0%;
@@ -11902,8 +11899,7 @@ md-tooltip {
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-sm-0,
   .layout-sm-column > .flex-sm-0 {
     -webkit-flex: 1 1 0%;
@@ -13173,8 +13169,7 @@ md-tooltip {
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-gt-sm-0,
   .layout-gt-sm-column > .flex-gt-sm-0 {
     -webkit-flex: 1 1 0%;
@@ -14448,8 +14443,7 @@ md-tooltip {
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-md-0,
   .layout-md-column > .flex-md-0 {
     -webkit-flex: 1 1 0%;
@@ -15719,8 +15713,7 @@ md-tooltip {
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-gt-md-0,
   .layout-gt-md-column > .flex-gt-md-0 {
     -webkit-flex: 1 1 0%;
@@ -16994,8 +16987,7 @@ md-tooltip {
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-lg-0,
   .layout-lg-column > .flex-lg-0 {
     -webkit-flex: 1 1 0%;
@@ -18265,8 +18257,7 @@ md-tooltip {
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-gt-lg-0,
   .layout-gt-lg-column > .flex-gt-lg-0 {
     -webkit-flex: 1 1 0%;
@@ -19534,8 +19525,7 @@ md-tooltip {
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-xl-0,
   .layout-xl-column > .flex-xl-0 {
     -webkit-flex: 1 1 0%;
@@ -21045,8 +21035,7 @@ html:not([dir]) body:not([dir]) .offset-66, html:not([dir]) body:not([dir]) .fle
           flex: 1 1 0%;
   max-width: 0%;
   max-height: 100%;
-  box-sizing: border-box;
-  min-width: 0; }
+  box-sizing: border-box; }
 
 .layout-column > .flex-0,
 .layout-column > .flex-0 {
@@ -22461,8 +22450,7 @@ html:not([dir]) body:not([dir]) .offset-66, html:not([dir]) body:not([dir]) .fle
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-xs-0,
   .layout-xs-column > .flex-xs-0 {
     -webkit-flex: 1 1 0%;
@@ -23732,8 +23720,7 @@ html:not([dir]) body:not([dir]) .offset-66, html:not([dir]) body:not([dir]) .fle
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-gt-xs-0,
   .layout-gt-xs-column > .flex-gt-xs-0 {
     -webkit-flex: 1 1 0%;
@@ -25007,8 +24994,7 @@ html:not([dir]) body:not([dir]) .offset-66, html:not([dir]) body:not([dir]) .fle
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-sm-0,
   .layout-sm-column > .flex-sm-0 {
     -webkit-flex: 1 1 0%;
@@ -26278,8 +26264,7 @@ html:not([dir]) body:not([dir]) .offset-66, html:not([dir]) body:not([dir]) .fle
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-gt-sm-0,
   .layout-gt-sm-column > .flex-gt-sm-0 {
     -webkit-flex: 1 1 0%;
@@ -27553,8 +27538,7 @@ html:not([dir]) body:not([dir]) .offset-66, html:not([dir]) body:not([dir]) .fle
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-md-0,
   .layout-md-column > .flex-md-0 {
     -webkit-flex: 1 1 0%;
@@ -28824,8 +28808,7 @@ html:not([dir]) body:not([dir]) .offset-66, html:not([dir]) body:not([dir]) .fle
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-gt-md-0,
   .layout-gt-md-column > .flex-gt-md-0 {
     -webkit-flex: 1 1 0%;
@@ -30099,8 +30082,7 @@ html:not([dir]) body:not([dir]) .offset-66, html:not([dir]) body:not([dir]) .fle
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-lg-0,
   .layout-lg-column > .flex-lg-0 {
     -webkit-flex: 1 1 0%;
@@ -31370,8 +31352,7 @@ html:not([dir]) body:not([dir]) .offset-66, html:not([dir]) body:not([dir]) .fle
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-gt-lg-0,
   .layout-gt-lg-column > .flex-gt-lg-0 {
     -webkit-flex: 1 1 0%;
@@ -32639,8 +32620,7 @@ html:not([dir]) body:not([dir]) .offset-66, html:not([dir]) body:not([dir]) .fle
             flex: 1 1 0%;
     max-width: 0%;
     max-height: 100%;
-    box-sizing: border-box;
-    min-width: 0; }
+    box-sizing: border-box; }
   .layout-column > .flex-xl-0,
   .layout-xl-column > .flex-xl-0 {
     -webkit-flex: 1 1 0%;

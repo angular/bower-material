@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-5cf32d0
+ * v1.0.5-master-557eea8
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -766,6 +766,35 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     now: window.performance ?
       angular.bind(window.performance, window.performance.now) : Date.now || function() {
       return new Date().getTime();
+    },
+
+    /**
+     * Bi-directional accessor/mutator used to easily update an element's
+     * property based on the current 'dir'ectional value.
+     */
+    bidi : function(element, property, lValue, rValue) {
+      var ltr = !($document[0].dir == 'rtl' || $document[0].body.dir == 'rtl');
+
+      // If accessor
+      if ( arguments.length == 0 ) return ltr ? 'ltr' : 'rtl';
+
+      // If mutator
+      if ( ltr && angular.isDefined(lValue)) {
+        angular.element(element).css(property, validate(lValue));
+      }
+      else if ( !ltr && angular.isDefined(rValue)) {
+        angular.element(element).css(property, validate(rValue) );
+      }
+
+        // Internal utils
+
+        function validate(value) {
+          return !value       ? '0'   :
+                 hasPx(value) ? value : value + 'px';
+        }
+        function hasPx(value) {
+          return String(value).indexOf('px') > -1;
+        }
     },
 
     clientRect: function(element, offsetParent, isOffsetRect) {
@@ -16271,18 +16300,10 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil, $compile) {
         current = current.offsetParent;
       }
       item.height = item.element.prop('offsetHeight');
-      var ltr = !($document[0].dir == 'rtl' || $document[0].body.dir == 'rtl');
-      if(ltr) {
-        item.clone.css('margin-left', item.left + 'px');
-        if ($mdUtil.floatingScrollbars()) {
-          item.clone.css('margin-right', '0');
-        }
-      } else {
-        item.clone.css('margin-right', item.right + 'px');
-        if ($mdUtil.floatingScrollbars()) {
-          item.clone.css('margin-left', '0');
-        }
-      }
+
+      var defaultVal = $mdUtil.floatingScrollbars() ? '0' : undefined;
+      $mdUtil.bidi(item.clone, 'margin-left', item.left, defaultVal);
+      $mdUtil.bidi(item.clone, 'margin-right', defaultVal, item.right);
     }
 
     // As we scroll, push in and select the correct sticky element.
@@ -16388,18 +16409,11 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil, $compile) {
         }
       } else {
         item.translateY = amount;
-        var ltr = !($document[0].dir == 'rtl' || $document[0].body.dir == 'rtl');
-        if(ltr) {
-          item.clone.css(
-              $mdConstant.CSS.TRANSFORM,
-              'translate3d(' + item.left + 'px,' + amount + 'px,0)'
-          );
-        } else {
-          item.clone.css(
-              $mdConstant.CSS.TRANSFORM,
-              'translateY(' + amount + 'px)'
-          );
-        }
+
+        $mdUtil.bidi( item.clone, $mdConstant.CSS.TRANSFORM,
+          'translate3d(' + item.left + 'px,' + amount + 'px,0)',
+          'translateY(' + amount + 'px)'
+        );
       }
     }
   }
@@ -22956,7 +22970,8 @@ function MenuProvider($$interimElementProvider) {
           throw new Error('Invalid target mode "' + positionMode.top + '" specified for md-menu on Y axis.');
       }
 
-      var rtl = $document[0].dir == 'rtl' || $document[0].body.dir == 'rtl';
+      var rtl = ($mdUtil.bidi() == 'rtl');
+      
       switch (positionMode.left) {
         case 'target':
           position.left = existingOffsets.left + originNodeRect.left - alignTargetRect.left;
@@ -24856,4 +24871,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-5cf32d0"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.5-master-557eea8"}};
