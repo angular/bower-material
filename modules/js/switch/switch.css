@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-557eea8
+ * v1.0.6
  */
 .md-inline-form md-switch {
   margin-top: 18px;
@@ -24,21 +24,14 @@ md-switch {
           align-items: center;
   display: -webkit-flex;
   display: -ms-flexbox;
-  display: flex; }
-  html[dir=ltr] md-switch {
-    margin-left: inherit;
-    unicode-bidi: embed; }
-  body[dir=ltr] md-switch {
-    margin-left: inherit;
-    unicode-bidi: embed; }
+  display: flex;
+  margin-left: inherit;
+  margin-right: 16px; }
   html[dir=rtl] md-switch {
     margin-left: 16px;
     unicode-bidi: embed; }
   body[dir=rtl] md-switch {
     margin-left: 16px;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) md-switch {
-    margin-left: inherit;
     unicode-bidi: embed; }
   md-switch bdo[dir=rtl] {
     direction: rtl;
@@ -46,20 +39,11 @@ md-switch {
   md-switch bdo[dir=ltr] {
     direction: ltr;
     unicode-bidi: bidi-override; }
-  html[dir=ltr] md-switch {
-    margin-right: 16px;
-    unicode-bidi: embed; }
-  body[dir=ltr] md-switch {
-    margin-right: 16px;
-    unicode-bidi: embed; }
   html[dir=rtl] md-switch {
     margin-right: inherit;
     unicode-bidi: embed; }
   body[dir=rtl] md-switch {
     margin-right: inherit;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) md-switch {
-    margin-right: 16px;
     unicode-bidi: embed; }
   md-switch bdo[dir=rtl] {
     direction: rtl;
@@ -67,53 +51,38 @@ md-switch {
   md-switch bdo[dir=ltr] {
     direction: ltr;
     unicode-bidi: bidi-override; }
-  html[dir=ltr] md-switch:last-of-type {
+  md-switch:last-of-type {
     margin-left: inherit;
-    unicode-bidi: embed; }
-  body[dir=ltr] md-switch:last-of-type {
-    margin-left: inherit;
-    unicode-bidi: embed; }
-  html[dir=rtl] md-switch:last-of-type {
-    margin-left: 0;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-switch:last-of-type {
-    margin-left: 0;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) md-switch:last-of-type {
-    margin-left: inherit;
-    unicode-bidi: embed; }
-  md-switch:last-of-type bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-switch:last-of-type bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
-  html[dir=ltr] md-switch:last-of-type {
-    margin-right: 0;
-    unicode-bidi: embed; }
-  body[dir=ltr] md-switch:last-of-type {
-    margin-right: 0;
-    unicode-bidi: embed; }
-  html[dir=rtl] md-switch:last-of-type {
-    margin-right: inherit;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-switch:last-of-type {
-    margin-right: inherit;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) md-switch:last-of-type {
-    margin-right: 0;
-    unicode-bidi: embed; }
-  md-switch:last-of-type bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-switch:last-of-type bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
+    margin-right: 0; }
+    html[dir=rtl] md-switch:last-of-type {
+      margin-left: 0;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-switch:last-of-type {
+      margin-left: 0;
+      unicode-bidi: embed; }
+    md-switch:last-of-type bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-switch:last-of-type bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
+    html[dir=rtl] md-switch:last-of-type {
+      margin-right: inherit;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-switch:last-of-type {
+      margin-right: inherit;
+      unicode-bidi: embed; }
+    md-switch:last-of-type bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-switch:last-of-type bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
   md-switch[disabled] {
     cursor: default; }
-    md-switch[disabled] ._md-container {
+    md-switch[disabled] .md-container {
       cursor: default; }
-  md-switch ._md-container {
+  md-switch .md-container {
     cursor: -webkit-grab;
     cursor: grab;
     width: 36px;
@@ -123,51 +92,31 @@ md-switch {
        -moz-user-select: none;
         -ms-user-select: none;
             user-select: none;
+    margin-right: 8px;
     float: left; }
-    html[dir=ltr] md-switch ._md-container {
-      margin-right: 8px;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-switch ._md-container {
-      margin-right: 8px;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-switch ._md-container {
-      margin-left: 8px;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-switch ._md-container {
-      margin-left: 8px;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-switch ._md-container {
-      margin-right: 8px;
-      unicode-bidi: embed; }
-    md-switch ._md-container bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-switch ._md-container bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
-  md-switch:not([disabled]) ._md-dragging,
-  md-switch:not([disabled])._md-dragging ._md-container {
+  md-switch:not([disabled]) .md-dragging,
+  md-switch:not([disabled]).md-dragging .md-container {
     cursor: -webkit-grabbing;
     cursor: grabbing; }
-  md-switch.md-focused:not([disabled]) ._md-thumb:before {
+  md-switch.md-focused:not([disabled]) .md-thumb:before {
     left: -8px;
     top: -8px;
     right: -8px;
     bottom: -8px; }
-  md-switch.md-focused:not([disabled]):not(.md-checked) ._md-thumb:before {
+  md-switch.md-focused:not([disabled]):not(.md-checked) .md-thumb:before {
     background-color: rgba(0, 0, 0, 0.12); }
-  md-switch ._md-label {
+  md-switch .md-label {
     border-color: transparent;
     border-width: 0;
     float: left; }
-  md-switch ._md-bar {
+  md-switch .md-bar {
     left: 1px;
     width: 34px;
     top: 5px;
     height: 14px;
     border-radius: 8px;
     position: absolute; }
-  md-switch ._md-thumb-container {
+  md-switch .md-thumb-container {
     top: 2px;
     left: 0;
     width: 16px;
@@ -175,10 +124,10 @@ md-switch {
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0);
     z-index: 1; }
-  md-switch.md-checked ._md-thumb-container {
+  md-switch.md-checked .md-thumb-container {
     -webkit-transform: translate3d(100%, 0, 0);
             transform: translate3d(100%, 0, 0); }
-  md-switch ._md-thumb {
+  md-switch .md-thumb {
     position: absolute;
     margin: 0;
     left: 0;
@@ -188,7 +137,7 @@ md-switch {
     width: 20px;
     border-radius: 50%;
     box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12); }
-    md-switch ._md-thumb:before {
+    md-switch .md-thumb:before {
       background-color: transparent;
       border-radius: 50%;
       content: '';
@@ -201,7 +150,7 @@ md-switch {
       bottom: 0;
       transition: all 0.5s;
       width: auto; }
-    md-switch ._md-thumb .md-ripple-container {
+    md-switch .md-thumb .md-ripple-container {
       position: absolute;
       display: block;
       width: auto;
@@ -210,20 +159,20 @@ md-switch {
       top: -20px;
       right: -20px;
       bottom: -20px; }
-  md-switch:not(._md-dragging) ._md-bar,
-  md-switch:not(._md-dragging) ._md-thumb-container,
-  md-switch:not(._md-dragging) ._md-thumb {
+  md-switch:not(.md-dragging) .md-bar,
+  md-switch:not(.md-dragging) .md-thumb-container,
+  md-switch:not(.md-dragging) .md-thumb {
     transition: all 0.08s linear;
     transition-property: -webkit-transform, background-color;
     transition-property: transform, background-color; }
-  md-switch:not(._md-dragging) ._md-bar,
-  md-switch:not(._md-dragging) ._md-thumb {
+  md-switch:not(.md-dragging) .md-bar,
+  md-switch:not(.md-dragging) .md-thumb {
     transition-delay: 0.05s; }
 
 @media screen and (-ms-high-contrast: active) {
-  md-switch.md-default-theme ._md-bar {
+  md-switch.md-default-theme .md-bar {
     background-color: #666; }
-  md-switch.md-default-theme.md-checked ._md-bar {
+  md-switch.md-default-theme.md-checked .md-bar {
     background-color: #9E9E9E; }
-  md-switch.md-default-theme ._md-thumb {
+  md-switch.md-default-theme .md-thumb {
     background-color: #fff; } }

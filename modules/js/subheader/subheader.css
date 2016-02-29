@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-557eea8
+ * v1.0.6
  */
 @-webkit-keyframes subheaderStickyHoverIn {
   0% {
@@ -28,15 +28,15 @@
   100% {
     box-shadow: 0 0 0 0 transparent; } }
 
-._md-subheader-wrapper:not(.md-sticky-no-effect) {
+.md-subheader-wrapper:not(.md-sticky-no-effect) {
   transition: 0.2s ease-out margin; }
-  ._md-subheader-wrapper:not(.md-sticky-no-effect) .md-subheader {
+  .md-subheader-wrapper:not(.md-sticky-no-effect) .md-subheader {
     margin: 0; }
-  ._md-subheader-wrapper:not(.md-sticky-no-effect).md-sticky-clone {
+  .md-subheader-wrapper:not(.md-sticky-no-effect).md-sticky-clone {
     z-index: 2; }
-  ._md-subheader-wrapper:not(.md-sticky-no-effect)[sticky-state="active"] {
+  .md-subheader-wrapper:not(.md-sticky-no-effect)[sticky-state="active"] {
     margin-top: -2px; }
-  ._md-subheader-wrapper:not(.md-sticky-no-effect):not(.md-sticky-clone)[sticky-prev-state="active"] ._md-subheader-inner:after {
+  .md-subheader-wrapper:not(.md-sticky-no-effect):not(.md-sticky-clone)[sticky-prev-state="active"] .md-subheader-inner:after {
     -webkit-animation: subheaderStickyHoverOut 0.3s ease-out both;
             animation: subheaderStickyHoverOut 0.3s ease-out both; }
 
@@ -47,10 +47,10 @@
   line-height: 1em;
   margin: 0 0 0 0;
   position: relative; }
-  .md-subheader ._md-subheader-inner {
+  .md-subheader .md-subheader-inner {
     display: block;
     padding: 16px; }
-  .md-subheader ._md-subheader-content {
+  .md-subheader .md-subheader-content {
     display: block;
     z-index: 1;
     position: relative; }
