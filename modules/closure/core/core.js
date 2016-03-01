@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-a5a0eaf
+ * v1.0.5-master-6d39c21
  */
 goog.provide('ng.material.core');
 
@@ -2719,7 +2719,7 @@ function InterimElementProvider() {
        *
        */
       function cancel(reason, options) {
-        var interim = stack.shift();
+        var interim = stack.pop();
         if ( !interim ) return $q.when(reason);
 
         interim
