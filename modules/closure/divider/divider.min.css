@@ -2,5 +2,5 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-8177ee9
+ * v1.0.5-master-6db1796
  */md-divider{display:block;border-top-width:1px;border-top-style:solid;margin:0}body[dir=ltr] md-divider[md-inset],html[dir=ltr] md-divider[md-inset]{margin-left:80px;unicode-bidi:embed}body[dir=rtl] md-divider[md-inset],html[dir=rtl] md-divider[md-inset]{margin-right:80px;unicode-bidi:embed}html:not([dir]) body:not([dir]) md-divider[md-inset]{margin-left:80px;unicode-bidi:embed}md-divider[md-inset] bdo[dir=rtl]{direction:rtl;unicode-bidi:bidi-override}md-divider[md-inset] bdo[dir=ltr]{direction:ltr;unicode-bidi:bidi-override}.layout-gt-lg-row>md-divider,.layout-gt-md-row>md-divider,.layout-gt-sm-row>md-divider,.layout-gt-xs-row>md-divider,.layout-lg-row>md-divider,.layout-md-row>md-divider,.layout-row>md-divider,.layout-sm-row>md-divider,.layout-xl-row>md-divider,.layout-xs-row>md-divider{border-top-width:0;border-right-width:1px;border-right-style:solid}
