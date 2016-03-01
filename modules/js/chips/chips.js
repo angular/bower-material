@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-fc07353
+ * v1.0.5-master-8177ee9
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -68,7 +68,6 @@ function MdChip($mdTheming, $mdUtil) {
     element.append($mdUtil.processTemplate(hintTemplate));
 
     return function postLink(scope, element, attr, ctrl) {
-      element.addClass('md-chip');
       $mdTheming(element);
 
       if (ctrl) angular.element(element[0].querySelector('._md-chip-content'))
