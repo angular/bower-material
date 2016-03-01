@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-abde470
+ * v1.0.5-master-b2afa36
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -298,19 +298,21 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
           }
         }
 
-        if (!hasClick && !proxies.length) {
-          firstChild && firstChild.addEventListener('keypress', function(e) {
-            if (e.target.nodeName != 'INPUT' && e.target.nodeName != 'TEXTAREA' && !e.target.isContentEditable) {
-              var keyCode = e.which || e.keyCode;
-              if (keyCode == $mdConstant.KEY_CODE.SPACE) {
-                if (firstChild) {
-                  firstChild.click();
-                  e.preventDefault();
-                  e.stopPropagation();
-                }
+        var firstChildKeypressListener = function(e) {
+          if (e.target.nodeName != 'INPUT' && e.target.nodeName != 'TEXTAREA' && !e.target.isContentEditable) {
+            var keyCode = e.which || e.keyCode;
+            if (keyCode == $mdConstant.KEY_CODE.SPACE) {
+              if (firstChild) {
+                firstChild.click();
+                e.preventDefault();
+                e.stopPropagation();
               }
             }
-          });
+          }
+        };
+
+        if (!hasClick && !proxies.length) {
+          firstChild && firstChild.addEventListener('keypress', firstChildKeypressListener);
         }
 
         $element.off('click');
@@ -328,6 +330,10 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
             }
           });
         }
+
+        $scope.$on('$destroy', function () {
+          firstChild && firstChild.removeEventListener('keypress', firstChildKeypressListener);
+        });
       }
     }
   };
