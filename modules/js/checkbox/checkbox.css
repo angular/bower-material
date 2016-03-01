@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-ada5850
+ * v1.0.5-master-a5a0eaf
  */
 .md-inline-form md-checkbox {
   margin: 19px 0 18px; }
@@ -120,7 +120,8 @@ md-checkbox {
     box-sizing: border-box;
     display: inline-block;
     width: 20px;
-    height: 20px; }
+    height: 20px;
+    pointer-events: none; }
     html[dir=ltr] md-checkbox ._md-container {
       left: 0;
       unicode-bidi: embed; }
