@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-f171fd2
+ * v1.0.6
  */
 goog.provide('ng.material.components.slider');
 goog.require('ng.material.core');
@@ -58,20 +58,20 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     scope: {},
     require: '?ngModel',
     template:
-      '<div class="_md-slider-wrapper">' +
-        '<div class="_md-track-container">' +
-          '<div class="_md-track"></div>' +
-          '<div class="_md-track _md-track-fill"></div>' +
-          '<div class="_md-track-ticks"></div>' +
+      '<div class="md-slider-wrapper">' +
+        '<div class="md-track-container">' +
+          '<div class="md-track"></div>' +
+          '<div class="md-track md-track-fill"></div>' +
+          '<div class="md-track-ticks"></div>' +
         '</div>' +
-        '<div class="_md-thumb-container">' +
-          '<div class="_md-thumb"></div>' +
-          '<div class="_md-focus-thumb"></div>' +
-          '<div class="_md-focus-ring"></div>' +
-          '<div class="_md-sign">' +
-            '<span class="_md-thumb-text"></span>' +
+        '<div class="md-thumb-container">' +
+          '<div class="md-thumb"></div>' +
+          '<div class="md-focus-thumb"></div>' +
+          '<div class="md-focus-ring"></div>' +
+          '<div class="md-sign">' +
+            '<span class="md-thumb-text"></span>' +
           '</div>' +
-          '<div class="_md-disabled-thumb"></div>' +
+          '<div class="md-disabled-thumb"></div>' +
         '</div>' +
       '</div>',
     compile: compile
@@ -104,25 +104,33 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       $viewChangeListeners: []
     };
 
-    var isDisabled = false;
+    var isDisabledGetter = angular.noop;
+    if (attr.disabled != null) {
+      isDisabledGetter = function() { return true; };
+    } else if (attr.ngDisabled) {
+      isDisabledGetter = angular.bind(null, $parse(attr.ngDisabled), scope.$parent);
+    }
 
-    attr.$observe('disabled', function (value) {
-      isDisabled = $mdUtil.parseAttributeBoolean(value, false);
-      updateAriaDisabled();
-    });
-
-    var thumb = angular.element(element[0].querySelector('._md-thumb'));
-    var thumbText = angular.element(element[0].querySelector('._md-thumb-text'));
+    var thumb = angular.element(element[0].querySelector('.md-thumb'));
+    var thumbText = angular.element(element[0].querySelector('.md-thumb-text'));
     var thumbContainer = thumb.parent();
-    var trackContainer = angular.element(element[0].querySelector('._md-track-container'));
-    var activeTrack = angular.element(element[0].querySelector('._md-track-fill'));
-    var tickContainer = angular.element(element[0].querySelector('._md-track-ticks'));
+    var trackContainer = angular.element(element[0].querySelector('.md-track-container'));
+    var activeTrack = angular.element(element[0].querySelector('.md-track-fill'));
+    var tickContainer = angular.element(element[0].querySelector('.md-track-ticks'));
     var throttledRefreshDimensions = $mdUtil.throttle(refreshSliderDimensions, 5000);
 
     // Default values, overridable by attrs
     angular.isDefined(attr.min) ? attr.$observe('min', updateMin) : updateMin(0);
     angular.isDefined(attr.max) ? attr.$observe('max', updateMax) : updateMax(100);
     angular.isDefined(attr.step)? attr.$observe('step', updateStep) : updateStep(1);
+
+    // We have to manually stop the $watch on ngDisabled because it exists
+    // on the parent scope, and won't be automatically destroyed when
+    // the component is destroyed.
+    var stopDisabledWatch = angular.noop;
+    if (attr.ngDisabled) {
+      stopDisabledWatch = scope.$parent.$watch(attr.ngDisabled, updateAriaDisabled);
+    }
 
     $mdGesture.register(element, 'drag');
 
@@ -147,6 +155,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
 
     scope.$on('$destroy', function() {
       angular.element($window).off('resize', debouncedUpdateAll);
+      stopDisabledWatch();
     });
 
     ngModelCtrl.$render = ngModelRender;
@@ -174,7 +183,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       step = parseFloat(value);
       redrawTicks();
     }
-    function updateAriaDisabled() {
+    function updateAriaDisabled(isDisabled) {
       element.attr('aria-disabled', !!isDisabled);
     }
 
@@ -231,7 +240,9 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
      * left/right arrow listener
      */
     function keydownListener(ev) {
-      if (isDisabled) return;
+      if(element[0].hasAttribute('disabled')) {
+        return;
+      }
 
       var changeAmount;
       if (ev.keyCode === $mdConstant.KEY_CODE.LEFT_ARROW) {
@@ -294,8 +305,8 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
         activeTrack.css('width', percentStr);
         thumbContainer.css('left',percentStr);
 
-        element.toggleClass('_md-min', percent === 0);
-        element.toggleClass('_md-max', percent === 1);
+        element.toggleClass('md-min', percent === 0);
+        element.toggleClass('md-max', percent === 1);
     }
 
 
@@ -306,9 +317,9 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     var isDiscrete = angular.isDefined(attr.mdDiscrete);
 
     function onPressDown(ev) {
-      if (isDisabled) return;
+      if (isDisabledGetter()) return;
 
-      element.addClass('_md-active');
+      element.addClass('md-active');
       element[0].focus();
       refreshSliderDimensions();
 
@@ -320,9 +331,9 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       });
     }
     function onPressUp(ev) {
-      if (isDisabled) return;
+      if (isDisabledGetter()) return;
 
-      element.removeClass('_md-dragging _md-active');
+      element.removeClass('md-dragging md-active');
 
       var exactVal = percentToValue( positionToPercent( ev.pointer.x ));
       var closestVal = minMaxValidator( stepValidator(exactVal) );
@@ -332,11 +343,11 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       });
     }
     function onDragStart(ev) {
-      if (isDisabled) return;
+      if (isDisabledGetter()) return;
       isDragging = true;
       ev.stopPropagation();
 
-      element.addClass('_md-dragging');
+      element.addClass('md-dragging');
       setSliderFromEvent(ev);
     }
     function onDrag(ev) {

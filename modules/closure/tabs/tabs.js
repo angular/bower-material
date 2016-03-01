@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-f171fd2
+ * v1.0.6
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -744,28 +744,13 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * Updates whether or not pagination should be displayed.
    */
   function updatePagination () {
-    updatePagingWidth();
+    if (!shouldStretchTabs()) updatePagingWidth();
     ctrl.maxTabWidth = getMaxTabWidth();
     ctrl.shouldPaginate = shouldPaginate();
   }
 
-  /**
-   * Sets or clears fixed width for md-pagination-wrapper depending on if tabs should stretch.
-   */
   function updatePagingWidth() {
-    if (shouldStretchTabs()) {
-      angular.element(elements.paging).css('width', '');
-    } else {
-      angular.element(elements.paging).css('width', calcPagingWidth() + 'px');
-    }
-  }
-
-  /**
-   * @returns {number}
-   */
-  function calcPagingWidth () {
     var width = 1;
-
     angular.forEach(getElements().dummies, function (element) {
       //-- Uses the larger value between `getBoundingClientRect().width` and `offsetWidth`.  This
       //   prevents `offsetWidth` value from being rounded down and causing wrapping issues, but
@@ -773,8 +758,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
       //   of a dialog)
       width += Math.max(element.offsetWidth, element.getBoundingClientRect().width);
     });
-
-    return Math.ceil(width);
+    angular.element(elements.paging).css('width', Math.ceil(width) + 'px');
   }
 
   function getMaxTabWidth () {
@@ -1145,7 +1129,7 @@ function MdTabs () {
                   'md-scope="::tab.parent"></md-tab-item> ' +
               '<md-ink-bar></md-ink-bar> ' +
             '</md-pagination-wrapper> ' +
-            '<div class="_md-visually-hidden md-dummy-wrapper"> ' +
+            '<div class="md-visually-hidden md-dummy-wrapper"> ' +
               '<md-dummy-tab ' +
                   'class="md-tab" ' +
                   'tabindex="-1" ' +

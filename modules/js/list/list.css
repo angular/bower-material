@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-f171fd2
+ * v1.0.6
  */
 md-list {
   display: block;
@@ -12,176 +12,23 @@ md-list {
     font-weight: 500;
     letter-spacing: 0.010em;
     line-height: 1.2em; }
-  md-list.md-dense md-list-item,
-  md-list.md-dense md-list-item ._md-list-item-inner {
-    min-height: 48px; }
-    md-list.md-dense md-list-item md-icon:first-child,
-    md-list.md-dense md-list-item ._md-list-item-inner md-icon:first-child {
-      width: 20px;
-      height: 20px; }
-    html[dir=ltr] md-list.md-dense md-list-item > md-icon:first-child:not(.md-avatar-icon), html[dir=ltr]
-    md-list.md-dense md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
-      margin-right: 36px;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-list.md-dense md-list-item > md-icon:first-child:not(.md-avatar-icon), body[dir=ltr]
-    md-list.md-dense md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
-      margin-right: 36px;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-list.md-dense md-list-item > md-icon:first-child:not(.md-avatar-icon), html[dir=rtl]
-    md-list.md-dense md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
-      margin-left: 36px;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-list.md-dense md-list-item > md-icon:first-child:not(.md-avatar-icon), body[dir=rtl]
-    md-list.md-dense md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
-      margin-left: 36px;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-list.md-dense md-list-item > md-icon:first-child:not(.md-avatar-icon), html:not([dir]) body:not([dir])
-    md-list.md-dense md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
-      margin-right: 36px;
-      unicode-bidi: embed; }
-    md-list.md-dense md-list-item > md-icon:first-child:not(.md-avatar-icon) bdo[dir=rtl],
-    md-list.md-dense md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-list.md-dense md-list-item > md-icon:first-child:not(.md-avatar-icon) bdo[dir=ltr],
-    md-list.md-dense md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
-    html[dir=ltr] md-list.md-dense md-list-item .md-avatar, html[dir=ltr] md-list.md-dense md-list-item .md-avatar-icon, html[dir=ltr]
-    md-list.md-dense md-list-item ._md-list-item-inner .md-avatar, html[dir=ltr]
-    md-list.md-dense md-list-item ._md-list-item-inner .md-avatar-icon {
-      margin-right: 20px;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-list.md-dense md-list-item .md-avatar, body[dir=ltr] md-list.md-dense md-list-item .md-avatar-icon, body[dir=ltr]
-    md-list.md-dense md-list-item ._md-list-item-inner .md-avatar, body[dir=ltr]
-    md-list.md-dense md-list-item ._md-list-item-inner .md-avatar-icon {
-      margin-right: 20px;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-list.md-dense md-list-item .md-avatar, html[dir=rtl] md-list.md-dense md-list-item .md-avatar-icon, html[dir=rtl]
-    md-list.md-dense md-list-item ._md-list-item-inner .md-avatar, html[dir=rtl]
-    md-list.md-dense md-list-item ._md-list-item-inner .md-avatar-icon {
-      margin-left: 20px;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-list.md-dense md-list-item .md-avatar, body[dir=rtl] md-list.md-dense md-list-item .md-avatar-icon, body[dir=rtl]
-    md-list.md-dense md-list-item ._md-list-item-inner .md-avatar, body[dir=rtl]
-    md-list.md-dense md-list-item ._md-list-item-inner .md-avatar-icon {
-      margin-left: 20px;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-list.md-dense md-list-item .md-avatar, html:not([dir]) body:not([dir]) md-list.md-dense md-list-item .md-avatar-icon, html:not([dir]) body:not([dir])
-    md-list.md-dense md-list-item ._md-list-item-inner .md-avatar, html:not([dir]) body:not([dir])
-    md-list.md-dense md-list-item ._md-list-item-inner .md-avatar-icon {
-      margin-right: 20px;
-      unicode-bidi: embed; }
-    md-list.md-dense md-list-item .md-avatar bdo[dir=rtl], md-list.md-dense md-list-item .md-avatar-icon bdo[dir=rtl],
-    md-list.md-dense md-list-item ._md-list-item-inner .md-avatar bdo[dir=rtl],
-    md-list.md-dense md-list-item ._md-list-item-inner .md-avatar-icon bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-list.md-dense md-list-item .md-avatar bdo[dir=ltr], md-list.md-dense md-list-item .md-avatar-icon bdo[dir=ltr],
-    md-list.md-dense md-list-item ._md-list-item-inner .md-avatar bdo[dir=ltr],
-    md-list.md-dense md-list-item ._md-list-item-inner .md-avatar-icon bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
-    md-list.md-dense md-list-item .md-avatar,
-    md-list.md-dense md-list-item ._md-list-item-inner .md-avatar {
-      width: 36px;
-      height: 36px; }
-  html[dir=ltr] md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset, html[dir=ltr] md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, html[dir=ltr] md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset, html[dir=ltr] md-list.md-dense md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
-    margin-left: 56px;
-    unicode-bidi: embed; }
-  body[dir=ltr] md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset, body[dir=ltr] md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, body[dir=ltr] md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset, body[dir=ltr] md-list.md-dense md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
-    margin-left: 56px;
-    unicode-bidi: embed; }
-  html[dir=rtl] md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset, html[dir=rtl] md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, html[dir=rtl] md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset, html[dir=rtl] md-list.md-dense md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
-    margin-right: 56px;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset, body[dir=rtl] md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, body[dir=rtl] md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset, body[dir=rtl] md-list.md-dense md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
-    margin-right: 56px;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset, html:not([dir]) body:not([dir]) md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, html:not([dir]) body:not([dir]) md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset, html:not([dir]) body:not([dir]) md-list.md-dense md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
-    margin-left: 56px;
-    unicode-bidi: embed; }
-  md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset bdo[dir=rtl], md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset bdo[dir=rtl], md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset bdo[dir=rtl], md-list.md-dense md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset bdo[dir=ltr], md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset bdo[dir=ltr], md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset bdo[dir=ltr], md-list.md-dense md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
-  md-list.md-dense md-list-item.md-2-line .md-list-item-text h3, md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-list-item-text h3, md-list.md-dense md-list-item.md-3-line .md-list-item-text h3, md-list.md-dense md-list-item.md-3-line > ._md-no-style .md-list-item-text h3 {
-    font-size: 1.3rem;
-    line-height: 1.3rem; }
-  md-list.md-dense md-list-item.md-2-line .md-list-item-text h4, md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-list-item-text h4, md-list.md-dense md-list-item.md-3-line .md-list-item-text h4, md-list.md-dense md-list-item.md-3-line > ._md-no-style .md-list-item-text h4 {
-    font-size: 1.2rem;
-    line-height: 1.2rem; }
-  md-list.md-dense md-list-item.md-2-line .md-list-item-text p, md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-list-item-text p, md-list.md-dense md-list-item.md-3-line .md-list-item-text p, md-list.md-dense md-list-item.md-3-line > ._md-no-style .md-list-item-text p {
-    font-size: 1.2rem;
-    line-height: 1.25rem; }
-  md-list.md-dense md-list-item.md-2-line, md-list.md-dense md-list-item.md-2-line > ._md-no-style {
-    min-height: 60px; }
-    md-list.md-dense md-list-item.md-2-line > .md-avatar, md-list.md-dense md-list-item.md-2-line .md-avatar-icon, md-list.md-dense md-list-item.md-2-line > ._md-no-style > .md-avatar, md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-avatar-icon {
-      margin-top: 12px; }
-  md-list.md-dense md-list-item.md-3-line, md-list.md-dense md-list-item.md-3-line > ._md-no-style {
-    min-height: 76px; }
-    md-list.md-dense md-list-item.md-3-line > md-icon:first-child,
-    md-list.md-dense md-list-item.md-3-line > .md-avatar, md-list.md-dense md-list-item.md-3-line > ._md-no-style > md-icon:first-child,
-    md-list.md-dense md-list-item.md-3-line > ._md-no-style > .md-avatar {
-      margin-top: 16px; }
 
 md-list-item {
   position: relative; }
-  md-list-item._md-proxy-focus.md-focused ._md-no-style {
+  md-list-item.md-proxy-focus.md-focused .md-no-style {
     transition: background-color 0.15s linear; }
-  md-list-item._md-button-wrap {
-    position: relative; }
-    md-list-item._md-button-wrap > .md-button:first-child {
-      padding: 0;
-      margin: 0;
-      font-weight: 400;
-      background-color: inherit;
-      border: medium none; }
-      html[dir=ltr] md-list-item._md-button-wrap > .md-button:first-child {
-        text-align: left;
-        unicode-bidi: embed; }
-      body[dir=ltr] md-list-item._md-button-wrap > .md-button:first-child {
-        text-align: left;
-        unicode-bidi: embed; }
-      html[dir=rtl] md-list-item._md-button-wrap > .md-button:first-child {
-        text-align: right;
-        unicode-bidi: embed; }
-      body[dir=rtl] md-list-item._md-button-wrap > .md-button:first-child {
-        text-align: right;
-        unicode-bidi: embed; }
-      html:not([dir]) body:not([dir]) md-list-item._md-button-wrap > .md-button:first-child {
-        text-align: left;
-        unicode-bidi: embed; }
-      md-list-item._md-button-wrap > .md-button:first-child bdo[dir=rtl] {
-        direction: rtl;
-        unicode-bidi: bidi-override; }
-      md-list-item._md-button-wrap > .md-button:first-child bdo[dir=ltr] {
-        direction: ltr;
-        unicode-bidi: bidi-override; }
-      md-list-item._md-button-wrap > .md-button:first-child > .md-button:first-child {
-        position: absolute;
-        top: 0;
-        left: 0;
-        margin: 0;
-        padding: 0;
-        height: 100%; }
-      md-list-item._md-button-wrap > .md-button:first-child ._md-list-item-inner {
-        width: 100%;
-        height: 100%;
-        padding: 0 16px; }
-  md-list-item._md-no-proxy,
-  md-list-item ._md-no-style {
+  md-list-item.md-no-proxy,
+  md-list-item .md-no-style {
     position: relative;
     padding: 0px 16px;
     -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto; }
-    md-list-item._md-no-proxy.md-button,
-    md-list-item ._md-no-style.md-button {
+    md-list-item.md-no-proxy.md-button,
+    md-list-item .md-no-style.md-button {
       font-size: inherit;
       height: inherit;
+      text-align: left;
       text-transform: none;
       width: 100%;
       white-space: normal;
@@ -191,41 +38,12 @@ md-list-item {
       -webkit-align-items: inherit;
           -ms-flex-align: inherit;
               align-items: inherit;
-      border-radius: 0;
-      margin: 0; }
-      html[dir=ltr] md-list-item._md-no-proxy.md-button, html[dir=ltr]
-      md-list-item ._md-no-style.md-button {
-        text-align: left;
-        unicode-bidi: embed; }
-      body[dir=ltr] md-list-item._md-no-proxy.md-button, body[dir=ltr]
-      md-list-item ._md-no-style.md-button {
-        text-align: left;
-        unicode-bidi: embed; }
-      html[dir=rtl] md-list-item._md-no-proxy.md-button, html[dir=rtl]
-      md-list-item ._md-no-style.md-button {
-        text-align: right;
-        unicode-bidi: embed; }
-      body[dir=rtl] md-list-item._md-no-proxy.md-button, body[dir=rtl]
-      md-list-item ._md-no-style.md-button {
-        text-align: right;
-        unicode-bidi: embed; }
-      html:not([dir]) body:not([dir]) md-list-item._md-no-proxy.md-button, html:not([dir]) body:not([dir])
-      md-list-item ._md-no-style.md-button {
-        text-align: left;
-        unicode-bidi: embed; }
-      md-list-item._md-no-proxy.md-button bdo[dir=rtl],
-      md-list-item ._md-no-style.md-button bdo[dir=rtl] {
-        direction: rtl;
-        unicode-bidi: bidi-override; }
-      md-list-item._md-no-proxy.md-button bdo[dir=ltr],
-      md-list-item ._md-no-style.md-button bdo[dir=ltr] {
-        direction: ltr;
-        unicode-bidi: bidi-override; }
-      md-list-item._md-no-proxy.md-button > .md-ripple-container,
-      md-list-item ._md-no-style.md-button > .md-ripple-container {
+      border-radius: 0; }
+      md-list-item.md-no-proxy.md-button > .md-ripple-container,
+      md-list-item .md-no-style.md-button > .md-ripple-container {
         border-radius: 0; }
-    md-list-item._md-no-proxy:focus,
-    md-list-item ._md-no-style:focus {
+    md-list-item.md-no-proxy:focus,
+    md-list-item .md-no-style:focus {
       outline: none; }
   md-list-item.md-with-secondary {
     position: relative; }
@@ -234,534 +52,202 @@ md-list-item {
   md-list-item md-divider {
     position: absolute;
     bottom: 0;
+    left: 0;
     width: 100%; }
-    html[dir=ltr] md-list-item md-divider {
-      left: 0;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-list-item md-divider {
-      left: 0;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-list-item md-divider {
-      right: 0;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-list-item md-divider {
-      right: 0;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-list-item md-divider {
-      left: 0;
-      unicode-bidi: embed; }
-    md-list-item md-divider bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-list-item md-divider bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
     md-list-item md-divider[md-inset] {
-      width: calc(100% - 72px);
+      left: 96px;
+      width: calc(100% - 96px);
       margin: 0; }
-      html[dir=ltr] md-list-item md-divider[md-inset] {
-        left: 72px;
-        unicode-bidi: embed; }
-      body[dir=ltr] md-list-item md-divider[md-inset] {
-        left: 72px;
-        unicode-bidi: embed; }
-      html[dir=rtl] md-list-item md-divider[md-inset] {
-        right: 72px;
-        unicode-bidi: embed; }
-      body[dir=rtl] md-list-item md-divider[md-inset] {
-        right: 72px;
-        unicode-bidi: embed; }
-      html:not([dir]) body:not([dir]) md-list-item md-divider[md-inset] {
-        left: 72px;
-        unicode-bidi: embed; }
-      md-list-item md-divider[md-inset] bdo[dir=rtl] {
-        direction: rtl;
-        unicode-bidi: bidi-override; }
-      md-list-item md-divider[md-inset] bdo[dir=ltr] {
-        direction: ltr;
-        unicode-bidi: bidi-override; }
-  md-list-item,
-  md-list-item ._md-list-item-inner {
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-justify-content: flex-start;
-        -ms-flex-pack: start;
-            justify-content: flex-start;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center;
-    min-height: 48px;
-    height: auto; }
-    md-list-item > div.md-primary > md-icon:not(.md-avatar-icon),
-    md-list-item > div.md-secondary > md-icon:not(.md-avatar-icon),
-    md-list-item > md-icon:first-child:not(.md-avatar-icon),
-    md-list-item > md-icon.md-secondary:not(.md-avatar-icon),
-    md-list-item ._md-list-item-inner > div.md-primary > md-icon:not(.md-avatar-icon),
-    md-list-item ._md-list-item-inner > div.md-secondary > md-icon:not(.md-avatar-icon),
-    md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon),
-    md-list-item ._md-list-item-inner > md-icon.md-secondary:not(.md-avatar-icon) {
-      width: 24px;
-      margin-top: 16px;
-      margin-bottom: 12px;
-      box-sizing: content-box; }
-    md-list-item > div.md-primary > md-checkbox,
-    md-list-item > div.md-secondary > md-checkbox,
-    md-list-item > md-checkbox,
-    md-list-item md-checkbox.md-secondary,
-    md-list-item ._md-list-item-inner > div.md-primary > md-checkbox,
-    md-list-item ._md-list-item-inner > div.md-secondary > md-checkbox,
-    md-list-item ._md-list-item-inner > md-checkbox,
-    md-list-item ._md-list-item-inner md-checkbox.md-secondary {
-      -webkit-align-self: center;
-          -ms-flex-item-align: center;
-              align-self: center; }
-      md-list-item > div.md-primary > md-checkbox .md-label,
-      md-list-item > div.md-secondary > md-checkbox .md-label,
-      md-list-item > md-checkbox .md-label,
-      md-list-item md-checkbox.md-secondary .md-label,
-      md-list-item ._md-list-item-inner > div.md-primary > md-checkbox .md-label,
-      md-list-item ._md-list-item-inner > div.md-secondary > md-checkbox .md-label,
-      md-list-item ._md-list-item-inner > md-checkbox .md-label,
-      md-list-item ._md-list-item-inner md-checkbox.md-secondary .md-label {
-        display: none; }
-    html[dir=ltr] md-list-item > md-icon:first-child:not(.md-avatar-icon), html[dir=ltr]
-    md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
-      margin-right: 32px;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-list-item > md-icon:first-child:not(.md-avatar-icon), body[dir=ltr]
-    md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
-      margin-right: 32px;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-list-item > md-icon:first-child:not(.md-avatar-icon), html[dir=rtl]
-    md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
-      margin-left: 32px;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-list-item > md-icon:first-child:not(.md-avatar-icon), body[dir=rtl]
-    md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
-      margin-left: 32px;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-list-item > md-icon:first-child:not(.md-avatar-icon), html:not([dir]) body:not([dir])
-    md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
-      margin-right: 32px;
-      unicode-bidi: embed; }
-    md-list-item > md-icon:first-child:not(.md-avatar-icon) bdo[dir=rtl],
-    md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-list-item > md-icon:first-child:not(.md-avatar-icon) bdo[dir=ltr],
-    md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
-    md-list-item > md-checkbox,
-    md-list-item ._md-list-item-inner > md-checkbox {
-      width: 24px;
-      margin-top: 16px; }
-      html[dir=ltr] md-list-item > md-checkbox, html[dir=ltr]
-      md-list-item ._md-list-item-inner > md-checkbox {
-        margin-left: 3px;
-        unicode-bidi: embed; }
-      body[dir=ltr] md-list-item > md-checkbox, body[dir=ltr]
-      md-list-item ._md-list-item-inner > md-checkbox {
-        margin-left: 3px;
-        unicode-bidi: embed; }
-      html[dir=rtl] md-list-item > md-checkbox, html[dir=rtl]
-      md-list-item ._md-list-item-inner > md-checkbox {
-        margin-left: 29px;
-        unicode-bidi: embed; }
-      body[dir=rtl] md-list-item > md-checkbox, body[dir=rtl]
-      md-list-item ._md-list-item-inner > md-checkbox {
-        margin-left: 29px;
-        unicode-bidi: embed; }
-      html:not([dir]) body:not([dir]) md-list-item > md-checkbox, html:not([dir]) body:not([dir])
-      md-list-item ._md-list-item-inner > md-checkbox {
-        margin-left: 3px;
-        unicode-bidi: embed; }
-      md-list-item > md-checkbox bdo[dir=rtl],
-      md-list-item ._md-list-item-inner > md-checkbox bdo[dir=rtl] {
-        direction: rtl;
-        unicode-bidi: bidi-override; }
-      md-list-item > md-checkbox bdo[dir=ltr],
-      md-list-item ._md-list-item-inner > md-checkbox bdo[dir=ltr] {
-        direction: ltr;
-        unicode-bidi: bidi-override; }
-      html[dir=ltr] md-list-item > md-checkbox, html[dir=ltr]
-      md-list-item ._md-list-item-inner > md-checkbox {
-        margin-right: 29px;
-        unicode-bidi: embed; }
-      body[dir=ltr] md-list-item > md-checkbox, body[dir=ltr]
-      md-list-item ._md-list-item-inner > md-checkbox {
-        margin-right: 29px;
-        unicode-bidi: embed; }
-      html[dir=rtl] md-list-item > md-checkbox, html[dir=rtl]
-      md-list-item ._md-list-item-inner > md-checkbox {
-        margin-right: 3px;
-        unicode-bidi: embed; }
-      body[dir=rtl] md-list-item > md-checkbox, body[dir=rtl]
-      md-list-item ._md-list-item-inner > md-checkbox {
-        margin-right: 3px;
-        unicode-bidi: embed; }
-      html:not([dir]) body:not([dir]) md-list-item > md-checkbox, html:not([dir]) body:not([dir])
-      md-list-item ._md-list-item-inner > md-checkbox {
-        margin-right: 29px;
-        unicode-bidi: embed; }
-      md-list-item > md-checkbox bdo[dir=rtl],
-      md-list-item ._md-list-item-inner > md-checkbox bdo[dir=rtl] {
-        direction: rtl;
-        unicode-bidi: bidi-override; }
-      md-list-item > md-checkbox bdo[dir=ltr],
-      md-list-item ._md-list-item-inner > md-checkbox bdo[dir=ltr] {
-        direction: ltr;
-        unicode-bidi: bidi-override; }
-    md-list-item .md-avatar, md-list-item .md-avatar-icon,
-    md-list-item ._md-list-item-inner .md-avatar,
-    md-list-item ._md-list-item-inner .md-avatar-icon {
-      margin-top: 8px;
-      margin-bottom: 8px;
-      border-radius: 50%;
-      box-sizing: content-box; }
-      html[dir=ltr] md-list-item .md-avatar, html[dir=ltr] md-list-item .md-avatar-icon, html[dir=ltr]
-      md-list-item ._md-list-item-inner .md-avatar, html[dir=ltr]
-      md-list-item ._md-list-item-inner .md-avatar-icon {
-        margin-right: 16px;
-        unicode-bidi: embed; }
-      body[dir=ltr] md-list-item .md-avatar, body[dir=ltr] md-list-item .md-avatar-icon, body[dir=ltr]
-      md-list-item ._md-list-item-inner .md-avatar, body[dir=ltr]
-      md-list-item ._md-list-item-inner .md-avatar-icon {
-        margin-right: 16px;
-        unicode-bidi: embed; }
-      html[dir=rtl] md-list-item .md-avatar, html[dir=rtl] md-list-item .md-avatar-icon, html[dir=rtl]
-      md-list-item ._md-list-item-inner .md-avatar, html[dir=rtl]
-      md-list-item ._md-list-item-inner .md-avatar-icon {
-        margin-left: 16px;
-        unicode-bidi: embed; }
-      body[dir=rtl] md-list-item .md-avatar, body[dir=rtl] md-list-item .md-avatar-icon, body[dir=rtl]
-      md-list-item ._md-list-item-inner .md-avatar, body[dir=rtl]
-      md-list-item ._md-list-item-inner .md-avatar-icon {
-        margin-left: 16px;
-        unicode-bidi: embed; }
-      html:not([dir]) body:not([dir]) md-list-item .md-avatar, html:not([dir]) body:not([dir]) md-list-item .md-avatar-icon, html:not([dir]) body:not([dir])
-      md-list-item ._md-list-item-inner .md-avatar, html:not([dir]) body:not([dir])
-      md-list-item ._md-list-item-inner .md-avatar-icon {
-        margin-right: 16px;
-        unicode-bidi: embed; }
-      md-list-item .md-avatar bdo[dir=rtl], md-list-item .md-avatar-icon bdo[dir=rtl],
-      md-list-item ._md-list-item-inner .md-avatar bdo[dir=rtl],
-      md-list-item ._md-list-item-inner .md-avatar-icon bdo[dir=rtl] {
-        direction: rtl;
-        unicode-bidi: bidi-override; }
-      md-list-item .md-avatar bdo[dir=ltr], md-list-item .md-avatar-icon bdo[dir=ltr],
-      md-list-item ._md-list-item-inner .md-avatar bdo[dir=ltr],
-      md-list-item ._md-list-item-inner .md-avatar-icon bdo[dir=ltr] {
-        direction: ltr;
-        unicode-bidi: bidi-override; }
-    md-list-item .md-avatar,
-    md-list-item ._md-list-item-inner .md-avatar {
-      width: 40px;
-      height: 40px; }
-    md-list-item .md-avatar-icon,
-    md-list-item ._md-list-item-inner .md-avatar-icon {
-      padding: 8px; }
-    md-list-item md-checkbox.md-secondary,
-    md-list-item md-switch.md-secondary,
-    md-list-item ._md-list-item-inner md-checkbox.md-secondary,
-    md-list-item ._md-list-item-inner md-switch.md-secondary {
-      margin-top: 0;
-      margin-bottom: 0; }
-    html[dir=ltr] md-list-item md-checkbox.md-secondary, html[dir=ltr]
-    md-list-item ._md-list-item-inner md-checkbox.md-secondary {
-      margin-right: 0;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-list-item md-checkbox.md-secondary, body[dir=ltr]
-    md-list-item ._md-list-item-inner md-checkbox.md-secondary {
-      margin-right: 0;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-list-item md-checkbox.md-secondary, html[dir=rtl]
-    md-list-item ._md-list-item-inner md-checkbox.md-secondary {
-      margin-left: 0;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-list-item md-checkbox.md-secondary, body[dir=rtl]
-    md-list-item ._md-list-item-inner md-checkbox.md-secondary {
-      margin-left: 0;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-list-item md-checkbox.md-secondary, html:not([dir]) body:not([dir])
-    md-list-item ._md-list-item-inner md-checkbox.md-secondary {
-      margin-right: 0;
-      unicode-bidi: embed; }
-    md-list-item md-checkbox.md-secondary bdo[dir=rtl],
-    md-list-item ._md-list-item-inner md-checkbox.md-secondary bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-list-item md-checkbox.md-secondary bdo[dir=ltr],
-    md-list-item ._md-list-item-inner md-checkbox.md-secondary bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
-    html[dir=ltr] md-list-item md-switch.md-secondary, html[dir=ltr]
-    md-list-item ._md-list-item-inner md-switch.md-secondary {
-      margin-right: -6px;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-list-item md-switch.md-secondary, body[dir=ltr]
-    md-list-item ._md-list-item-inner md-switch.md-secondary {
-      margin-right: -6px;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-list-item md-switch.md-secondary, html[dir=rtl]
-    md-list-item ._md-list-item-inner md-switch.md-secondary {
-      margin-left: -6px;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-list-item md-switch.md-secondary, body[dir=rtl]
-    md-list-item ._md-list-item-inner md-switch.md-secondary {
-      margin-left: -6px;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-list-item md-switch.md-secondary, html:not([dir]) body:not([dir])
-    md-list-item ._md-list-item-inner md-switch.md-secondary {
-      margin-right: -6px;
-      unicode-bidi: embed; }
-    md-list-item md-switch.md-secondary bdo[dir=rtl],
-    md-list-item ._md-list-item-inner md-switch.md-secondary bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-list-item md-switch.md-secondary bdo[dir=ltr],
-    md-list-item ._md-list-item-inner md-switch.md-secondary bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
-    md-list-item button.md-button._md-secondary-container,
-    md-list-item ._md-list-item-inner button.md-button._md-secondary-container {
-      background-color: transparent;
-      -webkit-align-self: center;
-          -ms-flex-item-align: center;
-              align-self: center;
-      border-radius: 50%;
-      margin: 0px;
-      min-width: 0px; }
-      md-list-item button.md-button._md-secondary-container .md-ripple,
-      md-list-item button.md-button._md-secondary-container .md-ripple-container,
-      md-list-item ._md-list-item-inner button.md-button._md-secondary-container .md-ripple,
-      md-list-item ._md-list-item-inner button.md-button._md-secondary-container .md-ripple-container {
-        border-radius: 50%; }
-    html[dir=ltr] md-list-item ._md-secondary-container, html[dir=ltr]
-    md-list-item ._md-list-item-inner ._md-secondary-container {
-      margin-right: -12px;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-list-item ._md-secondary-container, body[dir=ltr]
-    md-list-item ._md-list-item-inner ._md-secondary-container {
-      margin-right: -12px;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-list-item ._md-secondary-container, html[dir=rtl]
-    md-list-item ._md-list-item-inner ._md-secondary-container {
-      margin-left: -12px;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-list-item ._md-secondary-container, body[dir=rtl]
-    md-list-item ._md-list-item-inner ._md-secondary-container {
-      margin-left: -12px;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-list-item ._md-secondary-container, html:not([dir]) body:not([dir])
-    md-list-item ._md-list-item-inner ._md-secondary-container {
-      margin-right: -12px;
-      unicode-bidi: embed; }
-    md-list-item ._md-secondary-container bdo[dir=rtl],
-    md-list-item ._md-list-item-inner ._md-secondary-container bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-list-item ._md-secondary-container bdo[dir=ltr],
-    md-list-item ._md-list-item-inner ._md-secondary-container bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
-    html[dir=ltr] md-list-item ._md-secondary-container.md-icon-button, html[dir=ltr]
-    md-list-item ._md-list-item-inner ._md-secondary-container.md-icon-button {
-      margin-right: -6px;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-list-item ._md-secondary-container.md-icon-button, body[dir=ltr]
-    md-list-item ._md-list-item-inner ._md-secondary-container.md-icon-button {
-      margin-right: -6px;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-list-item ._md-secondary-container.md-icon-button, html[dir=rtl]
-    md-list-item ._md-list-item-inner ._md-secondary-container.md-icon-button {
-      margin-left: -6px;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-list-item ._md-secondary-container.md-icon-button, body[dir=rtl]
-    md-list-item ._md-list-item-inner ._md-secondary-container.md-icon-button {
-      margin-left: -6px;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-list-item ._md-secondary-container.md-icon-button, html:not([dir]) body:not([dir])
-    md-list-item ._md-list-item-inner ._md-secondary-container.md-icon-button {
-      margin-right: -6px;
-      unicode-bidi: embed; }
-    md-list-item ._md-secondary-container.md-icon-button bdo[dir=rtl],
-    md-list-item ._md-list-item-inner ._md-secondary-container.md-icon-button bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-list-item ._md-secondary-container.md-icon-button bdo[dir=ltr],
-    md-list-item ._md-list-item-inner ._md-secondary-container.md-icon-button bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
-    md-list-item ._md-secondary-container,
-    md-list-item .md-secondary,
-    md-list-item ._md-list-item-inner ._md-secondary-container,
-    md-list-item ._md-list-item-inner .md-secondary {
-      position: absolute;
-      top: 50%;
-      margin: 0;
-      -webkit-transform: translate3d(0, -50%, 0);
-              transform: translate3d(0, -50%, 0); }
-      html[dir=ltr] md-list-item ._md-secondary-container, html[dir=ltr]
-      md-list-item .md-secondary, html[dir=ltr]
-      md-list-item ._md-list-item-inner ._md-secondary-container, html[dir=ltr]
-      md-list-item ._md-list-item-inner .md-secondary {
-        right: 16px;
-        unicode-bidi: embed; }
-      body[dir=ltr] md-list-item ._md-secondary-container, body[dir=ltr]
-      md-list-item .md-secondary, body[dir=ltr]
-      md-list-item ._md-list-item-inner ._md-secondary-container, body[dir=ltr]
-      md-list-item ._md-list-item-inner .md-secondary {
-        right: 16px;
-        unicode-bidi: embed; }
-      html[dir=rtl] md-list-item ._md-secondary-container, html[dir=rtl]
-      md-list-item .md-secondary, html[dir=rtl]
-      md-list-item ._md-list-item-inner ._md-secondary-container, html[dir=rtl]
-      md-list-item ._md-list-item-inner .md-secondary {
-        left: 16px;
-        unicode-bidi: embed; }
-      body[dir=rtl] md-list-item ._md-secondary-container, body[dir=rtl]
-      md-list-item .md-secondary, body[dir=rtl]
-      md-list-item ._md-list-item-inner ._md-secondary-container, body[dir=rtl]
-      md-list-item ._md-list-item-inner .md-secondary {
-        left: 16px;
-        unicode-bidi: embed; }
-      html:not([dir]) body:not([dir]) md-list-item ._md-secondary-container, html:not([dir]) body:not([dir])
-      md-list-item .md-secondary, html:not([dir]) body:not([dir])
-      md-list-item ._md-list-item-inner ._md-secondary-container, html:not([dir]) body:not([dir])
-      md-list-item ._md-list-item-inner .md-secondary {
-        right: 16px;
-        unicode-bidi: embed; }
-      md-list-item ._md-secondary-container bdo[dir=rtl],
-      md-list-item .md-secondary bdo[dir=rtl],
-      md-list-item ._md-list-item-inner ._md-secondary-container bdo[dir=rtl],
-      md-list-item ._md-list-item-inner .md-secondary bdo[dir=rtl] {
-        direction: rtl;
-        unicode-bidi: bidi-override; }
-      md-list-item ._md-secondary-container bdo[dir=ltr],
-      md-list-item .md-secondary bdo[dir=ltr],
-      md-list-item ._md-list-item-inner ._md-secondary-container bdo[dir=ltr],
-      md-list-item ._md-list-item-inner .md-secondary bdo[dir=ltr] {
-        direction: ltr;
-        unicode-bidi: bidi-override; }
-    md-list-item > .md-button._md-secondary-container > .md-secondary,
-    md-list-item ._md-list-item-inner > .md-button._md-secondary-container > .md-secondary {
-      position: static; }
-      html[dir=ltr] md-list-item > .md-button._md-secondary-container > .md-secondary, html[dir=ltr]
-      md-list-item ._md-list-item-inner > .md-button._md-secondary-container > .md-secondary {
-        margin-left: 0;
-        unicode-bidi: embed; }
-      body[dir=ltr] md-list-item > .md-button._md-secondary-container > .md-secondary, body[dir=ltr]
-      md-list-item ._md-list-item-inner > .md-button._md-secondary-container > .md-secondary {
-        margin-left: 0;
-        unicode-bidi: embed; }
-      html[dir=rtl] md-list-item > .md-button._md-secondary-container > .md-secondary, html[dir=rtl]
-      md-list-item ._md-list-item-inner > .md-button._md-secondary-container > .md-secondary {
-        margin-right: 0;
-        unicode-bidi: embed; }
-      body[dir=rtl] md-list-item > .md-button._md-secondary-container > .md-secondary, body[dir=rtl]
-      md-list-item ._md-list-item-inner > .md-button._md-secondary-container > .md-secondary {
-        margin-right: 0;
-        unicode-bidi: embed; }
-      html:not([dir]) body:not([dir]) md-list-item > .md-button._md-secondary-container > .md-secondary, html:not([dir]) body:not([dir])
-      md-list-item ._md-list-item-inner > .md-button._md-secondary-container > .md-secondary {
-        margin-left: 0;
-        unicode-bidi: embed; }
-      md-list-item > .md-button._md-secondary-container > .md-secondary bdo[dir=rtl],
-      md-list-item ._md-list-item-inner > .md-button._md-secondary-container > .md-secondary bdo[dir=rtl] {
-        direction: rtl;
-        unicode-bidi: bidi-override; }
-      md-list-item > .md-button._md-secondary-container > .md-secondary bdo[dir=ltr],
-      md-list-item ._md-list-item-inner > .md-button._md-secondary-container > .md-secondary bdo[dir=ltr] {
-        direction: ltr;
-        unicode-bidi: bidi-override; }
-    md-list-item > p, md-list-item > ._md-list-item-inner > p,
-    md-list-item ._md-list-item-inner > p,
-    md-list-item ._md-list-item-inner > ._md-list-item-inner > p {
-      -webkit-flex: 1;
-          -ms-flex: 1;
-              flex: 1;
-      margin: 0; }
-  md-list-item.md-2-line, md-list-item.md-2-line > ._md-no-style, md-list-item.md-3-line, md-list-item.md-3-line > ._md-no-style {
-    -webkit-align-items: flex-start;
-        -ms-flex-align: start;
-            align-items: flex-start;
-    -webkit-justify-content: center;
-        -ms-flex-pack: center;
-            justify-content: center; }
-    md-list-item.md-2-line.md-long-text, md-list-item.md-2-line > ._md-no-style.md-long-text, md-list-item.md-3-line.md-long-text, md-list-item.md-3-line > ._md-no-style.md-long-text {
-      margin-top: 8px;
-      margin-bottom: 8px; }
-    md-list-item.md-2-line .md-list-item-text, md-list-item.md-2-line > ._md-no-style .md-list-item-text, md-list-item.md-3-line .md-list-item-text, md-list-item.md-3-line > ._md-no-style .md-list-item-text {
-      -webkit-flex: 1;
-          -ms-flex: 1;
-              flex: 1;
-      margin: auto;
-      text-overflow: ellipsis;
-      overflow: hidden; }
-      html[dir=ltr] md-list-item.md-2-line .md-list-item-text.md-offset, html[dir=ltr] md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, html[dir=ltr] md-list-item.md-3-line .md-list-item-text.md-offset, html[dir=ltr] md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
-        margin-left: 56px;
-        unicode-bidi: embed; }
-      body[dir=ltr] md-list-item.md-2-line .md-list-item-text.md-offset, body[dir=ltr] md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, body[dir=ltr] md-list-item.md-3-line .md-list-item-text.md-offset, body[dir=ltr] md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
-        margin-left: 56px;
-        unicode-bidi: embed; }
-      html[dir=rtl] md-list-item.md-2-line .md-list-item-text.md-offset, html[dir=rtl] md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, html[dir=rtl] md-list-item.md-3-line .md-list-item-text.md-offset, html[dir=rtl] md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
-        margin-right: 56px;
-        unicode-bidi: embed; }
-      body[dir=rtl] md-list-item.md-2-line .md-list-item-text.md-offset, body[dir=rtl] md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, body[dir=rtl] md-list-item.md-3-line .md-list-item-text.md-offset, body[dir=rtl] md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
-        margin-right: 56px;
-        unicode-bidi: embed; }
-      html:not([dir]) body:not([dir]) md-list-item.md-2-line .md-list-item-text.md-offset, html:not([dir]) body:not([dir]) md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, html:not([dir]) body:not([dir]) md-list-item.md-3-line .md-list-item-text.md-offset, html:not([dir]) body:not([dir]) md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
-        margin-left: 56px;
-        unicode-bidi: embed; }
-      md-list-item.md-2-line .md-list-item-text.md-offset bdo[dir=rtl], md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset bdo[dir=rtl], md-list-item.md-3-line .md-list-item-text.md-offset bdo[dir=rtl], md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset bdo[dir=rtl] {
-        direction: rtl;
-        unicode-bidi: bidi-override; }
-      md-list-item.md-2-line .md-list-item-text.md-offset bdo[dir=ltr], md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset bdo[dir=ltr], md-list-item.md-3-line .md-list-item-text.md-offset bdo[dir=ltr], md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset bdo[dir=ltr] {
-        direction: ltr;
-        unicode-bidi: bidi-override; }
-      md-list-item.md-2-line .md-list-item-text h3, md-list-item.md-2-line > ._md-no-style .md-list-item-text h3, md-list-item.md-3-line .md-list-item-text h3, md-list-item.md-3-line > ._md-no-style .md-list-item-text h3 {
-        font-size: 16px;
-        font-weight: 400;
-        letter-spacing: 0.010em;
-        margin: 0 0 0px 0;
-        line-height: 1.2em;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis; }
-      md-list-item.md-2-line .md-list-item-text h4, md-list-item.md-2-line > ._md-no-style .md-list-item-text h4, md-list-item.md-3-line .md-list-item-text h4, md-list-item.md-3-line > ._md-no-style .md-list-item-text h4 {
-        font-size: 14px;
-        letter-spacing: 0.010em;
-        margin: 3px 0 1px 0;
-        font-weight: 400;
-        line-height: 1.2em;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis; }
-      md-list-item.md-2-line .md-list-item-text p, md-list-item.md-2-line > ._md-no-style .md-list-item-text p, md-list-item.md-3-line .md-list-item-text p, md-list-item.md-3-line > ._md-no-style .md-list-item-text p {
-        font-size: 14px;
-        font-weight: 500;
-        letter-spacing: 0.010em;
-        margin: 0 0 0 0;
-        line-height: 1.6em; }
-  md-list-item.md-2-line, md-list-item.md-2-line > ._md-no-style {
-    height: auto;
-    min-height: 72px; }
-    md-list-item.md-2-line > .md-avatar, md-list-item.md-2-line .md-avatar-icon, md-list-item.md-2-line > ._md-no-style > .md-avatar, md-list-item.md-2-line > ._md-no-style .md-avatar-icon {
-      margin-top: 12px; }
-    md-list-item.md-2-line > md-icon:first-child, md-list-item.md-2-line > ._md-no-style > md-icon:first-child {
-      -webkit-align-self: flex-start;
-          -ms-flex-item-align: start;
-              align-self: flex-start; }
-    md-list-item.md-2-line .md-list-item-text, md-list-item.md-2-line > ._md-no-style .md-list-item-text {
-      -webkit-flex: 1;
-          -ms-flex: 1;
-              flex: 1; }
-  md-list-item.md-3-line, md-list-item.md-3-line > ._md-no-style {
-    height: auto;
-    min-height: 88px; }
-    md-list-item.md-3-line > md-icon:first-child,
-    md-list-item.md-3-line > .md-avatar, md-list-item.md-3-line > ._md-no-style > md-icon:first-child,
-    md-list-item.md-3-line > ._md-no-style > .md-avatar {
-      margin-top: 16px; }
+
+md-list-item, md-list-item .md-list-item-inner {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  min-height: 48px;
+  height: auto; }
+  md-list-item > div.md-primary > md-icon:not(.md-avatar-icon),
+  md-list-item > div.md-secondary > md-icon:not(.md-avatar-icon),
+  md-list-item > md-icon:first-child:not(.md-avatar-icon),
+  md-list-item > md-icon.md-secondary:not(.md-avatar-icon), md-list-item .md-list-item-inner > div.md-primary > md-icon:not(.md-avatar-icon),
+  md-list-item .md-list-item-inner > div.md-secondary > md-icon:not(.md-avatar-icon),
+  md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon),
+  md-list-item .md-list-item-inner > md-icon.md-secondary:not(.md-avatar-icon) {
+    width: 24px;
+    margin-top: 16px;
+    margin-bottom: 12px;
+    box-sizing: content-box; }
+  md-list-item > div.md-primary > md-checkbox,
+  md-list-item > div.md-secondary > md-checkbox,
+  md-list-item > md-checkbox,
+  md-list-item md-checkbox.md-secondary, md-list-item .md-list-item-inner > div.md-primary > md-checkbox,
+  md-list-item .md-list-item-inner > div.md-secondary > md-checkbox,
+  md-list-item .md-list-item-inner > md-checkbox,
+  md-list-item .md-list-item-inner md-checkbox.md-secondary {
+    -webkit-align-self: center;
+        -ms-flex-item-align: center;
+            align-self: center; }
+    md-list-item > div.md-primary > md-checkbox .md-label,
+    md-list-item > div.md-secondary > md-checkbox .md-label,
+    md-list-item > md-checkbox .md-label,
+    md-list-item md-checkbox.md-secondary .md-label, md-list-item .md-list-item-inner > div.md-primary > md-checkbox .md-label,
+    md-list-item .md-list-item-inner > div.md-secondary > md-checkbox .md-label,
+    md-list-item .md-list-item-inner > md-checkbox .md-label,
+    md-list-item .md-list-item-inner md-checkbox.md-secondary .md-label {
+      display: none; }
+  md-list-item > md-icon:first-child:not(.md-avatar-icon), md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
+    margin-right: 32px; }
+  md-list-item > md-checkbox, md-list-item .md-list-item-inner > md-checkbox {
+    width: 24px;
+    margin-left: 3px;
+    margin-right: 29px;
+    margin-top: 16px; }
+  md-list-item .md-avatar, md-list-item .md-avatar-icon, md-list-item .md-list-item-inner .md-avatar, md-list-item .md-list-item-inner .md-avatar-icon {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-right: 16px;
+    border-radius: 50%;
+    box-sizing: content-box; }
+  md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar {
+    width: 40px;
+    height: 40px; }
+  md-list-item .md-avatar-icon, md-list-item .md-list-item-inner .md-avatar-icon {
+    padding: 8px; }
+  md-list-item md-checkbox.md-secondary,
+  md-list-item md-switch.md-secondary, md-list-item .md-list-item-inner md-checkbox.md-secondary,
+  md-list-item .md-list-item-inner md-switch.md-secondary {
+    margin-top: 0;
+    margin-bottom: 0; }
+  md-list-item md-checkbox.md-secondary, md-list-item .md-list-item-inner md-checkbox.md-secondary {
+    margin-right: 0; }
+  md-list-item md-switch.md-secondary, md-list-item .md-list-item-inner md-switch.md-secondary {
+    margin-right: -6px; }
+  md-list-item button.md-button.md-secondary-container, md-list-item .md-list-item-inner button.md-button.md-secondary-container {
+    background-color: transparent;
+    -webkit-align-self: center;
+        -ms-flex-item-align: center;
+            align-self: center;
+    border-radius: 50%;
+    margin: 0px;
+    min-width: 0px; }
+    md-list-item button.md-button.md-secondary-container .md-ripple,
+    md-list-item button.md-button.md-secondary-container .md-ripple-container, md-list-item .md-list-item-inner button.md-button.md-secondary-container .md-ripple,
+    md-list-item .md-list-item-inner button.md-button.md-secondary-container .md-ripple-container {
+      border-radius: 50%; }
+    md-list-item button.md-button.md-secondary-container.md-icon-button, md-list-item .md-list-item-inner button.md-button.md-secondary-container.md-icon-button {
+      margin-right: -12px; }
+  md-list-item .md-secondary-container,
+  md-list-item .md-secondary, md-list-item .md-list-item-inner .md-secondary-container,
+  md-list-item .md-list-item-inner .md-secondary {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    margin: 0 0 0 16px;
+    -webkit-transform: translate3d(0, -50%, 0);
+            transform: translate3d(0, -50%, 0); }
+  md-list-item > .md-button.md-secondary-container > .md-secondary, md-list-item .md-list-item-inner > .md-button.md-secondary-container > .md-secondary {
+    margin-left: 0;
+    position: static; }
+  md-list-item > p, md-list-item > .md-list-item-inner > p, md-list-item .md-list-item-inner > p, md-list-item .md-list-item-inner > .md-list-item-inner > p {
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    margin: 0; }
+
+md-list-item.md-2-line,
+md-list-item.md-2-line > .md-no-style,
+md-list-item.md-3-line,
+md-list-item.md-3-line > .md-no-style {
+  -webkit-align-items: flex-start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+  md-list-item.md-2-line .md-list-item-text,
+  md-list-item.md-2-line > .md-no-style .md-list-item-text,
+  md-list-item.md-3-line .md-list-item-text,
+  md-list-item.md-3-line > .md-no-style .md-list-item-text {
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    margin: auto;
+    text-overflow: ellipsis; }
+    md-list-item.md-2-line .md-list-item-text.md-offset,
+    md-list-item.md-2-line > .md-no-style .md-list-item-text.md-offset,
+    md-list-item.md-3-line .md-list-item-text.md-offset,
+    md-list-item.md-3-line > .md-no-style .md-list-item-text.md-offset {
+      margin-left: 56px; }
+    md-list-item.md-2-line .md-list-item-text h3,
+    md-list-item.md-2-line > .md-no-style .md-list-item-text h3,
+    md-list-item.md-3-line .md-list-item-text h3,
+    md-list-item.md-3-line > .md-no-style .md-list-item-text h3 {
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 0.010em;
+      margin: 0 0 0px 0;
+      line-height: 1.2em;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis; }
+    md-list-item.md-2-line .md-list-item-text h4,
+    md-list-item.md-2-line > .md-no-style .md-list-item-text h4,
+    md-list-item.md-3-line .md-list-item-text h4,
+    md-list-item.md-3-line > .md-no-style .md-list-item-text h4 {
+      font-size: 14px;
+      letter-spacing: 0.010em;
+      margin: 3px 0 1px 0;
+      font-weight: 400;
+      line-height: 1.2em;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis; }
+    md-list-item.md-2-line .md-list-item-text p,
+    md-list-item.md-2-line > .md-no-style .md-list-item-text p,
+    md-list-item.md-3-line .md-list-item-text p,
+    md-list-item.md-3-line > .md-no-style .md-list-item-text p {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.010em;
+      margin: 0 0 0 0;
+      line-height: 1.6em; }
+
+md-list-item.md-2-line,
+md-list-item.md-2-line > .md-no-style {
+  height: auto;
+  min-height: 72px; }
+  md-list-item.md-2-line.md-long-text,
+  md-list-item.md-2-line > .md-no-style.md-long-text {
+    margin: 1.6em; }
+  md-list-item.md-2-line > .md-avatar, md-list-item.md-2-line .md-avatar-icon,
+  md-list-item.md-2-line > .md-no-style > .md-avatar,
+  md-list-item.md-2-line > .md-no-style .md-avatar-icon {
+    margin-top: 12px; }
+  md-list-item.md-2-line > md-icon:first-child,
+  md-list-item.md-2-line > .md-no-style > md-icon:first-child {
+    -webkit-align-self: flex-start;
+        -ms-flex-item-align: start;
+            align-self: flex-start; }
+  md-list-item.md-2-line .md-list-item-text,
+  md-list-item.md-2-line > .md-no-style .md-list-item-text {
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
+
+md-list-item.md-3-line,
+md-list-item.md-3-line > .md-no-style {
+  height: auto;
+  min-height: 88px; }
+  md-list-item.md-3-line.md-long-text,
+  md-list-item.md-3-line > .md-no-style.md-long-text {
+    margin: 1.6em; }
+  md-list-item.md-3-line > md-icon:first-child,
+  md-list-item.md-3-line > .md-avatar,
+  md-list-item.md-3-line > .md-no-style > md-icon:first-child,
+  md-list-item.md-3-line > .md-no-style > .md-avatar {
+    margin-top: 16px; }

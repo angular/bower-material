@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-f171fd2
+ * v1.0.6
  */
 goog.provide('ng.material.components.icon');
 goog.require('ng.material.core');
@@ -62,17 +62,13 @@ angular
  *
  * <ol>
  * <li>Load the font library. e.g.<br/>
- *    `<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
- *    rel="stylesheet">`
+ *    &lt;link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+ *    rel="stylesheet"&gt;
  * </li>
- * <li>
- *   Use either (a) font-icon class names or (b) font ligatures to render the font glyph by using
- *   its textual name
- * </li>
- * <li>
- *   Use `<md-icon md-font-icon="classname" />` or <br/>
- *   use `<md-icon md-font-set="font library classname or alias"> textual_name </md-icon>` or <br/>
- *   use `<md-icon md-font-set="font library classname or alias"> numerical_character_reference </md-icon>`
+ * <li> Use either (a) font-icon class names or (b) font ligatures to render the font glyph by using its textual name</li>
+ * <li> Use &lt;md-icon md-font-icon="classname" /&gt; or <br/>
+ *     use &lt;md-icon md-font-set="font library classname or alias"&gt; textual_name &lt;/md-icon&gt; or <br/>
+ *     use &lt;md-icon md-font-set="font library classname or alias"&gt; numerical_character_reference &lt;/md-icon&gt;
  * </li>
  * </ol>
  *
@@ -791,8 +787,7 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
            'height': '100%',
            'width' : '100%',
            'preserveAspectRatio': 'xMidYMid meet',
-           'viewBox' : this.element.getAttribute('viewBox') || ('0 0 ' + viewBoxSize + ' ' + viewBoxSize),
-           'focusable': false // Disable IE11s default behavior to make SVGs focusable
+           'viewBox' : this.element.getAttribute('viewBox') || ('0 0 ' + viewBoxSize + ' ' + viewBoxSize)
          }, function(val, attr) {
            this.element.setAttribute(attr, val);
          }, this);

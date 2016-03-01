@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-f171fd2
+ * v1.0.6
  */
 md-input-container {
   display: inline-block;
@@ -20,22 +20,14 @@ md-input-container {
   md-input-container.md-block {
     display: block; }
   md-input-container .md-errors-spacer {
+    float: right;
     min-height: 24px;
     min-width: 1px; }
-    html[dir=ltr] md-input-container .md-errors-spacer {
-      float: right;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-input-container .md-errors-spacer {
-      float: right;
-      unicode-bidi: embed; }
     html[dir=rtl] md-input-container .md-errors-spacer {
       float: left;
       unicode-bidi: embed; }
     body[dir=rtl] md-input-container .md-errors-spacer {
       float: left;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-input-container .md-errors-spacer {
-      float: right;
       unicode-bidi: embed; }
     md-input-container .md-errors-spacer bdo[dir=rtl] {
       direction: rtl;
@@ -45,21 +37,14 @@ md-input-container {
       unicode-bidi: bidi-override; }
   md-input-container > md-icon {
     position: absolute;
-    top: 8px; }
-    html[dir=ltr] md-input-container > md-icon {
-      left: 2px;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-input-container > md-icon {
-      left: 2px;
-      unicode-bidi: embed; }
+    top: 5px;
+    left: 2px;
+    right: auto; }
     html[dir=rtl] md-input-container > md-icon {
       left: auto;
       unicode-bidi: embed; }
     body[dir=rtl] md-input-container > md-icon {
       left: auto;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-input-container > md-icon {
-      left: 2px;
       unicode-bidi: embed; }
     md-input-container > md-icon bdo[dir=rtl] {
       direction: rtl;
@@ -67,20 +52,11 @@ md-input-container {
     md-input-container > md-icon bdo[dir=ltr] {
       direction: ltr;
       unicode-bidi: bidi-override; }
-    html[dir=ltr] md-input-container > md-icon {
-      right: auto;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-input-container > md-icon {
-      right: auto;
-      unicode-bidi: embed; }
     html[dir=rtl] md-input-container > md-icon {
       right: 2px;
       unicode-bidi: embed; }
     body[dir=rtl] md-input-container > md-icon {
       right: 2px;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-input-container > md-icon {
-      right: auto;
       unicode-bidi: embed; }
     md-input-container > md-icon bdo[dir=rtl] {
       direction: rtl;
@@ -118,161 +94,156 @@ md-input-container {
   md-input-container textarea.md-input {
     min-height: 26px;
     -ms-flex-preferred-size: auto; }
-  md-input-container label:not(._md-container-ignore) {
+  md-input-container label:not(.md-container-ignore) {
     position: absolute;
-    bottom: 100%; }
-    html[dir=ltr] md-input-container label:not(._md-container-ignore) {
-      left: 0;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-input-container label:not(._md-container-ignore) {
-      left: 0;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-input-container label:not(._md-container-ignore) {
+    bottom: 100%;
+    left: 0;
+    right: auto; }
+    html[dir=rtl] md-input-container label:not(.md-container-ignore) {
       left: auto;
       unicode-bidi: embed; }
-    body[dir=rtl] md-input-container label:not(._md-container-ignore) {
+    body[dir=rtl] md-input-container label:not(.md-container-ignore) {
       left: auto;
       unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-input-container label:not(._md-container-ignore) {
-      left: 0;
-      unicode-bidi: embed; }
-    md-input-container label:not(._md-container-ignore) bdo[dir=rtl] {
+    md-input-container label:not(.md-container-ignore) bdo[dir=rtl] {
       direction: rtl;
       unicode-bidi: bidi-override; }
-    md-input-container label:not(._md-container-ignore) bdo[dir=ltr] {
+    md-input-container label:not(.md-container-ignore) bdo[dir=ltr] {
       direction: ltr;
       unicode-bidi: bidi-override; }
-    html[dir=ltr] md-input-container label:not(._md-container-ignore) {
-      right: auto;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-input-container label:not(._md-container-ignore) {
-      right: auto;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-input-container label:not(._md-container-ignore) {
+    html[dir=rtl] md-input-container label:not(.md-container-ignore) {
       right: 0;
       unicode-bidi: embed; }
-    body[dir=rtl] md-input-container label:not(._md-container-ignore) {
+    body[dir=rtl] md-input-container label:not(.md-container-ignore) {
       right: 0;
       unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-input-container label:not(._md-container-ignore) {
-      right: auto;
-      unicode-bidi: embed; }
-    md-input-container label:not(._md-container-ignore) bdo[dir=rtl] {
+    md-input-container label:not(.md-container-ignore) bdo[dir=rtl] {
       direction: rtl;
       unicode-bidi: bidi-override; }
-    md-input-container label:not(._md-container-ignore) bdo[dir=ltr] {
+    md-input-container label:not(.md-container-ignore) bdo[dir=ltr] {
       direction: ltr;
       unicode-bidi: bidi-override; }
-    md-input-container label:not(._md-container-ignore).md-required:after {
-      content: ' *';
-      font-size: 13px;
-      vertical-align: top; }
-  md-input-container label:not(.md-no-float):not(._md-container-ignore),
-  md-input-container ._md-placeholder {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 100%;
+  md-input-container.md-has-icon {
+    padding-left: 36px;
+    padding-right: 0; }
+    html[dir=rtl] md-input-container.md-has-icon {
+      padding-left: 0;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-input-container.md-has-icon {
+      padding-left: 0;
+      unicode-bidi: embed; }
+    md-input-container.md-has-icon bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-input-container.md-has-icon bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
+    html[dir=rtl] md-input-container.md-has-icon {
+      padding-right: 36px;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-input-container.md-has-icon {
+      padding-right: 36px;
+      unicode-bidi: embed; }
+    md-input-container.md-has-icon bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-input-container.md-has-icon bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
+    md-input-container.md-has-icon > label {
+      left: 36px;
+      right: auto; }
+      html[dir=rtl] md-input-container.md-has-icon > label {
+        left: auto;
+        unicode-bidi: embed; }
+      body[dir=rtl] md-input-container.md-has-icon > label {
+        left: auto;
+        unicode-bidi: embed; }
+      md-input-container.md-has-icon > label bdo[dir=rtl] {
+        direction: rtl;
+        unicode-bidi: bidi-override; }
+      md-input-container.md-has-icon > label bdo[dir=ltr] {
+        direction: ltr;
+        unicode-bidi: bidi-override; }
+      html[dir=rtl] md-input-container.md-has-icon > label {
+        right: 36px;
+        unicode-bidi: embed; }
+      body[dir=rtl] md-input-container.md-has-icon > label {
+        right: 36px;
+        unicode-bidi: embed; }
+      md-input-container.md-has-icon > label bdo[dir=rtl] {
+        direction: rtl;
+        unicode-bidi: bidi-override; }
+      md-input-container.md-has-icon > label bdo[dir=ltr] {
+        direction: ltr;
+        unicode-bidi: bidi-override; }
+  md-input-container label:not(.md-no-float):not(.md-container-ignore),
+  md-input-container .md-placeholder {
     -webkit-order: 1;
         -ms-flex-order: 1;
             order: 1;
     pointer-events: none;
     -webkit-font-smoothing: antialiased;
+    padding-left: 3px;
+    padding-right: 0;
     z-index: 1;
     -webkit-transform: translate3d(0, 28px, 0) scale(1);
             transform: translate3d(0, 28px, 0) scale(1);
-    transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
-    html[dir=ltr] md-input-container label:not(.md-no-float):not(._md-container-ignore), html[dir=ltr]
-    md-input-container ._md-placeholder {
-      padding-left: 3px;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-input-container label:not(.md-no-float):not(._md-container-ignore), body[dir=ltr]
-    md-input-container ._md-placeholder {
-      padding-left: 3px;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-input-container label:not(.md-no-float):not(._md-container-ignore), html[dir=rtl]
-    md-input-container ._md-placeholder {
+    transition: -webkit-transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.25s;
+    transition: transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.25s;
+    -webkit-transform-origin: left top;
+            transform-origin: left top; }
+    html[dir=rtl] md-input-container label:not(.md-no-float):not(.md-container-ignore), html[dir=rtl]
+    md-input-container .md-placeholder {
       padding-left: 0;
       unicode-bidi: embed; }
-    body[dir=rtl] md-input-container label:not(.md-no-float):not(._md-container-ignore), body[dir=rtl]
-    md-input-container ._md-placeholder {
+    body[dir=rtl] md-input-container label:not(.md-no-float):not(.md-container-ignore), body[dir=rtl]
+    md-input-container .md-placeholder {
       padding-left: 0;
       unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-input-container label:not(.md-no-float):not(._md-container-ignore), html:not([dir]) body:not([dir])
-    md-input-container ._md-placeholder {
-      padding-left: 3px;
-      unicode-bidi: embed; }
-    md-input-container label:not(.md-no-float):not(._md-container-ignore) bdo[dir=rtl],
-    md-input-container ._md-placeholder bdo[dir=rtl] {
+    md-input-container label:not(.md-no-float):not(.md-container-ignore) bdo[dir=rtl],
+    md-input-container .md-placeholder bdo[dir=rtl] {
       direction: rtl;
       unicode-bidi: bidi-override; }
-    md-input-container label:not(.md-no-float):not(._md-container-ignore) bdo[dir=ltr],
-    md-input-container ._md-placeholder bdo[dir=ltr] {
+    md-input-container label:not(.md-no-float):not(.md-container-ignore) bdo[dir=ltr],
+    md-input-container .md-placeholder bdo[dir=ltr] {
       direction: ltr;
       unicode-bidi: bidi-override; }
-    html[dir=ltr] md-input-container label:not(.md-no-float):not(._md-container-ignore), html[dir=ltr]
-    md-input-container ._md-placeholder {
-      padding-right: 0;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-input-container label:not(.md-no-float):not(._md-container-ignore), body[dir=ltr]
-    md-input-container ._md-placeholder {
-      padding-right: 0;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-input-container label:not(.md-no-float):not(._md-container-ignore), html[dir=rtl]
-    md-input-container ._md-placeholder {
+    html[dir=rtl] md-input-container label:not(.md-no-float):not(.md-container-ignore), html[dir=rtl]
+    md-input-container .md-placeholder {
       padding-right: 3px;
       unicode-bidi: embed; }
-    body[dir=rtl] md-input-container label:not(.md-no-float):not(._md-container-ignore), body[dir=rtl]
-    md-input-container ._md-placeholder {
+    body[dir=rtl] md-input-container label:not(.md-no-float):not(.md-container-ignore), body[dir=rtl]
+    md-input-container .md-placeholder {
       padding-right: 3px;
       unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-input-container label:not(.md-no-float):not(._md-container-ignore), html:not([dir]) body:not([dir])
-    md-input-container ._md-placeholder {
-      padding-right: 0;
-      unicode-bidi: embed; }
-    md-input-container label:not(.md-no-float):not(._md-container-ignore) bdo[dir=rtl],
-    md-input-container ._md-placeholder bdo[dir=rtl] {
+    md-input-container label:not(.md-no-float):not(.md-container-ignore) bdo[dir=rtl],
+    md-input-container .md-placeholder bdo[dir=rtl] {
       direction: rtl;
       unicode-bidi: bidi-override; }
-    md-input-container label:not(.md-no-float):not(._md-container-ignore) bdo[dir=ltr],
-    md-input-container ._md-placeholder bdo[dir=ltr] {
+    md-input-container label:not(.md-no-float):not(.md-container-ignore) bdo[dir=ltr],
+    md-input-container .md-placeholder bdo[dir=ltr] {
       direction: ltr;
       unicode-bidi: bidi-override; }
-    html[dir=ltr] md-input-container label:not(.md-no-float):not(._md-container-ignore), html[dir=ltr]
-    md-input-container ._md-placeholder {
-      -webkit-transform-origin: left top;
-              transform-origin: left top;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-input-container label:not(.md-no-float):not(._md-container-ignore), body[dir=ltr]
-    md-input-container ._md-placeholder {
-      -webkit-transform-origin: left top;
-              transform-origin: left top;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-input-container label:not(.md-no-float):not(._md-container-ignore), html[dir=rtl]
-    md-input-container ._md-placeholder {
+    html[dir=rtl] md-input-container label:not(.md-no-float):not(.md-container-ignore), html[dir=rtl]
+    md-input-container .md-placeholder {
       -webkit-transform-origin: right top;
               transform-origin: right top;
       unicode-bidi: embed; }
-    body[dir=rtl] md-input-container label:not(.md-no-float):not(._md-container-ignore), body[dir=rtl]
-    md-input-container ._md-placeholder {
+    body[dir=rtl] md-input-container label:not(.md-no-float):not(.md-container-ignore), body[dir=rtl]
+    md-input-container .md-placeholder {
       -webkit-transform-origin: right top;
               transform-origin: right top;
       unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-input-container label:not(.md-no-float):not(._md-container-ignore), html:not([dir]) body:not([dir])
-    md-input-container ._md-placeholder {
-      -webkit-transform-origin: left top;
-              transform-origin: left top;
-      unicode-bidi: embed; }
-    md-input-container label:not(.md-no-float):not(._md-container-ignore) bdo[dir=rtl],
-    md-input-container ._md-placeholder bdo[dir=rtl] {
+    md-input-container label:not(.md-no-float):not(.md-container-ignore) bdo[dir=rtl],
+    md-input-container .md-placeholder bdo[dir=rtl] {
       direction: rtl;
       unicode-bidi: bidi-override; }
-    md-input-container label:not(.md-no-float):not(._md-container-ignore) bdo[dir=ltr],
-    md-input-container ._md-placeholder bdo[dir=ltr] {
+    md-input-container label:not(.md-no-float):not(.md-container-ignore) bdo[dir=ltr],
+    md-input-container .md-placeholder bdo[dir=ltr] {
       direction: ltr;
       unicode-bidi: bidi-override; }
-  md-input-container ._md-placeholder {
+  md-input-container .md-placeholder {
     position: absolute;
     top: 0;
     opacity: 0;
@@ -280,11 +251,11 @@ md-input-container {
     transition-property: opacity, transform;
     -webkit-transform: translate3d(0, 30px, 0);
             transform: translate3d(0, 30px, 0); }
-  md-input-container.md-input-focused ._md-placeholder {
+  md-input-container.md-input-focused .md-placeholder {
     opacity: 1;
     -webkit-transform: translate3d(0, 24px, 0);
             transform: translate3d(0, 24px, 0); }
-  md-input-container.md-input-has-value ._md-placeholder {
+  md-input-container.md-input-has-value .md-placeholder {
     transition: none;
     opacity: 0; }
   md-input-container:not(.md-input-has-value) input:not(:focus),
@@ -317,21 +288,13 @@ md-input-container {
     border-radius: 0;
     border-style: solid;
     width: 100%;
-    box-sizing: border-box; }
-    html[dir=ltr] md-input-container .md-input {
-      float: left;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-input-container .md-input {
-      float: left;
-      unicode-bidi: embed; }
+    box-sizing: border-box;
+    float: left; }
     html[dir=rtl] md-input-container .md-input {
       float: right;
       unicode-bidi: embed; }
     body[dir=rtl] md-input-container .md-input {
       float: right;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-input-container .md-input {
-      float: left;
       unicode-bidi: embed; }
     md-input-container .md-input bdo[dir=rtl] {
       direction: rtl;
@@ -348,84 +311,54 @@ md-input-container {
       -webkit-flex: none !important;
           -ms-flex: none !important;
               flex: none !important; }
-  html[dir=ltr] md-input-container .md-char-counter {
+  md-input-container .md-char-counter {
     text-align: right;
-    unicode-bidi: embed; }
-  body[dir=ltr] md-input-container .md-char-counter {
-    text-align: right;
-    unicode-bidi: embed; }
-  html[dir=rtl] md-input-container .md-char-counter {
-    text-align: left;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-input-container .md-char-counter {
-    text-align: left;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) md-input-container .md-char-counter {
-    text-align: right;
-    unicode-bidi: embed; }
-  md-input-container .md-char-counter bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-input-container .md-char-counter bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
-  html[dir=ltr] md-input-container .md-char-counter {
     padding-right: 2px;
-    unicode-bidi: embed; }
-  body[dir=ltr] md-input-container .md-char-counter {
-    padding-right: 2px;
-    unicode-bidi: embed; }
-  html[dir=rtl] md-input-container .md-char-counter {
-    padding-right: 0;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-input-container .md-char-counter {
-    padding-right: 0;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) md-input-container .md-char-counter {
-    padding-right: 2px;
-    unicode-bidi: embed; }
-  md-input-container .md-char-counter bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-input-container .md-char-counter bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
-  html[dir=ltr] md-input-container .md-char-counter {
-    padding-left: 0;
-    unicode-bidi: embed; }
-  body[dir=ltr] md-input-container .md-char-counter {
-    padding-left: 0;
-    unicode-bidi: embed; }
-  html[dir=rtl] md-input-container .md-char-counter {
-    padding-left: 2px;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-input-container .md-char-counter {
-    padding-left: 2px;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) md-input-container .md-char-counter {
-    padding-left: 0;
-    unicode-bidi: embed; }
-  md-input-container .md-char-counter bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-input-container .md-char-counter bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
+    padding-left: 0; }
+    html[dir=rtl] md-input-container .md-char-counter {
+      text-align: left;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-input-container .md-char-counter {
+      text-align: left;
+      unicode-bidi: embed; }
+    md-input-container .md-char-counter bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-input-container .md-char-counter bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
+    html[dir=rtl] md-input-container .md-char-counter {
+      padding-right: 0;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-input-container .md-char-counter {
+      padding-right: 0;
+      unicode-bidi: embed; }
+    md-input-container .md-char-counter bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-input-container .md-char-counter bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
+    html[dir=rtl] md-input-container .md-char-counter {
+      padding-left: 2px;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-input-container .md-char-counter {
+      padding-left: 2px;
+      unicode-bidi: embed; }
+    md-input-container .md-char-counter bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-input-container .md-char-counter bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
   md-input-container ng-messages, md-input-container data-ng-messages, md-input-container x-ng-messages,
   md-input-container [ng-messages], md-input-container [data-ng-messages], md-input-container [x-ng-messages] {
     position: relative;
     -webkit-order: 4;
         -ms-flex-order: 4;
             order: 4;
-    overflow: hidden; }
-    html[dir=ltr] md-input-container ng-messages, html[dir=ltr] md-input-container data-ng-messages, html[dir=ltr] md-input-container x-ng-messages, html[dir=ltr]
-    md-input-container [ng-messages], html[dir=ltr] md-input-container [data-ng-messages], html[dir=ltr] md-input-container [x-ng-messages] {
-      clear: left;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-input-container ng-messages, body[dir=ltr] md-input-container data-ng-messages, body[dir=ltr] md-input-container x-ng-messages, body[dir=ltr]
-    md-input-container [ng-messages], body[dir=ltr] md-input-container [data-ng-messages], body[dir=ltr] md-input-container [x-ng-messages] {
-      clear: left;
-      unicode-bidi: embed; }
+    overflow: hidden;
+    clear: left; }
     html[dir=rtl] md-input-container ng-messages, html[dir=rtl] md-input-container data-ng-messages, html[dir=rtl] md-input-container x-ng-messages, html[dir=rtl]
     md-input-container [ng-messages], html[dir=rtl] md-input-container [data-ng-messages], html[dir=rtl] md-input-container [x-ng-messages] {
       clear: right;
@@ -433,10 +366,6 @@ md-input-container {
     body[dir=rtl] md-input-container ng-messages, body[dir=rtl] md-input-container data-ng-messages, body[dir=rtl] md-input-container x-ng-messages, body[dir=rtl]
     md-input-container [ng-messages], body[dir=rtl] md-input-container [data-ng-messages], body[dir=rtl] md-input-container [x-ng-messages] {
       clear: right;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-input-container ng-messages, html:not([dir]) body:not([dir]) md-input-container data-ng-messages, html:not([dir]) body:not([dir]) md-input-container x-ng-messages, html:not([dir]) body:not([dir])
-    md-input-container [ng-messages], html:not([dir]) body:not([dir]) md-input-container [data-ng-messages], html:not([dir]) body:not([dir]) md-input-container [x-ng-messages] {
-      clear: left;
       unicode-bidi: embed; }
     md-input-container ng-messages bdo[dir=rtl], md-input-container data-ng-messages bdo[dir=rtl], md-input-container x-ng-messages bdo[dir=rtl],
     md-input-container [ng-messages] bdo[dir=rtl], md-input-container [data-ng-messages] bdo[dir=rtl], md-input-container [x-ng-messages] bdo[dir=rtl] {
@@ -479,90 +408,60 @@ md-input-container {
     opacity: 1;
     margin-top: 0;
     padding-top: 5px; }
-    html[dir=ltr] md-input-container ng-message:not(.md-char-counter), html[dir=ltr] md-input-container data-ng-message:not(.md-char-counter), html[dir=ltr] md-input-container x-ng-message:not(.md-char-counter), html[dir=ltr]
-    md-input-container [ng-message]:not(.md-char-counter), html[dir=ltr] md-input-container [data-ng-message]:not(.md-char-counter), html[dir=ltr] md-input-container [x-ng-message]:not(.md-char-counter), html[dir=ltr]
-    md-input-container [ng-message-exp]:not(.md-char-counter), html[dir=ltr] md-input-container [data-ng-message-exp]:not(.md-char-counter), html[dir=ltr] md-input-container [x-ng-message-exp]:not(.md-char-counter), html[dir=ltr]
+    md-input-container ng-message:not(.md-char-counter), md-input-container data-ng-message:not(.md-char-counter), md-input-container x-ng-message:not(.md-char-counter),
+    md-input-container [ng-message]:not(.md-char-counter), md-input-container [data-ng-message]:not(.md-char-counter), md-input-container [x-ng-message]:not(.md-char-counter),
+    md-input-container [ng-message-exp]:not(.md-char-counter), md-input-container [data-ng-message-exp]:not(.md-char-counter), md-input-container [x-ng-message-exp]:not(.md-char-counter),
     md-input-container .md-char-counter:not(.md-char-counter) {
       padding-right: 5px;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-input-container ng-message:not(.md-char-counter), body[dir=ltr] md-input-container data-ng-message:not(.md-char-counter), body[dir=ltr] md-input-container x-ng-message:not(.md-char-counter), body[dir=ltr]
-    md-input-container [ng-message]:not(.md-char-counter), body[dir=ltr] md-input-container [data-ng-message]:not(.md-char-counter), body[dir=ltr] md-input-container [x-ng-message]:not(.md-char-counter), body[dir=ltr]
-    md-input-container [ng-message-exp]:not(.md-char-counter), body[dir=ltr] md-input-container [data-ng-message-exp]:not(.md-char-counter), body[dir=ltr] md-input-container [x-ng-message-exp]:not(.md-char-counter), body[dir=ltr]
-    md-input-container .md-char-counter:not(.md-char-counter) {
-      padding-right: 5px;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-input-container ng-message:not(.md-char-counter), html[dir=rtl] md-input-container data-ng-message:not(.md-char-counter), html[dir=rtl] md-input-container x-ng-message:not(.md-char-counter), html[dir=rtl]
-    md-input-container [ng-message]:not(.md-char-counter), html[dir=rtl] md-input-container [data-ng-message]:not(.md-char-counter), html[dir=rtl] md-input-container [x-ng-message]:not(.md-char-counter), html[dir=rtl]
-    md-input-container [ng-message-exp]:not(.md-char-counter), html[dir=rtl] md-input-container [data-ng-message-exp]:not(.md-char-counter), html[dir=rtl] md-input-container [x-ng-message-exp]:not(.md-char-counter), html[dir=rtl]
-    md-input-container .md-char-counter:not(.md-char-counter) {
-      padding-right: 0;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-input-container ng-message:not(.md-char-counter), body[dir=rtl] md-input-container data-ng-message:not(.md-char-counter), body[dir=rtl] md-input-container x-ng-message:not(.md-char-counter), body[dir=rtl]
-    md-input-container [ng-message]:not(.md-char-counter), body[dir=rtl] md-input-container [data-ng-message]:not(.md-char-counter), body[dir=rtl] md-input-container [x-ng-message]:not(.md-char-counter), body[dir=rtl]
-    md-input-container [ng-message-exp]:not(.md-char-counter), body[dir=rtl] md-input-container [data-ng-message-exp]:not(.md-char-counter), body[dir=rtl] md-input-container [x-ng-message-exp]:not(.md-char-counter), body[dir=rtl]
-    md-input-container .md-char-counter:not(.md-char-counter) {
-      padding-right: 0;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-input-container ng-message:not(.md-char-counter), html:not([dir]) body:not([dir]) md-input-container data-ng-message:not(.md-char-counter), html:not([dir]) body:not([dir]) md-input-container x-ng-message:not(.md-char-counter), html:not([dir]) body:not([dir])
-    md-input-container [ng-message]:not(.md-char-counter), html:not([dir]) body:not([dir]) md-input-container [data-ng-message]:not(.md-char-counter), html:not([dir]) body:not([dir]) md-input-container [x-ng-message]:not(.md-char-counter), html:not([dir]) body:not([dir])
-    md-input-container [ng-message-exp]:not(.md-char-counter), html:not([dir]) body:not([dir]) md-input-container [data-ng-message-exp]:not(.md-char-counter), html:not([dir]) body:not([dir]) md-input-container [x-ng-message-exp]:not(.md-char-counter), html:not([dir]) body:not([dir])
-    md-input-container .md-char-counter:not(.md-char-counter) {
-      padding-right: 5px;
-      unicode-bidi: embed; }
-    md-input-container ng-message:not(.md-char-counter) bdo[dir=rtl], md-input-container data-ng-message:not(.md-char-counter) bdo[dir=rtl], md-input-container x-ng-message:not(.md-char-counter) bdo[dir=rtl],
-    md-input-container [ng-message]:not(.md-char-counter) bdo[dir=rtl], md-input-container [data-ng-message]:not(.md-char-counter) bdo[dir=rtl], md-input-container [x-ng-message]:not(.md-char-counter) bdo[dir=rtl],
-    md-input-container [ng-message-exp]:not(.md-char-counter) bdo[dir=rtl], md-input-container [data-ng-message-exp]:not(.md-char-counter) bdo[dir=rtl], md-input-container [x-ng-message-exp]:not(.md-char-counter) bdo[dir=rtl],
-    md-input-container .md-char-counter:not(.md-char-counter) bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-input-container ng-message:not(.md-char-counter) bdo[dir=ltr], md-input-container data-ng-message:not(.md-char-counter) bdo[dir=ltr], md-input-container x-ng-message:not(.md-char-counter) bdo[dir=ltr],
-    md-input-container [ng-message]:not(.md-char-counter) bdo[dir=ltr], md-input-container [data-ng-message]:not(.md-char-counter) bdo[dir=ltr], md-input-container [x-ng-message]:not(.md-char-counter) bdo[dir=ltr],
-    md-input-container [ng-message-exp]:not(.md-char-counter) bdo[dir=ltr], md-input-container [data-ng-message-exp]:not(.md-char-counter) bdo[dir=ltr], md-input-container [x-ng-message-exp]:not(.md-char-counter) bdo[dir=ltr],
-    md-input-container .md-char-counter:not(.md-char-counter) bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
-    html[dir=ltr] md-input-container ng-message:not(.md-char-counter), html[dir=ltr] md-input-container data-ng-message:not(.md-char-counter), html[dir=ltr] md-input-container x-ng-message:not(.md-char-counter), html[dir=ltr]
-    md-input-container [ng-message]:not(.md-char-counter), html[dir=ltr] md-input-container [data-ng-message]:not(.md-char-counter), html[dir=ltr] md-input-container [x-ng-message]:not(.md-char-counter), html[dir=ltr]
-    md-input-container [ng-message-exp]:not(.md-char-counter), html[dir=ltr] md-input-container [data-ng-message-exp]:not(.md-char-counter), html[dir=ltr] md-input-container [x-ng-message-exp]:not(.md-char-counter), html[dir=ltr]
-    md-input-container .md-char-counter:not(.md-char-counter) {
-      padding-left: 0;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-input-container ng-message:not(.md-char-counter), body[dir=ltr] md-input-container data-ng-message:not(.md-char-counter), body[dir=ltr] md-input-container x-ng-message:not(.md-char-counter), body[dir=ltr]
-    md-input-container [ng-message]:not(.md-char-counter), body[dir=ltr] md-input-container [data-ng-message]:not(.md-char-counter), body[dir=ltr] md-input-container [x-ng-message]:not(.md-char-counter), body[dir=ltr]
-    md-input-container [ng-message-exp]:not(.md-char-counter), body[dir=ltr] md-input-container [data-ng-message-exp]:not(.md-char-counter), body[dir=ltr] md-input-container [x-ng-message-exp]:not(.md-char-counter), body[dir=ltr]
-    md-input-container .md-char-counter:not(.md-char-counter) {
-      padding-left: 0;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-input-container ng-message:not(.md-char-counter), html[dir=rtl] md-input-container data-ng-message:not(.md-char-counter), html[dir=rtl] md-input-container x-ng-message:not(.md-char-counter), html[dir=rtl]
-    md-input-container [ng-message]:not(.md-char-counter), html[dir=rtl] md-input-container [data-ng-message]:not(.md-char-counter), html[dir=rtl] md-input-container [x-ng-message]:not(.md-char-counter), html[dir=rtl]
-    md-input-container [ng-message-exp]:not(.md-char-counter), html[dir=rtl] md-input-container [data-ng-message-exp]:not(.md-char-counter), html[dir=rtl] md-input-container [x-ng-message-exp]:not(.md-char-counter), html[dir=rtl]
-    md-input-container .md-char-counter:not(.md-char-counter) {
-      padding-left: 5px;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-input-container ng-message:not(.md-char-counter), body[dir=rtl] md-input-container data-ng-message:not(.md-char-counter), body[dir=rtl] md-input-container x-ng-message:not(.md-char-counter), body[dir=rtl]
-    md-input-container [ng-message]:not(.md-char-counter), body[dir=rtl] md-input-container [data-ng-message]:not(.md-char-counter), body[dir=rtl] md-input-container [x-ng-message]:not(.md-char-counter), body[dir=rtl]
-    md-input-container [ng-message-exp]:not(.md-char-counter), body[dir=rtl] md-input-container [data-ng-message-exp]:not(.md-char-counter), body[dir=rtl] md-input-container [x-ng-message-exp]:not(.md-char-counter), body[dir=rtl]
-    md-input-container .md-char-counter:not(.md-char-counter) {
-      padding-left: 5px;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-input-container ng-message:not(.md-char-counter), html:not([dir]) body:not([dir]) md-input-container data-ng-message:not(.md-char-counter), html:not([dir]) body:not([dir]) md-input-container x-ng-message:not(.md-char-counter), html:not([dir]) body:not([dir])
-    md-input-container [ng-message]:not(.md-char-counter), html:not([dir]) body:not([dir]) md-input-container [data-ng-message]:not(.md-char-counter), html:not([dir]) body:not([dir]) md-input-container [x-ng-message]:not(.md-char-counter), html:not([dir]) body:not([dir])
-    md-input-container [ng-message-exp]:not(.md-char-counter), html:not([dir]) body:not([dir]) md-input-container [data-ng-message-exp]:not(.md-char-counter), html:not([dir]) body:not([dir]) md-input-container [x-ng-message-exp]:not(.md-char-counter), html:not([dir]) body:not([dir])
-    md-input-container .md-char-counter:not(.md-char-counter) {
-      padding-left: 0;
-      unicode-bidi: embed; }
-    md-input-container ng-message:not(.md-char-counter) bdo[dir=rtl], md-input-container data-ng-message:not(.md-char-counter) bdo[dir=rtl], md-input-container x-ng-message:not(.md-char-counter) bdo[dir=rtl],
-    md-input-container [ng-message]:not(.md-char-counter) bdo[dir=rtl], md-input-container [data-ng-message]:not(.md-char-counter) bdo[dir=rtl], md-input-container [x-ng-message]:not(.md-char-counter) bdo[dir=rtl],
-    md-input-container [ng-message-exp]:not(.md-char-counter) bdo[dir=rtl], md-input-container [data-ng-message-exp]:not(.md-char-counter) bdo[dir=rtl], md-input-container [x-ng-message-exp]:not(.md-char-counter) bdo[dir=rtl],
-    md-input-container .md-char-counter:not(.md-char-counter) bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-input-container ng-message:not(.md-char-counter) bdo[dir=ltr], md-input-container data-ng-message:not(.md-char-counter) bdo[dir=ltr], md-input-container x-ng-message:not(.md-char-counter) bdo[dir=ltr],
-    md-input-container [ng-message]:not(.md-char-counter) bdo[dir=ltr], md-input-container [data-ng-message]:not(.md-char-counter) bdo[dir=ltr], md-input-container [x-ng-message]:not(.md-char-counter) bdo[dir=ltr],
-    md-input-container [ng-message-exp]:not(.md-char-counter) bdo[dir=ltr], md-input-container [data-ng-message-exp]:not(.md-char-counter) bdo[dir=ltr], md-input-container [x-ng-message-exp]:not(.md-char-counter) bdo[dir=ltr],
-    md-input-container .md-char-counter:not(.md-char-counter) bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
+      padding-left: 0; }
+      html[dir=rtl] md-input-container ng-message:not(.md-char-counter), html[dir=rtl] md-input-container data-ng-message:not(.md-char-counter), html[dir=rtl] md-input-container x-ng-message:not(.md-char-counter), html[dir=rtl]
+      md-input-container [ng-message]:not(.md-char-counter), html[dir=rtl] md-input-container [data-ng-message]:not(.md-char-counter), html[dir=rtl] md-input-container [x-ng-message]:not(.md-char-counter), html[dir=rtl]
+      md-input-container [ng-message-exp]:not(.md-char-counter), html[dir=rtl] md-input-container [data-ng-message-exp]:not(.md-char-counter), html[dir=rtl] md-input-container [x-ng-message-exp]:not(.md-char-counter), html[dir=rtl]
+      md-input-container .md-char-counter:not(.md-char-counter) {
+        padding-right: 0;
+        unicode-bidi: embed; }
+      body[dir=rtl] md-input-container ng-message:not(.md-char-counter), body[dir=rtl] md-input-container data-ng-message:not(.md-char-counter), body[dir=rtl] md-input-container x-ng-message:not(.md-char-counter), body[dir=rtl]
+      md-input-container [ng-message]:not(.md-char-counter), body[dir=rtl] md-input-container [data-ng-message]:not(.md-char-counter), body[dir=rtl] md-input-container [x-ng-message]:not(.md-char-counter), body[dir=rtl]
+      md-input-container [ng-message-exp]:not(.md-char-counter), body[dir=rtl] md-input-container [data-ng-message-exp]:not(.md-char-counter), body[dir=rtl] md-input-container [x-ng-message-exp]:not(.md-char-counter), body[dir=rtl]
+      md-input-container .md-char-counter:not(.md-char-counter) {
+        padding-right: 0;
+        unicode-bidi: embed; }
+      md-input-container ng-message:not(.md-char-counter) bdo[dir=rtl], md-input-container data-ng-message:not(.md-char-counter) bdo[dir=rtl], md-input-container x-ng-message:not(.md-char-counter) bdo[dir=rtl],
+      md-input-container [ng-message]:not(.md-char-counter) bdo[dir=rtl], md-input-container [data-ng-message]:not(.md-char-counter) bdo[dir=rtl], md-input-container [x-ng-message]:not(.md-char-counter) bdo[dir=rtl],
+      md-input-container [ng-message-exp]:not(.md-char-counter) bdo[dir=rtl], md-input-container [data-ng-message-exp]:not(.md-char-counter) bdo[dir=rtl], md-input-container [x-ng-message-exp]:not(.md-char-counter) bdo[dir=rtl],
+      md-input-container .md-char-counter:not(.md-char-counter) bdo[dir=rtl] {
+        direction: rtl;
+        unicode-bidi: bidi-override; }
+      md-input-container ng-message:not(.md-char-counter) bdo[dir=ltr], md-input-container data-ng-message:not(.md-char-counter) bdo[dir=ltr], md-input-container x-ng-message:not(.md-char-counter) bdo[dir=ltr],
+      md-input-container [ng-message]:not(.md-char-counter) bdo[dir=ltr], md-input-container [data-ng-message]:not(.md-char-counter) bdo[dir=ltr], md-input-container [x-ng-message]:not(.md-char-counter) bdo[dir=ltr],
+      md-input-container [ng-message-exp]:not(.md-char-counter) bdo[dir=ltr], md-input-container [data-ng-message-exp]:not(.md-char-counter) bdo[dir=ltr], md-input-container [x-ng-message-exp]:not(.md-char-counter) bdo[dir=ltr],
+      md-input-container .md-char-counter:not(.md-char-counter) bdo[dir=ltr] {
+        direction: ltr;
+        unicode-bidi: bidi-override; }
+      html[dir=rtl] md-input-container ng-message:not(.md-char-counter), html[dir=rtl] md-input-container data-ng-message:not(.md-char-counter), html[dir=rtl] md-input-container x-ng-message:not(.md-char-counter), html[dir=rtl]
+      md-input-container [ng-message]:not(.md-char-counter), html[dir=rtl] md-input-container [data-ng-message]:not(.md-char-counter), html[dir=rtl] md-input-container [x-ng-message]:not(.md-char-counter), html[dir=rtl]
+      md-input-container [ng-message-exp]:not(.md-char-counter), html[dir=rtl] md-input-container [data-ng-message-exp]:not(.md-char-counter), html[dir=rtl] md-input-container [x-ng-message-exp]:not(.md-char-counter), html[dir=rtl]
+      md-input-container .md-char-counter:not(.md-char-counter) {
+        padding-left: 5px;
+        unicode-bidi: embed; }
+      body[dir=rtl] md-input-container ng-message:not(.md-char-counter), body[dir=rtl] md-input-container data-ng-message:not(.md-char-counter), body[dir=rtl] md-input-container x-ng-message:not(.md-char-counter), body[dir=rtl]
+      md-input-container [ng-message]:not(.md-char-counter), body[dir=rtl] md-input-container [data-ng-message]:not(.md-char-counter), body[dir=rtl] md-input-container [x-ng-message]:not(.md-char-counter), body[dir=rtl]
+      md-input-container [ng-message-exp]:not(.md-char-counter), body[dir=rtl] md-input-container [data-ng-message-exp]:not(.md-char-counter), body[dir=rtl] md-input-container [x-ng-message-exp]:not(.md-char-counter), body[dir=rtl]
+      md-input-container .md-char-counter:not(.md-char-counter) {
+        padding-left: 5px;
+        unicode-bidi: embed; }
+      md-input-container ng-message:not(.md-char-counter) bdo[dir=rtl], md-input-container data-ng-message:not(.md-char-counter) bdo[dir=rtl], md-input-container x-ng-message:not(.md-char-counter) bdo[dir=rtl],
+      md-input-container [ng-message]:not(.md-char-counter) bdo[dir=rtl], md-input-container [data-ng-message]:not(.md-char-counter) bdo[dir=rtl], md-input-container [x-ng-message]:not(.md-char-counter) bdo[dir=rtl],
+      md-input-container [ng-message-exp]:not(.md-char-counter) bdo[dir=rtl], md-input-container [data-ng-message-exp]:not(.md-char-counter) bdo[dir=rtl], md-input-container [x-ng-message-exp]:not(.md-char-counter) bdo[dir=rtl],
+      md-input-container .md-char-counter:not(.md-char-counter) bdo[dir=rtl] {
+        direction: rtl;
+        unicode-bidi: bidi-override; }
+      md-input-container ng-message:not(.md-char-counter) bdo[dir=ltr], md-input-container data-ng-message:not(.md-char-counter) bdo[dir=ltr], md-input-container x-ng-message:not(.md-char-counter) bdo[dir=ltr],
+      md-input-container [ng-message]:not(.md-char-counter) bdo[dir=ltr], md-input-container [data-ng-message]:not(.md-char-counter) bdo[dir=ltr], md-input-container [x-ng-message]:not(.md-char-counter) bdo[dir=ltr],
+      md-input-container [ng-message-exp]:not(.md-char-counter) bdo[dir=ltr], md-input-container [data-ng-message-exp]:not(.md-char-counter) bdo[dir=ltr], md-input-container [x-ng-message-exp]:not(.md-char-counter) bdo[dir=ltr],
+      md-input-container .md-char-counter:not(.md-char-counter) bdo[dir=ltr] {
+        direction: ltr;
+        unicode-bidi: bidi-override; }
   md-input-container:not(.md-input-invalid) .md-auto-hide .md-input-message-animation {
     opacity: 0;
     margin-top: -100px; }
@@ -574,10 +473,7 @@ md-input-container {
     margin-top: -100px; }
   md-input-container.md-input-focused label:not(.md-no-float), md-input-container.md-input-has-placeholder label:not(.md-no-float), md-input-container.md-input-has-value label:not(.md-no-float) {
     -webkit-transform: translate3d(0, 6px, 0) scale(0.75);
-            transform: translate3d(0, 6px, 0) scale(0.75);
-    transition: -webkit-transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s, width cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s;
-    transition: transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s, width cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s;
-    width: calc((100% - 18px) / 0.75); }
+            transform: translate3d(0, 6px, 0) scale(0.75); }
   md-input-container.md-input-has-value label {
     transition: none; }
   md-input-container.md-input-focused .md-input,
@@ -590,185 +486,53 @@ md-input-container {
     background-size: 4px 1px;
     background-repeat: repeat-x;
     margin-bottom: -1px; }
-  md-input-container.md-icon-float {
-    transition: margin-top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
-    md-input-container.md-icon-float > label {
-      pointer-events: none;
-      position: absolute; }
-    md-input-container.md-icon-float > md-icon {
-      top: 8px; }
-      html[dir=ltr] md-input-container.md-icon-float > md-icon {
-        left: 2px;
-        unicode-bidi: embed; }
-      body[dir=ltr] md-input-container.md-icon-float > md-icon {
-        left: 2px;
-        unicode-bidi: embed; }
-      html[dir=rtl] md-input-container.md-icon-float > md-icon {
-        left: auto;
-        unicode-bidi: embed; }
-      body[dir=rtl] md-input-container.md-icon-float > md-icon {
-        left: auto;
-        unicode-bidi: embed; }
-      html:not([dir]) body:not([dir]) md-input-container.md-icon-float > md-icon {
-        left: 2px;
-        unicode-bidi: embed; }
-      md-input-container.md-icon-float > md-icon bdo[dir=rtl] {
-        direction: rtl;
-        unicode-bidi: bidi-override; }
-      md-input-container.md-icon-float > md-icon bdo[dir=ltr] {
-        direction: ltr;
-        unicode-bidi: bidi-override; }
-      html[dir=ltr] md-input-container.md-icon-float > md-icon {
-        right: auto;
-        unicode-bidi: embed; }
-      body[dir=ltr] md-input-container.md-icon-float > md-icon {
-        right: auto;
-        unicode-bidi: embed; }
-      html[dir=rtl] md-input-container.md-icon-float > md-icon {
-        right: 2px;
-        unicode-bidi: embed; }
-      body[dir=rtl] md-input-container.md-icon-float > md-icon {
-        right: 2px;
-        unicode-bidi: embed; }
-      html:not([dir]) body:not([dir]) md-input-container.md-icon-float > md-icon {
-        right: auto;
-        unicode-bidi: embed; }
-      md-input-container.md-icon-float > md-icon bdo[dir=rtl] {
-        direction: rtl;
-        unicode-bidi: bidi-override; }
-      md-input-container.md-icon-float > md-icon bdo[dir=ltr] {
-        direction: ltr;
-        unicode-bidi: bidi-override; }
-  md-input-container.md-icon-left > label:not(.md-no-float):not(._md-container-ignore),
-  md-input-container.md-icon-left > label .md-placeholder, md-input-container.md-icon-right > label:not(.md-no-float):not(._md-container-ignore),
-  md-input-container.md-icon-right > label .md-placeholder {
-    width: calc(100% - 36px - 18px); }
-  md-input-container.md-icon-left.md-input-focused > label:not(.md-no-float):not(._md-container-ignore),
-  md-input-container.md-icon-left.md-input-focused > label .md-placeholder, md-input-container.md-icon-left.md-input-has-placeholder > label:not(.md-no-float):not(._md-container-ignore),
-  md-input-container.md-icon-left.md-input-has-placeholder > label .md-placeholder, md-input-container.md-icon-left.md-input-has-value > label:not(.md-no-float):not(._md-container-ignore),
-  md-input-container.md-icon-left.md-input-has-value > label .md-placeholder, md-input-container.md-icon-right.md-input-focused > label:not(.md-no-float):not(._md-container-ignore),
-  md-input-container.md-icon-right.md-input-focused > label .md-placeholder, md-input-container.md-icon-right.md-input-has-placeholder > label:not(.md-no-float):not(._md-container-ignore),
-  md-input-container.md-icon-right.md-input-has-placeholder > label .md-placeholder, md-input-container.md-icon-right.md-input-has-value > label:not(.md-no-float):not(._md-container-ignore),
-  md-input-container.md-icon-right.md-input-has-value > label .md-placeholder {
-    width: calc((100% - 36px - 18px) / 0.75); }
-  html[dir=ltr] md-input-container.md-icon-left {
-    padding-left: 36px;
-    unicode-bidi: embed; }
-  body[dir=ltr] md-input-container.md-icon-left {
-    padding-left: 36px;
-    unicode-bidi: embed; }
-  html[dir=rtl] md-input-container.md-icon-left {
-    padding-left: 0;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-input-container.md-icon-left {
-    padding-left: 0;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) md-input-container.md-icon-left {
-    padding-left: 36px;
-    unicode-bidi: embed; }
-  md-input-container.md-icon-left bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-input-container.md-icon-left bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
-  html[dir=ltr] md-input-container.md-icon-left {
-    padding-right: 0;
-    unicode-bidi: embed; }
-  body[dir=ltr] md-input-container.md-icon-left {
-    padding-right: 0;
-    unicode-bidi: embed; }
-  html[dir=rtl] md-input-container.md-icon-left {
-    padding-right: 36px;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-input-container.md-icon-left {
-    padding-right: 36px;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) md-input-container.md-icon-left {
-    padding-right: 0;
-    unicode-bidi: embed; }
-  md-input-container.md-icon-left bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-input-container.md-icon-left bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
-  html[dir=ltr] md-input-container.md-icon-left > label {
-    left: 36px;
-    unicode-bidi: embed; }
-  body[dir=ltr] md-input-container.md-icon-left > label {
-    left: 36px;
-    unicode-bidi: embed; }
-  html[dir=rtl] md-input-container.md-icon-left > label {
-    left: auto;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-input-container.md-icon-left > label {
-    left: auto;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) md-input-container.md-icon-left > label {
-    left: 36px;
-    unicode-bidi: embed; }
-  md-input-container.md-icon-left > label bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-input-container.md-icon-left > label bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
-  html[dir=ltr] md-input-container.md-icon-left > label {
-    right: auto;
-    unicode-bidi: embed; }
-  body[dir=ltr] md-input-container.md-icon-left > label {
-    right: auto;
-    unicode-bidi: embed; }
-  html[dir=rtl] md-input-container.md-icon-left > label {
-    right: 36px;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-input-container.md-icon-left > label {
-    right: 36px;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) md-input-container.md-icon-left > label {
-    right: auto;
-    unicode-bidi: embed; }
-  md-input-container.md-icon-left > label bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-input-container.md-icon-left > label bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
-  html[dir=ltr] md-input-container.md-icon-right {
-    padding-left: 0;
-    unicode-bidi: embed; }
-  body[dir=ltr] md-input-container.md-icon-right {
-    padding-left: 0;
-    unicode-bidi: embed; }
+
+md-input-container.md-icon-float {
+  transition: margin-top 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  md-input-container.md-icon-float > label {
+    pointer-events: none;
+    position: absolute; }
+  md-input-container.md-icon-float > md-icon {
+    top: 2px;
+    left: 2px;
+    right: auto; }
+    html[dir=rtl] md-input-container.md-icon-float > md-icon {
+      left: auto;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-input-container.md-icon-float > md-icon {
+      left: auto;
+      unicode-bidi: embed; }
+    md-input-container.md-icon-float > md-icon bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-input-container.md-icon-float > md-icon bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
+    html[dir=rtl] md-input-container.md-icon-float > md-icon {
+      right: 2px;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-input-container.md-icon-float > md-icon {
+      right: 2px;
+      unicode-bidi: embed; }
+    md-input-container.md-icon-float > md-icon bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-input-container.md-icon-float > md-icon bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
+  md-input-container.md-icon-float.md-input-focused label, md-input-container.md-icon-float.md-input-has-value label {
+    -webkit-transform: translate3d(0, 6px, 0) scale(0.75);
+            transform: translate3d(0, 6px, 0) scale(0.75);
+    transition: -webkit-transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.5s;
+    transition: transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.5s; }
+
+md-input-container.md-icon-right {
+  padding-right: 36px;
+  padding-left: 36px; }
   html[dir=rtl] md-input-container.md-icon-right {
-    padding-left: 36px;
+    padding-right: 36px;
     unicode-bidi: embed; }
   body[dir=rtl] md-input-container.md-icon-right {
-    padding-left: 36px;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) md-input-container.md-icon-right {
-    padding-left: 0;
-    unicode-bidi: embed; }
-  md-input-container.md-icon-right bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-input-container.md-icon-right bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
-  html[dir=ltr] md-input-container.md-icon-right {
-    padding-right: 36px;
-    unicode-bidi: embed; }
-  body[dir=ltr] md-input-container.md-icon-right {
-    padding-right: 36px;
-    unicode-bidi: embed; }
-  html[dir=rtl] md-input-container.md-icon-right {
-    padding-right: 0;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-input-container.md-icon-right {
-    padding-right: 0;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) md-input-container.md-icon-right {
     padding-right: 36px;
     unicode-bidi: embed; }
   md-input-container.md-icon-right bdo[dir=rtl] {
@@ -777,61 +541,46 @@ md-input-container {
   md-input-container.md-icon-right bdo[dir=ltr] {
     direction: ltr;
     unicode-bidi: bidi-override; }
-  md-input-container.md-icon-right > md-icon:last-of-type {
-    margin: 0; }
-    html[dir=ltr] md-input-container.md-icon-right > md-icon:last-of-type {
-      right: 2px;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-input-container.md-icon-right > md-icon:last-of-type {
-      right: 2px;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-input-container.md-icon-right > md-icon:last-of-type {
-      right: auto;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-input-container.md-icon-right > md-icon:last-of-type {
-      right: auto;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-input-container.md-icon-right > md-icon:last-of-type {
-      right: 2px;
-      unicode-bidi: embed; }
-    md-input-container.md-icon-right > md-icon:last-of-type bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-input-container.md-icon-right > md-icon:last-of-type bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
-    html[dir=ltr] md-input-container.md-icon-right > md-icon:last-of-type {
-      left: auto;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-input-container.md-icon-right > md-icon:last-of-type {
-      left: auto;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-input-container.md-icon-right > md-icon:last-of-type {
-      left: 2px;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-input-container.md-icon-right > md-icon:last-of-type {
-      left: 2px;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-input-container.md-icon-right > md-icon:last-of-type {
-      left: auto;
-      unicode-bidi: embed; }
-    md-input-container.md-icon-right > md-icon:last-of-type bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-input-container.md-icon-right > md-icon:last-of-type bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
-  md-input-container.md-icon-left.md-icon-right {
+  html[dir=rtl] md-input-container.md-icon-right {
     padding-left: 36px;
-    padding-right: 36px; }
-    md-input-container.md-icon-left.md-icon-right > label:not(.md-no-float):not(._md-container-ignore),
-    md-input-container.md-icon-left.md-icon-right > label .md-placeholder {
-      width: calc(100% - (36px * 2)); }
-    md-input-container.md-icon-left.md-icon-right.md-input-focused > label:not(.md-no-float):not(._md-container-ignore),
-    md-input-container.md-icon-left.md-icon-right.md-input-focused > label .md-placeholder, md-input-container.md-icon-left.md-icon-right.md-input-has-placeholder > label:not(.md-no-float):not(._md-container-ignore),
-    md-input-container.md-icon-left.md-icon-right.md-input-has-placeholder > label .md-placeholder, md-input-container.md-icon-left.md-icon-right.md-input-has-value > label:not(.md-no-float):not(._md-container-ignore),
-    md-input-container.md-icon-left.md-icon-right.md-input-has-value > label .md-placeholder {
-      width: calc((100% - (36px * 2)) / 0.75); }
+    unicode-bidi: embed; }
+  body[dir=rtl] md-input-container.md-icon-right {
+    padding-left: 36px;
+    unicode-bidi: embed; }
+  md-input-container.md-icon-right bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  md-input-container.md-icon-right bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
+  md-input-container.md-icon-right .md-errors-spacer + md-icon {
+    margin: 0;
+    right: 2px;
+    left: auto; }
+    html[dir=rtl] md-input-container.md-icon-right .md-errors-spacer + md-icon {
+      right: auto;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-input-container.md-icon-right .md-errors-spacer + md-icon {
+      right: auto;
+      unicode-bidi: embed; }
+    md-input-container.md-icon-right .md-errors-spacer + md-icon bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-input-container.md-icon-right .md-errors-spacer + md-icon bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
+    html[dir=rtl] md-input-container.md-icon-right .md-errors-spacer + md-icon {
+      left: 2px;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-input-container.md-icon-right .md-errors-spacer + md-icon {
+      left: 2px;
+      unicode-bidi: embed; }
+    md-input-container.md-icon-right .md-errors-spacer + md-icon bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-input-container.md-icon-right .md-errors-spacer + md-icon bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
 
 @media screen and (-ms-high-contrast: active) {
   md-input-container.md-default-theme > md-icon {

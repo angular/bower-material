@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-f171fd2
+ * v1.0.6
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -72,17 +72,6 @@ angular.module('material.components.input', [
  * </hljs>
  */
 function mdInputContainerDirective($mdTheming, $parse) {
-
-  var INPUT_TAGS = ['INPUT', 'TEXTAREA', 'SELECT', 'MD-SELECT'];
-
-  var LEFT_SELECTORS = INPUT_TAGS.reduce(function(selectors, isel) {
-    return selectors.concat(['md-icon ~ ' + isel, '.md-icon ~ ' + isel]);
-  }, []).join(",");
-
-  var RIGHT_SELECTORS = INPUT_TAGS.reduce(function(selectors, isel) {
-    return selectors.concat([isel + ' ~ md-icon', isel + ' ~ .md-icon']);
-  }, []).join(",");
-
   ContainerCtrl.$inject = ["$scope", "$element", "$attrs", "$animate"];
   return {
     restrict: 'E',
@@ -90,15 +79,9 @@ function mdInputContainerDirective($mdTheming, $parse) {
     controller: ContainerCtrl
   };
 
-  function postLink(scope, element) {
+  function postLink(scope, element, attr) {
     $mdTheming(element);
-
-    // Check for both a left & right icon
-    var leftIcon = element[0].querySelector(LEFT_SELECTORS);
-    var rightIcon = element[0].querySelector(RIGHT_SELECTORS);
-
-    if (leftIcon) { element.addClass('md-icon-left'); }
-    if (rightIcon) { element.addClass('md-icon-right'); }
+    if (element.find('md-icon').length) element.addClass('md-has-icon');
   }
 
   function ContainerCtrl($scope, $element, $attrs, $animate) {
@@ -142,7 +125,7 @@ function labelDirective() {
     restrict: 'E',
     require: '^?mdInputContainer',
     link: function(scope, element, attr, containerCtrl) {
-      if (!containerCtrl || attr.mdNoFloat || element.hasClass('_md-container-ignore')) return;
+      if (!containerCtrl || attr.mdNoFloat || element.hasClass('md-container-ignore')) return;
 
       containerCtrl.label = element;
       scope.$on('$destroy', function() {
@@ -172,7 +155,6 @@ function labelDirective() {
  * @param {string=} placeholder An alternative approach to using aria-label when the label is not
  *   PRESENT. The placeholder text is copied to the aria-label attribute.
  * @param md-no-autogrow {boolean=} When present, textareas will not grow automatically.
- * @param md-no-asterisk {boolean=} When present, asterisk will not be appended to required inputs label
  * @param md-detect-hidden {boolean=} When present, textareas will be sized properly when they are
  *   revealed after being hidden. This is off by default for performance reasons because it
  *   guarantees a reflow every digest cycle.
@@ -273,16 +255,12 @@ function inputTextareaDirective($mdUtil, $window, $mdAria) {
     var hasNgModel = !!ctrls[1];
     var ngModelCtrl = ctrls[1] || $mdUtil.fakeNgModel();
     var isReadonly = angular.isDefined(attr.readonly);
-    var mdNoAsterisk = $mdUtil.parseAttributeBoolean(attr.mdNoAsterisk);
-
 
     if (!containerCtrl) return;
     if (containerCtrl.input) {
       throw new Error("<md-input-container> can only have *one* <input>, <textarea> or <md-select> child element!");
     }
     containerCtrl.input = element;
-
-    setupAttributeWatchers();
 
     // Add an error spacer div after our input to provide space for the char counter and any ng-messages
     var errorsSpacer = angular.element('<div class="md-errors-spacer">');
@@ -356,16 +334,6 @@ function inputTextareaDirective($mdUtil, $window, $mdAria) {
     function ngModelPipelineCheckValue(arg) {
       containerCtrl.setHasValue(!ngModelCtrl.$isEmpty(arg));
       return arg;
-    }
-
-    function setupAttributeWatchers() {
-      if (containerCtrl.label) {
-        attr.$observe('required', function (value) {
-          // We don't need to parse the required value, it's always a boolean because of angular's
-          // required directive.
-          containerCtrl.label.toggleClass('md-required', value && !mdNoAsterisk);
-        });
-      }
     }
 
     function inputCheckValue() {
