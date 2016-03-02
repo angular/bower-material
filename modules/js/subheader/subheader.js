@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6
+ * v1.0.6-master-05aad07
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -57,8 +57,8 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil) {
     transclude: true,
     template: (
     '<div class="md-subheader">' +
-    '  <div class="md-subheader-inner">' +
-    '    <span class="md-subheader-content"></span>' +
+    '  <div class="_md-subheader-inner">' +
+    '    <span class="_md-subheader-content"></span>' +
     '  </div>' +
     '</div>'
     ),
@@ -67,7 +67,7 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil) {
       var outerHTML = element[0].outerHTML;
 
       function getContent(el) {
-        return angular.element(el[0].querySelector('.md-subheader-content'));
+        return angular.element(el[0].querySelector('._md-subheader-content'));
       }
 
       // Transclude the user-given contents of the subheader
@@ -84,7 +84,7 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil) {
           // compiled clone below will only be a comment tag (since they replace their elements with
           // a comment) which cannot be properly passed to the $mdSticky; so we wrap it in our own
           // DIV to ensure we have something $mdSticky can use
-          var wrapperHtml = '<div class="md-subheader-wrapper">' + outerHTML + '</div>';
+          var wrapperHtml = '<div class="_md-subheader-wrapper">' + outerHTML + '</div>';
           var stickyClone = $compile(wrapperHtml)(scope);
 
           // Append the sticky

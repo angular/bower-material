@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6
+ * v1.0.6-master-05aad07
  */
 /** Styles for mdCalendar. */
 md-calendar {
@@ -36,10 +36,48 @@ md-calendar {
   text-align: center;
   padding: 0;
   border: none; }
-  .md-calendar-date:first-child {
-    padding-left: 16px; }
-  .md-calendar-date:last-child {
-    padding-right: 16px; }
+  html[dir=ltr] .md-calendar-date:first-child {
+    padding-left: 16px;
+    unicode-bidi: embed; }
+  body[dir=ltr] .md-calendar-date:first-child {
+    padding-left: 16px;
+    unicode-bidi: embed; }
+  html[dir=rtl] .md-calendar-date:first-child {
+    padding-right: 16px;
+    unicode-bidi: embed; }
+  body[dir=rtl] .md-calendar-date:first-child {
+    padding-right: 16px;
+    unicode-bidi: embed; }
+  html:not([dir]) body:not([dir]) .md-calendar-date:first-child {
+    padding-left: 16px;
+    unicode-bidi: embed; }
+  .md-calendar-date:first-child bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  .md-calendar-date:first-child bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
+  html[dir=ltr] .md-calendar-date:last-child {
+    padding-right: 16px;
+    unicode-bidi: embed; }
+  body[dir=ltr] .md-calendar-date:last-child {
+    padding-right: 16px;
+    unicode-bidi: embed; }
+  html[dir=rtl] .md-calendar-date:last-child {
+    padding-left: 16px;
+    unicode-bidi: embed; }
+  body[dir=rtl] .md-calendar-date:last-child {
+    padding-left: 16px;
+    unicode-bidi: embed; }
+  html:not([dir]) body:not([dir]) .md-calendar-date:last-child {
+    padding-right: 16px;
+    unicode-bidi: embed; }
+  .md-calendar-date:last-child bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  .md-calendar-date:last-child bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
   .md-calendar-date.md-calendar-date-disabled {
     cursor: default; }
 
@@ -56,8 +94,28 @@ md-calendar {
 .md-calendar-month-label {
   height: 44px;
   font-size: 14px;
-  font-weight: 500;
-  padding: 0 0 0 24px; }
+  font-weight: 500; }
+  html[dir=ltr] .md-calendar-month-label {
+    padding: 0 0 0 24px;
+    unicode-bidi: embed; }
+  body[dir=ltr] .md-calendar-month-label {
+    padding: 0 0 0 24px;
+    unicode-bidi: embed; }
+  html[dir=rtl] .md-calendar-month-label {
+    padding: 0 24px 0 0;
+    unicode-bidi: embed; }
+  body[dir=rtl] .md-calendar-month-label {
+    padding: 0 24px 0 0;
+    unicode-bidi: embed; }
+  html:not([dir]) body:not([dir]) .md-calendar-month-label {
+    padding: 0 0 0 24px;
+    unicode-bidi: embed; }
+  .md-calendar-month-label bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  .md-calendar-month-label bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
 
 .md-calendar-day-header {
   table-layout: fixed;
@@ -71,10 +129,48 @@ md-calendar {
     border: none;
     font-weight: normal;
     height: 40px; }
-    .md-calendar-day-header th:first-child {
-      padding-left: 16px; }
-    .md-calendar-day-header th:last-child {
-      padding-right: 16px; }
+    html[dir=ltr] .md-calendar-day-header th:first-child {
+      padding-left: 16px;
+      unicode-bidi: embed; }
+    body[dir=ltr] .md-calendar-day-header th:first-child {
+      padding-left: 16px;
+      unicode-bidi: embed; }
+    html[dir=rtl] .md-calendar-day-header th:first-child {
+      padding-right: 16px;
+      unicode-bidi: embed; }
+    body[dir=rtl] .md-calendar-day-header th:first-child {
+      padding-right: 16px;
+      unicode-bidi: embed; }
+    html:not([dir]) body:not([dir]) .md-calendar-day-header th:first-child {
+      padding-left: 16px;
+      unicode-bidi: embed; }
+    .md-calendar-day-header th:first-child bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    .md-calendar-day-header th:first-child bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
+    html[dir=ltr] .md-calendar-day-header th:last-child {
+      padding-right: 16px;
+      unicode-bidi: embed; }
+    body[dir=ltr] .md-calendar-day-header th:last-child {
+      padding-right: 16px;
+      unicode-bidi: embed; }
+    html[dir=rtl] .md-calendar-day-header th:last-child {
+      padding-left: 16px;
+      unicode-bidi: embed; }
+    body[dir=rtl] .md-calendar-day-header th:last-child {
+      padding-left: 16px;
+      unicode-bidi: embed; }
+    html:not([dir]) body:not([dir]) .md-calendar-day-header th:last-child {
+      padding-right: 16px;
+      unicode-bidi: embed; }
+    .md-calendar-day-header th:last-child bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    .md-calendar-day-header th:last-child bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
 
 .md-calendar {
   table-layout: fixed;
@@ -85,14 +181,56 @@ md-calendar {
     border-bottom-style: solid; }
   .md-calendar:first-child {
     border-top: 1px solid transparent; }
+  .md-calendar tbody, .md-calendar td, .md-calendar tr {
+    vertical-align: middle; }
 
 /** Styles for mdDatepicker. */
 md-datepicker {
   white-space: nowrap;
   overflow: hidden;
-  padding-right: 18px;
-  margin-right: -18px;
   vertical-align: middle; }
+  html[dir=ltr] md-datepicker {
+    padding-right: 18px;
+    unicode-bidi: embed; }
+  body[dir=ltr] md-datepicker {
+    padding-right: 18px;
+    unicode-bidi: embed; }
+  html[dir=rtl] md-datepicker {
+    padding-left: 18px;
+    unicode-bidi: embed; }
+  body[dir=rtl] md-datepicker {
+    padding-left: 18px;
+    unicode-bidi: embed; }
+  html:not([dir]) body:not([dir]) md-datepicker {
+    padding-right: 18px;
+    unicode-bidi: embed; }
+  md-datepicker bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  md-datepicker bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
+  html[dir=ltr] md-datepicker {
+    margin-right: -18px;
+    unicode-bidi: embed; }
+  body[dir=ltr] md-datepicker {
+    margin-right: -18px;
+    unicode-bidi: embed; }
+  html[dir=rtl] md-datepicker {
+    margin-left: -18px;
+    unicode-bidi: embed; }
+  body[dir=rtl] md-datepicker {
+    margin-left: -18px;
+    unicode-bidi: embed; }
+  html:not([dir]) body:not([dir]) md-datepicker {
+    margin-right: -18px;
+    unicode-bidi: embed; }
+  md-datepicker bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  md-datepicker bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
 
 .md-inline-form md-datepicker {
   margin-top: 12px; }
@@ -120,8 +258,28 @@ md-datepicker {
   border-bottom-width: 1px;
   border-bottom-style: solid;
   display: inline-block;
-  width: auto;
-  margin-left: 12px; }
+  width: auto; }
+  html[dir=ltr] .md-datepicker-input-container {
+    margin-left: 12px;
+    unicode-bidi: embed; }
+  body[dir=ltr] .md-datepicker-input-container {
+    margin-left: 12px;
+    unicode-bidi: embed; }
+  html[dir=rtl] .md-datepicker-input-container {
+    margin-right: 12px;
+    unicode-bidi: embed; }
+  body[dir=rtl] .md-datepicker-input-container {
+    margin-right: 12px;
+    unicode-bidi: embed; }
+  html:not([dir]) body:not([dir]) .md-datepicker-input-container {
+    margin-left: 12px;
+    unicode-bidi: embed; }
+  .md-datepicker-input-container bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  .md-datepicker-input-container bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
   .md-datepicker-input-container.md-datepicker-focused {
     border-bottom-width: 2px; }
 
@@ -179,10 +337,30 @@ md-datepicker {
 
 .md-datepicker-triangle-button {
   position: absolute;
-  right: 0;
   top: 0;
   -webkit-transform: translateY(-25%) translateX(45%);
           transform: translateY(-25%) translateX(45%); }
+  html[dir=ltr] .md-datepicker-triangle-button {
+    right: 0;
+    unicode-bidi: embed; }
+  body[dir=ltr] .md-datepicker-triangle-button {
+    right: 0;
+    unicode-bidi: embed; }
+  html[dir=rtl] .md-datepicker-triangle-button {
+    left: 0;
+    unicode-bidi: embed; }
+  body[dir=rtl] .md-datepicker-triangle-button {
+    left: 0;
+    unicode-bidi: embed; }
+  html:not([dir]) body:not([dir]) .md-datepicker-triangle-button {
+    right: 0;
+    unicode-bidi: embed; }
+  .md-datepicker-triangle-button bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  .md-datepicker-triangle-button bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
 
 .md-datepicker-triangle-button.md-button.md-icon-button {
   height: 100%;
@@ -196,12 +374,52 @@ md-datepicker[disabled] .md-datepicker-triangle-button {
   display: none; }
 
 .md-datepicker-open .md-datepicker-input-container {
-  margin-left: -12px;
   border: none; }
+  html[dir=ltr] .md-datepicker-open .md-datepicker-input-container {
+    margin-left: -12px;
+    unicode-bidi: embed; }
+  body[dir=ltr] .md-datepicker-open .md-datepicker-input-container {
+    margin-left: -12px;
+    unicode-bidi: embed; }
+  html[dir=rtl] .md-datepicker-open .md-datepicker-input-container {
+    margin-right: -12px;
+    unicode-bidi: embed; }
+  body[dir=rtl] .md-datepicker-open .md-datepicker-input-container {
+    margin-right: -12px;
+    unicode-bidi: embed; }
+  html:not([dir]) body:not([dir]) .md-datepicker-open .md-datepicker-input-container {
+    margin-left: -12px;
+    unicode-bidi: embed; }
+  .md-datepicker-open .md-datepicker-input-container bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  .md-datepicker-open .md-datepicker-input-container bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
 
 .md-datepicker-open .md-datepicker-input {
-  margin-left: 24px;
   height: 40px; }
+  html[dir=ltr] .md-datepicker-open .md-datepicker-input {
+    margin-left: 24px;
+    unicode-bidi: embed; }
+  body[dir=ltr] .md-datepicker-open .md-datepicker-input {
+    margin-left: 24px;
+    unicode-bidi: embed; }
+  html[dir=rtl] .md-datepicker-open .md-datepicker-input {
+    margin-right: 24px;
+    unicode-bidi: embed; }
+  body[dir=rtl] .md-datepicker-open .md-datepicker-input {
+    margin-right: 24px;
+    unicode-bidi: embed; }
+  html:not([dir]) body:not([dir]) .md-datepicker-open .md-datepicker-input {
+    margin-left: 24px;
+    unicode-bidi: embed; }
+  .md-datepicker-open .md-datepicker-input bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  .md-datepicker-open .md-datepicker-input bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
 
 .md-datepicker-open .md-datepicker-triangle-button {
   display: none; }

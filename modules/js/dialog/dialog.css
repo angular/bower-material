@@ -2,12 +2,12 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6
+ * v1.0.6-master-05aad07
  */
 .md-dialog-is-showing {
   max-height: 100%; }
 
-.md-dialog-container {
+._md-dialog-container {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -39,12 +39,12 @@ md-dialog {
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column; }
-  md-dialog.md-transition-in {
+  md-dialog._md-transition-in {
     opacity: 1;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     -webkit-transform: translate(0, 0) scale(1);
             transform: translate(0, 0) scale(1); }
-  md-dialog.md-transition-out {
+  md-dialog._md-transition-out {
     opacity: 0;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     -webkit-transform: translate(0, 100%) scale(0.2);
@@ -74,15 +74,11 @@ md-dialog {
       outline: none; }
     md-dialog md-dialog-content .md-subheader {
       margin: 0; }
-      md-dialog md-dialog-content .md-subheader.sticky-clone {
-        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16); }
-    md-dialog md-dialog-content.sticky-container {
-      padding: 0; }
-      md-dialog md-dialog-content.sticky-container > div {
-        padding: 24px;
-        padding-top: 0; }
-    md-dialog md-dialog-content .md-dialog-content-body {
+    md-dialog md-dialog-content ._md-dialog-content-body {
       width: 100%; }
+    md-dialog md-dialog-content .md-prompt-input-container {
+      width: 100%;
+      box-sizing: border-box; }
   md-dialog .md-actions, md-dialog md-dialog-actions {
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -98,15 +94,95 @@ md-dialog {
         -ms-flex-pack: end;
             justify-content: flex-end;
     margin-bottom: 0;
-    padding-right: 8px;
-    padding-left: 16px;
     min-height: 52px;
     overflow: hidden; }
+    html[dir=ltr] md-dialog .md-actions, html[dir=ltr] md-dialog md-dialog-actions {
+      padding-right: 8px;
+      unicode-bidi: embed; }
+    body[dir=ltr] md-dialog .md-actions, body[dir=ltr] md-dialog md-dialog-actions {
+      padding-right: 8px;
+      unicode-bidi: embed; }
+    html[dir=rtl] md-dialog .md-actions, html[dir=rtl] md-dialog md-dialog-actions {
+      padding-right: 16px;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-dialog .md-actions, body[dir=rtl] md-dialog md-dialog-actions {
+      padding-right: 16px;
+      unicode-bidi: embed; }
+    html:not([dir]) body:not([dir]) md-dialog .md-actions, html:not([dir]) body:not([dir]) md-dialog md-dialog-actions {
+      padding-right: 8px;
+      unicode-bidi: embed; }
+    md-dialog .md-actions bdo[dir=rtl], md-dialog md-dialog-actions bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-dialog .md-actions bdo[dir=ltr], md-dialog md-dialog-actions bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
+    html[dir=ltr] md-dialog .md-actions, html[dir=ltr] md-dialog md-dialog-actions {
+      padding-left: 16px;
+      unicode-bidi: embed; }
+    body[dir=ltr] md-dialog .md-actions, body[dir=ltr] md-dialog md-dialog-actions {
+      padding-left: 16px;
+      unicode-bidi: embed; }
+    html[dir=rtl] md-dialog .md-actions, html[dir=rtl] md-dialog md-dialog-actions {
+      padding-left: 8px;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-dialog .md-actions, body[dir=rtl] md-dialog md-dialog-actions {
+      padding-left: 8px;
+      unicode-bidi: embed; }
+    html:not([dir]) body:not([dir]) md-dialog .md-actions, html:not([dir]) body:not([dir]) md-dialog md-dialog-actions {
+      padding-left: 16px;
+      unicode-bidi: embed; }
+    md-dialog .md-actions bdo[dir=rtl], md-dialog md-dialog-actions bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-dialog .md-actions bdo[dir=ltr], md-dialog md-dialog-actions bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
     md-dialog .md-actions .md-button, md-dialog md-dialog-actions .md-button {
       margin-bottom: 8px;
-      margin-left: 8px;
-      margin-right: 0;
       margin-top: 8px; }
+      html[dir=ltr] md-dialog .md-actions .md-button, html[dir=ltr] md-dialog md-dialog-actions .md-button {
+        margin-left: 8px;
+        unicode-bidi: embed; }
+      body[dir=ltr] md-dialog .md-actions .md-button, body[dir=ltr] md-dialog md-dialog-actions .md-button {
+        margin-left: 8px;
+        unicode-bidi: embed; }
+      html[dir=rtl] md-dialog .md-actions .md-button, html[dir=rtl] md-dialog md-dialog-actions .md-button {
+        margin-left: 0;
+        unicode-bidi: embed; }
+      body[dir=rtl] md-dialog .md-actions .md-button, body[dir=rtl] md-dialog md-dialog-actions .md-button {
+        margin-left: 0;
+        unicode-bidi: embed; }
+      html:not([dir]) body:not([dir]) md-dialog .md-actions .md-button, html:not([dir]) body:not([dir]) md-dialog md-dialog-actions .md-button {
+        margin-left: 8px;
+        unicode-bidi: embed; }
+      md-dialog .md-actions .md-button bdo[dir=rtl], md-dialog md-dialog-actions .md-button bdo[dir=rtl] {
+        direction: rtl;
+        unicode-bidi: bidi-override; }
+      md-dialog .md-actions .md-button bdo[dir=ltr], md-dialog md-dialog-actions .md-button bdo[dir=ltr] {
+        direction: ltr;
+        unicode-bidi: bidi-override; }
+      html[dir=ltr] md-dialog .md-actions .md-button, html[dir=ltr] md-dialog md-dialog-actions .md-button {
+        margin-right: 0;
+        unicode-bidi: embed; }
+      body[dir=ltr] md-dialog .md-actions .md-button, body[dir=ltr] md-dialog md-dialog-actions .md-button {
+        margin-right: 0;
+        unicode-bidi: embed; }
+      html[dir=rtl] md-dialog .md-actions .md-button, html[dir=rtl] md-dialog md-dialog-actions .md-button {
+        margin-right: 8px;
+        unicode-bidi: embed; }
+      body[dir=rtl] md-dialog .md-actions .md-button, body[dir=rtl] md-dialog md-dialog-actions .md-button {
+        margin-right: 8px;
+        unicode-bidi: embed; }
+      html:not([dir]) body:not([dir]) md-dialog .md-actions .md-button, html:not([dir]) body:not([dir]) md-dialog md-dialog-actions .md-button {
+        margin-right: 0;
+        unicode-bidi: embed; }
+      md-dialog .md-actions .md-button bdo[dir=rtl], md-dialog md-dialog-actions .md-button bdo[dir=rtl] {
+        direction: rtl;
+        unicode-bidi: bidi-override; }
+      md-dialog .md-actions .md-button bdo[dir=ltr], md-dialog md-dialog-actions .md-button bdo[dir=ltr] {
+        direction: ltr;
+        unicode-bidi: bidi-override; }
   md-dialog.md-content-overflow .md-actions, md-dialog.md-content-overflow md-dialog-actions {
     border-top-width: 1px;
     border-top-style: solid; }

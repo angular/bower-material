@@ -2,9 +2,9 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6
+ * v1.0.6-master-05aad07
  */
-.md-sticky-clone {
+._md-sticky-clone {
   z-index: 2;
   top: 0;
   left: 0;
@@ -12,9 +12,9 @@
   position: absolute !important;
   -webkit-transform: translate3d(-9999px, -9999px, 0);
           transform: translate3d(-9999px, -9999px, 0); }
-  .md-sticky-clone[sticky-state="active"] {
+  ._md-sticky-clone[sticky-state="active"] {
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }
-    .md-sticky-clone[sticky-state="active"]:not(.md-sticky-no-effect) .md-subheader-inner {
+    ._md-sticky-clone[sticky-state="active"]:not(.md-sticky-no-effect) ._md-subheader-inner {
       -webkit-animation: subheaderStickyHoverIn 0.3s ease-out both;
               animation: subheaderStickyHoverIn 0.3s ease-out both; }

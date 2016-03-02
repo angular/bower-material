@@ -2,32 +2,32 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6
+ * v1.0.6-master-05aad07
  */
-.md-select-menu-container {
+._md-select-menu-container {
   position: fixed;
   left: 0;
   top: 0;
   z-index: 90;
   opacity: 0;
   display: none; }
-  .md-select-menu-container:not(.md-clickable) {
+  ._md-select-menu-container:not(._md-clickable) {
     pointer-events: none; }
-  .md-select-menu-container md-progress-circular {
+  ._md-select-menu-container md-progress-circular {
     display: table;
     margin: 24px auto !important; }
-  .md-select-menu-container.md-active {
+  ._md-select-menu-container._md-active {
     display: block;
     opacity: 1; }
-    .md-select-menu-container.md-active md-select-menu {
+    ._md-select-menu-container._md-active md-select-menu {
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       transition-duration: 150ms; }
-      .md-select-menu-container.md-active md-select-menu > * {
+      ._md-select-menu-container._md-active md-select-menu > * {
         opacity: 1;
         transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
         transition-duration: 150ms;
         transition-delay: 100ms; }
-  .md-select-menu-container.md-leave {
+  ._md-select-menu-container._md-leave {
     opacity: 0;
     transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
     transition-duration: 250ms; }
@@ -43,7 +43,7 @@ md-select {
   display: -ms-flexbox;
   display: flex;
   margin: 20px 0 26px 0; }
-  md-select[disabled] .md-select-value {
+  md-select[disabled] ._md-select-value {
     background-position: 0 bottom;
     background-size: 4px 1px;
     background-repeat: repeat-x;
@@ -54,15 +54,15 @@ md-select {
     cursor: default; }
   md-select:not([disabled]):hover {
     cursor: pointer; }
-  md-select:not([disabled]).ng-invalid.ng-dirty .md-select-value {
+  md-select:not([disabled]).ng-invalid.ng-dirty ._md-select-value {
     border-bottom: 2px solid;
     padding-bottom: 0; }
-  md-select:not([disabled]):focus .md-select-value {
+  md-select:not([disabled]):focus ._md-select-value {
     border-bottom-width: 2px;
     border-bottom-style: solid;
     padding-bottom: 0; }
 
-.md-select-value {
+._md-select-value {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -80,9 +80,9 @@ md-select {
   -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1; }
-  .md-select-value .md-text {
+  ._md-select-value ._md-text {
     display: inline; }
-  .md-select-value *:first-child {
+  ._md-select-value *:first-child {
     -webkit-flex: 1 0 auto;
         -ms-flex: 1 0 auto;
             flex: 1 0 auto;
@@ -91,7 +91,7 @@ md-select {
     overflow: hidden;
     -webkit-transform: translate3d(0, 2px, 0);
             transform: translate3d(0, 2px, 0); }
-  .md-select-value .md-select-icon {
+  ._md-select-value ._md-select-icon {
     display: block;
     -webkit-align-items: flex-end;
         -ms-flex-align: end;
@@ -101,7 +101,7 @@ md-select {
     margin: 0 4px;
     -webkit-transform: translate3d(0, 1px, 0);
             transform: translate3d(0, 1px, 0); }
-  .md-select-value .md-select-icon:after {
+  ._md-select-value ._md-select-icon:after {
     display: block;
     content: '\25BC';
     position: relative;
@@ -109,7 +109,7 @@ md-select {
     speak: none;
     -webkit-transform: scaleY(0.6) scaleX(1);
             transform: scaleY(0.6) scaleX(1); }
-  .md-select-value.md-select-placeholder {
+  ._md-select-value._md-select-placeholder {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
@@ -132,17 +132,23 @@ md-select-menu {
   max-height: 256px;
   min-height: 48px;
   overflow-y: hidden;
-  -webkit-transform-origin: left top;
-          transform-origin: left top;
   -webkit-transform: scale(1);
           transform: scale(1); }
   md-select-menu.md-reverse {
     -webkit-flex-direction: column-reverse;
         -ms-flex-direction: column-reverse;
             flex-direction: column-reverse; }
-  md-select-menu:not(.md-overflow) md-content {
+  md-select-menu:not(._md-overflow) md-content {
     padding-top: 8px;
     padding-bottom: 8px; }
+  html[dir=ltr] md-select-menu {
+    -webkit-transform-origin: left top;
+            transform-origin: left top;
+    unicode-bidi: embed; }
+  body[dir=ltr] md-select-menu {
+    -webkit-transform-origin: left top;
+            transform-origin: left top;
+    unicode-bidi: embed; }
   html[dir=rtl] md-select-menu {
     -webkit-transform-origin: right top;
             transform-origin: right top;
@@ -150,6 +156,10 @@ md-select-menu {
   body[dir=rtl] md-select-menu {
     -webkit-transform-origin: right top;
             transform-origin: right top;
+    unicode-bidi: embed; }
+  html:not([dir]) body:not([dir]) md-select-menu {
+    -webkit-transform-origin: left top;
+            transform-origin: left top;
     unicode-bidi: embed; }
   md-select-menu bdo[dir=rtl] {
     direction: rtl;
@@ -181,7 +191,7 @@ md-option {
     cursor: default; }
   md-option:focus {
     outline: none; }
-  md-option .md-text {
+  md-option ._md-text {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -207,7 +217,7 @@ md-optgroup {
     padding-right: 32px; }
 
 @media screen and (-ms-high-contrast: active) {
-  .md-select-backdrop {
+  ._md-select-backdrop {
     background-color: transparent; }
   md-select-menu {
     border: 1px solid #fff; } }
