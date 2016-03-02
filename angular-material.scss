@@ -1251,6 +1251,220 @@ md-backdrop {
 }
 
 
+$card-padding: 16px !default;
+$card-box-shadow: $whiteframe-shadow-1dp !default;
+
+md-card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  margin: $baseline-grid;
+
+  box-shadow: $card-box-shadow;
+
+  md-card-header {
+    padding: $card-padding;
+    display: flex;
+    flex-direction: row;
+
+    &:first-child {
+      md-card-avatar {
+       @include rtl-prop(margin-right, margin-left, 12px);
+      }
+    }
+
+    &:last-child {
+      md-card-avatar {
+        @include rtl-prop(margin-left, margin-right, 12px);
+      }
+    }
+
+    md-card-avatar {
+      width: 40px;
+      height: 40px;
+
+      .md-user-avatar,
+      md-icon{
+        border-radius: 50%;
+      }
+
+      md-icon {
+        padding: 8px;
+      }
+
+      & + md-card-header-text {
+        max-height: 40px;
+
+        .md-title {
+          font-size: 14px;
+        }
+      }
+    }
+
+    md-card-header-text {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+
+      .md-subhead {
+        font-size: 14px;
+      }
+    }
+  }
+
+  > img,
+  > :not(md-card-content) img {
+    box-sizing: border-box;
+    display: flex;
+    flex: 0 0 auto;
+    width: 100%;
+    height: 100% !important;
+  }
+
+  md-card-title {
+    padding: 3 * $card-padding / 2 $card-padding $card-padding;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+
+    & + md-card-content {
+      padding-top: 0;
+    }
+
+    md-card-title-text {
+      flex: 1;
+      flex-direction: column;
+      display: flex;
+
+      .md-subhead {
+        padding-top: 0;
+        font-size: 14px;
+      }
+
+      &:only-child {
+        .md-subhead {
+          padding-top: 3 * $card-padding / 4;
+        }
+      }
+    }
+
+    md-card-title-media {
+      margin-top: - $card-padding / 2;
+
+      .md-media-sm {
+        height: 80px;
+        width: 80px;
+      }
+      .md-media-md {
+        height: 112px;
+        width: 112px;
+      }
+      .md-media-lg {
+        height: 152px;
+        width: 152px;
+      }
+    }
+  }
+
+  md-card-content {
+    display: block;
+    padding: $card-padding;
+
+    & > p {
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .md-media-xl {
+      height: 240px;
+      width: 240px;
+    }
+  }
+
+  .md-actions, md-card-actions {
+    margin: $baseline-grid;
+
+    &.layout-column {
+      .md-button {
+        &:not(.md-icon-button) {
+          margin: $baseline-grid / 4 0;
+
+          &:first-of-type {
+            margin-top: 0;
+          }
+
+          &:last-of-type {
+            margin-bottom: 0;
+          }
+        }
+
+        &.md-icon-button {
+          margin-top: 3 * $baseline-grid / 4;
+          margin-bottom: 3 * $baseline-grid / 4;
+        }
+      }
+    }
+
+    md-card-icon-actions {
+      flex: 1;
+      justify-content: flex-start;
+      display: flex;
+      flex-direction: row;
+    }
+
+    &:not(.layout-column) .md-button {
+      &:not(.md-icon-button) {
+        margin: 0 $baseline-grid * .5;
+
+        &:first-of-type {
+          @include rtl-prop(margin-left, margin-right, 0);
+        }
+
+        &:last-of-type {
+          @include rtl-prop(margin-right, margin-left, 0);
+        }
+      }
+
+      &.md-icon-button {
+        margin-left: 3 * $baseline-grid / 4;
+        margin-right: 3 * $baseline-grid / 4;
+
+        &:first-of-type {
+          @include rtl-prop(margin-left, margin-right, 3 * $baseline-grid / 2);
+        }
+
+        &:last-of-type {
+          @include rtl-prop(margin-right, margin-left, 3 * $baseline-grid / 2);
+        }
+      }
+
+      & + md-card-icon-actions {
+        flex: 1;
+        justify-content: flex-end;
+        display: flex;
+        flex-direction: row;
+      }
+    }
+  }
+
+  md-card-footer {
+    margin-top: auto;
+    padding: $card-padding;
+  }
+}
+
+@media screen and (-ms-high-contrast: active) {
+  md-card {
+    border: 1px solid #fff;
+  }
+}
+
+
 $bottom-sheet-horizontal-padding: 2 * $baseline-grid !default;
 $bottom-sheet-vertical-padding: 1 * $baseline-grid !default;
 $bottom-sheet-icon-after-margin: 4 * $baseline-grid !default;
@@ -1660,220 +1874,6 @@ button.md-button::-moz-focus-inner {
     border: 1px solid #fff;
   }
 }
-
-$card-padding: 16px !default;
-$card-box-shadow: $whiteframe-shadow-1dp !default;
-
-md-card {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  margin: $baseline-grid;
-
-  box-shadow: $card-box-shadow;
-
-  md-card-header {
-    padding: $card-padding;
-    display: flex;
-    flex-direction: row;
-
-    &:first-child {
-      md-card-avatar {
-       @include rtl-prop(margin-right, margin-left, 12px);
-      }
-    }
-
-    &:last-child {
-      md-card-avatar {
-        @include rtl-prop(margin-left, margin-right, 12px);
-      }
-    }
-
-    md-card-avatar {
-      width: 40px;
-      height: 40px;
-
-      .md-user-avatar,
-      md-icon{
-        border-radius: 50%;
-      }
-
-      md-icon {
-        padding: 8px;
-      }
-
-      & + md-card-header-text {
-        max-height: 40px;
-
-        .md-title {
-          font-size: 14px;
-        }
-      }
-    }
-
-    md-card-header-text {
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-
-      .md-subhead {
-        font-size: 14px;
-      }
-    }
-  }
-
-  > img,
-  > :not(md-card-content) img {
-    box-sizing: border-box;
-    display: flex;
-    flex: 0 0 auto;
-    width: 100%;
-    height: 100% !important;
-  }
-
-  md-card-title {
-    padding: 3 * $card-padding / 2 $card-padding $card-padding;
-    display: flex;
-    flex: 1 1 auto;
-    flex-direction: row;
-
-    & + md-card-content {
-      padding-top: 0;
-    }
-
-    md-card-title-text {
-      flex: 1;
-      flex-direction: column;
-      display: flex;
-
-      .md-subhead {
-        padding-top: 0;
-        font-size: 14px;
-      }
-
-      &:only-child {
-        .md-subhead {
-          padding-top: 3 * $card-padding / 4;
-        }
-      }
-    }
-
-    md-card-title-media {
-      margin-top: - $card-padding / 2;
-
-      .md-media-sm {
-        height: 80px;
-        width: 80px;
-      }
-      .md-media-md {
-        height: 112px;
-        width: 112px;
-      }
-      .md-media-lg {
-        height: 152px;
-        width: 152px;
-      }
-    }
-  }
-
-  md-card-content {
-    display: block;
-    padding: $card-padding;
-
-    & > p {
-      &:first-child {
-        margin-top: 0;
-      }
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-
-    .md-media-xl {
-      height: 240px;
-      width: 240px;
-    }
-  }
-
-  .md-actions, md-card-actions {
-    margin: $baseline-grid;
-
-    &.layout-column {
-      .md-button {
-        &:not(.md-icon-button) {
-          margin: $baseline-grid / 4 0;
-
-          &:first-of-type {
-            margin-top: 0;
-          }
-
-          &:last-of-type {
-            margin-bottom: 0;
-          }
-        }
-
-        &.md-icon-button {
-          margin-top: 3 * $baseline-grid / 4;
-          margin-bottom: 3 * $baseline-grid / 4;
-        }
-      }
-    }
-
-    md-card-icon-actions {
-      flex: 1;
-      justify-content: flex-start;
-      display: flex;
-      flex-direction: row;
-    }
-
-    &:not(.layout-column) .md-button {
-      &:not(.md-icon-button) {
-        margin: 0 $baseline-grid * .5;
-
-        &:first-of-type {
-          @include rtl-prop(margin-left, margin-right, 0);
-        }
-
-        &:last-of-type {
-          @include rtl-prop(margin-right, margin-left, 0);
-        }
-      }
-
-      &.md-icon-button {
-        margin-left: 3 * $baseline-grid / 4;
-        margin-right: 3 * $baseline-grid / 4;
-
-        &:first-of-type {
-          @include rtl-prop(margin-left, margin-right, 3 * $baseline-grid / 2);
-        }
-
-        &:last-of-type {
-          @include rtl-prop(margin-right, margin-left, 3 * $baseline-grid / 2);
-        }
-      }
-
-      & + md-card-icon-actions {
-        flex: 1;
-        justify-content: flex-end;
-        display: flex;
-        flex-direction: row;
-      }
-    }
-  }
-
-  md-card-footer {
-    margin-top: auto;
-    padding: $card-padding;
-  }
-}
-
-@media screen and (-ms-high-contrast: active) {
-  md-card {
-    border: 1px solid #fff;
-  }
-}
-
 
 $checkbox-width: 20px !default;
 $checkbox-height: $checkbox-width !default;
@@ -3044,6 +3044,62 @@ md-fab-toolbar {
   }
 }
 
+md-icon {
+  margin: auto;
+  background-repeat: no-repeat no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+  fill: currentColor;
+  height: $icon-size;
+  width: $icon-size;
+
+  svg {
+    pointer-events: none;
+    display: block;
+  }
+
+  &[md-font-icon] {
+    line-height: $icon-size;
+    width: auto;
+  }
+}
+
+//
+//@font-face {
+//  font-family:"material";
+//  src:url("/dist/material-font/material.eot");
+//  font-weight:normal;
+//  font-style:normal;
+//}
+//
+//@font-face {
+//  font-family:"material";
+//  src:url("/dist/material-font/material.eot");
+//  src:url("/dist/material-font/material.eot?#iefix") format("embedded-opentype"),
+//    url("/dist/material-font/material.woff") format("woff"),
+//    url("/dist/material-font/material.ttf") format("truetype"),
+//    url("/dist/material-font/material.svg?#material") format("svg");
+//  font-weight:normal;
+//  font-style:normal;
+//}
+//
+///* Bootstrap Overrides */
+//[class^="icon-"]:before,
+//[class*=" icon-"]:before {
+//  font-family:"material";
+//  display:inline-block;
+//  vertical-align:middle;
+//  line-height:1;
+//  font-weight:normal;
+//  font-style:normal;
+//  speak:none;
+//  text-decoration:inherit;
+//  text-transform:none;
+//  text-rendering:optimizeLegibility;
+//  -webkit-font-smoothing:antialiased;
+//  -moz-osx-font-smoothing:grayscale;
+//}
+
 md-grid-list {
   box-sizing: border-box;
   display: block;
@@ -3125,62 +3181,6 @@ md-grid-list {
   }
 }
 
-
-md-icon {
-  margin: auto;
-  background-repeat: no-repeat no-repeat;
-  display: inline-block;
-  vertical-align: middle;
-  fill: currentColor;
-  height: $icon-size;
-  width: $icon-size;
-
-  svg {
-    pointer-events: none;
-    display: block;
-  }
-
-  &[md-font-icon] {
-    line-height: $icon-size;
-    width: auto;
-  }
-}
-
-//
-//@font-face {
-//  font-family:"material";
-//  src:url("/dist/material-font/material.eot");
-//  font-weight:normal;
-//  font-style:normal;
-//}
-//
-//@font-face {
-//  font-family:"material";
-//  src:url("/dist/material-font/material.eot");
-//  src:url("/dist/material-font/material.eot?#iefix") format("embedded-opentype"),
-//    url("/dist/material-font/material.woff") format("woff"),
-//    url("/dist/material-font/material.ttf") format("truetype"),
-//    url("/dist/material-font/material.svg?#material") format("svg");
-//  font-weight:normal;
-//  font-style:normal;
-//}
-//
-///* Bootstrap Overrides */
-//[class^="icon-"]:before,
-//[class*=" icon-"]:before {
-//  font-family:"material";
-//  display:inline-block;
-//  vertical-align:middle;
-//  line-height:1;
-//  font-weight:normal;
-//  font-style:normal;
-//  speak:none;
-//  text-decoration:inherit;
-//  text-transform:none;
-//  text-rendering:optimizeLegibility;
-//  -webkit-font-smoothing:antialiased;
-//  -moz-osx-font-smoothing:grayscale;
-//}
 
 $input-container-padding: 2px !default;
 
@@ -3582,6 +3582,160 @@ md-input-container {
   }
 }
 
+$menu-border-radius: 2px;
+$max-visible-items: 6;
+$menu-item-height: 6 * $baseline-grid;
+$dense-menu-item-height: 4 * $baseline-grid;
+$max-menu-height: 2 * $baseline-grid + $max-visible-items * $menu-item-height;
+$max-dense-menu-height: 2 * $baseline-grid + $max-visible-items * $dense-menu-item-height;
+
+._md-open-menu-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: $z-index-menu;
+  opacity: 0;
+  border-radius: $menu-border-radius;
+
+  md-menu-divider {
+    margin-top: $baseline-grid / 2;
+    margin-bottom: $baseline-grid / 2;
+    height: 1px;
+    min-height: 1px;
+    max-height: 1px;
+    width: 100%;
+  }
+
+  md-menu-content > * {
+    opacity: 0;
+  }
+
+  // Don't let the user click something until it's animated
+  &:not(._md-clickable) {
+    pointer-events: none;
+  }
+
+  // enter: menu scales in, then list fade in.
+  &._md-active {
+    opacity: 1;
+    transition: $swift-ease-out;
+    transition-duration: 200ms;
+    > md-menu-content > * {
+      opacity: 1;
+      transition: $swift-ease-in;
+      transition-duration: 200ms;
+      transition-delay: 100ms;
+    }
+  }
+  // leave: the container fades out
+  &._md-leave {
+    opacity: 0;
+    transition: $swift-ease-in;
+    transition-duration: 250ms;
+  }
+}
+
+md-menu-content {
+  display: flex;
+  flex-direction: column;
+  padding: $baseline-grid 0;
+  max-height: $max-menu-height;
+  overflow-y: auto;
+  &.md-dense {
+    max-height: $max-dense-menu-height;
+    md-menu-item {
+      height: $dense-menu-item-height;
+      min-height: 0px;
+    }
+  }
+}
+
+md-menu-item {
+  display: flex;
+  flex-direction: row;
+  min-height: $menu-item-height;
+  height: $menu-item-height;
+  align-content: center;
+  justify-content: flex-start;
+
+  > * {
+    width: 100%;
+    margin: auto 0;
+    padding-left: 2*$baseline-grid;
+    padding-right: 2*$baseline-grid;
+  }
+
+  > a.md-button {
+    display: flex;
+  }
+
+  > .md-button {
+    border-radius: 0;
+    margin: auto 0;
+    font-size: (2*$baseline-grid) - 1;
+    text-transform: none;
+    font-weight: 400;
+    text-align: left;
+    text-align: start;
+    height: 100%;
+    padding-left: 2*$baseline-grid;
+    padding-right: 2*$baseline-grid;
+    display: inline-block;
+    align-items: baseline;
+    align-content: flex-start;
+    width:100%;
+    md-icon {
+      @include rtl(margin, auto 2*$baseline-grid auto 0,  auto 0 auto 2*$baseline-grid);
+    }
+    p {
+      display:inline-block;
+      margin: auto;
+    }
+    span {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+    .md-ripple-container {
+      border-radius: inherit;
+    }
+  }
+}
+
+.md-menu {
+  padding: $baseline-grid 0;
+}
+
+md-toolbar {
+  .md-menu {
+    height: auto;
+    margin: auto;
+    padding: 0;
+  }
+}
+
+@media (max-width: $layout-breakpoint-sm - 1) {
+  md-menu-content {
+    min-width: 112px;
+  }
+  @for $i from 3 through 7 {
+    md-menu-content[width="#{$i}"] {
+      min-width: $i * 56px;
+    }
+  }
+}
+
+@media (min-width: $layout-breakpoint-sm) {
+  md-menu-content {
+    min-width: 96px;
+  }
+  @for $i from 3 through 7 {
+    md-menu-content[width="#{$i}"] {
+      min-width: $i * 64px;
+    }
+  }
+}
+
+
 $dense-baseline-grid: $baseline-grid / 2 !default;
 
 $list-h3-margin: 0 0 0px 0 !default;
@@ -3977,160 +4131,6 @@ md-list-item {
     }
   }
 }
-
-$menu-border-radius: 2px;
-$max-visible-items: 6;
-$menu-item-height: 6 * $baseline-grid;
-$dense-menu-item-height: 4 * $baseline-grid;
-$max-menu-height: 2 * $baseline-grid + $max-visible-items * $menu-item-height;
-$max-dense-menu-height: 2 * $baseline-grid + $max-visible-items * $dense-menu-item-height;
-
-._md-open-menu-container {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: $z-index-menu;
-  opacity: 0;
-  border-radius: $menu-border-radius;
-
-  md-menu-divider {
-    margin-top: $baseline-grid / 2;
-    margin-bottom: $baseline-grid / 2;
-    height: 1px;
-    min-height: 1px;
-    max-height: 1px;
-    width: 100%;
-  }
-
-  md-menu-content > * {
-    opacity: 0;
-  }
-
-  // Don't let the user click something until it's animated
-  &:not(._md-clickable) {
-    pointer-events: none;
-  }
-
-  // enter: menu scales in, then list fade in.
-  &._md-active {
-    opacity: 1;
-    transition: $swift-ease-out;
-    transition-duration: 200ms;
-    > md-menu-content > * {
-      opacity: 1;
-      transition: $swift-ease-in;
-      transition-duration: 200ms;
-      transition-delay: 100ms;
-    }
-  }
-  // leave: the container fades out
-  &._md-leave {
-    opacity: 0;
-    transition: $swift-ease-in;
-    transition-duration: 250ms;
-  }
-}
-
-md-menu-content {
-  display: flex;
-  flex-direction: column;
-  padding: $baseline-grid 0;
-  max-height: $max-menu-height;
-  overflow-y: auto;
-  &.md-dense {
-    max-height: $max-dense-menu-height;
-    md-menu-item {
-      height: $dense-menu-item-height;
-      min-height: 0px;
-    }
-  }
-}
-
-md-menu-item {
-  display: flex;
-  flex-direction: row;
-  min-height: $menu-item-height;
-  height: $menu-item-height;
-  align-content: center;
-  justify-content: flex-start;
-
-  > * {
-    width: 100%;
-    margin: auto 0;
-    padding-left: 2*$baseline-grid;
-    padding-right: 2*$baseline-grid;
-  }
-
-  > a.md-button {
-    display: flex;
-  }
-
-  > .md-button {
-    border-radius: 0;
-    margin: auto 0;
-    font-size: (2*$baseline-grid) - 1;
-    text-transform: none;
-    font-weight: 400;
-    text-align: left;
-    text-align: start;
-    height: 100%;
-    padding-left: 2*$baseline-grid;
-    padding-right: 2*$baseline-grid;
-    display: inline-block;
-    align-items: baseline;
-    align-content: flex-start;
-    width:100%;
-    md-icon {
-      @include rtl(margin, auto 2*$baseline-grid auto 0,  auto 0 auto 2*$baseline-grid);
-    }
-    p {
-      display:inline-block;
-      margin: auto;
-    }
-    span {
-      margin-top: auto;
-      margin-bottom: auto;
-    }
-    .md-ripple-container {
-      border-radius: inherit;
-    }
-  }
-}
-
-.md-menu {
-  padding: $baseline-grid 0;
-}
-
-md-toolbar {
-  .md-menu {
-    height: auto;
-    margin: auto;
-    padding: 0;
-  }
-}
-
-@media (max-width: $layout-breakpoint-sm - 1) {
-  md-menu-content {
-    min-width: 112px;
-  }
-  @for $i from 3 through 7 {
-    md-menu-content[width="#{$i}"] {
-      min-width: $i * 56px;
-    }
-  }
-}
-
-@media (min-width: $layout-breakpoint-sm) {
-  md-menu-content {
-    min-width: 96px;
-  }
-  @for $i from 3 through 7 {
-    md-menu-content[width="#{$i}"] {
-      min-width: $i * 64px;
-    }
-  }
-}
-
 
 md-toolbar.md-menu-toolbar {
   h2.md-toolbar-tools {
@@ -4978,19 +4978,21 @@ md-sidenav {
 }
 
 $slider-background-color:  rgb(200, 200, 200) !default;
-$slider-height:  48px !default;
+$slider-size:  48px !default;
+$slider-min-size:  128px !default;
 
 $slider-track-height:  2px !default;
-$slider-thumb-width:  32px !default;
+$slider-thumb-width:  20px !default;
 $slider-thumb-height:  $slider-thumb-width !default;
 
-$slider-thumb-default-scale: 0.5 !default;
-$slider-thumb-hover-scale: 0.6 !default;
-$slider-thumb-focus-scale: 0.85 !default;
-$slider-thumb-disabled-scale: 0.35 !default;
-$slider-thumb-disabled-border: 6px !default;
+$slider-thumb-default-scale: 0.7 !default;
+$slider-thumb-hover-scale: 0.8 !default;
+$slider-thumb-focus-scale: 1 !default;
+$slider-thumb-disabled-scale: 0.5 !default;
+$slider-thumb-disabled-border: 4px !default;
+$slider-thumb-focus-duration: .7s !default;
 
-$slider-focus-thumb-width:  48px !default;
+$slider-focus-thumb-width:  34px !default;
 $slider-focus-thumb-height: $slider-focus-thumb-width !default;
 $slider-focus-ring-border-width: 3px !default;
 
@@ -4999,45 +5001,76 @@ $slider-arrow-width: 28px !default;
 
 $slider-sign-height: 28px !default;
 $slider-sign-width: 28px !default;
-$slider-sign-top: ($slider-height / 2) - ($slider-thumb-default-scale * $slider-thumb-height / 2) - ($slider-sign-height) - ($slider-arrow-height) + 8px !default;
+$slider-sign-top: ($slider-size / 2) - ($slider-thumb-default-scale * $slider-thumb-height / 2) - ($slider-sign-height) - ($slider-arrow-height) + 10px !default;
 
 @keyframes sliderFocusThumb {
   0% {
-    opacity: 0;
-    transform: scale(0.0);
+    transform: scale($slider-thumb-default-scale);
+  }
+  30% {
+    transform: scale($slider-thumb-focus-scale);
+  }
+  100% {
+    transform: scale($slider-thumb-default-scale);
+  }
+}
+
+@keyframes sliderDiscreteFocusThumb {
+  0% {
+    transform: scale($slider-thumb-default-scale);
   }
   50% {
-    transform: scale(1.0);
+    transform: scale($slider-thumb-hover-scale);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes sliderDiscreteFocusRing {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1);
     opacity: 1;
   }
   100% {
-    opacity: 0;
+    transform: scale(0);
   }
 }
 
 @mixin slider-thumb-position($width: $slider-thumb-width, $height: $slider-thumb-height) {
   position: absolute;
   left: -$width / 2;
-  top: ($slider-height / 2) - ($height / 2);
+  top: ($slider-size / 2) - ($height / 2);
   width: $width;
   height: $height;
   border-radius: max($width, $height);
 }
 
 md-slider {
-
-  height: $slider-height;
+  height: $slider-size;
+  min-width: $slider-min-size;
   position: relative;
-  display: block;
   margin-left: 4px;
   margin-right: 4px;
   padding: 0;
+  display: block;
+  flex-direction: row;
 
   *, *:after {
     box-sizing: border-box;
   }
 
   ._md-slider-wrapper {
+    outline: none;
+    width: 100%;
+    height: 100%;
+  }
+
+  ._md-slider-content {
     position: relative;
   }
 
@@ -5047,7 +5080,7 @@ md-slider {
   ._md-track-container {
     width: 100%;
     position: absolute;
-    top: ($slider-height / 2) - ($slider-track-height) / 2;
+    top: ($slider-size / 2) - ($slider-track-height) / 2;
     height: $slider-track-height;
   }
   ._md-track {
@@ -5057,7 +5090,8 @@ md-slider {
     height: 100%;
   }
   ._md-track-fill {
-    transition: width 0.05s linear;
+    transition: all .4s cubic-bezier(.25,.8,.25,1);
+    transition-property: width, height;
   }
   ._md-track-ticks {
     position: absolute;
@@ -5066,10 +5100,11 @@ md-slider {
     height: 100%;
   }
   ._md-track-ticks canvas {
-    // Restrict the width of the canvas so that ticks are rendered correctly
+    // Restrict the width and the height of the canvas so that ticks are rendered correctly
     // when parent elements are resized. Else, the position of the ticks might
     // be incorrect as we only update the canvas width attribute on window resize.
     width: 100%;
+    height: 100%;
   }
 
   /**
@@ -5080,14 +5115,13 @@ md-slider {
     left: 0;
     top: 50%;
     transform: translate3d(-50%,-50%,0);
-    transition: left 0.1s linear;
+    transition: all .4s cubic-bezier(.25,.8,.25,1);
+    transition-property: left, bottom;
   }
   ._md-thumb {
     z-index: 1;
-
-    // Positioning the outer area of the thumb 6px bigger than it needs to be keeps
-    // the :after area being clipped by the background of the focus-thumb animation.
-    @include slider-thumb-position($slider-thumb-width + 6, $slider-thumb-height + 6);
+    
+    @include slider-thumb-position($slider-thumb-width, $slider-thumb-height);
 
     // We render thumb in an :after selector to fix an obscure problem with the
     // thumb being clipped by the focus-ring and focus-thumb while running the focus
@@ -5095,17 +5129,16 @@ md-slider {
     &:after {
       content: '';
       position: absolute;
-      left: 3px;
-      top: 3px;
       width: $slider-thumb-width;
       height: $slider-thumb-height;
       border-radius: max($slider-thumb-width, $slider-thumb-height);
       border-width: 3px;
       border-style: solid;
+      transition: inherit;
     }
 
     transform: scale($slider-thumb-default-scale);
-    transition: all 0.1s linear;
+    transition: all .4s cubic-bezier(.25,.8,.25,1);
   }
 
   /* The sign that's focused in discrete mode */
@@ -5123,8 +5156,8 @@ md-slider {
     height: $slider-sign-height;
     border-radius: max($slider-sign-height, $slider-sign-width);
 
-    transform: scale(0.4) translate3d(0,(-$slider-sign-top + 8) / 0.4,0);
-    transition: all 0.2s ease-in-out;
+    transform: scale(0.4) translate3d(0,(-$slider-sign-top + 10) / 0.4,0);
+    transition: all 0.3s $swift-ease-in-out-timing-function;
 
     /* The arrow pointing down under the sign */
     &:after {
@@ -5140,7 +5173,7 @@ md-slider {
 
       opacity: 0;
       transform: translate3d(0,-8px,0);
-      transition: all 0.2s ease-in-out;
+      transition: all 0.2s $swift-ease-in-out-timing-function;
     }
 
     ._md-thumb-text {
@@ -5153,18 +5186,12 @@ md-slider {
   /**
    * The border/background that comes in when focused in non-discrete mode
    */
-  ._md-focus-thumb {
-    @include slider-thumb-position($slider-focus-thumb-width, $slider-focus-thumb-height);
-    display: none;
-    opacity: 0;
-    background-color: #C0C0C0;
-    animation: sliderFocusThumb 0.4s linear;
-  }
   ._md-focus-ring {
     @include slider-thumb-position($slider-focus-thumb-width, $slider-focus-thumb-height);
-    transform: scale(0);
-    transition: all 0.2s linear;
-    opacity: 0.26;
+    transform: scale(.7);
+    opacity: 0;
+    // using a custom duration to match the spec example video
+    transition: all ($slider-thumb-focus-duration / 2) $swift-ease-in-out-timing-function;
   }
   ._md-disabled-thumb {
     @include slider-thumb-position(
@@ -5178,11 +5205,6 @@ md-slider {
   }
 
   &._md-min {
-    ._md-thumb {
-      &:after {
-        background-color: white;
-      }
-    }
     ._md-sign {
       opacity: 0;
     }
@@ -5208,42 +5230,66 @@ md-slider {
     }
 
     &:not([disabled]) {
-      &:hover {
-        ._md-thumb {
+      ._md-slider-wrapper {
+        ._md-thumb:hover {
           transform: scale($slider-thumb-hover-scale);
+        }
+
+        &.md-focused {
+          ._md-focus-ring {
+            transform: scale(1);
+            opacity: 1;
+          }
+          ._md-thumb {
+            animation: sliderFocusThumb $slider-thumb-focus-duration $swift-ease-in-out-timing-function;
+          }
         }
       }
 
-      &:focus,
       &._md-active {
-        ._md-focus-thumb {
-          display: block;
-        }
-        ._md-focus-ring {
-          transform: scale(1);
-        }
-        ._md-thumb {
-          transform: scale($slider-thumb-focus-scale);
+        ._md-slider-wrapper {
+          ._md-thumb {
+            transform: scale($slider-thumb-focus-scale);
+          }
         }
       }
     }
   }
 
   &[md-discrete] {
-    /* Hide the focus thumb in discrete mode */
-    ._md-focus-thumb,
-    ._md-focus-ring {
-      display: none;
-    }
-
     &:not([disabled]) {
-      &:focus,
+      ._md-slider-wrapper {
+        &.md-focused {
+          ._md-focus-ring {
+            transform: scale(0);
+            animation: sliderDiscreteFocusRing .5s $swift-ease-in-out-timing-function;
+          }
+          ._md-thumb {
+            animation: sliderDiscreteFocusThumb .5s $swift-ease-in-out-timing-function;
+          }
+        }
+      }
+      ._md-slider-wrapper.md-focused,
       &._md-active {
+        ._md-thumb {
+          transform: scale(0);
+        }
         ._md-sign,
         ._md-sign:after {
           opacity: 1;
           transform: translate3d(0,0,0) scale(1.0);
         }
+      }
+    }
+
+    &[disabled][readonly] {
+      ._md-thumb {
+        transform: scale(0);
+      }
+      ._md-sign,
+      ._md-sign:after {
+        opacity: 1;
+        transform: translate3d(0,0,0) scale(1.0);
       }
     }
   }
@@ -5252,14 +5298,159 @@ md-slider {
     ._md-track-fill {
       display: none;
     }
-    ._md-sign {
-      display: none;
+    ._md-track-ticks {
+      opacity: 0;
+    }
+    &:not([readonly]) ._md-sign {
+      opacity: 0;
     }
     ._md-thumb {
       transform: scale($slider-thumb-disabled-scale);
     }
     ._md-disabled-thumb {
       display: block;
+    }
+  }
+
+  &[md-vertical] {
+    flex-direction: column;
+    min-height: $slider-min-size;
+    min-width: 0;
+    
+    ._md-slider-wrapper {
+      flex: 1;
+      padding-top: 12px;
+      padding-bottom: 12px;
+      width: $slider-size;
+      align-self: center;
+      display: flex;
+      justify-content: center;
+    }
+
+    ._md-track-container {
+      height: 100%;
+      width: $slider-track-height;
+      top: 0;
+      left: calc(50% - (#{$slider-track-height} / 2));
+    }
+
+    ._md-thumb-container {
+      top: auto;
+      margin-bottom: ($slider-size / 2) - ($slider-track-height) / 2;
+      left: calc(50% - 1px);
+      bottom: 0;
+
+      ._md-thumb:after {
+        left: 1px;
+      }
+
+      ._md-focus-ring {
+        left: -(($slider-focus-thumb-width / 2) - ($slider-track-height / 2));
+      }
+    }
+
+    ._md-track-fill {
+      bottom: 0;
+    }
+
+    &[md-discrete] {
+      ._md-sign {
+        $sign-top: -($slider-sign-top / 2) + 1;
+
+        left: -$slider-sign-height - 12;
+        top: $sign-top;
+
+        transform: scale(0.4) translate3d((-$slider-sign-top + 10) / 0.4, 0 ,0);
+
+        /* The arrow pointing left next the sign */
+        &:after {
+          top: $sign-top;
+          left: 19px;
+          border-top: $slider-arrow-width / 2 solid transparent;
+          border-right: 0;
+          border-bottom: $slider-arrow-width / 2 solid transparent;
+          border-left-width: $slider-arrow-height;
+          border-left-style: solid;
+
+          opacity: 0;
+          transform: translate3d(0,-8px,0);
+          transition: all 0.2s ease-in-out;
+        }
+
+        ._md-thumb-text {
+          z-index: 1;
+          font-size: 12px;
+          font-weight: bold;
+        }
+      }
+
+      &._md-active,
+      .md-focused,
+      &[disabled][readonly]{
+        ._md-sign:after {
+          top: 0;
+        }
+      }
+    }
+
+    &[disabled][readonly] {
+      ._md-thumb {
+        transform: scale(0);
+      }
+      ._md-sign,
+      ._md-sign:after {
+        opacity: 1;
+        transform: translate3d(0,0,0) scale(1.0);
+      }
+    }
+  }
+}
+
+md-slider-container {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+  $items-width: 25px;
+  $items-height: $items-width;
+  $items-margin: 16px;
+
+  & > *:first-child,
+  & > *:last-child {
+    &:not(md-slider){
+      min-width: $items-width;
+      max-width: ($items-width * 2) - 8;
+      height: $items-height;
+      transition: $swift-ease-out;
+      transition-property: color, max-width;
+    }
+  }
+
+  & > *:first-child:not(md-slider) {
+    margin-right: $items-margin;
+  }
+
+  & > *:last-child:not(md-slider) {
+    margin-left: $items-margin;
+  }
+
+  &[md-vertical] {
+    flex-direction: column;
+
+    & > *:first-child:not(md-slider),
+    & > *:last-child:not(md-slider) {
+      margin-right: 0;
+      margin-left: 0;
+      text-align: center;
+    }
+  }
+
+  md-input-container {
+    input[type="number"] {
+      text-align: center;
+      padding-left: 15px; // size of arrows
+      height: $items-height * 2;
+      margin-top: -$items-height;
     }
   }
 }
