@@ -2,19 +2,17 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-b58343c
+ * v1.0.6-master-640b55d
  */
 goog.provide('ng.material.components.progressCircular');
 goog.require('ng.material.core');
 /**
  * @ngdoc module
  * @name material.components.progressCircular
- * @description Circular Progress module!
+ * @description Module for a circular progressbar
  */
-angular.module('material.components.progressCircular', [
-  'material.core'
-])
-  .directive('mdProgressCircular', MdProgressCircularDirective);
+
+angular.module('material.components.progressCircular', ['material.core']);
 
 /**
  * @ngdoc directive
@@ -22,7 +20,7 @@ angular.module('material.components.progressCircular', [
  * @module material.components.progressCircular
  * @restrict E
  *
-* @description
+ * @description
  * The circular progress directive is used to make loading content in your app as delightful and
  * painless as possible by minimizing the amount of visual change a user sees before they can view
  * and interact with content.
@@ -44,8 +42,8 @@ angular.module('material.components.progressCircular', [
  * @param {number=} value In determinate mode, this number represents the percentage of the
  *     circular progress. Default: 0
  * @param {number=} md-diameter This specifies the diameter of the circular progress. The value
- * may be a percentage (eg '25%') or a pixel-size value (eg '48'). If this attribute is
- * not present then a default value of '48px' is assumed.
+ * should be a pixel-size value (eg '100'). If this attribute is
+ * not present then a default value of '50px' is assumed.
  *
  * @usage
  * <hljs lang="html">
@@ -58,211 +56,326 @@ angular.module('material.components.progressCircular', [
  * <md-progress-circular md-mode="indeterminate"></md-progress-circular>
  * </hljs>
  */
-function MdProgressCircularDirective($mdTheming, $mdUtil, $log) {
-  var DEFAULT_PROGRESS_SIZE = 100;
-  var DEFAULT_SCALING = 0.5;
 
-  var MODE_DETERMINATE = "determinate",
-      MODE_INDETERMINATE = "indeterminate";
+angular
+  .module('material.components.progressCircular')
+  .directive('mdProgressCircular', [
+    '$$rAF',
+    '$window',
+    '$mdProgressCircular',
+    '$interval',
+    '$mdUtil',
+    '$log',
+    MdProgressCircularDirective
+  ]);
 
+function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $interval, $mdUtil, $log) {
+  var DEGREE_IN_RADIANS = $window.Math.PI / 180;
+  var MODE_DETERMINATE = 'determinate';
+  var MODE_INDETERMINATE = 'indeterminate';
+  var INDETERMINATE_CLASS = '_md-mode-indeterminate';
 
   return {
     restrict: 'E',
-    scope : true,
+    scope: {
+      value: '@',
+      mdDiameter: '@',
+      mdMode: '@'
+    },
     template:
-        // The progress 'circle' is composed of two half-circles: the left side and the right
-        // side. Each side has CSS applied to 'fill-in' the half-circle to the appropriate progress.
-        '<div class="_md-scale-wrapper">' +
-          '<div class="_md-spinner-wrapper">' +
-            '<div class="_md-inner">' +
-              '<div class="_md-gap"></div>' +
-              '<div class="_md-left">' +
-                '<div class="_md-half-circle"></div>' +
-              '</div>' +
-              '<div class="_md-right">' +
-                '<div class="_md-half-circle"></div>' +
-              '</div>' +
-            '</div>' +
-          '</div>' +
-        '</div>',
-    compile: compile
-  };
-
-  function compile(tElement) {
-    // The javascript in this file is mainly responsible for setting the correct aria attributes.
-    // The animation of the progress spinner is done entirely with just CSS.
-    tElement.attr('aria-valuemin', 0);
-    tElement.attr('aria-valuemax', 100);
-    tElement.attr('role', 'progressbar');
-
-    return postLink;
-  }
-
-  function postLink(scope, element, attr) {
-    $mdTheming(element);
-
-    var circle = element;
-    var spinnerWrapper =  angular.element(element.children()[0]);
-    var lastMode, toVendorCSS = $mdUtil.dom.animator.toCss;
-
-    element.attr('md-mode', mode());
-
-    updateScale();
-    validateMode();
-    watchAttributes();
-
-    /**
-     * Watch the value and md-mode attributes
-     */
-    function watchAttributes() {
-     attr.$observe('value', function(value) {
-           var percentValue = clamp(value);
-           element.attr('aria-valuenow', percentValue);
-
-           if (mode() == MODE_DETERMINATE) {
-             animateIndicator(percentValue);
-           }
-         });
-     attr.$observe('mdMode',function(mode){
-       switch( mode ) {
-         case MODE_DETERMINATE:
-         case MODE_INDETERMINATE:
-           spinnerWrapper.removeClass('ng-hide');
-           if (lastMode) spinnerWrapper.removeClass(lastMode);
-           spinnerWrapper.addClass( lastMode = "_md-mode-" + mode );
-           break;
-         default:
-           if (lastMode) spinnerWrapper.removeClass( lastMode );
-           spinnerWrapper.addClass('ng-hide');
-           lastMode = undefined;
-           break;
-       }
-     });
-    }
-
-    /**
-     * Update size/scaling of the progress indicator
-     * Watch the "value" and "md-mode" attributes
-     */
-    function updateScale() {
-      // set the outer container to the size the user specified
-      circle.css({
-        width: (100 * getDiameterRatio()) + 'px',
-        height: (100 * getDiameterRatio()) + 'px'
+      '<svg xmlns="http://www.w3.org/2000/svg">' +
+        '<path fill="none"/>' +
+      '</svg>',
+    compile: function(element, attrs){
+      element.attr({
+        'aria-valuemin': 0,
+        'aria-valuemax': 100,
+        'role': 'progressbar'
       });
-      // the internal element is still 100px, so we have to scale it down to match the size
-      circle.children().eq(0).css(toVendorCSS({
-        transform : $mdUtil.supplant('translate(-50%, -50%) scale( {0} )',[getDiameterRatio()])
-      }));
-    }
 
-    /**
-     * Auto-defaults the mode to either `determinate` or `indeterminate` mode; if not specified
-     */
-    function validateMode() {
-      if ( angular.isUndefined(attr.mdMode) ) {
-        var hasValue = angular.isDefined(attr.value);
+      if (angular.isUndefined(attrs.mdMode)) {
+        var hasValue = angular.isDefined(attrs.value);
         var mode = hasValue ? MODE_DETERMINATE : MODE_INDETERMINATE;
         var info = "Auto-adding the missing md-mode='{0}' to the ProgressCircular element";
 
         $log.debug( $mdUtil.supplant(info, [mode]) );
-
-        element.attr("md-mode",mode);
-        attr['mdMode'] = mode;
+        attrs.$set('mdMode', mode);
+      } else {
+        attrs.$set('mdMode', attrs.mdMode.trim());
       }
+
+      return MdProgressCircularLink;
     }
+  };
 
-    var leftC, rightC, gap;
+  function MdProgressCircularLink(scope, element) {
+    var svg = angular.element(element[0].querySelector('svg'));
+    var path = angular.element(element[0].querySelector('path'));
+    var lastAnimationId = 0;
+    var startIndeterminate = $mdProgressCircular.startIndeterminate;
+    var endIndeterminate = $mdProgressCircular.endIndeterminate;
+    var rotationIndeterminate = 0;
+    var interval;
 
-    /**
-     * Manually animate the Determinate indicator based on the specified
-     * percentage value (0-100).
-     *
-     * Note: this animation was previously done using SCSS.
-     * - generated 54K of styles
-     * - use attribute selectors which had poor performances in IE
-     */
-    function animateIndicator(value) {
-      if ( !mode() ) return;
+    scope.$watchGroup(['value', 'mdMode', 'mdDiameter'], function(newValues, oldValues) {
+      var mode = newValues[1];
 
-      leftC  = leftC  || angular.element(element[0].querySelector('._md-left > ._md-half-circle'));
-      rightC = rightC || angular.element(element[0].querySelector('._md-right > ._md-half-circle'));
-      gap    = gap    || angular.element(element[0].querySelector('._md-gap'));
+      if (mode !== MODE_DETERMINATE && mode !== MODE_INDETERMINATE) {
+        cleanupIndeterminate();
+        element.addClass('ng-hide');
+      } else {
+        element.removeClass('ng-hide');
 
-      var gapStyles = removeEmptyValues({
-          borderBottomColor: (value <= 50) ? "transparent !important" : "",
-          transition: (value <= 50) ? "" : "borderBottomColor 0.1s linear"
-        }),
-        leftStyles = removeEmptyValues({
-          transition: (value <= 50) ? "transform 0.1s linear" : "",
-          transform: $mdUtil.supplant("rotate({0}deg)", [value <= 50 ? 135 : (((value - 50) / 50 * 180) + 135)])
-        }),
-        rightStyles = removeEmptyValues({
-          transition: (value >= 50) ? "transform 0.1s linear" : "",
-          transform: $mdUtil.supplant("rotate({0}deg)", [value >= 50 ? 45 : (value / 50 * 180 - 135)])
-        });
+        if (mode === MODE_INDETERMINATE){
+          if (!interval) {
+            interval = $interval(
+              animateIndeterminate,
+              $mdProgressCircular.durationIndeterminate + 50,
+              0,
+              false
+            );
 
-      leftC.css(toVendorCSS(leftStyles));
-      rightC.css(toVendorCSS(rightStyles));
-      gap.css(toVendorCSS(gapStyles));
+            element.addClass(INDETERMINATE_CLASS);
+            animateIndeterminate();
+          }
 
-    }
-
-    /**
-     * We will scale the progress circle based on the default diameter.
-     *
-     * Determine the diameter percentage (defaults to 100%)
-     * May be express as float, percentage, or integer
-     */
-    function getDiameterRatio() {
-      if ( !attr.mdDiameter ) return DEFAULT_SCALING;
-
-      var match = /([0-9]*)%/.exec(attr.mdDiameter);
-      var value = Math.max(0, (match && match[1]/100) || parseFloat(attr.mdDiameter));
-
-      // should return ratio; DEFAULT_PROGRESS_SIZE === 100px is default size
-      return  (value > 1) ? value / DEFAULT_PROGRESS_SIZE : value;
-    }
-
-    /**
-     * Is the md-mode a valid option?
-     */
-    function mode() {
-      var value = (attr.mdMode || "").trim();
-      if ( value ) {
-        switch(value) {
-          case MODE_DETERMINATE :
-          case MODE_INDETERMINATE :
-            break;
-          default:
-            value = undefined;
-            break;
+        } else {
+          cleanupIndeterminate();
+          renderCircle(clamp(oldValues[0]), clamp(newValues[0]));
         }
       }
-      return value;
+    });
+
+    function renderCircle(animateFrom, animateTo, easing, duration, rotation) {
+      var id = ++lastAnimationId;
+      var startTime = new $window.Date();
+      var changeInValue = animateTo - animateFrom;
+      var diameter = getSize(scope.mdDiameter);
+      var strokeWidth = $mdProgressCircular.strokeWidth / 100 * diameter;
+
+      var pathDiameter = diameter - strokeWidth;
+      var ease = easing || $mdProgressCircular.easeFn;
+      var animationDuration = duration || $mdProgressCircular.duration;
+
+      element.attr('aria-valuenow', animateTo);
+      path.attr('stroke-width', strokeWidth + 'px');
+
+      svg.css({
+        width: diameter + 'px',
+        height: diameter + 'px'
+      });
+
+      // The viewBox has to be applied via setAttribute, because it is
+      // case-sensitive. If jQuery is included in the page, `.attr` lowercases
+      // all attribute names.
+      svg[0].setAttribute('viewBox', '0 0 ' + diameter + ' ' + diameter);
+
+      // No need to animate it if the values are the same
+      if (animateTo === animateFrom) {
+        path.attr('d', getSvgArc(animateTo, diameter, pathDiameter, rotation));
+      } else {
+        (function animation() {
+          var currentTime = $window.Math.min(new $window.Date() - startTime, animationDuration);
+
+          path.attr('d', getSvgArc(
+            ease(currentTime, animateFrom, changeInValue, animationDuration),
+            diameter,
+            pathDiameter,
+            rotation
+          ));
+
+          if (id === lastAnimationId && currentTime < animationDuration) {
+            $$rAF(animation);
+          }
+        })();
+      }
     }
 
+    function animateIndeterminate() {
+      renderCircle(
+        startIndeterminate,
+        endIndeterminate,
+        $mdProgressCircular.easeFnIndeterminate,
+        $mdProgressCircular.durationIndeterminate,
+        rotationIndeterminate
+      );
+
+      // The % 100 technically isn't necessary, but it keeps the rotation
+      // under 100, instead of becoming a crazy large number.
+      rotationIndeterminate = (rotationIndeterminate + endIndeterminate) % 100;
+
+      var temp = startIndeterminate;
+      startIndeterminate = -endIndeterminate;
+      endIndeterminate = -temp;
+    }
+
+    function cleanupIndeterminate() {
+      if (interval) {
+        $interval.cancel(interval);
+        interval = null;
+        element.removeClass(INDETERMINATE_CLASS);
+      }
+    }
   }
 
   /**
-   * Clamps the value to be between 0 and 100.
-   * @param {number} value The value to clamp.
-   * @returns {number}
+   * Generates an arc following the SVG arc syntax.
+   * Syntax spec: https://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands
+   *
+   * @param {number} current Current value between 0 and 100.
+   * @param {number} diameter Diameter of the container.
+   * @param {number} pathDiameter Diameter of the path element.
+   * @param {number=0} rotation The point at which the semicircle should start rendering.
+   * Used for doing the indeterminate animation.
+   *
+   * @returns {string} String representation of an SVG arc.
    */
-  function clamp(value) {
-    return Math.max(0, Math.min(value || 0, 100));
-  }
+  function getSvgArc(current, diameter, pathDiameter, rotation) {
+    // The angle can't be exactly 360, because the arc becomes hidden.
+    var maximumAngle = 359.99 / 100;
+    var startPoint = rotation || 0;
+    var radius = diameter / 2;
+    var pathRadius = pathDiameter / 2;
 
-  function removeEmptyValues(target) {
-    for (var key in target) {
-      if (target.hasOwnProperty(key)) {
-        if ( target[key] == "" ) delete target[key];
-      }
+    var startAngle = startPoint * maximumAngle;
+    var endAngle = current * maximumAngle;
+    var start = polarToCartesian(radius, pathRadius, startAngle);
+    var end = polarToCartesian(radius, pathRadius, endAngle + startAngle);
+    var arcSweep = endAngle < 0 ? 0 : 1;
+    var largeArcFlag;
+
+    if (endAngle < 0) {
+      largeArcFlag = endAngle >= -180 ? 0 : 1;
+    } else {
+      largeArcFlag = endAngle <= 180 ? 0 : 1;
     }
 
-    return target;
+    return 'M' + start + 'A' + pathRadius + ',' + pathRadius +
+      ' 0 ' + largeArcFlag + ',' + arcSweep + ' ' + end;
+  }
+
+  /**
+   * Converts Polar coordinates to Cartesian.
+   *
+   * @param {number} radius Radius of the container.
+   * @param {number} pathRadius Radius of the path element
+   * @param {number} angleInDegress Angle at which to place the point.
+   *
+   * @returns {string} Cartesian coordinates in the format of `x,y`.
+   */
+  function polarToCartesian(radius, pathRadius, angleInDegrees) {
+    var angleInRadians = (angleInDegrees - 90) * DEGREE_IN_RADIANS;
+
+    return (radius + (pathRadius * $window.Math.cos(angleInRadians))) +
+      ',' + (radius + (pathRadius * $window.Math.sin(angleInRadians)));
+  }
+
+  /**
+   * Limits a value between 0 and 100.
+   */
+  function clamp(value) {
+    return $window.Math.max(0, $window.Math.min(value || 0, 100));
+  }
+
+  /**
+   * Determines the size of a progress circle, based on the provided
+   * value in the following formats: `X`, `Ypx`, `Z%`.
+   */
+  function getSize(value) {
+    var defaultValue = $mdProgressCircular.progressSize;
+
+    if (value) {
+      var parsed = parseFloat(value);
+
+      if (value.lastIndexOf('%') === value.length - 1) {
+        parsed = (parsed / 100) * defaultValue;
+      }
+
+      return parsed;
+    }
+
+    return defaultValue;
   }
 }
-MdProgressCircularDirective.$inject = ["$mdTheming", "$mdUtil", "$log"];
+
+/**
+ * @ngdoc service
+ * @name $mdProgressCircular
+ * @module material.components.progressCircular
+ *
+ * @description
+ * Allows the user to specify the default options for the `progressCircular` directive.
+ *
+ * @property {number} progressSize Diameter of the progress circle in pixels.
+ * @property {number} strokeWidth Width of the circle's stroke as a percentage of the circle's size.
+ * @property {number} duration Length of the circle animation in milliseconds.
+ * @property {function} easeFn Default easing animation function.
+ * @property {object} easingPresets Collection of pre-defined easing functions.
+ *
+ * @property {number} durationIndeterminate Duration of the indeterminate animation.
+ * @property {number} startIndeterminate Indeterminate animation start point.
+ * @param {number} endIndeterminate Indeterminate animation end point.
+ * @param {function} easeFnIndeterminate Easing function to be used when animating
+ * between the indeterminate values.
+ *
+ * @property {(function(object): object)} configure Used to modify the default options.
+ *
+ * @usage
+ * <hljs lang="js">
+ *   myAppModule.config(function($mdProgressCircular) {
+ *
+ *     // Example of changing the default progress options.
+ *     $mdProgressCircular.configure({
+ *       progressSize: 100,
+ *       strokeWidth: 20,
+ *       duration: 800
+ *     });
+ * });
+ * </hljs>
+ *
+ */
+
+angular
+  .module('material.components.progressCircular')
+  .provider("$mdProgressCircular", MdProgressCircularProvider);
+
+function MdProgressCircularProvider() {
+  var progressConfig = {
+    progressSize: 50,
+    strokeWidth: 10,
+    duration: 100,
+    easeFn: linearEase,
+
+    durationIndeterminate: 600,
+    startIndeterminate: 2.5,
+    endIndeterminate: 80,
+    easeFnIndeterminate: materialEase,
+
+    easingPresets: {
+      linearEase: linearEase,
+      materialEase: materialEase
+    }
+  };
+
+  return {
+    configure: function(options) {
+      progressConfig = angular.extend(progressConfig, options || {});
+      return progressConfig;
+    },
+    $get: function() { return progressConfig; }
+  };
+
+  function linearEase(t, b, c, d) {
+    return c * t / d + b;
+  }
+
+  function materialEase(t, b, c, d) {
+    // via http://www.timotheegroleau.com/Flash/experiments/easing_function_generator.htm
+    // with settings of [0, 0, 1, 1]
+    var ts = (t /= d) * t;
+    var tc = ts * t;
+    return b + c * (6 * tc * ts + -15 * ts * ts + 10 * tc);
+  }
+}
 
 ng.material.components.progressCircular = angular.module("material.components.progressCircular");
