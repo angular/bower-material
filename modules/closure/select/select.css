@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-05aad07
+ * v1.0.6-master-540826e
  */
 ._md-select-menu-container {
   position: fixed;
@@ -132,6 +132,9 @@ md-select-menu {
   max-height: 256px;
   min-height: 48px;
   overflow-y: hidden;
+  unicode-bidi: embed;
+  -webkit-transform-origin: left top;
+          transform-origin: left top;
   -webkit-transform: scale(1);
           transform: scale(1); }
   md-select-menu.md-reverse {
@@ -141,32 +144,9 @@ md-select-menu {
   md-select-menu:not(._md-overflow) md-content {
     padding-top: 8px;
     padding-bottom: 8px; }
-  html[dir=ltr] md-select-menu {
-    -webkit-transform-origin: left top;
-            transform-origin: left top;
-    unicode-bidi: embed; }
-  body[dir=ltr] md-select-menu {
-    -webkit-transform-origin: left top;
-            transform-origin: left top;
-    unicode-bidi: embed; }
-  html[dir=rtl] md-select-menu {
+  [dir=rtl] md-select-menu {
     -webkit-transform-origin: right top;
-            transform-origin: right top;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-select-menu {
-    -webkit-transform-origin: right top;
-            transform-origin: right top;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) md-select-menu {
-    -webkit-transform-origin: left top;
-            transform-origin: left top;
-    unicode-bidi: embed; }
-  md-select-menu bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-select-menu bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
+            transform-origin: right top; }
   md-select-menu md-content {
     min-width: 136px;
     min-height: 48px;

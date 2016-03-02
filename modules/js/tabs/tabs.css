@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-05aad07
+ * v1.0.6-master-540826e
  */
 @-webkit-keyframes md-tab-content-hide {
   0% {
@@ -100,51 +100,17 @@ md-tabs-wrapper {
       -webkit-transform: translate3d(-50%, -50%, 0);
               transform: translate3d(-50%, -50%, 0); }
   md-tabs-wrapper md-prev-button {
+    unicode-bidi: embed;
+    left: 0;
     background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE3LjEuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPiA8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPiA8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSIyNHB4IiBoZWlnaHQ9IjI0cHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjQgMjQiIHhtbDpzcGFjZT0icHJlc2VydmUiPiA8ZyBpZD0iSGVhZGVyIj4gPGc+IDxyZWN0IHg9Ii02MTgiIHk9Ii0xMjA4IiBmaWxsPSJub25lIiB3aWR0aD0iMTQwMCIgaGVpZ2h0PSIzNjAwIi8+IDwvZz4gPC9nPiA8ZyBpZD0iTGFiZWwiPiA8L2c+IDxnIGlkPSJJY29uIj4gPGc+IDxwb2x5Z29uIHBvaW50cz0iMTUuNCw3LjQgMTQsNiA4LDEyIDE0LDE4IDE1LjQsMTYuNiAxMC44LDEyIAkJIiBzdHlsZT0iZmlsbDp3aGl0ZTsiLz4gPHJlY3QgZmlsbD0ibm9uZSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ii8+IDwvZz4gPC9nPiA8ZyBpZD0iR3JpZCIgZGlzcGxheT0ibm9uZSI+IDxnIGRpc3BsYXk9ImlubGluZSI+IDwvZz4gPC9nPiA8L3N2Zz4NCg=="); }
-    html[dir=ltr] md-tabs-wrapper md-prev-button {
-      left: 0;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-tabs-wrapper md-prev-button {
-      left: 0;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-tabs-wrapper md-prev-button {
-      right: 0;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-tabs-wrapper md-prev-button {
-      right: 0;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-tabs-wrapper md-prev-button {
-      left: 0;
-      unicode-bidi: embed; }
-    md-tabs-wrapper md-prev-button bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-tabs-wrapper md-prev-button bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
+    [dir=rtl] md-tabs-wrapper md-prev-button {
+      right: 0; }
   md-tabs-wrapper md-next-button {
+    unicode-bidi: embed;
+    right: 0;
     background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE3LjEuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPiA8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPiA8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSIyNHB4IiBoZWlnaHQ9IjI0cHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjQgMjQiIHhtbDpzcGFjZT0icHJlc2VydmUiPiA8ZyBpZD0iSGVhZGVyIj4gPGc+IDxyZWN0IHg9Ii02MTgiIHk9Ii0xMzM2IiBmaWxsPSJub25lIiB3aWR0aD0iMTQwMCIgaGVpZ2h0PSIzNjAwIi8+IDwvZz4gPC9nPiA8ZyBpZD0iTGFiZWwiPiA8L2c+IDxnIGlkPSJJY29uIj4gPGc+IDxwb2x5Z29uIHBvaW50cz0iMTAsNiA4LjYsNy40IDEzLjIsMTIgOC42LDE2LjYgMTAsMTggMTYsMTIgCQkiIHN0eWxlPSJmaWxsOndoaXRlOyIvPiA8cmVjdCBmaWxsPSJub25lIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiLz4gPC9nPiA8L2c+IDxnIGlkPSJHcmlkIiBkaXNwbGF5PSJub25lIj4gPGcgZGlzcGxheT0iaW5saW5lIj4gPC9nPiA8L2c+IDwvc3ZnPg0K"); }
-    html[dir=ltr] md-tabs-wrapper md-next-button {
-      right: 0;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-tabs-wrapper md-next-button {
-      right: 0;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-tabs-wrapper md-next-button {
-      left: 0;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-tabs-wrapper md-next-button {
-      left: 0;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-tabs-wrapper md-next-button {
-      right: 0;
-      unicode-bidi: embed; }
-    md-tabs-wrapper md-next-button bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-tabs-wrapper md-next-button bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
+    [dir=rtl] md-tabs-wrapper md-next-button {
+      left: 0; }
     md-tabs-wrapper md-next-button md-icon {
       -webkit-transform: translate3d(-50%, -50%, 0) rotate(180deg);
               transform: translate3d(-50%, -50%, 0) rotate(180deg); }
@@ -172,28 +138,11 @@ md-tabs-canvas {
     clear: both; }
   md-tabs-canvas .md-dummy-wrapper {
     position: absolute;
-    top: 0; }
-    html[dir=ltr] md-tabs-canvas .md-dummy-wrapper {
-      left: 0;
-      unicode-bidi: embed; }
-    body[dir=ltr] md-tabs-canvas .md-dummy-wrapper {
-      left: 0;
-      unicode-bidi: embed; }
-    html[dir=rtl] md-tabs-canvas .md-dummy-wrapper {
-      right: 0;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-tabs-canvas .md-dummy-wrapper {
-      right: 0;
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-tabs-canvas .md-dummy-wrapper {
-      left: 0;
-      unicode-bidi: embed; }
-    md-tabs-canvas .md-dummy-wrapper bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-tabs-canvas .md-dummy-wrapper bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
+    top: 0;
+    unicode-bidi: embed;
+    left: 0; }
+    [dir=rtl] md-tabs-canvas .md-dummy-wrapper {
+      right: 0; }
   md-tabs-canvas.md-paginated {
     margin: 0 32px; }
   md-tabs-canvas.md-center-tabs {
@@ -215,33 +164,16 @@ md-pagination-wrapper {
   transition: transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
   position: absolute;
   width: 999999px;
+  unicode-bidi: embed;
+  left: 0;
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0); }
   md-pagination-wrapper:after {
     content: '';
     display: table;
     clear: both; }
-  html[dir=ltr] md-pagination-wrapper {
-    left: 0;
-    unicode-bidi: embed; }
-  body[dir=ltr] md-pagination-wrapper {
-    left: 0;
-    unicode-bidi: embed; }
-  html[dir=rtl] md-pagination-wrapper {
-    right: 0;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-pagination-wrapper {
-    right: 0;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) md-pagination-wrapper {
-    left: 0;
-    unicode-bidi: embed; }
-  md-pagination-wrapper bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-pagination-wrapper bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
+  [dir=rtl] md-pagination-wrapper {
+    right: 0; }
   md-pagination-wrapper.md-center-tabs {
     position: relative;
     width: initial;
@@ -274,69 +206,29 @@ md-tab-content {
   md-tab-content.ng-leave, md-tab-content.md-no-transition {
     transition: none; }
   md-tab-content.md-left:not(.md-active) {
+    unicode-bidi: embed;
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
     -webkit-animation: 1s md-tab-content-hide;
             animation: 1s md-tab-content-hide;
     opacity: 0; }
-    html[dir=ltr] md-tab-content.md-left:not(.md-active) {
-      -webkit-transform: translateX(-100%);
-              transform: translateX(-100%);
-      unicode-bidi: embed; }
-    body[dir=ltr] md-tab-content.md-left:not(.md-active) {
-      -webkit-transform: translateX(-100%);
-              transform: translateX(-100%);
-      unicode-bidi: embed; }
-    html[dir=rtl] md-tab-content.md-left:not(.md-active) {
+    [dir=rtl] md-tab-content.md-left:not(.md-active) {
       -webkit-transform: translateX(100%);
-              transform: translateX(100%);
-      unicode-bidi: embed; }
-    body[dir=rtl] md-tab-content.md-left:not(.md-active) {
-      -webkit-transform: translateX(100%);
-              transform: translateX(100%);
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-tab-content.md-left:not(.md-active) {
-      -webkit-transform: translateX(-100%);
-              transform: translateX(-100%);
-      unicode-bidi: embed; }
-    md-tab-content.md-left:not(.md-active) bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-tab-content.md-left:not(.md-active) bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
+              transform: translateX(100%); }
     md-tab-content.md-left:not(.md-active) * {
       transition: visibility 0s linear;
       transition-delay: 0.5s;
       visibility: hidden; }
   md-tab-content.md-right:not(.md-active) {
+    unicode-bidi: embed;
+    -webkit-transform: translateX(100%);
+            transform: translateX(100%);
     -webkit-animation: 1s md-tab-content-hide;
             animation: 1s md-tab-content-hide;
     opacity: 0; }
-    html[dir=ltr] md-tab-content.md-right:not(.md-active) {
-      -webkit-transform: translateX(100%);
-              transform: translateX(100%);
-      unicode-bidi: embed; }
-    body[dir=ltr] md-tab-content.md-right:not(.md-active) {
-      -webkit-transform: translateX(100%);
-              transform: translateX(100%);
-      unicode-bidi: embed; }
-    html[dir=rtl] md-tab-content.md-right:not(.md-active) {
+    [dir=rtl] md-tab-content.md-right:not(.md-active) {
       -webkit-transform: translateX(-100%);
-              transform: translateX(-100%);
-      unicode-bidi: embed; }
-    body[dir=rtl] md-tab-content.md-right:not(.md-active) {
-      -webkit-transform: translateX(-100%);
-              transform: translateX(-100%);
-      unicode-bidi: embed; }
-    html:not([dir]) body:not([dir]) md-tab-content.md-right:not(.md-active) {
-      -webkit-transform: translateX(100%);
-              transform: translateX(100%);
-      unicode-bidi: embed; }
-    md-tab-content.md-right:not(.md-active) bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-tab-content.md-right:not(.md-active) bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
+              transform: translateX(-100%); }
     md-tab-content.md-right:not(.md-active) * {
       transition: visibility 0s linear;
       transition-delay: 0.5s;
@@ -371,31 +263,14 @@ md-tab {
   white-space: nowrap;
   position: relative;
   text-transform: uppercase;
+  unicode-bidi: embed;
+  float: left;
   font-weight: 500;
   box-sizing: border-box;
   overflow: hidden;
   text-overflow: ellipsis; }
-  html[dir=ltr] .md-tab {
-    float: left;
-    unicode-bidi: embed; }
-  body[dir=ltr] .md-tab {
-    float: left;
-    unicode-bidi: embed; }
-  html[dir=rtl] .md-tab {
-    float: right;
-    unicode-bidi: embed; }
-  body[dir=rtl] .md-tab {
-    float: right;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) .md-tab {
-    float: left;
-    unicode-bidi: embed; }
-  .md-tab bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  .md-tab bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
+  [dir=rtl] .md-tab {
+    float: right; }
   .md-tab.md-focused {
     box-shadow: none;
     outline: none; }

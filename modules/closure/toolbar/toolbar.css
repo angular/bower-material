@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-05aad07
+ * v1.0.6-master-540826e
  */
 md-toolbar {
   box-sizing: border-box;
@@ -39,27 +39,11 @@ md-toolbar {
       height: 48px;
       min-height: 48px;
       max-height: 48px; }
-  html[dir=ltr] md-toolbar > .md-indent {
-    margin-left: 64px;
-    unicode-bidi: embed; }
-  body[dir=ltr] md-toolbar > .md-indent {
-    margin-left: 64px;
-    unicode-bidi: embed; }
-  html[dir=rtl] md-toolbar > .md-indent {
-    margin-right: 64px;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-toolbar > .md-indent {
-    margin-right: 64px;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) md-toolbar > .md-indent {
-    margin-left: 64px;
-    unicode-bidi: embed; }
-  md-toolbar > .md-indent bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-toolbar > .md-indent bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
+  md-toolbar > .md-indent {
+    unicode-bidi: embed;
+    margin-left: 64px; }
+    [dir=rtl] md-toolbar > .md-indent {
+      margin-right: 64px; }
   md-toolbar ~ md-content > md-list {
     padding: 0; }
     md-toolbar ~ md-content > md-list md-list-item:last-child md-divider {
@@ -104,90 +88,26 @@ md-toolbar {
     .md-toolbar-tools .md-button, .md-toolbar-tools .md-button.md-icon-button md-icon {
       transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
       transition-property: background-color, fill, color; }
-  html[dir=ltr] .md-toolbar-tools > .md-button:first-child {
-    margin-left: -8px;
-    unicode-bidi: embed; }
-  body[dir=ltr] .md-toolbar-tools > .md-button:first-child {
-    margin-left: -8px;
-    unicode-bidi: embed; }
-  html[dir=rtl] .md-toolbar-tools > .md-button:first-child {
-    margin-right: -8px;
-    unicode-bidi: embed; }
-  body[dir=rtl] .md-toolbar-tools > .md-button:first-child {
-    margin-right: -8px;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) .md-toolbar-tools > .md-button:first-child {
-    margin-left: -8px;
-    unicode-bidi: embed; }
-  .md-toolbar-tools > .md-button:first-child bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  .md-toolbar-tools > .md-button:first-child bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
-  html[dir=ltr] .md-toolbar-tools > .md-button:last-child {
-    margin-right: -8px;
-    unicode-bidi: embed; }
-  body[dir=ltr] .md-toolbar-tools > .md-button:last-child {
-    margin-right: -8px;
-    unicode-bidi: embed; }
-  html[dir=rtl] .md-toolbar-tools > .md-button:last-child {
-    margin-left: -8px;
-    unicode-bidi: embed; }
-  body[dir=rtl] .md-toolbar-tools > .md-button:last-child {
-    margin-left: -8px;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) .md-toolbar-tools > .md-button:last-child {
-    margin-right: -8px;
-    unicode-bidi: embed; }
-  .md-toolbar-tools > .md-button:last-child bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  .md-toolbar-tools > .md-button:last-child bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
-  html[dir=ltr] .md-toolbar-tools > md-menu:last-child {
-    margin-right: -8px;
-    unicode-bidi: embed; }
-  body[dir=ltr] .md-toolbar-tools > md-menu:last-child {
-    margin-right: -8px;
-    unicode-bidi: embed; }
-  html[dir=rtl] .md-toolbar-tools > md-menu:last-child {
-    margin-left: -8px;
-    unicode-bidi: embed; }
-  body[dir=rtl] .md-toolbar-tools > md-menu:last-child {
-    margin-left: -8px;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) .md-toolbar-tools > md-menu:last-child {
-    margin-right: -8px;
-    unicode-bidi: embed; }
-  .md-toolbar-tools > md-menu:last-child bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  .md-toolbar-tools > md-menu:last-child bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
-  html[dir=ltr] .md-toolbar-tools > md-menu:last-child > .md-button {
-    margin-right: 0;
-    unicode-bidi: embed; }
-  body[dir=ltr] .md-toolbar-tools > md-menu:last-child > .md-button {
-    margin-right: 0;
-    unicode-bidi: embed; }
-  html[dir=rtl] .md-toolbar-tools > md-menu:last-child > .md-button {
-    margin-left: 0;
-    unicode-bidi: embed; }
-  body[dir=rtl] .md-toolbar-tools > md-menu:last-child > .md-button {
-    margin-left: 0;
-    unicode-bidi: embed; }
-  html:not([dir]) body:not([dir]) .md-toolbar-tools > md-menu:last-child > .md-button {
-    margin-right: 0;
-    unicode-bidi: embed; }
-  .md-toolbar-tools > md-menu:last-child > .md-button bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  .md-toolbar-tools > md-menu:last-child > .md-button bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
+  .md-toolbar-tools > .md-button:first-child {
+    unicode-bidi: embed;
+    margin-left: -8px; }
+    [dir=rtl] .md-toolbar-tools > .md-button:first-child {
+      margin-right: -8px; }
+  .md-toolbar-tools > .md-button:last-child {
+    unicode-bidi: embed;
+    margin-right: -8px; }
+    [dir=rtl] .md-toolbar-tools > .md-button:last-child {
+      margin-left: -8px; }
+  .md-toolbar-tools > md-menu:last-child {
+    unicode-bidi: embed;
+    margin-right: -8px; }
+    [dir=rtl] .md-toolbar-tools > md-menu:last-child {
+      margin-left: -8px; }
+    .md-toolbar-tools > md-menu:last-child > .md-button {
+      unicode-bidi: embed;
+      margin-right: 0; }
+      [dir=rtl] .md-toolbar-tools > md-menu:last-child > .md-button {
+        margin-left: 0; }
   @media screen and (-ms-high-contrast: active) {
     .md-toolbar-tools {
       border-bottom: 1px solid #fff; } }
