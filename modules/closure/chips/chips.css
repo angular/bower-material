@@ -2,15 +2,13 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-faf5845
+ * v1.0.6-master-be5a57a
  */
 .md-contact-chips .md-chips md-chip {
-  unicode-bidi: embed;
   padding: 0 25px 0 0; }
   [dir=rtl] .md-contact-chips .md-chips md-chip {
     padding: 0 0 0 25px; }
   .md-contact-chips .md-chips md-chip .md-contact-avatar {
-    unicode-bidi: embed;
     float: left; }
     [dir=rtl] .md-contact-chips .md-chips md-chip .md-contact-avatar {
       float: right; }
@@ -20,7 +18,6 @@
   .md-contact-chips .md-chips md-chip .md-contact-name {
     display: inline-block;
     height: 32px;
-    unicode-bidi: embed;
     margin-left: 8px; }
     [dir=rtl] .md-contact-chips .md-chips md-chip .md-contact-name {
       margin-right: 8px; }
@@ -32,7 +29,6 @@
     border-radius: 20px;
     margin-top: 8px; }
   .md-contact-suggestion .md-contact-name {
-    unicode-bidi: embed;
     margin-left: 8px;
     width: 120px; }
     [dir=rtl] .md-contact-suggestion .md-contact-name {
@@ -49,7 +45,6 @@
   display: block;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-size: 16px;
-  unicode-bidi: embed;
   padding: 0 0 8px 3px;
   vertical-align: middle; }
   .md-chips:after {
@@ -61,12 +56,10 @@
   .md-chips:not(.md-readonly) {
     cursor: text; }
     .md-chips:not(.md-readonly) md-chip:not(.md-readonly) {
-      unicode-bidi: embed;
       padding-right: 22px; }
       [dir=rtl] .md-chips:not(.md-readonly) md-chip:not(.md-readonly) {
         padding-left: 22px; }
       .md-chips:not(.md-readonly) md-chip:not(.md-readonly) ._md-chip-content {
-        unicode-bidi: embed;
         padding-right: 4px; }
         [dir=rtl] .md-chips:not(.md-readonly) md-chip:not(.md-readonly) ._md-chip-content {
           padding-left: 4px; }
@@ -76,10 +69,8 @@
     display: block;
     height: 32px;
     line-height: 32px;
-    unicode-bidi: embed;
     margin: 8px 8px 0 0;
     padding: 0 12px 0 12px;
-    unicode-bidi: embed;
     float: left;
     box-sizing: border-box;
     max-width: 100%;
@@ -90,7 +81,6 @@
       float: right; }
     .md-chips md-chip ._md-chip-content {
       display: block;
-      unicode-bidi: embed;
       float: left;
       white-space: nowrap;
       max-width: 100%;
@@ -102,7 +92,6 @@
         outline: none; }
     .md-chips md-chip ._md-chip-remove-container {
       position: absolute;
-      unicode-bidi: embed;
       right: 0;
       line-height: 22px; }
       [dir=rtl] .md-chips md-chip ._md-chip-remove-container {
@@ -129,10 +118,8 @@
   .md-chips ._md-chip-input-container {
     display: block;
     line-height: 32px;
-    unicode-bidi: embed;
     margin: 8px 8px 0 0;
     padding: 0;
-    unicode-bidi: embed;
     float: left; }
     [dir=rtl] .md-chips ._md-chip-input-container {
       margin: 8px 0 0 8px; }
@@ -166,7 +153,6 @@
       .md-chips ._md-chip-input-container md-autocomplete input {
         position: relative; }
     .md-chips ._md-chip-input-container:not(:first-child) {
-      unicode-bidi: embed;
       margin: 8px 8px 0 0; }
       [dir=rtl] .md-chips ._md-chip-input-container:not(:first-child) {
         margin: 8px 0 0 8px; }

@@ -224,8 +224,6 @@ $button-fab-padding: rem(1.60) !default;
 // @see https://css-tricks.com/almanac/properties/d/direction/
 
 @mixin rtl($prop, $ltr-value, $rtl-value) {
-  unicode-bidi: embed;
-
   #{$prop}: $ltr-value;
   [dir=rtl] & {
     #{$prop}: $rtl-value;
@@ -233,8 +231,6 @@ $button-fab-padding: rem(1.60) !default;
 }
 
 @mixin rtl-prop($ltr-prop, $rtl-prop, $value) {
-  unicode-bidi: embed;
-
   #{$ltr-prop}: $value;
   [dir=rtl] & {
     #{$rtl-prop}: $value;
@@ -445,6 +441,12 @@ input {
 
 // Bi-directional support
 
+html, body {
+  &[dir=rtl], &[dir=ltr] {
+     unicode-bidi: embed
+  }
+}
+
 bdo[dir=rtl] {
   direction: rtl;
   unicode-bidi: bidi-override;
@@ -453,6 +455,7 @@ bdo[dir=ltr] {
   direction: ltr;
   unicode-bidi: bidi-override;
 }
+
 
 // Global page styles
 //

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-faf5845
+ * v1.0.6-master-be5a57a
  */
 goog.provide('ng.material.components.menuBar');
 goog.require('ng.material.components.menu');

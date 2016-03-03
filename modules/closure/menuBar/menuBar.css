@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-faf5845
+ * v1.0.6-master-be5a57a
  */
 md-toolbar.md-menu-toolbar h2.md-toolbar-tools {
   line-height: 1rem;
@@ -39,12 +39,10 @@ md-menu-content._md-menu-bar-menu.md-dense {
       padding: 0;
       width: 24px;
       top: 6px;
-      unicode-bidi: embed;
       left: 24px; }
       [dir=rtl] md-menu-content._md-menu-bar-menu.md-dense md-menu-item.md-indent > md-icon {
         right: 24px; }
     md-menu-content._md-menu-bar-menu.md-dense md-menu-item.md-indent > .md-button, md-menu-content._md-menu-bar-menu.md-dense md-menu-item.md-indent .md-menu > .md-button {
-      unicode-bidi: embed;
       padding: 0 32px 0 64px; }
       [dir=rtl] md-menu-content._md-menu-bar-menu.md-dense md-menu-item.md-indent > .md-button, [dir=rtl] md-menu-content._md-menu-bar-menu.md-dense md-menu-item.md-indent .md-menu > .md-button {
         padding: 0 64px 0 32px; }
@@ -69,7 +67,6 @@ md-menu-content._md-menu-bar-menu.md-dense {
   md-menu-content._md-menu-bar-menu.md-dense md-menu-divider {
     margin: 8px 0; }
   md-menu-content._md-menu-bar-menu.md-dense md-menu-item > .md-button, md-menu-content._md-menu-bar-menu.md-dense .md-menu > .md-button {
-    unicode-bidi: embed;
     text-align: left;
     text-align: start; }
     [dir=rtl] md-menu-content._md-menu-bar-menu.md-dense md-menu-item > .md-button, [dir=rtl] md-menu-content._md-menu-bar-menu.md-dense .md-menu > .md-button {
@@ -83,7 +80,6 @@ md-menu-content._md-menu-bar-menu.md-dense {
       text-transform: none;
       font-weight: normal;
       border-radius: 0px;
-      unicode-bidi: embed;
       padding-left: 16px; }
       [dir=rtl] md-menu-content._md-menu-bar-menu.md-dense .md-menu > .md-button {
         padding-right: 16px; }
@@ -93,10 +89,8 @@ md-menu-content._md-menu-bar-menu.md-dense {
         position: absolute;
         top: 0px;
         speak: none;
-        unicode-bidi: embed;
         -webkit-transform: rotate(270deg) scaleY(0.45) scaleX(0.9);
                 transform: rotate(270deg) scaleY(0.45) scaleX(0.9);
-        unicode-bidi: embed;
         right: 28px; }
         [dir=rtl] md-menu-content._md-menu-bar-menu.md-dense .md-menu > .md-button:after {
           -webkit-transform: rotate(90deg) scaleY(0.45) scaleX(0.9);

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-faf5845
+ * v1.0.6-master-be5a57a
  */
 md-radio-button {
   box-sizing: border-box;
@@ -25,9 +25,7 @@ md-radio-button {
     width: 20px;
     height: 20px;
     cursor: pointer;
-    unicode-bidi: embed;
     left: 0;
-    unicode-bidi: embed;
     right: auto; }
     [dir=rtl] md-radio-button ._md-container {
       left: auto; }
@@ -88,9 +86,7 @@ md-radio-button {
     box-sizing: border-box;
     position: relative;
     display: inline-block;
-    unicode-bidi: embed;
     margin-left: 30px;
-    unicode-bidi: embed;
     margin-right: 0;
     vertical-align: middle;
     white-space: normal;
@@ -107,18 +103,14 @@ md-radio-group.layout-column md-radio-button, md-radio-group.layout-xs-column md
 md-radio-group.layout-row md-radio-button, md-radio-group.layout-xs-row md-radio-button, md-radio-group.layout-gt-xs-row md-radio-button, md-radio-group.layout-sm-row md-radio-button, md-radio-group.layout-gt-sm-row md-radio-button, md-radio-group.layout-md-row md-radio-button, md-radio-group.layout-gt-md-row md-radio-button, md-radio-group.layout-lg-row md-radio-button, md-radio-group.layout-gt-lg-row md-radio-button, md-radio-group.layout-xl-row md-radio-button {
   margin-top: 0;
   margin-bottom: 0;
-  unicode-bidi: embed;
   margin-left: inherit;
-  unicode-bidi: embed;
   margin-right: 16px; }
   [dir=rtl] md-radio-group.layout-row md-radio-button, [dir=rtl] md-radio-group.layout-xs-row md-radio-button, [dir=rtl] md-radio-group.layout-gt-xs-row md-radio-button, [dir=rtl] md-radio-group.layout-sm-row md-radio-button, [dir=rtl] md-radio-group.layout-gt-sm-row md-radio-button, [dir=rtl] md-radio-group.layout-md-row md-radio-button, [dir=rtl] md-radio-group.layout-gt-md-row md-radio-button, [dir=rtl] md-radio-group.layout-lg-row md-radio-button, [dir=rtl] md-radio-group.layout-gt-lg-row md-radio-button, [dir=rtl] md-radio-group.layout-xl-row md-radio-button {
     margin-left: 16px; }
   [dir=rtl] md-radio-group.layout-row md-radio-button, [dir=rtl] md-radio-group.layout-xs-row md-radio-button, [dir=rtl] md-radio-group.layout-gt-xs-row md-radio-button, [dir=rtl] md-radio-group.layout-sm-row md-radio-button, [dir=rtl] md-radio-group.layout-gt-sm-row md-radio-button, [dir=rtl] md-radio-group.layout-md-row md-radio-button, [dir=rtl] md-radio-group.layout-gt-md-row md-radio-button, [dir=rtl] md-radio-group.layout-lg-row md-radio-button, [dir=rtl] md-radio-group.layout-gt-lg-row md-radio-button, [dir=rtl] md-radio-group.layout-xl-row md-radio-button {
     margin-right: inherit; }
   md-radio-group.layout-row md-radio-button:last-of-type, md-radio-group.layout-xs-row md-radio-button:last-of-type, md-radio-group.layout-gt-xs-row md-radio-button:last-of-type, md-radio-group.layout-sm-row md-radio-button:last-of-type, md-radio-group.layout-gt-sm-row md-radio-button:last-of-type, md-radio-group.layout-md-row md-radio-button:last-of-type, md-radio-group.layout-gt-md-row md-radio-button:last-of-type, md-radio-group.layout-lg-row md-radio-button:last-of-type, md-radio-group.layout-gt-lg-row md-radio-button:last-of-type, md-radio-group.layout-xl-row md-radio-button:last-of-type {
-    unicode-bidi: embed;
     margin-left: inherit;
-    unicode-bidi: embed;
     margin-right: 0; }
     [dir=rtl] md-radio-group.layout-row md-radio-button:last-of-type, [dir=rtl] md-radio-group.layout-xs-row md-radio-button:last-of-type, [dir=rtl] md-radio-group.layout-gt-xs-row md-radio-button:last-of-type, [dir=rtl] md-radio-group.layout-sm-row md-radio-button:last-of-type, [dir=rtl] md-radio-group.layout-gt-sm-row md-radio-button:last-of-type, [dir=rtl] md-radio-group.layout-md-row md-radio-button:last-of-type, [dir=rtl] md-radio-group.layout-gt-md-row md-radio-button:last-of-type, [dir=rtl] md-radio-group.layout-lg-row md-radio-button:last-of-type, [dir=rtl] md-radio-group.layout-gt-lg-row md-radio-button:last-of-type, [dir=rtl] md-radio-group.layout-xl-row md-radio-button:last-of-type {
       margin-left: 0; }

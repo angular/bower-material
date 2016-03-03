@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-faf5845
+ * v1.0.6-master-be5a57a
  */
 md-list {
   display: block;
@@ -21,7 +21,6 @@ md-list {
       height: 20px; }
     md-list.md-dense md-list-item > md-icon:first-child:not(.md-avatar-icon),
     md-list.md-dense md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
-      unicode-bidi: embed;
       margin-right: 36px; }
       [dir=rtl] md-list.md-dense md-list-item > md-icon:first-child:not(.md-avatar-icon), [dir=rtl]
       md-list.md-dense md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
@@ -29,7 +28,6 @@ md-list {
     md-list.md-dense md-list-item .md-avatar, md-list.md-dense md-list-item .md-avatar-icon,
     md-list.md-dense md-list-item ._md-list-item-inner .md-avatar,
     md-list.md-dense md-list-item ._md-list-item-inner .md-avatar-icon {
-      unicode-bidi: embed;
       margin-right: 20px; }
       [dir=rtl] md-list.md-dense md-list-item .md-avatar, [dir=rtl] md-list.md-dense md-list-item .md-avatar-icon, [dir=rtl]
       md-list.md-dense md-list-item ._md-list-item-inner .md-avatar, [dir=rtl]
@@ -40,7 +38,6 @@ md-list {
       width: 36px;
       height: 36px; }
   md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
-    unicode-bidi: embed;
     margin-left: 56px; }
     [dir=rtl] md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
       margin-right: 56px; }
@@ -75,7 +72,6 @@ md-list-item {
       margin: 0;
       font-weight: 400;
       background-color: inherit;
-      unicode-bidi: embed;
       text-align: left;
       border: medium none; }
       [dir=rtl] md-list-item._md-button-wrap > .md-button:first-child {
@@ -102,7 +98,6 @@ md-list-item {
     md-list-item ._md-no-style.md-button {
       font-size: inherit;
       height: inherit;
-      unicode-bidi: embed;
       text-align: left;
       text-transform: none;
       width: 100%;
@@ -131,13 +126,11 @@ md-list-item {
   md-list-item md-divider {
     position: absolute;
     bottom: 0;
-    unicode-bidi: embed;
     left: 0;
     width: 100%; }
     [dir=rtl] md-list-item md-divider {
       right: 0; }
     md-list-item md-divider[md-inset] {
-      unicode-bidi: embed;
       left: 72px;
       width: calc(100% - 72px);
       margin: 0; }
@@ -190,7 +183,6 @@ md-list-item {
         display: none; }
     md-list-item > md-icon:first-child:not(.md-avatar-icon),
     md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
-      unicode-bidi: embed;
       margin-right: 32px; }
       [dir=rtl] md-list-item > md-icon:first-child:not(.md-avatar-icon), [dir=rtl]
       md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
@@ -198,9 +190,7 @@ md-list-item {
     md-list-item > md-checkbox,
     md-list-item ._md-list-item-inner > md-checkbox {
       width: 24px;
-      unicode-bidi: embed;
       margin-left: 3px;
-      unicode-bidi: embed;
       margin-right: 29px;
       margin-top: 16px; }
       [dir=rtl] md-list-item > md-checkbox, [dir=rtl]
@@ -214,7 +204,6 @@ md-list-item {
     md-list-item ._md-list-item-inner .md-avatar-icon {
       margin-top: 8px;
       margin-bottom: 8px;
-      unicode-bidi: embed;
       margin-right: 16px;
       border-radius: 50%;
       box-sizing: content-box; }
@@ -237,14 +226,12 @@ md-list-item {
       margin-bottom: 0; }
     md-list-item md-checkbox.md-secondary,
     md-list-item ._md-list-item-inner md-checkbox.md-secondary {
-      unicode-bidi: embed;
       margin-right: 0; }
       [dir=rtl] md-list-item md-checkbox.md-secondary, [dir=rtl]
       md-list-item ._md-list-item-inner md-checkbox.md-secondary {
         margin-left: 0; }
     md-list-item md-switch.md-secondary,
     md-list-item ._md-list-item-inner md-switch.md-secondary {
-      unicode-bidi: embed;
       margin-right: -6px; }
       [dir=rtl] md-list-item md-switch.md-secondary, [dir=rtl]
       md-list-item ._md-list-item-inner md-switch.md-secondary {
@@ -265,14 +252,12 @@ md-list-item {
         border-radius: 50%; }
     md-list-item ._md-secondary-container,
     md-list-item ._md-list-item-inner ._md-secondary-container {
-      unicode-bidi: embed;
       margin-right: -12px; }
       [dir=rtl] md-list-item ._md-secondary-container, [dir=rtl]
       md-list-item ._md-list-item-inner ._md-secondary-container {
         margin-left: -12px; }
       md-list-item ._md-secondary-container.md-icon-button,
       md-list-item ._md-list-item-inner ._md-secondary-container.md-icon-button {
-        unicode-bidi: embed;
         margin-right: -6px; }
         [dir=rtl] md-list-item ._md-secondary-container.md-icon-button, [dir=rtl]
         md-list-item ._md-list-item-inner ._md-secondary-container.md-icon-button {
@@ -284,7 +269,6 @@ md-list-item {
       position: absolute;
       top: 50%;
       margin: 0;
-      unicode-bidi: embed;
       right: 16px;
       -webkit-transform: translate3d(0, -50%, 0);
               transform: translate3d(0, -50%, 0); }
@@ -295,7 +279,6 @@ md-list-item {
         left: 16px; }
     md-list-item > .md-button._md-secondary-container > .md-secondary,
     md-list-item ._md-list-item-inner > .md-button._md-secondary-container > .md-secondary {
-      unicode-bidi: embed;
       margin-left: 0;
       position: static; }
       [dir=rtl] md-list-item > .md-button._md-secondary-container > .md-secondary, [dir=rtl]
@@ -326,7 +309,6 @@ md-list-item {
       text-overflow: ellipsis;
       overflow: hidden; }
       md-list-item.md-2-line .md-list-item-text.md-offset, md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, md-list-item.md-3-line .md-list-item-text.md-offset, md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
-        unicode-bidi: embed;
         margin-left: 56px; }
         [dir=rtl] md-list-item.md-2-line .md-list-item-text.md-offset, [dir=rtl] md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, [dir=rtl] md-list-item.md-3-line .md-list-item-text.md-offset, [dir=rtl] md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
           margin-right: 56px; }

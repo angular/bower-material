@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-faf5845
+ * v1.0.6-master-be5a57a
  */
 .md-toast-text {
   padding: 0 6px; }
@@ -40,7 +40,6 @@ md-toast {
     -webkit-transform: translate3d(0, 0, 0) rotateZ(0deg);
             transform: translate3d(0, 0, 0) rotateZ(0deg);
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    unicode-bidi: embed;
     -webkit-justify-content: flex-start;
         -ms-flex-pack: start;
             justify-content: flex-start; }
@@ -91,9 +90,7 @@ md-toast {
     float: right; }
   md-toast .md-button {
     min-width: 0;
-    unicode-bidi: embed;
     margin-right: 0;
-    unicode-bidi: embed;
     margin-left: 12px; }
     [dir=rtl] md-toast .md-button {
       margin-right: 12px; }
