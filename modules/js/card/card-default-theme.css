@@ -2,10 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-7efb351
+ * v1.0.6-master-e3b0cd8
  */
 md-card.md-THEME_NAME-theme {
-  background-color: '{{background-color}}';
+  background-color: '{{background-hue-1}}';
   border-radius: 2px; }
   md-card.md-THEME_NAME-theme .md-card-image {
     border-radius: 2px 2px 0 0; }
