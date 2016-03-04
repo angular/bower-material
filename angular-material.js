@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-e3b0cd8
+ * v1.0.6-master-1554eb1
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1403,7 +1403,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      */
     parseAttributeBoolean: function(value, negatedCheck) {
       return value === '' || !!value && (negatedCheck === false || value !== 'false' && value !== '0');
-},
+    },
 
     hasComputedStyle: hasComputedStyle
   };
@@ -6219,6 +6219,7 @@ MdBottomSheetDirective.$inject = ["$mdBottomSheet"];
  *   of 3.
  *   - `clickOutsideToClose` - `{boolean=}`: Whether the user can click outside the bottom sheet to
  *     close it. Default true.
+ *   - `disableBackdrop` - `{boolean=}`: When set to true, the bottomsheet will not show a backdrop.
  *   - `escapeToClose` - `{boolean=}`: Whether the user can press escape to close the bottom sheet.
  *     Default true.
  *   - `resolve` - `{object=}`: Similar to locals, except it takes promises as values
@@ -6278,6 +6279,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
       themable: true,
       onShow: onShow,
       onRemove: onRemove,
+      disableBackdrop: false,
       escapeToClose: true,
       clickOutsideToClose: true,
       disableParentScroll: true
@@ -6288,18 +6290,20 @@ function MdBottomSheetProvider($$interimElementProvider) {
 
       element = $mdUtil.extractElementByName(element, 'md-bottom-sheet');
 
-      // Add a backdrop that will close on click
-      backdrop = $mdUtil.createBackdrop(scope, "_md-bottom-sheet-backdrop md-opaque");
+      if (!options.disableBackdrop) {
+        // Add a backdrop that will close on click
+        backdrop = $mdUtil.createBackdrop(scope, "_md-bottom-sheet-backdrop md-opaque");
 
-      if (options.clickOutsideToClose) {
-        backdrop.on('click', function() {
-          $mdUtil.nextTick($mdBottomSheet.cancel,true);
-        });
+        if (options.clickOutsideToClose) {
+          backdrop.on('click', function() {
+            $mdUtil.nextTick($mdBottomSheet.cancel,true);
+          });
+        }
+
+        $mdTheming.inherit(backdrop, options.parent);
+
+        $animate.enter(backdrop, options.parent, null);
       }
-
-      $mdTheming.inherit(backdrop, options.parent);
-
-      $animate.enter(backdrop, options.parent, null);
 
       var bottomSheet = new BottomSheet(element, options.parent);
       options.bottomSheet = bottomSheet;
@@ -6335,7 +6339,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
 
       var bottomSheet = options.bottomSheet;
 
-      $animate.leave(backdrop);
+      if (!options.disableBackdrop) $animate.leave(backdrop);
       return $animate.leave(bottomSheet.element).then(function() {
         if (options.disableParentScroll) {
           options.restoreScroll();
@@ -15226,6 +15230,7 @@ function SidenavFocusDirective() {
  * </hljs>
  *
  * @param {expression=} md-is-open A model bound to whether the sidenav is opened.
+ * @param {boolean=} md-disable-backdrop When present in the markup, the sidenav will not show a backdrop.
  * @param {string=} md-component-id componentId to use with $mdSidenav service.
  * @param {expression=} md-is-locked-open When this expression evalutes to true,
  * the sidenav 'locks open': it falls into the content's flow instead
@@ -15260,7 +15265,6 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $animate, 
     var lastParentOverFlow;
     var triggeringElement = null;
     var promise = $q.when(true);
-
     var isLockedOpenParsed = $parse(attr.mdIsLockedOpen);
     var isLocked = function() {
       return isLockedOpenParsed(scope.$parent, {
@@ -15271,21 +15275,21 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $animate, 
         $mdMedia: $mdMedia
       });
     };
-    var backdrop = $mdUtil.createBackdrop(scope, "_md-sidenav-backdrop md-opaque ng-enter");
+    var backdrop = !angular.isDefined(attr.mdDisableBackdrop) ? $mdUtil.createBackdrop(scope, "_md-sidenav-backdrop md-opaque ng-enter") : undefined;
 
     $mdTheming(element);
 
     // The backdrop should inherit the sidenavs theme,
     // because the backdrop will take its parent theme by default.
-    $mdTheming.inherit(backdrop, element);
+    if ( backdrop ) $mdTheming.inherit(backdrop, element);
 
     element.on('$destroy', function() {
-      backdrop.remove();
+      backdrop && backdrop.remove();
       sidenavCtrl.destroy();
     });
 
     scope.$on('$destroy', function(){
-      backdrop.remove()
+      backdrop && backdrop.remove()
     });
 
     scope.$watch(isLocked, updateIsLocked);
@@ -15306,7 +15310,9 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $animate, 
       } else {
         $animate[isLocked ? 'addClass' : 'removeClass'](element, '_md-locked-open');
       }
-      backdrop.toggleClass('_md-locked-open', !!isLocked);
+      if (backdrop) {
+        backdrop.toggleClass('_md-locked-open', !!isLocked);
+      }
     }
 
     /**
@@ -15319,7 +15325,7 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $animate, 
       var parent = element.parent();
 
       parent[isOpen ? 'on' : 'off']('keydown', onKeyDown);
-      backdrop[isOpen ? 'on' : 'off']('click', close);
+      if (backdrop) backdrop[isOpen ? 'on' : 'off']('click', close);
 
       if ( isOpen ) {
         // Capture upon opening..
@@ -15329,7 +15335,8 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $animate, 
       disableParentScroll(isOpen);
 
       return promise = $q.all([
-                isOpen ? $animate.enter(backdrop, parent) : $animate.leave(backdrop),
+                isOpen && backdrop ? $animate.enter(backdrop, parent) :
+                backdrop ? $animate.leave(backdrop) : $q.when(true),
                 $animate[isOpen ? 'removeClass' : 'addClass'](element, '_md-closed')
               ])
               .then(function() {
@@ -25167,4 +25174,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.6-master-e3b0cd8"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.6-master-1554eb1"}};

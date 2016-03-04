@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-e3b0cd8
+ * v1.0.6-master-1554eb1
  */
 goog.provide('ng.material.core');
 
@@ -1378,7 +1378,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      */
     parseAttributeBoolean: function(value, negatedCheck) {
       return value === '' || !!value && (negatedCheck === false || value !== 'false' && value !== '0');
-},
+    },
 
     hasComputedStyle: hasComputedStyle
   };

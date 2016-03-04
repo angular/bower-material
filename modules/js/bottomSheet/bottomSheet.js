@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-e3b0cd8
+ * v1.0.6-master-1554eb1
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -95,6 +95,7 @@ MdBottomSheetDirective.$inject = ["$mdBottomSheet"];
  *   of 3.
  *   - `clickOutsideToClose` - `{boolean=}`: Whether the user can click outside the bottom sheet to
  *     close it. Default true.
+ *   - `disableBackdrop` - `{boolean=}`: When set to true, the bottomsheet will not show a backdrop.
  *   - `escapeToClose` - `{boolean=}`: Whether the user can press escape to close the bottom sheet.
  *     Default true.
  *   - `resolve` - `{object=}`: Similar to locals, except it takes promises as values
@@ -154,6 +155,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
       themable: true,
       onShow: onShow,
       onRemove: onRemove,
+      disableBackdrop: false,
       escapeToClose: true,
       clickOutsideToClose: true,
       disableParentScroll: true
@@ -164,18 +166,20 @@ function MdBottomSheetProvider($$interimElementProvider) {
 
       element = $mdUtil.extractElementByName(element, 'md-bottom-sheet');
 
-      // Add a backdrop that will close on click
-      backdrop = $mdUtil.createBackdrop(scope, "_md-bottom-sheet-backdrop md-opaque");
+      if (!options.disableBackdrop) {
+        // Add a backdrop that will close on click
+        backdrop = $mdUtil.createBackdrop(scope, "_md-bottom-sheet-backdrop md-opaque");
 
-      if (options.clickOutsideToClose) {
-        backdrop.on('click', function() {
-          $mdUtil.nextTick($mdBottomSheet.cancel,true);
-        });
+        if (options.clickOutsideToClose) {
+          backdrop.on('click', function() {
+            $mdUtil.nextTick($mdBottomSheet.cancel,true);
+          });
+        }
+
+        $mdTheming.inherit(backdrop, options.parent);
+
+        $animate.enter(backdrop, options.parent, null);
       }
-
-      $mdTheming.inherit(backdrop, options.parent);
-
-      $animate.enter(backdrop, options.parent, null);
 
       var bottomSheet = new BottomSheet(element, options.parent);
       options.bottomSheet = bottomSheet;
@@ -211,7 +215,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
 
       var bottomSheet = options.bottomSheet;
 
-      $animate.leave(backdrop);
+      if (!options.disableBackdrop) $animate.leave(backdrop);
       return $animate.leave(bottomSheet.element).then(function() {
         if (options.disableParentScroll) {
           options.restoreScroll();
