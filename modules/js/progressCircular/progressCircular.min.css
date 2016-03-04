@@ -2,5 +2,5 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-1554eb1
- */@-webkit-keyframes indeterminate-rotate{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes indeterminate-rotate{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}md-progress-circular svg{display:block}md-progress-circular._md-mode-indeterminate svg{-webkit-animation:indeterminate-rotate 2.9s linear infinite;animation:indeterminate-rotate 2.9s linear infinite}
+ * v1.0.6-master-d67389c
+ */md-progress-circular{position:relative}md-progress-circular svg{position:absolute;overflow:visible;top:0;left:0}

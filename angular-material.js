@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-1554eb1
+ * v1.0.6-master-d67389c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -23622,17 +23622,16 @@ angular
     '$$rAF',
     '$window',
     '$mdProgressCircular',
-    '$interval',
     '$mdUtil',
+    '$interval',
     '$log',
     MdProgressCircularDirective
   ]);
 
-function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $interval, $mdUtil, $log) {
+function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUtil, $interval, $log) {
   var DEGREE_IN_RADIANS = $window.Math.PI / 180;
   var MODE_DETERMINATE = 'determinate';
   var MODE_INDETERMINATE = 'indeterminate';
-  var INDETERMINATE_CLASS = '_md-mode-indeterminate';
 
   return {
     restrict: 'E',
@@ -23645,7 +23644,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $inter
       '<svg xmlns="http://www.w3.org/2000/svg">' +
         '<path fill="none"/>' +
       '</svg>',
-    compile: function(element, attrs){
+    compile: function(element, attrs) {
       element.attr({
         'aria-valuemin': 0,
         'aria-valuemax': 100,
@@ -23668,73 +23667,66 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $inter
   };
 
   function MdProgressCircularLink(scope, element) {
-    var svg = angular.element(element[0].querySelector('svg'));
-    var path = angular.element(element[0].querySelector('path'));
-    var lastAnimationId = 0;
+    var svg = element[0].querySelector('svg');
+    var path = angular.element(svg.querySelector('path'));
     var startIndeterminate = $mdProgressCircular.startIndeterminate;
     var endIndeterminate = $mdProgressCircular.endIndeterminate;
     var rotationIndeterminate = 0;
+    var lastAnimationId = 0;
     var interval;
 
-    scope.$watchGroup(['value', 'mdMode', 'mdDiameter'], function(newValues, oldValues) {
+    scope.$watchGroup(['value', 'mdMode'], function(newValues, oldValues) {
       var mode = newValues[1];
 
       if (mode !== MODE_DETERMINATE && mode !== MODE_INDETERMINATE) {
-        cleanupIndeterminate();
+        cleanupIndeterminateAnimation();
         element.addClass('ng-hide');
       } else {
         element.removeClass('ng-hide');
 
-        if (mode === MODE_INDETERMINATE){
-          if (!interval) {
-            interval = $interval(
-              animateIndeterminate,
-              $mdProgressCircular.durationIndeterminate + 50,
-              0,
-              false
-            );
-
-            element.addClass(INDETERMINATE_CLASS);
-            animateIndeterminate();
-          }
-
+        if (mode === MODE_INDETERMINATE) {
+          startIndeterminateAnimation();
         } else {
-          cleanupIndeterminate();
+          cleanupIndeterminateAnimation();
           renderCircle(clamp(oldValues[0]), clamp(newValues[0]));
         }
       }
     });
 
-    function renderCircle(animateFrom, animateTo, easing, duration, rotation) {
-      var id = ++lastAnimationId;
-      var startTime = new $window.Date();
-      var changeInValue = animateTo - animateFrom;
-      var diameter = getSize(scope.mdDiameter);
-      var strokeWidth = $mdProgressCircular.strokeWidth / 100 * diameter;
-
-      var pathDiameter = diameter - strokeWidth;
-      var ease = easing || $mdProgressCircular.easeFn;
-      var animationDuration = duration || $mdProgressCircular.duration;
-
-      element.attr('aria-valuenow', animateTo);
-      path.attr('stroke-width', strokeWidth + 'px');
-
-      svg.css({
-        width: diameter + 'px',
-        height: diameter + 'px'
-      });
+    // This is in a separate watch in order to avoid layout, unless
+    // the value has actually changed.
+    scope.$watch('mdDiameter', function(newValue) {
+      var diameter = getSize(newValue);
+      var strokeWidth = getStroke(diameter);
 
       // The viewBox has to be applied via setAttribute, because it is
       // case-sensitive. If jQuery is included in the page, `.attr` lowercases
       // all attribute names.
-      svg[0].setAttribute('viewBox', '0 0 ' + diameter + ' ' + diameter);
+      svg.setAttribute('viewBox', '0 0 ' + diameter + ' ' + diameter);
+      path.css('stroke-width',  strokeWidth + 'px');
+      element.css({
+        width: diameter + 'px',
+        height: diameter + 'px'
+      });
+    });
+
+    function renderCircle(animateFrom, animateTo, easing, duration, rotation) {
+      var id = ++lastAnimationId;
+      var startTime = $window.performance.now();
+      var changeInValue = animateTo - animateFrom;
+      var diameter = getSize(scope.mdDiameter);
+      var pathDiameter = diameter - getStroke(diameter);
+      var ease = easing || $mdProgressCircular.easeFn;
+      var animationDuration = duration || $mdProgressCircular.duration;
+
+      element.attr('aria-valuenow', animateTo);
 
       // No need to animate it if the values are the same
       if (animateTo === animateFrom) {
         path.attr('d', getSvgArc(animateTo, diameter, pathDiameter, rotation));
       } else {
-        (function animation() {
-          var currentTime = $window.Math.min(new $window.Date() - startTime, animationDuration);
+        $$rAF(function animation(now) {
+          var currentTime = now - startTime;
 
           path.attr('d', getSvgArc(
             ease(currentTime, animateFrom, changeInValue, animationDuration),
@@ -23746,7 +23738,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $inter
           if (id === lastAnimationId && currentTime < animationDuration) {
             $$rAF(animation);
           }
-        })();
+        });
       }
     }
 
@@ -23768,11 +23760,52 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $inter
       endIndeterminate = -temp;
     }
 
-    function cleanupIndeterminate() {
+    function startIndeterminateAnimation() {
+      if (!interval) {
+        var startTime = $window.performance.now();
+        var animationDuration = $mdProgressCircular.rotationDurationIndeterminate;
+        var radius = getSize(scope.mdDiameter) / 2;
+
+        // Spares us at least a little bit of string concatenation.
+        radius = ' ' + radius + ', ' + radius;
+
+        // This animates the indeterminate rotation. This can be achieved much easier
+        // with CSS keyframes, however IE11 seems to have problems centering the rotation
+        // which causes a wobble in the indeterminate animation.
+        $$rAF(function animation(now) {
+          var currentTime = now - startTime;
+          var rotation = $mdProgressCircular.easingPresets.linearEase(currentTime, 0, 360, animationDuration);
+
+          path.attr('transform', 'rotate(' + rotation + radius + ')');
+
+          if (interval) {
+            $$rAF(animation);
+          } else {
+            path.removeAttr('transform');
+          }
+
+          // Reset the animation
+          if (currentTime >= animationDuration) {
+            startTime = now;
+          }
+        });
+
+        // This shouldn't trigger a digest which is why we don't use $interval.
+        interval = $interval(
+          animateIndeterminate,
+          $mdProgressCircular.durationIndeterminate + 50,
+          0,
+          false
+        );
+
+        animateIndeterminate();
+      }
+    }
+
+    function cleanupIndeterminateAnimation() {
       if (interval) {
         $interval.cancel(interval);
         interval = null;
-        element.removeClass(INDETERMINATE_CLASS);
       }
     }
   }
@@ -23855,6 +23888,14 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $inter
 
     return defaultValue;
   }
+
+  /**
+   * Determines the circle's stroke width, based on
+   * the provided diameter.
+   */
+  function getStroke(diameter) {
+    return $mdProgressCircular.strokeWidth / 100 * diameter;
+  }
 }
 
 })();
@@ -23878,6 +23919,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $inter
  * @property {number} durationIndeterminate Duration of the indeterminate animation.
  * @property {number} startIndeterminate Indeterminate animation start point.
  * @param {number} endIndeterminate Indeterminate animation end point.
+ * @param {number} rotationDurationIndeterminate Duration of the indeterminate rotating animation.
  * @param {function} easeFnIndeterminate Easing function to be used when animating
  * between the indeterminate values.
  *
@@ -23909,9 +23951,10 @@ function MdProgressCircularProvider() {
     duration: 100,
     easeFn: linearEase,
 
-    durationIndeterminate: 600,
-    startIndeterminate: 2.5,
+    durationIndeterminate: 500,
+    startIndeterminate: 3,
     endIndeterminate: 80,
+    rotationDurationIndeterminate: 2900,
     easeFnIndeterminate: materialEase,
 
     easingPresets: {
@@ -25174,4 +25217,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.6-master-1554eb1"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.6-master-d67389c"}};
