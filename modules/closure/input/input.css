@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-e592012
+ * v1.0.6-master-fae559c
  */
 md-input-container {
   display: inline-block;
@@ -175,43 +175,19 @@ md-input-container {
       padding-right: 0; }
     [dir=rtl] md-input-container .md-char-counter {
       padding-left: 2px; }
-  md-input-container ng-messages, md-input-container data-ng-messages, md-input-container x-ng-messages,
-  md-input-container [ng-messages], md-input-container [data-ng-messages], md-input-container [x-ng-messages] {
+  md-input-container .md-input-messages-animation {
     position: relative;
     -webkit-order: 4;
         -ms-flex-order: 4;
             order: 4;
     overflow: hidden;
     clear: left; }
-    [dir=rtl] md-input-container ng-messages, [dir=rtl] md-input-container data-ng-messages, [dir=rtl] md-input-container x-ng-messages, [dir=rtl]
-    md-input-container [ng-messages], [dir=rtl] md-input-container [data-ng-messages], [dir=rtl] md-input-container [x-ng-messages] {
+    [dir=rtl] md-input-container .md-input-messages-animation {
       clear: right; }
-    md-input-container ng-messages.ng-enter ng-message, md-input-container ng-messages.ng-enter data-ng-message, md-input-container ng-messages.ng-enter x-ng-message,
-    md-input-container ng-messages.ng-enter [ng-message], md-input-container ng-messages.ng-enter [data-ng-message], md-input-container ng-messages.ng-enter [x-ng-message],
-    md-input-container ng-messages.ng-enter [ng-message-exp], md-input-container ng-messages.ng-enter [data-ng-message-exp], md-input-container ng-messages.ng-enter [x-ng-message-exp], md-input-container data-ng-messages.ng-enter ng-message, md-input-container data-ng-messages.ng-enter data-ng-message, md-input-container data-ng-messages.ng-enter x-ng-message,
-    md-input-container data-ng-messages.ng-enter [ng-message], md-input-container data-ng-messages.ng-enter [data-ng-message], md-input-container data-ng-messages.ng-enter [x-ng-message],
-    md-input-container data-ng-messages.ng-enter [ng-message-exp], md-input-container data-ng-messages.ng-enter [data-ng-message-exp], md-input-container data-ng-messages.ng-enter [x-ng-message-exp], md-input-container x-ng-messages.ng-enter ng-message, md-input-container x-ng-messages.ng-enter data-ng-message, md-input-container x-ng-messages.ng-enter x-ng-message,
-    md-input-container x-ng-messages.ng-enter [ng-message], md-input-container x-ng-messages.ng-enter [data-ng-message], md-input-container x-ng-messages.ng-enter [x-ng-message],
-    md-input-container x-ng-messages.ng-enter [ng-message-exp], md-input-container x-ng-messages.ng-enter [data-ng-message-exp], md-input-container x-ng-messages.ng-enter [x-ng-message-exp],
-    md-input-container [ng-messages].ng-enter ng-message,
-    md-input-container [ng-messages].ng-enter data-ng-message,
-    md-input-container [ng-messages].ng-enter x-ng-message,
-    md-input-container [ng-messages].ng-enter [ng-message],
-    md-input-container [ng-messages].ng-enter [data-ng-message],
-    md-input-container [ng-messages].ng-enter [x-ng-message],
-    md-input-container [ng-messages].ng-enter [ng-message-exp],
-    md-input-container [ng-messages].ng-enter [data-ng-message-exp],
-    md-input-container [ng-messages].ng-enter [x-ng-message-exp], md-input-container [data-ng-messages].ng-enter ng-message, md-input-container [data-ng-messages].ng-enter data-ng-message, md-input-container [data-ng-messages].ng-enter x-ng-message,
-    md-input-container [data-ng-messages].ng-enter [ng-message], md-input-container [data-ng-messages].ng-enter [data-ng-message], md-input-container [data-ng-messages].ng-enter [x-ng-message],
-    md-input-container [data-ng-messages].ng-enter [ng-message-exp], md-input-container [data-ng-messages].ng-enter [data-ng-message-exp], md-input-container [data-ng-messages].ng-enter [x-ng-message-exp], md-input-container [x-ng-messages].ng-enter ng-message, md-input-container [x-ng-messages].ng-enter data-ng-message, md-input-container [x-ng-messages].ng-enter x-ng-message,
-    md-input-container [x-ng-messages].ng-enter [ng-message], md-input-container [x-ng-messages].ng-enter [data-ng-message], md-input-container [x-ng-messages].ng-enter [x-ng-message],
-    md-input-container [x-ng-messages].ng-enter [ng-message-exp], md-input-container [x-ng-messages].ng-enter [data-ng-message-exp], md-input-container [x-ng-messages].ng-enter [x-ng-message-exp] {
+    md-input-container .md-input-messages-animation.ng-enter .md-input-message-animation {
       opacity: 0;
       margin-top: -100px; }
-  md-input-container ng-message, md-input-container data-ng-message, md-input-container x-ng-message,
-  md-input-container [ng-message], md-input-container [data-ng-message], md-input-container [x-ng-message],
-  md-input-container [ng-message-exp], md-input-container [data-ng-message-exp], md-input-container [x-ng-message-exp],
-  md-input-container .md-char-counter {
+  md-input-container .md-input-message-animation, md-input-container .md-char-counter {
     font-size: 12px;
     line-height: 14px;
     overflow: hidden;
@@ -219,21 +195,12 @@ md-input-container {
     opacity: 1;
     margin-top: 0;
     padding-top: 5px; }
-    md-input-container ng-message:not(.md-char-counter), md-input-container data-ng-message:not(.md-char-counter), md-input-container x-ng-message:not(.md-char-counter),
-    md-input-container [ng-message]:not(.md-char-counter), md-input-container [data-ng-message]:not(.md-char-counter), md-input-container [x-ng-message]:not(.md-char-counter),
-    md-input-container [ng-message-exp]:not(.md-char-counter), md-input-container [data-ng-message-exp]:not(.md-char-counter), md-input-container [x-ng-message-exp]:not(.md-char-counter),
-    md-input-container .md-char-counter:not(.md-char-counter) {
+    md-input-container .md-input-message-animation:not(.md-char-counter), md-input-container .md-char-counter:not(.md-char-counter) {
       padding-right: 5px;
       padding-left: 0; }
-      [dir=rtl] md-input-container ng-message:not(.md-char-counter), [dir=rtl] md-input-container data-ng-message:not(.md-char-counter), [dir=rtl] md-input-container x-ng-message:not(.md-char-counter), [dir=rtl]
-      md-input-container [ng-message]:not(.md-char-counter), [dir=rtl] md-input-container [data-ng-message]:not(.md-char-counter), [dir=rtl] md-input-container [x-ng-message]:not(.md-char-counter), [dir=rtl]
-      md-input-container [ng-message-exp]:not(.md-char-counter), [dir=rtl] md-input-container [data-ng-message-exp]:not(.md-char-counter), [dir=rtl] md-input-container [x-ng-message-exp]:not(.md-char-counter), [dir=rtl]
-      md-input-container .md-char-counter:not(.md-char-counter) {
+      [dir=rtl] md-input-container .md-input-message-animation:not(.md-char-counter), [dir=rtl] md-input-container .md-char-counter:not(.md-char-counter) {
         padding-right: 0; }
-      [dir=rtl] md-input-container ng-message:not(.md-char-counter), [dir=rtl] md-input-container data-ng-message:not(.md-char-counter), [dir=rtl] md-input-container x-ng-message:not(.md-char-counter), [dir=rtl]
-      md-input-container [ng-message]:not(.md-char-counter), [dir=rtl] md-input-container [data-ng-message]:not(.md-char-counter), [dir=rtl] md-input-container [x-ng-message]:not(.md-char-counter), [dir=rtl]
-      md-input-container [ng-message-exp]:not(.md-char-counter), [dir=rtl] md-input-container [data-ng-message-exp]:not(.md-char-counter), [dir=rtl] md-input-container [x-ng-message-exp]:not(.md-char-counter), [dir=rtl]
-      md-input-container .md-char-counter:not(.md-char-counter) {
+      [dir=rtl] md-input-container .md-input-message-animation:not(.md-char-counter), [dir=rtl] md-input-container .md-char-counter:not(.md-char-counter) {
         padding-left: 5px; }
   md-input-container:not(.md-input-invalid) .md-auto-hide .md-input-message-animation {
     opacity: 0;
