@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-34f2704
+ * v1.0.6-master-8539eac
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -23679,8 +23679,8 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUti
   };
 
   function MdProgressCircularLink(scope, element) {
-    var svg = element[0].querySelector('svg');
-    var path = angular.element(svg.querySelector('path'));
+    var svg = angular.element(element[0].querySelector('svg'));
+    var path = angular.element(element[0].querySelector('path'));
     var startIndeterminate = $mdProgressCircular.startIndeterminate;
     var endIndeterminate = $mdProgressCircular.endIndeterminate;
     var rotationIndeterminate = 0;
@@ -23699,8 +23699,11 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUti
         if (mode === MODE_INDETERMINATE) {
           startIndeterminateAnimation();
         } else {
+          var newValue = clamp(newValues[0]);
+
           cleanupIndeterminateAnimation();
-          renderCircle(clamp(oldValues[0]), clamp(newValues[0]));
+          element.attr('aria-valuenow', newValue);
+          renderCircle(clamp(oldValues[0]), newValue);
         }
       }
     });
@@ -23710,35 +23713,38 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUti
     scope.$watch('mdDiameter', function(newValue) {
       var diameter = getSize(newValue);
       var strokeWidth = getStroke(diameter);
+      var dimensions = {
+        width: diameter + 'px',
+        height: diameter + 'px'
+      };
 
       // The viewBox has to be applied via setAttribute, because it is
       // case-sensitive. If jQuery is included in the page, `.attr` lowercases
       // all attribute names.
-      svg.setAttribute('viewBox', '0 0 ' + diameter + ' ' + diameter);
+      svg[0].setAttribute('viewBox', '0 0 ' + diameter + ' ' + diameter);
+
+      // Usually viewBox sets the dimensions for the SVG, however that doesn't
+      // seem to be the case on IE10.
+      svg.css(dimensions);
+      element.css(dimensions);
       path.css('stroke-width',  strokeWidth + 'px');
-      element.css({
-        width: diameter + 'px',
-        height: diameter + 'px'
-      });
     });
 
     function renderCircle(animateFrom, animateTo, easing, duration, rotation) {
       var id = ++lastAnimationId;
-      var startTime = $window.performance.now();
+      var startTime = getTimestamp();
       var changeInValue = animateTo - animateFrom;
       var diameter = getSize(scope.mdDiameter);
       var pathDiameter = diameter - getStroke(diameter);
       var ease = easing || $mdProgressCircular.easeFn;
       var animationDuration = duration || $mdProgressCircular.duration;
 
-      element.attr('aria-valuenow', animateTo);
-
       // No need to animate it if the values are the same
       if (animateTo === animateFrom) {
         path.attr('d', getSvgArc(animateTo, diameter, pathDiameter, rotation));
       } else {
         $$rAF(function animation(now) {
-          var currentTime = now - startTime;
+          var currentTime = (now || getTimestamp()) - startTime;
 
           path.attr('d', getSvgArc(
             ease(currentTime, animateFrom, changeInValue, animationDuration),
@@ -23774,7 +23780,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUti
 
     function startIndeterminateAnimation() {
       if (!interval) {
-        var startTime = $window.performance.now();
+        var startTime = getTimestamp();
         var animationDuration = $mdProgressCircular.rotationDurationIndeterminate;
         var radius = getSize(scope.mdDiameter) / 2;
 
@@ -23785,7 +23791,8 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUti
         // with CSS keyframes, however IE11 seems to have problems centering the rotation
         // which causes a wobble in the indeterminate animation.
         $$rAF(function animation(now) {
-          var currentTime = now - startTime;
+          var timestamp = now || getTimestamp();
+          var currentTime = timestamp - startTime;
           var rotation = $mdProgressCircular.easingPresets.linearEase(currentTime, 0, 360, animationDuration);
 
           path.attr('transform', 'rotate(' + rotation + radius + ')');
@@ -23798,11 +23805,11 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUti
 
           // Reset the animation
           if (currentTime >= animationDuration) {
-            startTime = now;
+            startTime = timestamp;
           }
         });
 
-        // This shouldn't trigger a digest which is why we don't use $interval.
+        // Note that this interval isn't supposed to trigger a digest.
         interval = $interval(
           animateIndeterminate,
           $mdProgressCircular.durationIndeterminate + 50,
@@ -23811,6 +23818,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUti
         );
 
         animateIndeterminate();
+        element.removeAttr('aria-valuenow');
       }
     }
 
@@ -23907,6 +23915,14 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUti
    */
   function getStroke(diameter) {
     return $mdProgressCircular.strokeWidth / 100 * diameter;
+  }
+
+  /**
+   * Retrieves a timestamp for timing animations.
+   */
+  function getTimestamp() {
+    var perf = $window.performance;
+    return perf && perf.now && perf.now() || +new $window.Date();
   }
 }
 
@@ -25229,4 +25245,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.6-master-34f2704"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.6-master-8539eac"}};
