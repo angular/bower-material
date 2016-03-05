@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-fae559c
+ * v1.0.6-master-8d7f54f
  */
 /** Styles for mdCalendar. */
 md-calendar {
@@ -39,10 +39,12 @@ md-calendar {
   .md-calendar-date:first-child {
     padding-left: 16px; }
     [dir=rtl] .md-calendar-date:first-child {
+      padding-left: auto;
       padding-right: 16px; }
   .md-calendar-date:last-child {
     padding-right: 16px; }
     [dir=rtl] .md-calendar-date:last-child {
+      padding-right: auto;
       padding-left: 16px; }
   .md-calendar-date.md-calendar-date-disabled {
     cursor: default; }
@@ -80,10 +82,12 @@ md-calendar {
     .md-calendar-day-header th:first-child {
       padding-left: 16px; }
       [dir=rtl] .md-calendar-day-header th:first-child {
+        padding-left: auto;
         padding-right: 16px; }
     .md-calendar-day-header th:last-child {
       padding-right: 16px; }
       [dir=rtl] .md-calendar-day-header th:last-child {
+        padding-right: auto;
         padding-left: 16px; }
 
 .md-calendar {
@@ -106,8 +110,10 @@ md-datepicker {
   margin-right: -18px;
   vertical-align: middle; }
   [dir=rtl] md-datepicker {
+    padding-right: auto;
     padding-left: 18px; }
   [dir=rtl] md-datepicker {
+    margin-right: auto;
     margin-left: -18px; }
 
 .md-inline-form md-datepicker {
@@ -139,6 +145,7 @@ md-datepicker {
   width: auto;
   margin-left: 12px; }
   [dir=rtl] .md-datepicker-input-container {
+    margin-left: auto;
     margin-right: 12px; }
   .md-datepicker-input-container.md-datepicker-focused {
     border-bottom-width: 2px; }
@@ -202,7 +209,11 @@ md-datepicker {
   -webkit-transform: translateY(-25%) translateX(45%);
           transform: translateY(-25%) translateX(45%); }
   [dir=rtl] .md-datepicker-triangle-button {
+    right: auto;
     left: 0; }
+  [dir=rtl] .md-datepicker-triangle-button {
+    -webkit-transform: translateY(-25%) translateX(-45%);
+            transform: translateY(-25%) translateX(-45%); }
 
 .md-datepicker-triangle-button.md-button.md-icon-button {
   height: 100%;
@@ -219,12 +230,14 @@ md-datepicker[disabled] .md-datepicker-triangle-button {
   margin-left: -12px;
   border: none; }
   [dir=rtl] .md-datepicker-open .md-datepicker-input-container {
+    margin-left: auto;
     margin-right: -12px; }
 
 .md-datepicker-open .md-datepicker-input {
   margin-left: 24px;
   height: 40px; }
   [dir=rtl] .md-datepicker-open .md-datepicker-input {
+    margin-left: auto;
     margin-right: 24px; }
 
 .md-datepicker-open .md-datepicker-triangle-button {

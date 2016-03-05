@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-fae559c
+ * v1.0.6-master-8d7f54f
  */
 .md-inline-form md-switch {
   margin-top: 18px;
@@ -55,6 +55,7 @@ md-switch {
     margin-right: 8px;
     float: left; }
     [dir=rtl] md-switch ._md-container {
+      margin-right: auto;
       margin-left: 8px; }
   md-switch:not([disabled]) ._md-dragging,
   md-switch:not([disabled])._md-dragging ._md-container {

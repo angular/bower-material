@@ -233,6 +233,7 @@ $button-fab-padding: rem(1.60) !default;
 @mixin rtl-prop($ltr-prop, $rtl-prop, $value) {
   #{$ltr-prop}: $value;
   [dir=rtl] & {
+    #{$ltr-prop}: auto;
     #{$rtl-prop}: $value;
   }
 }
@@ -2574,7 +2575,7 @@ $md-date-arrow-size: 5px;
   top: 0;
 
   // TODO(jelbourn): This position isn't great on all platforms.
-  transform: translateY(-25%) translateX(45%);
+  @include rtl(transform, translateY(-25%) translateX(45%), translateY(-25%) translateX(-45%));
 }
 
 // Need crazy specificity to override .md-button.md-icon-button.
@@ -3785,7 +3786,7 @@ md-list-item {
     &[md-inset] {
       @include rtl-prop(left, right, $list-item-inset-divider-offset);
       width: calc(100% - #{$list-item-inset-divider-offset});
-      margin: 0;
+      margin: 0 !important;
     }
   }
 

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-fae559c
+ * v1.0.6-master-8d7f54f
  */
 md-list {
   display: block;
@@ -24,6 +24,7 @@ md-list {
       margin-right: 36px; }
       [dir=rtl] md-list.md-dense md-list-item > md-icon:first-child:not(.md-avatar-icon), [dir=rtl]
       md-list.md-dense md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
+        margin-right: auto;
         margin-left: 36px; }
     md-list.md-dense md-list-item .md-avatar, md-list.md-dense md-list-item .md-avatar-icon,
     md-list.md-dense md-list-item ._md-list-item-inner .md-avatar,
@@ -32,6 +33,7 @@ md-list {
       [dir=rtl] md-list.md-dense md-list-item .md-avatar, [dir=rtl] md-list.md-dense md-list-item .md-avatar-icon, [dir=rtl]
       md-list.md-dense md-list-item ._md-list-item-inner .md-avatar, [dir=rtl]
       md-list.md-dense md-list-item ._md-list-item-inner .md-avatar-icon {
+        margin-right: auto;
         margin-left: 20px; }
     md-list.md-dense md-list-item .md-avatar,
     md-list.md-dense md-list-item ._md-list-item-inner .md-avatar {
@@ -40,6 +42,7 @@ md-list {
   md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
     margin-left: 56px; }
     [dir=rtl] md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
+      margin-left: auto;
       margin-right: 56px; }
   md-list.md-dense md-list-item.md-2-line .md-list-item-text h3, md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-list-item-text h3, md-list.md-dense md-list-item.md-3-line .md-list-item-text h3, md-list.md-dense md-list-item.md-3-line > ._md-no-style .md-list-item-text h3 {
     font-size: 1.3rem;
@@ -129,12 +132,14 @@ md-list-item {
     left: 0;
     width: 100%; }
     [dir=rtl] md-list-item md-divider {
+      left: auto;
       right: 0; }
     md-list-item md-divider[md-inset] {
       left: 72px;
       width: calc(100% - 72px);
-      margin: 0; }
+      margin: 0 !important; }
       [dir=rtl] md-list-item md-divider[md-inset] {
+        left: auto;
         right: 72px; }
   md-list-item,
   md-list-item ._md-list-item-inner {
@@ -186,6 +191,7 @@ md-list-item {
       margin-right: 32px; }
       [dir=rtl] md-list-item > md-icon:first-child:not(.md-avatar-icon), [dir=rtl]
       md-list-item ._md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
+        margin-right: auto;
         margin-left: 32px; }
     md-list-item > md-checkbox,
     md-list-item ._md-list-item-inner > md-checkbox {
@@ -210,6 +216,7 @@ md-list-item {
       [dir=rtl] md-list-item .md-avatar, [dir=rtl] md-list-item .md-avatar-icon, [dir=rtl]
       md-list-item ._md-list-item-inner .md-avatar, [dir=rtl]
       md-list-item ._md-list-item-inner .md-avatar-icon {
+        margin-right: auto;
         margin-left: 16px; }
     md-list-item .md-avatar,
     md-list-item ._md-list-item-inner .md-avatar {
@@ -229,12 +236,14 @@ md-list-item {
       margin-right: 0; }
       [dir=rtl] md-list-item md-checkbox.md-secondary, [dir=rtl]
       md-list-item ._md-list-item-inner md-checkbox.md-secondary {
+        margin-right: auto;
         margin-left: 0; }
     md-list-item md-switch.md-secondary,
     md-list-item ._md-list-item-inner md-switch.md-secondary {
       margin-right: -6px; }
       [dir=rtl] md-list-item md-switch.md-secondary, [dir=rtl]
       md-list-item ._md-list-item-inner md-switch.md-secondary {
+        margin-right: auto;
         margin-left: -6px; }
     md-list-item button.md-button._md-secondary-container,
     md-list-item ._md-list-item-inner button.md-button._md-secondary-container {
@@ -255,12 +264,14 @@ md-list-item {
       margin-right: -12px; }
       [dir=rtl] md-list-item ._md-secondary-container, [dir=rtl]
       md-list-item ._md-list-item-inner ._md-secondary-container {
+        margin-right: auto;
         margin-left: -12px; }
       md-list-item ._md-secondary-container.md-icon-button,
       md-list-item ._md-list-item-inner ._md-secondary-container.md-icon-button {
         margin-right: -6px; }
         [dir=rtl] md-list-item ._md-secondary-container.md-icon-button, [dir=rtl]
         md-list-item ._md-list-item-inner ._md-secondary-container.md-icon-button {
+          margin-right: auto;
           margin-left: -6px; }
     md-list-item ._md-secondary-container,
     md-list-item .md-secondary,
@@ -276,6 +287,7 @@ md-list-item {
       md-list-item .md-secondary, [dir=rtl]
       md-list-item ._md-list-item-inner ._md-secondary-container, [dir=rtl]
       md-list-item ._md-list-item-inner .md-secondary {
+        right: auto;
         left: 16px; }
     md-list-item > .md-button._md-secondary-container > .md-secondary,
     md-list-item ._md-list-item-inner > .md-button._md-secondary-container > .md-secondary {
@@ -283,6 +295,7 @@ md-list-item {
       position: static; }
       [dir=rtl] md-list-item > .md-button._md-secondary-container > .md-secondary, [dir=rtl]
       md-list-item ._md-list-item-inner > .md-button._md-secondary-container > .md-secondary {
+        margin-left: auto;
         margin-right: 0; }
     md-list-item > p, md-list-item > ._md-list-item-inner > p,
     md-list-item ._md-list-item-inner > p,
@@ -311,6 +324,7 @@ md-list-item {
       md-list-item.md-2-line .md-list-item-text.md-offset, md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, md-list-item.md-3-line .md-list-item-text.md-offset, md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
         margin-left: 56px; }
         [dir=rtl] md-list-item.md-2-line .md-list-item-text.md-offset, [dir=rtl] md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, [dir=rtl] md-list-item.md-3-line .md-list-item-text.md-offset, [dir=rtl] md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
+          margin-left: auto;
           margin-right: 56px; }
       md-list-item.md-2-line .md-list-item-text h3, md-list-item.md-2-line > ._md-no-style .md-list-item-text h3, md-list-item.md-3-line .md-list-item-text h3, md-list-item.md-3-line > ._md-no-style .md-list-item-text h3 {
         font-size: 16px;

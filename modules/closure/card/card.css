@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-fae559c
+ * v1.0.6-master-8d7f54f
  */
 md-card {
   box-sizing: border-box;
@@ -25,10 +25,12 @@ md-card {
     md-card md-card-header:first-child md-card-avatar {
       margin-right: 12px; }
       [dir=rtl] md-card md-card-header:first-child md-card-avatar {
+        margin-right: auto;
         margin-left: 12px; }
     md-card md-card-header:last-child md-card-avatar {
       margin-left: 12px; }
       [dir=rtl] md-card md-card-header:last-child md-card-avatar {
+        margin-left: auto;
         margin-right: 12px; }
     md-card md-card-header md-card-avatar {
       width: 40px;
@@ -143,10 +145,12 @@ md-card {
       md-card .md-actions:not(.layout-column) .md-button:not(.md-icon-button):first-of-type, md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button):first-of-type {
         margin-left: 0; }
         [dir=rtl] md-card .md-actions:not(.layout-column) .md-button:not(.md-icon-button):first-of-type, [dir=rtl] md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button):first-of-type {
+          margin-left: auto;
           margin-right: 0; }
       md-card .md-actions:not(.layout-column) .md-button:not(.md-icon-button):last-of-type, md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button):last-of-type {
         margin-right: 0; }
         [dir=rtl] md-card .md-actions:not(.layout-column) .md-button:not(.md-icon-button):last-of-type, [dir=rtl] md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button):last-of-type {
+          margin-right: auto;
           margin-left: 0; }
     md-card .md-actions:not(.layout-column) .md-button.md-icon-button, md-card md-card-actions:not(.layout-column) .md-button.md-icon-button {
       margin-left: 6px;
@@ -154,10 +158,12 @@ md-card {
       md-card .md-actions:not(.layout-column) .md-button.md-icon-button:first-of-type, md-card md-card-actions:not(.layout-column) .md-button.md-icon-button:first-of-type {
         margin-left: 12px; }
         [dir=rtl] md-card .md-actions:not(.layout-column) .md-button.md-icon-button:first-of-type, [dir=rtl] md-card md-card-actions:not(.layout-column) .md-button.md-icon-button:first-of-type {
+          margin-left: auto;
           margin-right: 12px; }
       md-card .md-actions:not(.layout-column) .md-button.md-icon-button:last-of-type, md-card md-card-actions:not(.layout-column) .md-button.md-icon-button:last-of-type {
         margin-right: 12px; }
         [dir=rtl] md-card .md-actions:not(.layout-column) .md-button.md-icon-button:last-of-type, [dir=rtl] md-card md-card-actions:not(.layout-column) .md-button.md-icon-button:last-of-type {
+          margin-right: auto;
           margin-left: 12px; }
     md-card .md-actions:not(.layout-column) .md-button + md-card-icon-actions, md-card md-card-actions:not(.layout-column) .md-button + md-card-icon-actions {
       -webkit-flex: 1;

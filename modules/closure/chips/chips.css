@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-fae559c
+ * v1.0.6-master-8d7f54f
  */
 .md-contact-chips .md-chips md-chip {
   padding: 0 25px 0 0; }
@@ -20,6 +20,7 @@
     height: 32px;
     margin-left: 8px; }
     [dir=rtl] .md-contact-chips .md-chips md-chip .md-contact-name {
+      margin-left: auto;
       margin-right: 8px; }
 
 .md-contact-suggestion {
@@ -32,6 +33,7 @@
     margin-left: 8px;
     width: 120px; }
     [dir=rtl] .md-contact-suggestion .md-contact-name {
+      margin-left: auto;
       margin-right: 8px; }
   .md-contact-suggestion .md-contact-name, .md-contact-suggestion .md-contact-email {
     display: inline-block;
@@ -58,10 +60,12 @@
     .md-chips:not(.md-readonly) md-chip:not(.md-readonly) {
       padding-right: 22px; }
       [dir=rtl] .md-chips:not(.md-readonly) md-chip:not(.md-readonly) {
+        padding-right: auto;
         padding-left: 22px; }
       .md-chips:not(.md-readonly) md-chip:not(.md-readonly) ._md-chip-content {
         padding-right: 4px; }
         [dir=rtl] .md-chips:not(.md-readonly) md-chip:not(.md-readonly) ._md-chip-content {
+          padding-right: auto;
           padding-left: 4px; }
   .md-chips md-chip {
     cursor: default;
@@ -95,6 +99,7 @@
       right: 0;
       line-height: 22px; }
       [dir=rtl] .md-chips md-chip ._md-chip-remove-container {
+        right: auto;
         left: 0; }
     .md-chips md-chip ._md-chip-remove {
       text-align: center;

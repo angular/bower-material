@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-fae559c
+ * v1.0.6-master-8d7f54f
  */
 md-divider {
   display: block;
@@ -12,6 +12,7 @@ md-divider {
   md-divider[md-inset] {
     margin-left: 80px; }
     [dir=rtl] md-divider[md-inset] {
+      margin-left: auto;
       margin-right: 80px; }
 
 .layout-row > md-divider,
