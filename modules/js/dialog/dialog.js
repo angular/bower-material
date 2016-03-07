@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-357e4d5
+ * v1.0.6-master-a2eca80
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -950,7 +950,7 @@ function MdDialogProvider($$interimElementProvider) {
       // The top focus trap inserted immeidately before the md-dialog element (as a sibling).
       // The bottom focus trap is inserted at the very end of the md-dialog element (as a child).
       element[0].parentNode.insertBefore(topFocusTrap, element[0]);
-      element.append(bottomFocusTrap);
+      element.after(bottomFocusTrap);
     }
 
     /**
