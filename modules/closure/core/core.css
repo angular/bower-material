@@ -2,8 +2,13 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-810c4f3
+ * v1.1.0-rc1
  */
+/*  Only used with Theme processes */
+html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
+  color: '{{primary-color}}';
+  background-color: '{{background-50}}'; }
+
 /*
 *
 *  Responsive attributes
@@ -17,10 +22,18 @@
 *
 *
 */
+/*  Only used with Theme processes */
+html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
+  color: '{{primary-color}}';
+  background-color: '{{background-50}}'; }
+
+/*  Only used with Theme processes */
+html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
+  color: '{{primary-color}}';
+  background-color: '{{background-50}}'; }
+
 html, body {
   height: 100%;
-  color: rgba(0, 0, 0, 0.87);
-  background: white;
   position: relative; }
 
 body {
@@ -171,6 +184,21 @@ bdo[dir=ltr] {
   direction: ltr;
   unicode-bidi: bidi-override; }
 
+/*  Only used with Theme processes */
+html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
+  color: '{{primary-color}}';
+  background-color: '{{background-50}}'; }
+
+/*  Only used with Theme processes */
+html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
+  color: '{{primary-color}}';
+  background-color: '{{background-50}}'; }
+
+/*  Only used with Theme processes */
+html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
+  color: '{{primary-color}}';
+  background-color: '{{background-50}}'; }
+
 html, body {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
@@ -258,6 +286,16 @@ button,
 textarea,
 input {
   font-size: 100%; }
+
+/*  Only used with Theme processes */
+html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
+  color: '{{primary-color}}';
+  background-color: '{{background-50}}'; }
+
+/*  Only used with Theme processes */
+html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
+  color: '{{primary-color}}';
+  background-color: '{{background-50}}'; }
 
 /*
 *
@@ -10058,6 +10096,11 @@ input {
   [hide-print]:not([show-print]):not([show]) {
     display: none; } }
 
+/*  Only used with Theme processes */
+html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
+  color: '{{primary-color}}';
+  background-color: '{{background-50}}'; }
+
 /*
 *
 *  Adaptive Print settings with Breakpoint Aliases*
@@ -12932,6 +12975,11 @@ input {
         -ms-flex: 1;
             flex: 1;
     box-sizing: border-box; } }
+
+/*  Only used with Theme processes */
+html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
+  color: '{{primary-color}}';
+  background-color: '{{background-50}}'; }
 
 /*
 *

@@ -2,8 +2,13 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-810c4f3
+ * v1.1.0-rc1
  */
+/*  Only used with Theme processes */
+html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
+  color: '{{primary-color}}';
+  background-color: '{{background-50}}'; }
+
 a.md-button.md-THEME_NAME-theme:not([disabled]):hover,
 .md-button.md-THEME_NAME-theme:not([disabled]):hover {
   background-color: '{{background-500-0.2}}'; }
@@ -154,3 +159,16 @@ a.md-button.md-THEME_NAME-theme.md-raised[disabled], a.md-button.md-THEME_NAME-t
 a.md-button.md-THEME_NAME-theme[disabled],
 .md-button.md-THEME_NAME-theme[disabled] {
   background-color: transparent; }
+
+a.md-THEME_NAME-theme:not(.md-button) {
+  color: '{{accent-color}}'; }
+  a.md-THEME_NAME-theme:not(.md-button):hover {
+    color: '{{accent-700}}'; }
+  a.md-THEME_NAME-theme:not(.md-button).md-primary {
+    color: '{{primary-color}}'; }
+    a.md-THEME_NAME-theme:not(.md-button).md-primary:hover {
+      color: '{{primary-700}}'; }
+  a.md-THEME_NAME-theme:not(.md-button).md-warn {
+    color: '{{warn-color}}'; }
+    a.md-THEME_NAME-theme:not(.md-button).md-warn:hover {
+      color: '{{warn-700}}'; }
