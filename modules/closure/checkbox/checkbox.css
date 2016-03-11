@@ -2,11 +2,11 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-467129c
+ * v1.0.6-master-4112f51
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
-  color: '{{primary-color}}';
+  color: '{{foreground-1}}';
   background-color: '{{background-50}}'; }
 
 .md-inline-form md-checkbox {
