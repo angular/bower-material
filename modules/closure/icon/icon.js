@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-810c4f3
+ * v1.0.6-master-467129c
  */
 goog.provide('ng.material.components.icon');
 goog.require('ng.material.core');
@@ -165,7 +165,7 @@ angular
  *  <!-- The class '.material-icons' is auto-added if a style has NOT been specified -->
  *  <md-icon> face </md-icon>
  *  <md-icon md-font-set="material-icons"> face </md-icon>
- *  <md-icon> #xE87C; </md-icon>
+ *  <md-icon> &#xE87C; </md-icon>
  *  <!-- The class '.material-icons' must be manually added if other styles are also specified-->
  *  <md-icon class="material-icons md-light md-48"> face </md-icon>
  * </hljs>

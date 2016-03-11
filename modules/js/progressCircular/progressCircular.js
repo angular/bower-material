@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-810c4f3
+ * v1.0.6-master-467129c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -35,8 +35,8 @@ angular.module('material.components.progressCircular', ['material.core']);
  *
  * @param {string} md-mode Select from one of two modes: **'determinate'** and **'indeterminate'**.
  *
- * Note: if the `md-mode` value is set as undefined or specified as not 1 of the two (2) valid modes, then `.ng-hide`
- * will be auto-applied as a style to the component.
+ * Note: if the `md-mode` value is set as undefined or specified as not 1 of the two (2) valid modes, then **'indeterminate'**
+ * will be auto-applied as the mode.
  *
  * Note: if not configured, the `md-mode="indeterminate"` will be auto injected as an attribute.
  * If `value=""` is also specified, however, then `md-mode="determinate"` would be auto-injected instead.
@@ -108,7 +108,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUti
     }
   };
 
-  function MdProgressCircularLink(scope, element) {
+  function MdProgressCircularLink(scope, element, attrs) {
     var svg = angular.element(element[0].querySelector('svg'));
     var path = angular.element(element[0].querySelector('path'));
     var startIndeterminate = $mdProgressCircular.startIndeterminate;
@@ -121,21 +121,20 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUti
       var mode = newValues[1];
 
       if (mode !== MODE_DETERMINATE && mode !== MODE_INDETERMINATE) {
-        cleanupIndeterminateAnimation();
-        element.addClass('ng-hide');
-      } else {
-        element.removeClass('ng-hide');
-
-        if (mode === MODE_INDETERMINATE) {
-          startIndeterminateAnimation();
-        } else {
-          var newValue = clamp(newValues[0]);
-
-          cleanupIndeterminateAnimation();
-          element.attr('aria-valuenow', newValue);
-          renderCircle(clamp(oldValues[0]), newValue);
-        }
+        mode = MODE_INDETERMINATE;
+        attrs.$set('mdMode', mode);
       }
+
+      if (mode === MODE_INDETERMINATE) {
+        startIndeterminateAnimation();
+      } else {
+        var newValue = clamp(newValues[0]);
+
+        cleanupIndeterminateAnimation();
+        element.attr('aria-valuenow', newValue);
+        renderCircle(clamp(oldValues[0]), newValue);
+      }
+
     });
 
     // This is in a separate watch in order to avoid layout, unless
@@ -162,7 +161,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUti
 
     function renderCircle(animateFrom, animateTo, easing, duration, rotation) {
       var id = ++lastAnimationId;
-      var startTime = getTimestamp();
+      var startTime = $mdUtil.now();
       var changeInValue = animateTo - animateFrom;
       var diameter = getSize(scope.mdDiameter);
       var pathDiameter = diameter - getStroke(diameter);
@@ -174,7 +173,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUti
         path.attr('d', getSvgArc(animateTo, diameter, pathDiameter, rotation));
       } else {
         $$rAF(function animation(now) {
-          var currentTime = (now || getTimestamp()) - startTime;
+          var currentTime = $window.Math.min((now || $mdUtil.now()) - startTime, animationDuration);
 
           path.attr('d', getSvgArc(
             ease(currentTime, animateFrom, changeInValue, animationDuration),
@@ -210,7 +209,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUti
 
     function startIndeterminateAnimation() {
       if (!interval) {
-        var startTime = getTimestamp();
+        var startTime = $mdUtil.now();
         var animationDuration = $mdProgressCircular.rotationDurationIndeterminate;
         var radius = getSize(scope.mdDiameter) / 2;
 
@@ -221,7 +220,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUti
         // with CSS keyframes, however IE11 seems to have problems centering the rotation
         // which causes a wobble in the indeterminate animation.
         $$rAF(function animation(now) {
-          var timestamp = now || getTimestamp();
+          var timestamp = now || $mdUtil.now();
           var currentTime = timestamp - startTime;
           var rotation = $mdProgressCircular.easingPresets.linearEase(currentTime, 0, 360, animationDuration);
 
@@ -345,14 +344,6 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUti
    */
   function getStroke(diameter) {
     return $mdProgressCircular.strokeWidth / 100 * diameter;
-  }
-
-  /**
-   * Retrieves a timestamp for timing animations.
-   */
-  function getTimestamp() {
-    var perf = $window.performance;
-    return perf && perf.now && perf.now() || +new $window.Date();
   }
 }
 

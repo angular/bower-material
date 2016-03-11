@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc1
+ * v1.0.6-master-467129c
  */
 html, body {
   height: 100%;
@@ -348,23 +348,23 @@ md-autocomplete {
         right: 2px;
         left: 2px;
         width: auto; }
-      md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate {
+      md-autocomplete md-autocomplete-wrap md-progress-linear ._md-mode-indeterminate {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 3px;
         transition: none; }
-        md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate .md-container {
+        md-autocomplete md-autocomplete-wrap md-progress-linear ._md-mode-indeterminate .md-container {
           transition: none;
           height: 3px; }
-        md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-enter {
+        md-autocomplete md-autocomplete-wrap md-progress-linear ._md-mode-indeterminate.ng-enter {
           transition: opacity 0.15s linear; }
-          md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-enter.ng-enter-active {
+          md-autocomplete md-autocomplete-wrap md-progress-linear ._md-mode-indeterminate.ng-enter.ng-enter-active {
             opacity: 1; }
-        md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-leave {
+        md-autocomplete md-autocomplete-wrap md-progress-linear ._md-mode-indeterminate.ng-leave {
           transition: opacity 0.15s linear; }
-          md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-leave.ng-leave-active {
+          md-autocomplete md-autocomplete-wrap md-progress-linear ._md-mode-indeterminate.ng-leave.ng-leave-active {
             opacity: 0; }
   md-autocomplete input:not(.md-input) {
     font-size: 14px;
@@ -1196,6 +1196,8 @@ md-checkbox {
     clear: both; }
   [dir=rtl] .md-chips {
     padding: 0 3px 8px 0; }
+  .md-chips.md-readonly ._md-chip-input-container {
+    min-height: 32px; }
   .md-chips:not(.md-readonly) {
     cursor: text; }
     .md-chips:not(.md-readonly) md-chip:not(.md-readonly) {
@@ -2417,25 +2419,35 @@ md-list-item {
     transition: background-color 0.15s linear; }
   md-list-item._md-button-wrap {
     position: relative; }
-    md-list-item._md-button-wrap > .md-button:first-child {
+    md-list-item._md-button-wrap > div.md-button:first-child {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
+      -webkit-justify-content: flex-start;
+          -ms-flex-pack: start;
+              justify-content: flex-start;
       padding: 0;
       margin: 0;
       font-weight: 400;
       background-color: inherit;
       text-align: left;
       border: medium none; }
-      [dir=rtl] md-list-item._md-button-wrap > .md-button:first-child {
+      [dir=rtl] md-list-item._md-button-wrap > div.md-button:first-child {
         text-align: right; }
-      md-list-item._md-button-wrap > .md-button:first-child > .md-button:first-child {
+      md-list-item._md-button-wrap > div.md-button:first-child > .md-button:first-child {
         position: absolute;
         top: 0;
         left: 0;
         margin: 0;
         padding: 0;
         height: 100%; }
-      md-list-item._md-button-wrap > .md-button:first-child ._md-list-item-inner {
-        width: 100%;
-        height: 100%;
+      md-list-item._md-button-wrap > div.md-button:first-child ._md-list-item-inner {
+        -webkit-flex: 1 1 auto;
+            -ms-flex: 1 1 auto;
+                flex: 1 1 auto;
         padding: 0 16px; }
   md-list-item._md-no-proxy,
   md-list-item ._md-no-style {

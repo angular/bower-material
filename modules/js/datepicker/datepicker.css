@@ -2,8 +2,13 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-810c4f3
+ * v1.0.6-master-467129c
  */
+/*  Only used with Theme processes */
+html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
+  color: '{{primary-color}}';
+  background-color: '{{background-50}}'; }
+
 /** Styles for mdCalendar. */
 md-calendar {
   font-size: 13px;
@@ -101,6 +106,11 @@ md-calendar {
     border-top: 1px solid transparent; }
   .md-calendar tbody, .md-calendar td, .md-calendar tr {
     vertical-align: middle; }
+
+/*  Only used with Theme processes */
+html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
+  color: '{{primary-color}}';
+  background-color: '{{background-50}}'; }
 
 /** Styles for mdDatepicker. */
 md-datepicker {

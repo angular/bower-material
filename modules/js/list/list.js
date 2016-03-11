@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-810c4f3
+ * v1.0.6-master-467129c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -148,9 +148,9 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
         } else {
           // Element which holds the default list-item content.
           container = angular.element(
-            '<button class="md-button _md-no-style">'+
+            '<div class="md-button _md-no-style">'+
             '   <div class="_md-list-item-inner"></div>'+
-            '</button>'
+            '</div>'
           );
 
           // Button which shows ripple and executes primary action.

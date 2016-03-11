@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-810c4f3
+ * v1.0.6-master-467129c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -57,7 +57,7 @@ angular.module('material.components.tabs', [
  * be initiated via data binding changes, programmatic invocation, or user gestures.
  *
  * @param {string=} label Optional attribute to specify a simple string as the tab label
- * @param {boolean=} ng-disabled If present, disabled tab selection.
+ * @param {boolean=} ng-disabled If present and expression evaluates to truthy, disabled tab selection.
  * @param {expression=} md-on-deselect Expression to be evaluated after the tab has been de-selected.
  * @param {expression=} md-on-select Expression to be evaluated after the tab has been selected.
  * @param {boolean=} md-active When true, sets the active tab.  Note: There can only be one active tab at a time.
@@ -66,7 +66,7 @@ angular.module('material.components.tabs', [
  * @usage
  *
  * <hljs lang="html">
- * <md-tab label="" disabled="" md-on-select="" md-on-deselect="" >
+ * <md-tab label="" ng-disabled md-on-select="" md-on-deselect="" >
  *   <h3>My Tab content</h3>
  * </md-tab>
  *
@@ -140,7 +140,7 @@ function MdTab () {
     scope.select   = scope.select || angular.noop;
     scope.deselect = scope.deselect || angular.noop;
 
-    scope.$watch('active', function (active) { if (active) ctrl.select(data.getIndex()); });
+    scope.$watch('active', function (active) { if (active) ctrl.select(data.getIndex(), true); });
     scope.$watch('disabled', function () { ctrl.refreshIndex(); });
     scope.$watch(
         function () {
@@ -239,6 +239,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   defineBooleanAttribute('swipeContent');
   defineBooleanAttribute('noDisconnect');
   defineBooleanAttribute('autoselect');
+  defineBooleanAttribute('noSelectClick');
   defineBooleanAttribute('centerTabs', handleCenterTabs, false);
   defineBooleanAttribute('enableDisconnect');
 
@@ -491,13 +492,16 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   }
 
   /**
-   * Update the selected index and trigger a click event on the original `md-tab` element in order
-   * to fire user-added click events.
+   * Update the selected index. Triggers a click event on the original `md-tab` element in order
+   * to fire user-added click events if canSkipClick or `md-no-select-click` are false.
    * @param index
+   * @param canSkipClick Optionally allow not firing the click event if `md-no-select-click` is also true.
    */
-  function select (index) {
+  function select (index, canSkipClick) {
     if (!locked) ctrl.focusIndex = ctrl.selectedIndex = index;
     ctrl.lastClick = true;
+    // skip the click event if noSelectClick is enabled
+    if (canSkipClick && ctrl.noSelectClick) return;
     // nextTick is required to prevent errors in user-defined click events
     $mdUtil.nextTick(function () {
       ctrl.tabs[ index ].element.triggerHandler('click');
@@ -1055,6 +1059,7 @@ MdTabsController.$inject = ["$scope", "$element", "$window", "$mdConstant", "$md
  * @param {boolean=} md-swipe-content When enabled, swipe gestures will be enabled for the content area to jump between tabs
  * @param {boolean=} md-enable-disconnect When enabled, scopes will be disconnected for tabs that are not being displayed.  This provides a performance boost, but may also cause unexpected issues and is not recommended for most users.
  * @param {boolean=} md-autoselect When present, any tabs added after the initial load will be automatically selected
+ * @param {boolean=} md-no-select-click When enabled, click events will not be fired when selecting tabs
  *
  * @usage
  * <hljs lang="html">

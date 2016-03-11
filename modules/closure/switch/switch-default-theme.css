@@ -2,8 +2,13 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-810c4f3
+ * v1.0.6-master-467129c
  */
+/*  Only used with Theme processes */
+html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
+  color: '{{primary-color}}';
+  background-color: '{{background-50}}'; }
+
 md-switch.md-THEME_NAME-theme .md-ink-ripple {
   color: '{{background-500}}'; }
 
