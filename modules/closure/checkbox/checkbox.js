@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-48a3b9c
+ * v1.0.6-master-06e4ef9
  */
 goog.provide('ng.material.components.checkbox');
 goog.require('ng.material.core');
@@ -76,6 +76,7 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
   // **********************************************************
 
   function compile (tElement, tAttrs) {
+    var container = tElement.children();
 
     tAttrs.type = 'checkbox';
     tAttrs.tabindex = tAttrs.tabindex || '0';
@@ -87,6 +88,12 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
       if (this.hasAttribute('disabled')) {
         event.stopImmediatePropagation();
       }
+    });
+
+    // Redirect focus events to the root element, because IE11 is always focusing the container element instead
+    // of the md-checkbox element. This causes issues when using ngModelOptions: `updateOnBlur`
+    container.on('focus', function() {
+      tElement.focus();
     });
 
     return function postLink(scope, element, attr, ngModelCtrl) {

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-48a3b9c
+ * v1.0.6-master-06e4ef9
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -52,8 +52,7 @@ md-checkbox {
     width: 20px;
     height: 20px;
     left: 0;
-    right: auto;
-    pointer-events: none; }
+    right: auto; }
     [dir=rtl] md-checkbox ._md-container {
       left: auto; }
     [dir=rtl] md-checkbox ._md-container {
