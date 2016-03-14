@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-9158589
+ * v1.0.6-master-c3b498f
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -1295,7 +1295,7 @@ function SelectProvider($$interimElementProvider) {
       var mdSelect = opts.selectCtrl;
       if (mdSelect) {
         var menuController = opts.selectEl.controller('mdSelectMenu');
-        mdSelect.setLabelText(menuController.selectedLabels());
+        mdSelect.setLabelText(menuController ? menuController.selectedLabels() : '');
         mdSelect.triggerClose();
       }
     }
