@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-a653122
+ * v1.0.6-master-c3085ee
  */
 html, body {
   height: 100%;
@@ -1236,6 +1236,15 @@ md-checkbox {
         float: right; }
       .md-chips md-chip ._md-chip-content:focus {
         outline: none; }
+    .md-chips md-chip._md-chip-content-edit-is-enabled {
+      -webkit-user-select: none;
+      /* webkit (safari, chrome) browsers */
+      -moz-user-select: none;
+      /* mozilla browsers */
+      -khtml-user-select: none;
+      /* webkit (konqueror) browsers */
+      -ms-user-select: none;
+      /* IE10+ */ }
     .md-chips md-chip ._md-chip-remove-container {
       position: absolute;
       right: 0;
