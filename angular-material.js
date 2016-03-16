@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-2bc88e2
+ * v1.0.6-master-6a9ee5c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -23982,6 +23982,12 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
 
     $mdTheming(element);
 
+    // If the mode is indeterminate, it doesn't need to
+    // wait for the next digest. It can start right away.
+    if(scope.mdMode === MODE_INDETERMINATE){
+      startIndeterminateAnimation();
+    }
+
     scope.$watchGroup(['value', 'mdMode'], function(newValues, oldValues) {
       var mode = newValues[1];
 
@@ -25537,4 +25543,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.6-master-2bc88e2"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.6-master-6a9ee5c"}};
