@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-c3085ee
+ * v1.0.6-master-31787c0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -21203,10 +21203,12 @@ MdChipsCtrl.prototype.hasFocus = function () {
       var userTemplate = attr['$mdUserTemplate'];
       attr['$mdUserTemplate'] = null;
 
+      var chipTemplate = getTemplateByQuery('md-chips>md-chip-template');
+
       // Set the chip remove, chip contents and chip input templates. The link function will put
       // them on the scope for transclusion later.
       var chipRemoveTemplate   = getTemplateByQuery('md-chips>*[md-chip-remove]') || templates.remove,
-          chipContentsTemplate = getTemplateByQuery('md-chips>md-chip-template') || templates.default,
+          chipContentsTemplate = chipTemplate || templates.default,
           chipInputTemplate    = getTemplateByQuery('md-chips>md-autocomplete')
               || getTemplateByQuery('md-chips>input')
               || templates.input,
@@ -21231,6 +21233,11 @@ MdChipsCtrl.prototype.hasFocus = function () {
 
         $mdTheming(element);
         var mdChipsCtrl = controllers[0];
+        if(chipTemplate) {
+          // Chip editing functionality assumes we are using the default chip template.
+          mdChipsCtrl.enableChipEdit = false;
+        }
+
         mdChipsCtrl.chipContentsTemplate = chipContentsTemplate;
         mdChipsCtrl.chipRemoveTemplate   = chipRemoveTemplate;
         mdChipsCtrl.chipInputTemplate    = chipInputTemplate;
@@ -25532,4 +25539,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.6-master-c3085ee"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.6-master-31787c0"}};
