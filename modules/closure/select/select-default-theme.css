@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-6a9ee5c
+ * v1.0.6-master-0855fd3
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -57,3 +57,30 @@ md-select-menu.md-THEME_NAME-theme md-content {
         color: '{{accent-500}}'; }
         md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent:focus {
           color: '{{accent-600}}'; }
+
+[md-checkbox-enabled].md-THEME_NAME-theme .md-ripple {
+  color: '{{primary-600}}'; }
+
+[md-checkbox-enabled].md-THEME_NAME-theme[selected] .md-ripple {
+  color: '{{background-600}}'; }
+
+[md-checkbox-enabled].md-THEME_NAME-theme .md-ink-ripple {
+  color: '{{foreground-2}}'; }
+
+[md-checkbox-enabled].md-THEME_NAME-theme[selected] .md-ink-ripple {
+  color: '{{primary-color-0.87}}'; }
+
+[md-checkbox-enabled].md-THEME_NAME-theme ._md-icon {
+  border-color: '{{foreground-2}}'; }
+
+[md-checkbox-enabled].md-THEME_NAME-theme[selected] ._md-icon {
+  background-color: '{{primary-color-0.87}}'; }
+
+[md-checkbox-enabled].md-THEME_NAME-theme[selected].md-focused ._md-container:before {
+  background-color: '{{primary-color-0.26}}'; }
+
+[md-checkbox-enabled].md-THEME_NAME-theme[selected] ._md-icon:after {
+  border-color: '{{primary-contrast-0.87}}'; }
+
+[md-checkbox-enabled].md-THEME_NAME-theme md-option ._md-text {
+  color: '{{background-900-0.87}}'; }

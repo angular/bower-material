@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-6a9ee5c
+ * v1.0.6-master-0855fd3
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -104,6 +104,7 @@ md-input-container {
             transform: translate3d(0, 28px, 0) scale(1);
     transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    max-width: 100%;
     -webkit-transform-origin: left top;
             transform-origin: left top; }
     [dir=rtl] md-input-container label:not(.md-no-float):not(._md-container-ignore), [dir=rtl]

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-6a9ee5c
+ * v1.0.6-master-0855fd3
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -359,10 +359,7 @@ angular
   .module('material.components.menuBar')
   .directive('mdMenuBar', MenuBarDirective);
 
-/**
- *
- * @ngInjdect
- */
+/* ngInject */
 function MenuBarDirective($mdUtil, $mdTheming) {
   return {
     restrict: 'E',
@@ -528,10 +525,7 @@ angular
   .module('material.components.menuBar')
   .directive('mdMenuItem', MenuItemDirective);
 
- /**
-  *
-  * @ngInjdect
-  */
+ /* ngInject */
 function MenuItemDirective() {
   return {
     require: ['mdMenuItem', '?ngModel'],

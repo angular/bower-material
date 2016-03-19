@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-6a9ee5c
+ * v1.0.6-master-0855fd3
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -206,3 +206,94 @@ md-optgroup {
     background-color: transparent; }
   md-select-menu {
     border: 1px solid #fff; } }
+
+md-select-menu[multiple] md-option[md-checkbox-enabled] {
+  padding-left: 40px;
+  padding-right: 16px; }
+  [dir=rtl] md-select-menu[multiple] md-option[md-checkbox-enabled] {
+    padding-left: 16px; }
+  [dir=rtl] md-select-menu[multiple] md-option[md-checkbox-enabled] {
+    padding-right: 40px; }
+  md-select-menu[multiple] md-option[md-checkbox-enabled] ._md-container {
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+    box-sizing: border-box;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    left: 0;
+    right: auto; }
+    [dir=rtl] md-select-menu[multiple] md-option[md-checkbox-enabled] ._md-container {
+      left: auto; }
+    [dir=rtl] md-select-menu[multiple] md-option[md-checkbox-enabled] ._md-container {
+      right: 0; }
+    md-select-menu[multiple] md-option[md-checkbox-enabled] ._md-container:before {
+      box-sizing: border-box;
+      background-color: transparent;
+      border-radius: 50%;
+      content: '';
+      position: absolute;
+      display: block;
+      height: auto;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      transition: all 0.5s;
+      width: auto; }
+    md-select-menu[multiple] md-option[md-checkbox-enabled] ._md-container:after {
+      box-sizing: border-box;
+      content: '';
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      bottom: -10px;
+      left: -10px; }
+    md-select-menu[multiple] md-option[md-checkbox-enabled] ._md-container .md-ripple-container {
+      position: absolute;
+      display: block;
+      width: auto;
+      height: auto;
+      left: -15px;
+      top: -15px;
+      right: -15px;
+      bottom: -15px; }
+  md-select-menu[multiple] md-option[md-checkbox-enabled] ._md-icon {
+    box-sizing: border-box;
+    transition: 240ms;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 2px; }
+  md-select-menu[multiple] md-option[md-checkbox-enabled][selected] ._md-icon {
+    border: none; }
+    md-select-menu[multiple] md-option[md-checkbox-enabled][selected] ._md-icon:after {
+      box-sizing: border-box;
+      -webkit-transform: rotate(45deg);
+              transform: rotate(45deg);
+      position: absolute;
+      left: 6.66667px;
+      top: 2.22222px;
+      display: table;
+      width: 6.66667px;
+      height: 13.33333px;
+      border-width: 2px;
+      border-style: solid;
+      border-top: 0;
+      border-left: 0;
+      content: ''; }
+  md-select-menu[multiple] md-option[md-checkbox-enabled][disabled] {
+    cursor: default; }
+  md-select-menu[multiple] md-option[md-checkbox-enabled] ._md-container {
+    margin-left: 10.66667px;
+    margin-right: auto; }
+    [dir=rtl] md-select-menu[multiple] md-option[md-checkbox-enabled] ._md-container {
+      margin-left: auto; }
+    [dir=rtl] md-select-menu[multiple] md-option[md-checkbox-enabled] ._md-container {
+      margin-right: 10.66667px; }

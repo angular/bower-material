@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-6a9ee5c
+ * v1.0.6-master-0855fd3
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -644,7 +644,8 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
   /* ngInject */
  function MdIconService(config, $http, $q, $log, $templateCache) {
    var iconCache = {};
-   var urlRegex = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/i;
+   var urlRegex = /[-\w@:%\+.~#?&//=]{2,}\.[a-z]{2,4}\b(\/[-\w@:%\+.~#?&//=]*)?/i;
+   var dataUrlRegex = /^data:image\/svg\+xml[\s*;\w\-\=]*?(base64)?,(.*)$/i;
 
    Icon.prototype = { clone : cloneSVG, prepare: prepareAndStyle };
    getIcon.fontSet = findRegisteredFontSet;
@@ -661,8 +662,8 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
      // If already loaded and cached, use a clone of the cached icon.
      // Otherwise either load by URL, or lookup in the registry and then load by URL, and cache.
 
-     if ( iconCache[id]         ) return $q.when( iconCache[id].clone() );
-     if ( urlRegex.test(id)     ) return loadByURL(id).then( cacheIcon(id) );
+     if ( iconCache[id] ) return $q.when( iconCache[id].clone() );
+     if ( urlRegex.test(id) || dataUrlRegex.test(id) ) return loadByURL(id).then( cacheIcon(id) );
      if ( id.indexOf(':') == -1 ) id = '$default:' + id;
 
      var load = config[id] ? loadByID : loadFromIconSet;
@@ -750,11 +751,26 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
     * Extract the data for later conversion to Icon
     */
    function loadByURL(url) {
-     return $http
-       .get(url, { cache: $templateCache })
-       .then(function(response) {
-         return angular.element('<div>').append(response.data).find('svg')[0];
-       }).catch(announceNotFound);
+     /* Load the icon from embedded data URL. */
+     function loadByDataUrl(url) {
+       var results = dataUrlRegex.exec(url);
+       var isBase64 = /base64/i.test(url);
+       var data = isBase64 ? window.atob(results[2]) : results[2];
+       return $q.when(angular.element(data)[0]);
+     }
+
+     /* Load the icon by URL using HTTP. */
+     function loadByHttpUrl(url) {
+       return $http
+         .get(url, { cache: $templateCache })
+         .then(function(response) {
+           return angular.element('<div>').append(response.data).find('svg')[0];
+         }).catch(announceNotFound);
+     }
+
+     return dataUrlRegex.test(url)
+       ? loadByDataUrl(url)
+       : loadByHttpUrl(url);
    }
 
    /**

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-6a9ee5c
+ * v1.0.6-master-0855fd3
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -42,6 +42,8 @@ md-checkbox {
     bottom: -8px; }
   md-checkbox.md-focused:not([disabled]):not(.md-checked) ._md-container:before {
     background-color: rgba(0, 0, 0, 0.12); }
+  md-checkbox.md-align-top-left > div._md-container {
+    top: 12px; }
   md-checkbox ._md-container {
     position: absolute;
     top: 50%;
@@ -88,8 +90,6 @@ md-checkbox {
       top: -15px;
       right: -15px;
       bottom: -15px; }
-  md-checkbox.md-align-top-left > div._md-container {
-    top: 12px; }
   md-checkbox ._md-icon {
     box-sizing: border-box;
     transition: 240ms;
@@ -103,23 +103,23 @@ md-checkbox {
     border-radius: 2px; }
   md-checkbox.md-checked ._md-icon {
     border: none; }
+    md-checkbox.md-checked ._md-icon:after {
+      box-sizing: border-box;
+      -webkit-transform: rotate(45deg);
+              transform: rotate(45deg);
+      position: absolute;
+      left: 6.66667px;
+      top: 2.22222px;
+      display: table;
+      width: 6.66667px;
+      height: 13.33333px;
+      border-width: 2px;
+      border-style: solid;
+      border-top: 0;
+      border-left: 0;
+      content: ''; }
   md-checkbox[disabled] {
     cursor: default; }
-  md-checkbox.md-checked ._md-icon:after {
-    box-sizing: border-box;
-    -webkit-transform: rotate(45deg);
-            transform: rotate(45deg);
-    position: absolute;
-    left: 6.66667px;
-    top: 2.22222px;
-    display: table;
-    width: 6.66667px;
-    height: 13.33333px;
-    border-width: 2px;
-    border-style: solid;
-    border-top: 0;
-    border-left: 0;
-    content: ''; }
   md-checkbox ._md-label {
     box-sizing: border-box;
     position: relative;
