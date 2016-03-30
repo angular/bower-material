@@ -2,12 +2,12 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-ba130f2
+ * v1.0.6-master-c68869e
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
   color: '{{foreground-1}}';
-  background-color: '{{background-50}}'; }
+  background-color: '{{background-color}}'; }
 
 md-sidenav {
   box-sizing: border-box;
@@ -19,7 +19,8 @@ md-sidenav {
   width: 320px;
   max-width: 320px;
   bottom: 0;
-  overflow: auto; }
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; }
   md-sidenav ul {
     list-style: none; }
   md-sidenav._md-closed {
@@ -61,7 +62,7 @@ md-sidenav {
     -webkit-transform: translate3d(0%, 0, 0);
             transform: translate3d(0%, 0, 0); }
 
-.md-sidenav-backdrop._md-locked-open {
+._md-sidenav-backdrop._md-locked-open {
   display: none; }
 
 .md-sidenav-left, md-sidenav {

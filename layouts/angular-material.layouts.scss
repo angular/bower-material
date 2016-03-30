@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-ba130f2
+ * v1.0.6-master-c68869e
  */
 $font-family: Roboto, 'Helvetica Neue', sans-serif !default;
 $font-size:   10px;
@@ -383,6 +383,23 @@ $checkbox-border-width: 2px !default;
     cursor: default;
   }
 
+  &.md-indeterminate ._md-icon {
+    &:after {
+      box-sizing: border-box;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: table;
+      width: $width * 0.6;
+      height: $border-width;
+      border-width: $border-width;
+      border-style: solid;
+      border-top: 0;
+      border-left: 0;
+      content: '';
+    }
+  }
 }
 
 /*

@@ -377,6 +377,23 @@ $checkbox-border-width: 2px !default;
     cursor: default;
   }
 
+  &.md-indeterminate ._md-icon {
+    &:after {
+      box-sizing: border-box;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: table;
+      width: $width * 0.6;
+      height: $border-width;
+      border-width: $border-width;
+      border-style: solid;
+      border-top: 0;
+      border-left: 0;
+      content: '';
+    }
+  }
 }
 
 html, body {
@@ -396,6 +413,7 @@ body {
   padding: 10px;
 }
 
+a._md-no-style,
 button._md-no-style {
   font-weight: normal;
   background-color: inherit;
@@ -2004,7 +2022,6 @@ $checkbox-margin: 16px !default;
 $checkbox-text-margin: 10px !default;
 $checkbox-top: 12px !default;
 
-
 .md-inline-form {
   md-checkbox {
     margin: 19px 0 18px;
@@ -2560,8 +2577,12 @@ md-datepicker {
   position: absolute;
   right: 0;
   left: 120px;
-
   height: 100%;
+
+  // The margin pulls it an extra pixel to the left, which gives it a slight overlap
+  // with the input container. This ensures that there are no gaps between the two
+  // elements.
+  margin-left: -1px;
 }
 
 // The calendar portion of the floating pane (vs. the input mask).
@@ -2633,6 +2654,10 @@ md-datepicker[disabled] {
 .md-datepicker-open {
   .md-datepicker-input-container {
     @include rtl-prop(margin-left, margin-right, -$md-datepicker-button-gap);
+
+    // The negative bottom margin prevents the content around the datepicker
+    // from jumping when it gets opened.
+    margin-bottom: -$md-datepicker-border-bottom-gap;
     border: none;
   }
 
@@ -3665,9 +3690,9 @@ $list-item-dense-two-line-height: 15 * $dense-baseline-grid !default;
 $list-item-dense-three-line-height: 19 * $dense-baseline-grid !default;
 $list-item-dense-primary-icon-width: $dense-baseline-grid * 5 !default;
 $list-item-dense-primary-avatar-width: $dense-baseline-grid * 9 !default;
-$list-item-dense-header-font-size: 1.3rem !default;
-$list-item-dense-font-size: 1.2rem !default;
-$list-item-dense-line-height: 1.25rem !default;
+$list-item-dense-header-font-size: round($subhead-font-size-base * 0.8) !default;
+$list-item-dense-font-size: round($body-font-size-base * 0.85) !default;
+$list-item-dense-line-height: 1.05 !default;
 
 // This is a mixin, which fixes IE11's vertical alignment issue, when using `min-height`.
 // This mixin isn't that much generic to be used in other cases.
@@ -3727,17 +3752,15 @@ md-list {
               @include rtl-prop(margin-left, margin-right, $list-item-primary-width);
             }
 
+            h3,
+            h4,
+            p {
+              line-height: $list-item-dense-line-height;
+              font-size: $list-item-dense-font-size;
+            }
+
             h3 {
               font-size: $list-item-dense-header-font-size;
-              line-height: $list-item-dense-header-font-size;
-            }
-            h4 {
-              font-size: $list-item-dense-font-size;
-              line-height: $list-item-dense-font-size;
-            }
-            p {
-              font-size: $list-item-dense-font-size;
-              line-height: $list-item-dense-line-height;
             }
           }
         }
@@ -3845,9 +3868,6 @@ md-list-item {
       outline: none
     }
   }
-  &.md-with-secondary {
-    position: relative;
-  }
   &.md-clickable:hover {
     cursor: pointer;
   }
@@ -3895,12 +3915,7 @@ md-list-item {
     & > md-icon:first-child:not(.md-avatar-icon) {
       @include rtl-prop(margin-right, margin-left, $list-item-primary-width - $list-item-primary-icon-width);
     }
-    & > md-checkbox {
-      width: 3 * $baseline-grid;
-      @include rtl(margin-left, 3px, 29px);
-      @include rtl(margin-right, 29px,3px);
-      margin-top: 16px;
-    }
+
     & .md-avatar, .md-avatar-icon {
       margin-top: $baseline-grid;
       margin-bottom: $baseline-grid;
@@ -3916,57 +3931,47 @@ md-list-item {
       padding: 8px;
     }
 
-    md-checkbox.md-secondary,
-    md-switch.md-secondary {
-      margin-top: 0;
-      margin-bottom: 0;
-    }
-
-    md-checkbox.md-secondary {
-      @include rtl-prop(margin-right, margin-left, 0);
-    }
-
-    md-switch.md-secondary {
-      @include rtl-prop(margin-right, margin-left, -6px);
-    }
-
-    button.md-button._md-secondary-container {
-      background-color: transparent;
-      align-self: center;
-      border-radius: 50%;
-      margin: 0px;
-      min-width: 0px;
-
-      .md-ripple,
-      .md-ripple-container {
-        border-radius: 50%;
-      }
+    & > md-checkbox {
+      width: 3 * $baseline-grid;
+      @include rtl(margin-left, 3px, 29px);
+      @include rtl(margin-right, 29px, 3px);
+      margin-top: 16px;
     }
 
     ._md-secondary-container {
-      @include rtl-prop(margin-right, margin-left, -12px);
+      display: flex;
+      align-items: center;
 
-      &.md-icon-button {
+      height: 100%;
+      margin: auto;
+
+      .md-button, .md-icon-button {
+        &:last-of-type {
+          // Reset 6px margin for the button.
+          @include rtl-prop(margin-right, margin-left, 0px);
+        }
+      }
+
+      md-checkbox {
+        margin-top: 0;
+        margin-bottom: 0;
+
+        &:last-child {
+          width: 3 * $baseline-grid;
+          @include rtl-prop(margin-right, margin-left, 0);
+        }
+      }
+
+      md-switch {
+        margin-top: 0;
+        margin-bottom: 0;
+
         @include rtl-prop(margin-right, margin-left, -6px);
       }
     }
 
-    ._md-secondary-container,
-    .md-secondary {
-      position: absolute;
-      top: 50%;
-      margin: 0;
-      @include rtl-prop(right, left, $list-item-padding-horizontal);
-      transform: translate3d(0, -50%, 0);
-    }
-
-    & > .md-button._md-secondary-container > .md-secondary {
-      @include rtl-prop(margin-left, margin-right, 0);
-      position: static;
-    }
-
     & > p, & > ._md-list-item-inner > p {
-      flex: 1;
+      flex: 1 1 auto;
       margin: 0;
     }
   }
@@ -3983,7 +3988,7 @@ md-list-item {
       }
 
       .md-list-item-text {
-        flex: 1;
+        flex: 1 1 auto;
         margin: auto;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -4037,7 +4042,7 @@ md-list-item {
         align-self: flex-start;
       }
       .md-list-item-text {
-        flex: 1;
+        flex: 1 1 auto;
       }
     }
   }
@@ -4649,12 +4654,12 @@ md-radio-group {
     md-radio-button {
       margin-top: 0;
       margin-bottom: 0;
-      @include rtl(margin-left, inherit, $radio-margin);
-      @include rtl(margin-right, $radio-margin, inherit);
+      @include rtl(margin-left, 0, $radio-margin);
+      @include rtl(margin-right, $radio-margin, 0);
 
       &:last-of-type {
-        @include rtl(margin-left, inherit, 0);
-        @include rtl(margin-right, 0, inherit);
+        margin-left: 0;
+        margin-right: 0;
       }
     }
   }
@@ -4882,6 +4887,7 @@ md-option {
   display: flex;
   align-items: center;
   width: auto;
+  transition: background 0.15s linear;
 
   &[disabled] {
     cursor: default;
@@ -4955,6 +4961,7 @@ md-sidenav {
   max-width: $sidenav-mobile-width;
   bottom: 0;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 
   ul {
     list-style: none;
@@ -5013,7 +5020,7 @@ md-sidenav {
 
   @extend .md-sidenav-left;
 }
-.md-sidenav-backdrop._md-locked-open {
+._md-sidenav-backdrop._md-locked-open {
   display: none;
 }
 

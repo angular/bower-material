@@ -2,12 +2,12 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-ba130f2
+ * v1.0.6-master-c68869e
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
   color: '{{foreground-1}}';
-  background-color: '{{background-50}}'; }
+  background-color: '{{background-color}}'; }
 
 /** Styles for mdCalendar. */
 md-calendar {
@@ -110,7 +110,7 @@ md-calendar {
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
   color: '{{foreground-1}}';
-  background-color: '{{background-50}}'; }
+  background-color: '{{background-color}}'; }
 
 /** Styles for mdDatepicker. */
 md-datepicker {
@@ -190,7 +190,8 @@ md-datepicker {
   position: absolute;
   right: 0;
   left: 120px;
-  height: 100%; }
+  height: 100%;
+  margin-left: -1px; }
 
 .md-datepicker-calendar {
   opacity: 0;
@@ -238,6 +239,7 @@ md-datepicker[disabled] .md-datepicker-triangle-button {
 
 .md-datepicker-open .md-datepicker-input-container {
   margin-left: -12px;
+  margin-bottom: -5px;
   border: none; }
   [dir=rtl] .md-datepicker-open .md-datepicker-input-container {
     margin-left: auto;

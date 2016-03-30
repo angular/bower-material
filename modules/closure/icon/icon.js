@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-ba130f2
+ * v1.0.6-master-c68869e
  */
 goog.provide('ng.material.components.icon');
 goog.require('ng.material.core');
@@ -12,9 +12,7 @@ goog.require('ng.material.core');
  * @description
  * Icon
  */
-angular.module('material.components.icon', [
-    'material.core'
-  ]);
+angular.module('material.components.icon', ['material.core']);
 
 angular
   .module('material.components.icon')
@@ -187,12 +185,6 @@ angular
 function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
 
   return {
-    scope: {
-      fontSet : '@mdFontSet',
-      fontIcon: '@mdFontIcon',
-      svgIcon : '@mdSvgIcon',
-      svgSrc  : '@mdSvgSrc'
-    },
     restrict: 'E',
     link : postLink
   };
@@ -210,12 +202,12 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
     // If using a font-icon, then the textual name of the icon itself
     // provides the aria-label.
 
-    var label = attr.alt || scope.fontIcon || scope.svgIcon || element.text();
+    var label = attr.alt || attr.mdFontIcon || attr.mdSvgIcon || element.text();
     var attrName = attr.$normalize(attr.$attr.mdSvgIcon || attr.$attr.mdSvgSrc || '');
 
     if ( !attr['aria-label'] ) {
 
-      if (label != '' && !parentsHaveText() ) {
+      if (label !== '' && !parentsHaveText() ) {
 
         $mdAria.expect(element, 'aria-label', label);
         $mdAria.expect(element, 'role', 'img');
@@ -256,11 +248,11 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
     }
 
     function prepareForFontIcon() {
-      if (!scope.svgIcon && !scope.svgSrc) {
-        if (scope.fontIcon) {
-          element.addClass('md-font ' + scope.fontIcon);
+      if (!attr.mdSvgIcon && !attr.mdSvgSrc) {
+        if (attr.mdFontIcon) {
+          element.addClass('md-font ' + attr.mdFontIcon);
         }
-        element.addClass($mdIcon.fontSet(scope.fontSet));
+        element.addClass($mdIcon.fontSet(attr.mdFontSet));
       }
     }
   }
@@ -584,9 +576,9 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
 
    },
 
-   $get : ['$http', '$q', '$log', '$templateCache', function($http, $q, $log, $templateCache) {
+   $get : ['$http', '$q', '$log', '$templateCache', '$mdUtil', function($http, $q, $log, $templateCache, $mdUtil) {
      this.preloadIcons($templateCache);
-     return MdIconService(config, $http, $q, $log, $templateCache);
+     return MdIconService(config, $http, $q, $log, $templateCache, $mdUtil);
    }]
  };
 
@@ -641,7 +633,7 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
   */
 
   /* ngInject */
- function MdIconService(config, $http, $q, $log, $templateCache) {
+ function MdIconService(config, $http, $q, $log, $templateCache, $mdUtil) {
    var iconCache = {};
    var urlRegex = /[-\w@:%\+.~#?&//=]{2,}\.[a-z]{2,4}\b(\/[-\w@:%\+.~#?&//=]*)?/i;
    var dataUrlRegex = /^data:image\/svg\+xml[\s*;\w\-\=]*?(base64)?,(.*)$/i;
@@ -661,7 +653,7 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
      // If already loaded and cached, use a clone of the cached icon.
      // Otherwise either load by URL, or lookup in the registry and then load by URL, and cache.
 
-     if ( iconCache[id] ) return $q.when( iconCache[id].clone() );
+     if ( iconCache[id] ) return $q.when( transformClone(iconCache[id]) );
      if ( urlRegex.test(id) || dataUrlRegex.test(id) ) return loadByURL(id).then( cacheIcon(id) );
      if ( id.indexOf(':') == -1 ) id = '$default:' + id;
 
@@ -686,24 +678,28 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
       return result;
    }
 
+   function transformClone(cacheElement) {
+     var clone = cacheElement.clone();
+     var cacheSuffix = '_cache' + $mdUtil.nextUid();
+
+     // We need to modify for each cached icon the id attributes.
+     // This is needed because SVG id's are treated as normal DOM ids
+     // and should not have a duplicated id.
+     if (clone.id) clone.id += cacheSuffix;
+     angular.forEach(clone.querySelectorAll('[id]'), function (item) {
+       item.id += cacheSuffix;
+     });
+
+     return clone;
+   }
+
    /**
     * Prepare and cache the loaded icon for the specified `id`
     */
    function cacheIcon( id ) {
 
-     return function updateCache( _icon ) {
-       var icon = isIcon(_icon) ? _icon : new Icon(_icon, config[id]);
-
-       //clear id attributes to prevent aria issues
-       var elem = icon.element;
-       elem.removeAttribute('id');
-
-       angular.forEach(elem.querySelectorAll('[id]'), function(item) {
-         item.removeAttribute('id');
-       });
-
-       iconCache[id] = icon;
-
+     return function updateCache( icon ) {
+       iconCache[id] = isIcon(icon) ? icon : new Icon(icon, config[id]);
 
        return iconCache[id].clone();
      };
@@ -835,6 +831,6 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
    }
 
  }
- MdIconService.$inject = ["config", "$http", "$q", "$log", "$templateCache"];
+ MdIconService.$inject = ["config", "$http", "$q", "$log", "$templateCache", "$mdUtil"];
 
 ng.material.components.icon = angular.module("material.components.icon");
