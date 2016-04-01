@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc2-master-0fc0f3e
+ * v1.0.5-master-1beb7b6
  */
 $font-family: Roboto, 'Helvetica Neue', sans-serif !default;
 $font-size:   10px;
@@ -21,7 +21,6 @@ $layout-breakpoint-xs:     600px !default;
 $layout-breakpoint-sm:     960px !default;
 $layout-breakpoint-md:     1280px !default;
 $layout-breakpoint-lg:     1920px !default;
-$button-left-right-padding: rem(0.600);
 $icon-size: rem(2.400) !default;
 $app-bar-height: 64px;
 $toast-height: $baseline-grid * 3 !default;
@@ -79,10 +78,6 @@ $swift-linear: all $swift-linear-duration $swift-linear-timing-function !default
 $button-fab-width: rem(5.600) !default;
 $button-fab-height: rem(5.600) !default;
 $button-fab-padding: rem(1.60) !default;
-$checkbox-width: 20px !default;
-$checkbox-height: $checkbox-width !default;
-$checkbox-border-radius: 2px !default;
-$checkbox-border-width: 2px !default;
 // Function
 //-- Must be defined before variables
 @function rem($multiplier) {
@@ -99,8 +94,6 @@ $checkbox-border-width: 2px !default;
 // ------------------------------
 
 
-
-// Button
 
 // Icon
 
@@ -127,9 +120,6 @@ $checkbox-border-width: 2px !default;
 // Fab Buttons (shared between buttons.scss and fab*.scss)
 // -------------------------------------------
 
-
-// Shared Checkbox variables
-
 @mixin margin-selectors($before:1em, $after:1em, $start:0px, $end:0px) {
   -webkit-margin-before: $before;
   -webkit-margin-after: $after;
@@ -147,16 +137,12 @@ $checkbox-border-width: 2px !default;
 }
 
 @mixin input-placeholder-color($color) {
-  $pseudos: '::-webkit-input-placeholder', ':-moz-placeholder', '::-moz-placeholder',
-            ':-ms-input-placeholder',  '::-webkit-input-placeholder';
-
-  // It is important to export every pseudo within its own block, because otherwise the placeholder
-  // won't be set on the most browsers.
-  @each $pseudo in $pseudos {
-    &#{$pseudo} {
-      color: unquote($color);
+  &::-webkit-input-placeholder,
+    &::-moz-placeholder,
+    &:-moz-placeholder,
+    &:-ms-input-placeholder {
+      color: $color;
     }
-  }
 }
 
 @mixin pie-clearfix {
@@ -240,30 +226,28 @@ $checkbox-border-width: 2px !default;
 // mixin definition ; sets LTR and RTL within the same style call
 // @see https://css-tricks.com/almanac/properties/d/direction/
 
-@mixin rtl($prop, $ltr-value, $rtl-value) {
-  #{$prop}: $ltr-value;
-  [dir=rtl] & {
+@mixin rtl($prop, $value, $rtl-value) {
+  #{$prop}: $value;
+
+  html[dir=rtl] & {
     #{$prop}: $rtl-value;
+    unicode-bidi: embed;
   }
-}
+  body[dir=rtl] & {
+    #{$prop}: $rtl-value;
+    unicode-bidi: embed;
+  }
 
-@mixin rtl-prop($ltr-prop, $rtl-prop, $value) {
-  #{$ltr-prop}: $value;
-  [dir=rtl] & {
-    #{$ltr-prop}: auto;
-    #{$rtl-prop}: $value;
+  bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override;
   }
-}
+  bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override;
+  }
 
-// To reverse padding (top left bottom right) -> (top right bottom left)
-@function rtl-value($list) {
-  @if length($list) == 4 {
-    @return nth($list, 1) nth($list, 4) nth($list, 3) nth($list, 2)
-  }
-  @if length($list) == 5 {
-    @return nth($list, 1) nth($list, 4) nth($list, 3) nth($list, 2) nth($list, 5)
-  }
-  @return $list;
+
 }
 
 // Position a FAB button.
@@ -284,124 +268,6 @@ $checkbox-border-width: 2px !default;
   @include fab-position(top-left, ($button-fab-height - $button-fab-padding)/2, auto, auto, ($button-fab-width - $button-fab-padding)/2);
 }
 
-// This mixin allows a user to use the md-checkbox css outside of the
-// md-checkbox directive.
-// See src/components/select/select.scss for an example.
-@mixin checkbox-container(
-  $checkedSelector: '.md-checked',
-  $width: $checkbox-width,
-  $height: $checkbox-height,
-  $border-width: $checkbox-border-width,
-  $border-radius: $checkbox-border-radius) {
-  ._md-container {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-
-    box-sizing: border-box;
-    display: inline-block;
-
-    width: $width;
-    height: $height;
-    @include rtl(left, 0, auto);
-    @include rtl(right, auto, 0);
-
-    &:before {
-      box-sizing: border-box;
-      background-color: transparent;
-      border-radius: 50%;
-      content: '';
-      position: absolute;
-      display: block;
-      height: auto;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      transition: all 0.5s;
-      width: auto;
-    }
-
-    &:after {
-      box-sizing: border-box;
-      content: '';
-      position: absolute;
-      top: -10px;
-      right: -10px;
-      bottom: -10px;
-      left: -10px;
-    }
-
-    .md-ripple-container {
-      position: absolute;
-      display: block;
-      width: auto;
-      height: auto;
-      left: -15px;
-      top: -15px;
-      right: -15px;
-      bottom: -15px;
-    }
-  }
-
-  // unchecked
-  ._md-icon {
-    box-sizing: border-box;
-    transition: 240ms;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: $width;
-    height: $height;
-    border-width: $border-width;
-    border-style: solid;
-    border-radius: $border-radius;
-  }
-
-  &#{$checkedSelector} ._md-icon {
-    border: none;
-
-    &:after {
-      box-sizing: border-box;
-      transform: rotate(45deg);
-      position: absolute;
-      left: $width / 3;
-      top: $width / 9;
-      display: table;
-      width: $width / 3;
-      height: $width * 2 / 3;
-      border-width: $border-width;
-      border-style: solid;
-      border-top: 0;
-      border-left: 0;
-      content: '';
-    }
-  }
-
-  // disabled
-  &[disabled] {
-    cursor: default;
-  }
-
-  &.md-indeterminate ._md-icon {
-    &:after {
-      box-sizing: border-box;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: table;
-      width: $width * 0.6;
-      height: $border-width;
-      border-width: $border-width;
-      border-style: solid;
-      border-top: 0;
-      border-left: 0;
-      content: '';
-    }
-  }
-}
-
 /*
 *
 *  Responsive attributes
@@ -415,6 +281,16 @@ $checkbox-border-width: 2px !default;
 *
 *
 */
+
+@-moz-document url-prefix() {
+  .layout-fill {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+    height: 100%;
+  }
+}
+
 
 @mixin flex-order-for-name($sizes:null) {
   @if $sizes == null {
@@ -457,8 +333,7 @@ $checkbox-border-width: 2px !default;
     }
 
     #{$offsets} {
-      @if $i != 0 { @include rtl-prop(margin-left, margin-right, #{$i * 5 + '%'}); }
-      @else { @include rtl-prop(margin-left, margin-right, 0); }
+      margin-left: #{$i * 5 + '%'};
     }
   }
 
@@ -490,7 +365,7 @@ $checkbox-border-width: 2px !default;
     }
 
     #{$offsets} {
-      @include rtl-prop(margin-left, margin-right, calc(200% / 3));
+      margin-left: calc(200% / 3);
     }
   }
 }
@@ -521,6 +396,18 @@ $checkbox-border-width: 2px !default;
   }
 
   .#{$flexName}             { flex: 1;         box-sizing: border-box; }  // === flex: 1 1 0%;
+
+  // IE mediaQuery hack for 8,9,10 to set the flex-basis properly for 'flex' values
+  // Details:
+  // Do not use unitless flex-basis values in the flex shorthand because IE 10-11 will error.
+  // Also use 0% instead of 0px since minifiers will often convert 0px to 0 (which is unitless and will have the same problem).
+  // Safari, however, fails with flex-basis : 0% and requires flex-basis : 0px
+  @media screen\0 {
+      .#{$flexName} {
+        flex: 1 1 0%;
+      }
+  }
+
 
   .#{$flexName}-grow        { flex: 1 1 100%;  box-sizing: border-box; }
   .#{$flexName}-initial     { flex: 0 1 auto;  box-sizing: border-box; }
@@ -560,8 +447,8 @@ $checkbox-border-width: 2px !default;
 
       // Bug workaround for http://crbug.com/546034 - flex issues on Chrome 48
       @if $i == 0 {  min-height: 0;  }
-    }
 
+    }
   }
 
   .layout-row, .layout#{$name}-row {
@@ -570,7 +457,6 @@ $checkbox-border-width: 2px !default;
 
     // Bug workaround for http://crbug.com/546034 - flex issues on Chrome 48
     > .flex                                       { min-width: 0;   }
-
   }
   .layout-column, .layout#{$name}-column {
     > .#{$flexName}-33   , > .#{$flexName}-33     {  flex: 1 1 33.33%;  max-width: 100%;  max-height: 33.33%; box-sizing: border-box; }
@@ -579,7 +465,6 @@ $checkbox-border-width: 2px !default;
     // Bug workaround for http://crbug.com/546034 - flex issues on Chrome 48
     > .flex                                       { min-height: 0;   }
   }
-
 }
 
 @mixin layout-align-for-name($suffix: null) {
@@ -814,30 +699,6 @@ $checkbox-border-width: 2px !default;
     @include flex-properties-for-name($name);
     @include layout-for-name($name);
 }
-
-/*
-*
-*  Responsive attributes
-*
-*  References:
-*  1) https://scotch.io/tutorials/a-visual-guide-to-css3-flexbox-properties#flex
-*  2) https://css-tricks.com/almanac/properties/f/flex/
-*  3) https://css-tricks.com/snippets/css/a-guide-to-flexbox/
-*  4) https://github.com/philipwalton/flexbugs#3-min-height-on-a-flex-container-wont-apply-to-its-flex-items
-*  5) http://godban.com.ua/projects/flexgrid
-*
-*
-*/
-
-@-moz-document url-prefix() {
-  .layout-fill {
-    margin: 0;
-    width: 100%;
-    min-height: 100%;
-    height: 100%;
-  }
-}
-
 
 /*
  *  Apply Mixins to create Layout/Flexbox styles
