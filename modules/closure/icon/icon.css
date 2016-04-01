@@ -2,8 +2,13 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7
+ * v1.0.7-master-8ba034c
  */
+/*  Only used with Theme processes */
+html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
+  color: '{{foreground-1}}';
+  background-color: '{{background-color}}'; }
+
 md-icon {
   margin: auto;
   background-repeat: no-repeat no-repeat;
@@ -16,5 +21,5 @@ md-icon {
     pointer-events: none;
     display: block; }
   md-icon[md-font-icon] {
-    line-height: 1;
+    line-height: 24px;
     width: auto; }
