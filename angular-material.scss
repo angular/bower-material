@@ -829,193 +829,6 @@ md-backdrop {
 }
 
 
-$bottom-sheet-horizontal-padding: 2 * $baseline-grid !default;
-$bottom-sheet-vertical-padding: 1 * $baseline-grid !default;
-$bottom-sheet-icon-after-margin: 4 * $baseline-grid !default;
-$bottom-sheet-list-item-height: 6 * $baseline-grid !default;
-$bottom-sheet-hidden-bottom-padding: 80px !default;
-$bottom-sheet-header-height: 7 * $baseline-grid !default;
-$bottom-sheet-grid-font-weight: 400 !default;
-
-md-bottom-sheet {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: $bottom-sheet-vertical-padding $bottom-sheet-horizontal-padding $bottom-sheet-vertical-padding + $bottom-sheet-hidden-bottom-padding $bottom-sheet-horizontal-padding;
-  z-index: $z-index-bottom-sheet;
-
-  border-top-width: 1px;
-  border-top-style: solid;
-
-  transform: translate3d(0, $bottom-sheet-hidden-bottom-padding, 0);
-  transition: $swift-ease-out;
-  transition-property: transform;
-
-  &.md-has-header {
-    padding-top: 0;
-  }
-
-  &.ng-enter {
-    opacity: 0;
-    transform: translate3d(0, 100%, 0);
-  }
-
-  &.ng-enter-active {
-    opacity: 1;
-    display: block;
-    transform: translate3d(0, $bottom-sheet-hidden-bottom-padding, 0) !important;
-  }
-
-
-  &.ng-leave-active {
-    transform: translate3d(0, 100%, 0) !important;
-    transition: $swift-ease-in;
-  }
-
-  .md-subheader {
-    background-color: transparent;
-    font-family: $font-family;
-    line-height: $bottom-sheet-header-height;
-    padding: 0;
-    white-space: nowrap;
-  }
-
-  md-inline-icon {
-    display: inline-block;
-    height: 24px;
-    width: 24px;
-    fill: #444;
-  }
-
-  md-list-item {
-    display: flex;
-    outline: none;
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
-
-  &.md-list {
-    md-list-item {
-      padding: 0;
-      align-items: center;
-      height: $bottom-sheet-list-item-height;
-
-      div.md-icon-container {
-        display: inline-block;
-        height: 3 * $baseline-grid;
-        margin-right: $bottom-sheet-icon-after-margin;
-      }
-    }
-  }
-
-
-
-  &.md-grid {
-    padding-left: 3 * $baseline-grid;
-    padding-right: 3 * $baseline-grid;
-    padding-top: 0;
-
-    md-list {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      transition: all 0.5s;
-      align-items: center;
-    }
-
-    md-list-item {
-      flex-direction: column;
-      align-items: center;
-      transition: all 0.5s;
-
-      height: 12 * $baseline-grid;
-
-      margin-top: $baseline-grid;
-      margin-bottom: $baseline-grid;
-
-      /* Mixin for how many grid items to show per row */
-      @mixin grid-items-per-row($num, $alignEdges: false) {
-        $width: 100% / $num;
-        flex: 1 1 $width;
-        max-width: $width;
-
-        @if $alignEdges {
-          &:nth-of-type(#{$num}n + 1) {
-            align-items: flex-start;
-          }
-          &:nth-of-type(#{$num}n) {
-            align-items: flex-end;
-          }
-        }
-      }
-      
-      @media screen and (max-width: $layout-breakpoint-sm) {
-        @include grid-items-per-row(3, true);
-      }
-
-      @media screen and (min-width: $layout-breakpoint-sm) and (max-width: $layout-breakpoint-md - 1) {
-        @include grid-items-per-row(4);
-      }
-
-      @media screen and (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg - 1) {
-        @include grid-items-per-row(6);
-      }
-
-      @media screen and (min-width: $layout-breakpoint-lg) {
-        @include grid-items-per-row(7);
-      }
-
-
-
-      .md-list-item-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 6 * $baseline-grid;
-        padding-bottom: 2 * $baseline-grid;
-      }
-
-      .md-grid-item-content {
-        border: 1px solid transparent;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 10 * $baseline-grid;
-      }
-
-      .md-icon-container {
-        display: inline-block;
-        box-sizing: border-box;
-        height: 6 * $baseline-grid;
-        width: 6 * $baseline-grid;
-        margin: 0 0;
-      }
-
-      .md-grid-text {
-        font-weight: $bottom-sheet-grid-font-weight;
-        line-height: 2 * $baseline-grid;
-        font-size: 2 * $baseline-grid - 3;
-        margin: 0;
-        white-space: nowrap;
-        width: 8 * $baseline-grid;
-        text-align: center;
-        text-transform: none;
-        padding-top: 1 * $baseline-grid;
-      }
-    }
-  }
-}
-
-// IE only
-@media screen and (-ms-high-contrast: active) {
-  md-bottom-sheet {
-    border: 1px solid #fff;
-  }
-}
-
 $button-border-radius: 3px !default;
 $button-fab-border-radius: 50% !default;
 $button-icon-border-radius: $button-fab-border-radius;
@@ -1246,6 +1059,193 @@ button.md-button::-moz-focus-inner {
 @media screen and (-ms-high-contrast: active) {
   .md-button.md-raised,
   .md-button.md-fab {
+    border: 1px solid #fff;
+  }
+}
+
+$bottom-sheet-horizontal-padding: 2 * $baseline-grid !default;
+$bottom-sheet-vertical-padding: 1 * $baseline-grid !default;
+$bottom-sheet-icon-after-margin: 4 * $baseline-grid !default;
+$bottom-sheet-list-item-height: 6 * $baseline-grid !default;
+$bottom-sheet-hidden-bottom-padding: 80px !default;
+$bottom-sheet-header-height: 7 * $baseline-grid !default;
+$bottom-sheet-grid-font-weight: 400 !default;
+
+md-bottom-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: $bottom-sheet-vertical-padding $bottom-sheet-horizontal-padding $bottom-sheet-vertical-padding + $bottom-sheet-hidden-bottom-padding $bottom-sheet-horizontal-padding;
+  z-index: $z-index-bottom-sheet;
+
+  border-top-width: 1px;
+  border-top-style: solid;
+
+  transform: translate3d(0, $bottom-sheet-hidden-bottom-padding, 0);
+  transition: $swift-ease-out;
+  transition-property: transform;
+
+  &.md-has-header {
+    padding-top: 0;
+  }
+
+  &.ng-enter {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  &.ng-enter-active {
+    opacity: 1;
+    display: block;
+    transform: translate3d(0, $bottom-sheet-hidden-bottom-padding, 0) !important;
+  }
+
+
+  &.ng-leave-active {
+    transform: translate3d(0, 100%, 0) !important;
+    transition: $swift-ease-in;
+  }
+
+  .md-subheader {
+    background-color: transparent;
+    font-family: $font-family;
+    line-height: $bottom-sheet-header-height;
+    padding: 0;
+    white-space: nowrap;
+  }
+
+  md-inline-icon {
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    fill: #444;
+  }
+
+  md-list-item {
+    display: flex;
+    outline: none;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &.md-list {
+    md-list-item {
+      padding: 0;
+      align-items: center;
+      height: $bottom-sheet-list-item-height;
+
+      div.md-icon-container {
+        display: inline-block;
+        height: 3 * $baseline-grid;
+        margin-right: $bottom-sheet-icon-after-margin;
+      }
+    }
+  }
+
+
+
+  &.md-grid {
+    padding-left: 3 * $baseline-grid;
+    padding-right: 3 * $baseline-grid;
+    padding-top: 0;
+
+    md-list {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      transition: all 0.5s;
+      align-items: center;
+    }
+
+    md-list-item {
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.5s;
+
+      height: 12 * $baseline-grid;
+
+      margin-top: $baseline-grid;
+      margin-bottom: $baseline-grid;
+
+      /* Mixin for how many grid items to show per row */
+      @mixin grid-items-per-row($num, $alignEdges: false) {
+        $width: 100% / $num;
+        flex: 1 1 $width;
+        max-width: $width;
+
+        @if $alignEdges {
+          &:nth-of-type(#{$num}n + 1) {
+            align-items: flex-start;
+          }
+          &:nth-of-type(#{$num}n) {
+            align-items: flex-end;
+          }
+        }
+      }
+      
+      @media screen and (max-width: $layout-breakpoint-sm) {
+        @include grid-items-per-row(3, true);
+      }
+
+      @media screen and (min-width: $layout-breakpoint-sm) and (max-width: $layout-breakpoint-md - 1) {
+        @include grid-items-per-row(4);
+      }
+
+      @media screen and (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg - 1) {
+        @include grid-items-per-row(6);
+      }
+
+      @media screen and (min-width: $layout-breakpoint-lg) {
+        @include grid-items-per-row(7);
+      }
+
+
+
+      .md-list-item-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 6 * $baseline-grid;
+        padding-bottom: 2 * $baseline-grid;
+      }
+
+      .md-grid-item-content {
+        border: 1px solid transparent;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 10 * $baseline-grid;
+      }
+
+      .md-icon-container {
+        display: inline-block;
+        box-sizing: border-box;
+        height: 6 * $baseline-grid;
+        width: 6 * $baseline-grid;
+        margin: 0 0;
+      }
+
+      .md-grid-text {
+        font-weight: $bottom-sheet-grid-font-weight;
+        line-height: 2 * $baseline-grid;
+        font-size: 2 * $baseline-grid - 3;
+        margin: 0;
+        white-space: nowrap;
+        width: 8 * $baseline-grid;
+        text-align: center;
+        text-transform: none;
+        padding-top: 1 * $baseline-grid;
+      }
+    }
+  }
+}
+
+// IE only
+@media screen and (-ms-high-contrast: active) {
+  md-bottom-sheet {
     border: 1px solid #fff;
   }
 }
@@ -1621,6 +1621,34 @@ md-checkbox {
   }
 }
 
+md-content {
+
+  display: block;
+  position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &[md-scroll-y] {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  &[md-scroll-x] {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  &[md-scroll-xy] {
+  }
+
+  // For iOS allow disabling of momentum scrolling
+  // @see issue #2640.
+
+  &.autoScroll {
+    -webkit-overflow-scrolling: auto;
+  }
+}
+
+
+
 $chip-font-size: rem(1.6) !default;
 $chip-height: rem(3.2) !default;
 $chip-padding: 0 rem(1.2) 0 rem(1.2) !default;
@@ -1816,34 +1844,6 @@ $contact-chip-name-width: rem(12) !default;
     border: none;
   }
 }
-
-
-md-content {
-
-  display: block;
-  position: relative;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-
-  &[md-scroll-y] {
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-  &[md-scroll-x] {
-    overflow-x: auto;
-    overflow-y: hidden;
-  }
-  &[md-scroll-xy] {
-  }
-
-  // For iOS allow disabling of momentum scrolling
-  // @see issue #2640.
-
-  &.autoScroll {
-    -webkit-overflow-scrolling: auto;
-  }
-}
-
 
 
 /** Styles for mdCalendar. */
@@ -3109,6 +3109,160 @@ md-input-container.md-icon-right {
   }
 }
 
+$menu-border-radius: 2px;
+$max-visible-items: 6;
+$menu-item-height: 6 * $baseline-grid;
+$dense-menu-item-height: 4 * $baseline-grid;
+$max-menu-height: 2 * $baseline-grid + $max-visible-items * $menu-item-height;
+$max-dense-menu-height: 2 * $baseline-grid + $max-visible-items * $dense-menu-item-height;
+
+.md-open-menu-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: $z-index-menu;
+  opacity: 0;
+  border-radius: $menu-border-radius;
+
+  md-menu-divider {
+    margin-top: $baseline-grid / 2;
+    margin-bottom: $baseline-grid / 2;
+    height: 1px;
+    min-height: 1px;
+    max-height: 1px;
+    width: 100%;
+  }
+
+  md-menu-content > * {
+    opacity: 0;
+  }
+
+  // Don't let the user click something until it's animated
+  &:not(.md-clickable) {
+    pointer-events: none;
+  }
+
+  // enter: menu scales in, then list fade in.
+  &.md-active {
+    opacity: 1;
+    transition: $swift-ease-out;
+    transition-duration: 200ms;
+    > md-menu-content > * {
+      opacity: 1;
+      transition: $swift-ease-in;
+      transition-duration: 200ms;
+      transition-delay: 100ms;
+    }
+  }
+  // leave: the container fades out
+  &.md-leave {
+    opacity: 0;
+    transition: $swift-ease-in;
+    transition-duration: 250ms;
+  }
+}
+
+md-menu-content {
+  display: flex;
+  flex-direction: column;
+  padding: $baseline-grid 0;
+  max-height: $max-menu-height;
+  overflow-y: auto;
+  &.md-dense {
+    max-height: $max-dense-menu-height;
+    md-menu-item {
+      height: $dense-menu-item-height;
+      min-height: 0px;
+    }
+  }
+}
+
+md-menu-item {
+  display: flex;
+  flex-direction: row;
+  min-height: $menu-item-height;
+  height: $menu-item-height;
+  align-content: center;
+  justify-content: flex-start;
+
+  > * {
+    width: 100%;
+    margin: auto 0;
+    padding-left: 2*$baseline-grid;
+    padding-right: 2*$baseline-grid;
+  }
+
+  > a.md-button {
+    display: flex;
+  }
+
+  > .md-button {
+    border-radius: 0;
+    margin: auto 0;
+    font-size: (2*$baseline-grid) - 1;
+    text-transform: none;
+    font-weight: 400;
+    text-align: left;
+    text-align: start;
+    height: 100%;
+    padding-left: 2*$baseline-grid;
+    padding-right: 2*$baseline-grid;
+    display: inline-block;
+    align-items: baseline;
+    align-content: flex-start;
+    width:100%;
+    md-icon {
+      margin: auto 2*$baseline-grid auto 0;
+    }
+    p {
+      display:inline-block;
+      margin: auto;
+    }
+    span {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+    .md-ripple-container {
+      border-radius: inherit;
+    }
+  }
+}
+
+.md-menu {
+  padding: $baseline-grid 0;
+}
+
+md-toolbar {
+  .md-menu {
+    height: auto;
+    margin: auto;
+    padding: 0;
+  }
+}
+
+@media (max-width: $layout-breakpoint-sm - 1) {
+  md-menu-content {
+    min-width: 112px;
+  }
+  @for $i from 3 through 7 {
+    md-menu-content[width="#{$i}"] {
+      min-width: $i * 56px;
+    }
+  }
+}
+
+@media (min-width: $layout-breakpoint-sm) {
+  md-menu-content {
+    min-width: 96px;
+  }
+  @for $i from 3 through 7 {
+    md-menu-content[width="#{$i}"] {
+      min-width: $i * 64px;
+    }
+  }
+}
+
+
 $list-h3-margin: 0 0 0px 0 !default;
 $list-h4-margin: 3px 0 1px 0 !default;
 $list-h4-font-weight: 400 !default;
@@ -3381,160 +3535,6 @@ md-list-item.md-3-line > .md-no-style {
     margin-top: $baseline-grid * 2;
   }
 }
-
-$menu-border-radius: 2px;
-$max-visible-items: 6;
-$menu-item-height: 6 * $baseline-grid;
-$dense-menu-item-height: 4 * $baseline-grid;
-$max-menu-height: 2 * $baseline-grid + $max-visible-items * $menu-item-height;
-$max-dense-menu-height: 2 * $baseline-grid + $max-visible-items * $dense-menu-item-height;
-
-.md-open-menu-container {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: $z-index-menu;
-  opacity: 0;
-  border-radius: $menu-border-radius;
-
-  md-menu-divider {
-    margin-top: $baseline-grid / 2;
-    margin-bottom: $baseline-grid / 2;
-    height: 1px;
-    min-height: 1px;
-    max-height: 1px;
-    width: 100%;
-  }
-
-  md-menu-content > * {
-    opacity: 0;
-  }
-
-  // Don't let the user click something until it's animated
-  &:not(.md-clickable) {
-    pointer-events: none;
-  }
-
-  // enter: menu scales in, then list fade in.
-  &.md-active {
-    opacity: 1;
-    transition: $swift-ease-out;
-    transition-duration: 200ms;
-    > md-menu-content > * {
-      opacity: 1;
-      transition: $swift-ease-in;
-      transition-duration: 200ms;
-      transition-delay: 100ms;
-    }
-  }
-  // leave: the container fades out
-  &.md-leave {
-    opacity: 0;
-    transition: $swift-ease-in;
-    transition-duration: 250ms;
-  }
-}
-
-md-menu-content {
-  display: flex;
-  flex-direction: column;
-  padding: $baseline-grid 0;
-  max-height: $max-menu-height;
-  overflow-y: auto;
-  &.md-dense {
-    max-height: $max-dense-menu-height;
-    md-menu-item {
-      height: $dense-menu-item-height;
-      min-height: 0px;
-    }
-  }
-}
-
-md-menu-item {
-  display: flex;
-  flex-direction: row;
-  min-height: $menu-item-height;
-  height: $menu-item-height;
-  align-content: center;
-  justify-content: flex-start;
-
-  > * {
-    width: 100%;
-    margin: auto 0;
-    padding-left: 2*$baseline-grid;
-    padding-right: 2*$baseline-grid;
-  }
-
-  > a.md-button {
-    display: flex;
-  }
-
-  > .md-button {
-    border-radius: 0;
-    margin: auto 0;
-    font-size: (2*$baseline-grid) - 1;
-    text-transform: none;
-    font-weight: 400;
-    text-align: left;
-    text-align: start;
-    height: 100%;
-    padding-left: 2*$baseline-grid;
-    padding-right: 2*$baseline-grid;
-    display: inline-block;
-    align-items: baseline;
-    align-content: flex-start;
-    width:100%;
-    md-icon {
-      margin: auto 2*$baseline-grid auto 0;
-    }
-    p {
-      display:inline-block;
-      margin: auto;
-    }
-    span {
-      margin-top: auto;
-      margin-bottom: auto;
-    }
-    .md-ripple-container {
-      border-radius: inherit;
-    }
-  }
-}
-
-.md-menu {
-  padding: $baseline-grid 0;
-}
-
-md-toolbar {
-  .md-menu {
-    height: auto;
-    margin: auto;
-    padding: 0;
-  }
-}
-
-@media (max-width: $layout-breakpoint-sm - 1) {
-  md-menu-content {
-    min-width: 112px;
-  }
-  @for $i from 3 through 7 {
-    md-menu-content[width="#{$i}"] {
-      min-width: $i * 56px;
-    }
-  }
-}
-
-@media (min-width: $layout-breakpoint-sm) {
-  md-menu-content {
-    min-width: 96px;
-  }
-  @for $i from 3 through 7 {
-    md-menu-content[width="#{$i}"] {
-      min-width: $i * 64px;
-    }
-  }
-}
-
 
 md-toolbar.md-menu-toolbar {
   h2.md-toolbar-tools {
