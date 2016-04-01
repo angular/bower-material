@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.5-master-1beb7b6
+ * v1.1.0-rc2-master-f6cf82d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -65,13 +65,13 @@ function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdG
     priority: 210, // Run before ngAria
     transclude: true,
     template:
-      '<div class="md-container">' +
-        '<div class="md-bar"></div>' +
-        '<div class="md-thumb-container">' +
-          '<div class="md-thumb" md-ink-ripple md-ink-ripple-checkbox></div>' +
+      '<div class="_md-container">' +
+        '<div class="_md-bar"></div>' +
+        '<div class="_md-thumb-container">' +
+          '<div class="_md-thumb" md-ink-ripple md-ink-ripple-checkbox></div>' +
         '</div>'+
       '</div>' +
-      '<div ng-transclude class="md-label"></div>',
+      '<div ng-transclude class="_md-label"></div>',
     require: '?ngModel',
     compile: mdSwitchCompile
   };
@@ -79,7 +79,7 @@ function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdG
   function mdSwitchCompile(element, attr) {
     var checkboxLink = checkboxDirective.compile(element, attr);
     // No transition on initial load.
-    element.addClass('md-dragging');
+    element.addClass('_md-dragging');
 
     return function (scope, element, attr, ngModel) {
       ngModel = ngModel || $mdUtil.fakeNgModel();
@@ -91,12 +91,12 @@ function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdG
         disabledGetter = $parse(attr.ngDisabled);
       }
 
-      var thumbContainer = angular.element(element[0].querySelector('.md-thumb-container'));
-      var switchContainer = angular.element(element[0].querySelector('.md-container'));
+      var thumbContainer = angular.element(element[0].querySelector('._md-thumb-container'));
+      var switchContainer = angular.element(element[0].querySelector('._md-container'));
 
       // no transition on initial load
       $$rAF(function() {
-        element.removeClass('md-dragging');
+        element.removeClass('_md-dragging');
       });
 
       checkboxLink(scope, element, attr, ngModel);
@@ -120,9 +120,8 @@ function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdG
         if (disabledGetter && disabledGetter(scope)) return;
         ev.stopPropagation();
 
-        element.addClass('md-dragging');
+        element.addClass('_md-dragging');
         drag = {width: thumbContainer.prop('offsetWidth')};
-        element.removeClass('transition');
       }
 
       function onDrag(ev) {
@@ -145,7 +144,7 @@ function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdG
         if (!drag) return;
         ev.stopPropagation();
 
-        element.removeClass('md-dragging');
+        element.removeClass('_md-dragging');
         thumbContainer.css($mdConstant.CSS.TRANSFORM, '');
 
         // We changed if there is no distance (this is a click a click),
