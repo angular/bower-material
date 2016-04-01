@@ -11,7 +11,7 @@ md-input-container:not(.md-input-invalid) > md-icon.name {
 }
 
 md-input-container.md-input-invalid > md-icon.email,
-md-input-container.md-input-invalid > md-icon.name,
+md-input-container.md-input-invalid > md-icon.name
 {
     color : red;
 }
