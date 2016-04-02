@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7-master-8ba034c
+ * v1.0.6-master-e85e328
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -117,55 +117,22 @@ MdToastDirective.$inject = ["$mdToast"];
   * @returns {obj} a `$mdToastPreset` with the following chainable configuration methods.
   *
   * _**Note:** These configuration methods are provided in addition to the methods provided by
-  * the `build()` and `show()` methods below._
+  *   the `build()` and `show()` methods below._
   *
-  * <table class="md-api-table methods">
-  *    <thead>
-  *      <tr>
-  *        <th>Method</th>
-  *        <th>Description</th>
-  *      </tr>
-  *    </thead>
-  *    <tbody>
-  *      <tr>
-  *        <td>`.textContent(string)`</td>
-  *        <td>Sets the toast content to the specified string</td>
-  *      </tr>
-  *      <tr>
-  *        <td>`.action(string)`</td>
-  *        <td>
-  *          Adds an action button. <br/>
-  *          If clicked, the promise (returned from `show()`)
-  *          will resolve with the value `'ok'`; otherwise, it is resolved with `true` after a `hideDelay`
-  *          timeout
-  *        </td>
-  *      </tr>
-  *      <tr>
-  *        <td>`.highlightAction(boolean)`</td>
-  *        <td>
-  *          Whether or not the action button will have an additional highlight class.<br/>
-  *          By default the `accent` color will be applied to the action button.
-  *        </td>
-  *      </tr>
-  *      <tr>
-  *        <td>`.highlightClass(string)`</td>
-  *        <td>
-  *          If set, the given class will be applied to the highlighted action button.<br/>
-  *          This allows you to specify the highlight color easily. Highlight classes are `md-primary`, `md-warn`
-  *          and `md-accent`
-  *        </td>
-  *      </tr>
-  *      <tr>
-  *        <td>`.capsule(boolean)`</td>
-  *        <td>Whether or not to add the `md-capsule` class to the toast to provide rounded corners</td>
-  *      </tr>
-  *      <tr>
-  *        <td>`.theme(string)`</td>
-  *        <td>Sets the theme on the toast to the requested theme. Default is `$mdThemingProvider`'s default.</td>
-  *      </tr>
-  *    </tbody>
-  * </table>
+  * - `.textContent(string)` - Sets the toast content to the specified string.
   *
+  * - `.action(string)` - Adds an action button. If clicked, the promise (returned from `show()`)
+  * will resolve with the value `'ok'`; otherwise, it is resolved with `true` after a `hideDelay`
+  * timeout.
+  *
+  * - `.highlightAction(boolean)` - Whether or not the action button will have an additional
+  * highlight class.
+  *
+  * - `.capsule(boolean)` - Whether or not to add the `md-capsule` class to the toast to provide
+  * rounded corners.
+  *
+  * - `.theme(string)` - Sets the theme on the toast to the requested theme. Default is
+  * `$mdThemingProvider`'s default.
   */
 
 /**
@@ -273,40 +240,30 @@ function MdToastProvider($$interimElementProvider) {
   var activeToastContent;
   var $mdToast = $$interimElementProvider('$mdToast')
     .setDefaults({
-      methods: ['position', 'hideDelay', 'capsule', 'parent', 'position' ],
+      methods: ['position', 'hideDelay', 'capsule', 'parent' ],
       options: toastDefaultOptions
     })
     .addPreset('simple', {
       argOption: 'textContent',
-      methods: ['textContent', 'content', 'action', 'highlightAction', 'highlightClass', 'theme', 'parent' ],
+      methods: ['textContent', 'content', 'action', 'highlightAction', 'theme', 'parent'],
       options: /* ngInject */ ["$mdToast", "$mdTheming", function($mdToast, $mdTheming) {
-        return {
+        var opts = {
           template:
             '<md-toast md-theme="{{ toast.theme }}" ng-class="{\'md-capsule\': toast.capsule}">' +
             '  <div class="md-toast-content">' +
-            '    <span flex class="md-toast-text" role="alert" aria-relevant="all" aria-atomic="true">' +
+            '    <span flex role="alert" aria-relevant="all" aria-atomic="true">' +
             '      {{ toast.content }}' +
             '    </span>' +
-            '    <md-button class="md-action" ng-if="toast.action" ng-click="toast.resolve()" ' +
-            '        ng-class="highlightClasses">' +
+            '    <md-button class="md-action" ng-if="toast.action" ng-click="toast.resolve()" ng-class="{\'md-highlight\': toast.highlightAction}">' +
             '      {{ toast.action }}' +
             '    </md-button>' +
             '  </div>' +
             '</md-toast>',
           controller: /* ngInject */ ["$scope", function mdToastCtrl($scope) {
             var self = this;
-
-            if (self.highlightAction) {
-              $scope.highlightClasses = [
-                'md-highlight',
-                self.highlightClass
-              ]
-            }
-
             $scope.$watch(function() { return activeToastContent; }, function() {
               self.content = activeToastContent;
             });
-
             this.resolve = function() {
               $mdToast.hide( ACTION_RESOLVE );
             };
@@ -315,6 +272,7 @@ function MdToastProvider($$interimElementProvider) {
           controllerAs: 'toast',
           bindToController: true
         };
+        return opts;
       }]
     })
     .addMethod('updateTextContent', updateTextContent)
@@ -387,7 +345,7 @@ function MdToastProvider($$interimElementProvider) {
           return;
         }
 
-        element.addClass('_md-' + swipe);
+        element.addClass('md-' + swipe);
         $mdUtil.nextTick($mdToast.cancel);
       };
       options.openClass = toastOpenClass(options.position);
@@ -402,24 +360,24 @@ function MdToastProvider($$interimElementProvider) {
       }
 
       element.on(SWIPE_EVENTS, options.onSwipe);
-      element.addClass(isSmScreen ? '_md-bottom' : options.position.split(' ').map(function(pos) {
-        return '_md-' + pos;
+      element.addClass(isSmScreen ? 'md-bottom' : options.position.split(' ').map(function(pos) {
+        return 'md-' + pos;
       }).join(' '));
 
-      if (options.parent) options.parent.addClass('_md-toast-animating');
+      if (options.parent) options.parent.addClass('md-toast-animating');
       return $animate.enter(element, options.parent).then(function() {
-        if (options.parent) options.parent.removeClass('_md-toast-animating');
+        if (options.parent) options.parent.removeClass('md-toast-animating');
       });
     }
 
     function onRemove(scope, element, options) {
       element.off(SWIPE_EVENTS, options.onSwipe);
-      if (options.parent) options.parent.addClass('_md-toast-animating');
+      if (options.parent) options.parent.addClass('md-toast-animating');
       if (options.openClass) options.parent.removeClass(options.openClass);
 
       return ((options.$destroy == true) ? element.remove() : $animate.leave(element))
         .then(function () {
-          if (options.parent) options.parent.removeClass('_md-toast-animating');
+          if (options.parent) options.parent.removeClass('md-toast-animating');
           if ($mdUtil.hasComputedStyle(options.parent, 'position', 'static')) {
             options.parent.css('position', '');
           }
@@ -427,12 +385,11 @@ function MdToastProvider($$interimElementProvider) {
     }
 
     function toastOpenClass(position) {
-      // For mobile, always open full-width on bottom
-      if (!$mdMedia('gt-xs')) {
-        return '_md-toast-open-bottom';
+      if (!$mdMedia('gt-sm')) {
+        return 'md-toast-open-bottom';
       }
 
-      return '_md-toast-open-' +
+      return 'md-toast-open-' +
         (position.indexOf('top') > -1 ? 'top' : 'bottom');
     }
   }
