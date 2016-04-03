@@ -8,7 +8,7 @@
 // Typography
 // ------------------------------
 $font-family: Roboto, 'Helvetica Neue', sans-serif !default;
-$font-size:   10px;
+$font-size:   10px !default;
 
 $display-4-font-size-base: rem(11.20) !default;
 $display-3-font-size-base: rem(5.600) !default;
@@ -33,22 +33,22 @@ $layout-breakpoint-md:     1280px !default;
 $layout-breakpoint-lg:     1920px !default;
 
 // Button
-$button-left-right-padding: rem(0.600);
+$button-left-right-padding: rem(0.600) !default;
 
 // Icon
 $icon-size: rem(2.400) !default;
 
 // App bar variables
-$app-bar-height: 64px;
+$app-bar-height: 64px !default;
 
 $toast-height: $baseline-grid * 3 !default;
 $toast-margin: $baseline-grid * 1 !default;
 
 // Whiteframes
 
-$shadow-key-umbra-opacity:      0.2;
-$shadow-key-penumbra-opacity:   0.14;
-$shadow-ambient-shadow-opacity: 0.12;
+$shadow-key-umbra-opacity:      0.2 !default;
+$shadow-key-penumbra-opacity:   0.14 !default;
+$shadow-ambient-shadow-opacity: 0.12 !default;
 
 // NOTE(shyndman): gulp-sass seems to be failing if I split the shadow defs across
 //    multiple lines. Ugly. Sorry.
@@ -1096,7 +1096,7 @@ input {
     @include layout-for-name($name);
 }
 
-$autocomplete-option-height: 48px;
+$autocomplete-option-height: 48px !default;
 
 @keyframes md-autocomplete-list-out {
   0% {
@@ -1563,7 +1563,7 @@ md-bottom-sheet {
 
 $button-border-radius: 3px !default;
 $button-fab-border-radius: 50% !default;
-$button-icon-border-radius: $button-fab-border-radius;
+$button-icon-border-radius: $button-fab-border-radius !default;
 
 $button-line-height: rem(3.60) !default;
 $button-margin: rem(0.600) rem(0.800) !default;
@@ -2323,7 +2323,7 @@ md-content {
 
 /** Styles for mdCalendar. */
 $md-calendar-cell-size: 44px !default;
-$md-calendar-header-height: 40px;
+$md-calendar-header-height: 40px !default;
 $md-calendar-cell-emphasis-size: 40px !default;
 $md-calendar-side-padding: 16px !default;
 $md-calendar-weeks-to-show: 7 !default;
@@ -2331,11 +2331,11 @@ $md-calendar-weeks-to-show: 7 !default;
 $md-calendar-month-label-padding: 8px !default;
 $md-calendar-month-label-font-size: 14px !default;
 
-$md-calendar-scroll-cue-shadow-radius: 6px;
+$md-calendar-scroll-cue-shadow-radius: 6px !default;
 
-$md-calendar-width: (7 * $md-calendar-cell-size) + (2 * $md-calendar-side-padding);
+$md-calendar-width: (7 * $md-calendar-cell-size) + (2 * $md-calendar-side-padding) !default;
 $md-calendar-height:
-    ($md-calendar-weeks-to-show * $md-calendar-cell-size) + $md-calendar-header-height;
+    ($md-calendar-weeks-to-show * $md-calendar-cell-size) + $md-calendar-header-height !default;
 
 // Styles for date cells, including day-of-the-week header cells.
 @mixin md-calendar-cell() {
@@ -2605,7 +2605,7 @@ md-datepicker {
 // Down triangle/arrow indicating that the datepicker can be opened.
 // We can do this entirely with CSS without needing to load an icon.
 // See https://css-tricks.com/snippets/css/css-triangle/
-$md-date-arrow-size: 5px;
+$md-date-arrow-size: 5px !default;
 .md-datepicker-expand-triangle {
   // Center the triangle inside of the button so that the
   // ink ripple origin looks correct.
@@ -2692,7 +2692,7 @@ md-datepicker[disabled] {
   }
 }
 
-$dialog-padding: $baseline-grid * 3;
+$dialog-padding: $baseline-grid * 3 !default;
 
 .md-dialog-is-showing {
   max-height: 100%;
@@ -3200,6 +3200,10 @@ md-icon {
   height: $icon-size;
   width: $icon-size;
 
+  // The icons should not shrink on smaller viewports.
+  min-height: $icon-size;
+  min-width: $icon-size;
+
   svg {
     pointer-events: none;
     display: block;
@@ -3253,7 +3257,7 @@ $input-label-default-offset: 24px !default;
 $input-label-default-scale: 1.0 !default;
 $input-label-float-offset: 6px !default;
 $input-label-float-scale: 0.75 !default;
-$input-label-float-width: $input-container-padding + 16px;
+$input-label-float-width: $input-container-padding + 16px !default;
 
 $input-placeholder-offset: $input-label-default-offset !default;
 
@@ -3264,12 +3268,12 @@ $input-padding-top: 2px !default;
 
 $input-error-font-size: 12px !default;
 $input-error-height: 24px !default;
-$input-error-line-height: $input-error-font-size + 2px;
-$error-padding-top: ($input-error-height - $input-error-line-height) / 2;
+$input-error-line-height: $input-error-font-size + 2px !default;
+$error-padding-top: ($input-error-height - $input-error-line-height) / 2 !default;
 
 $icon-offset: 36px !default;
 
-$icon-top-offset: ($icon-offset - $input-padding-top - $input-border-width-focused) / 4;
+$icon-top-offset: ($icon-offset - $input-padding-top - $input-border-width-focused) / 4 !default;
 
 $icon-float-focused-top: -8px !default;
 
@@ -4062,12 +4066,12 @@ md-list-item {
   }
 }
 
-$menu-border-radius: 2px;
-$max-visible-items: 6;
-$menu-item-height: 6 * $baseline-grid;
-$dense-menu-item-height: 4 * $baseline-grid;
-$max-menu-height: 2 * $baseline-grid + $max-visible-items * $menu-item-height;
-$max-dense-menu-height: 2 * $baseline-grid + $max-visible-items * $dense-menu-item-height;
+$menu-border-radius: 2px !default;
+$max-visible-items: 6 !default;
+$menu-item-height: 6 * $baseline-grid !default;
+$dense-menu-item-height: 4 * $baseline-grid !default;
+$max-menu-height: 2 * $baseline-grid + $max-visible-items * $menu-item-height !default;
+$max-dense-menu-height: 2 * $baseline-grid + $max-visible-items * $dense-menu-item-height !default;
 
 ._md-open-menu-container {
   position: fixed;
@@ -4309,6 +4313,10 @@ md-menu-content._md-menu-bar-menu.md-dense {
 md-progress-circular {
     position: relative;
 
+    &._md-progress-circular-disabled {
+        visibility: hidden;
+    }
+
     svg {
         position: absolute;
         overflow: visible;
@@ -4327,6 +4335,10 @@ md-progress-linear {
 
   padding-top: 0 !important;
   margin-bottom: 0 !important;
+
+  &._md-progress-linear-disabled {
+    visibility: hidden;
+  }
 
   ._md-container {
     display:block;
@@ -4402,7 +4414,8 @@ md-progress-linear {
       }
     }
 
-    &.ng-hide {
+    &.ng-hide
+    ._md-progress-linear-disabled & {
       animation: none;
 
       ._md-bar1 {
@@ -4526,7 +4539,7 @@ $radio-width: 20px !default;
 $radio-height: $radio-width !default;
 $radio-text-margin: 10px !default;
 $radio-top-left: 12px !default;
-$radio-margin: 16px;
+$radio-margin: 16px !default;
 
 md-radio-button {
   box-sizing: border-box;
@@ -4699,12 +4712,12 @@ md-radio-group {
 $select-checkbox-border-radius: 2px !default;
 $select-checkbox-border-width: 2px !default;
 $select-checkbox-width: rem(1.4) !default;
-$select-option-height: 48px;
-$select-option-padding: 16px;
-$select-container-padding: 16px;
-$select-container-transition-duration: 350ms;
+$select-option-height: 48px !default;
+$select-option-padding: 16px !default;
+$select-container-padding: 16px !default;
+$select-container-transition-duration: 350ms !default;
 
-$select-max-visible-options: 5;
+$select-max-visible-options: 5 !default;
 
 ._md-select-menu-container {
   position: fixed;
@@ -6092,9 +6105,9 @@ md-toolbar + md-tabs {
 
 // See height set globally, depended on by buttons
 
-$md-toast-content-padding: 3 * $baseline-grid - $button-left-right-padding;
-$md-toast-button-left-margin: 3 * $baseline-grid - 2 * $button-left-right-padding;
-$md-toast-text-padding: $button-left-right-padding;
+$md-toast-content-padding: 3 * $baseline-grid - $button-left-right-padding !default;
+$md-toast-button-left-margin: 3 * $baseline-grid - 2 * $button-left-right-padding !default;
+$md-toast-text-padding: $button-left-right-padding !default;
 
 
 .md-toast-text {
@@ -6470,15 +6483,15 @@ md-toolbar {
 }
 
 
-$tooltip-fontsize-lg: rem(1);
-$tooltip-fontsize-sm: rem(1.4);
-$tooltip-height-lg: rem(2.2);
-$tooltip-height-sm: rem(3.2);
-$tooltip-top-margin-lg: rem(1.4);
-$tooltip-top-margin-sm: rem(2.4);
-$tooltip-lr-padding-lg: rem(0.8);
-$tooltip-lr-padding-sm: rem(1.6);
-$tooltip-max-width: rem(3.20);
+$tooltip-fontsize-lg: rem(1) !default;
+$tooltip-fontsize-sm: rem(1.4) !default;
+$tooltip-height-lg: rem(2.2) !default;
+$tooltip-height-sm: rem(3.2) !default;
+$tooltip-top-margin-lg: rem(1.4) !default;
+$tooltip-top-margin-sm: rem(2.4) !default;
+$tooltip-lr-padding-lg: rem(0.8) !default;
+$tooltip-lr-padding-sm: rem(1.6) !default;
+$tooltip-max-width: rem(3.20) !default;
 
 md-tooltip {
   position: absolute;
@@ -6543,7 +6556,7 @@ md-tooltip {
   }
 }
 
-$virtual-repeat-scrollbar-width: 16px;
+$virtual-repeat-scrollbar-width: 16px !default;
 
 .md-virtual-repeat-container {
   box-sizing: border-box;

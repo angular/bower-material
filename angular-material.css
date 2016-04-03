@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7-master-bbaa5b8
+ * v1.0.7-master-0c659c2
  */
 html, body {
   height: 100%;
@@ -2076,7 +2076,9 @@ md-icon {
   vertical-align: middle;
   fill: currentColor;
   height: 24px;
-  width: 24px; }
+  width: 24px;
+  min-height: 24px;
+  min-width: 24px; }
   md-icon svg {
     pointer-events: none;
     display: block; }
@@ -2983,6 +2985,8 @@ md-menu-content._md-menu-bar-menu.md-dense {
 
 md-progress-circular {
   position: relative; }
+  md-progress-circular._md-progress-circular-disabled {
+    visibility: hidden; }
   md-progress-circular svg {
     position: absolute;
     overflow: visible;
@@ -2996,6 +3000,8 @@ md-progress-linear {
   height: 5px;
   padding-top: 0 !important;
   margin-bottom: 0 !important; }
+  md-progress-linear._md-progress-linear-disabled {
+    visibility: hidden; }
   md-progress-linear ._md-container {
     display: block;
     position: relative;
@@ -3038,13 +3044,13 @@ md-progress-linear {
     md-progress-linear ._md-container._md-mode-indeterminate ._md-bar2 {
       -webkit-animation: md-progress-linear-indeterminate-scale-2 4s infinite, md-progress-linear-indeterminate-2 4s infinite;
               animation: md-progress-linear-indeterminate-scale-2 4s infinite, md-progress-linear-indeterminate-2 4s infinite; }
-    md-progress-linear ._md-container.ng-hide {
+    md-progress-linear ._md-container.ng-hide ._md-progress-linear-disabled md-progress-linear ._md-container {
       -webkit-animation: none;
               animation: none; }
-      md-progress-linear ._md-container.ng-hide ._md-bar1 {
+      md-progress-linear ._md-container.ng-hide ._md-progress-linear-disabled md-progress-linear ._md-container ._md-bar1 {
         -webkit-animation-name: none;
                 animation-name: none; }
-      md-progress-linear ._md-container.ng-hide ._md-bar2 {
+      md-progress-linear ._md-container.ng-hide ._md-progress-linear-disabled md-progress-linear ._md-container ._md-bar2 {
         -webkit-animation-name: none;
                 animation-name: none; }
   md-progress-linear ._md-container._md-mode-buffer {

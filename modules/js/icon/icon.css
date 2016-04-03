@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7-master-bbaa5b8
+ * v1.0.7-master-0c659c2
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -16,7 +16,9 @@ md-icon {
   vertical-align: middle;
   fill: currentColor;
   height: 24px;
-  width: 24px; }
+  width: 24px;
+  min-height: 24px;
+  min-width: 24px; }
   md-icon svg {
     pointer-events: none;
     display: block; }

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7-master-bbaa5b8
+ * v1.0.7-master-0c659c2
  */
 goog.provide('ng.material.components.progressCircular');
 goog.require('ng.material.core');
@@ -45,6 +45,8 @@ angular.module('material.components.progressCircular', ['material.core']);
  * should be a pixel-size value (eg '100'). If this attribute is
  * not present then a default value of '50px' is assumed.
  *
+ * @param {boolean=} ng-disabled Determines whether to disable the progress element.
+ *
  * @usage
  * <hljs lang="html">
  * <md-progress-circular md-mode="determinate" value="..."></md-progress-circular>
@@ -68,6 +70,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
   var DEGREE_IN_RADIANS = $window.Math.PI / 180;
   var MODE_DETERMINATE = 'determinate';
   var MODE_INDETERMINATE = 'indeterminate';
+  var DISABLED_CLASS = '_md-progress-circular-disabled';
 
   return {
     restrict: 'E',
@@ -92,7 +95,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
         var mode = hasValue ? MODE_DETERMINATE : MODE_INDETERMINATE;
         var info = "Auto-adding the missing md-mode='{0}' to the ProgressCircular element";
 
-        $log.debug( $mdUtil.supplant(info, [mode]) );
+          // $log.debug( $mdUtil.supplant(info, [mode]) );
         attrs.$set('mdMode', mode);
       } else {
         attrs.$set('mdMode', attrs.mdMode.trim());
@@ -103,8 +106,9 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
   };
 
   function MdProgressCircularLink(scope, element, attrs) {
-    var svg = angular.element(element[0].querySelector('svg'));
-    var path = angular.element(element[0].querySelector('path'));
+    var node = element[0];
+    var svg = angular.element(node.querySelector('svg'));
+    var path = angular.element(node.querySelector('path'));
     var startIndeterminate = $mdProgressCircular.startIndeterminate;
     var endIndeterminate = $mdProgressCircular.endIndeterminate;
     var rotationIndeterminate = 0;
@@ -112,6 +116,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
     var interval;
 
     $mdTheming(element);
+    element.toggleClass(DISABLED_CLASS, attrs.hasOwnProperty('disabled'));
 
     // If the mode is indeterminate, it doesn't need to
     // wait for the next digest. It can start right away.
@@ -119,22 +124,43 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
       startIndeterminateAnimation();
     }
 
-    scope.$watchGroup(['value', 'mdMode'], function(newValues, oldValues) {
-      var mode = newValues[1];
+    scope.$watchGroup(['value', 'mdMode', function() {
+      var isDisabled = node.disabled;
 
-      if (mode !== MODE_DETERMINATE && mode !== MODE_INDETERMINATE) {
-        mode = MODE_INDETERMINATE;
-        attrs.$set('mdMode', mode);
+      // Sometimes the browser doesn't return a boolean, in
+      // which case we should check whether the attribute is
+      // present.
+      if (isDisabled === true || isDisabled === false){
+        return isDisabled;
+      }
+      return angular.isDefined(element.attr('disabled'));
+
+    }], function(newValues, oldValues) {
+      var mode = newValues[1];
+      var isDisabled = newValues[2];
+      var wasDisabled = oldValues[2];
+
+      if (isDisabled !== wasDisabled) {
+        element.toggleClass(DISABLED_CLASS, !!isDisabled);
       }
 
-      if (mode === MODE_INDETERMINATE) {
-        startIndeterminateAnimation();
-      } else {
-        var newValue = clamp(newValues[0]);
-
+      if (isDisabled) {
         cleanupIndeterminateAnimation();
-        element.attr('aria-valuenow', newValue);
-        renderCircle(clamp(oldValues[0]), newValue);
+      } else {
+        if (mode !== MODE_DETERMINATE && mode !== MODE_INDETERMINATE) {
+          mode = MODE_INDETERMINATE;
+          attrs.$set('mdMode', mode);
+        }
+
+        if (mode === MODE_INDETERMINATE) {
+          startIndeterminateAnimation();
+        } else {
+          var newValue = clamp(newValues[0]);
+
+          cleanupIndeterminateAnimation();
+          element.attr('aria-valuenow', newValue);
+          renderCircle(clamp(oldValues[0]), newValue);
+        }
       }
 
     });
@@ -175,7 +201,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
         path.attr('d', getSvgArc(animateTo, diameter, pathDiameter, rotation));
       } else {
         $$rAF(function animation(now) {
-          var currentTime = $window.Math.min((now || $mdUtil.now()) - startTime, animationDuration);
+          var currentTime = $window.Math.max(0, $window.Math.min((now || $mdUtil.now()) - startTime, animationDuration));
 
           path.attr('d', getSvgArc(
             ease(currentTime, animateFrom, changeInValue, animationDuration),
@@ -396,7 +422,7 @@ function MdProgressCircularProvider() {
   var progressConfig = {
     progressSize: 50,
     strokeWidth: 10,
-    duration: 100,
+    duration: 1000,
     easeFn: linearEase,
 
     durationIndeterminate: 500,
