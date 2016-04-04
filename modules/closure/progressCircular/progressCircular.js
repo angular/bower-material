@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7-master-db1792d
+ * v1.0.7-master-c562190
  */
 goog.provide('ng.material.components.progressCircular');
 goog.require('ng.material.core');
@@ -95,7 +95,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
         var mode = hasValue ? MODE_DETERMINATE : MODE_INDETERMINATE;
         var info = "Auto-adding the missing md-mode='{0}' to the ProgressCircular element";
 
-        $log.debug( $mdUtil.supplant(info, [mode]) );
+          // $log.debug( $mdUtil.supplant(info, [mode]) );
         attrs.$set('mdMode', mode);
       } else {
         attrs.$set('mdMode', attrs.mdMode.trim());
@@ -127,9 +127,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
     }
 
     scope.$on('$destroy', function() {
-      cleanupIndeterminateAnimation();
-      lastDrawFrame && lastDrawFrame();
-      lastRotationFrame && lastRotationFrame();
+      cleanupIndeterminateAnimation(true);
     });
 
     scope.$watchGroup(['value', 'mdMode', function() {
@@ -165,7 +163,8 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
         } else {
           var newValue = clamp(newValues[0]);
 
-          cleanupIndeterminateAnimation();
+          cleanupIndeterminateAnimation( true );
+
           element.attr('aria-valuenow', newValue);
           renderCircle(clamp(oldValues[0]), newValue);
         }
@@ -220,6 +219,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
 
           lastDrawFrame && lastDrawFrame();
 
+          // Do not allow overlapping animations
           if (id === lastAnimationId && currentTime < animationDuration) {
             lastDrawFrame = $$rAF(animation);
           }
@@ -290,10 +290,17 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
       }
     }
 
-    function cleanupIndeterminateAnimation() {
+    function cleanupIndeterminateAnimation( clearLastFrames ) {
       if (interval) {
         $interval.cancel(interval);
         interval = null;
+      }
+
+      if ( clearLastFrames === true ){
+        lastDrawFrame && lastDrawFrame();
+        lastRotationFrame && lastRotationFrame();
+
+        lastDrawFrame = lastRotationFrame = undefined;
       }
     }
   }
