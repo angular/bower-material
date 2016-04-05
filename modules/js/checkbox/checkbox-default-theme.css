@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7-master-0a33ee2
+ * v1.0.7-master-59dfce6
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -10,7 +10,7 @@ html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
   background-color: '{{background-color}}'; }
 
 md-checkbox.md-THEME_NAME-theme .md-ripple {
-  color: '{{accent-600}}'; }
+  color: '{{accent-A700}}'; }
 
 md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple {
   color: '{{background-600}}'; }

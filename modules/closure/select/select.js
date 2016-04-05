@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7-master-0a33ee2
+ * v1.0.7-master-59dfce6
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -805,7 +805,7 @@ function OptionDirective($mdButtonInkRipple, $mdUtil) {
     var selectCtrl = ctrls[1];
 
     if (selectCtrl.isMultiple) {
-      element.attr('md-checkbox-enabled', '');
+      element.addClass('_md-checkbox-enabled');
       element.prepend(CHECKBOX_SELECTION_INDICATOR.clone());
     }
 
