@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7-master-c562190
+ * v1.0.7-master-65239b7
  */
 goog.provide('ng.material.components.tooltip');
 goog.require('ng.material.core');
@@ -136,13 +136,12 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       if (parent[0] && 'MutationObserver' in $window) {
         // use an mutationObserver to tackle #2602
         var attributeObserver = new MutationObserver(function(mutations) {
-          mutations
-            .forEach(function (mutation) {
-              if (mutation.attributeName === 'disabled' && parent[0].disabled) {
-                setVisible(false);
-                scope.$digest(); // make sure the elements gets updated
-              }
-            });
+          mutations.forEach(function (mutation) {
+            if (mutation.attributeName === 'disabled' && parent[0].disabled) {
+              setVisible(false);
+              scope.$digest(); // make sure the elements gets updated
+            }
+          });
         });
 
         attributeObserver.observe(parent[0], { attributes: true});
@@ -195,6 +194,9 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     }
 
     function setVisible (value) {
+      // break if passed value is already in queue or there is no queue and passed value is current in the scope
+      if (setVisible.queued && setVisible.visible === !!value || scope.visible === !!value) return;
+      
       setVisible.value = !!value;
       if (!setVisible.queued) {
         if (value) {
