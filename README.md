@@ -1,7 +1,7 @@
-This repo is for distribution on `npm` and `bower`. The component source code for this library is in the
+This repository is used only for Angular Material v1.x library deployments and localized installs using `npm` and `bower`. The actual component source-code for this library is in the
 [main Angular Material repository](https://github.com/angular/material).
 
-> Please file issues and pull requests against that repository only. Do not file issues for this deployment repository.
+> Please file issues and pull requests against that `angular/material` repository only. Do not file issues here on the deployment repository.
 
 ## Layouts and SCSS
 
@@ -9,6 +9,7 @@ Included in this repository are the:
 
 * **[SCSS files](https://github.com/angular/bower-material/tree/master/modules/scss)** used to build the *.css files
 * **[Layout files](https://github.com/angular/bower-material/tree/master/modules/layouts/*.css)** used with the Angular Material (Flexbox) Layout API. 
+
 > Note these are already included in the `angular-material.css` files. These copies are for direct developer access and contain IE flexbox fixes; as needed.
 
 ## Installing Angular Material
