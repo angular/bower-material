@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7-master-59dfce6
+ * v1.0.7-master-d86efaf
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -24097,6 +24097,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
   var MODE_DETERMINATE = 'determinate';
   var MODE_INDETERMINATE = 'indeterminate';
   var DISABLED_CLASS = '_md-progress-circular-disabled';
+  var INDETERMINATE_CLASS = '_md-mode-indeterminate';
 
   return {
     restrict: 'E',
@@ -24140,7 +24141,6 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
     var rotationIndeterminate = 0;
     var lastAnimationId = 0;
     var lastDrawFrame;
-    var lastRotationFrame;
     var interval;
 
     $mdTheming(element);
@@ -24203,6 +24203,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
     scope.$watch('mdDiameter', function(newValue) {
       var diameter = getSize(newValue);
       var strokeWidth = getStroke(diameter);
+      var transformOrigin = (diameter / 2) + 'px';
       var dimensions = {
         width: diameter + 'px',
         height: diameter + 'px'
@@ -24215,7 +24216,15 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
 
       // Usually viewBox sets the dimensions for the SVG, however that doesn't
       // seem to be the case on IE10.
-      svg.css(dimensions);
+      // Important! The transform origin has to be set from here and it has to
+      // be in the format of "Ypx Ypx Ypx", otherwise the rotation wobbles in
+      // IE and Edge, because they don't account for the stroke width when
+      // rotating. Also "center" doesn't help in this case, it has to be a
+      // precise value.
+      svg
+        .css(dimensions)
+        .css('transform-origin', transformOrigin + ' ' + transformOrigin + ' ' + transformOrigin);
+
       element.css(dimensions);
       path.css('stroke-width',  strokeWidth + 'px');
     });
@@ -24273,36 +24282,6 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
 
     function startIndeterminateAnimation() {
       if (!interval) {
-        var startTime = $mdUtil.now();
-        var animationDuration = $mdProgressCircular.rotationDurationIndeterminate;
-        var radius = getSize(scope.mdDiameter) / 2;
-
-        // Spares us at least a little bit of string concatenation.
-        radius = ' ' + radius + ', ' + radius;
-
-        // This animates the indeterminate rotation. This can be achieved much easier
-        // with CSS keyframes, however IE11 seems to have problems centering the rotation
-        // which causes a wobble in the indeterminate animation.
-        lastRotationFrame = $$rAF(function animation(now) {
-          var timestamp = now || $mdUtil.now();
-          var currentTime = timestamp - startTime;
-          var rotation = $mdProgressCircular.easingPresets.linearEase(currentTime, 0, 360, animationDuration);
-
-          path.attr('transform', 'rotate(' + rotation + radius + ')');
-
-          if (interval) {
-            lastRotationFrame && lastRotationFrame();
-            lastRotationFrame = $$rAF(animation);
-          } else {
-            path.removeAttr('transform');
-          }
-
-          // Reset the animation
-          if (currentTime >= animationDuration) {
-            startTime = timestamp;
-          }
-        });
-
         // Note that this interval isn't supposed to trigger a digest.
         interval = $interval(
           animateIndeterminate,
@@ -24312,7 +24291,10 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
         );
 
         animateIndeterminate();
-        element.removeAttr('aria-valuenow');
+
+        element
+          .addClass(INDETERMINATE_CLASS)
+          .removeAttr('aria-valuenow');
       }
     }
 
@@ -24320,13 +24302,12 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
       if (interval) {
         $interval.cancel(interval);
         interval = null;
+        element.removeClass(INDETERMINATE_CLASS);
       }
 
       if ( clearLastFrames === true ){
         lastDrawFrame && lastDrawFrame();
-        lastRotationFrame && lastRotationFrame();
-
-        lastDrawFrame = lastRotationFrame = undefined;
+        lastDrawFrame = undefined;
       }
     }
   }
@@ -24441,7 +24422,6 @@ MdProgressCircularDirective.$inject = ["$$rAF", "$window", "$mdProgressCircular"
  * @property {number} durationIndeterminate Duration of the indeterminate animation.
  * @property {number} startIndeterminate Indeterminate animation start point.
  * @property {number} endIndeterminate Indeterminate animation end point.
- * @property {number} rotationDurationIndeterminate Duration of the indeterminate rotating animation.
  * @property {function} easeFnIndeterminate Easing function to be used when animating
  * between the indeterminate values.
  *
@@ -24476,7 +24456,6 @@ function MdProgressCircularProvider() {
     durationIndeterminate: 500,
     startIndeterminate: 3,
     endIndeterminate: 80,
-    rotationDurationIndeterminate: 2900,
     easeFnIndeterminate: materialEase,
 
     easingPresets: {
@@ -25744,4 +25723,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.7-master-59dfce6"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.7-master-d86efaf"}};
