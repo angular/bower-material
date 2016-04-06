@@ -14,9 +14,9 @@ Included in this repository are the:
 
 ## Installing Angular Material
 
-You can install this package locally either with `npm`, `jspm`, or `bower`. 
+You can install this package locally either with `npm`, `jspm`, or `bower` (deprecated). 
 
-> Please note that Angular Material requires **Angular 1.3.x** or higher. The recommended install tool is `npm`.
+> Please note that Angular Material requires **Angular 1.3.x** or higher. 
 
 ### npm
 
