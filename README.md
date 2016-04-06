@@ -7,8 +7,8 @@ This repository is used only for Angular Material v1.x library deployments and l
 
 Included in this repository are the:
 
-* **[SCSS files](https://github.com/angular/bower-material/tree/master/modules/scss)** used to build the *.css files
-* **[Layout files](https://github.com/angular/bower-material/tree/master/modules/layouts/*.css)** used with the Angular Material (Flexbox) Layout API. 
+* **[SCSS files](https://github.com/angular/bower-material/tree/master/modules/scss)** which are used to build the *.css files
+* **[Layout files](https://github.com/angular/bower-material/tree/master/modules/layouts)** which are used with the Angular Material (Flexbox) Layout API. 
 
 > Note these are already included in the `angular-material.css` files. These copies are for direct developer access and contain IE flexbox fixes; as needed.
 
