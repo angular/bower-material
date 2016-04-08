@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7-master-d86efaf
+ * v1.0.7-master-317c1c8
  */
 goog.provide('ng.material.components.card');
 goog.require('ng.material.core');
@@ -130,7 +130,8 @@ angular.module('material.components.card', [
 function mdCardDirective($mdTheming) {
   return {
     restrict: 'E',
-    link: function ($scope, $element) {
+    link: function ($scope, $element, attr) {
+      $element.addClass('_md');     // private md component indicator for styling
       $mdTheming($element);
     }
   };

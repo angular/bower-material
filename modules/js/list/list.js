@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7-master-d86efaf
+ * v1.0.7-master-317c1c8
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -240,7 +240,8 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
       return postLink;
 
       function postLink($scope, $element, $attr, ctrl) {
-
+        $element.addClass('_md');     // private md component indicator for styling
+        
         var proxies       = [],
             firstElement  = $element[0].firstElementChild,
             isButtonWrap  = $element.hasClass('_md-button-wrap'),

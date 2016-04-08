@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7-master-d86efaf
+ * v1.0.7-master-317c1c8
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -102,22 +102,30 @@ html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
 .md-button.md-THEME_NAME-theme[disabled] {
   background-color: transparent; }
 
-a.md-THEME_NAME-theme:not(.md-button).md-primary {
+a.md-THEME_NAME-theme:not(.md-button).md-primary,
+._md a:not(.md-button).md-primary {
   color: '{{primary-color}}'; }
-  a.md-THEME_NAME-theme:not(.md-button).md-primary:hover {
+  a.md-THEME_NAME-theme:not(.md-button).md-primary:hover,
+  ._md a:not(.md-button).md-primary:hover {
     color: '{{primary-700}}'; }
 
-a.md-THEME_NAME-theme:not(.md-button).md-accent {
+a.md-THEME_NAME-theme:not(.md-button).md-accent,
+._md a:not(.md-button).md-accent {
   color: '{{accent-color}}'; }
-  a.md-THEME_NAME-theme:not(.md-button).md-accent:hover {
+  a.md-THEME_NAME-theme:not(.md-button).md-accent:hover,
+  ._md a:not(.md-button).md-accent:hover {
     color: '{{accent-700}}'; }
 
-a.md-THEME_NAME-theme:not(.md-button).md-accent {
+a.md-THEME_NAME-theme:not(.md-button).md-accent,
+._md a:not(.md-button).md-accent {
   color: '{{accent-color}}'; }
-  a.md-THEME_NAME-theme:not(.md-button).md-accent:hover {
+  a.md-THEME_NAME-theme:not(.md-button).md-accent:hover,
+  ._md a:not(.md-button).md-accent:hover {
     color: '{{accent-A700}}'; }
 
-a.md-THEME_NAME-theme:not(.md-button).md-warn {
+a.md-THEME_NAME-theme:not(.md-button).md-warn,
+._md a:not(.md-button).md-warn {
   color: '{{warn-color}}'; }
-  a.md-THEME_NAME-theme:not(.md-button).md-warn:hover {
+  a.md-THEME_NAME-theme:not(.md-button).md-warn:hover,
+  ._md a:not(.md-button).md-warn:hover {
     color: '{{warn-700}}'; }

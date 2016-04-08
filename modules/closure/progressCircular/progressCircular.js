@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7-master-d86efaf
+ * v1.0.7-master-317c1c8
  */
 goog.provide('ng.material.components.progressCircular');
 goog.require('ng.material.core');
@@ -64,9 +64,13 @@ angular
   .directive('mdProgressCircular', MdProgressCircularDirective);
 
 /* ngInject */
-function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdTheming,
+function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
                                      $mdUtil, $interval, $log) {
 
+  // Note that this shouldn't use use $$rAF, because it can cause an infinite loop
+  // in any tests that call $animate.flush.
+  var rAF = $window.requestAnimationFrame || angular.noop;
+  var cAF = $window.cancelAnimationFrame || angular.noop;
   var DEGREE_IN_RADIANS = $window.Math.PI / 180;
   var MODE_DETERMINATE = 'determinate';
   var MODE_INDETERMINATE = 'indeterminate';
@@ -126,8 +130,12 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
       startIndeterminateAnimation();
     }
 
-    scope.$on('$destroy', function() {
-      cleanupIndeterminateAnimation(true);
+    scope.$on('$destroy', function(){
+      cleanupIndeterminateAnimation();
+
+      if (lastDrawFrame) {
+        cAF(lastDrawFrame);
+      }
     });
 
     scope.$watchGroup(['value', 'mdMode', function() {
@@ -163,7 +171,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
         } else {
           var newValue = clamp(newValues[0]);
 
-          cleanupIndeterminateAnimation( true );
+          cleanupIndeterminateAnimation();
 
           element.attr('aria-valuenow', newValue);
           renderCircle(clamp(oldValues[0]), newValue);
@@ -216,7 +224,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
       if (animateTo === animateFrom) {
         path.attr('d', getSvgArc(animateTo, diameter, pathDiameter, rotation));
       } else {
-        lastDrawFrame = $$rAF(function animation(now) {
+        lastDrawFrame = rAF(function animation(now) {
           var currentTime = $window.Math.max(0, $window.Math.min((now || $mdUtil.now()) - startTime, animationDuration));
 
           path.attr('d', getSvgArc(
@@ -226,11 +234,9 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
             rotation
           ));
 
-          lastDrawFrame && lastDrawFrame();
-
           // Do not allow overlapping animations
           if (id === lastAnimationId && currentTime < animationDuration) {
-            lastDrawFrame = $$rAF(animation);
+            lastDrawFrame = rAF(animation);
           }
         });
       }
@@ -272,16 +278,11 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
       }
     }
 
-    function cleanupIndeterminateAnimation( clearLastFrames ) {
+    function cleanupIndeterminateAnimation() {
       if (interval) {
         $interval.cancel(interval);
         interval = null;
         element.removeClass(INDETERMINATE_CLASS);
-      }
-
-      if ( clearLastFrames === true ){
-        lastDrawFrame && lastDrawFrame();
-        lastDrawFrame = undefined;
       }
     }
   }
@@ -373,7 +374,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
     return $mdProgressCircular.strokeWidth / 100 * diameter;
   }
 }
-MdProgressCircularDirective.$inject = ["$$rAF", "$window", "$mdProgressCircular", "$mdTheming", "$mdUtil", "$interval", "$log"];
+MdProgressCircularDirective.$inject = ["$window", "$mdProgressCircular", "$mdTheming", "$mdUtil", "$interval", "$log"];
 
 /**
  * @ngdoc service
