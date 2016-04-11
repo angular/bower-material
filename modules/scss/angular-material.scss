@@ -244,7 +244,12 @@ $checkbox-border-width: 2px !default;
 @mixin rtl-prop($ltr-prop, $rtl-prop, $value) {
   #{$ltr-prop}: $value;
   [dir=rtl] & {
+    // fallback for auto
+    #{$ltr-prop}: 0;
+    // fallback for IE
     #{$ltr-prop}: auto;
+    #{$ltr-prop}: initial;
+
     #{$rtl-prop}: $value;
   }
 }
@@ -5025,13 +5030,13 @@ md-sidenav {
   &._md-locked-open-remove-active {
     transition: width $swift-ease-in-duration $swift-ease-in-timing-function,
                 min-width $swift-ease-in-duration $swift-ease-in-timing-function;
-    width: 0;
-    min-width: 0;
+    width: 0 !important;
+    min-width: 0 !important;
   }
 
   &._md-closed._md-locked-open-add {
-    width: 0;
-    min-width: 0;
+    width: 0 !important;
+    min-width: 0 !important;
     transform: translate3d(0%, 0, 0);
   }
 

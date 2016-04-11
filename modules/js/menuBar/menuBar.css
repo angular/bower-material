@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7-master-77dc3a0
+ * v1.0.7-master-cb69404
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -46,7 +46,9 @@ md-menu-content._md-menu-bar-menu.md-dense {
       top: 6px;
       left: 24px; }
       [dir=rtl] md-menu-content._md-menu-bar-menu.md-dense md-menu-item.md-indent > md-icon {
+        left: 0;
         left: auto;
+        left: initial;
         right: 24px; }
     md-menu-content._md-menu-bar-menu.md-dense md-menu-item.md-indent > .md-button, md-menu-content._md-menu-bar-menu.md-dense md-menu-item.md-indent .md-menu > .md-button {
       padding: 0 32px 0 64px; }
@@ -88,7 +90,9 @@ md-menu-content._md-menu-bar-menu.md-dense {
       border-radius: 0px;
       padding-left: 16px; }
       [dir=rtl] md-menu-content._md-menu-bar-menu.md-dense .md-menu > .md-button {
+        padding-left: 0;
         padding-left: auto;
+        padding-left: initial;
         padding-right: 16px; }
       md-menu-content._md-menu-bar-menu.md-dense .md-menu > .md-button:after {
         display: block;
@@ -103,5 +107,7 @@ md-menu-content._md-menu-bar-menu.md-dense {
           -webkit-transform: rotate(90deg) scaleY(0.45) scaleX(0.9);
                   transform: rotate(90deg) scaleY(0.45) scaleX(0.9); }
         [dir=rtl] md-menu-content._md-menu-bar-menu.md-dense .md-menu > .md-button:after {
+          right: 0;
           right: auto;
+          right: initial;
           left: 28px; }

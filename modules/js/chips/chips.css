@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7-master-77dc3a0
+ * v1.0.7-master-cb69404
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -25,7 +25,9 @@ html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
     height: 32px;
     margin-left: 8px; }
     [dir=rtl] .md-contact-chips .md-chips md-chip .md-contact-name {
+      margin-left: 0;
       margin-left: auto;
+      margin-left: initial;
       margin-right: 8px; }
 
 .md-contact-suggestion {
@@ -38,7 +40,9 @@ html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
     margin-left: 8px;
     width: 120px; }
     [dir=rtl] .md-contact-suggestion .md-contact-name {
+      margin-left: 0;
       margin-left: auto;
+      margin-left: initial;
       margin-right: 8px; }
   .md-contact-suggestion .md-contact-name, .md-contact-suggestion .md-contact-email {
     display: inline-block;
@@ -67,12 +71,16 @@ html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
     .md-chips:not(.md-readonly) md-chip:not(.md-readonly) {
       padding-right: 22px; }
       [dir=rtl] .md-chips:not(.md-readonly) md-chip:not(.md-readonly) {
+        padding-right: 0;
         padding-right: auto;
+        padding-right: initial;
         padding-left: 22px; }
       .md-chips:not(.md-readonly) md-chip:not(.md-readonly) ._md-chip-content {
         padding-right: 4px; }
         [dir=rtl] .md-chips:not(.md-readonly) md-chip:not(.md-readonly) ._md-chip-content {
+          padding-right: 0;
           padding-right: auto;
+          padding-right: initial;
           padding-left: 4px; }
   .md-chips md-chip {
     cursor: default;
@@ -115,7 +123,9 @@ html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
       right: 0;
       line-height: 22px; }
       [dir=rtl] .md-chips md-chip ._md-chip-remove-container {
+        right: 0;
         right: auto;
+        right: initial;
         left: 0; }
     .md-chips md-chip ._md-chip-remove {
       text-align: center;

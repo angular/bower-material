@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7-master-77dc3a0
+ * v1.0.7-master-cb69404
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -30,12 +30,16 @@ md-card {
     md-card md-card-header:first-child md-card-avatar {
       margin-right: 12px; }
       [dir=rtl] md-card md-card-header:first-child md-card-avatar {
+        margin-right: 0;
         margin-right: auto;
+        margin-right: initial;
         margin-left: 12px; }
     md-card md-card-header:last-child md-card-avatar {
       margin-left: 12px; }
       [dir=rtl] md-card md-card-header:last-child md-card-avatar {
+        margin-left: 0;
         margin-left: auto;
+        margin-left: initial;
         margin-right: 12px; }
     md-card md-card-header md-card-avatar {
       width: 40px;
@@ -150,12 +154,16 @@ md-card {
       md-card .md-actions:not(.layout-column) .md-button:not(.md-icon-button):first-of-type, md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button):first-of-type {
         margin-left: 0; }
         [dir=rtl] md-card .md-actions:not(.layout-column) .md-button:not(.md-icon-button):first-of-type, [dir=rtl] md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button):first-of-type {
+          margin-left: 0;
           margin-left: auto;
+          margin-left: initial;
           margin-right: 0; }
       md-card .md-actions:not(.layout-column) .md-button:not(.md-icon-button):last-of-type, md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button):last-of-type {
         margin-right: 0; }
         [dir=rtl] md-card .md-actions:not(.layout-column) .md-button:not(.md-icon-button):last-of-type, [dir=rtl] md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button):last-of-type {
+          margin-right: 0;
           margin-right: auto;
+          margin-right: initial;
           margin-left: 0; }
     md-card .md-actions:not(.layout-column) .md-button.md-icon-button, md-card md-card-actions:not(.layout-column) .md-button.md-icon-button {
       margin-left: 6px;
@@ -163,12 +171,16 @@ md-card {
       md-card .md-actions:not(.layout-column) .md-button.md-icon-button:first-of-type, md-card md-card-actions:not(.layout-column) .md-button.md-icon-button:first-of-type {
         margin-left: 12px; }
         [dir=rtl] md-card .md-actions:not(.layout-column) .md-button.md-icon-button:first-of-type, [dir=rtl] md-card md-card-actions:not(.layout-column) .md-button.md-icon-button:first-of-type {
+          margin-left: 0;
           margin-left: auto;
+          margin-left: initial;
           margin-right: 12px; }
       md-card .md-actions:not(.layout-column) .md-button.md-icon-button:last-of-type, md-card md-card-actions:not(.layout-column) .md-button.md-icon-button:last-of-type {
         margin-right: 12px; }
         [dir=rtl] md-card .md-actions:not(.layout-column) .md-button.md-icon-button:last-of-type, [dir=rtl] md-card md-card-actions:not(.layout-column) .md-button.md-icon-button:last-of-type {
+          margin-right: 0;
           margin-right: auto;
+          margin-right: initial;
           margin-left: 12px; }
     md-card .md-actions:not(.layout-column) .md-button + md-card-icon-actions, md-card md-card-actions:not(.layout-column) .md-button + md-card-icon-actions {
       -webkit-flex: 1;
