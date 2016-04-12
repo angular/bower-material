@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc2-master-9245f54
+ * v1.1.0-rc2-master-e7f866d
  */
 goog.provide('ng.material.core');
 
@@ -4727,6 +4727,8 @@ var GENERATED = { };
 var PALETTES;
 var THEMES;
 
+// Text Colors on light and dakr backgrounds
+// @see https://www.google.com/design/spec/style/color.html#color-text-background-colors
 var DARK_FOREGROUND = {
   name: 'dark',
   '1': 'rgba(0,0,0,0.87)',
