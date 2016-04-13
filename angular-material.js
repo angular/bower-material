@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc2-master-c48df16
+ * v1.1.0-rc2-master-15424ba
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -26142,4 +26142,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc2-master-c48df16"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc2-master-15424ba"}};
