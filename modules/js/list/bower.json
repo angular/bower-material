@@ -1,7 +1,7 @@
 {
   "name": "angular-material-list",
-  "version": "1.1.0-rc3-master-6275424",
+  "version": "1.1.0-rc3-master-9f66352",
   "dependencies": {
-    "angular-material-core": "1.1.0-rc3-master-6275424"
+    "angular-material-core": "1.1.0-rc3-master-9f66352"
   }
 }
