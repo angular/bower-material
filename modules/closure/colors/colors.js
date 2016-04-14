@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc3-master-05b8c1e
+ * v1.1.0-rc3-master-246ae54
  */
 goog.provide('ng.material.components.colors');
 goog.require('ng.material.core');
@@ -14,7 +14,7 @@ goog.require('ng.material.core');
    *  or one that should be observed and dynamically interpolated.
    */
   var STATIC_COLOR_EXPRESSION = /^{((\s|,)*?["'a-zA-Z-]+?\s*?:\s*?('|")[a-zA-Z0-9-.]*('|"))+\s*}$/;
-  var COLOR_PALETTES = undefined;
+  var colorPalettes = undefined;
 
   /**
    * @ngdoc module
@@ -49,7 +49,7 @@ goog.require('ng.material.core');
    *
    */
   function MdColorsService($mdTheming, $mdColorPalette, $mdUtil, $parse) {
-    COLOR_PALETTES = COLOR_PALETTES || Object.keys($mdColorPalette);
+    colorPalettes = colorPalettes || Object.keys($mdColorPalette);
 
     // Publish service instance
     return {
@@ -152,12 +152,12 @@ goog.require('ng.material.core');
       // If the next section is one of the palettes we assume it's a two word palette
       // Two word palette can be also written in camelCase, forming camelCase to dash-case
 
-      var isTwoWord = parts.length > 1 && COLOR_PALETTES.indexOf(parts[1]) !== -1;
+      var isTwoWord = parts.length > 1 && colorPalettes.indexOf(parts[1]) !== -1;
       var palette = parts[0].replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 
       if (isTwoWord)  palette = parts[0] + '-' + parts.splice(1, 1);
 
-      if (COLOR_PALETTES.indexOf(palette) === -1) {
+      if (colorPalettes.indexOf(palette) === -1) {
         // If the palette is not in the palette list it's one of primary/accent/warn/background
         var scheme = $mdTheming.THEMES[theme].colors[palette];
         if (!scheme) {
