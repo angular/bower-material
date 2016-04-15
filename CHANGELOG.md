@@ -1,3 +1,23 @@
+<a name"1.1.0-rc4"></a>
+### 1.1.0-rc4 (2016-04-15)
+
+
+#### Features
+
+* **select:** Adding md-select-header directive to md-select. ([62754242](https://github.com/angular/material/commit/62754242), closes [#7782](https://github.com/angular/material/issues/7782))
+
+
+#### Bug Fixes
+
+* **colors:**
+  * using default palette and defined palettes from $mdTheming ([61b742ef](https://github.com/angular/material/commit/61b742ef), closes [#8036](https://github.com/angular/material/issues/8036), [#8061](https://github.com/angular/material/issues/8061))
+  * coverts COLOR_PALETTES to colorPalettes ([246ae54b](https://github.com/angular/material/commit/246ae54b), closes [#8051](https://github.com/angular/material/issues/8051))
+* **list:** Correct avatar/icon size/spacing. ([05b8c1e9](https://github.com/angular/material/commit/05b8c1e9), closes [#8053](https://github.com/angular/material/issues/8053))
+* **menu:** Typo in hover deregistration. ([9f663524](https://github.com/angular/material/commit/9f663524), closes [#7947](https://github.com/angular/material/issues/7947), [#8045](https://github.com/angular/material/issues/8045))
+* **sidenav:** add support for  legacy API ([fbf17dbf](https://github.com/angular/material/commit/fbf17dbf))
+* **subheader:** transform span to div to allow custom styling. ([01952ec5](https://github.com/angular/material/commit/01952ec5), closes [#8063](https://github.com/angular/material/issues/8063), [#8069](https://github.com/angular/material/issues/8069))
+
+
 <a name"1.1.0-rc3"></a>
 ### 1.1.0-rc3 (2016-04-13)
 

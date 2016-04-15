@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc3-master-01952ec
+ * v1.1.0-rc4
  */
 html, body {
   height: 100%;
@@ -473,40 +473,6 @@ md-autocomplete {
   .md-autocomplete-suggestions {
     border: 1px solid #fff; } }
 
-md-backdrop {
-  transition: opacity 450ms;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 50; }
-  md-backdrop._md-menu-backdrop {
-    position: fixed !important;
-    z-index: 99; }
-  md-backdrop._md-select-backdrop {
-    z-index: 81;
-    transition-duration: 0; }
-  md-backdrop._md-dialog-backdrop {
-    z-index: 79; }
-  md-backdrop._md-bottom-sheet-backdrop {
-    z-index: 69; }
-  md-backdrop._md-sidenav-backdrop {
-    z-index: 59; }
-  md-backdrop._md-click-catcher {
-    position: absolute; }
-  md-backdrop.md-opaque {
-    opacity: .48; }
-    md-backdrop.md-opaque.ng-enter {
-      opacity: 0; }
-    md-backdrop.md-opaque.ng-enter.md-opaque.ng-enter-active {
-      opacity: .48; }
-    md-backdrop.md-opaque.ng-leave {
-      opacity: .48;
-      transition: opacity 400ms; }
-    md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
-      opacity: 0; }
-
 md-bottom-sheet {
   position: absolute;
   left: 0;
@@ -660,6 +626,40 @@ md-bottom-sheet {
 @media screen and (-ms-high-contrast: active) {
   md-bottom-sheet {
     border: 1px solid #fff; } }
+
+md-backdrop {
+  transition: opacity 450ms;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50; }
+  md-backdrop._md-menu-backdrop {
+    position: fixed !important;
+    z-index: 99; }
+  md-backdrop._md-select-backdrop {
+    z-index: 81;
+    transition-duration: 0; }
+  md-backdrop._md-dialog-backdrop {
+    z-index: 79; }
+  md-backdrop._md-bottom-sheet-backdrop {
+    z-index: 69; }
+  md-backdrop._md-sidenav-backdrop {
+    z-index: 59; }
+  md-backdrop._md-click-catcher {
+    position: absolute; }
+  md-backdrop.md-opaque {
+    opacity: .48; }
+    md-backdrop.md-opaque.ng-enter {
+      opacity: 0; }
+    md-backdrop.md-opaque.ng-enter.md-opaque.ng-enter-active {
+      opacity: .48; }
+    md-backdrop.md-opaque.ng-leave {
+      opacity: .48;
+      transition: opacity 400ms; }
+    md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
+      opacity: 0; }
 
 button.md-button::-moz-focus-inner {
   border: 0; }
@@ -3074,35 +3074,6 @@ md-menu-content._md-menu-bar-menu.md-dense {
           right: initial;
           left: 28px; }
 
-@-webkit-keyframes indeterminate-rotate {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg); }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg); } }
-
-@keyframes indeterminate-rotate {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg); }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg); } }
-
-md-progress-circular {
-  position: relative; }
-  md-progress-circular._md-progress-circular-disabled {
-    visibility: hidden; }
-  md-progress-circular._md-mode-indeterminate svg {
-    -webkit-animation: indeterminate-rotate 2.9s linear infinite;
-            animation: indeterminate-rotate 2.9s linear infinite; }
-  md-progress-circular svg {
-    position: absolute;
-    overflow: visible;
-    top: 0;
-    left: 0; }
-
 md-progress-linear {
   display: block;
   position: relative;
@@ -3354,6 +3325,35 @@ md-progress-linear {
             animation-timing-function: cubic-bezier(0.4, 0.62703, 0.6, 0.90203); }
   100% {
     left: 117.38889%; } }
+
+@-webkit-keyframes indeterminate-rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+@keyframes indeterminate-rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+md-progress-circular {
+  position: relative; }
+  md-progress-circular._md-progress-circular-disabled {
+    visibility: hidden; }
+  md-progress-circular._md-mode-indeterminate svg {
+    -webkit-animation: indeterminate-rotate 2.9s linear infinite;
+            animation: indeterminate-rotate 2.9s linear infinite; }
+  md-progress-circular svg {
+    position: absolute;
+    overflow: visible;
+    top: 0;
+    left: 0; }
 
 md-radio-button {
   box-sizing: border-box;
