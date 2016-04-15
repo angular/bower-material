@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc3-master-61b742e
+ * v1.1.0-rc3-master-01952ec
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -17077,7 +17077,7 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil) {
     template: (
     '<div class="md-subheader _md">' +
     '  <div class="_md-subheader-inner">' +
-    '    <span class="_md-subheader-content"></span>' +
+    '    <div class="_md-subheader-content"></div>' +
     '  </div>' +
     '</div>'
     ),
@@ -26264,4 +26264,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc3-master-61b742e"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc3-master-01952ec"}};

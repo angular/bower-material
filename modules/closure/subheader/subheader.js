@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc3-master-61b742e
+ * v1.1.0-rc3-master-01952ec
  */
 goog.provide('ng.material.components.subheader');
 goog.require('ng.material.components.sticky');
@@ -58,7 +58,7 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil) {
     template: (
     '<div class="md-subheader _md">' +
     '  <div class="_md-subheader-inner">' +
-    '    <span class="_md-subheader-content"></span>' +
+    '    <div class="_md-subheader-content"></div>' +
     '  </div>' +
     '</div>'
     ),
