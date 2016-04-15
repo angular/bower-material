@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc3-master-fbf17db
+ * v1.1.0-rc3-master-61b742e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -5057,6 +5057,7 @@ function ThemingProvider($mdColorPalette) {
         };
 
     applyTheme.THEMES = angular.extend({}, THEMES);
+    applyTheme.PALETTES = angular.extend({}, PALETTES);
     applyTheme.inherit = inheritTheme;
     applyTheme.registered = registered;
     applyTheme.defaultTheme = function() { return defaultTheme; };
