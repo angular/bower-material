@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-4010169
+ * v1.1.0-rc4-master-5b67817
  */
 (function( window, angular, undefined ){
 "use strict";
