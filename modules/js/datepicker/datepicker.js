@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-8c79f32
+ * v1.1.0-rc4-master-af990ed
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -886,7 +886,8 @@
    *     };
    *
    *     $mdDateLocaleProvider.formatDate = function(date) {
-   *       return moment(date).format('L');
+   *       var m = moment(date);
+   *       return m.isValid() ? m.format('L') : '';
    *     };
    *
    *     $mdDateLocaleProvider.monthHeaderFormatter = function(date) {
