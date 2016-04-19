@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-af990ed
+ * v1.1.0-rc4-master-135cf64
  */
 goog.provide('ng.material.components.button');
 goog.require('ng.material.core');
@@ -20,13 +20,8 @@ angular
 
 
 /**
- * @ngdoc directive
- * @name a
- * @module material.components.button
+ * @private
  *
- * @restrict E
- *
- * @description
  * `a` is a anchnor directive used to inherit theme so stand-alone anchors.
  * This allows standalone `a` tags to support theme colors for md-primary, md-accent, etc.
  *

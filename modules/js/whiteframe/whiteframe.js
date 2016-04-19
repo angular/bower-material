@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-af990ed
+ * v1.1.0-rc4-master-135cf64
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -16,7 +16,6 @@ angular
   .directive('mdWhiteframe', MdWhiteframeDirective);
 
 /**
- * @private
  * @ngdoc directive
  * @module material.components.whiteframe
  * @name mdWhiteframe
