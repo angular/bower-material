@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-562d7c1
+ * v1.1.0-rc4-master-7c6ff36
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.components.autocomplete');
@@ -270,11 +270,13 @@ function MdChip($mdTheming, $mdUtil) {
       if (chipsController) {
         chipController.init(chipsController);
 
-        angular.element(element[0].querySelector('._md-chip-content'))
-            .on('blur', function () {
-              chipsController.selectedChip = -1;
-              chipsController.$scope.$applyAsync();
-            });
+        angular
+          .element(element[0]
+          .querySelector('._md-chip-content'))
+          .on('blur', function () {
+            chipsController.resetSelectedChip();
+            chipsController.$scope.$applyAsync();
+          });
       }
     };
   }

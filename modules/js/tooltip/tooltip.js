@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-562d7c1
+ * v1.1.0-rc4-master-7c6ff36
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -243,8 +243,9 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     }
 
     function showTooltip() {
-      // Insert the element before positioning it, so we can get the position
+      // Insert the element and position at top left, so we can get the position
       // and check if we should display it
+      element.css({top: 0, left: 0});
       tooltipParent.append(element);
 
       // Check if we should display it or not.

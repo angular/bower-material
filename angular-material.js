@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-562d7c1
+ * v1.1.0-rc4-master-7c6ff36
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -18340,8 +18340,9 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     }
 
     function showTooltip() {
-      // Insert the element before positioning it, so we can get the position
+      // Insert the element and position at top left, so we can get the position
       // and check if we should display it
+      element.css({top: 0, left: 0});
       tooltipParent.append(element);
 
       // Check if we should display it or not.
@@ -20337,8 +20338,8 @@ angular
  * </form>
  * </hljs>
  *
- * In this example, our code utilizes `md-item-template` and `md-not-found` to specify the
- *     different parts that make up our component.
+ * In this example, our code utilizes `md-item-template` and `ng-messages` to specify
+ *     input validation for the field.
  */
 
 function MdAutocomplete () {
@@ -20950,11 +20951,13 @@ function MdChip($mdTheming, $mdUtil) {
       if (chipsController) {
         chipController.init(chipsController);
 
-        angular.element(element[0].querySelector('._md-chip-content'))
-            .on('blur', function () {
-              chipsController.selectedChip = -1;
-              chipsController.$scope.$applyAsync();
-            });
+        angular
+          .element(element[0]
+          .querySelector('._md-chip-content'))
+          .on('blur', function () {
+            chipsController.resetSelectedChip();
+            chipsController.$scope.$applyAsync();
+          });
       }
     };
   }
@@ -26288,4 +26291,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc4-master-562d7c1"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc4-master-7c6ff36"}};
