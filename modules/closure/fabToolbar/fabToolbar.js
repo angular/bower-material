@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-2510f69
+ * v1.1.0-rc4-master-562d7c1
  */
 goog.provide('ng.material.components.fabToolbar');
 goog.require('ng.material.components.fabActions');
@@ -148,7 +148,7 @@ goog.require('ng.material.core');
         // If we're open
         if (ctrl.isOpen) {
           // Turn on toolbar pointer events when closed
-          toolbarElement.style.pointerEvents = 'initial';
+          toolbarElement.style.pointerEvents = 'inherit';
 
           backgroundElement.style.width = triggerElement.offsetWidth + 'px';
           backgroundElement.style.height = triggerElement.offsetHeight + 'px';
