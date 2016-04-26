@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-b1c1bde
+ * v1.1.0-rc4-master-4aa15e4
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -715,7 +715,7 @@ MdPanelService.prototype.newPanelPosition = function() {
  * @returns {MdPanelAnimation}
  */
 MdPanelService.prototype.newPanelAnimation = function() {
-  return new MdPanelAnimation();
+  return new MdPanelAnimation(this._$injector);
 };
 
 
@@ -759,7 +759,7 @@ function MdPanelRef(config, $injector) {
   /** @private @const {!angular.$mdCompiler} */
   this._$mdCompiler = $injector.get('$mdCompiler');
 
-  /** @private @const */
+  /** @private @const {!angular.$mdConstant} */
   this._$mdConstant = $injector.get('$mdConstant');
 
   /** @private @const {!angular.$mdUtil} */
@@ -1333,7 +1333,7 @@ MdPanelRef.prototype._animateOpen = function() {
       done();
     };
 
-    animationConfig.animateOpen(self._panelEl, self._$mdUtil.dom.animator)
+    animationConfig.animateOpen(self._panelEl)
         .then(done, warnAndOpen);
   });
 };
@@ -1364,7 +1364,7 @@ MdPanelRef.prototype._animateClose = function() {
       done();
     };
 
-    animationConfig.animateClose(self._panelEl, self._$mdUtil.dom.animator)
+    animationConfig.animateClose(self._panelEl)
         .then(done, warnAndClose);
   });
 };
@@ -1843,9 +1843,13 @@ MdPanelPosition.prototype._calculatePanelPosition = function(panelEl) {
  *   animation: panelAnimation
  * });
  *
+ * @param {!angular.$injector} $injector
  * @final @constructor
  */
-function MdPanelAnimation() {
+function MdPanelAnimation($injector) {
+  /** @private @const {!angular.$mdUtil} */
+  this._$mdUtil = $injector.get('$mdUtil');
+
   /**
    * @private {{element: !angular.JQLite|undefined, bounds: !DOMRect}|
    *    undefined}
@@ -1860,9 +1864,6 @@ function MdPanelAnimation() {
 
   /** @private {string|{open: string, close: string} */
   this._animationClass = '';
-
-  /** @private {!angular.$q.Promise|undefined} **/
-  this._reverseAnimation;
 }
 
 
@@ -1957,10 +1958,11 @@ MdPanelAnimation.prototype.withAnimation = function(cssClass) {
 /**
  * Animate the panel open.
  * @param {!angular.JQLite} panelEl
- * @param animator
  * @returns {!angular.$q.Promise}
  */
-MdPanelAnimation.prototype.animateOpen = function(panelEl, animator) {
+MdPanelAnimation.prototype.animateOpen = function(panelEl) {
+  var animator = this._$mdUtil.dom.animator;
+
   this._fixBounds(panelEl);
   var animationOptions = {};
 
@@ -2016,7 +2018,6 @@ MdPanelAnimation.prototype.animateOpen = function(panelEl, animator) {
       // panel transform.
   }
 
-  var self = this;
   return animator
       .translate3d(panelEl, openFrom, openTo, animationOptions);
 };
@@ -2025,10 +2026,10 @@ MdPanelAnimation.prototype.animateOpen = function(panelEl, animator) {
 /**
  * Animate the panel close.
  * @param {!angular.JQLite} panelEl
- * @param animator
  * @returns {!angular.$q.Promise}
  */
-MdPanelAnimation.prototype.animateClose = function(panelEl, animator) {
+MdPanelAnimation.prototype.animateClose = function(panelEl) {
+  var animator = this._$mdUtil.dom.animator;
   var reverseAnimationOptions = {};
 
   // Include the panel transformations when calculating the animations.
@@ -2082,7 +2083,6 @@ MdPanelAnimation.prototype.animateClose = function(panelEl, animator) {
       // panel transform.
   }
 
-  var self = this;
   return animator
       .translate3d(panelEl, closeFrom, closeTo, reverseAnimationOptions);
 };
