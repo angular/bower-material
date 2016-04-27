@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-e081b9e
+ * v1.1.0-rc4-master-800f9ab
  */
 goog.provide('ng.material.components.panel');
 goog.require('ng.material.components.backdrop');
@@ -1114,10 +1114,11 @@ MdPanelRef.prototype._addStyles = function() {
     // correctly. This is necessary so that the panel will have a defined height
     // and width.
     self._$rootScope['$$postDigest'](function() {
-      self._panelEl.css('top', positionConfig.getTop(self._panelEl));
-      self._panelEl.css('bottom', positionConfig.getBottom(self._panelEl));
-      self._panelEl.css('left', positionConfig.getLeft(self._panelEl));
-      self._panelEl.css('right', positionConfig.getRight(self._panelEl));
+      positionConfig._calculatePanelPosition(self._panelEl);
+      self._panelEl.css('top', positionConfig.getTop());
+      self._panelEl.css('bottom', positionConfig.getBottom());
+      self._panelEl.css('left', positionConfig.getLeft());
+      self._panelEl.css('right', positionConfig.getRight());
 
       // Use the vendor prefixed version of transform.
       var prefixedTransform = self._$mdConstant.CSS.TRANSFORM;
@@ -1422,9 +1423,6 @@ function MdPanelPosition() {
   /** @private {!DOMRect} */
   this._relativeToRect;
 
-  /** @private {boolean} */
-  this._panelPositionCalculated = false;
-
   /** @private {string} */
   this._top = '';
 
@@ -1687,44 +1685,36 @@ MdPanelPosition.prototype.withOffsetY = function(offsetY) {
 
 /**
  * Gets the value of `top` for the panel.
- * @param {!angular.JQLite} panelEl
  * @returns {string}
  */
-MdPanelPosition.prototype.getTop = function(panelEl) {
-  this._calculatePanelPosition(panelEl);
+MdPanelPosition.prototype.getTop = function() {
   return this._top;
 };
 
 
 /**
  * Gets the value of `bottom` for the panel.
- * @param {!angular.JQLite} panelEl
  * @returns {string}
  */
-MdPanelPosition.prototype.getBottom = function(panelEl) {
-  this._calculatePanelPosition(panelEl);
+MdPanelPosition.prototype.getBottom = function() {
   return this._bottom;
 };
 
 
 /**
  * Gets the value of `left` for the panel.
- * @param {!angular.JQLite} panelEl
  * @returns {string}
  */
-MdPanelPosition.prototype.getLeft = function(panelEl) {
-  this._calculatePanelPosition(panelEl);
+MdPanelPosition.prototype.getLeft = function() {
   return this._left;
 };
 
 
 /**
  * Gets the value of `right` for the panel.
- * @param {!angular.JQLite} panelEl
  * @returns {string}
  */
-MdPanelPosition.prototype.getRight = function(panelEl) {
-  this._calculatePanelPosition(panelEl);
+MdPanelPosition.prototype.getRight = function() {
   return this._right;
 };
 
@@ -1745,7 +1735,7 @@ MdPanelPosition.prototype.getTransform = function() {
 
 /**
  * Gets the first x/y position that can fit on-screen.
- * @returns {string}
+ * @returns {{x: string, y: string}}
  */
 MdPanelPosition.prototype.getActualPosition = function() {
   // TODO(gmoothart): intelligently pick the first on-screen position.
@@ -1776,15 +1766,12 @@ MdPanelPosition.prototype._reduceTranslateValues =
  */
 MdPanelPosition.prototype._calculatePanelPosition = function(panelEl) {
   // Only calculate the position if necessary.
-  if (this._absolute || this._panelPositionCalculated) {
+  if (this._absolute) {
     return;
   }
 
   // TODO(ErinCoughlan): Update position on scroll.
   // TODO(ErinCoughlan): Position panel intelligently to keep it on screen.
-
-  // Indicate that the position is calculated so it can be skipped next time.
-  this._panelPositionCalculated = true;
 
   var panelBounds = panelEl[0].getBoundingClientRect();
   var panelWidth = panelBounds.width;
