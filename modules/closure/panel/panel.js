@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-800f9ab
+ * v1.1.0-rc4-master-649c616
  */
 goog.provide('ng.material.components.panel');
 goog.require('ng.material.components.backdrop');
@@ -140,6 +140,14 @@ angular
  *     behind the panel. Defaults to false.
  *   - `disableParentScroll` - `{boolean=}`: Whether the user can scroll the
  *     page behind the panel. Defaults to false.
+ *   - `onDomAdded` - `{function=}`: Callback function used to announce when
+ *     the panel is added to the DOM.
+ *   - `onOpenComplete` - `{function=}`: Callback function used to announce
+ *     when the open() action is finished.
+ *   - `onRemoving` - `{function=}`: Callback function used to announce the
+ *     close/hide() action is starting.
+ *   - `onDomRemoved` - `{function=}`: Callback function used to announce when the
+ *     panel is removed from the DOM.
  *
  * TODO(ErinCoughlan): Add the following config options.
  *   - `groupName` - `{string=}`: Name of panel groups. This group name is
@@ -221,15 +229,6 @@ angular
  *     create.
  *   - `isAttached` - `{boolean}`: Whether the panel is attached to the DOM.
  *     Visibility to the user does not factor into isAttached.
- *
- * TODO(ErinCoughlan): Add the following properties.
- *   - `onDomAdded` - `{function=}`: Callback function used to announce when
- *     the panel is added to the DOM.
- *   - `onOpenComplete` - `{function=}`: Callback function used to announce
- *     when the open() action is finished.
- *   - `onRemoving` - `{function=}`: Callback function used to announce the
- *     close/hide() action is starting. This allows developers to run custom
- *     animations in parallel the close animations.
  */
 
 /**
@@ -831,8 +830,9 @@ MdPanelRef.prototype.open = function() {
     var show = self._simpleBind(self.show, self);
 
     self.attach()
-        .then(show, reject)
-        .then(done, reject);
+        .then(show)
+        .then(done)
+        .catch(reject);
   });
 };
 
@@ -845,13 +845,15 @@ MdPanelRef.prototype.open = function() {
  */
 MdPanelRef.prototype.close = function() {
   var self = this;
+
   return this._$q(function(resolve, reject) {
     var done = self._done(resolve, self);
     var detach = self._simpleBind(self.detach, self);
 
     self.hide()
-        .then(detach, reject)
-        .then(done, reject);
+        .then(detach)
+        .then(done)
+        .catch(reject);
   });
 };
 
@@ -870,14 +872,21 @@ MdPanelRef.prototype.attach = function() {
   var self = this;
   return this._$q(function(resolve, reject) {
     var done = self._done(resolve, self);
-
-    self._$q.all([
-      self._createBackdrop(),
-      self._createPanel().then(function() {
+    var onDomAdded = self._config['onDomAdded'] || angular.noop;
+    var addListeners = function(response) {
         self.isAttached = true;
         self._addEventListeners();
-      }, reject)
-    ]).then(done, reject);
+        return response;
+    };
+
+    self._$q.all([
+        self._createBackdrop(),
+        self._createPanel()
+            .then(addListeners)
+            .catch(reject)
+    ]).then(onDomAdded)
+      .then(done)
+      .catch(reject);
   });
 };
 
@@ -894,6 +903,8 @@ MdPanelRef.prototype.detach = function() {
   }
 
   var self = this;
+  var onDomRemoved = self._config['onDomRemoved'] || angular.noop;
+
   var detachFn = function() {
     self._removeEventListener();
 
@@ -923,7 +934,9 @@ MdPanelRef.prototype.detach = function() {
     self._$q.all([
       detachFn(),
       self._backdropRef ? self._backdropRef.detach() : true
-    ]).then(done, reject);
+    ]).then(onDomRemoved)
+      .then(done)
+      .catch(reject);
   });
 };
 
@@ -953,11 +966,14 @@ MdPanelRef.prototype.show = function() {
 
   return this._$q(function(resolve, reject) {
     var done = self._done(resolve, self);
+    var onOpenComplete = self._config['onOpenComplete'] || angular.noop;
 
     self._$q.all([
       self._backdropRef ? self._backdropRef.show() : self,
       animatePromise().then(function() { self._focusOnOpen(); }, reject)
-    ]).then(done, reject);
+    ]).then(onOpenComplete)
+      .then(done)
+      .catch(reject);
   });
 };
 
@@ -982,11 +998,15 @@ MdPanelRef.prototype.hide = function() {
   var self = this;
   return this._$q(function(resolve, reject) {
     var done = self._done(resolve, self);
+    var onRemoving = self._config['onRemoving'] || angular.noop;
+
 
     self._$q.all([
       self._backdropRef ? self._backdropRef.hide() : self,
-      self._animateClose().then(function() { self.addClass(MD_PANEL_HIDDEN); },
-          reject)
+      self._animateClose()
+          .then(onRemoving)
+          .then(function() { self.addClass(MD_PANEL_HIDDEN); })
+          .catch(reject)
     ]).then(done, reject);
   });
 };
@@ -1047,6 +1067,7 @@ MdPanelRef.prototype.toggleClass = function(toggleClass) {
  */
 MdPanelRef.prototype._createPanel = function() {
   var self = this;
+
   return this._$q(function(resolve, reject) {
     if (!self._config.locals) {
       self._config.locals = {};
