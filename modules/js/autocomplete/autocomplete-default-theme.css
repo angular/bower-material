@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c81f9f1
+ * v1.0.8
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -10,8 +10,8 @@ html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
   background-color: '{{background-color}}'; }
 
 md-autocomplete.md-THEME_NAME-theme {
-  background: '{{background-A100}}'; }
-  md-autocomplete.md-THEME_NAME-theme[disabled]:not([md-floating-label]) {
+  background: '{{background-50}}'; }
+  md-autocomplete.md-THEME_NAME-theme[disabled] {
     background: '{{background-100}}'; }
   md-autocomplete.md-THEME_NAME-theme button md-icon path {
     fill: '{{background-600}}'; }
@@ -19,7 +19,7 @@ md-autocomplete.md-THEME_NAME-theme {
     background: '{{background-600-0.3}}'; }
 
 .md-autocomplete-suggestions-container.md-THEME_NAME-theme {
-  background: '{{background-A100}}'; }
+  background: '{{background-50}}'; }
   .md-autocomplete-suggestions-container.md-THEME_NAME-theme li {
     color: '{{background-900}}'; }
     .md-autocomplete-suggestions-container.md-THEME_NAME-theme li .highlight {

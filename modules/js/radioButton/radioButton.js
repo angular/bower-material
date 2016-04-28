@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c81f9f1
+ * v1.0.8
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -69,9 +69,7 @@ function mdRadioGroupDirective($mdUtil, $mdConstant, $mdTheming, $timeout) {
   };
 
   function linkRadioGroup(scope, element, attr, ctrls) {
-    element.addClass('_md');     // private md component indicator for styling
     $mdTheming(element);
-    
     var rgCtrl = ctrls[0];
     var ngModelCtrl = ctrls[1] || $mdUtil.fakeNgModel();
 
@@ -259,11 +257,11 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
     restrict: 'E',
     require: '^mdRadioGroup',
     transclude: true,
-    template: '<div class="_md-container" md-ink-ripple md-ink-ripple-checkbox>' +
-                '<div class="_md-off"></div>' +
-                '<div class="_md-on"></div>' +
+    template: '<div class="md-container" md-ink-ripple md-ink-ripple-checkbox>' +
+                '<div class="md-off"></div>' +
+                '<div class="md-on"></div>' +
               '</div>' +
-              '<div ng-transclude class="_md-label"></div>',
+              '<div ng-transclude class="md-label"></div>',
     link: link
   };
 

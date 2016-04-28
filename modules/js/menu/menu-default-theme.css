@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c81f9f1
+ * v1.0.8
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -10,14 +10,6 @@ html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
   background-color: '{{background-color}}'; }
 
 md-menu-content.md-THEME_NAME-theme {
-  background-color: '{{background-A100}}'; }
-  md-menu-content.md-THEME_NAME-theme md-menu-item {
-    color: '{{background-A200-0.87}}'; }
-    md-menu-content.md-THEME_NAME-theme md-menu-item md-icon {
-      color: '{{background-A200-0.54}}'; }
-    md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled] {
-      color: '{{background-A200-0.25}}'; }
-      md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled] md-icon {
-        color: '{{background-A200-0.25}}'; }
+  background-color: '{{background-color}}'; }
   md-menu-content.md-THEME_NAME-theme md-menu-divider {
-    background-color: '{{background-A200-0.11}}'; }
+    background-color: '{{foreground-4}}'; }

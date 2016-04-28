@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c81f9f1
+ * v1.0.8
  */
 goog.provide('ng.material.components.datepicker');
 goog.require('ng.material.components.icon');
@@ -887,8 +887,7 @@ goog.require('ng.material.core');
    *     };
    *
    *     $mdDateLocaleProvider.formatDate = function(date) {
-   *       var m = moment(date);
-   *       return m.isValid() ? m.format('L') : '';
+   *       return moment(date).format('L');
    *     };
    *
    *     $mdDateLocaleProvider.monthHeaderFormatter = function(date) {

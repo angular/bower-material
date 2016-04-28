@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c81f9f1
+ * v1.0.8
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -113,8 +113,6 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
   };
 
   function postLink(scope, element, attrs, ctrl) {
-    element.addClass('_md');     // private md component indicator for styling
-    
     // Apply semantics
     element.attr('role', 'list');
 
