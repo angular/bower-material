@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.8
+ * v1.0.8-master-ce006cf
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -18,9 +18,9 @@ md-radio-button {
   position: relative; }
   md-radio-button[disabled] {
     cursor: default; }
-    md-radio-button[disabled] .md-container {
+    md-radio-button[disabled] ._md-container {
       cursor: default; }
-  md-radio-button .md-container {
+  md-radio-button ._md-container {
     position: absolute;
     top: 50%;
     -webkit-transform: translateY(-50%);
@@ -32,31 +32,11 @@ md-radio-button {
     cursor: pointer;
     left: 0;
     right: auto; }
-    html[dir=rtl] md-radio-button .md-container {
-      left: auto;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-radio-button .md-container {
-      left: auto;
-      unicode-bidi: embed; }
-    md-radio-button .md-container bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-radio-button .md-container bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
-    html[dir=rtl] md-radio-button .md-container {
-      right: 0;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-radio-button .md-container {
-      right: 0;
-      unicode-bidi: embed; }
-    md-radio-button .md-container bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-radio-button .md-container bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
-    md-radio-button .md-container .md-ripple-container {
+    [dir=rtl] md-radio-button ._md-container {
+      left: auto; }
+    [dir=rtl] md-radio-button ._md-container {
+      right: 0; }
+    md-radio-button ._md-container .md-ripple-container {
       position: absolute;
       display: block;
       width: auto;
@@ -65,7 +45,7 @@ md-radio-button {
       top: -15px;
       right: -15px;
       bottom: -15px; }
-    md-radio-button .md-container:before {
+    md-radio-button ._md-container:before {
       box-sizing: border-box;
       background-color: transparent;
       border-radius: 50%;
@@ -79,9 +59,9 @@ md-radio-button {
       bottom: 0;
       transition: all 0.5s;
       width: auto; }
-  md-radio-button.md-align-top-left > div.md-container {
+  md-radio-button.md-align-top-left > div._md-container {
     top: 12px; }
-  md-radio-button .md-off {
+  md-radio-button ._md-off {
     box-sizing: border-box;
     position: absolute;
     top: 0;
@@ -92,7 +72,7 @@ md-radio-button {
     border-width: 2px;
     border-radius: 50%;
     transition: border-color ease 0.28s; }
-  md-radio-button .md-on {
+  md-radio-button ._md-on {
     box-sizing: border-box;
     position: absolute;
     top: 0;
@@ -104,10 +84,10 @@ md-radio-button {
     transition: transform ease 0.28s;
     -webkit-transform: scale(0);
             transform: scale(0); }
-  md-radio-button.md-checked .md-on {
+  md-radio-button.md-checked ._md-on {
     -webkit-transform: scale(0.5);
             transform: scale(0.5); }
-  md-radio-button .md-label {
+  md-radio-button ._md-label {
     box-sizing: border-box;
     position: relative;
     display: inline-block;
@@ -117,73 +97,31 @@ md-radio-button {
     white-space: normal;
     pointer-events: none;
     width: auto; }
-    html[dir=rtl] md-radio-button .md-label {
-      margin-left: 0;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-radio-button .md-label {
-      margin-left: 0;
-      unicode-bidi: embed; }
-    md-radio-button .md-label bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-radio-button .md-label bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
-    html[dir=rtl] md-radio-button .md-label {
-      margin-right: 30px;
-      unicode-bidi: embed; }
-    body[dir=rtl] md-radio-button .md-label {
-      margin-right: 30px;
-      unicode-bidi: embed; }
-    md-radio-button .md-label bdo[dir=rtl] {
-      direction: rtl;
-      unicode-bidi: bidi-override; }
-    md-radio-button .md-label bdo[dir=ltr] {
-      direction: ltr;
-      unicode-bidi: bidi-override; }
-  md-radio-button .circle {
-    border-radius: 50%; }
+    [dir=rtl] md-radio-button ._md-label {
+      margin-left: 0; }
+    [dir=rtl] md-radio-button ._md-label {
+      margin-right: 30px; }
 
-md-radio-group md-radio-button:not(:first-child) {
-  margin-top: 16px; }
+md-radio-group.layout-column md-radio-button, md-radio-group.layout-xs-column md-radio-button, md-radio-group.layout-gt-xs-column md-radio-button, md-radio-group.layout-sm-column md-radio-button, md-radio-group.layout-gt-sm-column md-radio-button, md-radio-group.layout-md-column md-radio-button, md-radio-group.layout-gt-md-column md-radio-button, md-radio-group.layout-lg-column md-radio-button, md-radio-group.layout-gt-lg-column md-radio-button, md-radio-group.layout-xl-column md-radio-button {
+  margin-bottom: 16px; }
 
-md-radio-group.layout-row md-radio-button {
+md-radio-group.layout-row md-radio-button, md-radio-group.layout-xs-row md-radio-button, md-radio-group.layout-gt-xs-row md-radio-button, md-radio-group.layout-sm-row md-radio-button, md-radio-group.layout-gt-sm-row md-radio-button, md-radio-group.layout-md-row md-radio-button, md-radio-group.layout-gt-md-row md-radio-button, md-radio-group.layout-lg-row md-radio-button, md-radio-group.layout-gt-lg-row md-radio-button, md-radio-group.layout-xl-row md-radio-button {
   margin-top: 0;
   margin-bottom: 0;
   margin-left: 0;
   margin-right: 16px; }
-  html[dir=rtl] md-radio-group.layout-row md-radio-button {
-    margin-left: 16px;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-radio-group.layout-row md-radio-button {
-    margin-left: 16px;
-    unicode-bidi: embed; }
-  md-radio-group.layout-row md-radio-button bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-radio-group.layout-row md-radio-button bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
-  html[dir=rtl] md-radio-group.layout-row md-radio-button {
-    margin-right: 0;
-    unicode-bidi: embed; }
-  body[dir=rtl] md-radio-group.layout-row md-radio-button {
-    margin-right: 0;
-    unicode-bidi: embed; }
-  md-radio-group.layout-row md-radio-button bdo[dir=rtl] {
-    direction: rtl;
-    unicode-bidi: bidi-override; }
-  md-radio-group.layout-row md-radio-button bdo[dir=ltr] {
-    direction: ltr;
-    unicode-bidi: bidi-override; }
-  md-radio-group.layout-row md-radio-button:last-of-type {
+  [dir=rtl] md-radio-group.layout-row md-radio-button, [dir=rtl] md-radio-group.layout-xs-row md-radio-button, [dir=rtl] md-radio-group.layout-gt-xs-row md-radio-button, [dir=rtl] md-radio-group.layout-sm-row md-radio-button, [dir=rtl] md-radio-group.layout-gt-sm-row md-radio-button, [dir=rtl] md-radio-group.layout-md-row md-radio-button, [dir=rtl] md-radio-group.layout-gt-md-row md-radio-button, [dir=rtl] md-radio-group.layout-lg-row md-radio-button, [dir=rtl] md-radio-group.layout-gt-lg-row md-radio-button, [dir=rtl] md-radio-group.layout-xl-row md-radio-button {
+    margin-left: 16px; }
+  [dir=rtl] md-radio-group.layout-row md-radio-button, [dir=rtl] md-radio-group.layout-xs-row md-radio-button, [dir=rtl] md-radio-group.layout-gt-xs-row md-radio-button, [dir=rtl] md-radio-group.layout-sm-row md-radio-button, [dir=rtl] md-radio-group.layout-gt-sm-row md-radio-button, [dir=rtl] md-radio-group.layout-md-row md-radio-button, [dir=rtl] md-radio-group.layout-gt-md-row md-radio-button, [dir=rtl] md-radio-group.layout-lg-row md-radio-button, [dir=rtl] md-radio-group.layout-gt-lg-row md-radio-button, [dir=rtl] md-radio-group.layout-xl-row md-radio-button {
+    margin-right: 0; }
+  md-radio-group.layout-row md-radio-button:last-of-type, md-radio-group.layout-xs-row md-radio-button:last-of-type, md-radio-group.layout-gt-xs-row md-radio-button:last-of-type, md-radio-group.layout-sm-row md-radio-button:last-of-type, md-radio-group.layout-gt-sm-row md-radio-button:last-of-type, md-radio-group.layout-md-row md-radio-button:last-of-type, md-radio-group.layout-gt-md-row md-radio-button:last-of-type, md-radio-group.layout-lg-row md-radio-button:last-of-type, md-radio-group.layout-gt-lg-row md-radio-button:last-of-type, md-radio-group.layout-xl-row md-radio-button:last-of-type {
     margin-left: 0;
     margin-right: 0; }
 
 md-radio-group:focus {
   outline: none; }
 
-md-radio-group.md-focused .md-checked .md-container:before {
+md-radio-group.md-focused .md-checked ._md-container:before {
   left: -8px;
   top: -8px;
   right: -8px;
@@ -200,5 +138,5 @@ md-radio-group.md-focused .md-checked .md-container:before {
     margin-bottom: 0; }
 
 @media screen and (-ms-high-contrast: active) {
-  md-radio-button.md-default-theme .md-on {
+  md-radio-button.md-default-theme ._md-on {
     background-color: #fff; } }

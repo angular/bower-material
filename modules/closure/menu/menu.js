@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.8
+ * v1.0.8-master-ce006cf
  */
 goog.provide('ng.material.components.menu');
 goog.require('ng.material.components.backdrop');
@@ -50,7 +50,9 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
 
     menuContainer.on('$mdInterimElementRemove', function() {
       self.isOpen = false;
+      $mdUtil.nextTick(function(){ self.onIsOpenChanged(self.isOpen);});
     });
+    $mdUtil.nextTick(function(){ self.onIsOpenChanged(self.isOpen);});
 
     var menuContainerId = 'menu_container_' + $mdUtil.nextUid();
     menuContainer.attr('id', menuContainerId);
@@ -89,7 +91,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
       deregisterScopeListeners.shift()();
     }
     menuItems && menuItems.off('mouseenter', self.handleMenuItemHover);
-    menuItems && menuItems.off('mouseleave', self.handleMenuMouseLeave);
+    menuItems && menuItems.off('mouseleave', self.handleMenuItemMouseLeave);
   };
 
   this.handleMenuItemHover = function(event) {
@@ -106,11 +108,11 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
       if (self.currentlyOpenMenu && self.currentlyOpenMenu != nestedMenu) {
         var closeTo = self.nestLevel + 1;
         self.currentlyOpenMenu.close(true, { closeTo: closeTo });
-        self.isAlreadyOpening = true;
-        nestedMenu.open();
+        self.isAlreadyOpening = !!nestedMenu;
+        nestedMenu && nestedMenu.open();
       } else if (nestedMenu && !nestedMenu.isOpen && nestedMenu.open) {
-        self.isAlreadyOpening = true;
-        nestedMenu.open();
+        self.isAlreadyOpening = !!nestedMenu;
+        nestedMenu && nestedMenu.open();
       }
     }, nestedMenu ? 100 : 250);
     var focusableTarget = event.currentTarget.querySelector('.md-button:not([disabled])');
@@ -134,6 +136,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
     if (self.isOpen) return;
     self.enableHoverListener();
     self.isOpen = true;
+    $mdUtil.nextTick(function(){ self.onIsOpenChanged(self.isOpen);});
     triggerElement = triggerElement || (ev ? ev.target : $element[0]);
     triggerElement.setAttribute('aria-expanded', 'true');
     $scope.$emit('$mdMenuOpen', $element);
@@ -154,19 +157,19 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
   // Expose a open function to the child scope for html to use
   $scope.$mdOpenMenu = this.open;
 
-  $scope.$watch(function() { return self.isOpen; }, function(isOpen) {
+  this.onIsOpenChanged = function(isOpen) {
     if (isOpen) {
       menuContainer.attr('aria-hidden', 'false');
-      $element[0].classList.add('md-open');
+      $element[0].classList.add('_md-open');
       angular.forEach(self.nestedMenus, function(el) {
-        el.classList.remove('md-open');
+        el.classList.remove('_md-open');
       });
     } else {
       menuContainer.attr('aria-hidden', 'true');
-      $element[0].classList.remove('md-open');
+      $element[0].classList.remove('_md-open');
     }
     $scope.$mdMenuIsOpen = self.isOpen;
-  });
+  };
 
   this.focusMenuContainer = function focusMenuContainer() {
     var focusTarget = menuContainer[0].querySelector('[md-menu-focus-target]');
@@ -190,6 +193,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
   this.close = function closeMenu(skipFocus, closeOpts) {
     if ( !self.isOpen ) return;
     self.isOpen = false;
+    $mdUtil.nextTick(function(){ self.onIsOpenChanged(self.isOpen);});
 
     var eventDetails = angular.extend({}, closeOpts, { skipFocus: skipFocus });
     $scope.$emit('$mdMenuClose', $element, eventDetails);
@@ -430,21 +434,22 @@ function MenuDirective($mdUtil) {
         if (!menuEl.hasAttribute('md-position-mode')) {
           menuEl.setAttribute('md-position-mode', 'cascade');
         }
-        menuEl.classList.add('md-nested-menu');
+        menuEl.classList.add('_md-nested-menu');
         menuEl.setAttribute('md-nest-level', nestingDepth + 1);
       });
     }
     return link;
   }
 
-  function link(scope, element, attrs, ctrls) {
+  function link(scope, element, attr, ctrls) {
     var mdMenuCtrl = ctrls[0];
     var isInMenuBar = ctrls[1] != undefined;
     // Move everything into a md-menu-container and pass it to the controller
-    var menuContainer = angular.element(
-      '<div class="md-open-menu-container md-whiteframe-z2"></div>'
-    );
+    var menuContainer = angular.element( '<div class="_md _md-open-menu-container md-whiteframe-z2"></div>');
     var menuContents = element.children()[1];
+
+    element.addClass('_md');     // private md component indicator for styling
+
     if (!menuContents.hasAttribute('role')) {
       menuContents.setAttribute('role', 'menu');
     }
@@ -457,6 +462,7 @@ function MenuDirective($mdUtil) {
     element.append(menuContainer);
     menuContainer[0].style.display = 'none';
     mdMenuCtrl.init(menuContainer, { isInMenuBar: isInMenuBar });
+
   }
 }
 MenuDirective.$inject = ["$mdUtil"];
@@ -518,7 +524,7 @@ function MenuProvider($$interimElementProvider) {
       }
 
       if (options.hasBackdrop) {
-        options.backdrop = $mdUtil.createBackdrop(scope, "md-menu-backdrop md-click-catcher");
+        options.backdrop = $mdUtil.createBackdrop(scope, "_md-menu-backdrop _md-click-catcher");
 
         $animate.enter(options.backdrop, $document[0].body);
       }
@@ -551,14 +557,14 @@ function MenuProvider($$interimElementProvider) {
        * For forced closes (like $destroy events), skip the animations
        */
       function animateRemoval() {
-        return $animateCss(element, {addClass: 'md-leave'}).start();
+        return $animateCss(element, {addClass: '_md-leave'}).start();
       }
 
       /**
        * Detach the element
        */
       function detachAndClean() {
-        element.removeClass('md-active');
+        element.removeClass('_md-active');
         detachElement(element, opts);
         opts.alreadyOpen = false;
       }
@@ -597,12 +603,12 @@ function MenuProvider($$interimElementProvider) {
         return $q(function(resolve) {
           var position = calculateMenuPosition(element, opts);
 
-          element.removeClass('md-leave');
+          element.removeClass('_md-leave');
 
           // Animate the menu scaling, and opacity [from its position origin (default == top-left)]
           // to normal scale.
           $animateCss(element, {
-            addClass: 'md-active',
+            addClass: '_md-active',
             from: animator.toCss(position),
             to: animator.toCss({transform: ''})
           })
@@ -661,7 +667,7 @@ function MenuProvider($$interimElementProvider) {
        * clicks, keypresses, backdrop closing, etc.
        */
       function activateInteraction() {
-        element.addClass('md-clickable');
+        element.addClass('_md-clickable');
 
         // close on backdrop click
         if (opts.backdrop) opts.backdrop.on('click', onBackdropClick);
@@ -684,7 +690,7 @@ function MenuProvider($$interimElementProvider) {
         focusTarget && focusTarget.focus();
 
         return function cleanupInteraction() {
-          element.removeClass('md-clickable');
+          element.removeClass('_md-clickable');
           if (opts.backdrop) opts.backdrop.off('click', onBackdropClick);
           opts.menuContentEl.off('keydown', onMenuKeyDown);
           opts.menuContentEl[0].removeEventListener('click', captureClickListener, true);
@@ -785,7 +791,7 @@ function MenuProvider($$interimElementProvider) {
         opts.menuContentEl[0].addEventListener('click', captureClickListener, true);
 
         return function cleanupInteraction() {
-          element.removeClass('md-clickable');
+          element.removeClass('_md-clickable');
           opts.menuContentEl.off('keydown');
           opts.menuContentEl[0].removeEventListener('click', captureClickListener, true);
         };
@@ -905,9 +911,15 @@ function MenuProvider($$interimElementProvider) {
           throw new Error('Invalid target mode "' + positionMode.top + '" specified for md-menu on Y axis.');
       }
 
+      var rtl = ($mdUtil.bidi() == 'rtl');
+      
       switch (positionMode.left) {
         case 'target':
           position.left = existingOffsets.left + originNodeRect.left - alignTargetRect.left;
+          transformOrigin += rtl ? 'right'  : 'left';
+          break;
+        case 'target-left':
+          position.left = originNodeRect.left;
           transformOrigin += 'left';
           break;
         case 'target-right':
@@ -915,13 +927,18 @@ function MenuProvider($$interimElementProvider) {
           transformOrigin += 'right';
           break;
         case 'cascade':
-          var willFitRight = (originNodeRect.right + openMenuNodeRect.width) < bounds.right;
+          var willFitRight = rtl ? (originNodeRect.left - openMenuNodeRect.width) < bounds.left : (originNodeRect.right + openMenuNodeRect.width) < bounds.right;
           position.left = willFitRight ? originNodeRect.right - originNode.style.left : originNodeRect.left - originNode.style.left - openMenuNodeRect.width;
           transformOrigin += willFitRight ? 'left' : 'right';
           break;
         case 'left':
-          position.left = originNodeRect.left;
-          transformOrigin += 'left';
+          if(rtl) {
+            position.left = originNodeRect.right - openMenuNodeRect.width;
+            transformOrigin += 'right';
+          } else {
+            position.left = originNodeRect.left;
+            transformOrigin += 'left';
+          }
           break;
         default:
           throw new Error('Invalid target mode "' + positionMode.left + '" specified for md-menu on X axis.');
