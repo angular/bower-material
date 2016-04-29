@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.8-master-6d3ba90
+ * v1.1.0-rc4-master-52a137f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -908,8 +908,7 @@ function MdDialogProvider($$interimElementProvider) {
 
       var role = (options.$type === 'alert') ? 'alertdialog' : 'dialog';
       var dialogContent = element.find('md-dialog-content');
-      var existingDialogId = element.attr('id');
-      var dialogContentId = 'dialogContent_' + (existingDialogId || $mdUtil.nextUid());
+      var dialogContentId = 'dialogContent_' + (element.attr('id') || $mdUtil.nextUid());
 
       element.attr({
         'role': role,
@@ -918,10 +917,6 @@ function MdDialogProvider($$interimElementProvider) {
 
       if (dialogContent.length === 0) {
         dialogContent = element;
-        // If the dialog element already had an ID, don't clobber it.
-        if (existingDialogId) {
-          dialogContentId = existingDialogId;
-        }
       }
 
       dialogContent.attr('id', dialogContentId);
