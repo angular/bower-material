@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-52a137f
+ * v1.1.0-rc4-master-9859e89
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1183,15 +1183,17 @@ MdPanelRef.prototype._addStyles = function() {
 MdPanelRef.prototype._updatePosition = function() {
   var positionConfig = this._config['position'];
 
-  positionConfig._setPanelPosition(this._panelEl);
-  this._panelEl.css('top', positionConfig.getTop());
-  this._panelEl.css('bottom', positionConfig.getBottom());
-  this._panelEl.css('left', positionConfig.getLeft());
-  this._panelEl.css('right', positionConfig.getRight());
+  if (positionConfig) {
+    positionConfig._setPanelPosition(this._panelEl);
+    this._panelEl.css('top', positionConfig.getTop());
+    this._panelEl.css('bottom', positionConfig.getBottom());
+    this._panelEl.css('left', positionConfig.getLeft());
+    this._panelEl.css('right', positionConfig.getRight());
 
-  // Use the vendor prefixed version of transform.
-  var prefixedTransform = this._$mdConstant.CSS.TRANSFORM;
-  this._panelEl.css(prefixedTransform, positionConfig.getTransform());
+    // Use the vendor prefixed version of transform.
+    var prefixedTransform = this._$mdConstant.CSS.TRANSFORM;
+    this._panelEl.css(prefixedTransform, positionConfig.getTransform());
+  }
 };
 
 
