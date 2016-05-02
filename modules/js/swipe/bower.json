@@ -1,7 +1,7 @@
 {
   "name": "angular-material-swipe",
-  "version": "1.1.0-rc4-master-eff20cb",
+  "version": "1.1.0-rc4-master-58e895f",
   "dependencies": {
-    "angular-material-core": "1.1.0-rc4-master-eff20cb"
+    "angular-material-core": "1.1.0-rc4-master-58e895f"
   }
 }

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-eff20cb
+ * v1.1.0-rc4-master-58e895f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13758,7 +13758,7 @@ angular
  * @ngdoc method
  * @name MdPanelRef#destroy
  * @description
- * Destorys the panel. The panel cannot be opened again after this is called.
+ * Destroys the panel. The panel cannot be opened again after this is called.
  */
 
 /**
@@ -28637,4 +28637,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc4-master-eff20cb"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc4-master-58e895f"}};

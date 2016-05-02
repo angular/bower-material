@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-eff20cb
+ * v1.1.0-rc4-master-58e895f
  */
 goog.provide('ng.material.components.panel');
 goog.require('ng.material.components.backdrop');
@@ -299,7 +299,7 @@ angular
  * @ngdoc method
  * @name MdPanelRef#destroy
  * @description
- * Destorys the panel. The panel cannot be opened again after this is called.
+ * Destroys the panel. The panel cannot be opened again after this is called.
  */
 
 /**
