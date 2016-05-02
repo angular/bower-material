@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-9859e89
+ * v1.1.0-rc4-master-eff20cb
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -293,6 +293,13 @@ angular
  *
  * @returns {!angular.$q.Promise} A promise that is resolved when the panel has
  * hidden and animations are completed.
+ */
+
+/**
+ * @ngdoc method
+ * @name MdPanelRef#destroy
+ * @description
+ * Destorys the panel. The panel cannot be opened again after this is called.
  */
 
 /**
