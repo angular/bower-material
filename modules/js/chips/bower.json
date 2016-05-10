@@ -1,8 +1,8 @@
 {
   "name": "angular-material-chips",
-  "version": "1.0.8-master-dac838d",
+  "version": "1.0.8-master-c13feb7",
   "dependencies": {
-    "angular-material-core": "1.0.8-master-dac838d",
-    "angular-material-autocomplete": "1.0.8-master-dac838d"
+    "angular-material-core": "1.0.8-master-c13feb7",
+    "angular-material-autocomplete": "1.0.8-master-c13feb7"
   }
 }
