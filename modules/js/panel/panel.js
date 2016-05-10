@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.8-master-f697a54
+ * v1.0.8-master-dac838d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -155,7 +155,8 @@ angular
  *     panel is removed from the DOM.
  *   - `origin` - `{(string|!angular.JQLite|!Element)=}`: The element to
  *     focus on when the panel closes. This is commonly the element which triggered
- *     the opening of the panel.
+ *     the opening of the panel. If you do not use `origin`, you need to control
+ *     the focus manually.
  *
  * TODO(ErinCoughlan): Add the following config options.
  *   - `groupName` - `{string=}`: Name of panel groups. This group name is
