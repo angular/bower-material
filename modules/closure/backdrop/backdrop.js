@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.8-master-6c549f5
+ * v1.0.8-master-86bb3f7
  */
 goog.provide('ng.material.components.backdrop');
 goog.require('ng.material.core');
@@ -27,7 +27,7 @@ goog.require('ng.material.core');
 
 angular
   .module('material.components.backdrop', ['material.core'])
-  .directive('mdBackdrop', ["$mdTheming", "$animate", "$rootElement", "$window", "$log", "$$rAF", "$document", function BackdropDirective($mdTheming, $animate, $rootElement, $window, $log, $$rAF, $document) {
+  .directive('mdBackdrop', ["$mdTheming", "$mdUtil", "$animate", "$rootElement", "$window", "$log", "$$rAF", "$document", function BackdropDirective($mdTheming, $mdUtil, $animate, $rootElement, $window, $log, $$rAF, $document) {
     var ERROR_CSS_POSITION = "<md-backdrop> may not work properly in a scrolled, static-positioned parent container.";
 
     return {
@@ -35,15 +35,20 @@ angular
       link: postLink
     };
 
-    function postLink(scope, element, attrs) {
+    function postLink(scope, element) {
 
       // If body scrolling has been disabled using mdUtil.disableBodyScroll(),
       // adjust the 'backdrop' height to account for the fixed 'body' top offset
       var body = $window.getComputedStyle($document[0].body);
+
       if (body.position == 'fixed') {
-        var hViewport = parseInt(body.height, 10) + Math.abs(parseInt(body.top, 10));
-        element.css({
-          height: hViewport + 'px'
+        var debouncedResize = $mdUtil.debounce(resize, 60, null, false);
+
+        resize();
+        angular.element($window).on('resize', debouncedResize);
+
+        scope.$on('$destroy', function() {
+          angular.element($window).off('resize', debouncedResize);
         });
       }
 
@@ -73,6 +78,13 @@ angular
           $mdTheming.inherit(element, element.parent());
         }
       });
+
+      function resize() {
+        var hViewport = parseInt(body.height, 10) + Math.abs(parseInt(body.top, 10));
+        element.css({
+          height: hViewport + 'px'
+        });
+      }
 
     }
 
