@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.8-master-86bb3f7
+ * v1.0.8-master-e9a1d4f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -10,7 +10,7 @@
 (function(){
 "use strict";
 
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.layout","material.core.theming.palette","material.core.theming","material.core.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.colors","material.components.content","material.components.datepicker","material.components.dialog","material.components.fabActions","material.components.divider","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.fabTrigger","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.navBar","material.components.panel","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.showHide","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.virtualRepeat","material.components.whiteframe"]);
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.layout","material.core.theming.palette","material.core.theming","material.core.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.colors","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.fabTrigger","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.navBar","material.components.panel","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.showHide","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.virtualRepeat","material.components.whiteframe"]);
 })();
 (function(){
 "use strict";
@@ -7136,7 +7136,7 @@ angular.module('material.components.chips', [
    *  </hljs>
    *
    */
-  function MdColorsService($mdTheming, $mdUtil, $parse, $log) {
+  function MdColorsService($mdTheming, $mdUtil, $log) {
     colorPalettes = colorPalettes || Object.keys($mdTheming.PALETTES);
 
     // Publish service instance
@@ -7158,10 +7158,8 @@ angular.module('material.components.chips', [
      * Then calculate the rgba() values based on the theme color parts
      *
      * @param {DOMElement} element the element to apply the styles on.
-     * @param {scope} scope a scope is needed in case there are interpolated values in the expression.
-     * @param {string|object} colorExpression json object, keys are css properties and values are string of the wanted color,
-     * for example: `{color: 'red-A200-0.3'}`. Note that the color keys must be upperCamelCase instead of snake-case.
-     * e.g. `{background-color: 'grey-300'}` --> `{backgroundColor: 'grey-300'}`
+     * @param {object} colorExpression json object, keys are css properties and values are string of the wanted color,
+     * for example: `{color: 'red-A200-0.3'}`.
      *
      * @usage
      * <hljs lang="js">
@@ -7175,16 +7173,10 @@ angular.module('material.components.chips', [
      *   });
      * </hljs>
      */
-    function applyThemeColors(element, scope, colorExpression) {
+    function applyThemeColors(element, colorExpression) {
       try {
-        // Json.parse() does not work because the keys are not quoted;
-        // use $parse to convert to a hash map
-        // NOTE: keys cannot be snake-case, upperCamelCase are required
-        //        e.g.   {background-color: 'grey-300'} --> {backgroundColor: 'grey-300'}
-        var themeColors = $parse(colorExpression)(scope);
-
         // Assign the calculate RGBA color values directly as inline CSS
-        element.css(interpolateColors(themeColors));
+        element.css(interpolateColors(colorExpression));
       } catch( e ) {
         $log.error(e.message);
       }
@@ -7267,12 +7259,10 @@ angular.module('material.components.chips', [
       var hasTheme = angular.isDefined($mdTheming.THEMES[parts[0]]);
       var theme = hasTheme ? parts.splice(0, 1)[0] : $mdTheming.defaultTheme();
 
-      var defaultHue = parts[0] !== 'accent' ? 500 : 'A200';
-
       return {
         theme: theme,
         palette: extractPalette(parts, theme),
-        hue: parts[1] || defaultHue,
+        hue: extractHue(parts, theme),
         opacity: parts[2] || 1
       };
     }
@@ -7300,8 +7290,32 @@ angular.module('material.components.chips', [
 
       return palette;
     }
+
+    function extractHue(parts, theme) {
+      var themeColors = $mdTheming.THEMES[theme].colors;
+
+      if (parts[1] === 'hue') {
+        var hueNumber = parseInt(parts.splice(2, 1)[0],10);
+
+        if (hueNumber < 1 || hueNumber > 3) {
+          throw new Error($mdUtil.supplant('mdColors: \'hue-{hueNumber}\' is not a valid hue, can be only \'hue-1\', \'hue-2\' and \'hue-3\'', {hueNumber: hueNumber}));
+        }
+        parts[1] = 'hue-' + hueNumber;
+
+        if (!(parts[0] in themeColors)) {
+          throw new Error($mdUtil.supplant('mdColors: \'hue-x\' can only be used with [{availableThemes}], but was used with \'{usedTheme}\'', {
+            availableThemes: Object.keys(themeColors).join(', '),
+            usedTheme: parts[0]
+          }));
+        }
+
+        return themeColors[parts[0]].hues[parts[1]];
+      }
+
+      return parts[1] || themeColors[parts[0] in themeColors ? parts[0] : 'primary'].hues['default'];
+    }
   }
-  MdColorsService.$inject = ["$mdTheming", "$mdUtil", "$parse", "$log"];
+  MdColorsService.$inject = ["$mdTheming", "$mdUtil", "$log"];
 
   /**
    * @ngdoc directive
@@ -7318,7 +7332,7 @@ angular.module('material.components.chips', [
    *   ## `[?theme]-[palette]-[?hue]-[?opacity]`
    *   - [theme]    - default value is the default theme
    *   - [palette]  - can be either palette name or primary/accent/warn/background
-   *   - [hue]      - default is 500
+   *   - [hue]      - default is 500 (hue-x can be used with primary/accent/warn/background)
    *   - [opacity]  - default is 1
    *
    *   > `?` indicates optional parameter
@@ -7341,7 +7355,7 @@ angular.module('material.components.chips', [
    * </hljs>
    *
    */
-  function MdColorsDirective($mdColors, $mdUtil, $log) {
+  function MdColorsDirective($mdColors, $mdUtil, $log, $parse) {
     return {
       restrict: 'A',
       compile: function (tElem, tAttrs) {
@@ -7349,17 +7363,19 @@ angular.module('material.components.chips', [
 
         return function (scope, element, attrs) {
           var colorExpression = function () {
-            return attrs.mdColors;
+            // Json.parse() does not work because the keys are not quoted;
+            // use $parse to convert to a hash map
+            return $parse(attrs.mdColors)(scope);
           };
 
           try {
             if (shouldWatch) {
               scope.$watch(colorExpression, angular.bind(this,
-                $mdColors.applyThemeColors, element, scope
-              ));
+                $mdColors.applyThemeColors, element
+              ), true);
             }
             else {
-              $mdColors.applyThemeColors(element, scope, colorExpression());
+              $mdColors.applyThemeColors(element, colorExpression());
             }
 
           }
@@ -7387,7 +7403,7 @@ angular.module('material.components.chips', [
     };
 
   }
-  MdColorsDirective.$inject = ["$mdColors", "$mdUtil", "$log"];
+  MdColorsDirective.$inject = ["$mdColors", "$mdUtil", "$log", "$parse"];
 
 
 })();
@@ -10563,6 +10579,46 @@ MdDialogProvider.$inject = ["$$interimElementProvider"];
 (function(){
 "use strict";
 
+/**
+ * @ngdoc module
+ * @name material.components.divider
+ * @description Divider module!
+ */
+angular.module('material.components.divider', [
+  'material.core'
+])
+  .directive('mdDivider', MdDividerDirective);
+
+/**
+ * @ngdoc directive
+ * @name mdDivider
+ * @module material.components.divider
+ * @restrict E
+ *
+ * @description
+ * Dividers group and separate content within lists and page layouts using strong visual and spatial distinctions. This divider is a thin rule, lightweight enough to not distract the user from content.
+ *
+ * @param {boolean=} md-inset Add this attribute to activate the inset divider style.
+ * @usage
+ * <hljs lang="html">
+ * <md-divider></md-divider>
+ *
+ * <md-divider md-inset></md-divider>
+ * </hljs>
+ *
+ */
+function MdDividerDirective($mdTheming) {
+  return {
+    restrict: 'E',
+    link: $mdTheming
+  };
+}
+MdDividerDirective.$inject = ["$mdTheming"];
+
+})();
+(function(){
+"use strict";
+
 (function() {
   'use strict';
 
@@ -10616,46 +10672,6 @@ MdDialogProvider.$inject = ["$$interimElementProvider"];
   }
 
 })();
-
-})();
-(function(){
-"use strict";
-
-/**
- * @ngdoc module
- * @name material.components.divider
- * @description Divider module!
- */
-angular.module('material.components.divider', [
-  'material.core'
-])
-  .directive('mdDivider', MdDividerDirective);
-
-/**
- * @ngdoc directive
- * @name mdDivider
- * @module material.components.divider
- * @restrict E
- *
- * @description
- * Dividers group and separate content within lists and page layouts using strong visual and spatial distinctions. This divider is a thin rule, lightweight enough to not distract the user from content.
- *
- * @param {boolean=} md-inset Add this attribute to activate the inset divider style.
- * @usage
- * <hljs lang="html">
- * <md-divider></md-divider>
- *
- * <md-divider md-inset></md-divider>
- * </hljs>
- *
- */
-function MdDividerDirective($mdTheming) {
-  return {
-    restrict: 'E',
-    link: $mdTheming
-  };
-}
-MdDividerDirective.$inject = ["$mdTheming"];
 
 })();
 (function(){
@@ -29288,4 +29304,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.8-master-86bb3f7"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.8-master-e9a1d4f"}};
