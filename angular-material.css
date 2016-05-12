@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.8-master-296f1c7
+ * v1.0.8-master-b9b6203
  */
 html, body {
   height: 100%;
@@ -3146,10 +3146,10 @@ md-nav-extra-content {
     transition: none; }
   .md-panel._md-panel-animate-enter {
     opacity: 1;
-    transition: all 0.5s cubic-bezier(0, 0, 0.2, 1); }
+    transition: all 0.3s cubic-bezier(0, 0, 0.2, 1); }
   .md-panel._md-panel-animate-leave {
     opacity: 1;
-    transition: all 0.5s cubic-bezier(0.4, 0, 1, 1); }
+    transition: all 0.3s cubic-bezier(0.4, 0, 1, 1); }
   .md-panel._md-panel-animate-scale-out, .md-panel._md-panel-animate-fade-out {
     opacity: 0; }
   .md-panel._md-panel-backdrop {
@@ -3158,9 +3158,9 @@ md-nav-extra-content {
     width: 100%; }
   .md-panel._md-opaque-enter {
     opacity: .48;
-    transition: opacity 0.5s cubic-bezier(0, 0, 0.2, 1); }
+    transition: opacity 0.3s cubic-bezier(0, 0, 0.2, 1); }
   .md-panel._md-opaque-leave {
-    transition: opacity 0.5s cubic-bezier(0.4, 0, 1, 1); }
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 1, 1); }
 
 @-webkit-keyframes indeterminate-rotate {
   0% {
