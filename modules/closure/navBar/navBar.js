@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.8-master-e9a1d4f
+ * v1.0.8-master-296f1c7
  */
 goog.provide('ng.material.components.navBar');
 goog.require('ng.material.core');
@@ -472,9 +472,9 @@ function MdNavItemController($element) {
   /** @private {boolean} */
   this._focused = false;
 
-  var hasNavClick = this.mdNavClick != null;
-  var hasNavHref = this.mdNavHref != null;
-  var hasNavSref = this.mdNavSref != null;
+  var hasNavClick = !!($element.attr('md-nav-click'));
+  var hasNavHref = !!($element.attr('md-nav-href'));
+  var hasNavSref = !!($element.attr('md-nav-sref'));
 
   // Cannot specify more than one nav attribute
   if ((hasNavClick ? 1:0) + (hasNavHref ? 1:0) + (hasNavSref ? 1:0) > 1) {
