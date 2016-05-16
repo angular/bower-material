@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.8-master-40ea6ec
+ * v1.0.8-master-4803b49
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -626,7 +626,7 @@ MdIconProvider.prototype = {
 
   $get: ['$templateRequest', '$q', '$log', '$templateCache', '$mdUtil', function($templateRequest, $q, $log, $templateCache, $mdUtil) {
     this.preloadIcons($templateCache);
-    return MdIconService(config, $templateRequest, $q, $log, $templateCache, $mdUtil);
+    return MdIconService(config, $templateRequest, $q, $log, $mdUtil);
   }]
 };
 
@@ -681,7 +681,7 @@ function ConfigurationItem(url, viewBoxSize) {
  */
 
 /* ngInject */
-function MdIconService(config, $templateRequest, $q, $log, $templateCache, $mdUtil) {
+function MdIconService(config, $templateRequest, $q, $log, $mdUtil) {
   var iconCache = {};
   var urlRegex = /[-\w@:%\+.~#?&//=]{2,}\.[a-z]{2,4}\b(\/[-\w@:%\+.~#?&//=]*)?/i;
   var dataUrlRegex = /^data:image\/svg\+xml[\s*;\w\-\=]*?(base64)?,(.*)$/i;
@@ -881,6 +881,6 @@ function MdIconService(config, $templateRequest, $q, $log, $templateCache, $mdUt
   }
 
 }
-MdIconService.$inject = ["config", "$templateRequest", "$q", "$log", "$templateCache", "$mdUtil"];
+MdIconService.$inject = ["config", "$templateRequest", "$q", "$log", "$mdUtil"];
 
 })(window, window.angular);
