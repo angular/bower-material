@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-be601ea
+ * v1.1.0-rc4-master-c26842a
  */
 html, body {
   height: 100%;
@@ -5312,6 +5312,13 @@ md-tooltip {
 @media screen and (-ms-high-contrast: active) {
   md-whiteframe {
     border: 1px solid #fff; } }
+
+/*
+* Since Layout API uses ng-cloak to hide the dom elements while layouts are adjusted
+*
+*/
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important; }
 
 /*
 *
