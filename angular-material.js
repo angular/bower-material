@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.8-master-4803b49
+ * v1.0.8-master-05a3a0f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -25187,7 +25187,7 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
 
 angular
   .module('material.components.icon')
-  .directive('mdIcon', ['$mdIcon', '$mdTheming', '$mdAria', mdIconDirective]);
+  .directive('mdIcon', ['$mdIcon', '$mdTheming', '$mdAria', '$sce', mdIconDirective]);
 
 /**
  * @ngdoc directive
@@ -25358,7 +25358,7 @@ angular
  * </hljs>
  *
  */
-function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
+function mdIconDirective($mdIcon, $mdTheming, $mdAria, $sce) {
 
   return {
     restrict: 'E',
@@ -25374,6 +25374,10 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
     $mdTheming(element);
 
     prepareForFontIcon();
+
+    // Keep track of the content of the svg src so we can compare against it later to see if the
+    // attribute is static (and thus safe).
+    var originalSvgSrc = element[0].getAttribute(attr.$attr.mdSvgSrc);
 
     // If using a font-icon, then the textual name of the icon itself
     // provides the aria-label.
@@ -25399,6 +25403,12 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
     if (attrName) {
       // Use either pre-configured SVG or URL source, respectively.
       attr.$observe(attrName, function(attrVal) {
+
+        // If using svg-src and the value is static (i.e., is exactly equal to the compile-time
+        // `md-svg-src` value), then it is implicitly trusted.
+        if (!isInlineSvg(attrVal) && attrVal === originalSvgSrc) {
+          attrVal = $sce.trustAsUrl(attrVal);
+        }
 
         element.empty();
         if (attrVal) {
@@ -25431,6 +25441,16 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria ) {
         element.addClass($mdIcon.fontSet(attr.mdFontSet));
       }
     }
+  }
+
+  /**
+   * Gets whether the given svg src is an inline ("data:" style) SVG.
+   * @param {string} svgSrc The svg src.
+   * @returns {boolean} Whether the src is an inline SVG.
+   */
+  function isInlineSvg(svgSrc) {
+    var dataUrlRegex = /^data:image\/svg\+xml[\s*;\w\-\=]*?(base64)?,(.*)$/i;
+    return dataUrlRegex.test(svgSrc);
   }
 }
 
@@ -25798,9 +25818,9 @@ MdIconProvider.prototype = {
 
   },
 
-  $get: ['$templateRequest', '$q', '$log', '$templateCache', '$mdUtil', function($templateRequest, $q, $log, $templateCache, $mdUtil) {
+  $get: ['$templateRequest', '$q', '$log', '$templateCache', '$mdUtil', '$sce', function($templateRequest, $q, $log, $templateCache, $mdUtil, $sce) {
     this.preloadIcons($templateCache);
-    return MdIconService(config, $templateRequest, $q, $log, $mdUtil);
+    return MdIconService(config, $templateRequest, $q, $log, $mdUtil, $sce);
   }]
 };
 
@@ -25855,7 +25875,7 @@ function ConfigurationItem(url, viewBoxSize) {
  */
 
 /* @ngInject */
-function MdIconService(config, $templateRequest, $q, $log, $mdUtil) {
+function MdIconService(config, $templateRequest, $q, $log, $mdUtil, $sce) {
   var iconCache = {};
   var urlRegex = /[-\w@:%\+.~#?&//=]{2,}\.[a-z]{2,4}\b(\/[-\w@:%\+.~#?&//=]*)?/i;
   var dataUrlRegex = /^data:image\/svg\+xml[\s*;\w\-\=]*?(base64)?,(.*)$/i;
@@ -25872,12 +25892,28 @@ function MdIconService(config, $templateRequest, $q, $log, $mdUtil) {
   function getIcon(id) {
     id = id || '';
 
+    // If the "id" provided is not a string, the only other valid value is a $sce trust wrapper
+    // over a URL string. If the value is not trusted, this will intentionally throw an error
+    // because the user is attempted to use an unsafe URL, potentially opening themselves up
+    // to an XSS attack.
+    if (!angular.isString(id)) {
+      id = $sce.getTrustedUrl(id);
+    }
+
     // If already loaded and cached, use a clone of the cached icon.
     // Otherwise either load by URL, or lookup in the registry and then load by URL, and cache.
 
-    if (iconCache[id]) return $q.when(transformClone(iconCache[id]));
-    if (urlRegex.test(id) || dataUrlRegex.test(id)) return loadByURL(id).then(cacheIcon(id));
-    if (id.indexOf(':') == -1) id = '$default:' + id;
+    if (iconCache[id]) {
+      return $q.when(transformClone(iconCache[id]));
+    }
+
+    if (urlRegex.test(id) || dataUrlRegex.test(id)) {
+      return loadByURL(id).then(cacheIcon(id));
+    }
+
+    if (id.indexOf(':') == -1) {
+      id = '$default:' + id;
+    }
 
     var load = config[id] ? loadByID : loadFromIconSet;
     return load(id)
@@ -25980,9 +26016,7 @@ function MdIconService(config, $templateRequest, $q, $log, $mdUtil) {
     /* Load the icon by URL using HTTP. */
     function loadByHttpUrl(url) {
       return $q(function(resolve, reject) {
-        /**
-         * Catch HTTP or generic errors not related to incorrect icon IDs.
-         */
+        // Catch HTTP or generic errors not related to incorrect icon IDs.
         var announceAndReject = function(err) {
             var msg = angular.isString(err) ? err : (err.message || err.data || err.statusText);
             $log.warn(msg);
@@ -26055,7 +26089,7 @@ function MdIconService(config, $templateRequest, $q, $log, $mdUtil) {
   }
 
 }
-MdIconService.$inject = ["config", "$templateRequest", "$q", "$log", "$mdUtil"];
+MdIconService.$inject = ["config", "$templateRequest", "$q", "$log", "$mdUtil", "$sce"];
 
 })();
 (function(){
@@ -29318,4 +29352,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.8-master-4803b49"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.8-master-05a3a0f"}};
