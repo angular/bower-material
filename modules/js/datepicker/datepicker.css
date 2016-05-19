@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c26842a
+ * v1.0.9
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -43,18 +43,8 @@ md-calendar {
   border: none; }
   .md-calendar-date:first-child {
     padding-left: 16px; }
-    [dir=rtl] .md-calendar-date:first-child {
-      padding-left: 0;
-      padding-left: auto;
-      padding-left: initial;
-      padding-right: 16px; }
   .md-calendar-date:last-child {
     padding-right: 16px; }
-    [dir=rtl] .md-calendar-date:last-child {
-      padding-right: 0;
-      padding-right: auto;
-      padding-right: initial;
-      padding-left: 16px; }
   .md-calendar-date.md-calendar-date-disabled {
     cursor: default; }
 
@@ -73,8 +63,6 @@ md-calendar {
   font-size: 14px;
   font-weight: 500;
   padding: 0 0 0 24px; }
-  [dir=rtl] .md-calendar-month-label {
-    padding: 0 24px 0 0; }
 
 .md-calendar-day-header {
   table-layout: fixed;
@@ -90,18 +78,8 @@ md-calendar {
     height: 40px; }
     .md-calendar-day-header th:first-child {
       padding-left: 16px; }
-      [dir=rtl] .md-calendar-day-header th:first-child {
-        padding-left: 0;
-        padding-left: auto;
-        padding-left: initial;
-        padding-right: 16px; }
     .md-calendar-day-header th:last-child {
       padding-right: 16px; }
-      [dir=rtl] .md-calendar-day-header th:last-child {
-        padding-right: 0;
-        padding-right: auto;
-        padding-right: initial;
-        padding-left: 16px; }
 
 .md-calendar {
   table-layout: fixed;
@@ -112,8 +90,6 @@ md-calendar {
     border-bottom-style: solid; }
   .md-calendar:first-child {
     border-top: 1px solid transparent; }
-  .md-calendar tbody, .md-calendar td, .md-calendar tr {
-    vertical-align: middle; }
 
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -127,16 +103,6 @@ md-datepicker {
   padding-right: 18px;
   margin-right: -18px;
   vertical-align: middle; }
-  [dir=rtl] md-datepicker {
-    padding-right: 0;
-    padding-right: auto;
-    padding-right: initial;
-    padding-left: 18px; }
-  [dir=rtl] md-datepicker {
-    margin-right: 0;
-    margin-right: auto;
-    margin-right: initial;
-    margin-left: -18px; }
 
 .md-inline-form md-datepicker {
   margin-top: 12px; }
@@ -166,11 +132,6 @@ md-datepicker {
   display: inline-block;
   width: auto;
   margin-left: 12px; }
-  [dir=rtl] .md-datepicker-input-container {
-    margin-left: 0;
-    margin-left: auto;
-    margin-left: initial;
-    margin-right: 12px; }
   .md-datepicker-input-container.md-datepicker-focused {
     border-bottom-width: 2px; }
 
@@ -204,8 +165,7 @@ md-datepicker {
   position: absolute;
   right: 0;
   left: 120px;
-  height: 100%;
-  margin-left: -1px; }
+  height: 100%; }
 
 .md-datepicker-calendar {
   opacity: 0;
@@ -233,14 +193,6 @@ md-datepicker {
   top: 0;
   -webkit-transform: translateY(-25%) translateX(45%);
           transform: translateY(-25%) translateX(45%); }
-  [dir=rtl] .md-datepicker-triangle-button {
-    right: 0;
-    right: auto;
-    right: initial;
-    left: 0; }
-  [dir=rtl] .md-datepicker-triangle-button {
-    -webkit-transform: translateY(-25%) translateX(-45%);
-            transform: translateY(-25%) translateX(-45%); }
 
 .md-datepicker-triangle-button.md-button.md-icon-button {
   height: 100%;
@@ -255,22 +207,11 @@ md-datepicker[disabled] .md-datepicker-triangle-button {
 
 .md-datepicker-open .md-datepicker-input-container {
   margin-left: -12px;
-  margin-bottom: -5px;
   border: none; }
-  [dir=rtl] .md-datepicker-open .md-datepicker-input-container {
-    margin-left: 0;
-    margin-left: auto;
-    margin-left: initial;
-    margin-right: -12px; }
 
 .md-datepicker-open .md-datepicker-input {
   margin-left: 24px;
   height: 40px; }
-  [dir=rtl] .md-datepicker-open .md-datepicker-input {
-    margin-left: 0;
-    margin-left: auto;
-    margin-left: initial;
-    margin-right: 24px; }
 
 .md-datepicker-open .md-datepicker-triangle-button {
   display: none; }

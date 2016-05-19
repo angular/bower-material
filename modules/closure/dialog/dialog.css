@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c26842a
+ * v1.0.9
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -44,12 +44,12 @@ md-dialog {
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column; }
-  md-dialog._md-transition-in {
+  md-dialog.md-transition-in {
     opacity: 1;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     -webkit-transform: translate(0, 0) scale(1);
             transform: translate(0, 0) scale(1); }
-  md-dialog._md-transition-out {
+  md-dialog.md-transition-out {
     opacity: 0;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     -webkit-transform: translate(0, 100%) scale(0.2);
@@ -79,11 +79,15 @@ md-dialog {
       outline: none; }
     md-dialog md-dialog-content .md-subheader {
       margin: 0; }
-    md-dialog md-dialog-content ._md-dialog-content-body {
+      md-dialog md-dialog-content .md-subheader.sticky-clone {
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16); }
+    md-dialog md-dialog-content.sticky-container {
+      padding: 0; }
+      md-dialog md-dialog-content.sticky-container > div {
+        padding: 24px;
+        padding-top: 0; }
+    md-dialog md-dialog-content .md-dialog-content-body {
       width: 100%; }
-    md-dialog md-dialog-content .md-prompt-input-container {
-      width: 100%;
-      box-sizing: border-box; }
   md-dialog .md-actions, md-dialog md-dialog-actions {
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -103,19 +107,11 @@ md-dialog {
     padding-left: 16px;
     min-height: 52px;
     overflow: hidden; }
-    [dir=rtl] md-dialog .md-actions, [dir=rtl] md-dialog md-dialog-actions {
-      padding-right: 16px; }
-    [dir=rtl] md-dialog .md-actions, [dir=rtl] md-dialog md-dialog-actions {
-      padding-left: 8px; }
     md-dialog .md-actions .md-button, md-dialog md-dialog-actions .md-button {
       margin-bottom: 8px;
       margin-left: 8px;
       margin-right: 0;
       margin-top: 8px; }
-      [dir=rtl] md-dialog .md-actions .md-button, [dir=rtl] md-dialog md-dialog-actions .md-button {
-        margin-left: 0; }
-      [dir=rtl] md-dialog .md-actions .md-button, [dir=rtl] md-dialog md-dialog-actions .md-button {
-        margin-right: 8px; }
   md-dialog.md-content-overflow .md-actions, md-dialog.md-content-overflow md-dialog-actions {
     border-top-width: 1px;
     border-top-style: solid; }

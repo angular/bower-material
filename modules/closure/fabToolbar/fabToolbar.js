@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c26842a
+ * v1.0.9
  */
 goog.provide('ng.material.components.fabToolbar');
 goog.require('ng.material.components.fabActions');
@@ -65,17 +65,15 @@ goog.require('ng.material.core');
    *     <md-button aria-label="Add..."><md-icon icon="/img/icons/plus.svg"></md-icon></md-button>
    *   </md-fab-trigger>
    *
-   *   <md-toolbar>
-   *    <md-fab-actions>
-   *      <md-button aria-label="Add User">
-   *        <md-icon icon="/img/icons/user.svg"></md-icon>
-   *      </md-button>
+   *   <md-fab-actions>
+   *     <md-button aria-label="Add User">
+   *       <md-icon icon="/img/icons/user.svg"></md-icon>
+   *     </md-button>
    *
-   *      <md-button aria-label="Add Group">
-   *        <md-icon icon="/img/icons/group.svg"></md-icon>
-   *      </md-button>
-   *    </md-fab-actions>
-   *   </md-toolbar>
+   *     <md-button aria-label="Add Group">
+   *       <md-icon icon="/img/icons/group.svg"></md-icon>
+   *     </md-button>
+   *   </md-fab-actions>
    * </md-fab-toolbar>
    * </hljs>
    *
@@ -87,8 +85,8 @@ goog.require('ng.material.core');
     return {
       restrict: 'E',
       transclude: true,
-      template: '<div class="_md-fab-toolbar-wrapper">' +
-      '  <div class="_md-fab-toolbar-content" ng-transclude></div>' +
+      template: '<div class="md-fab-toolbar-wrapper">' +
+      '  <div class="md-fab-toolbar-content" ng-transclude></div>' +
       '</div>',
 
       scope: {
@@ -97,7 +95,7 @@ goog.require('ng.material.core');
       },
 
       bindToController: true,
-      controller: 'MdFabController',
+      controller: 'FabController',
       controllerAs: 'vm',
 
       link: link
@@ -109,7 +107,7 @@ goog.require('ng.material.core');
 
       // Prepend the background element to the trigger's button
       element.find('md-fab-trigger').find('button')
-        .prepend('<div class="_md-fab-toolbar-background"></div>');
+        .prepend('<div class="md-fab-toolbar-background"></div>');
     }
   }
 
@@ -125,7 +123,7 @@ goog.require('ng.material.core');
       var ctrl = element.controller('mdFabToolbar');
 
       // Grab the relevant child elements
-      var backgroundElement = el.querySelector('._md-fab-toolbar-background');
+      var backgroundElement = el.querySelector('.md-fab-toolbar-background');
       var triggerElement = el.querySelector('md-fab-trigger button');
       var toolbarElement = el.querySelector('md-toolbar');
       var iconElement = el.querySelector('md-fab-trigger button md-icon');
@@ -148,7 +146,7 @@ goog.require('ng.material.core');
         // If we're open
         if (ctrl.isOpen) {
           // Turn on toolbar pointer events when closed
-          toolbarElement.style.pointerEvents = 'inherit';
+          toolbarElement.style.pointerEvents = 'initial';
 
           backgroundElement.style.width = triggerElement.offsetWidth + 'px';
           backgroundElement.style.height = triggerElement.offsetHeight + 'px';
@@ -207,5 +205,4 @@ goog.require('ng.material.core');
     }
   }
 })();
-
 ng.material.components.fabToolbar = angular.module("material.components.fabToolbar");

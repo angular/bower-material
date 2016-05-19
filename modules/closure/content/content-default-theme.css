@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c26842a
+ * v1.0.9
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -11,4 +11,4 @@ html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
 
 md-content.md-THEME_NAME-theme {
   color: '{{foreground-1}}';
-  background-color: '{{background-default}}'; }
+  background-color: '{{background-color}}'; }

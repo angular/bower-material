@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c26842a
+ * v1.0.9
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -20,8 +20,5 @@ md-content {
   md-content[md-scroll-x] {
     overflow-x: auto;
     overflow-y: hidden; }
-  md-content.md-no-momentum {
+  md-content.autoScroll {
     -webkit-overflow-scrolling: auto; }
-  @media print {
-    md-content {
-      overflow: visible !important; } }

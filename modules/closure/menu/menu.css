@@ -2,41 +2,41 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c26842a
+ * v1.0.9
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
   color: '{{foreground-1}}';
   background-color: '{{background-color}}'; }
 
-._md-open-menu-container {
+.md-open-menu-container {
   position: fixed;
   left: 0;
   top: 0;
   z-index: 100;
   opacity: 0;
   border-radius: 2px; }
-  ._md-open-menu-container md-menu-divider {
+  .md-open-menu-container md-menu-divider {
     margin-top: 4px;
     margin-bottom: 4px;
     height: 1px;
     min-height: 1px;
     max-height: 1px;
     width: 100%; }
-  ._md-open-menu-container md-menu-content > * {
+  .md-open-menu-container md-menu-content > * {
     opacity: 0; }
-  ._md-open-menu-container:not(._md-clickable) {
+  .md-open-menu-container:not(.md-clickable) {
     pointer-events: none; }
-  ._md-open-menu-container._md-active {
+  .md-open-menu-container.md-active {
     opacity: 1;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     transition-duration: 200ms; }
-    ._md-open-menu-container._md-active > md-menu-content > * {
+    .md-open-menu-container.md-active > md-menu-content > * {
       opacity: 1;
       transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
       transition-duration: 200ms;
       transition-delay: 100ms; }
-  ._md-open-menu-container._md-leave {
+  .md-open-menu-container.md-leave {
     opacity: 0;
     transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
     transition-duration: 250ms; }
@@ -77,19 +77,22 @@ md-menu-item {
     margin: auto 0;
     padding-left: 16px;
     padding-right: 16px; }
+  md-menu-item > a.md-button {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
   md-menu-item > .md-button {
     border-radius: 0;
     margin: auto 0;
     font-size: 15px;
     text-transform: none;
     font-weight: 400;
+    text-align: left;
+    text-align: start;
     height: 100%;
     padding-left: 16px;
     padding-right: 16px;
-    text-align: left;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
+    display: inline-block;
     -webkit-align-items: baseline;
         -ms-flex-align: baseline;
             align-items: baseline;
@@ -97,12 +100,8 @@ md-menu-item {
         -ms-flex-line-pack: start;
             align-content: flex-start;
     width: 100%; }
-    [dir=rtl] md-menu-item > .md-button {
-      text-align: right; }
     md-menu-item > .md-button md-icon {
       margin: auto 16px auto 0; }
-      [dir=rtl] md-menu-item > .md-button md-icon {
-        margin: auto 0 auto 16px; }
     md-menu-item > .md-button p {
       display: inline-block;
       margin: auto; }

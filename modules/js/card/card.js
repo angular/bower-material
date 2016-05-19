@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c26842a
+ * v1.0.9
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -131,8 +131,7 @@ angular.module('material.components.card', [
 function mdCardDirective($mdTheming) {
   return {
     restrict: 'E',
-    link: function ($scope, $element, attr) {
-      $element.addClass('_md');     // private md component indicator for styling
+    link: function ($scope, $element) {
       $mdTheming($element);
     }
   };

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c26842a
+ * v1.0.9
  */
 goog.provide('ng.material.components.content');
 goog.require('ng.material.core');
@@ -26,23 +26,11 @@ angular.module('material.components.content', [
  * @restrict E
  *
  * @description
- *
- * The `<md-content>` directive is a container element useful for scrollable content. It achieves
- * this by setting the CSS `overflow` property to `auto` so that content can properly scroll.
- *
- * In general, `<md-content>` components are not designed to be nested inside one another. If
- * possible, it is better to make them siblings. This often results in a better user experience as
- * having nested scrollbars may confuse the user.
- *
- * ## Troubleshooting
- *
- * In some cases, you may wish to apply the `md-no-momentum` class to ensure that Safari's
- * momentum scrolling is disabled. Momentum scrolling can cause flickering issues while scrolling
- * SVG icons and some other components.
+ * The `<md-content>` directive is a container element useful for scrollable content
  *
  * @usage
  *
- * Add the `[layout-padding]` attribute to make the content padded.
+ * - Add the `[layout-padding]` attribute to make the content padded.
  *
  * <hljs lang="html">
  *  <md-content layout-padding>
@@ -56,8 +44,8 @@ function mdContentDirective($mdTheming) {
   return {
     restrict: 'E',
     controller: ['$scope', '$element', ContentController],
-    link: function(scope, element) {
-      element.addClass('_md');     // private md component indicator for styling
+    link: function(scope, element, attr) {
+      var node = element[0];
 
       $mdTheming(element);
       scope.$broadcast('$mdContentLoaded', element);

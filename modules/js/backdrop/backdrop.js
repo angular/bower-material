@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c26842a
+ * v1.0.9
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -28,7 +28,7 @@
 
 angular
   .module('material.components.backdrop', ['material.core'])
-  .directive('mdBackdrop', ["$mdTheming", "$mdUtil", "$animate", "$rootElement", "$window", "$log", "$$rAF", "$document", function BackdropDirective($mdTheming, $mdUtil, $animate, $rootElement, $window, $log, $$rAF, $document) {
+  .directive('mdBackdrop', ["$mdTheming", "$animate", "$rootElement", "$window", "$log", "$$rAF", "$document", function BackdropDirective($mdTheming, $animate, $rootElement, $window, $log, $$rAF, $document) {
     var ERROR_CSS_POSITION = "<md-backdrop> may not work properly in a scrolled, static-positioned parent container.";
 
     return {
@@ -37,20 +37,21 @@ angular
     };
 
     function postLink(scope, element, attrs) {
+
+      // If body scrolling has been disabled using mdUtil.disableBodyScroll(),
+      // adjust the 'backdrop' height to account for the fixed 'body' top offset
+      var body = $window.getComputedStyle($document[0].body);
+      if (body.position == 'fixed') {
+        var hViewport = parseInt(body.height, 10) + Math.abs(parseInt(body.top, 10));
+        element.css({
+          height: hViewport + 'px'
+        });
+      }
+
       // backdrop may be outside the $rootElement, tell ngAnimate to animate regardless
       if ($animate.pin) $animate.pin(element, $rootElement);
 
       $$rAF(function () {
-        // If body scrolling has been disabled using mdUtil.disableBodyScroll(),
-        // adjust the 'backdrop' height to account for the fixed 'body' top offset.
-        // Note that this can be pretty expensive and is better done inside the $$rAF.
-        var body = $window.getComputedStyle($document[0].body);
-        if (body.position == 'fixed') {
-          var hViewport = parseInt(body.height, 10) + Math.abs(parseInt(body.top, 10));
-          element.css({
-            height: hViewport + 'px'
-          });
-        }
 
         // Often $animate.enter() is used to append the backDrop element
         // so let's wait until $animate is done...
@@ -73,13 +74,6 @@ angular
           $mdTheming.inherit(element, element.parent());
         }
       });
-
-      function resize() {
-        var hViewport = parseInt(body.height, 10) + Math.abs(parseInt(body.top, 10));
-        element.css({
-          height: hViewport + 'px'
-        });
-      }
 
     }
 
