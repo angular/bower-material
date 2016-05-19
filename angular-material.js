@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c26842a
+ * v1.1.0-rc4-master-06e7e99
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -5238,12 +5238,32 @@ function ThemingDirective($mdTheming, $interpolate, $log) {
     priority: 100,
     link: {
       pre: function(scope, el, attrs) {
+        var registeredCallbacks = [];
         var ctrl = {
-          $setTheme: function(theme) {
+          registerChanges: function (cb, context) {
+            if (context) {
+              cb = angular.bind(context, cb);
+            }
+
+            registeredCallbacks.push(cb);
+
+            return function () {
+              var index = registeredCallbacks.indexOf(cb);
+
+              if (index > -1) {
+                registeredCallbacks.splice(index, 1);
+              }
+            }
+          },
+          $setTheme: function (theme) {
             if (!$mdTheming.registered(theme)) {
               $log.warn('attempted to use unregistered theme \'' + theme + '\'');
             }
             ctrl.$mdTheme = theme;
+
+            registeredCallbacks.forEach(function (cb) {
+              cb();
+            })
           }
         };
         el.data('$mdThemeController', ctrl);
@@ -7143,7 +7163,8 @@ angular.module('material.components.chips', [
     // Publish service instance
     return {
       applyThemeColors: applyThemeColors,
-      getThemeColor: getThemeColor
+      getThemeColor: getThemeColor,
+      hasTheme: hasTheme
     };
 
     // ********************************************
@@ -7178,7 +7199,7 @@ angular.module('material.components.chips', [
       try {
         // Assign the calculate RGBA color values directly as inline CSS
         element.css(interpolateColors(colorExpression));
-      } catch( e ) {
+      } catch (e) {
         $log.error(e.message);
       }
 
@@ -7253,6 +7274,16 @@ angular.module('material.components.chips', [
     }
 
     /**
+     * Check if expression has defined theme
+     * e.g.
+     * 'myTheme-primary' => true
+     * 'red-800' => false
+     */
+    function hasTheme(expression) {
+      return angular.isDefined($mdTheming.THEMES[expression.split('-')[0]]);
+    }
+
+    /**
      * For the evaluated expression, extract the color parts into a hash map
      */
     function extractColorOptions(expression) {
@@ -7296,7 +7327,7 @@ angular.module('material.components.chips', [
       var themeColors = $mdTheming.THEMES[theme].colors;
 
       if (parts[1] === 'hue') {
-        var hueNumber = parseInt(parts.splice(2, 1)[0],10);
+        var hueNumber = parseInt(parts.splice(2, 1)[0], 10);
 
         if (hueNumber < 1 || hueNumber > 3) {
           throw new Error($mdUtil.supplant('mdColors: \'hue-{hueNumber}\' is not a valid hue, can be only \'hue-1\', \'hue-2\' and \'hue-3\'', {hueNumber: hueNumber}));
@@ -7359,24 +7390,71 @@ angular.module('material.components.chips', [
   function MdColorsDirective($mdColors, $mdUtil, $log, $parse) {
     return {
       restrict: 'A',
+      require: ['^?mdTheme'],
       compile: function (tElem, tAttrs) {
         var shouldWatch = shouldColorsWatch();
 
-        return function (scope, element, attrs) {
-          var colorExpression = function () {
-            // Json.parse() does not work because the keys are not quoted;
-            // use $parse to convert to a hash map
-            return $parse(attrs.mdColors)(scope);
+        return function (scope, element, attrs, ctrl) {
+          var mdThemeController = ctrl[0];
+
+          var parseColors = function (theme) {
+            /**
+             * Json.parse() does not work because the keys are not quoted;
+             * use $parse to convert to a hash map
+             */
+            var colors = $parse(attrs.mdColors)(scope);
+
+            /**
+             * If mdTheme is defined up the DOM tree
+             * we add mdTheme theme to colors who doesn't specified a theme
+             *
+             * # example
+             * <hljs lang="html">
+             *   <div md-theme="myTheme">
+             *     <div md-colors="{background: 'primary-600'}">
+             *       <span md-colors="{background: 'mySecondTheme-accent-200'}">Color demo</span>
+             *     </div>
+             *   </div>
+             * </hljs>
+             *
+             * 'primary-600' will be 'myTheme-primary-600',
+             * but 'mySecondTheme-accent-200' will stay the same cause it has a theme prefix
+             */
+            if (mdThemeController) {
+              Object.keys(colors).forEach(function (prop) {
+                var color = colors[prop];
+                if (!$mdColors.hasTheme(color)) {
+                  colors[prop] = (theme || mdThemeController.$mdTheme) + '-' + color;
+                }
+              });
+            }
+
+            return colors;
           };
+
+          /**
+           * Registering for mgTheme changes and asking mdTheme controller run our callback whenever a theme changes
+           */
+          var unregisterChanges = angular.noop;
+
+          if (mdThemeController) {
+            unregisterChanges = mdThemeController.registerChanges(function (theme) {
+              $mdColors.applyThemeColors(element, parseColors(theme));
+            });
+          }
+
+          scope.$on('destroy', function () {
+            unregisterChanges();
+          });
 
           try {
             if (shouldWatch) {
-              scope.$watch(colorExpression, angular.bind(this,
+              scope.$watch(parseColors, angular.bind(this,
                 $mdColors.applyThemeColors, element
               ), true);
             }
             else {
-              $mdColors.applyThemeColors(element, colorExpression());
+              $mdColors.applyThemeColors(element, parseColors());
             }
 
           }
@@ -7387,19 +7465,19 @@ angular.module('material.components.chips', [
         };
 
         function shouldColorsWatch() {
-            // Simulate 1x binding and mark mdColorsWatch == false
-            var rawColorExpression = tAttrs.mdColors;
-            var bindOnce = rawColorExpression.indexOf('::') > -1;
-            var isStatic = bindOnce ? true : STATIC_COLOR_EXPRESSION.test(tAttrs.mdColors);
+          // Simulate 1x binding and mark mdColorsWatch == false
+          var rawColorExpression = tAttrs.mdColors;
+          var bindOnce = rawColorExpression.indexOf('::') > -1;
+          var isStatic = bindOnce ? true : STATIC_COLOR_EXPRESSION.test(tAttrs.mdColors);
 
-              // Remove it for the postLink...
-              tAttrs.mdColors = rawColorExpression.replace('::','');
+          // Remove it for the postLink...
+          tAttrs.mdColors = rawColorExpression.replace('::', '');
 
-            var hasWatchAttr = angular.isDefined(tAttrs.mdColorsWatch);
+          var hasWatchAttr = angular.isDefined(tAttrs.mdColorsWatch);
 
-            return (bindOnce || isStatic) ? false :
-                   hasWatchAttr ? $mdUtil.parseAttributeBoolean(tAttrs.mdColorsWatch) : true;
-          }
+          return (bindOnce || isStatic) ? false :
+            hasWatchAttr ? $mdUtil.parseAttributeBoolean(tAttrs.mdColorsWatch) : true;
+        }
       }
     };
 
@@ -12987,16 +13065,43 @@ function ngMessageDirective($mdUtil) {
     priority: 100
   };
 
-  function compile(element) {
-    var inputContainer = $mdUtil.getClosest(element, "md-input-container");
+  function compile(tElement) {
+    if (!isInsideInputContainer(tElement)) {
 
-    // If we are not a child of an input container, don't do anything
-    if (!inputContainer) return;
+      // When the current element is inside of a document fragment, then we need to check for an input-container
+      // in the postLink, because the element will be later added to the DOM and is currently just in a temporary
+      // fragment, which causes the input-container check to fail.
+      if (isInsideFragment()) {
+        return function (scope, element) {
+          if (isInsideInputContainer(element)) {
+            // Inside of the postLink function, a ngMessage directive will be a comment element, because it's
+            // currently hidden. To access the shown element, we need to use the element from the compile function.
+            initMessageElement(tElement);
+          }
+        };
+      }
+    } else {
+      initMessageElement(tElement);
+    }
 
-    // Add our animation class
-    element.toggleClass('md-input-message-animation', true);
+    function isInsideFragment() {
+      var nextNode = tElement[0];
+      while (nextNode = nextNode.parentNode) {
+        if (nextNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+          return true;
+        }
+      }
+      return false;
+    }
 
-    return {};
+    function isInsideInputContainer(element) {
+      return !!$mdUtil.getClosest(element, "md-input-container");
+    }
+
+    function initMessageElement(element) {
+      // Add our animation class
+      element.toggleClass('md-input-message-animation', true);
+    }
   }
 }
 ngMessageDirective.$inject = ["$mdUtil"];
@@ -20051,17 +20156,17 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil) {
           // compiled clone below will only be a comment tag (since they replace their elements with
           // a comment) which cannot be properly passed to the $mdSticky; so we wrap it in our own
           // DIV to ensure we have something $mdSticky can use
-          var wrapperHtml = '<div class="_md-subheader-wrapper">' + outerHTML + '</div>';
-          var stickyClone = $compile(wrapperHtml)(scope);
+          var wrapper = angular.element('<div class="_md-subheader-wrapper">' + outerHTML + '</div>');
 
-          // Append the sticky
-          $mdSticky(scope, element, stickyClone);
+          // Immediately append our transcluded clone into the wrapper.
+          // We don't have to recompile the element again, because the clone is already
+          // compiled in it's transclusion scope. If we recompile the outerHTML of the new clone, we would lose
+          // our ngIf's and other previous registered bindings / properties.
+          getContent(wrapper).append(clone);
 
-          // Delay initialization until after any `ng-if`/`ng-repeat`/etc has finished before
-          // attempting to create the clone
-          $mdUtil.nextTick(function() {
-            getContent(stickyClone).append(clone);
-          });
+          // Make the element sticky and provide the stickyClone our self, to avoid recompilation of the subheader
+          // element.
+          $mdSticky(scope, element, wrapper);
         });
       }
     }
@@ -20162,7 +20267,7 @@ function getDirective(name) {
       function postLink(scope, element, attr) {
         var fn = $parse(attr[directiveName]);
         element.on(eventName, function(ev) {
-          scope.$apply(function() { fn(scope, { $event: ev }); });
+          scope.$applyAsync(function() { fn(scope, { $event: ev }); });
         });
       }
     }
@@ -25848,7 +25953,9 @@ function ConfigurationItem(url, viewBoxSize) {
  * For the **id** query to work properly, this means that all id-to-URL mappings must have been previously configured
  * using the `$mdIconProvider`.
  *
- * @returns {obj} Clone of the initial SVG DOM element; which was created from the SVG markup in the SVG data file.
+ * @returns {angular.$q.Promise} A promise that gets resolved to a clone of the initial SVG DOM element; which was
+ * created from the SVG markup in the SVG data file. If an error occurs (e.g. the icon cannot be found) the promise
+ * will get rejected. 
  *
  * @usage
  * <hljs lang="js">
@@ -28461,6 +28568,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * @param stretchTabs
    */
   function handleStretchTabs (stretchTabs) {
+    var elements = getElements();
     angular.element(elements.wrapper).toggleClass('md-stretch-tabs', shouldStretchTabs());
     updateInkBarStyles();
   }
@@ -28471,6 +28579,8 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
 
   function handleMaxTabWidth (newWidth, oldWidth) {
     if (newWidth !== oldWidth) {
+      var elements = getElements();
+
       angular.forEach(elements.tabs, function(tab) {
         tab.style.maxWidth = newWidth + 'px';
       });
@@ -28502,7 +28612,9 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * @param left
    */
   function handleOffsetChange (left) {
+    var elements = getElements();
     var newValue = ctrl.shouldCenterTabs ? '' : '-' + left + 'px';
+
     angular.element(elements.paging).css($mdConstant.CSS.TRANSFORM, 'translate3d(' + newValue + ', 0, 0)');
     $scope.$broadcast('$mdTabsPaginationChanged');
   }
@@ -28514,7 +28626,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    */
   function handleFocusIndexChange (newIndex, oldIndex) {
     if (newIndex === oldIndex) return;
-    if (!elements.tabs[ newIndex ]) return;
+    if (!getElements().tabs[ newIndex ]) return;
     adjustOffset();
     redirectFocus();
   }
@@ -28622,6 +28734,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * Slides the tabs over approximately one page forward.
    */
   function nextPage () {
+    var elements = getElements();
     var viewportWidth = elements.canvas.clientWidth,
         totalWidth    = viewportWidth + ctrl.offsetLeft,
         i, tab;
@@ -28636,7 +28749,8 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * Slides the tabs over approximately one page backward.
    */
   function previousPage () {
-    var i, tab;
+    var i, tab, elements = getElements();
+
     for (i = 0; i < elements.tabs.length; i++) {
       tab = elements.tabs[ i ];
       if (tab.offsetLeft + tab.offsetWidth >= ctrl.offsetLeft) break;
@@ -28657,7 +28771,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   }
 
   function handleInkBar (hide) {
-    angular.element(elements.inkBar).toggleClass('ng-hide', hide);
+    angular.element(getElements().inkBar).toggleClass('ng-hide', hide);
   }
 
   /**
@@ -28763,6 +28877,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * @returns {*|boolean}
    */
   function canPageForward () {
+    var elements = getElements();
     var lastTab = elements.tabs[ elements.tabs.length - 1 ];
     return lastTab && lastTab.offsetLeft + lastTab.offsetWidth > elements.canvas.clientWidth +
         ctrl.offsetLeft;
@@ -28799,7 +28914,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   function shouldPaginate () {
     if (ctrl.noPagination || !loaded) return false;
     var canvasWidth = $element.prop('clientWidth');
-    angular.forEach(elements.dummies, function (tab) { canvasWidth -= tab.offsetWidth; });
+    angular.forEach(getElements().dummies, function (tab) { canvasWidth -= tab.offsetWidth; });
     return canvasWidth < 0;
   }
 
@@ -28855,6 +28970,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * Sets or clears fixed width for md-pagination-wrapper depending on if tabs should stretch.
    */
   function updatePagingWidth() {
+    var elements = getElements();
     if (shouldStretchTabs()) {
       angular.element(elements.paging).css('width', '');
     } else {
@@ -28868,7 +28984,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   function calcPagingWidth () {
     var width = 1;
 
-    angular.forEach(elements.dummies, function (element) {
+    angular.forEach(getElements().dummies, function (element) {
       //-- Uses the larger value between `getBoundingClientRect().width` and `offsetWidth`.  This
       //   prevents `offsetWidth` value from being rounded down and causing wrapping issues, but
       //   also handles scenarios where `getBoundingClientRect()` is inaccurate (ie. tabs inside
@@ -28918,13 +29034,15 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * issues when attempting to focus an item that is out of view.
    */
   function redirectFocus () {
-    elements.dummies[ ctrl.focusIndex ].focus();
+    getElements().dummies[ ctrl.focusIndex ].focus();
   }
 
   /**
    * Forces the pagination to move the focused tab into view.
    */
   function adjustOffset (index) {
+    var elements = getElements();
+
     if (index == null) index = ctrl.focusIndex;
     if (!elements.tabs[ index ]) return;
     if (ctrl.shouldCenterTabs) return;
@@ -28970,6 +29088,8 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   function updateHeightFromContent () {
     if (!ctrl.dynamicHeight) return $element.css('height', '');
     if (!ctrl.tabs.length) return queue.push(updateHeightFromContent);
+
+    var elements = getElements();
 
     var tabContent    = elements.contents[ ctrl.selectedIndex ],
         contentHeight = tabContent ? tabContent.offsetHeight : 0,
@@ -29029,6 +29149,8 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * @returns {*}
    */
   function updateInkBarStyles () {
+    var elements = getElements();
+
     if (!elements.tabs[ ctrl.selectedIndex ]) {
       angular.element(elements.inkBar).css({ left: 'auto', right: 'auto' });
       return;
@@ -29057,6 +29179,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * Adds left/right classes so that the ink bar will animate properly.
    */
   function updateInkBarClassName () {
+    var elements = getElements();
     var newIndex = ctrl.selectedIndex,
         oldIndex = ctrl.lastSelectedIndex,
         ink      = angular.element(elements.inkBar);
@@ -29072,6 +29195,8 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * @returns {*}
    */
   function fixOffset (value) {
+    var elements = getElements();
+
     if (!elements.tabs.length || !ctrl.shouldPaginate) return 0;
     var lastTab    = elements.tabs[ elements.tabs.length - 1 ],
         totalWidth = lastTab.offsetLeft + lastTab.offsetWidth;
@@ -29086,6 +29211,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * @param element
    */
   function attachRipple (scope, element) {
+    var elements = getElements();
     var options = { colorElement: angular.element(elements.inkBar) };
     $mdTabInkRipple.attach(scope, element, options);
   }
@@ -29252,7 +29378,7 @@ function MdTabs () {
                   'md-scope="::tab.parent"></md-tab-item> ' +
               '<md-ink-bar></md-ink-bar> ' +
             '</md-pagination-wrapper> ' +
-            '<div class="_md-visually-hidden md-dummy-wrapper"> ' +
+            '<md-tabs-dummy-wrapper class="_md-visually-hidden md-dummy-wrapper"> ' +
               '<md-dummy-tab ' +
                   'class="md-tab" ' +
                   'tabindex="-1" ' +
@@ -29266,7 +29392,7 @@ function MdTabs () {
                   'ng-repeat="tab in $mdTabsCtrl.tabs" ' +
                   'md-tabs-template="::tab.label" ' +
                   'md-scope="::tab.parent"></md-dummy-tab> ' +
-            '</div> ' +
+            '</md-tabs-dummy-wrapper> ' +
           '</md-tabs-canvas> ' +
         '</md-tabs-wrapper> ' +
         '<md-tabs-content-wrapper ng-show="$mdTabsCtrl.hasContent && $mdTabsCtrl.selectedIndex >= 0" class="_md"> ' +
@@ -29305,6 +29431,48 @@ function MdTabs () {
 "use strict";
 
 angular
+  .module('material.components.tabs')
+  .directive('mdTabsDummyWrapper', MdTabsDummyWrapper);
+
+/**
+ * @private
+ *
+ * @param $mdUtil
+ * @returns {{require: string, link: link}}
+ * @constructor
+ * 
+ * @ngInject
+ */
+function MdTabsDummyWrapper ($mdUtil) {
+  return {
+    require: '^?mdTabs',
+    link:    function link (scope, element, attr, ctrl) {
+      if (!ctrl) return;
+
+      var observer = new MutationObserver(function(mutations) {
+        ctrl.updatePagination();
+        ctrl.updateInkBarStyles();
+      });
+      var config = { childList: true, subtree: true };
+
+      observer.observe(element[0], config);
+
+      // Disconnect the observer
+      scope.$on('$destroy', function() {
+        if (observer) {
+          observer.disconnect();
+        }
+      });
+    }
+  };
+}
+MdTabsDummyWrapper.$inject = ["$mdUtil"];
+
+})();
+(function(){
+"use strict";
+
+angular
     .module('material.components.tabs')
     .directive('mdTabsTemplate', MdTabsTemplate);
 
@@ -29321,13 +29489,12 @@ function MdTabsTemplate ($compile, $mdUtil) {
   };
   function link (scope, element, attr, ctrl) {
     if (!ctrl) return;
+
     var compileScope = ctrl.enableDisconnect ? scope.compileScope.$new() : scope.compileScope;
+
     element.html(scope.template);
     $compile(element.contents())(compileScope);
-    element.on('DOMSubtreeModified', function () {
-      ctrl.updatePagination();
-      ctrl.updateInkBarStyles();
-    });
+
     return $mdUtil.nextTick(handleScope);
 
     function handleScope () {
@@ -29352,4 +29519,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc4-master-c26842a"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc4-master-06e7e99"}};

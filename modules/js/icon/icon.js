@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c26842a
+ * v1.1.0-rc4-master-06e7e99
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -674,7 +674,9 @@ function ConfigurationItem(url, viewBoxSize) {
  * For the **id** query to work properly, this means that all id-to-URL mappings must have been previously configured
  * using the `$mdIconProvider`.
  *
- * @returns {obj} Clone of the initial SVG DOM element; which was created from the SVG markup in the SVG data file.
+ * @returns {angular.$q.Promise} A promise that gets resolved to a clone of the initial SVG DOM element; which was
+ * created from the SVG markup in the SVG data file. If an error occurs (e.g. the icon cannot be found) the promise
+ * will get rejected. 
  *
  * @usage
  * <hljs lang="js">
