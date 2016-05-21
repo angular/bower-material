@@ -6875,6 +6875,12 @@ $virtual-repeat-scrollbar-width: 16px !default;
   }
 }
 
+@media print {
+  md-whiteframe, [md-whiteframe] {
+    background-color: #ffffff;
+  }
+}
+
 /*
 * Since Layout API uses ng-cloak to hide the dom elements while layouts are adjusted
 *
