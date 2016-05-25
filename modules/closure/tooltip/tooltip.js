@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-cfc33a6
+ * v1.1.0-rc4-master-71529d7
  */
 goog.provide('ng.material.components.tooltip');
 goog.require('ng.material.core');
@@ -57,7 +57,13 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       autohide: '=?mdAutohide',
       direction: '@?mdDirection'    // only expect raw or interpolated string value; not expression
     },
-    link: postLink
+    compile: function(tElement, tAttr) {
+      if (!tAttr.mdDirection) {
+        tAttr.$set('mdDirection', 'bottom');
+      }
+
+      return postLink;
+    }
   };
 
   function postLink(scope, element, attr) {

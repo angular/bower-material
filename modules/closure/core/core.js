@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-cfc33a6
+ * v1.1.0-rc4-master-71529d7
  */
 goog.provide('ng.material.core');
 
@@ -4734,6 +4734,12 @@ angular.module('material.core.theming.palette', [])
   }
 });
 
+/**
+ * @ngdoc module
+ * @name material.core.theming
+ * @description
+ * Theming
+ */
 angular.module('material.core.theming', ['material.core.theming.palette'])
   .directive('mdTheme', ThemingDirective)
   .directive('mdThemable', ThemableDirective)
