@@ -2,13 +2,12 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c9158c8
+ * v1.1.0-rc4-master-6515150
  */
 (function( window, angular, undefined ){
 "use strict";
 
 /**
- * @private
  * @ngdoc module
  * @name material.components.switch
  */

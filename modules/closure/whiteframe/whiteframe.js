@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c9158c8
+ * v1.1.0-rc4-master-6515150
  */
 goog.provide('ng.material.components.whiteframe');
 goog.require('ng.material.core');
@@ -18,7 +18,6 @@ angular
  * @ngdoc directive
  * @module material.components.whiteframe
  * @name mdWhiteframe
- * @restrict A
  *
  * @description
  * The md-whiteframe directive allows you to apply an elevation shadow to an element.
@@ -42,7 +41,6 @@ function MdWhiteframeDirective($log) {
   var DEFAULT_DP = 4;
 
   return {
-    restrict: 'A',
     link: postLink
   };
 
