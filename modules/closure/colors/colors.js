@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-4aa7160
+ * v1.1.0-rc4-master-8bf174b
  */
 goog.provide('ng.material.components.colors');
 goog.require('ng.material.core');
@@ -66,7 +66,7 @@ goog.require('ng.material.core');
      * @name $mdColors#applyThemeColors
      *
      * @description
-     * Convert the color expression into an object with scope-interpolated values
+     * Gets a color json object, keys are css properties and values are string of the wanted color
      * Then calculate the rgba() values based on the theme color parts
      *
      * @param {DOMElement} element the element to apply the styles on.
@@ -79,7 +79,7 @@ goog.require('ng.material.core');
      *     return {
      *       ...
      *       link: function (scope, elem) {
-     *         $mdColors.applyThemeColors(elem, scope, {color: 'red'});
+     *         $mdColors.applyThemeColors(elem, {color: 'red'});
      *       }
      *    }
      *   });
