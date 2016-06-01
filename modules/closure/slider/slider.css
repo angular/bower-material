@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-8bf174b
+ * v1.1.0-rc4-master-e85e1b9
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -352,6 +352,12 @@ md-slider {
       opacity: 1;
       -webkit-transform: translate3d(0, 0, 0) scale(1);
               transform: translate3d(0, 0, 0) scale(1); }
+  md-slider[md-invert]:not([md-vertical]) ._md-track-fill {
+    left: auto;
+    right: 0; }
+  md-slider[md-invert][md-vertical] ._md-track-fill {
+    bottom: auto;
+    top: 0; }
 
 md-slider-container {
   display: -webkit-flex;

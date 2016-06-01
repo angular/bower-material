@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-8bf174b
+ * v1.1.0-rc4-master-e85e1b9
  */
 goog.provide('ng.material.components.list');
 goog.require('ng.material.core');
@@ -178,10 +178,6 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
         angular.forEach(secondaryItems, function(secondaryItem) {
           wrapSecondaryItem(secondaryItem, secondaryItemsWrapper);
         });
-
-        // Since the secondary item container is static we need to fill the remaing space.
-        var spaceFiller = angular.element('<div class="flex"></div>');
-        itemContainer.append(spaceFiller);
 
         itemContainer.append(secondaryItemsWrapper);
       }
