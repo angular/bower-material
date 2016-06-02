@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-e85e1b9
+ * v1.1.0-rc4-master-da02ea2
  */
 html, body {
   height: 100%;
@@ -4996,6 +4996,20 @@ md-toast {
       right: 0; }
     md-toast._md-top {
       top: 0; }
+    md-toast._md-start {
+      left: 0; }
+      [dir=rtl] md-toast._md-start {
+        left: 0;
+        left: auto;
+        left: initial;
+        right: 0; }
+    md-toast._md-end {
+      right: 0; }
+      [dir=rtl] md-toast._md-end {
+        right: 0;
+        right: auto;
+        right: initial;
+        left: 0; }
     md-toast.ng-leave.ng-leave-active._md-swipeleft .md-toast-content {
       -webkit-transform: translate3d(-50%, 0, 0);
               transform: translate3d(-50%, 0, 0); }
