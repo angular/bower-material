@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-da02ea2
+ * v1.1.0-rc4-master-ce07651
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -44,7 +44,7 @@ md-input-container.md-THEME_NAME-theme .md-input-messages-animation, md-input-co
 md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-has-value label {
   color: '{{foreground-2}}'; }
 
-md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused .md-input {
+md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused .md-input, md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-resized .md-input {
   border-color: '{{primary-color}}'; }
 
 md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused label {
