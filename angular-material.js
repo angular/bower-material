@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-ce07651
+ * v1.1.0-rc4-master-112a3e4
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2871,7 +2871,10 @@ function InterimElementProvider() {
             return reason;
           });
 
-        return interim.deferred.promise;
+        // Since Angular 1.6.7, promises will be logged to $exceptionHandler when the promise
+        // is not handling the rejection. We create a pseudo catch handler, which will prevent the
+        // promise from being logged to the $exceptionHandler.
+        return interim.deferred.promise.catch(angular.noop);
       }
 
       /*
@@ -30503,4 +30506,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc4-master-ce07651"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc4-master-112a3e4"}};
