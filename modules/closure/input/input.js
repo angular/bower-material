@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-f9738f5
+ * v1.1.0-rc4-master-0efece2
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -678,10 +678,10 @@ function placeholderDirective($log) {
     if (!inputContainer) return;
 
     var label = inputContainer.element.find('label');
-    var hasNoFloat = angular.isDefined(inputContainer.element.attr('md-no-float'));
+    var noFloat = inputContainer.element.attr('md-no-float');
 
     // If we have a label, or they specify the md-no-float attribute, just return
-    if ((label && label.length) || hasNoFloat) {
+    if ((label && label.length) || noFloat === '' || scope.$eval(noFloat)) {
       // Add a placeholder class so we can target it in the CSS
       inputContainer.setHasPlaceholder(true);
       return;
