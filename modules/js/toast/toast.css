@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-0efece2
+ * v1.1.0-rc4-master-dce2fee
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -33,7 +33,6 @@ md-toast {
     -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
-    height: 0;
     max-height: 168px;
     max-width: 100%;
     min-height: 48px;
@@ -48,6 +47,11 @@ md-toast {
     -webkit-justify-content: flex-start;
         -ms-flex-pack: start;
             justify-content: flex-start; }
+    md-toast .md-toast-content::before {
+      content: '';
+      min-height: 48px;
+      visibility: hidden;
+      display: inline-block; }
     [dir=rtl] md-toast .md-toast-content {
       -webkit-justify-content: flex-end;
           -ms-flex-pack: end;

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-0efece2
+ * v1.1.0-rc4-master-dce2fee
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -76,7 +76,8 @@ md-list {
     md-list.md-dense md-list-item.md-2-line div.md-button:first-child::before, md-list.md-dense md-list-item.md-2-line > ._md-no-style div.md-button:first-child::before {
       content: '';
       min-height: 60px;
-      visibility: hidden; }
+      visibility: hidden;
+      display: inline-block; }
     md-list.md-dense md-list-item.md-2-line > .md-avatar, md-list.md-dense md-list-item.md-2-line .md-avatar-icon, md-list.md-dense md-list-item.md-2-line > ._md-no-style > .md-avatar, md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-avatar-icon {
       margin-top: 12px; }
   md-list.md-dense md-list-item.md-3-line, md-list.md-dense md-list-item.md-3-line > ._md-no-style {
@@ -84,7 +85,8 @@ md-list {
     md-list.md-dense md-list-item.md-3-line div.md-button:first-child::before, md-list.md-dense md-list-item.md-3-line > ._md-no-style div.md-button:first-child::before {
       content: '';
       min-height: 76px;
-      visibility: hidden; }
+      visibility: hidden;
+      display: inline-block; }
     md-list.md-dense md-list-item.md-3-line > md-icon:first-child,
     md-list.md-dense md-list-item.md-3-line > .md-avatar, md-list.md-dense md-list-item.md-3-line > ._md-no-style > md-icon:first-child,
     md-list.md-dense md-list-item.md-3-line > ._md-no-style > .md-avatar {
@@ -386,7 +388,8 @@ md-list-item {
     md-list-item.md-2-line div.md-button:first-child::before, md-list-item.md-2-line > ._md-no-style div.md-button:first-child::before {
       content: '';
       min-height: 72px;
-      visibility: hidden; }
+      visibility: hidden;
+      display: inline-block; }
     md-list-item.md-2-line > .md-avatar, md-list-item.md-2-line .md-avatar-icon, md-list-item.md-2-line > ._md-no-style > .md-avatar, md-list-item.md-2-line > ._md-no-style .md-avatar-icon {
       margin-top: 12px; }
     md-list-item.md-2-line > md-icon:first-child, md-list-item.md-2-line > ._md-no-style > md-icon:first-child {
@@ -403,7 +406,8 @@ md-list-item {
     md-list-item.md-3-line div.md-button:first-child::before, md-list-item.md-3-line > ._md-no-style div.md-button:first-child::before {
       content: '';
       min-height: 88px;
-      visibility: hidden; }
+      visibility: hidden;
+      display: inline-block; }
     md-list-item.md-3-line > md-icon:first-child,
     md-list-item.md-3-line > .md-avatar, md-list-item.md-3-line > ._md-no-style > md-icon:first-child,
     md-list-item.md-3-line > ._md-no-style > .md-avatar {
