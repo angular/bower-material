@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-dce2fee
+ * v1.1.0-rc4-master-9ce4f9e
  */
 goog.provide('ng.material.components.menu');
 goog.require('ng.material.components.backdrop');
@@ -28,6 +28,7 @@ angular
  */
 function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $rootScope, $q) {
 
+  var prefixer = $mdUtil.prefixer();
   var menuContainer;
   var self = this;
   var triggerElement;
@@ -41,8 +42,9 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
   this.init = function init(setMenuContainer, opts) {
     opts = opts || {};
     menuContainer = setMenuContainer;
+    
     // Default element for ARIA attributes has the ngClick or ngMouseenter expression
-    triggerElement = $element[0].querySelector('[ng-click],[ng-mouseenter]');
+    triggerElement = $element[0].querySelector(prefixer.buildSelector(['ng-click', 'ng-mouseenter']));
     triggerElement.setAttribute('aria-expanded', 'false');
 
     this.isInMenuBar = opts.isInMenuBar;
@@ -172,7 +174,9 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
   };
 
   this.focusMenuContainer = function focusMenuContainer() {
-    var focusTarget = menuContainer[0].querySelector('[md-menu-focus-target], [md-autofocus]');
+    var focusTarget = menuContainer[0]
+      .querySelector(prefixer.buildSelector(['md-menu-focus-target', 'md-autofocus']));
+
     if (!focusTarget) focusTarget = menuContainer[0].querySelector('.md-button');
     focusTarget.focus();
   };
@@ -425,8 +429,11 @@ function MenuDirective($mdUtil) {
   function compile(templateElement) {
     templateElement.addClass('md-menu');
     var triggerElement = templateElement.children()[0];
-    if (!triggerElement.hasAttribute('ng-click')) {
-      triggerElement = triggerElement.querySelector('[ng-click],[ng-mouseenter]') || triggerElement;
+    var prefixer = $mdUtil.prefixer();
+
+    if (!prefixer.hasAttribute(triggerElement, 'ng-click')) {
+      triggerElement = triggerElement
+          .querySelector(prefixer.buildSelector(['ng-click', 'ng-mouseenter'])) || triggerElement;
     }
     if (triggerElement && (
       triggerElement.nodeName == 'MD-BUTTON' ||
@@ -508,6 +515,7 @@ function MenuProvider($$interimElementProvider) {
 
   /* ngInject */
   function menuDefaultOptions($mdUtil, $mdTheming, $mdConstant, $document, $window, $q, $$rAF, $animateCss, $animate) {
+    var prefixer = $mdUtil.prefixer();
     var animator = $mdUtil.dom.animator;
 
     return {
@@ -695,7 +703,9 @@ function MenuProvider($$interimElementProvider) {
         opts.menuContentEl[0].addEventListener('click', captureClickListener, true);
 
         // kick off initial focus in the menu on the first element
-        var focusTarget = opts.menuContentEl[0].querySelector('[md-menu-focus-target], [md-autofocus]');
+        var focusTarget = opts.menuContentEl[0]
+          .querySelector(prefixer.buildSelector(['md-menu-focus-target', 'md-autofocus']));
+
         if ( !focusTarget ) {
           var firstChild = opts.menuContentEl[0].firstElementChild;
 
@@ -791,14 +801,13 @@ function MenuProvider($$interimElementProvider) {
 
           function hasAnyAttribute(target, attrs) {
             if (!target) return false;
+
             for (var i = 0, attr; attr = attrs[i]; ++i) {
-              var altForms = [attr, 'data-' + attr, 'x-' + attr];
-              for (var j = 0, rawAttr; rawAttr = altForms[j]; ++j) {
-                if (target.hasAttribute(rawAttr)) {
-                  return true;
-                }
+              if (prefixer.hasAttribute(target, attr)) {
+                return true;
               }
             }
+
             return false;
           }
         }
@@ -874,7 +883,7 @@ function MenuProvider($$interimElementProvider) {
 
       var menuStyle = $window.getComputedStyle(openMenuNode);
 
-      var originNode = opts.target[0].querySelector('[md-menu-origin]') || opts.target[0],
+      var originNode = opts.target[0].querySelector(prefixer.buildSelector('md-menu-origin')) || opts.target[0],
         originNodeRect = originNode.getBoundingClientRect();
 
       var bounds = {
@@ -892,7 +901,7 @@ function MenuProvider($$interimElementProvider) {
         if ( alignTarget ) {
           // TODO: Allow centering on an arbitrary node, for now center on first menu-item's child
           alignTarget = alignTarget.firstElementChild || alignTarget;
-          alignTarget = alignTarget.querySelector('[md-menu-align-target]') || alignTarget;
+          alignTarget = alignTarget.querySelector(prefixer.buildSelector('md-menu-align-target')) || alignTarget;
           alignTargetRect = alignTarget.getBoundingClientRect();
 
           existingOffsets = {

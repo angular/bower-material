@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-dce2fee
+ * v1.1.0-rc4-master-9ce4f9e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -206,7 +206,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
           var focusable = $mdUtil.findFocusTarget(element) || angular.element(
             element[0].querySelector('button') ||
             element[0].querySelector('a') ||
-            element[0].querySelector('[ng-click]')
+            element[0].querySelector($mdUtil.prefixer('ng-click', true))
           ) || backdrop;
 
           if (options.escapeToClose) {

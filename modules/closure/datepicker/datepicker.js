@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-dce2fee
+ * v1.1.0-rc4-master-9ce4f9e
  */
 goog.provide('ng.material.components.datepicker');
 goog.require('ng.material.components.icon');
@@ -1756,7 +1756,7 @@ goog.require('ng.material.core');
    * </hljs>
    *
    */
-  function datePickerDirective() {
+  function datePickerDirective($$mdSvgRegistry) {
     return {
       template:
           // Buttons are not in the tab order because users can open the calendar via keyboard
@@ -1765,7 +1765,8 @@ goog.require('ng.material.core');
           '<md-button class="md-datepicker-button md-icon-button" type="button" ' +
               'tabindex="-1" aria-hidden="true" ' +
               'ng-click="ctrl.openCalendarPane($event)">' +
-            '<md-icon class="md-datepicker-calendar-icon" md-svg-icon="md-calendar"></md-icon>' +
+            '<md-icon class="md-datepicker-calendar-icon" aria-label="md-calendar" ' +
+                     'md-svg-src="' + $$mdSvgRegistry.mdCalendar + '"></md-icon>' +
           '</md-button>' +
           '<div class="md-datepicker-input-container" ' +
               'ng-class="{\'md-datepicker-focused\': ctrl.isFocused}">' +
@@ -1815,6 +1816,7 @@ goog.require('ng.material.core');
       }
     };
   }
+  datePickerDirective.$inject = ["$$mdSvgRegistry"];
 
   /** Additional offset for the input's `size` attribute, which is updated based on its content. */
   var EXTRA_INPUT_SIZE = 3;

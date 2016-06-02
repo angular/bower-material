@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-dce2fee
+ * v1.1.0-rc4-master-9ce4f9e
  */
 goog.provide('ng.material.core');
 
@@ -775,6 +775,69 @@ function mdMediaFactory($mdConstant, $rootScope, $window) {
 }
 mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];
 
+angular
+  .module('material.core')
+  .config( ["$provide", function($provide) {
+    $provide.decorator('$mdUtil', ['$delegate', function ($delegate) {
+
+      // Inject the prefixer into our original $mdUtil service.
+      $delegate.prefixer = MdPrefixer;
+
+      return $delegate;
+    }]);
+  }]);
+
+function MdPrefixer(initialAttributes, buildSelector) {
+  var PREFIXES = ['data', 'x'];
+
+  if (initialAttributes) {
+    // The prefixer also accepts attributes as a parameter, and immediately builds a list or selector for
+    // the specified attributes.
+    return buildSelector ? _buildSelector(initialAttributes) : _buildList(initialAttributes);
+  }
+
+  return {
+    buildList: _buildList,
+    buildSelector: _buildSelector,
+    hasAttribute: _hasAttribute
+  };
+
+  function _buildList(attributes) {
+    attributes = angular.isArray(attributes) ? attributes : [attributes];
+
+    attributes.forEach(function(item) {
+      PREFIXES.forEach(function(prefix) {
+        attributes.push(prefix + '-' + item);
+      });
+    });
+
+    return attributes;
+  }
+
+  function _buildSelector(attributes) {
+    attributes = angular.isArray(attributes) ? attributes : [attributes];
+
+    return _buildList(attributes)
+      .map(function (item) {
+        return '[' + item + ']'
+      })
+      .join(',');
+  }
+
+  function _hasAttribute(element, attribute) {
+    element = element[0] || element;
+
+    var prefixedAttrs = _buildList(attribute);
+
+    for (var i = 0; i < prefixedAttrs.length; i++) {
+      if (element.hasAttribute(prefixedAttrs[i])) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+}
 /*
  * This var has to be outside the angular factory, otherwise when
  * there are multiple material apps on the same page, each app
@@ -911,14 +974,14 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      * @returns {*}
      */
     findFocusTarget: function(containerEl, attributeVal) {
-      var AUTO_FOCUS = '[md-autofocus]';
+      var AUTO_FOCUS = this.prefixer('md-autofocus', true);
       var elToFocus;
 
       elToFocus = scanForFocusable(containerEl, attributeVal || AUTO_FOCUS);
 
       if ( !elToFocus && attributeVal != AUTO_FOCUS) {
         // Scan for deprecated attribute
-        elToFocus = scanForFocusable(containerEl, '[md-auto-focus]');
+        elToFocus = scanForFocusable(containerEl, this.prefixer('md-auto-focus', true));
 
         if ( !elToFocus ) {
           // Scan for fallback to 'universal' API

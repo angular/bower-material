@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-dce2fee
+ * v1.1.0-rc4-master-9ce4f9e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -204,8 +204,10 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
       }
 
       function copyAttributes(item, wrapper) {
-        var copiedAttrs = ['ng-if', 'ng-click', 'ng-dblclick', 'aria-label', 'ng-disabled',
-          'ui-sref', 'href', 'ng-href', 'target', 'ng-attr-ui-sref', 'ui-sref-opts'];
+        var copiedAttrs = $mdUtil.prefixer([
+          'ng-if', 'ng-click', 'ng-dblclick', 'aria-label', 'ng-disabled', 'ui-sref',
+          'href', 'ng-href', 'target', 'ng-attr-ui-sref', 'ui-sref-opts'
+        ]);
 
         angular.forEach(copiedAttrs, function(attr) {
           if (item.hasAttribute(attr)) {

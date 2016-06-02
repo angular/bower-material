@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-dce2fee
+ * v1.1.0-rc4-master-9ce4f9e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -804,6 +804,73 @@ mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];
 (function(){
 "use strict";
 
+angular
+  .module('material.core')
+  .config( ["$provide", function($provide) {
+    $provide.decorator('$mdUtil', ['$delegate', function ($delegate) {
+
+      // Inject the prefixer into our original $mdUtil service.
+      $delegate.prefixer = MdPrefixer;
+
+      return $delegate;
+    }]);
+  }]);
+
+function MdPrefixer(initialAttributes, buildSelector) {
+  var PREFIXES = ['data', 'x'];
+
+  if (initialAttributes) {
+    // The prefixer also accepts attributes as a parameter, and immediately builds a list or selector for
+    // the specified attributes.
+    return buildSelector ? _buildSelector(initialAttributes) : _buildList(initialAttributes);
+  }
+
+  return {
+    buildList: _buildList,
+    buildSelector: _buildSelector,
+    hasAttribute: _hasAttribute
+  };
+
+  function _buildList(attributes) {
+    attributes = angular.isArray(attributes) ? attributes : [attributes];
+
+    attributes.forEach(function(item) {
+      PREFIXES.forEach(function(prefix) {
+        attributes.push(prefix + '-' + item);
+      });
+    });
+
+    return attributes;
+  }
+
+  function _buildSelector(attributes) {
+    attributes = angular.isArray(attributes) ? attributes : [attributes];
+
+    return _buildList(attributes)
+      .map(function (item) {
+        return '[' + item + ']'
+      })
+      .join(',');
+  }
+
+  function _hasAttribute(element, attribute) {
+    element = element[0] || element;
+
+    var prefixedAttrs = _buildList(attribute);
+
+    for (var i = 0; i < prefixedAttrs.length; i++) {
+      if (element.hasAttribute(prefixedAttrs[i])) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+}
+})();
+(function(){
+"use strict";
+
 /*
  * This var has to be outside the angular factory, otherwise when
  * there are multiple material apps on the same page, each app
@@ -940,14 +1007,14 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      * @returns {*}
      */
     findFocusTarget: function(containerEl, attributeVal) {
-      var AUTO_FOCUS = '[md-autofocus]';
+      var AUTO_FOCUS = this.prefixer('md-autofocus', true);
       var elToFocus;
 
       elToFocus = scanForFocusable(containerEl, attributeVal || AUTO_FOCUS);
 
       if ( !elToFocus && attributeVal != AUTO_FOCUS) {
         // Scan for deprecated attribute
-        elToFocus = scanForFocusable(containerEl, '[md-auto-focus]');
+        elToFocus = scanForFocusable(containerEl, this.prefixer('md-auto-focus', true));
 
         if ( !elToFocus ) {
           // Scan for fallback to 'universal' API
@@ -6529,7 +6596,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
           var focusable = $mdUtil.findFocusTarget(element) || angular.element(
             element[0].querySelector('button') ||
             element[0].querySelector('a') ||
-            element[0].querySelector('[ng-click]')
+            element[0].querySelector($mdUtil.prefixer('ng-click', true))
           ) || backdrop;
 
           if (options.escapeToClose) {
@@ -9386,7 +9453,7 @@ function iosScrollFix(node) {
    * </hljs>
    *
    */
-  function datePickerDirective() {
+  function datePickerDirective($$mdSvgRegistry) {
     return {
       template:
           // Buttons are not in the tab order because users can open the calendar via keyboard
@@ -9395,7 +9462,8 @@ function iosScrollFix(node) {
           '<md-button class="md-datepicker-button md-icon-button" type="button" ' +
               'tabindex="-1" aria-hidden="true" ' +
               'ng-click="ctrl.openCalendarPane($event)">' +
-            '<md-icon class="md-datepicker-calendar-icon" md-svg-icon="md-calendar"></md-icon>' +
+            '<md-icon class="md-datepicker-calendar-icon" aria-label="md-calendar" ' +
+                     'md-svg-src="' + $$mdSvgRegistry.mdCalendar + '"></md-icon>' +
           '</md-button>' +
           '<div class="md-datepicker-input-container" ' +
               'ng-class="{\'md-datepicker-focused\': ctrl.isFocused}">' +
@@ -9445,6 +9513,7 @@ function iosScrollFix(node) {
       }
     };
   }
+  datePickerDirective.$inject = ["$$mdSvgRegistry"];
 
   /** Additional offset for the input's `size` attribute, which is updated based on its content. */
   var EXTRA_INPUT_SIZE = 3;
@@ -11558,7 +11627,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
    * @usage
    * See the `<md-fab-speed-dial>` or `<md-fab-toolbar>` directives for example usage.
    */
-  function MdFabActionsDirective() {
+  function MdFabActionsDirective($mdUtil) {
     return {
       restrict: 'E',
 
@@ -11567,11 +11636,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
       compile: function(element, attributes) {
         var children = element.children();
 
-        var hasNgRepeat = false;
-
-        angular.forEach(['', 'data-', 'x-'], function(prefix) {
-          hasNgRepeat = hasNgRepeat || (children.attr(prefix + 'ng-repeat') ? true : false);
-        });
+        var hasNgRepeat = $mdUtil.prefixer().hasAttribute(children, 'ng-repeat');
 
         // Support both ng-repeat and static content
         if (hasNgRepeat) {
@@ -11583,6 +11648,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
       }
     }
   }
+  MdFabActionsDirective.$inject = ["$mdUtil"];
 
 })();
 
@@ -14375,8 +14441,10 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
       }
 
       function copyAttributes(item, wrapper) {
-        var copiedAttrs = ['ng-if', 'ng-click', 'ng-dblclick', 'aria-label', 'ng-disabled',
-          'ui-sref', 'href', 'ng-href', 'target', 'ng-attr-ui-sref', 'ui-sref-opts'];
+        var copiedAttrs = $mdUtil.prefixer([
+          'ng-if', 'ng-click', 'ng-dblclick', 'aria-label', 'ng-disabled', 'ui-sref',
+          'href', 'ng-href', 'target', 'ng-attr-ui-sref', 'ui-sref-opts'
+        ]);
 
         angular.forEach(copiedAttrs, function(attr) {
           if (item.hasAttribute(attr)) {
@@ -24467,7 +24535,7 @@ angular
  *     input validation for the field.
  */
 
-function MdAutocomplete () {
+function MdAutocomplete ($$mdSvgRegistry) {
 
   return {
     controller:   'MdAutocompleteCtrl',
@@ -24628,7 +24696,7 @@ function MdAutocomplete () {
                 tabindex="-1"\
                 ng-if="$mdAutocompleteCtrl.scope.searchText && !$mdAutocompleteCtrl.isDisabled"\
                 ng-click="$mdAutocompleteCtrl.clear($event)">\
-              <md-icon md-svg-icon="md-close"></md-icon>\
+              <md-icon md-svg-src="' + $$mdSvgRegistry.mdClose + '"></md-icon>\
               <span class="_md-visually-hidden">Clear</span>\
             </button>\
                 ';
@@ -24637,6 +24705,7 @@ function MdAutocomplete () {
     }
   };
 }
+MdAutocomplete.$inject = ["$$mdSvgRegistry"];
 
 })();
 (function(){
@@ -25886,7 +25955,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
           type="button"\
           aria-hidden="true"\
           tabindex="-1">\
-        <md-icon md-svg-icon="md-close"></md-icon>\
+        <md-icon md-svg-src="{{ $mdChipsCtrl.mdCloseIcon }}"></md-icon>\
         <span class="_md-visually-hidden">\
           {{$mdChipsCtrl.deleteButtonLabel}}\
         </span>\
@@ -25895,7 +25964,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
   /**
    * MDChips Directive Definition
    */
-  function MdChips ($mdTheming, $mdUtil, $compile, $log, $timeout) {
+  function MdChips ($mdTheming, $mdUtil, $compile, $log, $timeout, $$mdSvgRegistry) {
     // Run our templates through $mdUtil.processTemplate() to allow custom start/end symbols
     var templates = getTemplates();
 
@@ -25967,9 +26036,17 @@ MdChipsCtrl.prototype.hasFocus = function () {
 
       var chipTemplate = getTemplateByQuery('md-chips>md-chip-template');
 
+      var chipRemoveSelector = $mdUtil
+        .prefixer()
+        .buildList('md-chip-remove')
+        .map(function(attr) {
+          return 'md-chips>*[' + attr + ']';
+        })
+        .join(',');
+
       // Set the chip remove, chip contents and chip input templates. The link function will put
       // them on the scope for transclusion later.
-      var chipRemoveTemplate   = getTemplateByQuery('md-chips>*[md-chip-remove]') || templates.remove,
+      var chipRemoveTemplate   = getTemplateByQuery(chipRemoveSelector) || templates.remove,
           chipContentsTemplate = chipTemplate || templates.default,
           chipInputTemplate    = getTemplateByQuery('md-chips>md-autocomplete')
               || getTemplateByQuery('md-chips>input')
@@ -26003,6 +26080,8 @@ MdChipsCtrl.prototype.hasFocus = function () {
         mdChipsCtrl.chipContentsTemplate = chipContentsTemplate;
         mdChipsCtrl.chipRemoveTemplate   = chipRemoveTemplate;
         mdChipsCtrl.chipInputTemplate    = chipInputTemplate;
+
+        mdChipsCtrl.mdCloseIcon = $$mdSvgRegistry.mdClose;
 
         element
             .attr({ 'aria-hidden': true, tabindex: -1 })
@@ -26079,7 +26158,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
       };
     }
   }
-  MdChips.$inject = ["$mdTheming", "$mdUtil", "$compile", "$log", "$timeout"];
+  MdChips.$inject = ["$mdTheming", "$mdUtil", "$compile", "$log", "$timeout", "$$mdSvgRegistry"];
 
 })();
 (function(){
@@ -26537,9 +26616,17 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $sce) {
 (function(){
 "use strict";
 
-angular
-  .module('material.components.icon')
-  .provider('$mdIcon', MdIconProvider);
+  angular
+    .module('material.components.icon')
+    .constant('$$mdSvgRegistry', {
+        'mdTabsArrow':   'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxnPjxwb2x5Z29uIHBvaW50cz0iMTUuNCw3LjQgMTQsNiA4LDEyIDE0LDE4IDE1LjQsMTYuNiAxMC44LDEyICIvPjwvZz48L3N2Zz4=',
+        'mdClose':       'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxnPjxwYXRoIGQ9Ik0xOSA2LjQxbC0xLjQxLTEuNDEtNS41OSA1LjU5LTUuNTktNS41OS0xLjQxIDEuNDEgNS41OSA1LjU5LTUuNTkgNS41OSAxLjQxIDEuNDEgNS41OS01LjU5IDUuNTkgNS41OSAxLjQxLTEuNDEtNS41OS01LjU5eiIvPjwvZz48L3N2Zz4=',
+        'mdCancel':      'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxnPjxwYXRoIGQ9Ik0xMiAyYy01LjUzIDAtMTAgNC40Ny0xMCAxMHM0LjQ3IDEwIDEwIDEwIDEwLTQuNDcgMTAtMTAtNC40Ny0xMC0xMC0xMHptNSAxMy41OWwtMS40MSAxLjQxLTMuNTktMy41OS0zLjU5IDMuNTktMS40MS0xLjQxIDMuNTktMy41OS0zLjU5LTMuNTkgMS40MS0xLjQxIDMuNTkgMy41OSAzLjU5LTMuNTkgMS40MSAxLjQxLTMuNTkgMy41OSAzLjU5IDMuNTl6Ii8+PC9nPjwvc3ZnPg==',
+        'mdMenu':        'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGQ9Ik0zLDZIMjFWOEgzVjZNMywxMUgyMVYxM0gzVjExTTMsMTZIMjFWMThIM1YxNloiIC8+PC9zdmc+',
+        'mdToggleArrow': 'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNDggNDgiPjxwYXRoIGQ9Ik0yNCAxNmwtMTIgMTIgMi44MyAyLjgzIDkuMTctOS4xNyA5LjE3IDkuMTcgMi44My0yLjgzeiIvPjxwYXRoIGQ9Ik0wIDBoNDh2NDhoLTQ4eiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==',
+        'mdCalendar':    'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTkgM2gtMVYxaC0ydjJIOFYxSDZ2Mkg1Yy0xLjExIDAtMS45OS45LTEuOTkgMkwzIDE5YzAgMS4xLjg5IDIgMiAyaDE0YzEuMSAwIDItLjkgMi0yVjVjMC0xLjEtLjktMi0yLTJ6bTAgMTZINVY4aDE0djExek03IDEwaDV2NUg3eiIvPjwvc3ZnPg=='
+    })
+    .provider('$mdIcon', MdIconProvider);
 
 /**
  * @ngdoc service
@@ -26855,50 +26942,7 @@ MdIconProvider.prototype = {
     return this;
   },
 
-  preloadIcons: function($templateCache) {
-    var iconProvider = this;
-    var svgRegistry = [
-      {
-        id: 'md-tabs-arrow',
-        url: 'md-tabs-arrow.svg',
-        svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><polygon points="15.4,7.4 14,6 8,12 14,18 15.4,16.6 10.8,12 "/></g></svg>'
-      },
-      {
-        id: 'md-close',
-        url: 'md-close.svg',
-        svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/></g></svg>'
-      },
-      {
-        id: 'md-cancel',
-        url: 'md-cancel.svg',
-        svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><path d="M12 2c-5.53 0-10 4.47-10 10s4.47 10 10 10 10-4.47 10-10-4.47-10-10-10zm5 13.59l-1.41 1.41-3.59-3.59-3.59 3.59-1.41-1.41 3.59-3.59-3.59-3.59 1.41-1.41 3.59 3.59 3.59-3.59 1.41 1.41-3.59 3.59 3.59 3.59z"/></g></svg>'
-      },
-      {
-        id: 'md-menu',
-        url: 'md-menu.svg',
-        svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" /></svg>'
-      },
-      {
-        id: 'md-toggle-arrow',
-        url: 'md-toggle-arrow-svg',
-        svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 48 48"><path d="M24 16l-12 12 2.83 2.83 9.17-9.17 9.17 9.17 2.83-2.83z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>'
-      },
-      {
-        id: 'md-calendar',
-        url: 'md-calendar.svg',
-        svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>'
-      }
-    ];
-
-    svgRegistry.forEach(function(asset) {
-      iconProvider.icon(asset.id, asset.url);
-      $templateCache.put(asset.url, asset.svg);
-    });
-
-  },
-
   $get: ['$templateRequest', '$q', '$log', '$templateCache', '$mdUtil', '$sce', function($templateRequest, $q, $log, $templateCache, $mdUtil, $sce) {
-    this.preloadIcons($templateCache);
     return MdIconService(config, $templateRequest, $q, $log, $mdUtil, $sce);
   }]
 };
@@ -27187,6 +27231,7 @@ angular
  */
 function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $rootScope, $q) {
 
+  var prefixer = $mdUtil.prefixer();
   var menuContainer;
   var self = this;
   var triggerElement;
@@ -27200,8 +27245,9 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
   this.init = function init(setMenuContainer, opts) {
     opts = opts || {};
     menuContainer = setMenuContainer;
+    
     // Default element for ARIA attributes has the ngClick or ngMouseenter expression
-    triggerElement = $element[0].querySelector('[ng-click],[ng-mouseenter]');
+    triggerElement = $element[0].querySelector(prefixer.buildSelector(['ng-click', 'ng-mouseenter']));
     triggerElement.setAttribute('aria-expanded', 'false');
 
     this.isInMenuBar = opts.isInMenuBar;
@@ -27331,7 +27377,9 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
   };
 
   this.focusMenuContainer = function focusMenuContainer() {
-    var focusTarget = menuContainer[0].querySelector('[md-menu-focus-target], [md-autofocus]');
+    var focusTarget = menuContainer[0]
+      .querySelector(prefixer.buildSelector(['md-menu-focus-target', 'md-autofocus']));
+
     if (!focusTarget) focusTarget = menuContainer[0].querySelector('.md-button');
     focusTarget.focus();
   };
@@ -27588,8 +27636,11 @@ function MenuDirective($mdUtil) {
   function compile(templateElement) {
     templateElement.addClass('md-menu');
     var triggerElement = templateElement.children()[0];
-    if (!triggerElement.hasAttribute('ng-click')) {
-      triggerElement = triggerElement.querySelector('[ng-click],[ng-mouseenter]') || triggerElement;
+    var prefixer = $mdUtil.prefixer();
+
+    if (!prefixer.hasAttribute(triggerElement, 'ng-click')) {
+      triggerElement = triggerElement
+          .querySelector(prefixer.buildSelector(['ng-click', 'ng-mouseenter'])) || triggerElement;
     }
     if (triggerElement && (
       triggerElement.nodeName == 'MD-BUTTON' ||
@@ -27675,6 +27726,7 @@ function MenuProvider($$interimElementProvider) {
 
   /* @ngInject */
   function menuDefaultOptions($mdUtil, $mdTheming, $mdConstant, $document, $window, $q, $$rAF, $animateCss, $animate) {
+    var prefixer = $mdUtil.prefixer();
     var animator = $mdUtil.dom.animator;
 
     return {
@@ -27862,7 +27914,9 @@ function MenuProvider($$interimElementProvider) {
         opts.menuContentEl[0].addEventListener('click', captureClickListener, true);
 
         // kick off initial focus in the menu on the first element
-        var focusTarget = opts.menuContentEl[0].querySelector('[md-menu-focus-target], [md-autofocus]');
+        var focusTarget = opts.menuContentEl[0]
+          .querySelector(prefixer.buildSelector(['md-menu-focus-target', 'md-autofocus']));
+
         if ( !focusTarget ) {
           var firstChild = opts.menuContentEl[0].firstElementChild;
 
@@ -27958,14 +28012,13 @@ function MenuProvider($$interimElementProvider) {
 
           function hasAnyAttribute(target, attrs) {
             if (!target) return false;
+
             for (var i = 0, attr; attr = attrs[i]; ++i) {
-              var altForms = [attr, 'data-' + attr, 'x-' + attr];
-              for (var j = 0, rawAttr; rawAttr = altForms[j]; ++j) {
-                if (target.hasAttribute(rawAttr)) {
-                  return true;
-                }
+              if (prefixer.hasAttribute(target, attr)) {
+                return true;
               }
             }
+
             return false;
           }
         }
@@ -28041,7 +28094,7 @@ function MenuProvider($$interimElementProvider) {
 
       var menuStyle = $window.getComputedStyle(openMenuNode);
 
-      var originNode = opts.target[0].querySelector('[md-menu-origin]') || opts.target[0],
+      var originNode = opts.target[0].querySelector(prefixer.buildSelector('md-menu-origin')) || opts.target[0],
         originNodeRect = originNode.getBoundingClientRect();
 
       var bounds = {
@@ -28059,7 +28112,7 @@ function MenuProvider($$interimElementProvider) {
         if ( alignTarget ) {
           // TODO: Allow centering on an arbitrary node, for now center on first menu-item's child
           alignTarget = alignTarget.firstElementChild || alignTarget;
-          alignTarget = alignTarget.querySelector('[md-menu-align-target]') || alignTarget;
+          alignTarget = alignTarget.querySelector(prefixer.buildSelector('md-menu-align-target')) || alignTarget;
           alignTargetRect = alignTarget.getBoundingClientRect();
 
           existingOffsets = {
@@ -30303,7 +30356,7 @@ angular
     .module('material.components.tabs')
     .directive('mdTabs', MdTabs);
 
-function MdTabs () {
+function MdTabs ($$mdSvgRegistry) {
   return {
     scope:            {
       selectedIndex: '=?mdSelected'
@@ -30321,7 +30374,7 @@ function MdTabs () {
               'ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageBack() }" ' +
               'ng-if="$mdTabsCtrl.shouldPaginate" ' +
               'ng-click="$mdTabsCtrl.previousPage()"> ' +
-            '<md-icon md-svg-icon="md-tabs-arrow"></md-icon> ' +
+            '<md-icon md-svg-src="'+ $$mdSvgRegistry.mdTabsArrow +'"></md-icon> ' +
           '</md-prev-button> ' +
           '<md-next-button ' +
               'tabindex="-1" ' +
@@ -30331,7 +30384,7 @@ function MdTabs () {
               'ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageForward() }" ' +
               'ng-if="$mdTabsCtrl.shouldPaginate" ' +
               'ng-click="$mdTabsCtrl.nextPage()"> ' +
-            '<md-icon md-svg-icon="md-tabs-arrow"></md-icon> ' +
+            '<md-icon md-svg-src="'+ $$mdSvgRegistry.mdTabsArrow +'"></md-icon> ' +
           '</md-next-button> ' +
           '<md-tabs-canvas ' +
               'tabindex="{{ $mdTabsCtrl.hasFocus ? -1 : 0 }}" ' +
@@ -30414,6 +30467,7 @@ function MdTabs () {
     bindToController: true
   };
 }
+MdTabs.$inject = ["$$mdSvgRegistry"];
 
 })();
 (function(){
@@ -30508,4 +30562,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc4-master-dce2fee"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc4-master-9ce4f9e"}};

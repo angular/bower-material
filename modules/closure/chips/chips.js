@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-dce2fee
+ * v1.1.0-rc4-master-9ce4f9e
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.components.autocomplete');
@@ -1063,7 +1063,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
           type="button"\
           aria-hidden="true"\
           tabindex="-1">\
-        <md-icon md-svg-icon="md-close"></md-icon>\
+        <md-icon md-svg-src="{{ $mdChipsCtrl.mdCloseIcon }}"></md-icon>\
         <span class="_md-visually-hidden">\
           {{$mdChipsCtrl.deleteButtonLabel}}\
         </span>\
@@ -1072,7 +1072,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
   /**
    * MDChips Directive Definition
    */
-  function MdChips ($mdTheming, $mdUtil, $compile, $log, $timeout) {
+  function MdChips ($mdTheming, $mdUtil, $compile, $log, $timeout, $$mdSvgRegistry) {
     // Run our templates through $mdUtil.processTemplate() to allow custom start/end symbols
     var templates = getTemplates();
 
@@ -1144,9 +1144,17 @@ MdChipsCtrl.prototype.hasFocus = function () {
 
       var chipTemplate = getTemplateByQuery('md-chips>md-chip-template');
 
+      var chipRemoveSelector = $mdUtil
+        .prefixer()
+        .buildList('md-chip-remove')
+        .map(function(attr) {
+          return 'md-chips>*[' + attr + ']';
+        })
+        .join(',');
+
       // Set the chip remove, chip contents and chip input templates. The link function will put
       // them on the scope for transclusion later.
-      var chipRemoveTemplate   = getTemplateByQuery('md-chips>*[md-chip-remove]') || templates.remove,
+      var chipRemoveTemplate   = getTemplateByQuery(chipRemoveSelector) || templates.remove,
           chipContentsTemplate = chipTemplate || templates.default,
           chipInputTemplate    = getTemplateByQuery('md-chips>md-autocomplete')
               || getTemplateByQuery('md-chips>input')
@@ -1180,6 +1188,8 @@ MdChipsCtrl.prototype.hasFocus = function () {
         mdChipsCtrl.chipContentsTemplate = chipContentsTemplate;
         mdChipsCtrl.chipRemoveTemplate   = chipRemoveTemplate;
         mdChipsCtrl.chipInputTemplate    = chipInputTemplate;
+
+        mdChipsCtrl.mdCloseIcon = $$mdSvgRegistry.mdClose;
 
         element
             .attr({ 'aria-hidden': true, tabindex: -1 })
@@ -1256,7 +1266,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
       };
     }
   }
-  MdChips.$inject = ["$mdTheming", "$mdUtil", "$compile", "$log", "$timeout"];
+  MdChips.$inject = ["$mdTheming", "$mdUtil", "$compile", "$log", "$timeout", "$$mdSvgRegistry"];
 
 angular
     .module('material.components.chips')
