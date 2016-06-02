@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-112a3e4
+ * v1.1.0-rc4-master-f9738f5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1033,17 +1033,19 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
         var restoreHtmlStyle = htmlNode.style.cssText || '';
         var restoreBodyStyle = body.style.cssText || '';
         var scrollOffset = $mdUtil.scrollTop(body);
+        var clientWidth = body.clientWidth;
 
         if (body.scrollHeight > body.clientHeight + 1) {
           applyStyles(body, {
             position: 'fixed',
             width: '100%',
-            top: -scrollOffset + 'px',
-            overflow: 'hidden'
+            top: -scrollOffset + 'px'
           });
 
           htmlNode.style.overflowY = 'scroll';
         }
+
+        if (body.clientWidth < clientWidth) applyStyles(body, {overflow: 'hidden'});
 
         return function restoreScroll() {
           body.style.cssText = restoreBodyStyle;
@@ -30506,4 +30508,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc4-master-112a3e4"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc4-master-f9738f5"}};
