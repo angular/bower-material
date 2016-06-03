@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-9ce4f9e
+ * v1.1.0-rc4-master-00f09f4
  */
 goog.provide('ng.material.components.datepicker');
 goog.require('ng.material.components.icon');
@@ -1570,7 +1570,7 @@ goog.require('ng.material.core');
      * @param $locale
      * @returns {DateLocale}
      */
-    DateLocaleProvider.prototype.$get = function($locale) {
+    DateLocaleProvider.prototype.$get = function($locale, $filter) {
       /**
        * Default date-to-string formatting function.
        * @param {!Date} date
@@ -1593,7 +1593,7 @@ goog.require('ng.material.core');
           formatDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 1, 0, 0);
         }
 
-        return formatDate.toLocaleDateString();
+        return $filter('date')(formatDate, 'M/d/yyyy');
       }
 
       /**
@@ -1701,7 +1701,7 @@ goog.require('ng.material.core');
 
       return service;
     };
-    DateLocaleProvider.prototype.$get.$inject = ["$locale"];
+    DateLocaleProvider.prototype.$get.$inject = ["$locale", "$filter"];
 
     $provide.provider('$mdDateLocale', new DateLocaleProvider());
   }]);
