@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-6e38d7c
+ * v1.1.0-rc4-master-c6c5d48
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -22,6 +22,13 @@ html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
 *
 *
 */
+/* IE10-IE11 column-flex bug fix (set proper default value) */
+.layout-column > .flex {
+  -ms-flex-basis: auto;
+  -webkit-flex-basis: auto;
+      -ms-flex-preferred-size: auto;
+          flex-basis: auto; }
+
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
   color: '{{foreground-1}}';

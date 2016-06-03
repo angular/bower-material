@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-6e38d7c
+ * v1.1.0-rc4-master-c6c5d48
  */
 html, body {
   height: 100%;
@@ -259,6 +259,13 @@ input {
 *
 *
 */
+/* IE10-IE11 column-flex bug fix (set proper default value) */
+.layout-column > .flex {
+  -ms-flex-basis: auto;
+  -webkit-flex-basis: auto;
+      -ms-flex-preferred-size: auto;
+          flex-basis: auto; }
+
 @-webkit-keyframes md-autocomplete-list-out {
   0% {
     -webkit-animation-timing-function: linear;
@@ -271,6 +278,7 @@ input {
   100% {
     height: 0;
     opacity: 0; } }
+
 @keyframes md-autocomplete-list-out {
   0% {
     -webkit-animation-timing-function: linear;
@@ -782,6 +790,10 @@ button.md-button::-moz-focus-inner {
     background-clip: padding-box;
     overflow: hidden;
     -webkit-mask-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC"); }
+
+.md-button.md-icon-button md-icon,
+button.md-button.md-fab md-icon {
+  display: block; }
 
 ._md-toast-open-top .md-button.md-fab-top-left,
 ._md-toast-open-top .md-button.md-fab-top-right {
@@ -2372,8 +2384,7 @@ md-input-container {
     -webkit-transform: translate3d(0, 6px, 0) scale(0.75);
             transform: translate3d(0, 6px, 0) scale(0.75);
     transition: -webkit-transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s, width cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s;
-    transition: transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s, width cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s;
-    width: calc((100% - 18px) / 0.75); }
+    transition: transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s, width cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s; }
   md-input-container.md-input-has-value label {
     transition: none; }
   md-input-container.md-input-focused .md-input,
@@ -2403,14 +2414,6 @@ md-input-container {
   md-input-container.md-icon-left > label .md-placeholder, md-input-container.md-icon-right > label:not(.md-no-float):not(._md-container-ignore),
   md-input-container.md-icon-right > label .md-placeholder {
     width: calc(100% - 36px - 18px); }
-  md-input-container.md-icon-left.md-input-focused > label:not(.md-no-float):not(._md-container-ignore),
-  md-input-container.md-icon-left.md-input-focused > label .md-placeholder, md-input-container.md-icon-left.md-input-has-placeholder > label:not(.md-no-float):not(._md-container-ignore),
-  md-input-container.md-icon-left.md-input-has-placeholder > label .md-placeholder, md-input-container.md-icon-left.md-input-has-value > label:not(.md-no-float):not(._md-container-ignore),
-  md-input-container.md-icon-left.md-input-has-value > label .md-placeholder, md-input-container.md-icon-right.md-input-focused > label:not(.md-no-float):not(._md-container-ignore),
-  md-input-container.md-icon-right.md-input-focused > label .md-placeholder, md-input-container.md-icon-right.md-input-has-placeholder > label:not(.md-no-float):not(._md-container-ignore),
-  md-input-container.md-icon-right.md-input-has-placeholder > label .md-placeholder, md-input-container.md-icon-right.md-input-has-value > label:not(.md-no-float):not(._md-container-ignore),
-  md-input-container.md-icon-right.md-input-has-value > label .md-placeholder {
-    width: calc((100% - 36px - 18px) / 0.75); }
   md-input-container.md-icon-left {
     padding-left: 36px;
     padding-right: 0; }
@@ -2446,11 +2449,6 @@ md-input-container {
     md-input-container.md-icon-left.md-icon-right > label:not(.md-no-float):not(._md-container-ignore),
     md-input-container.md-icon-left.md-icon-right > label .md-placeholder {
       width: calc(100% - (36px * 2)); }
-    md-input-container.md-icon-left.md-icon-right.md-input-focused > label:not(.md-no-float):not(._md-container-ignore),
-    md-input-container.md-icon-left.md-icon-right.md-input-focused > label .md-placeholder, md-input-container.md-icon-left.md-icon-right.md-input-has-placeholder > label:not(.md-no-float):not(._md-container-ignore),
-    md-input-container.md-icon-left.md-icon-right.md-input-has-placeholder > label .md-placeholder, md-input-container.md-icon-left.md-icon-right.md-input-has-value > label:not(.md-no-float):not(._md-container-ignore),
-    md-input-container.md-icon-left.md-icon-right.md-input-has-value > label .md-placeholder {
-      width: calc((100% - (36px * 2)) / 0.75); }
 
 @media screen and (-ms-high-contrast: active) {
   md-input-container.md-default-theme > md-icon {
@@ -3190,35 +3188,6 @@ md-nav-extra-content {
   .md-panel._md-opaque-leave {
     transition: opacity 0.3s cubic-bezier(0.4, 0, 1, 1); }
 
-@-webkit-keyframes indeterminate-rotate {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg); }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg); } }
-
-@keyframes indeterminate-rotate {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg); }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg); } }
-
-md-progress-circular {
-  position: relative; }
-  md-progress-circular._md-progress-circular-disabled {
-    visibility: hidden; }
-  md-progress-circular._md-mode-indeterminate svg {
-    -webkit-animation: indeterminate-rotate 2.9s linear infinite;
-            animation: indeterminate-rotate 2.9s linear infinite; }
-  md-progress-circular svg {
-    position: absolute;
-    overflow: visible;
-    top: 0;
-    left: 0; }
-
 md-progress-linear {
   display: block;
   position: relative;
@@ -3470,6 +3439,35 @@ md-progress-linear {
             animation-timing-function: cubic-bezier(0.4, 0.62703, 0.6, 0.90203); }
   100% {
     left: 117.38889%; } }
+
+@-webkit-keyframes indeterminate-rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+@keyframes indeterminate-rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+md-progress-circular {
+  position: relative; }
+  md-progress-circular._md-progress-circular-disabled {
+    visibility: hidden; }
+  md-progress-circular._md-mode-indeterminate svg {
+    -webkit-animation: indeterminate-rotate 2.9s linear infinite;
+            animation: indeterminate-rotate 2.9s linear infinite; }
+  md-progress-circular svg {
+    position: absolute;
+    overflow: visible;
+    top: 0;
+    left: 0; }
 
 md-radio-button {
   box-sizing: border-box;

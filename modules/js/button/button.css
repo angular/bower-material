@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-6e38d7c
+ * v1.1.0-rc4-master-c6c5d48
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -129,6 +129,10 @@ button.md-button::-moz-focus-inner {
     background-clip: padding-box;
     overflow: hidden;
     -webkit-mask-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC"); }
+
+.md-button.md-icon-button md-icon,
+button.md-button.md-fab md-icon {
+  display: block; }
 
 ._md-toast-open-top .md-button.md-fab-top-left,
 ._md-toast-open-top .md-button.md-fab-top-right {
