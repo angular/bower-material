@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-a8473e9
+ * v1.1.0-rc4-master-6e38d7c
  */
 $font-family: Roboto, 'Helvetica Neue', sans-serif !default;
 $font-size:   10px !default;
@@ -56,10 +56,12 @@ $whiteframe-shadow-24dp: 0px 11px 15px -7px rgba(0, 0, 0, $shadow-key-umbra-opac
 $z-index-toast: 105 !default;
 $z-index-tooltip: 100 !default;
 $z-index-menu: 100 !default;
+$z-index-calendar-pane: 100 !default;
 $z-index-select: 90 !default;
 $z-index-dialog: 80 !default;
 $z-index-bottom-sheet: 70 !default;
-$z-index-scroll-mask: 65 !default;
+$z-index-scroll-mask: 50 !default;
+$z-index-scroll-mask-bar: 65 !default;
 $z-index-sidenav: 60 !default;
 $z-index-backdrop: 50 !default;
 $z-index-fab: 20 !default;

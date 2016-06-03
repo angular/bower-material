@@ -83,10 +83,12 @@ $whiteframe-shadow-24dp: 0px 11px 15px -7px rgba(0, 0, 0, $shadow-key-umbra-opac
 $z-index-toast: 105 !default;
 $z-index-tooltip: 100 !default;
 $z-index-menu: 100 !default;
+$z-index-calendar-pane: 100 !default;
 $z-index-select: 90 !default;
 $z-index-dialog: 80 !default;
 $z-index-bottom-sheet: 70 !default;
-$z-index-scroll-mask: 65 !default;
+$z-index-scroll-mask: 50 !default;
+$z-index-scroll-mask-bar: 65 !default;
 $z-index-sidenav: 60 !default;
 $z-index-backdrop: 50 !default;
 $z-index-fab: 20 !default;
@@ -573,6 +575,8 @@ input {
   right: 0;
   bottom: 0;
   left: 0;
+  z-index: $z-index-scroll-mask;
+
   > .md-scroll-mask-bar {
     display: block;
     position: absolute;
@@ -580,7 +584,7 @@ input {
     right: 0;
     top: 0;
     bottom: 0;
-    z-index: $z-index-scroll-mask;
+    z-index: $z-index-scroll-mask-bar;
     box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.3)
   }
 }
@@ -2576,13 +2580,16 @@ md-datepicker {
   }
 }
 
+.md-datepicker-is-showing .md-scroll-mask {
+  z-index: $z-index-calendar-pane - 1;
+}
 
 // Floating pane that contains the calendar at the bottom of the input.
 .md-datepicker-calendar-pane {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: $z-index-menu;
+  z-index: $z-index-calendar-pane;
 
   border-width: 1px;
   border-style: solid;

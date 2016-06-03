@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-a8473e9
+ * v1.1.0-rc4-master-6e38d7c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2174,11 +2174,14 @@
   /** Position and attach the floating calendar to the document. */
   DatePickerCtrl.prototype.attachCalendarPane = function() {
     var calendarPane = this.calendarPane;
+    var body = document.body;
+
     calendarPane.style.transform = '';
     this.$element.addClass('md-datepicker-open');
+    angular.element(body).addClass('md-datepicker-is-showing');
 
     var elementRect = this.inputContainer.getBoundingClientRect();
-    var bodyRect = document.body.getBoundingClientRect();
+    var bodyRect = body.getBoundingClientRect();
 
     // Check to see if the calendar pane would go off the screen. If so, adjust position
     // accordingly to keep it within the viewport.
@@ -2243,6 +2246,7 @@
   /** Detach the floating calendar pane from the document. */
   DatePickerCtrl.prototype.detachCalendarPane = function() {
     this.$element.removeClass('md-datepicker-open');
+    angular.element(document.body).removeClass('md-datepicker-is-showing');
     this.calendarPane.classList.remove('md-pane-open');
     this.calendarPane.classList.remove('md-datepicker-pos-adjusted');
 

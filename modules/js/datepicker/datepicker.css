@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-a8473e9
+ * v1.1.0-rc4-master-6e38d7c
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -178,6 +178,9 @@ md-datepicker {
     margin-right: 12px; }
   .md-datepicker-input-container.md-datepicker-focused {
     border-bottom-width: 2px; }
+
+.md-datepicker-is-showing .md-scroll-mask {
+  z-index: 99; }
 
 .md-datepicker-calendar-pane {
   position: absolute;
