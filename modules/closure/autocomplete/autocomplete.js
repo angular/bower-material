@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c6c5d48
+ * v1.1.0-rc4-master-45278ec
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -1241,11 +1241,10 @@ function MdHighlightCtrl ($scope, $element, $attrs) {
   }
 
   function getRegExp (text, flags) {
-    var str = '';
-    if (flags.indexOf('^') >= 1) str += '^';
-    str += text;
-    if (flags.indexOf('$') >= 1) str += '$';
-    return new RegExp(sanitize(str), flags.replace(/[\$\^]/g, ''));
+    var startFlag = '', endFlag = '';
+    if (flags.indexOf('^') >= 0) startFlag = '^';
+    if (flags.indexOf('$') >= 0) endFlag = '$';
+    return new RegExp(startFlag + sanitize(text) + endFlag, flags.replace(/[\$\^]/g, ''));
   }
 }
 MdHighlightCtrl.$inject = ["$scope", "$element", "$attrs"];

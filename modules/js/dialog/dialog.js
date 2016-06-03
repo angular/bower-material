@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-c6c5d48
+ * v1.1.0-rc4-master-45278ec
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -431,6 +431,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
  * - $mdDialogPreset#htmlContent(string) - Sets the prompt message as HTML. Requires ngSanitize
  *     module to be loaded. HTML is not run through Angular's compiler.
  * - $mdDialogPreset#placeholder(string) - Sets the placeholder text for the input.
+ * - $mdDialogPreset#initialValue(string) - Sets the initial value for the prompt input.
  * - $mdDialogPreset#ok(string) - Sets the prompt "Okay" button text.
  * - $mdDialogPreset#cancel(string) - Sets the prompt "Cancel" button text.
  * - $mdDialogPreset#theme(string) - Sets the theme of the prompt dialog.
@@ -556,7 +557,7 @@ function MdDialogProvider($$interimElementProvider) {
       options: advancedDialogOptions
     })
     .addPreset('prompt', {
-      methods: ['title', 'htmlContent', 'textContent', 'content', 'placeholder', 'ariaLabel',
+      methods: ['title', 'htmlContent', 'textContent', 'initialValue', 'content', 'placeholder', 'ariaLabel',
           'ok', 'cancel', 'theme', 'css'],
       options: advancedDialogOptions
     });
@@ -574,7 +575,8 @@ function MdDialogProvider($$interimElementProvider) {
         '      <p>{{::dialog.mdTextContent}}</p>',
         '    </div>',
         '    <md-input-container md-no-float ng-if="::dialog.$type == \'prompt\'" class="md-prompt-input-container">',
-        '      <input ng-keypress="dialog.keypress($event)" md-autofocus ng-model="dialog.result" placeholder="{{::dialog.placeholder}}">',
+        '      <input ng-keypress="dialog.keypress($event)" md-autofocus ng-model="dialog.result" ' +
+        '             placeholder="{{::dialog.placeholder}}">',
         '    </md-input-container>',
         '  </md-dialog-content>',
         '  <md-dialog-actions>',
@@ -589,8 +591,14 @@ function MdDialogProvider($$interimElementProvider) {
         '</md-dialog>'
       ].join('').replace(/\s\s+/g, ''),
       controller: function mdDialogCtrl() {
+        var isPrompt = this.$type == 'prompt';
+
+        if (isPrompt && this.initialValue) {
+          this.result = this.initialValue;
+        }
+
         this.hide = function() {
-          $mdDialog.hide(this.$type === 'prompt' ? this.result : true);
+          $mdDialog.hide(isPrompt ? this.result : true);
         };
         this.abort = function() {
           $mdDialog.cancel();
