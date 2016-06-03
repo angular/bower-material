@@ -1,138 +1,150 @@
-<a name"1.0.8"></a>
-### 1.0.8 (2016-04-28)
+<a name"1.1.0-rc.5"></a>
+### 1.1.0-rc.5 (2016-06-03)
+
+With this release we have merged many of the pending Pull requests and added some notable changes:
+
+*  added new `md-nav-bar` and `md-panel` components
+*  enhanced the performance of the `md-tabs` component
+*  added many improvements to dialog, datepicker
+*  added shrinking and resizing features to the md-input textarea component
+*  improved security safeguards using $templateRequest instead of $http
+
+![panel-animations](https://cloud.githubusercontent.com/assets/210413/15787710/5d7d8fb4-2989-11e6-8392-04f3f6626668.png)
 
 
 #### Features
 
-* **autocomplete:**
-  * allow disabling asterisk on floating label ([7361e715](https://github.com/angular/material/commit/7361e715), closes [#7119](https://github.com/angular/material/issues/7119))
-  * allow select on match to be case insensitive. ([5e222561](https://github.com/angular/material/commit/5e222561), closes [#5782](https://github.com/angular/material/issues/5782), [#6935](https://github.com/angular/material/issues/6935))
-  * forward `md-select-on-focus` attribute to input aswell ([2023a33d](https://github.com/angular/material/commit/2023a33d), closes [#7125](https://github.com/angular/material/issues/7125), [#7127](https://github.com/angular/material/issues/7127))
-  * support readonly attribute ([e0a7843f](https://github.com/angular/material/commit/e0a7843f), closes [#5507](https://github.com/angular/material/issues/5507), [#7107](https://github.com/angular/material/issues/7107))
-* **checkbox:** add indeterminate checkbox support ([cd987f0b](https://github.com/angular/material/commit/cd987f0b), closes [#7643](https://github.com/angular/material/issues/7643))
-* **chips:** md-max-chips to specify a maximum of chips that can be added through user input ([64cefc81](https://github.com/angular/material/commit/64cefc81), closes [#6864](https://github.com/angular/material/issues/6864), [#6897](https://github.com/angular/material/issues/6897))
-* **input:**
-  * allow skip hidden inputs ([e7c51e3e](https://github.com/angular/material/commit/e7c51e3e), closes [#2153](https://github.com/angular/material/issues/2153), [#6425](https://github.com/angular/material/issues/6425))
-  * add directive to auto select text on input focus ([cb8ef183](https://github.com/angular/material/commit/cb8ef183), closes [#6679](https://github.com/angular/material/issues/6679), [#6701](https://github.com/angular/material/issues/6701))
-* **select:**
-  * Adding md-select-header directive to md-select. ([c6d08bbf](https://github.com/angular/material/commit/c6d08bbf), closes [#7782](https://github.com/angular/material/issues/7782))
-  * Adding md-selected-text attribute to md-select. ([e7af2c87](https://github.com/angular/material/commit/e7af2c87), closes [#7721](https://github.com/angular/material/issues/7721))
-* **tabs:** allow disabling select click event by adding `md-no-select-click` attribute ([9624dac1](https://github.com/angular/material/commit/9624dac1), closes [#5351](https://github.com/angular/material/issues/5351))
-
-
-#### Breaking Changes
-
-* inputs with type `hidden` will be skipped by the `input-container`
-
-Fixes #2153
-
-Closes #6425
-
- ([e7c51e3e](https://github.com/angular/material/commit/e7c51e3e))
+* **colors:**
+  * mdTheme integration ([077769b2](https://github.com/angular/material/commit/077769b2), closes [#8407](https://github.com/angular/material/issues/8407), [#8507](https://github.com/angular/material/issues/8507))
+  * support hue-x on primary/accent/warn/background palettes ([d62bb5e1](https://github.com/angular/material/commit/d62bb5e1), closes [#8175](https://github.com/angular/material/issues/8175), [#8257](https://github.com/angular/material/issues/8257))
+* **datepicker:**
+  * year view, open on focus, bug fixes ([5615d06f](https://github.com/angular/material/commit/5615d06f), closes [#4251](https://github.com/angular/material/issues/4251), [#4650](https://github.com/angular/material/issues/4650), [#8547](https://github.com/angular/material/issues/8547), [#8030](https://github.com/angular/material/issues/8030), [#8557](https://github.com/angular/material/issues/8557), [#8472](https://github.com/angular/material/issues/8472))
+  * add a year view ([cfc33a60](https://github.com/angular/material/commit/cfc33a60), closes [#4251](https://github.com/angular/material/issues/4251), [#8472](https://github.com/angular/material/issues/8472))
+* **demos:** add global classes support ([b639ce21](https://github.com/angular/material/commit/b639ce21), closes [#8400](https://github.com/angular/material/issues/8400), [#8406](https://github.com/angular/material/issues/8406))
+* **dialog:**
+  * add initial value option to prompt preset. ([b49ebcf5](https://github.com/angular/material/commit/b49ebcf5), closes [#7046](https://github.com/angular/material/issues/7046), [#7090](https://github.com/angular/material/issues/7090))
+  * allow to specify a content element ([135cb3a2](https://github.com/angular/material/commit/135cb3a2), closes [#7566](https://github.com/angular/material/issues/7566), [#8491](https://github.com/angular/material/issues/8491))
+* **list:** add support for ng-dblclick. ([a9bca2bb](https://github.com/angular/material/commit/a9bca2bb), closes [#8303](https://github.com/angular/material/issues/8303), [#8306](https://github.com/angular/material/issues/8306))
+* **menu:** add support for md-autofocus attribute ([10e47120](https://github.com/angular/material/commit/10e47120), closes [#7868](https://github.com/angular/material/issues/7868), [#8469](https://github.com/angular/material/issues/8469))
+* **navbar:** add new md-nav-bar component. ([0e2e60fd](https://github.com/angular/material/commit/0e2e60fd), closes [#7781](https://github.com/angular/material/issues/7781))
+* **panel:**
+  * Update the panel position on scroll. ([18aa360e](https://github.com/angular/material/commit/18aa360e))
+  * animation hook and origin focus config ([0d2e4890](https://github.com/angular/material/commit/0d2e4890))
+  * Clean up promises ([16f4aeed](https://github.com/angular/material/commit/16f4aeed))
+  * Allows centering to be used with animation transforms. ([67ccfc54](https://github.com/angular/material/commit/67ccfc54))
+  * Add hasBackdrop config to the panel. ([0c4ad174](https://github.com/angular/material/commit/0c4ad174))
+  * Inject mdPanelRef when instantiating the panel controller. ([49c96c14](https://github.com/angular/material/commit/49c96c14))
+  * Add default animations and withAnimation API method. ([4ec5cebd](https://github.com/angular/material/commit/4ec5cebd))
+  * initial implementation. ([c481d5b1](https://github.com/angular/material/commit/c481d5b1))
+* **prefixer:** add service to prefix attributes ([b3e401a7](https://github.com/angular/material/commit/b3e401a7), closes [#3258](https://github.com/angular/material/issues/3258), [#8080](https://github.com/angular/material/issues/8080), [#8121](https://github.com/angular/material/issues/8121), [#8163](https://github.com/angular/material/issues/8163))
+* **ripple:** add the ability to disable ripples globally ([86bb3f75](https://github.com/angular/material/commit/86bb3f75), closes [#5669](https://github.com/angular/material/issues/5669), [#8191](https://github.com/angular/material/issues/8191))
+* **select:** support asterisk on floating labels. ([d9784584](https://github.com/angular/material/commit/d9784584), closes [#7928](https://github.com/angular/material/issues/7928), [#8348](https://github.com/angular/material/issues/8348))
+* **slider:** md-invert ([e85e1b95](https://github.com/angular/material/commit/e85e1b95), closes [#7666](https://github.com/angular/material/issues/7666), [#7667](https://github.com/angular/material/issues/7667))
+* **textarea:** support shrinking and resizing ([ce076517](https://github.com/angular/material/commit/ce076517), closes [#7649](https://github.com/angular/material/issues/7649), [#5919](https://github.com/angular/material/issues/5919), [#8135](https://github.com/angular/material/issues/8135), [#7991](https://github.com/angular/material/issues/7991))
+* **toast:** add dynamic `start` and `end` positions. ([7f776a14](https://github.com/angular/material/commit/7f776a14), closes [#7263](https://github.com/angular/material/issues/7263), [#7318](https://github.com/angular/material/issues/7318))
 
 
 #### Bug Fixes
 
+* **$mdIcon:** prevent "Possibly unhandled rejection" errors ([1fc80ce1](https://github.com/angular/material/commit/1fc80ce1), closes [#8468](https://github.com/angular/material/issues/8468))
+* **all:** Use $templateRequest instead of $http for security. ([0397e298](https://github.com/angular/material/commit/0397e298), closes [#8413](https://github.com/angular/material/issues/8413), [#8423](https://github.com/angular/material/issues/8423))
 * **autocomplete:**
-  * fix autocomplete tabindex support ([321feb00](https://github.com/angular/material/commit/321feb00), closes [#6999](https://github.com/angular/material/issues/6999), [#7005](https://github.com/angular/material/issues/7005))
-  * only handle results if it's an array or a promise ([5eab71b8](https://github.com/angular/material/commit/5eab71b8), closes [#7074](https://github.com/angular/material/issues/7074), [#7089](https://github.com/angular/material/issues/7089))
-  * probably clear the autocomplete. ([b05b1f7c](https://github.com/angular/material/commit/b05b1f7c), closes [#7180](https://github.com/angular/material/issues/7180), [#7354](https://github.com/angular/material/issues/7354))
-  * stop loading if last promise got resolved ([6307516c](https://github.com/angular/material/commit/6307516c), closes [#6907](https://github.com/angular/material/issues/6907), [#6927](https://github.com/angular/material/issues/6927))
-  * fix not found template detection when element is hidden ([3b766479](https://github.com/angular/material/commit/3b766479), closes [#7035](https://github.com/angular/material/issues/7035), [#7142](https://github.com/angular/material/issues/7142), [#7042](https://github.com/angular/material/issues/7042))
-  * clean up md-scroll-mask element on destroy ([acbd5c6a](https://github.com/angular/material/commit/acbd5c6a), closes [#7049](https://github.com/angular/material/issues/7049), [#7128](https://github.com/angular/material/issues/7128), [#7291](https://github.com/angular/material/issues/7291))
-  * fixes the sizing math ([2390d88b](https://github.com/angular/material/commit/2390d88b), closes [#6212](https://github.com/angular/material/issues/6212), [#7015](https://github.com/angular/material/issues/7015))
-  * store hasNotFoundTemplate in shared element ([0f9dae36](https://github.com/angular/material/commit/0f9dae36), closes [#5865](https://github.com/angular/material/issues/5865), [#5867](https://github.com/angular/material/issues/5867))
-  * allow clicking on not-found template. ([4ef9674c](https://github.com/angular/material/commit/4ef9674c), closes [#6191](https://github.com/angular/material/issues/6191), [#5526](https://github.com/angular/material/issues/5526), [#6103](https://github.com/angular/material/issues/6103))
+  * always hide the progressbar when clearing the input ([3b3fc39b](https://github.com/angular/material/commit/3b3fc39b), closes [#8301](https://github.com/angular/material/issues/8301), [#8195](https://github.com/angular/material/issues/8195), [#8341](https://github.com/angular/material/issues/8341))
+  * Fix autocomplete items with spaces. ([2fa2e4d5](https://github.com/angular/material/commit/2fa2e4d5), closes [#7655](https://github.com/angular/material/issues/7655), [#8178](https://github.com/angular/material/issues/8178), [#8580](https://github.com/angular/material/issues/8580))
+  * disable scroll events for autocomplete wrap layer ([8c79f32a](https://github.com/angular/material/commit/8c79f32a), closes [#6585](https://github.com/angular/material/issues/6585), [#5230](https://github.com/angular/material/issues/5230), [#5890](https://github.com/angular/material/issues/5890), [#6589](https://github.com/angular/material/issues/6589))
+* **backdrop:** adjust the backdrop height when the viewport resizes ([918e335e](https://github.com/angular/material/commit/918e335e), closes [#8155](https://github.com/angular/material/issues/8155), [#8285](https://github.com/angular/material/issues/8285))
 * **build:**
-  * bower-material-release should force remove the stale layout files. ([a543def6](https://github.com/angular/material/commit/a543def6), closes [#7807](https://github.com/angular/material/issues/7807))
-  * remove stale bower-material/layout css files ([ab1a7d2f](https://github.com/angular/material/commit/ab1a7d2f))
-  * closure build needs @ngInject to $mdUtil ([d3c29fe2](https://github.com/angular/material/commit/d3c29fe2), closes [#7611](https://github.com/angular/material/issues/7611), [#7609](https://github.com/angular/material/issues/7609), [#7608](https://github.com/angular/material/issues/7608))
-  * closure build needs @ngInject annotation ([79a00dbd](https://github.com/angular/material/commit/79a00dbd), closes [#7613](https://github.com/angular/material/issues/7613))
-* **button:** fixed wrong md-icon selector and changed raised icon color to hue-900 ([32435759](https://github.com/angular/material/commit/32435759), closes [#6944](https://github.com/angular/material/issues/6944), [#6945](https://github.com/angular/material/issues/6945))
-* **card:** remove duplicate demo module names. ([cc47355a](https://github.com/angular/material/commit/cc47355a), closes [#7693](https://github.com/angular/material/issues/7693))
+  * fix a warning when running local server ([b09dcbb0](https://github.com/angular/material/commit/b09dcbb0), closes [#8463](https://github.com/angular/material/issues/8463))
+  * Fix failing tests with Angular 1.6. ([2b0e0fd9](https://github.com/angular/material/commit/2b0e0fd9), closes [#8404](https://github.com/angular/material/issues/8404))
+  * remove use of template strings in build-contributors ([93921f8e](https://github.com/angular/material/commit/93921f8e))
 * **checkbox:**
-  * pointer events disable ripple events too ([f790e93e](https://github.com/angular/material/commit/f790e93e), closes [#7538](https://github.com/angular/material/issues/7538), [#7541](https://github.com/angular/material/issues/7541))
-  * fix IE11 focus for checkbox ([1f6cd8f9](https://github.com/angular/material/commit/1f6cd8f9), closes [#7086](https://github.com/angular/material/issues/7086), [#7088](https://github.com/angular/material/issues/7088))
+  * md-checkbox documentation update & indeterminate color fix. ([65151504](https://github.com/angular/material/commit/65151504), closes [#8513](https://github.com/angular/material/issues/8513))
+  * initial value not being marked properly ([63e1c8e6](https://github.com/angular/material/commit/63e1c8e6), closes [#8343](https://github.com/angular/material/issues/8343), [#8511](https://github.com/angular/material/issues/8511))
 * **chips:**
-  * fix md-max-chips for autocomplete watcher ([ed4b20f1](https://github.com/angular/material/commit/ed4b20f1), closes [#7549](https://github.com/angular/material/issues/7549), [#7550](https://github.com/angular/material/issues/7550))
-  * do not trim the input model. ([d7c389d7](https://github.com/angular/material/commit/d7c389d7), closes [#7243](https://github.com/angular/material/issues/7243), [#7748](https://github.com/angular/material/issues/7748))
-  * fix chips focus functionality ([cfb285cb](https://github.com/angular/material/commit/cfb285cb), closes [#5897](https://github.com/angular/material/issues/5897), [#5662](https://github.com/angular/material/issues/5662), [#5941](https://github.com/angular/material/issues/5941))
-* **constants:** add semicolon keycode ([5e8cf9eb](https://github.com/angular/material/commit/5e8cf9eb), closes [#7228](https://github.com/angular/material/issues/7228))
-* **datePicker:** ensure one is able to override default sass variables values ([dee1c1c7](https://github.com/angular/material/commit/dee1c1c7), closes [#7329](https://github.com/angular/material/issues/7329))
+  * safety check before getting length ([4c47b27e](https://github.com/angular/material/commit/4c47b27e), closes [#6175](https://github.com/angular/material/issues/6175))
+  * chipsCtrl.resetChip() should be called synchronously ([7c6ff365](https://github.com/angular/material/commit/7c6ff365))
+* **colors:** parsed watched expression ([e9a1d4f4](https://github.com/angular/material/commit/e9a1d4f4), closes [#8212](https://github.com/angular/material/issues/8212), [#8235](https://github.com/angular/material/issues/8235))
+* **constants:** prefixes for properties should be correct. ([6aa9e08e](https://github.com/angular/material/commit/6aa9e08e), closes [#8186](https://github.com/angular/material/issues/8186), [#8187](https://github.com/angular/material/issues/8187))
 * **datepicker:**
-  * style demo ngMessage as same as input messages. ([0e5c253a](https://github.com/angular/material/commit/0e5c253a), closes [#7071](https://github.com/angular/material/issues/7071), [#7219](https://github.com/angular/material/issues/7219))
-  * enable scrolling when scope destroyed. ([4d639b0d](https://github.com/angular/material/commit/4d639b0d), closes [#7542](https://github.com/angular/material/issues/7542), [#7544](https://github.com/angular/material/issues/7544))
-* **demo:**
-  * use md-dialog-actions ([e12859a7](https://github.com/angular/material/commit/e12859a7))
-  * observe interpolated docs-demo attributes + fix layout alignment interactive dem ([d0deb379](https://github.com/angular/material/commit/d0deb379), closes [#6564](https://github.com/angular/material/issues/6564), [#6361](https://github.com/angular/material/issues/6361), [#6319](https://github.com/angular/material/issues/6319), [#6567](https://github.com/angular/material/issues/6567))
+  * prevent scrolling within a dialog ([6e38d7c4](https://github.com/angular/material/commit/6e38d7c4), closes [#8177](https://github.com/angular/material/issues/8177), [#8292](https://github.com/angular/material/issues/8292))
+  * align input border colors with inputs. ([e5dcbab9](https://github.com/angular/material/commit/e5dcbab9), closes [#8148](https://github.com/angular/material/issues/8148), [#8375](https://github.com/angular/material/issues/8375))
+  * don't use the locale in the default formatting function ([00f09f4e](https://github.com/angular/material/commit/00f09f4e), closes [#7456](https://github.com/angular/material/issues/7456), [#7404](https://github.com/angular/material/issues/7404), [#8275](https://github.com/angular/material/issues/8275), [#8162](https://github.com/angular/material/issues/8162))
+  * disabled dates blending in with background on a dark theme ([ab1d7253](https://github.com/angular/material/commit/ab1d7253), closes [#8550](https://github.com/angular/material/issues/8550), [#8627](https://github.com/angular/material/issues/8627))
+  * occasionally failing test ([92e932c3](https://github.com/angular/material/commit/92e932c3), closes [#8596](https://github.com/angular/material/issues/8596))
+  * unit tests in safari ([e588df9a](https://github.com/angular/material/commit/e588df9a), closes [#8551](https://github.com/angular/material/issues/8551))
 * **dialog:**
-  * don't clobber md-dialog id ([8390c22d](https://github.com/angular/material/commit/8390c22d))
-  * prefix dialog content probably ([3a41828a](https://github.com/angular/material/commit/3a41828a), closes [#7469](https://github.com/angular/material/issues/7469), [#7480](https://github.com/angular/material/issues/7480))
-  * moved bottom focus trap to be a sibling ([1e2d3806](https://github.com/angular/material/commit/1e2d3806), closes [#7407](https://github.com/angular/material/issues/7407), [#7408](https://github.com/angular/material/issues/7408))
-  * correctly disable keydown listener for escapeToClose ([35de3d1a](https://github.com/angular/material/commit/35de3d1a), closes [#7214](https://github.com/angular/material/issues/7214), [#5153](https://github.com/angular/material/issues/5153), [#7222](https://github.com/angular/material/issues/7222))
-* **docs:**
-  * retrieve source descriptor dynamically. ([4e3846dd](https://github.com/angular/material/commit/4e3846dd), closes [#7131](https://github.com/angular/material/issues/7131), [#7319](https://github.com/angular/material/issues/7319))
-  * stretched icon button will interfere with ripple ([c59f33e4](https://github.com/angular/material/commit/c59f33e4), closes [#7227](https://github.com/angular/material/issues/7227))
-  * docs stylesheet should not prevent scrolling in code pens ([f2858c61](https://github.com/angular/material/commit/f2858c61), closes [#7269](https://github.com/angular/material/issues/7269), [#7216](https://github.com/angular/material/issues/7216), [#7270](https://github.com/angular/material/issues/7270))
-  * DocsDemoCtrl fixed to interpolate and observe. ([893b67ec](https://github.com/angular/material/commit/893b67ec))
-  * fix animation for menu-toggle ([c739d110](https://github.com/angular/material/commit/c739d110), closes [#6262](https://github.com/angular/material/issues/6262), [#6936](https://github.com/angular/material/issues/6936), [#6937](https://github.com/angular/material/issues/6937))
-* **grid-list:** validate that row height is defined ([a8b886ab](https://github.com/angular/material/commit/a8b886ab), closes [#6870](https://github.com/angular/material/issues/6870), [#7348](https://github.com/angular/material/issues/7348))
-* **handleMenuItemHover:** allow any mdButton to be a focusableTarget ([0fa96d54](https://github.com/angular/material/commit/0fa96d54), closes [#7221](https://github.com/angular/material/issues/7221))
+  * backdrop being clipped ([f9738f5b](https://github.com/angular/material/commit/f9738f5b), closes [#8602](https://github.com/angular/material/issues/8602), [#8611](https://github.com/angular/material/issues/8611))
+  * remove whitespace from "custom" dialog demo ([55041ce4](https://github.com/angular/material/commit/55041ce4), closes [#8271](https://github.com/angular/material/issues/8271))
+  * don't clobber md-dialog id ([f0e6de99](https://github.com/angular/material/commit/f0e6de99))
+* **fabToolbar:** change of pointerEvents from initial to inherit ([562d7c17](https://github.com/angular/material/commit/562d7c17), closes [#7012](https://github.com/angular/material/issues/7012), [#8082](https://github.com/angular/material/issues/8082))
+* **highlight-flags:** make ^/$ work properly ([45278ec0](https://github.com/angular/material/commit/45278ec0), closes [#8096](https://github.com/angular/material/issues/8096), [#8120](https://github.com/angular/material/issues/8120))
 * **icon:**
-  * rename nodes id's from cache to prevent duplicates. ([0afbbd04](https://github.com/angular/material/commit/0afbbd04), closes [#7468](https://github.com/angular/material/issues/7468))
-  * Allow using data URLs ([e494c159](https://github.com/angular/material/commit/e494c159), closes [#4126](https://github.com/angular/material/issues/4126), [#7547](https://github.com/angular/material/issues/7547))
-  * accessibility issue with unique IDs ([5a2ad02e](https://github.com/angular/material/commit/5a2ad02e), closes [#6796](https://github.com/angular/material/issues/6796), [#7440](https://github.com/angular/material/issues/7440))
-  * disable e11 focus for SVG icons ([ccc1fdb5](https://github.com/angular/material/commit/ccc1fdb5), closes [#7250](https://github.com/angular/material/issues/7250), [#7321](https://github.com/angular/material/issues/7321))
+  * fix icon vertical alignment within md-button. ([bc2fac05](https://github.com/angular/material/commit/bc2fac05), closes [#8066](https://github.com/angular/material/issues/8066), [#8194](https://github.com/angular/material/issues/8194))
+  * Use data URLS instead of $templateCache ([9ce4f9ec](https://github.com/angular/material/commit/9ce4f9ec), closes [#6531](https://github.com/angular/material/issues/6531), [#7741](https://github.com/angular/material/issues/7741))
+  * static svg urls are trustable (#8484) ([05a3a0f9](https://github.com/angular/material/commit/05a3a0f9))
 * **input:**
-  * IE perf with attribute selectors for ngMessages ([e8cbc957](https://github.com/angular/material/commit/e8cbc957), closes [#7360](https://github.com/angular/material/issues/7360))
-  * Fix transition when switching tabs in Safari. ([b944ea1e](https://github.com/angular/material/commit/b944ea1e), closes [#4203](https://github.com/angular/material/issues/4203), [#7207](https://github.com/angular/material/issues/7207))
-* **interim-element:** cancel was emitted as list and not as stack ([f4ac5299](https://github.com/angular/material/commit/f4ac5299), closes [#6912](https://github.com/angular/material/issues/6912), [#7053](https://github.com/angular/material/issues/7053))
-* **layout:** Firefox and flex layout with min-height ([ee3cab59](https://github.com/angular/material/commit/ee3cab59), closes [#7382](https://github.com/angular/material/issues/7382))
-* **list:**
-  * removed `keypress` event listener from first child on destroy ([2df6cffa](https://github.com/angular/material/commit/2df6cffa), closes [#5842](https://github.com/angular/material/issues/5842), [#7057](https://github.com/angular/material/issues/7057))
-  * fix converted space when target is content editable. ([5d596a4f](https://github.com/angular/material/commit/5d596a4f), closes [#5406](https://github.com/angular/material/issues/5406), [#7161](https://github.com/angular/material/issues/7161))
-* **md-chips placeholder:** correct placeholder/secondary logic ([367d0ccc](https://github.com/angular/material/commit/367d0ccc), closes [#6535](https://github.com/angular/material/issues/6535))
-* **mdSelect:** fix flickering of ngMessages on mdSelect opening ([b54f7ede](https://github.com/angular/material/commit/b54f7ede), closes [#7636](https://github.com/angular/material/issues/7636), [#7646](https://github.com/angular/material/issues/7646))
-* **menuBar:** Fix hovering consecutive nested menus. ([4bdda21c](https://github.com/angular/material/commit/4bdda21c), closes [#6685](https://github.com/angular/material/issues/6685), [#7361](https://github.com/angular/material/issues/7361))
-* **menubar:** remove debugger; statement ([822267b0](https://github.com/angular/material/commit/822267b0))
-* **radioButton:** replaced inherit margin values with 0 Inherit is not the proper value, 0 should  ([39619ae4](https://github.com/angular/material/commit/39619ae4), closes [#7740](https://github.com/angular/material/issues/7740), [#7770](https://github.com/angular/material/issues/7770))
-* **release:**
-  * specifies upstream URL when pushing to material repo ([7abfddf5](https://github.com/angular/material/commit/7abfddf5), closes [#7852](https://github.com/angular/material/issues/7852))
-  * replace https urls with ssh versions to prevent typing password during release ([cdecdd2a](https://github.com/angular/material/commit/cdecdd2a), closes [#8070](https://github.com/angular/material/issues/8070))
-  * adds `newVersion` value to node string to update package.json ([0e13786b](https://github.com/angular/material/commit/0e13786b), closes [#7810](https://github.com/angular/material/issues/7810))
-  * cleans up git commands used for release script ([4b0d1bfe](https://github.com/angular/material/commit/4b0d1bfe), closes [#7369](https://github.com/angular/material/issues/7369))
+  * number input width in webkit ([c6c5d48c](https://github.com/angular/material/commit/c6c5d48c), closes [#7349](https://github.com/angular/material/issues/7349), [#7761](https://github.com/angular/material/issues/7761))
+  * prevent the floating label from overflowing ([437f764a](https://github.com/angular/material/commit/437f764a), closes [#7403](https://github.com/angular/material/issues/7403), [#8116](https://github.com/angular/material/issues/8116))
+  * add support for dynamically loaded ngMessage directives. ([06e7e992](https://github.com/angular/material/commit/06e7e992), closes [#7477](https://github.com/angular/material/issues/7477), [#7596](https://github.com/angular/material/issues/7596), [#6810](https://github.com/angular/material/issues/6810), [#7823](https://github.com/angular/material/issues/7823), [#8387](https://github.com/angular/material/issues/8387))
+* **interimElement:**
+  * prevent unhandled rejection error in $exceptionHandler. ([112a3e40](https://github.com/angular/material/commit/112a3e40), closes [#8622](https://github.com/angular/material/issues/8622))
+  * show method should cancel existing interim element ([8bf174b5](https://github.com/angular/material/commit/8bf174b5), closes [#8600](https://github.com/angular/material/issues/8600))
+* **layout:** IE10-IE11 column-flex bug fix ([ce0ebbfc](https://github.com/angular/material/commit/ce0ebbfc), closes [#8161](https://github.com/angular/material/issues/8161))
+* **list:** remove secondary container flex filler. ([621cc952](https://github.com/angular/material/commit/621cc952), closes [#8094](https://github.com/angular/material/issues/8094), [#7976](https://github.com/angular/material/issues/7976), [#8075](https://github.com/angular/material/issues/8075))
+* **menu:** type checkbox should not affect a normal menu item. ([560474f7](https://github.com/angular/material/commit/560474f7), closes [#8110](https://github.com/angular/material/issues/8110), [#8117](https://github.com/angular/material/issues/8117))
+* **navbar:** fixes navbar logic in angular 1.3 ([2b8d18fb](https://github.com/angular/material/commit/2b8d18fb), closes [#8419](https://github.com/angular/material/issues/8419))
+* **panel:**
+  * attached panels to body ([b9b6203a](https://github.com/angular/material/commit/b9b6203a), closes [#8420](https://github.com/angular/material/issues/8420))
+  * Fix panel tests in Angular 1.3. ([296f1c71](https://github.com/angular/material/commit/296f1c71), closes [#8418](https://github.com/angular/material/issues/8418))
+  * positions panel offscreen when calculating height/width ([46492407](https://github.com/angular/material/commit/46492407), closes [#8405](https://github.com/angular/material/issues/8405))
+  * css and docs fixes ([c13feb76](https://github.com/angular/material/commit/c13feb76))
+  * updates to positioning ([0168e867](https://github.com/angular/material/commit/0168e867))
+  * Fixes custom animations in the demo to account for opacity. ([060a54bb](https://github.com/angular/material/commit/060a54bb))
+  * Make all tests wait for promises to resolve. ([685c6fc8](https://github.com/angular/material/commit/685c6fc8))
+* **radioButton:** demos are not support RTL properly. ([02d3de20](https://github.com/angular/material/commit/02d3de20), closes [#8233](https://github.com/angular/material/issues/8233), [#8243](https://github.com/angular/material/issues/8243))
 * **select:**
-  * md-checkbox inside md-list-item using incorrect text color. ([d9682e24](https://github.com/angular/material/commit/d9682e24), closes [#7893](https://github.com/angular/material/issues/7893))
-  * prevent labels from overflowing ([d0c781f9](https://github.com/angular/material/commit/d0c781f9), closes [#7865](https://github.com/angular/material/issues/7865))
-  * disabled state, invalid html in unit tests ([d2c29b59](https://github.com/angular/material/commit/d2c29b59), closes [#7773](https://github.com/angular/material/issues/7773), [#7778](https://github.com/angular/material/issues/7778))
-  * spinner size ([2dcc90eb](https://github.com/angular/material/commit/2dcc90eb), closes [#7505](https://github.com/angular/material/issues/7505), [#7506](https://github.com/angular/material/issues/7506))
-  * use parsed attribute for md-container-class attribute ([ecd68378](https://github.com/angular/material/commit/ecd68378), closes [#6973](https://github.com/angular/material/issues/6973), [#6976](https://github.com/angular/material/issues/6976))
-  * fix set form to pristine if ng-model for multiple select is predefined. ([e164e69d](https://github.com/angular/material/commit/e164e69d), closes [#6556](https://github.com/angular/material/issues/6556), [#6782](https://github.com/angular/material/issues/6782))
+  * Fail validation if selection is not a valid option. ([da02ea2e](https://github.com/angular/material/commit/da02ea2e), closes [#7954](https://github.com/angular/material/issues/7954), [#7989](https://github.com/angular/material/issues/7989))
+  * properly hide the progressbar ([9e1e2023](https://github.com/angular/material/commit/9e1e2023), closes [#8379](https://github.com/angular/material/issues/8379), [#8381](https://github.com/angular/material/issues/8381))
 * **sidenav:**
-  * enable native scrolling on touch devices ([e440edbf](https://github.com/angular/material/commit/e440edbf), closes [#7786](https://github.com/angular/material/issues/7786), [#7751](https://github.com/angular/material/issues/7751))
-  * apply theming on sidenav correctly ([035626be](https://github.com/angular/material/commit/035626be), closes [#7084](https://github.com/angular/material/issues/7084), [#7374](https://github.com/angular/material/issues/7374))
-* **slider:** allow tabindex overwrite ([47cfe446](https://github.com/angular/material/commit/47cfe446), closes [#5829](https://github.com/angular/material/issues/5829), [#5830](https://github.com/angular/material/issues/5830))
-* **sticky:**
-  * logic NPE ([63098b08](https://github.com/angular/material/commit/63098b08), closes [#7316](https://github.com/angular/material/issues/7316))
-  * compile cloned element in the same scope ([026c87be](https://github.com/angular/material/commit/026c87be), closes [#4979](https://github.com/angular/material/issues/4979), [#7151](https://github.com/angular/material/issues/7151))
+  * update position of sidenav and backdrop if scrolled. ([9f6eecb0](https://github.com/angular/material/commit/9f6eecb0), closes [#5850](https://github.com/angular/material/issues/5850), [#8184](https://github.com/angular/material/issues/8184))
+  * don't log an error when waiting for an instance. ([ca07b769](https://github.com/angular/material/commit/ca07b769), closes [#8308](https://github.com/angular/material/issues/8308), [#8326](https://github.com/angular/material/issues/8326))
+  * rightNav button and input text is blurry on IE11 ([fc42e2cd](https://github.com/angular/material/commit/fc42e2cd), closes [#6007](https://github.com/angular/material/issues/6007), [#8297](https://github.com/angular/material/issues/8297))
+* **slider:** fix a js error if the slider container doesn't have a md-input-container ([4aa7160c](https://github.com/angular/material/commit/4aa7160c), closes [#8174](https://github.com/angular/material/issues/8174), [#7728](https://github.com/angular/material/issues/7728), [#8225](https://github.com/angular/material/issues/8225))
+* **subheader:** fix hidden directives inside of sticky clone. ([44140ce6](https://github.com/angular/material/commit/44140ce6), closes [#8500](https://github.com/angular/material/issues/8500), [#8504](https://github.com/angular/material/issues/8504), [#8505](https://github.com/angular/material/issues/8505))
+* **swipe:** safe apply the callback ([715dd34f](https://github.com/angular/material/commit/715dd34f), closes [#8318](https://github.com/angular/material/issues/8318), [#8497](https://github.com/angular/material/issues/8497))
 * **tabs:**
-  * fix always ignoring click events ([c998c49c](https://github.com/angular/material/commit/c998c49c), closes [#6482](https://github.com/angular/material/issues/6482))
-  * fixes background flicker in iOS Safari ([8961dcb2](https://github.com/angular/material/commit/8961dcb2), closes [#6290](https://github.com/angular/material/issues/6290), [#7076](https://github.com/angular/material/issues/7076))
-  * fixes tab math to address issues when used within dialog ([463d5e3f](https://github.com/angular/material/commit/463d5e3f), closes [#7048](https://github.com/angular/material/issues/7048), [#7118](https://github.com/angular/material/issues/7118))
+  * avoid width calculation deviations. ([efbbd372](https://github.com/angular/material/commit/efbbd372), closes [#8289](https://github.com/angular/material/issues/8289), [#8293](https://github.com/angular/material/issues/8293))
+  * fix object reference-related errors in IE ([a3cd6191](https://github.com/angular/material/commit/a3cd6191), closes [#8276](https://github.com/angular/material/issues/8276), [#8354](https://github.com/angular/material/issues/8354))
+  * fixes keyboard navigation issue ([8aa9b169](https://github.com/angular/material/commit/8aa9b169), closes [#2344](https://github.com/angular/material/issues/2344), [#7098](https://github.com/angular/material/issues/7098))
 * **tests:**
-  * update mdCompiler to support unwrapped simple text nodes ([36df9b9b](https://github.com/angular/material/commit/36df9b9b))
-  * remove invalid use of css private names ([d35c3bbd](https://github.com/angular/material/commit/d35c3bbd))
-* **theming:** theming should also watch for controller changes. ([3e35ef0a](https://github.com/angular/material/commit/3e35ef0a), closes [#5899](https://github.com/angular/material/issues/5899), [#7154](https://github.com/angular/material/issues/7154))
-* **toast:** better toast templating allowing comments and sibling elements ([57a929a2](https://github.com/angular/material/commit/57a929a2), closes [#6259](https://github.com/angular/material/issues/6259), [#6494](https://github.com/angular/material/issues/6494))
-* **util:** restore scrolling after test executed. ([59144784](https://github.com/angular/material/commit/59144784), closes [#8206](https://github.com/angular/material/issues/8206))
-* **virtualRepeat:**
-  * Memory leak ([ac010d39](https://github.com/angular/material/commit/ac010d39), closes [#8055](https://github.com/angular/material/issues/8055), [#8056](https://github.com/angular/material/issues/8056))
-  * Do not scroll past bottom Might also fix #4169 ([9a36112c](https://github.com/angular/material/commit/9a36112c), closes [#6279](https://github.com/angular/material/issues/6279), [#6990](https://github.com/angular/material/issues/6990))
-* **whiteframe:** update breakpoints in whiteframe class demo ([c43b1a34](https://github.com/angular/material/commit/c43b1a34))
+  * Cleans up the DOM after select, menu, and tooltip tests. ([62c2da1b](https://github.com/angular/material/commit/62c2da1b), closes [#8181](https://github.com/angular/material/issues/8181))
+  * re-enable the mdGridList test ([b496b0d7](https://github.com/angular/material/commit/b496b0d7), closes [#8086](https://github.com/angular/material/issues/8086))
+* **theming:**
+  * remove console warn for same primary and accent palettes ([3654fbf0](https://github.com/angular/material/commit/3654fbf0), closes [#8260](https://github.com/angular/material/issues/8260), [#8564](https://github.com/angular/material/issues/8564))
+  * only insert default theme if its usable. ([4c4c170c](https://github.com/angular/material/commit/4c4c170c), closes [#7425](https://github.com/angular/material/issues/7425), [#8578](https://github.com/angular/material/issues/8578))
+* **toast:** toast template transform was not appending nodes. ([a8f43b85](https://github.com/angular/material/commit/a8f43b85), closes [#8131](https://github.com/angular/material/issues/8131), [#8132](https://github.com/angular/material/issues/8132))
+* **toolbar:**
+  * fix the toolbar not shrinking on load ([72ed02fe](https://github.com/angular/material/commit/72ed02fe), closes [#8258](https://github.com/angular/material/issues/8258), [#8221](https://github.com/angular/material/issues/8221), [#8543](https://github.com/angular/material/issues/8543))
+  * remove transition duration for $ngAnimate ([9ef50a7a](https://github.com/angular/material/commit/9ef50a7a), closes [#7929](https://github.com/angular/material/issues/7929), [#8190](https://github.com/angular/material/issues/8190))
+* **tooltip:**
+  * interpolate the tooltip text when adding it to the aria-label ([60910efa](https://github.com/angular/material/commit/60910efa), closes [#6855](https://github.com/angular/material/issues/6855), [#8170](https://github.com/angular/material/issues/8170))
+  * properly default to "bottom", if no position is specified ([491e692d](https://github.com/angular/material/commit/491e692d), closes [#8389](https://github.com/angular/material/issues/8389), [#8525](https://github.com/angular/material/issues/8525))
+  * empty tooltips should not show up. ([c513e493](https://github.com/angular/material/commit/c513e493), closes [#8021](https://github.com/angular/material/issues/8021))
+  * cancel show timeouts when leaving before delay. ([5ba4c0e7](https://github.com/angular/material/commit/5ba4c0e7), closes [#8363](https://github.com/angular/material/issues/8363), [#8394](https://github.com/angular/material/issues/8394))
+  * set initial position of tooltip ([1cc80d3a](https://github.com/angular/material/commit/1cc80d3a), closes [#4345](https://github.com/angular/material/issues/4345), [#5654](https://github.com/angular/material/issues/5654))
+* **util:** restore scrolling after test executed. ([1ccf7277](https://github.com/angular/material/commit/1ccf7277), closes [#8206](https://github.com/angular/material/issues/8206))
+* **virtual-repeat:** auto shrink restored wrong original size. ([7e5be01a](https://github.com/angular/material/commit/7e5be01a), closes [#7955](https://github.com/angular/material/issues/7955), [#8095](https://github.com/angular/material/issues/8095))
+* **virtualRepeat:** Memory leak ([b99e74d9](https://github.com/angular/material/commit/b99e74d9), closes [#8055](https://github.com/angular/material/issues/8055), [#8056](https://github.com/angular/material/issues/8056))
+* **whiteframe:** prevent contents from being printed black ([0f0c4b65](https://github.com/angular/material/commit/0f0c4b65), closes [#8512](https://github.com/angular/material/issues/8512), [#8520](https://github.com/angular/material/issues/8520))
+
 
 
 <a name"1.1.0-rc4"></a>
 ### 1.1.0-rc4 (2016-04-15)
+
+This release we added a new feature `md-select-header` which supports custom content in the header of the `md-select` component:
+
+![selectwithinputheader](https://cloud.githubusercontent.com/assets/210413/14587401/f46c7c8c-0477-11e6-9cfc-79cecebec121.png)
 
 
 #### Features
@@ -150,9 +162,30 @@ Closes #6425
 * **sidenav:** add support for  legacy API ([fbf17dbf](https://github.com/angular/material/commit/fbf17dbf))
 * **subheader:** transform span to div to allow custom styling. ([01952ec5](https://github.com/angular/material/commit/01952ec5), closes [#8063](https://github.com/angular/material/issues/8063), [#8069](https://github.com/angular/material/issues/8069))
 
+#### Contributors
+
+Thanks to the great contributors who helped with this release:
+
+[<img alt="ThomasBurleson" src="https://avatars.githubusercontent.com/u/210413?v=3&s=117" width="117">](https://github.com/ThomasBurleson) |[<img alt="robertmesserle" src="https://avatars.githubusercontent.com/u/571363?v=3&s=117" width="117">](https://github.com/robertmesserle) |[<img alt="DevVersion" src="https://avatars.githubusercontent.com/u/4987015?v=3&s=117" width="117">](https://github.com/DevVersion) |[<img alt="topherfangio" src="https://avatars.githubusercontent.com/u/54370?v=3&s=117" width="117">](https://github.com/topherfangio) |[<img alt="EladBezalel" src="https://avatars.githubusercontent.com/u/6004537?v=3&s=117" width="117">](https://github.com/EladBezalel) |[<img alt="clshortfuse" src="https://avatars.githubusercontent.com/u/9271155?v=3&s=117" width="117">](https://github.com/clshortfuse) |
+:---: |:---: |:---: |:---: |:---: |:---: |
+[ThomasBurleson](https://github.com/ThomasBurleson) |[robertmesserle](https://github.com/robertmesserle) |[DevVersion](https://github.com/DevVersion) |[topherfangio](https://github.com/topherfangio) |[EladBezalel](https://github.com/EladBezalel) |[clshortfuse](https://github.com/clshortfuse) |
+
+[<img alt="DerekLouie" src="https://avatars.githubusercontent.com/u/709204?v=3&s=117" width="117">](https://github.com/DerekLouie) |[<img alt="VictorCoding" src="https://avatars.githubusercontent.com/u/6878222?v=3&s=117" width="117">](https://github.com/VictorCoding) |
+:---: |:---: |
+[DerekLouie](https://github.com/DerekLouie) |[VictorCoding](https://github.com/VictorCoding) |
+
+
+<br/>
+---
+
 
 <a name"1.1.0-rc3"></a>
 ### 1.1.0-rc3 (2016-04-13)
+
+This RC3 provides several fixes to Theme foreground and background colors. Also included is a **Colors** demo *Theme ColorPicker* that will be useful for developers interested using Theme colors and the new `md-colors` directive within their own custom components.
+
+![theme_colorpicker](https://cloud.githubusercontent.com/assets/210413/14511803/b8905722-019f-11e6-90ff-8e724d6ce3b5.png)
+
 
 #### Features
 
@@ -169,12 +202,12 @@ Closes #6425
 * Subheader: `background-color: '{{background-default}}'`
 * Button: use accent palette A700 for hover and focused
 * Checkbox: ripple use accent palette A700
-* Input: use primary-color instead of primary-500
-* LinearProgress: background-color: '{{accent-A100}}'
-* RadioButton: container uses  color: '{{accent-A700}}';
-* Select: accent uses color: '{{accent-color}}';
+* Input: use `primary-color` instead of `primary-500`
+* LinearProgress: `background-color: '{{accent-A100}}'`
+* RadioButton: container uses `color: '{{accent-A700}}';`
+* Select: accent uses color: `'{{accent-color}}';`
 * Slider: focus reing uses  `background-color: '{{accent-A200-0.2}}';`
-* Toast: uses `color: '{{accent-color}}';` instead of `color: '{{accent-A200}}';` 
+* Toast: uses `color: '{{accent-color}}';` instead of `color: '{{accent-A200}}';`
 
 
 #### Bug Fixes
@@ -211,6 +244,26 @@ Closes #6425
   * anchor should inherit theme to support colors ([81b44a47](https://github.com/angular/material/commit/81b44a47))
   * anchor theme colors are scoped to _md components ([901c3fc6](https://github.com/angular/material/commit/901c3fc6))
 * **theming:** theming should probably parse background hue names. ([79eba382](https://github.com/angular/material/commit/79eba382), closes [#7510](https://github.com/angular/material/issues/7510), [#8022](https://github.com/angular/material/issues/8022))
+
+#### Contributors
+
+Thanks to the great contributors who helped with this release:
+
+[<img alt="ThomasBurleson" src="https://avatars.githubusercontent.com/u/210413?v=3&s=117" width="117">](https://github.com/ThomasBurleson) |[<img alt="robertmesserle" src="https://avatars.githubusercontent.com/u/571363?v=3&s=117" width="117">](https://github.com/robertmesserle) |[<img alt="DevVersion" src="https://avatars.githubusercontent.com/u/4987015?v=3&s=117" width="117">](https://github.com/DevVersion) |[<img alt="EladBezalel" src="https://avatars.githubusercontent.com/u/6004537?v=3&s=117" width="117">](https://github.com/EladBezalel) |[<img alt="crisbeto" src="https://avatars.githubusercontent.com/u/4450522?v=3&s=117" width="117">](https://github.com/crisbeto) |[<img alt="Splaktar" src="https://avatars.githubusercontent.com/u/3506071?v=3&s=117" width="117">](https://github.com/Splaktar) |
+:---: |:---: |:---: |:---: |:---: |:---: |
+[ThomasBurleson](https://github.com/ThomasBurleson) |[robertmesserle](https://github.com/robertmesserle) |[DevVersion](https://github.com/DevVersion) |[EladBezalel](https://github.com/EladBezalel) |[crisbeto](https://github.com/crisbeto) |[Splaktar](https://github.com/Splaktar) |
+
+[<img alt="clshortfuse" src="https://avatars.githubusercontent.com/u/9271155?v=3&s=117" width="117">](https://github.com/clshortfuse) |[<img alt="DerekLouie" src="https://avatars.githubusercontent.com/u/709204?v=3&s=117" width="117">](https://github.com/DerekLouie) |[<img alt="jadjoubran" src="https://avatars.githubusercontent.com/u/2265232?v=3&s=117" width="117">](https://github.com/jadjoubran) |[<img alt="code-tree" src="https://avatars.githubusercontent.com/u/11289719?v=3&s=117" width="117">](https://github.com/code-tree) |[<img alt="trainerbill" src="https://avatars.githubusercontent.com/u/3578259?v=3&s=117" width="117">](https://github.com/trainerbill) |[<img alt="dentych" src="https://avatars.githubusercontent.com/u/2256372?v=3&s=117" width="117">](https://github.com/dentych) |
+:---: |:---: |:---: |:---: |:---: |:---: |
+[clshortfuse](https://github.com/clshortfuse) |[DerekLouie](https://github.com/DerekLouie) |[jadjoubran](https://github.com/jadjoubran) |[code-tree](https://github.com/code-tree) |[trainerbill](https://github.com/trainerbill) |[dentych](https://github.com/dentych) |
+
+[<img alt="ilovett" src="https://avatars.githubusercontent.com/u/1776100?v=3&s=117" width="117">](https://github.com/ilovett) |[<img alt="Djulia" src="https://avatars.githubusercontent.com/u/3987507?v=3&s=117" width="117">](https://github.com/Djulia) |[<img alt="kwypchlo" src="https://avatars.githubusercontent.com/u/3755029?v=3&s=117" width="117">](https://github.com/kwypchlo) |
+:---: |:---: |:---: |
+[ilovett](https://github.com/ilovett) |[Djulia](https://github.com/Djulia) |[kwypchlo](https://github.com/kwypchlo) |
+
+
+<br/>
+---
 
 
 <a name"1.1.0-rc2"></a>
@@ -306,6 +359,9 @@ Closes #6425
   * theming should also watch for controller changes. ([a653122c](https://github.com/angular/material/commit/a653122c), closes [#5899](https://github.com/angular/material/issues/5899), [#7154](https://github.com/angular/material/issues/7154))
   * updates text opacities to the newest specs ([48a3b9c3](https://github.com/angular/material/commit/48a3b9c3), closes [#7433](https://github.com/angular/material/issues/7433))
 * **toast:** better toast templating allowing comments and sibling elements ([43d53878](https://github.com/angular/material/commit/43d53878), closes [#6259](https://github.com/angular/material/issues/6259), [#6494](https://github.com/angular/material/issues/6494))
+
+<br/>
+---
 
 
 <a name"1.1.0-rc1"></a>
@@ -456,6 +512,263 @@ Closes #7246
   * removed allow_failures ([0b5fa378](https://github.com/angular/material/commit/0b5fa378))
 * **virtualRepeat:** Do not scroll past bottom Might also fix #4169 ([2bf00ad2](https://github.com/angular/material/commit/2bf00ad2), closes [#6279](https://github.com/angular/material/issues/6279), [#6990](https://github.com/angular/material/issues/6990))
 * **whiteframe:** update breakpoints in whiteframe class demo ([d2913a97](https://github.com/angular/material/commit/d2913a97), closes [#6911](https://github.com/angular/material/issues/6911))
+
+<a name"1.0.9"></a>
+### 1.0.9 (2016-05-19, Patch release)
+
+
+#### Features
+
+* **demos:** add global classes support ([6726ca6c](https://github.com/angular/material/commit/6726ca6c), closes [#8400](https://github.com/angular/material/issues/8400), [#8406](https://github.com/angular/material/issues/8406))
+* **panel:**
+  * New `$mdPanel` service!
+
+
+#### Bug Fixes
+
+* **build:** Fix failing tests with Angular 1.6. ([af1e2269](https://github.com/angular/material/commit/af1e2269), closes [#8404](https://github.com/angular/material/issues/8404))
+
+
+<a name"1.0.8"></a>
+### 1.0.8 (2016-04-28, Patch release)
+
+
+#### Features
+
+* **autocomplete:**
+  * allow disabling asterisk on floating label ([7361e715](https://github.com/angular/material/commit/7361e715), closes [#7119](https://github.com/angular/material/issues/7119))
+  * allow select on match to be case insensitive. ([5e222561](https://github.com/angular/material/commit/5e222561), closes [#5782](https://github.com/angular/material/issues/5782), [#6935](https://github.com/angular/material/issues/6935))
+  * forward `md-select-on-focus` attribute to input aswell ([2023a33d](https://github.com/angular/material/commit/2023a33d), closes [#7125](https://github.com/angular/material/issues/7125), [#7127](https://github.com/angular/material/issues/7127))
+  * support readonly attribute ([e0a7843f](https://github.com/angular/material/commit/e0a7843f), closes [#5507](https://github.com/angular/material/issues/5507), [#7107](https://github.com/angular/material/issues/7107))
+* **checkbox:** add indeterminate checkbox support ([cd987f0b](https://github.com/angular/material/commit/cd987f0b), closes [#7643](https://github.com/angular/material/issues/7643))
+* **chips:** md-max-chips to specify a maximum of chips that can be added through user input ([64cefc81](https://github.com/angular/material/commit/64cefc81), closes [#6864](https://github.com/angular/material/issues/6864), [#6897](https://github.com/angular/material/issues/6897))
+* **input:**
+  * allow skip hidden inputs ([e7c51e3e](https://github.com/angular/material/commit/e7c51e3e), closes [#2153](https://github.com/angular/material/issues/2153), [#6425](https://github.com/angular/material/issues/6425))
+  * add directive to auto select text on input focus ([cb8ef183](https://github.com/angular/material/commit/cb8ef183), closes [#6679](https://github.com/angular/material/issues/6679), [#6701](https://github.com/angular/material/issues/6701))
+* **select:**
+  * Adding md-select-header directive to md-select. ([c6d08bbf](https://github.com/angular/material/commit/c6d08bbf), closes [#7782](https://github.com/angular/material/issues/7782))
+  * Adding md-selected-text attribute to md-select. ([e7af2c87](https://github.com/angular/material/commit/e7af2c87), closes [#7721](https://github.com/angular/material/issues/7721))
+* **tabs:** allow disabling select click event by adding `md-no-select-click` attribute ([9624dac1](https://github.com/angular/material/commit/9624dac1), closes [#5351](https://github.com/angular/material/issues/5351))
+
+
+#### Breaking Changes
+
+* inputs with type `hidden` will be skipped by the `input-container`
+
+Fixes #2153
+
+Closes #6425
+
+ ([e7c51e3e](https://github.com/angular/material/commit/e7c51e3e))
+
+
+#### Bug Fixes
+
+* **autocomplete:**
+  * fix autocomplete tabindex support ([321feb00](https://github.com/angular/material/commit/321feb00), closes [#6999](https://github.com/angular/material/issues/6999), [#7005](https://github.com/angular/material/issues/7005))
+  * only handle results if it's an array or a promise ([5eab71b8](https://github.com/angular/material/commit/5eab71b8), closes [#7074](https://github.com/angular/material/issues/7074), [#7089](https://github.com/angular/material/issues/7089))
+  * probably clear the autocomplete. ([b05b1f7c](https://github.com/angular/material/commit/b05b1f7c), closes [#7180](https://github.com/angular/material/issues/7180), [#7354](https://github.com/angular/material/issues/7354))
+  * stop loading if last promise got resolved ([6307516c](https://github.com/angular/material/commit/6307516c), closes [#6907](https://github.com/angular/material/issues/6907), [#6927](https://github.com/angular/material/issues/6927))
+  * fix not found template detection when element is hidden ([3b766479](https://github.com/angular/material/commit/3b766479), closes [#7035](https://github.com/angular/material/issues/7035), [#7142](https://github.com/angular/material/issues/7142), [#7042](https://github.com/angular/material/issues/7042))
+  * clean up md-scroll-mask element on destroy ([acbd5c6a](https://github.com/angular/material/commit/acbd5c6a), closes [#7049](https://github.com/angular/material/issues/7049), [#7128](https://github.com/angular/material/issues/7128), [#7291](https://github.com/angular/material/issues/7291))
+  * fixes the sizing math ([2390d88b](https://github.com/angular/material/commit/2390d88b), closes [#6212](https://github.com/angular/material/issues/6212), [#7015](https://github.com/angular/material/issues/7015))
+  * store hasNotFoundTemplate in shared element ([0f9dae36](https://github.com/angular/material/commit/0f9dae36), closes [#5865](https://github.com/angular/material/issues/5865), [#5867](https://github.com/angular/material/issues/5867))
+  * allow clicking on not-found template. ([4ef9674c](https://github.com/angular/material/commit/4ef9674c), closes [#6191](https://github.com/angular/material/issues/6191), [#5526](https://github.com/angular/material/issues/5526), [#6103](https://github.com/angular/material/issues/6103))
+* **build:**
+  * bower-material-release should force remove the stale layout files. ([a543def6](https://github.com/angular/material/commit/a543def6), closes [#7807](https://github.com/angular/material/issues/7807))
+  * remove stale bower-material/layout css files ([ab1a7d2f](https://github.com/angular/material/commit/ab1a7d2f))
+  * closure build needs @ngInject to $mdUtil ([d3c29fe2](https://github.com/angular/material/commit/d3c29fe2), closes [#7611](https://github.com/angular/material/issues/7611), [#7609](https://github.com/angular/material/issues/7609), [#7608](https://github.com/angular/material/issues/7608))
+  * closure build needs @ngInject annotation ([79a00dbd](https://github.com/angular/material/commit/79a00dbd), closes [#7613](https://github.com/angular/material/issues/7613))
+* **button:** fixed wrong md-icon selector and changed raised icon color to hue-900 ([32435759](https://github.com/angular/material/commit/32435759), closes [#6944](https://github.com/angular/material/issues/6944), [#6945](https://github.com/angular/material/issues/6945))
+* **card:** remove duplicate demo module names. ([cc47355a](https://github.com/angular/material/commit/cc47355a), closes [#7693](https://github.com/angular/material/issues/7693))
+* **checkbox:**
+  * pointer events disable ripple events too ([f790e93e](https://github.com/angular/material/commit/f790e93e), closes [#7538](https://github.com/angular/material/issues/7538), [#7541](https://github.com/angular/material/issues/7541))
+  * fix IE11 focus for checkbox ([1f6cd8f9](https://github.com/angular/material/commit/1f6cd8f9), closes [#7086](https://github.com/angular/material/issues/7086), [#7088](https://github.com/angular/material/issues/7088))
+* **chips:**
+  * fix md-max-chips for autocomplete watcher ([ed4b20f1](https://github.com/angular/material/commit/ed4b20f1), closes [#7549](https://github.com/angular/material/issues/7549), [#7550](https://github.com/angular/material/issues/7550))
+  * do not trim the input model. ([d7c389d7](https://github.com/angular/material/commit/d7c389d7), closes [#7243](https://github.com/angular/material/issues/7243), [#7748](https://github.com/angular/material/issues/7748))
+  * fix chips focus functionality ([cfb285cb](https://github.com/angular/material/commit/cfb285cb), closes [#5897](https://github.com/angular/material/issues/5897), [#5662](https://github.com/angular/material/issues/5662), [#5941](https://github.com/angular/material/issues/5941))
+* **constants:** add semicolon keycode ([5e8cf9eb](https://github.com/angular/material/commit/5e8cf9eb), closes [#7228](https://github.com/angular/material/issues/7228))
+* **datePicker:** ensure one is able to override default sass variables values ([dee1c1c7](https://github.com/angular/material/commit/dee1c1c7), closes [#7329](https://github.com/angular/material/issues/7329))
+* **datepicker:**
+  * style demo ngMessage as same as input messages. ([0e5c253a](https://github.com/angular/material/commit/0e5c253a), closes [#7071](https://github.com/angular/material/issues/7071), [#7219](https://github.com/angular/material/issues/7219))
+  * enable scrolling when scope destroyed. ([4d639b0d](https://github.com/angular/material/commit/4d639b0d), closes [#7542](https://github.com/angular/material/issues/7542), [#7544](https://github.com/angular/material/issues/7544))
+* **demo:**
+  * use md-dialog-actions ([e12859a7](https://github.com/angular/material/commit/e12859a7))
+  * observe interpolated docs-demo attributes + fix layout alignment interactive dem ([d0deb379](https://github.com/angular/material/commit/d0deb379), closes [#6564](https://github.com/angular/material/issues/6564), [#6361](https://github.com/angular/material/issues/6361), [#6319](https://github.com/angular/material/issues/6319), [#6567](https://github.com/angular/material/issues/6567))
+* **dialog:**
+  * don't clobber md-dialog id ([8390c22d](https://github.com/angular/material/commit/8390c22d))
+  * prefix dialog content probably ([3a41828a](https://github.com/angular/material/commit/3a41828a), closes [#7469](https://github.com/angular/material/issues/7469), [#7480](https://github.com/angular/material/issues/7480))
+  * moved bottom focus trap to be a sibling ([1e2d3806](https://github.com/angular/material/commit/1e2d3806), closes [#7407](https://github.com/angular/material/issues/7407), [#7408](https://github.com/angular/material/issues/7408))
+  * correctly disable keydown listener for escapeToClose ([35de3d1a](https://github.com/angular/material/commit/35de3d1a), closes [#7214](https://github.com/angular/material/issues/7214), [#5153](https://github.com/angular/material/issues/5153), [#7222](https://github.com/angular/material/issues/7222))
+* **docs:**
+  * retrieve source descriptor dynamically. ([4e3846dd](https://github.com/angular/material/commit/4e3846dd), closes [#7131](https://github.com/angular/material/issues/7131), [#7319](https://github.com/angular/material/issues/7319))
+  * stretched icon button will interfere with ripple ([c59f33e4](https://github.com/angular/material/commit/c59f33e4), closes [#7227](https://github.com/angular/material/issues/7227))
+  * docs stylesheet should not prevent scrolling in code pens ([f2858c61](https://github.com/angular/material/commit/f2858c61), closes [#7269](https://github.com/angular/material/issues/7269), [#7216](https://github.com/angular/material/issues/7216), [#7270](https://github.com/angular/material/issues/7270))
+  * DocsDemoCtrl fixed to interpolate and observe. ([893b67ec](https://github.com/angular/material/commit/893b67ec))
+  * fix animation for menu-toggle ([c739d110](https://github.com/angular/material/commit/c739d110), closes [#6262](https://github.com/angular/material/issues/6262), [#6936](https://github.com/angular/material/issues/6936), [#6937](https://github.com/angular/material/issues/6937))
+* **grid-list:** validate that row height is defined ([a8b886ab](https://github.com/angular/material/commit/a8b886ab), closes [#6870](https://github.com/angular/material/issues/6870), [#7348](https://github.com/angular/material/issues/7348))
+* **handleMenuItemHover:** allow any mdButton to be a focusableTarget ([0fa96d54](https://github.com/angular/material/commit/0fa96d54), closes [#7221](https://github.com/angular/material/issues/7221))
+* **icon:**
+  * rename nodes id's from cache to prevent duplicates. ([0afbbd04](https://github.com/angular/material/commit/0afbbd04), closes [#7468](https://github.com/angular/material/issues/7468))
+  * Allow using data URLs ([e494c159](https://github.com/angular/material/commit/e494c159), closes [#4126](https://github.com/angular/material/issues/4126), [#7547](https://github.com/angular/material/issues/7547))
+  * accessibility issue with unique IDs ([5a2ad02e](https://github.com/angular/material/commit/5a2ad02e), closes [#6796](https://github.com/angular/material/issues/6796), [#7440](https://github.com/angular/material/issues/7440))
+  * disable e11 focus for SVG icons ([ccc1fdb5](https://github.com/angular/material/commit/ccc1fdb5), closes [#7250](https://github.com/angular/material/issues/7250), [#7321](https://github.com/angular/material/issues/7321))
+* **input:**
+  * IE perf with attribute selectors for ngMessages ([e8cbc957](https://github.com/angular/material/commit/e8cbc957), closes [#7360](https://github.com/angular/material/issues/7360))
+  * Fix transition when switching tabs in Safari. ([b944ea1e](https://github.com/angular/material/commit/b944ea1e), closes [#4203](https://github.com/angular/material/issues/4203), [#7207](https://github.com/angular/material/issues/7207))
+* **interim-element:** cancel was emitted as list and not as stack ([f4ac5299](https://github.com/angular/material/commit/f4ac5299), closes [#6912](https://github.com/angular/material/issues/6912), [#7053](https://github.com/angular/material/issues/7053))
+* **layout:** Firefox and flex layout with min-height ([ee3cab59](https://github.com/angular/material/commit/ee3cab59), closes [#7382](https://github.com/angular/material/issues/7382))
+* **list:**
+  * removed `keypress` event listener from first child on destroy ([2df6cffa](https://github.com/angular/material/commit/2df6cffa), closes [#5842](https://github.com/angular/material/issues/5842), [#7057](https://github.com/angular/material/issues/7057))
+  * fix converted space when target is content editable. ([5d596a4f](https://github.com/angular/material/commit/5d596a4f), closes [#5406](https://github.com/angular/material/issues/5406), [#7161](https://github.com/angular/material/issues/7161))
+* **md-chips placeholder:** correct placeholder/secondary logic ([367d0ccc](https://github.com/angular/material/commit/367d0ccc), closes [#6535](https://github.com/angular/material/issues/6535))
+* **mdSelect:** fix flickering of ngMessages on mdSelect opening ([b54f7ede](https://github.com/angular/material/commit/b54f7ede), closes [#7636](https://github.com/angular/material/issues/7636), [#7646](https://github.com/angular/material/issues/7646))
+* **menuBar:** Fix hovering consecutive nested menus. ([4bdda21c](https://github.com/angular/material/commit/4bdda21c), closes [#6685](https://github.com/angular/material/issues/6685), [#7361](https://github.com/angular/material/issues/7361))
+* **menubar:** remove debugger; statement ([822267b0](https://github.com/angular/material/commit/822267b0))
+* **radioButton:** replaced inherit margin values with 0 Inherit is not the proper value, 0 should  ([39619ae4](https://github.com/angular/material/commit/39619ae4), closes [#7740](https://github.com/angular/material/issues/7740), [#7770](https://github.com/angular/material/issues/7770))
+* **release:**
+  * specifies upstream URL when pushing to material repo ([7abfddf5](https://github.com/angular/material/commit/7abfddf5), closes [#7852](https://github.com/angular/material/issues/7852))
+  * replace https urls with ssh versions to prevent typing password during release ([cdecdd2a](https://github.com/angular/material/commit/cdecdd2a), closes [#8070](https://github.com/angular/material/issues/8070))
+  * adds `newVersion` value to node string to update package.json ([0e13786b](https://github.com/angular/material/commit/0e13786b), closes [#7810](https://github.com/angular/material/issues/7810))
+  * cleans up git commands used for release script ([4b0d1bfe](https://github.com/angular/material/commit/4b0d1bfe), closes [#7369](https://github.com/angular/material/issues/7369))
+* **select:**
+  * md-checkbox inside md-list-item using incorrect text color. ([d9682e24](https://github.com/angular/material/commit/d9682e24), closes [#7893](https://github.com/angular/material/issues/7893))
+  * prevent labels from overflowing ([d0c781f9](https://github.com/angular/material/commit/d0c781f9), closes [#7865](https://github.com/angular/material/issues/7865))
+  * disabled state, invalid html in unit tests ([d2c29b59](https://github.com/angular/material/commit/d2c29b59), closes [#7773](https://github.com/angular/material/issues/7773), [#7778](https://github.com/angular/material/issues/7778))
+  * spinner size ([2dcc90eb](https://github.com/angular/material/commit/2dcc90eb), closes [#7505](https://github.com/angular/material/issues/7505), [#7506](https://github.com/angular/material/issues/7506))
+  * use parsed attribute for md-container-class attribute ([ecd68378](https://github.com/angular/material/commit/ecd68378), closes [#6973](https://github.com/angular/material/issues/6973), [#6976](https://github.com/angular/material/issues/6976))
+  * fix set form to pristine if ng-model for multiple select is predefined. ([e164e69d](https://github.com/angular/material/commit/e164e69d), closes [#6556](https://github.com/angular/material/issues/6556), [#6782](https://github.com/angular/material/issues/6782))
+* **sidenav:**
+  * enable native scrolling on touch devices ([e440edbf](https://github.com/angular/material/commit/e440edbf), closes [#7786](https://github.com/angular/material/issues/7786), [#7751](https://github.com/angular/material/issues/7751))
+  * apply theming on sidenav correctly ([035626be](https://github.com/angular/material/commit/035626be), closes [#7084](https://github.com/angular/material/issues/7084), [#7374](https://github.com/angular/material/issues/7374))
+* **slider:** allow tabindex overwrite ([47cfe446](https://github.com/angular/material/commit/47cfe446), closes [#5829](https://github.com/angular/material/issues/5829), [#5830](https://github.com/angular/material/issues/5830))
+* **sticky:**
+  * logic NPE ([63098b08](https://github.com/angular/material/commit/63098b08), closes [#7316](https://github.com/angular/material/issues/7316))
+  * compile cloned element in the same scope ([026c87be](https://github.com/angular/material/commit/026c87be), closes [#4979](https://github.com/angular/material/issues/4979), [#7151](https://github.com/angular/material/issues/7151))
+* **tabs:**
+  * fix always ignoring click events ([c998c49c](https://github.com/angular/material/commit/c998c49c), closes [#6482](https://github.com/angular/material/issues/6482))
+  * fixes background flicker in iOS Safari ([8961dcb2](https://github.com/angular/material/commit/8961dcb2), closes [#6290](https://github.com/angular/material/issues/6290), [#7076](https://github.com/angular/material/issues/7076))
+  * fixes tab math to address issues when used within dialog ([463d5e3f](https://github.com/angular/material/commit/463d5e3f), closes [#7048](https://github.com/angular/material/issues/7048), [#7118](https://github.com/angular/material/issues/7118))
+* **tests:**
+  * update mdCompiler to support unwrapped simple text nodes ([36df9b9b](https://github.com/angular/material/commit/36df9b9b))
+  * remove invalid use of css private names ([d35c3bbd](https://github.com/angular/material/commit/d35c3bbd))
+* **theming:** theming should also watch for controller changes. ([3e35ef0a](https://github.com/angular/material/commit/3e35ef0a), closes [#5899](https://github.com/angular/material/issues/5899), [#7154](https://github.com/angular/material/issues/7154))
+* **toast:** better toast templating allowing comments and sibling elements ([57a929a2](https://github.com/angular/material/commit/57a929a2), closes [#6259](https://github.com/angular/material/issues/6259), [#6494](https://github.com/angular/material/issues/6494))
+* **util:** restore scrolling after test executed. ([59144784](https://github.com/angular/material/commit/59144784), closes [#8206](https://github.com/angular/material/issues/8206))
+* **virtualRepeat:**
+  * Memory leak ([ac010d39](https://github.com/angular/material/commit/ac010d39), closes [#8055](https://github.com/angular/material/issues/8055), [#8056](https://github.com/angular/material/issues/8056))
+  * Do not scroll past bottom Might also fix #4169 ([9a36112c](https://github.com/angular/material/commit/9a36112c), closes [#6279](https://github.com/angular/material/issues/6279), [#6990](https://github.com/angular/material/issues/6990))
+* **whiteframe:** update breakpoints in whiteframe class demo ([c43b1a34](https://github.com/angular/material/commit/c43b1a34))
+
+<a name"1.0.7"></a>
+### 1.0.7 (2016-04-01, Patch Release)
+
+
+#### Features
+
+* **autocomplete:**
+  * allow disabling asterisk on floating label ([7361e715](https://github.com/angular/material/commit/7361e715), closes [#7119](https://github.com/angular/material/issues/7119))
+  * allow select on match to be case insensitive. ([5e222561](https://github.com/angular/material/commit/5e222561), closes [#5782](https://github.com/angular/material/issues/5782), [#6935](https://github.com/angular/material/issues/6935))
+  * forward `md-select-on-focus` attribute to input aswell ([2023a33d](https://github.com/angular/material/commit/2023a33d), closes [#7125](https://github.com/angular/material/issues/7125), [#7127](https://github.com/angular/material/issues/7127))
+  * support readonly attribute ([e0a7843f](https://github.com/angular/material/commit/e0a7843f), closes [#5507](https://github.com/angular/material/issues/5507), [#7107](https://github.com/angular/material/issues/7107))
+* **chips:** md-max-chips to specify a maximum of chips that can be added through user input ([64cefc81](https://github.com/angular/material/commit/64cefc81), closes [#6864](https://github.com/angular/material/issues/6864), [#6897](https://github.com/angular/material/issues/6897))
+* **input:**
+  * allow skip hidden inputs ([e7c51e3e](https://github.com/angular/material/commit/e7c51e3e), closes [#2153](https://github.com/angular/material/issues/2153), [#6425](https://github.com/angular/material/issues/6425))
+  * add directive to auto select text on input focus ([cb8ef183](https://github.com/angular/material/commit/cb8ef183), closes [#6679](https://github.com/angular/material/issues/6679), [#6701](https://github.com/angular/material/issues/6701))
+* **tabs:** allow disabling select click event by adding `md-no-select-click` attribute ([9624dac1](https://github.com/angular/material/commit/9624dac1), closes [#5351](https://github.com/angular/material/issues/5351))
+
+#### Bug Fixes
+
+* **autocomplete:**
+  * fix autocomplete tabindex support ([321feb00](https://github.com/angular/material/commit/321feb00), closes [#6999](https://github.com/angular/material/issues/6999), [#7005](https://github.com/angular/material/issues/7005))
+  * only handle results if it's an array or a promise ([5eab71b8](https://github.com/angular/material/commit/5eab71b8), closes [#7074](https://github.com/angular/material/issues/7074), [#7089](https://github.com/angular/material/issues/7089))
+  * probably clear the autocomplete. ([b05b1f7c](https://github.com/angular/material/commit/b05b1f7c), closes [#7180](https://github.com/angular/material/issues/7180), [#7354](https://github.com/angular/material/issues/7354))
+  * stop loading if last promise got resolved ([6307516c](https://github.com/angular/material/commit/6307516c), closes [#6907](https://github.com/angular/material/issues/6907), [#6927](https://github.com/angular/material/issues/6927))
+  * fix not found template detection when element is hidden ([3b766479](https://github.com/angular/material/commit/3b766479), closes [#7035](https://github.com/angular/material/issues/7035), [#7142](https://github.com/angular/material/issues/7142), [#7042](https://github.com/angular/material/issues/7042))
+  * clean up md-scroll-mask element on destroy ([acbd5c6a](https://github.com/angular/material/commit/acbd5c6a), closes [#7049](https://github.com/angular/material/issues/7049), [#7128](https://github.com/angular/material/issues/7128), [#7291](https://github.com/angular/material/issues/7291))
+  * fixes the sizing math ([2390d88b](https://github.com/angular/material/commit/2390d88b), closes [#6212](https://github.com/angular/material/issues/6212), [#7015](https://github.com/angular/material/issues/7015))
+  * store hasNotFoundTemplate in shared element ([0f9dae36](https://github.com/angular/material/commit/0f9dae36), closes [#5865](https://github.com/angular/material/issues/5865), [#5867](https://github.com/angular/material/issues/5867))
+  * allow clicking on not-found template. ([4ef9674c](https://github.com/angular/material/commit/4ef9674c), closes [#6191](https://github.com/angular/material/issues/6191), [#5526](https://github.com/angular/material/issues/5526), [#6103](https://github.com/angular/material/issues/6103))
+* **build:**
+  * bower-material-release should force remove the stale layout files. ([a543def6](https://github.com/angular/material/commit/a543def6), closes [#7807](https://github.com/angular/material/issues/7807))
+  * remove stale bower-material/layout css files ([ab1a7d2f](https://github.com/angular/material/commit/ab1a7d2f))
+  * closure build needs @ngInject to $mdUtil ([d3c29fe2](https://github.com/angular/material/commit/d3c29fe2), closes [#7611](https://github.com/angular/material/issues/7611), [#7609](https://github.com/angular/material/issues/7609), [#7608](https://github.com/angular/material/issues/7608))
+  * closure build needs @ngInject annotation ([79a00dbd](https://github.com/angular/material/commit/79a00dbd), closes [#7613](https://github.com/angular/material/issues/7613))
+* **button:** fixed wrong md-icon selector and changed raised icon color to hue-900 ([32435759](https://github.com/angular/material/commit/32435759), closes [#6944](https://github.com/angular/material/issues/6944), [#6945](https://github.com/angular/material/issues/6945))
+* **card:** remove duplicate demo module names. ([cc47355a](https://github.com/angular/material/commit/cc47355a), closes [#7693](https://github.com/angular/material/issues/7693))
+* **checkbox:**
+  * pointer events disable ripple events too ([f790e93e](https://github.com/angular/material/commit/f790e93e), closes [#7538](https://github.com/angular/material/issues/7538), [#7541](https://github.com/angular/material/issues/7541))
+  * fix IE11 focus for checkbox ([1f6cd8f9](https://github.com/angular/material/commit/1f6cd8f9), closes [#7086](https://github.com/angular/material/issues/7086), [#7088](https://github.com/angular/material/issues/7088))
+* **chips:**
+  * fix md-max-chips for autocomplete watcher ([ed4b20f1](https://github.com/angular/material/commit/ed4b20f1), closes [#7549](https://github.com/angular/material/issues/7549), [#7550](https://github.com/angular/material/issues/7550))
+  * do not trim the input model. ([d7c389d7](https://github.com/angular/material/commit/d7c389d7), closes [#7243](https://github.com/angular/material/issues/7243), [#7748](https://github.com/angular/material/issues/7748))
+  * fix chips focus functionality ([cfb285cb](https://github.com/angular/material/commit/cfb285cb), closes [#5897](https://github.com/angular/material/issues/5897), [#5662](https://github.com/angular/material/issues/5662), [#5941](https://github.com/angular/material/issues/5941))
+* **constants:** add semicolon keycode ([5e8cf9eb](https://github.com/angular/material/commit/5e8cf9eb), closes [#7228](https://github.com/angular/material/issues/7228))
+* **datePicker:** ensure one is able to override default sass variables values ([dee1c1c7](https://github.com/angular/material/commit/dee1c1c7), closes [#7329](https://github.com/angular/material/issues/7329))
+* **datepicker:**
+  * style demo ngMessage as same as input messages. ([0e5c253a](https://github.com/angular/material/commit/0e5c253a), closes [#7071](https://github.com/angular/material/issues/7071), [#7219](https://github.com/angular/material/issues/7219))
+  * enable scrolling when scope destroyed. ([4d639b0d](https://github.com/angular/material/commit/4d639b0d), closes [#7542](https://github.com/angular/material/issues/7542), [#7544](https://github.com/angular/material/issues/7544))
+* **demo:**
+  * use md-dialog-actions ([e12859a7](https://github.com/angular/material/commit/e12859a7))
+  * observe interpolated docs-demo attributes + fix layout alignment interactive dem ([d0deb379](https://github.com/angular/material/commit/d0deb379), closes [#6564](https://github.com/angular/material/issues/6564), [#6361](https://github.com/angular/material/issues/6361), [#6319](https://github.com/angular/material/issues/6319), [#6567](https://github.com/angular/material/issues/6567))
+* **dialog:**
+  * prefix dialog content probably ([3a41828a](https://github.com/angular/material/commit/3a41828a), closes [#7469](https://github.com/angular/material/issues/7469), [#7480](https://github.com/angular/material/issues/7480))
+  * moved bottom focus trap to be a sibling ([1e2d3806](https://github.com/angular/material/commit/1e2d3806), closes [#7407](https://github.com/angular/material/issues/7407), [#7408](https://github.com/angular/material/issues/7408))
+  * correctly disable keydown listener for escapeToClose ([35de3d1a](https://github.com/angular/material/commit/35de3d1a), closes [#7214](https://github.com/angular/material/issues/7214), [#5153](https://github.com/angular/material/issues/5153), [#7222](https://github.com/angular/material/issues/7222))
+* **docs:**
+  * retrieve source descriptor dynamically. ([4e3846dd](https://github.com/angular/material/commit/4e3846dd), closes [#7131](https://github.com/angular/material/issues/7131), [#7319](https://github.com/angular/material/issues/7319))
+  * stretched icon button will interfere with ripple ([c59f33e4](https://github.com/angular/material/commit/c59f33e4), closes [#7227](https://github.com/angular/material/issues/7227))
+  * docs stylesheet should not prevent scrolling in code pens ([f2858c61](https://github.com/angular/material/commit/f2858c61), closes [#7269](https://github.com/angular/material/issues/7269), [#7216](https://github.com/angular/material/issues/7216), [#7270](https://github.com/angular/material/issues/7270))
+  * DocsDemoCtrl fixed to interpolate and observe. ([893b67ec](https://github.com/angular/material/commit/893b67ec))
+  * fix animation for menu-toggle ([c739d110](https://github.com/angular/material/commit/c739d110), closes [#6262](https://github.com/angular/material/issues/6262), [#6936](https://github.com/angular/material/issues/6936), [#6937](https://github.com/angular/material/issues/6937))
+* **grid-list:** validate that row height is defined ([a8b886ab](https://github.com/angular/material/commit/a8b886ab), closes [#6870](https://github.com/angular/material/issues/6870), [#7348](https://github.com/angular/material/issues/7348))
+* **handleMenuItemHover:** allow any mdButton to be a focusableTarget ([0fa96d54](https://github.com/angular/material/commit/0fa96d54), closes [#7221](https://github.com/angular/material/issues/7221))
+* **icon:**
+  * rename nodes id's from cache to prevent duplicates. ([0afbbd04](https://github.com/angular/material/commit/0afbbd04), closes [#7468](https://github.com/angular/material/issues/7468))
+  * Allow using data URLs ([e494c159](https://github.com/angular/material/commit/e494c159), closes [#4126](https://github.com/angular/material/issues/4126), [#7547](https://github.com/angular/material/issues/7547))
+  * accessibility issue with unique IDs ([5a2ad02e](https://github.com/angular/material/commit/5a2ad02e), closes [#6796](https://github.com/angular/material/issues/6796), [#7440](https://github.com/angular/material/issues/7440))
+  * disable e11 focus for SVG icons ([ccc1fdb5](https://github.com/angular/material/commit/ccc1fdb5), closes [#7250](https://github.com/angular/material/issues/7250), [#7321](https://github.com/angular/material/issues/7321))
+* **input:**
+  * IE perf with attribute selectors for ngMessages ([e8cbc957](https://github.com/angular/material/commit/e8cbc957), closes [#7360](https://github.com/angular/material/issues/7360))
+  * Fix transition when switching tabs in Safari. ([b944ea1e](https://github.com/angular/material/commit/b944ea1e), closes [#4203](https://github.com/angular/material/issues/4203), [#7207](https://github.com/angular/material/issues/7207))
+* **interim-element:** cancel was emitted as list and not as stack ([f4ac5299](https://github.com/angular/material/commit/f4ac5299), closes [#6912](https://github.com/angular/material/issues/6912), [#7053](https://github.com/angular/material/issues/7053))
+* **layout:** Firefox and flex layout with min-height ([ee3cab59](https://github.com/angular/material/commit/ee3cab59), closes [#7382](https://github.com/angular/material/issues/7382))
+* **list:**
+  * removed `keypress` event listener from first child on destroy ([2df6cffa](https://github.com/angular/material/commit/2df6cffa), closes [#5842](https://github.com/angular/material/issues/5842), [#7057](https://github.com/angular/material/issues/7057))
+  * fix converted space when target is content editable. ([5d596a4f](https://github.com/angular/material/commit/5d596a4f), closes [#5406](https://github.com/angular/material/issues/5406), [#7161](https://github.com/angular/material/issues/7161))
+* **md-chips placeholder:** correct placeholder/secondary logic ([367d0ccc](https://github.com/angular/material/commit/367d0ccc), closes [#6535](https://github.com/angular/material/issues/6535))
+* **mdSelect:** fix flickering of ngMessages on mdSelect opening ([b54f7ede](https://github.com/angular/material/commit/b54f7ede), closes [#7636](https://github.com/angular/material/issues/7636), [#7646](https://github.com/angular/material/issues/7646))
+* **menuBar:** Fix hovering consecutive nested menus. ([4bdda21c](https://github.com/angular/material/commit/4bdda21c), closes [#6685](https://github.com/angular/material/issues/6685), [#7361](https://github.com/angular/material/issues/7361))
+* **menubar:** remove debugger; statement ([822267b0](https://github.com/angular/material/commit/822267b0))
+* **radioButton:** replaced inherit margin values with 0 Inherit is not the proper value, 0 should  ([39619ae4](https://github.com/angular/material/commit/39619ae4), closes [#7740](https://github.com/angular/material/issues/7740), [#7770](https://github.com/angular/material/issues/7770))
+* **release:**
+  * adds `newVersion` value to node string to update package.json ([0e13786b](https://github.com/angular/material/commit/0e13786b), closes [#7810](https://github.com/angular/material/issues/7810))
+  * cleans up git commands used for release script ([4b0d1bfe](https://github.com/angular/material/commit/4b0d1bfe), closes [#7369](https://github.com/angular/material/issues/7369))
+* **select:**
+  * disabled state, invalid html in unit tests ([d2c29b59](https://github.com/angular/material/commit/d2c29b59), closes [#7773](https://github.com/angular/material/issues/7773), [#7778](https://github.com/angular/material/issues/7778))
+  * spinner size ([2dcc90eb](https://github.com/angular/material/commit/2dcc90eb), closes [#7505](https://github.com/angular/material/issues/7505), [#7506](https://github.com/angular/material/issues/7506))
+  * use parsed attribute for md-container-class attribute ([ecd68378](https://github.com/angular/material/commit/ecd68378), closes [#6973](https://github.com/angular/material/issues/6973), [#6976](https://github.com/angular/material/issues/6976))
+  * fix set form to pristine if ng-model for multiple select is predefined. ([e164e69d](https://github.com/angular/material/commit/e164e69d), closes [#6556](https://github.com/angular/material/issues/6556), [#6782](https://github.com/angular/material/issues/6782))
+* **sidenav:**
+  * enable native scrolling on touch devices ([e440edbf](https://github.com/angular/material/commit/e440edbf), closes [#7786](https://github.com/angular/material/issues/7786), [#7751](https://github.com/angular/material/issues/7751))
+  * apply theming on sidenav correctly ([035626be](https://github.com/angular/material/commit/035626be), closes [#7084](https://github.com/angular/material/issues/7084), [#7374](https://github.com/angular/material/issues/7374))
+* **slider:** allow tabindex overwrite ([47cfe446](https://github.com/angular/material/commit/47cfe446), closes [#5829](https://github.com/angular/material/issues/5829), [#5830](https://github.com/angular/material/issues/5830))
+* **sticky:**
+  * logic NPE ([63098b08](https://github.com/angular/material/commit/63098b08), closes [#7316](https://github.com/angular/material/issues/7316))
+  * compile cloned element in the same scope ([026c87be](https://github.com/angular/material/commit/026c87be), closes [#4979](https://github.com/angular/material/issues/4979), [#7151](https://github.com/angular/material/issues/7151))
+* **tabs:**
+  * fix always ignoring click events ([c998c49c](https://github.com/angular/material/commit/c998c49c), closes [#6482](https://github.com/angular/material/issues/6482))
+  * fixes background flicker in iOS Safari ([8961dcb2](https://github.com/angular/material/commit/8961dcb2), closes [#6290](https://github.com/angular/material/issues/6290), [#7076](https://github.com/angular/material/issues/7076))
+  * fixes tab math to address issues when used within dialog ([463d5e3f](https://github.com/angular/material/commit/463d5e3f), closes [#7048](https://github.com/angular/material/issues/7048), [#7118](https://github.com/angular/material/issues/7118))
+* **tests:**
+  * update mdCompiler to support unwrapped simple text nodes ([36df9b9b](https://github.com/angular/material/commit/36df9b9b))
+  * remove invalid use of css private names ([d35c3bbd](https://github.com/angular/material/commit/d35c3bbd))
+* **theming:** theming should also watch for controller changes. ([3e35ef0a](https://github.com/angular/material/commit/3e35ef0a), closes [#5899](https://github.com/angular/material/issues/5899), [#7154](https://github.com/angular/material/issues/7154))
+* **toast:** better toast templating allowing comments and sibling elements ([57a929a2](https://github.com/angular/material/commit/57a929a2), closes [#6259](https://github.com/angular/material/issues/6259), [#6494](https://github.com/angular/material/issues/6494))
+* **virtualRepeat:** Do not scroll past bottom Might also fix #4169 ([9a36112c](https://github.com/angular/material/commit/9a36112c), closes [#6279](https://github.com/angular/material/issues/6279), [#6990](https://github.com/angular/material/issues/6990))
+* **whiteframe:** update breakpoints in whiteframe class demo ([c43b1a34](https://github.com/angular/material/commit/c43b1a34))
+
 
 
 <a name"1.0.6"></a>
@@ -3221,3 +3534,4 @@ Additionally, accessibility support is added to material-button, material-checkb
 * **slider:** add full-featured slider component ([5ea4dbc2](https://github.com/angular/material/commit/5ea4dbc2cbb778884bb164d91fcf9b6262987e52), closes [#260](https://github.com/angular/material/issues/260), [#31](https://github.com/angular/material/issues/31))
 * **switch:** add focus styles ([8878ca7a](https://github.com/angular/material/commit/8878ca7aed861ac4c667cc96de61b8c2e09f9bac))
 * **tabs:** improvements to pagination, disabled tabs, and tab navigation. ([b4244bf3](https://github.com/angular/material/commit/b4244bf3a2d9b97c78361fd0b0189919a710e394))
+

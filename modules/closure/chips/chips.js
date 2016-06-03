@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-88f2e3f
+ * v1.1.0-rc.5
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.components.autocomplete');
