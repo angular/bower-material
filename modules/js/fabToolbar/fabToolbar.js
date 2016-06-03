@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-26a5fb8
+ * v1.1.0-rc.5-master-a0ca139
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -19,7 +19,6 @@
     .module('material.components.fabToolbar', [
       'material.core',
       'material.components.fabShared',
-      'material.components.fabTrigger',
       'material.components.fabActions'
     ])
 
