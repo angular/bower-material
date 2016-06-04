@@ -1,7 +1,7 @@
 {
   "name": "angular-material-navBar",
-  "version": "1.1.0-rc.5-master-a0ca139",
+  "version": "1.1.0-rc.5-master-5a0836c",
   "dependencies": {
-    "angular-material-core": "1.1.0-rc.5-master-a0ca139"
+    "angular-material-core": "1.1.0-rc.5-master-5a0836c"
   }
 }
