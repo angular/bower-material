@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-0c34ff4
+ * v1.1.0-rc.5-master-e1a052c
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -27,12 +27,10 @@ md-toast {
    * make it rotate when the user swipes it away
    */ }
   md-toast .md-toast-content {
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center;
+    -ms-flex-align: center;
+        align-items: center;
     max-height: 168px;
     max-width: 100%;
     min-height: 48px;
@@ -44,18 +42,16 @@ md-toast {
     -webkit-transform: translate3d(0, 0, 0) rotateZ(0deg);
             transform: translate3d(0, 0, 0) rotateZ(0deg);
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    -webkit-justify-content: flex-start;
-        -ms-flex-pack: start;
-            justify-content: flex-start; }
+    -ms-flex-pack: start;
+        justify-content: flex-start; }
     md-toast .md-toast-content::before {
       content: '';
       min-height: 48px;
       visibility: hidden;
       display: inline-block; }
     [dir=rtl] md-toast .md-toast-content {
-      -webkit-justify-content: flex-end;
-          -ms-flex-pack: end;
-              justify-content: flex-end; }
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
   md-toast.md-capsule {
     border-radius: 24px; }
     md-toast.md-capsule .md-toast-content {

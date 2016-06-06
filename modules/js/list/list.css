@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-0c34ff4
+ * v1.1.0-rc.5-master-e1a052c
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -46,9 +46,8 @@ md-list {
         margin-left: 20px; }
     md-list.md-dense md-list-item .md-avatar,
     md-list.md-dense md-list-item ._md-list-item-inner .md-avatar {
-      -webkit-flex: none;
-          -ms-flex: none;
-              flex: none;
+      -ms-flex: none;
+          flex: none;
       width: 36px;
       height: 36px; }
   md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-2-line > ._md-no-style .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-3-line > ._md-no-style .md-list-item-text.md-offset {
@@ -99,15 +98,12 @@ md-list-item {
   md-list-item._md-button-wrap {
     position: relative; }
     md-list-item._md-button-wrap > div.md-button:first-child {
-      display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
-      -webkit-align-items: center;
-          -ms-flex-align: center;
-              align-items: center;
-      -webkit-justify-content: flex-start;
-          -ms-flex-pack: start;
-              justify-content: flex-start;
+      -ms-flex-align: center;
+          align-items: center;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
       padding: 0 16px;
       margin: 0;
       background-color: initial;
@@ -130,9 +126,8 @@ md-list-item {
   md-list-item ._md-no-style {
     position: relative;
     padding: 0px 16px;
-    -webkit-flex: 1 1 auto;
-        -ms-flex: 1 1 auto;
-            flex: 1 1 auto; }
+    -ms-flex: 1 1 auto;
+        flex: 1 1 auto; }
     md-list-item._md-no-proxy.md-button,
     md-list-item ._md-no-style.md-button {
       font-size: inherit;
@@ -141,12 +136,10 @@ md-list-item {
       text-transform: none;
       width: 100%;
       white-space: normal;
-      -webkit-flex-direction: inherit;
-          -ms-flex-direction: inherit;
-              flex-direction: inherit;
-      -webkit-align-items: inherit;
-          -ms-flex-align: inherit;
-              align-items: inherit;
+      -ms-flex-direction: inherit;
+          flex-direction: inherit;
+      -ms-flex-align: inherit;
+          align-items: inherit;
       border-radius: 0;
       margin: 0; }
       [dir=rtl] md-list-item._md-no-proxy.md-button, [dir=rtl]
@@ -181,15 +174,12 @@ md-list-item {
         right: 72px; }
   md-list-item,
   md-list-item ._md-list-item-inner {
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-justify-content: flex-start;
-        -ms-flex-pack: start;
-            justify-content: flex-start;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center;
+    -ms-flex-pack: start;
+        justify-content: flex-start;
+    -ms-flex-align: center;
+        align-items: center;
     min-height: 48px;
     height: auto; }
     md-list-item > div.md-primary > md-icon:not(.md-avatar-icon),
@@ -212,9 +202,8 @@ md-list-item {
     md-list-item ._md-list-item-inner > div.md-secondary > md-checkbox,
     md-list-item ._md-list-item-inner > md-checkbox,
     md-list-item ._md-list-item-inner md-checkbox.md-secondary {
-      -webkit-align-self: center;
-          -ms-flex-item-align: center;
-              align-self: center; }
+      -ms-flex-item-align: center;
+          align-self: center; }
       md-list-item > div.md-primary > md-checkbox .md-label,
       md-list-item > div.md-secondary > md-checkbox .md-label,
       md-list-item > md-checkbox .md-label,
@@ -250,9 +239,8 @@ md-list-item {
         margin-left: 16px; }
     md-list-item .md-avatar,
     md-list-item ._md-list-item-inner .md-avatar {
-      -webkit-flex: none;
-          -ms-flex: none;
-              flex: none;
+      -ms-flex: none;
+          flex: none;
       width: 40px;
       height: 40px; }
     md-list-item .md-avatar-icon,
@@ -276,12 +264,10 @@ md-list-item {
         margin-right: 3px; }
     md-list-item ._md-secondary-container,
     md-list-item ._md-list-item-inner ._md-secondary-container {
-      display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
-      -webkit-align-items: center;
-          -ms-flex-align: center;
-              align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
       margin: auto;
       margin-right: 0;
       margin-left: auto; }
@@ -330,24 +316,20 @@ md-list-item {
     md-list-item > p, md-list-item > ._md-list-item-inner > p,
     md-list-item ._md-list-item-inner > p,
     md-list-item ._md-list-item-inner > ._md-list-item-inner > p {
-      -webkit-flex: 1 1 auto;
-          -ms-flex: 1 1 auto;
-              flex: 1 1 auto;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
       margin: 0; }
   md-list-item.md-2-line, md-list-item.md-2-line > ._md-no-style, md-list-item.md-3-line, md-list-item.md-3-line > ._md-no-style {
-    -webkit-align-items: flex-start;
-        -ms-flex-align: start;
-            align-items: flex-start;
-    -webkit-justify-content: center;
-        -ms-flex-pack: center;
-            justify-content: center; }
+    -ms-flex-align: start;
+        align-items: flex-start;
+    -ms-flex-pack: center;
+        justify-content: center; }
     md-list-item.md-2-line.md-long-text, md-list-item.md-2-line > ._md-no-style.md-long-text, md-list-item.md-3-line.md-long-text, md-list-item.md-3-line > ._md-no-style.md-long-text {
       margin-top: 8px;
       margin-bottom: 8px; }
     md-list-item.md-2-line .md-list-item-text, md-list-item.md-2-line > ._md-no-style .md-list-item-text, md-list-item.md-3-line .md-list-item-text, md-list-item.md-3-line > ._md-no-style .md-list-item-text {
-      -webkit-flex: 1 1 auto;
-          -ms-flex: 1 1 auto;
-              flex: 1 1 auto;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
       margin: auto;
       text-overflow: ellipsis;
       overflow: hidden; }
@@ -393,13 +375,11 @@ md-list-item {
     md-list-item.md-2-line > .md-avatar, md-list-item.md-2-line .md-avatar-icon, md-list-item.md-2-line > ._md-no-style > .md-avatar, md-list-item.md-2-line > ._md-no-style .md-avatar-icon {
       margin-top: 12px; }
     md-list-item.md-2-line > md-icon:first-child, md-list-item.md-2-line > ._md-no-style > md-icon:first-child {
-      -webkit-align-self: flex-start;
-          -ms-flex-item-align: start;
-              align-self: flex-start; }
+      -ms-flex-item-align: start;
+          align-self: flex-start; }
     md-list-item.md-2-line .md-list-item-text, md-list-item.md-2-line > ._md-no-style .md-list-item-text {
-      -webkit-flex: 1 1 auto;
-          -ms-flex: 1 1 auto;
-              flex: 1 1 auto; }
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto; }
   md-list-item.md-3-line, md-list-item.md-3-line > ._md-no-style {
     height: auto;
     min-height: 88px; }

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-0c34ff4
+ * v1.1.0-rc.5-master-e1a052c
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -87,9 +87,8 @@ md-slider {
   margin-right: 4px;
   padding: 0;
   display: block;
-  -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  -ms-flex-direction: row;
+      flex-direction: row;
   /**
    * Track
    */
@@ -160,15 +159,12 @@ md-slider {
       transition: inherit; }
   md-slider ._md-sign {
     /* Center the children (slider-thumb-text) */
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-justify-content: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    -ms-flex-align: center;
+        align-items: center;
+    -ms-flex-pack: center;
+        justify-content: center;
     position: absolute;
     left: -14px;
     top: -17px;
@@ -282,27 +278,22 @@ md-slider {
   md-slider[disabled] ._md-disabled-thumb {
     display: block; }
   md-slider[md-vertical] {
-    -webkit-flex-direction: column;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    -ms-flex-direction: column;
+        flex-direction: column;
     min-height: 128px;
     min-width: 0; }
     md-slider[md-vertical] ._md-slider-wrapper {
-      -webkit-flex: 1;
-          -ms-flex: 1;
-              flex: 1;
+      -ms-flex: 1;
+          flex: 1;
       padding-top: 12px;
       padding-bottom: 12px;
       width: 48px;
-      -webkit-align-self: center;
-          -ms-flex-item-align: center;
-              align-self: center;
-      display: -webkit-flex;
+      -ms-flex-item-align: center;
+          align-self: center;
       display: -ms-flexbox;
       display: flex;
-      -webkit-justify-content: center;
-          -ms-flex-pack: center;
-              justify-content: center; }
+      -ms-flex-pack: center;
+          justify-content: center; }
     md-slider[md-vertical] ._md-track-container {
       height: 100%;
       width: 2px;
@@ -360,15 +351,12 @@ md-slider {
     top: 0; }
 
 md-slider-container {
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row; }
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-direction: row;
+      flex-direction: row; }
   md-slider-container > *:first-child:not(md-slider),
   md-slider-container > *:last-child:not(md-slider) {
     min-width: 25px;
@@ -381,9 +369,8 @@ md-slider-container {
   md-slider-container > *:last-child:not(md-slider) {
     margin-left: 16px; }
   md-slider-container[md-vertical] {
-    -webkit-flex-direction: column;
-        -ms-flex-direction: column;
-            flex-direction: column; }
+    -ms-flex-direction: column;
+        flex-direction: column; }
     md-slider-container[md-vertical] > *:first-child:not(md-slider),
     md-slider-container[md-vertical] > *:last-child:not(md-slider) {
       margin-right: 0;

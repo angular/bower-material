@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-0c34ff4
+ * v1.1.0-rc.5-master-e1a052c
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -11,12 +11,10 @@ html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
 
 md-fab-speed-dial {
   position: relative;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+      align-items: center;
   z-index: 20;
   /*
    * Hide some graphics glitches if switching animation types
@@ -57,78 +55,60 @@ md-fab-speed-dial {
   md-fab-speed-dial ._md-css-variables {
     z-index: 20; }
   md-fab-speed-dial.md-is-open .md-fab-action-item {
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center; }
+    -ms-flex-align: center;
+        align-items: center; }
   md-fab-speed-dial md-fab-actions {
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     height: auto; }
     md-fab-speed-dial md-fab-actions .md-fab-action-item {
       transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-fab-speed-dial.md-down {
-    -webkit-flex-direction: column;
-        -ms-flex-direction: column;
-            flex-direction: column; }
+    -ms-flex-direction: column;
+        flex-direction: column; }
     md-fab-speed-dial.md-down md-fab-trigger {
-      -webkit-order: 1;
-          -ms-flex-order: 1;
-              order: 1; }
+      -ms-flex-order: 1;
+          order: 1; }
     md-fab-speed-dial.md-down md-fab-actions {
-      -webkit-flex-direction: column;
-          -ms-flex-direction: column;
-              flex-direction: column;
-      -webkit-order: 2;
-          -ms-flex-order: 2;
-              order: 2; }
+      -ms-flex-direction: column;
+          flex-direction: column;
+      -ms-flex-order: 2;
+          order: 2; }
   md-fab-speed-dial.md-up {
-    -webkit-flex-direction: column;
-        -ms-flex-direction: column;
-            flex-direction: column; }
+    -ms-flex-direction: column;
+        flex-direction: column; }
     md-fab-speed-dial.md-up md-fab-trigger {
-      -webkit-order: 2;
-          -ms-flex-order: 2;
-              order: 2; }
+      -ms-flex-order: 2;
+          order: 2; }
     md-fab-speed-dial.md-up md-fab-actions {
-      -webkit-flex-direction: column-reverse;
-          -ms-flex-direction: column-reverse;
-              flex-direction: column-reverse;
-      -webkit-order: 1;
-          -ms-flex-order: 1;
-              order: 1; }
+      -ms-flex-direction: column-reverse;
+          flex-direction: column-reverse;
+      -ms-flex-order: 1;
+          order: 1; }
   md-fab-speed-dial.md-left {
-    -webkit-flex-direction: row;
-        -ms-flex-direction: row;
-            flex-direction: row; }
+    -ms-flex-direction: row;
+        flex-direction: row; }
     md-fab-speed-dial.md-left md-fab-trigger {
-      -webkit-order: 2;
-          -ms-flex-order: 2;
-              order: 2; }
+      -ms-flex-order: 2;
+          order: 2; }
     md-fab-speed-dial.md-left md-fab-actions {
-      -webkit-flex-direction: row-reverse;
-          -ms-flex-direction: row-reverse;
-              flex-direction: row-reverse;
-      -webkit-order: 1;
-          -ms-flex-order: 1;
-              order: 1; }
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+      -ms-flex-order: 1;
+          order: 1; }
       md-fab-speed-dial.md-left md-fab-actions .md-fab-action-item {
         transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-fab-speed-dial.md-right {
-    -webkit-flex-direction: row;
-        -ms-flex-direction: row;
-            flex-direction: row; }
+    -ms-flex-direction: row;
+        flex-direction: row; }
     md-fab-speed-dial.md-right md-fab-trigger {
-      -webkit-order: 1;
-          -ms-flex-order: 1;
-              order: 1; }
+      -ms-flex-order: 1;
+          order: 1; }
     md-fab-speed-dial.md-right md-fab-actions {
-      -webkit-flex-direction: row;
-          -ms-flex-direction: row;
-              flex-direction: row;
-      -webkit-order: 2;
-          -ms-flex-order: 2;
-              order: 2; }
+      -ms-flex-direction: row;
+          flex-direction: row;
+      -ms-flex-order: 2;
+          order: 2; }
       md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item {
         transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-fab-speed-dial.md-fling-remove .md-fab-action-item > *, md-fab-speed-dial.md-scale-remove .md-fab-action-item > * {

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-0c34ff4
+ * v1.1.0-rc.5-master-e1a052c
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -57,20 +57,16 @@ md-menu-content._md-menu-bar-menu.md-dense {
   md-menu-content._md-menu-bar-menu.md-dense .md-button {
     min-height: 0;
     height: 32px;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex; }
     md-menu-content._md-menu-bar-menu.md-dense .md-button span {
-      -webkit-flex-grow: 1;
-          -ms-flex-positive: 1;
-              flex-grow: 1; }
+      -ms-flex-positive: 1;
+          flex-grow: 1; }
     md-menu-content._md-menu-bar-menu.md-dense .md-button span.md-alt-text {
-      -webkit-flex-grow: 0;
-          -ms-flex-positive: 0;
-              flex-grow: 0;
-      -webkit-align-self: flex-end;
-          -ms-flex-item-align: end;
-              align-self: flex-end;
+      -ms-flex-positive: 0;
+          flex-grow: 0;
+      -ms-flex-item-align: end;
+          align-self: flex-end;
       margin: 0 8px; }
   md-menu-content._md-menu-bar-menu.md-dense md-menu-divider {
     margin: 8px 0; }

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-0c34ff4
+ * v1.1.0-rc.5-master-e1a052c
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -24,10 +24,8 @@ md-switch {
           user-select: none;
   height: 30px;
   line-height: 28px;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  display: -webkit-flex;
+  -ms-flex-align: center;
+      align-items: center;
   display: -ms-flexbox;
   display: flex;
   margin-left: inherit;
@@ -48,7 +46,6 @@ md-switch {
     md-switch[disabled] ._md-container {
       cursor: default; }
   md-switch ._md-container {
-    cursor: -webkit-grab;
     cursor: grab;
     width: 36px;
     height: 24px;
@@ -66,7 +63,6 @@ md-switch {
       margin-left: 8px; }
   md-switch:not([disabled]) ._md-dragging,
   md-switch:not([disabled])._md-dragging ._md-container {
-    cursor: -webkit-grabbing;
     cursor: grabbing; }
   md-switch.md-focused:not([disabled]) ._md-thumb:before {
     left: -8px;

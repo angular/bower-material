@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-0c34ff4
+ * v1.1.0-rc.5-master-e1a052c
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -99,9 +99,8 @@ md-input-container {
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100%;
-    -webkit-order: 1;
-        -ms-flex-order: 1;
-            order: 1;
+    -ms-flex-order: 1;
+        order: 1;
     pointer-events: none;
     -webkit-font-smoothing: antialiased;
     padding-left: 3px;
@@ -152,9 +151,8 @@ md-input-container {
   md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-text {
     color: transparent; }
   md-input-container .md-input {
-    -webkit-order: 2;
-        -ms-flex-order: 2;
-            order: 2;
+    -ms-flex-order: 2;
+        order: 2;
     display: block;
     margin-top: 0;
     background: none;
@@ -179,9 +177,8 @@ md-input-container {
       outline: none;
       box-shadow: none; }
     md-input-container .md-input.md-no-flex {
-      -webkit-flex: none !important;
-          -ms-flex: none !important;
-              flex: none !important; }
+      -ms-flex: none !important;
+          flex: none !important; }
   md-input-container .md-char-counter {
     text-align: right;
     padding-right: 2px;
@@ -194,9 +191,8 @@ md-input-container {
       padding-left: 2px; }
   md-input-container .md-input-messages-animation {
     position: relative;
-    -webkit-order: 4;
-        -ms-flex-order: 4;
-            order: 4;
+    -ms-flex-order: 4;
+        order: 4;
     overflow: hidden;
     clear: left; }
     [dir=rtl] md-input-container .md-input-messages-animation {

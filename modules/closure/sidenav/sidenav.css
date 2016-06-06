@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-0c34ff4
+ * v1.1.0-rc.5-master-e1a052c
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -12,9 +12,8 @@ html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
 md-sidenav {
   box-sizing: border-box;
   position: absolute;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+      flex-direction: column;
   z-index: 60;
   width: 320px;
   max-width: 320px;
@@ -26,7 +25,6 @@ md-sidenav {
   md-sidenav._md-closed {
     display: none; }
   md-sidenav._md-closed-add, md-sidenav._md-closed-remove {
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     transition: 0.2s ease-in all; }
@@ -34,14 +32,12 @@ md-sidenav {
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
   md-sidenav._md-locked-open-add, md-sidenav._md-locked-open-remove {
     position: static;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }
   md-sidenav._md-locked-open, md-sidenav._md-locked-open._md-closed, md-sidenav._md-locked-open._md-closed.md-sidenav-left, md-sidenav._md-locked-open._md-closed, md-sidenav._md-locked-open._md-closed.md-sidenav-right, md-sidenav._md-locked-open-remove._md-closed {
     position: static;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-transform: translate3d(0, 0, 0);

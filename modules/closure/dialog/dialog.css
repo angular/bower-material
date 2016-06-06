@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-0c34ff4
+ * v1.1.0-rc.5-master-e1a052c
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -13,15 +13,12 @@ html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
   max-height: 100%; }
 
 .md-dialog-container {
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
   position: absolute;
   top: 0;
   left: 0;
@@ -38,12 +35,10 @@ md-dialog {
   position: relative;
   overflow: auto;
   box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column; }
+  -ms-flex-direction: column;
+      flex-direction: column; }
   md-dialog._md-transition-in {
     opacity: 1;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -55,22 +50,18 @@ md-dialog {
     -webkit-transform: translate(0, 100%) scale(0.2);
             transform: translate(0, 100%) scale(0.2); }
   md-dialog > form {
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    -ms-flex-direction: column;
+        flex-direction: column;
     overflow: auto; }
   md-dialog .md-dialog-content {
     padding: 24px; }
   md-dialog md-dialog-content {
-    -webkit-order: 1;
-        -ms-flex-order: 1;
-            order: 1;
-    -webkit-flex-direction: column;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    -ms-flex-order: 1;
+        order: 1;
+    -ms-flex-direction: column;
+        flex-direction: column;
     overflow: auto;
     -webkit-overflow-scrolling: touch; }
     md-dialog md-dialog-content:not([layout=row]) > *:first-child:not(.md-subheader) {
@@ -85,19 +76,15 @@ md-dialog {
       width: 100%;
       box-sizing: border-box; }
   md-dialog .md-actions, md-dialog md-dialog-actions {
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-order: 2;
-        -ms-flex-order: 2;
-            order: 2;
+    -ms-flex-order: 2;
+        order: 2;
     box-sizing: border-box;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-justify-content: flex-end;
-        -ms-flex-pack: end;
-            justify-content: flex-end;
+    -ms-flex-align: center;
+        align-items: center;
+    -ms-flex-pack: end;
+        justify-content: flex-end;
     margin-bottom: 0;
     padding-right: 8px;
     padding-left: 16px;

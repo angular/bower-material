@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-0c34ff4
+ * v1.1.0-rc.5-master-e1a052c
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -70,9 +70,8 @@ md-fab-toolbar {
       right: initial;
       left: 0; }
   md-fab-toolbar.md-left .md-toolbar-tools {
-    -webkit-flex-direction: row-reverse;
-        -ms-flex-direction: row-reverse;
-            flex-direction: row-reverse; }
+    -ms-flex-direction: row-reverse;
+        flex-direction: row-reverse; }
     md-fab-toolbar.md-left .md-toolbar-tools > .md-button:first-child {
       margin-right: 0.6rem; }
       [dir=rtl] md-fab-toolbar.md-left .md-toolbar-tools > .md-button:first-child {
@@ -102,9 +101,8 @@ md-fab-toolbar {
       left: initial;
       right: 0; }
   md-fab-toolbar.md-right .md-toolbar-tools {
-    -webkit-flex-direction: row;
-        -ms-flex-direction: row;
-            flex-direction: row; }
+    -ms-flex-direction: row;
+        flex-direction: row; }
   md-fab-toolbar md-toolbar {
     background-color: transparent !important;
     pointer-events: none;
