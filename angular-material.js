@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-ea62bc2
+ * v1.1.0-rc.5-master-39911d3
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -298,7 +298,7 @@ angular.module('material.core')
  * Factory function that creates the grab-bag $mdConstant service.
  * @ngInject
  */
-function MdConstantFactory($sniffer) {
+function MdConstantFactory($sniffer, $window, $document) {
 
   var vendorPrefix = $sniffer.vendorPrefix;
   var isWebkit = /webkit/i.test(vendorPrefix);
@@ -327,6 +327,7 @@ function MdConstantFactory($sniffer) {
   }
 
   return {
+    IS_TOUCH: ('ontouchstart' in $window) || $window.DocumentTouch && $document[0] instanceof DocumentTouch,
     KEY_CODE: {
       COMMA: 188,
       SEMICOLON : 186,
@@ -399,7 +400,7 @@ function MdConstantFactory($sniffer) {
     ]
   };
 }
-MdConstantFactory.$inject = ["$sniffer"];
+MdConstantFactory.$inject = ["$sniffer", "$window", "$document"];
 
 })();
 (function(){
@@ -22594,20 +22595,26 @@ angular
  * </hljs>
  *
  * @param {expression=} md-visible Boolean bound to whether the tooltip is currently visible.
- * @param {number=} md-delay How many milliseconds to wait to show the tooltip after the user focuses, hovers, or touches the parent. Defaults to 0ms.
+ * @param {number=} md-delay How many milliseconds to wait to show the tooltip after the user focuses, hovers, or touches the
+ * parent. Defaults to 0ms on non-touch devices and 75ms on touch.
  * @param {boolean=} md-autohide If present or provided with a boolean value, the tooltip will hide on mouse leave, regardless of focus
  * @param {string=} md-direction Which direction would you like the tooltip to go?  Supports left, right, top, and bottom.  Defaults to bottom.
  */
 function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdTheming, $rootElement,
-                            $animate, $q, $interpolate) {
+                            $animate, $q, $interpolate, $mdConstant) {
 
-  var TOOLTIP_SHOW_DELAY = 0;
+  // Note that touch devices still fire mouse events, even though they don't have a
+  // mouse. We shouldn't bind them in those cases, because it causes the callbacks
+  // to fire too often.
+  var ENTER_EVENTS = 'focus ' + ($mdConstant.IS_TOUCH ? 'touchstart' : 'mouseenter');
+  var LEAVE_EVENTS = 'blur ' + ($mdConstant.IS_TOUCH ? 'touchend touchcancel' : 'mouseleave');
+  var TOOLTIP_SHOW_DELAY = $mdConstant.IS_TOUCH ? 75 : 0;
   var TOOLTIP_WINDOW_EDGE_SPACE = 8;
 
   return {
     restrict: 'E',
     transclude: true,
-    priority:210, // Before ngAria
+    priority: 210, // Before ngAria
     template: '<div class="_md-content _md" ng-transclude></div>',
     scope: {
       delay: '=?mdDelay',
@@ -22762,9 +22769,9 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
 
       // Store whether the element was focused when the window loses focus.
       var windowBlurHandler = function() {
-        elementFocusedOnWindowBlur = document.activeElement === parent[0];
+        preventNextFocus = document.activeElement === parent[0];
       };
-      var elementFocusedOnWindowBlur = false;
+      var preventNextFocus = false;
 
       function windowScrollHandler() {
         setVisible(false);
@@ -22781,8 +22788,8 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
           .off('resize', debouncedOnResize);
 
         parent
-          .off('focus mouseenter touchstart', enterHandler)
-          .off('blur mouseleave touchend touchcancel', leaveHandler)
+          .off(ENTER_EVENTS, enterHandler)
+          .off(LEAVE_EVENTS, leaveHandler)
           .off('mousedown', mousedownHandler);
 
         // Trigger the handler in case any the tooltip was still visible.
@@ -22793,12 +22800,12 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
 
       var enterHandler = function(e) {
         // Prevent the tooltip from showing when the window is receiving focus.
-        if (e.type === 'focus' && elementFocusedOnWindowBlur) {
-          elementFocusedOnWindowBlur = false;
-          return;
+        if (e.type === 'focus' && preventNextFocus) {
+          preventNextFocus = false;
+        } else if (!scope.visible) {
+          parent.on(LEAVE_EVENTS, leaveHandler );
+          setVisible(true);
         }
-        parent.on('blur mouseleave touchend touchcancel', leaveHandler );
-        setVisible(true);
       };
       var leaveHandler = function () {
         var autohide = scope.hasOwnProperty('autohide') ? scope.autohide : attr.hasOwnProperty('mdAutohide');
@@ -22813,19 +22820,22 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
             showTimeout = null;
           }
 
-          parent.off('blur mouseleave touchend touchcancel', leaveHandler );
-          parent.triggerHandler("blur");
+          parent.off(LEAVE_EVENTS, leaveHandler );
+          parent.triggerHandler('blur');
           setVisible(false);
         }
         mouseActive = false;
       };
       var mousedownHandler = function() {
+        // Don't show the tooltip when tapping on a touch device,
+        // in order to prevent the tooltip staying open after random taps.
+        preventNextFocus = $mdConstant.IS_TOUCH;
         mouseActive = true;
       };
 
       // to avoid `synthetic clicks` we listen to mousedown instead of `click`
       parent.on('mousedown', mousedownHandler);
-      parent.on('focus mouseenter touchstart', enterHandler );
+      parent.on(ENTER_EVENTS, enterHandler );
     }
 
     function setVisible (value) {
@@ -22946,7 +22956,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
   }
 
 }
-MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdUtil", "$mdTheming", "$rootElement", "$animate", "$q", "$interpolate"];
+MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdUtil", "$mdTheming", "$rootElement", "$animate", "$q", "$interpolate", "$mdConstant"];
 
 })();
 (function(){
@@ -26909,8 +26919,13 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $sce) {
    */
   function postLink(scope, element, attr) {
     $mdTheming(element);
+    var lastFontIcon = attr.mdFontIcon;
+    var lastFontSet = $mdIcon.fontSet(attr.mdFontSet);
 
     prepareForFontIcon();
+
+    attr.$observe('mdFontIcon', fontIconChanged);
+    attr.$observe('mdFontSet', fontIconChanged);
 
     // Keep track of the content of the svg src so we can compare against it later to see if the
     // attribute is static (and thus safe).
@@ -26951,9 +26966,9 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $sce) {
         if (attrVal) {
           $mdIcon(attrVal)
             .then(function(svg) {
-              element.empty();
-              element.append(svg);
-            });
+            element.empty();
+            element.append(svg);
+          });
         }
 
       });
@@ -26975,7 +26990,28 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $sce) {
         if (attr.mdFontIcon) {
           element.addClass('md-font ' + attr.mdFontIcon);
         }
-        element.addClass($mdIcon.fontSet(attr.mdFontSet));
+
+        element.addClass(lastFontSet);
+      }
+    }
+
+    function fontIconChanged() {
+      if (!attr.mdSvgIcon && !attr.mdSvgSrc) {
+        if (attr.mdFontIcon) {
+          element.removeClass(lastFontIcon);
+          element.addClass(attr.mdFontIcon);
+
+          lastFontIcon = attr.mdFontIcon;
+        }
+
+        var fontSet = $mdIcon.fontSet(attr.mdFontSet);
+
+        if (lastFontSet !== fontSet) {
+          element.removeClass(lastFontSet);
+          element.addClass(fontSet);
+
+          lastFontSet = fontSet;
+        }
       }
     }
   }
@@ -27023,6 +27059,23 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $sce) {
  * internally by the `$mdIcon` service using the `$templateRequest` service. When an SVG is
  * requested by name/ID, the `$mdIcon` service searches its registry for the associated source URL;
  * that URL is used to on-demand load and parse the SVG dynamically.
+ *
+ * The `$templateRequest` service expects the icons source to be loaded over trusted URLs.<br/>
+ * This means, when loading icons from an external URL, you have to trust the URL in the `$sceDelegateProvider`.
+ *
+ * <hljs lang="js">
+ *   app.config(function($sceDelegateProvider) {
+ *     $sceDelegateProvider.resourceUrlWhitelist([
+ *       // Adding 'self' to the whitelist, will allow requests from the current origin.
+ *       'self',
+ *       // Using double asterisks here, will allow all URLs to load.
+ *       // We recommend to only specify the given domain you want to allow.
+ *       '**'
+ *     ]);
+ *   });
+ * </hljs>
+ *
+ * Read more about the [$sceDelegateProvider](https://docs.angularjs.org/api/ng/provider/$sceDelegateProvider).
  *
  * **Notice:** Most font-icons libraries do not support ligatures (for example `fontawesome`).<br/>
  *  In such cases you are not able to use the icon's ligature name - Like so:
@@ -30963,4 +31016,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-ea62bc2"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-39911d3"}};
