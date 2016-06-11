@@ -2,12 +2,24 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-62bf00c
+ * v1.1.0-rc.5-master-024e979
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
   color: '{{foreground-1}}';
   background-color: '{{background-color}}'; }
+
+md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-THEME_NAME-theme ._md-select-value {
+  color: '{{primary-color}}'; }
+  md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-THEME_NAME-theme ._md-select-value._md-select-placeholder {
+    color: '{{primary-color}}'; }
+
+md-input-container.md-input-invalid md-select.md-THEME_NAME-theme ._md-select-value {
+  color: '{{warn-A700}}' !important;
+  border-bottom-color: '{{warn-A700}}' !important; }
+
+md-input-container.md-input-invalid md-select.md-THEME_NAME-theme.md-no-underline ._md-select-value {
+  border-bottom-color: transparent !important; }
 
 md-select.md-THEME_NAME-theme[disabled] ._md-select-value {
   border-bottom-color: transparent;
@@ -18,15 +30,24 @@ md-select.md-THEME_NAME-theme ._md-select-value {
   md-select.md-THEME_NAME-theme ._md-select-value._md-select-placeholder {
     color: '{{foreground-3}}'; }
 
-md-select.md-THEME_NAME-theme.ng-invalid.ng-dirty ._md-select-value {
+md-select.md-THEME_NAME-theme.md-no-underline ._md-select-value {
+  border-bottom-color: transparent !important; }
+
+md-select.md-THEME_NAME-theme.ng-invalid.ng-touched ._md-select-value {
   color: '{{warn-A700}}' !important;
   border-bottom-color: '{{warn-A700}}' !important; }
+
+md-select.md-THEME_NAME-theme.ng-invalid.ng-touched.md-no-underline ._md-select-value {
+  border-bottom-color: transparent !important; }
 
 md-select.md-THEME_NAME-theme:not([disabled]):focus ._md-select-value {
   border-bottom-color: '{{primary-color}}';
   color: '{{ foreground-1 }}'; }
   md-select.md-THEME_NAME-theme:not([disabled]):focus ._md-select-value._md-select-placeholder {
     color: '{{ foreground-1 }}'; }
+
+md-select.md-THEME_NAME-theme:not([disabled]):focus.md-no-underline ._md-select-value {
+  border-bottom-color: transparent !important; }
 
 md-select.md-THEME_NAME-theme:not([disabled]):focus.md-accent ._md-select-value {
   border-bottom-color: '{{accent-color}}'; }

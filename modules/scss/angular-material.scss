@@ -3764,6 +3764,8 @@ md-list {
       &,
       ._md-list-item-inner {
         min-height: $list-item-dense-height;
+        @include ie11-min-height-flexbug($list-item-dense-height);
+
 
         // Layout for controls in primary or secondary divs, or auto-infered first child
 
@@ -3810,10 +3812,7 @@ md-list {
       &.md-2-line {
         &, & > ._md-no-style {
           min-height: $list-item-dense-two-line-height;
-
-          div.md-button:first-child {
-            @include ie11-min-height-flexbug($list-item-dense-two-line-height);
-          }
+          @include ie11-min-height-flexbug($list-item-dense-two-line-height);
 
           > .md-avatar, .md-avatar-icon {
             margin-top: $baseline-grid * 1.5;
@@ -3823,11 +3822,9 @@ md-list {
 
       &.md-3-line {
         &, & > ._md-no-style {
+          
           min-height: $list-item-dense-three-line-height;
-
-          div.md-button:first-child {
-            @include ie11-min-height-flexbug($list-item-dense-three-line-height);
-          }
+          @include ie11-min-height-flexbug($list-item-dense-three-line-height);
 
           > md-icon:first-child,
           > .md-avatar {
@@ -3934,7 +3931,10 @@ md-list-item {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+
     min-height: $list-item-height;
+    @include ie11-min-height-flexbug($list-item-height);
+
     height: auto;
 
     // Layout for controls in primary or secondary divs, or auto-infered first child
@@ -4093,11 +4093,9 @@ md-list-item {
   &.md-2-line {
     &, & > ._md-no-style {
       height: auto;
-      min-height: $list-item-two-line-height;
 
-      div.md-button:first-child {
-        @include ie11-min-height-flexbug($list-item-two-line-height);
-      }
+      min-height: $list-item-two-line-height;
+      @include ie11-min-height-flexbug($list-item-two-line-height);
 
       > .md-avatar, .md-avatar-icon {
         margin-top: $baseline-grid * 1.5;
@@ -4116,11 +4114,9 @@ md-list-item {
   &.md-3-line {
     &, & > ._md-no-style {
       height: auto;
-      min-height: $list-item-three-line-height;
 
-      div.md-button:first-child {
-        @include ie11-min-height-flexbug($list-item-three-line-height);
-      }
+      min-height: $list-item-three-line-height;
+      @include ie11-min-height-flexbug($list-item-three-line-height);
 
       > md-icon:first-child,
       > .md-avatar {
@@ -4939,6 +4935,23 @@ $select-container-transition-duration: 350ms !default;
 
 $select-max-visible-options: 5 !default;
 
+// Fixes the animations with the floating label when select is inside an input container
+md-input-container {
+  &:not([md-no-float]) {
+    ._md-select-placeholder span:first-child {
+      transition: transform $swift-ease-out-duration $swift-ease-out-timing-function;
+      @include rtl(transform-origin, left top, right top);
+    }
+  }
+  &.md-input-focused {
+    &:not([md-no-float]) {
+      ._md-select-placeholder span:first-child {
+        transform: translateY(-22px) translateX(-2px) scale(0.75);
+      }
+    }
+  }
+}
+
 ._md-select-menu-container {
   position: fixed;
   left: 0;
@@ -4946,6 +4959,9 @@ $select-max-visible-options: 5 !default;
   z-index: $z-index-select;
   opacity: 0;
   display: none;
+
+  // Fix 1px alignment issue to line up with text inputs (and spec)
+  transform: translateY(-1px);
 
   // Don't let the user select a new choice while it's animating
   &:not(._md-clickable) {
@@ -4987,9 +5003,44 @@ md-input-container > md-select {
   order: 2;
 }
 
+
+// Show the asterisk on the placeholder if the element is required
+//
+// NOTE: When the input has a value and uses a floating label, the floating label will show the
+// asterisk denoting that it is required
+md-input-container:not(.md-input-has-value) {
+  md-select[required], md-select.ng-required {
+    ._md-select-value span:first-child:after {
+      content: ' *';
+      font-size: 13px;
+      vertical-align: top;
+    }
+  }
+}
+
+md-input-container.md-input-invalid {
+  md-select {
+    ._md-select-value {
+      border-bottom-style: solid;
+      padding-bottom: 1px;
+    }
+  }
+}
+
 md-select {
   display: flex;
   margin: 2.5*$baseline-grid 0 3*$baseline-grid + 2 0;
+
+  &[required], &.ng-required {
+    &.ng-invalid {
+      ._md-select-value span:first-child:after {
+        content: ' *';
+        font-size: 13px;
+        vertical-align: top;
+      }
+    }
+  }
+
   &[disabled] ._md-select-value {
     background-position: 0 bottom;
     // This background-size is coordinated with a linear-gradient set in select-theme.scss
@@ -4998,6 +5049,7 @@ md-select {
     background-repeat: repeat-x;
     margin-bottom: -1px; // Shift downward so dotted line is positioned the same as other bottom borders
   }
+
   &:focus {
     outline: none;
   }
@@ -5008,10 +5060,10 @@ md-select {
     &:hover {
       cursor: pointer
     }
-    &.ng-invalid.ng-dirty {
+    &.ng-invalid.ng-touched {
       ._md-select-value {
-        border-bottom: 2px solid;
-        padding-bottom: 0;
+        border-bottom-style: solid;
+        padding-bottom: 1px;
       }
     }
     &:focus {
@@ -5020,10 +5072,21 @@ md-select {
         border-bottom-style: solid;
         padding-bottom: 0;
       }
+      &.ng-invalid.ng-touched {
+        ._md-select-value {
+          padding-bottom: 0;
+        }
+      }
     }
   }
 }
 
+// Fix value by 1px to align with standard text inputs (and spec)
+md-input-container.md-input-has-value ._md-select-value {
+  > span:not(._md-select-icon) {
+    transform: translate3d(0, 1px, 0);
+  }
+}
 
 ._md-select-value {
   display: flex;
@@ -5042,7 +5105,6 @@ md-select {
   > span:not(._md-select-icon) {
     max-width: 100%;
     flex: 1 1 auto;
-    transform: translate3d(0, 2px, 0);
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -5058,7 +5120,8 @@ md-select {
     text-align: end;
     width: 3 * $baseline-grid;
     margin: 0 .5 * $baseline-grid;
-    transform: translate3d(0, 1px, 0);
+    transform: translate3d(0, -2px, 0);
+    font-size: 1.2rem;
   }
 
   ._md-select-icon:after {

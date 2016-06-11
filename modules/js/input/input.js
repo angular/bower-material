@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-62bf00c
+ * v1.1.0-rc.5-master-024e979
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -348,14 +348,7 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
     }
 
     var isErrorGetter = containerCtrl.isErrorGetter || function() {
-      return ngModelCtrl.$invalid && (ngModelCtrl.$touched || isParentFormSubmitted());
-    };
-
-    var isParentFormSubmitted = function () {
-      var parent = $mdUtil.getClosest(element, 'form');
-      var form = parent ? angular.element(parent).controller('form') : null;
-
-      return form ? form.$submitted : false;
+      return ngModelCtrl.$invalid && (ngModelCtrl.$touched || $mdUtil.isParentFormSubmitted(element));
     };
 
     scope.$watch(isErrorGetter, containerCtrl.setInvalid);
