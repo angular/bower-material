@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-39911d3
+ * v1.1.0-rc.5-master-62bf00c
  */
 goog.provide('ng.material.core');
 
@@ -310,7 +310,6 @@ function MdConstantFactory($sniffer, $window, $document) {
   }
 
   return {
-    IS_TOUCH: ('ontouchstart' in $window) || $window.DocumentTouch && $document[0] instanceof DocumentTouch,
     KEY_CODE: {
       COMMA: 188,
       SEMICOLON : 186,

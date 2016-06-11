@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-39911d3
+ * v1.1.0-rc.5-master-62bf00c
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -665,7 +665,7 @@ function mdMaxlengthDirective($animate, $mdUtil) {
 
       // Force the value into a string since it may be a number,
       // which does not have a length property.
-      charCountEl.text(String(element.val() || value || '').length + '/' + maxlength);
+      charCountEl.text(String(element.val() || value || '').length + ' / ' + maxlength);
       return value;
     }
   }
