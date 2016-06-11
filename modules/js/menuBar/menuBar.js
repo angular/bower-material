@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-024e979
+ * v1.1.0-rc.5-master-361d541
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -374,7 +374,10 @@ function MenuBarDirective($mdUtil, $mdTheming) {
         if (menuEl.nodeName == 'MD-MENU') {
           if (!menuEl.hasAttribute('md-position-mode')) {
             menuEl.setAttribute('md-position-mode', 'left bottom');
-            menuEl.querySelector('button,a').setAttribute('role', 'menuitem');
+
+            // Since we're in the compile function and actual `md-buttons` are not compiled yet,
+            // we need to query for possible `md-buttons` as well.
+            menuEl.querySelector('button, a, md-button').setAttribute('role', 'menuitem');
           }
           var contentEls = $mdUtil.nodesToArray(menuEl.querySelectorAll('md-menu-content'));
           angular.forEach(contentEls, function(contentEl) {

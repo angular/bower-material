@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-024e979
+ * v1.1.0-rc.5-master-361d541
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2039,8 +2039,9 @@ angular.module('material.components.datepicker', [
   // TODO(jelbourn): UTC mode
   // TODO(jelbourn): RTL
 
+
   angular.module('material.components.datepicker')
-    .directive('mdDatepicker', datePickerDirective);
+      .directive('mdDatepicker', datePickerDirective);
 
   /**
    * @ngdoc directive
@@ -2124,13 +2125,36 @@ angular.module('material.components.datepicker', [
       link: function(scope, element, attr, controllers) {
         var ngModelCtrl = controllers[0];
         var mdDatePickerCtrl = controllers[1];
-
         var mdInputContainer = controllers[2];
-        if (mdInputContainer) {
-          throw Error('md-datepicker should not be placed inside md-input-container.');
-        }
 
-        mdDatePickerCtrl.configureNgModel(ngModelCtrl);
+        mdDatePickerCtrl.configureNgModel(ngModelCtrl, mdInputContainer);
+
+        if (mdInputContainer) {
+          // We need to move the spacer after the datepicker itself,
+          // because md-input-container adds it after the
+          // md-datepicker-input by default. The spacer gets wrapped in a
+          // div, because it floats and gets aligned next to the datepicker.
+          // There are easier ways of working around this with CSS (making the
+          // datepicker 100% wide, change the `display` etc.), however they
+          // break the alignment with any other form controls.
+          var spacer = element[0].querySelector('.md-errors-spacer');
+
+          if (spacer) {
+            element.after(angular.element('<div>').append(spacer));
+          }
+
+          mdInputContainer.setHasPlaceholder(attr.mdPlaceholder);
+          mdInputContainer.element.addClass(INPUT_CONTAINER_CLASS);
+          mdInputContainer.input = element;
+
+          if (!mdInputContainer.label) {
+            $mdAria.expect(element, 'aria-label', attr.mdPlaceholder);
+          }
+
+          scope.$watch(mdInputContainer.isErrorGetter || function() {
+            return ngModelCtrl.$invalid && ngModelCtrl.$touched;
+          }, mdInputContainer.setInvalid);
+        }
       }
     };
   }
@@ -2141,6 +2165,12 @@ angular.module('material.components.datepicker', [
 
   /** Class applied to the container if the date is invalid. */
   var INVALID_CLASS = 'md-datepicker-invalid';
+
+  /** Class applied to the datepicker when it's open. */
+  var OPEN_CLASS = 'md-datepicker-open';
+
+  /** Class applied to the md-input-container, if a datepicker is placed inside it */
+  var INPUT_CONTAINER_CLASS = '_md-datepicker-floating-label';
 
   /** Default time in ms to debounce input event by. */
   var DEFAULT_DEBOUNCE_INTERVAL = 500;
@@ -2254,6 +2284,9 @@ angular.module('material.components.datepicker', [
     /** @type {boolean} Whether the calendar should open when the input is focused. */
     this.openOnFocus = $attrs.hasOwnProperty('mdOpenOnFocus');
 
+    /** @final */
+    this.mdInputContainer = null;
+
     /**
      * Element from which the calendar pane was opened. Keep track of this so that we can return
      * focus to it when the pane is closed.
@@ -2293,8 +2326,9 @@ angular.module('material.components.datepicker', [
    * Sets up the controller's reference to ngModelController.
    * @param {!angular.NgModelController} ngModelCtrl
    */
-  DatePickerCtrl.prototype.configureNgModel = function(ngModelCtrl) {
+  DatePickerCtrl.prototype.configureNgModel = function(ngModelCtrl, mdInputContainer) {
     this.ngModelCtrl = ngModelCtrl;
+    this.mdInputContainer = mdInputContainer;
 
     var self = this;
     ngModelCtrl.$render = function() {
@@ -2307,6 +2341,7 @@ angular.module('material.components.datepicker', [
 
       self.date = value;
       self.inputElement.value = self.dateLocale.formatDate(value);
+      self.mdInputContainer && self.mdInputContainer.setHasValue(!!value);
       self.resizeInputElement();
       self.updateErrorState();
     };
@@ -2324,6 +2359,7 @@ angular.module('material.components.datepicker', [
       self.ngModelCtrl.$setViewValue(date);
       self.date = date;
       self.inputElement.value = self.dateLocale.formatDate(date);
+      self.mdInputContainer && self.mdInputContainer.setHasValue(!!date);
       self.closeCalendarPane();
       self.resizeInputElement();
       self.updateErrorState();
@@ -2496,7 +2532,8 @@ angular.module('material.components.datepicker', [
     var body = document.body;
 
     calendarPane.style.transform = '';
-    this.$element.addClass('md-datepicker-open');
+    this.$element.addClass(OPEN_CLASS);
+    this.mdInputContainer && this.mdInputContainer.element.addClass(OPEN_CLASS);
     angular.element(body).addClass('md-datepicker-is-showing');
 
     var elementRect = this.inputContainer.getBoundingClientRect();
@@ -2564,7 +2601,8 @@ angular.module('material.components.datepicker', [
 
   /** Detach the floating calendar pane from the document. */
   DatePickerCtrl.prototype.detachCalendarPane = function() {
-    this.$element.removeClass('md-datepicker-open');
+    this.$element.removeClass(OPEN_CLASS);
+    this.mdInputContainer && this.mdInputContainer.element.removeClass(OPEN_CLASS);
     angular.element(document.body).removeClass('md-datepicker-is-showing');
     this.calendarPane.classList.remove('md-pane-open');
     this.calendarPane.classList.remove('md-datepicker-pos-adjusted');

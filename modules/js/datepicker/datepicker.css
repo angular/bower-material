@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-024e979
+ * v1.1.0-rc.5-master-361d541
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -152,7 +152,7 @@ md-datepicker {
   background: none;
   vertical-align: middle; }
 
-.md-datepicker-input {
+.md-datepicker-input, label:not(.md-no-float):not(._md-container-ignore) {
   font-size: 14px;
   box-sizing: border-box;
   border: none;
@@ -161,8 +161,27 @@ md-datepicker {
   background: transparent;
   min-width: 120px;
   max-width: 328px; }
-  .md-datepicker-input::-ms-clear {
+  .md-datepicker-input::-ms-clear, label:not(.md-no-float):not(._md-container-ignore)::-ms-clear {
     display: none; }
+
+._md-datepicker-floating-label > label:not(.md-no-float):not(._md-container-ignore) {
+  left: 62px;
+  width: calc(100% - 98px); }
+  [dir=rtl] ._md-datepicker-floating-label > label:not(.md-no-float):not(._md-container-ignore) {
+    left: 0;
+    left: auto;
+    left: initial;
+    right: 62px; }
+
+._md-datepicker-floating-label > md-datepicker {
+  overflow: visible; }
+  ._md-datepicker-floating-label > md-datepicker .md-datepicker-input-container {
+    border: none; }
+  ._md-datepicker-floating-label > md-datepicker .md-datepicker-button {
+    float: left;
+    margin-top: -2.5px; }
+    [dir=rtl] ._md-datepicker-floating-label > md-datepicker .md-datepicker-button {
+      float: right; }
 
 .md-datepicker-input-container {
   position: relative;
@@ -184,6 +203,7 @@ md-datepicker {
   z-index: 99; }
 
 .md-datepicker-calendar-pane {
+  left: -100%;
   position: absolute;
   top: 0;
   left: 0;
@@ -202,7 +222,7 @@ md-datepicker {
             transform: scale(1); }
 
 .md-datepicker-input-mask {
-  height: 40px;
+  height: 39px;
   width: 340px;
   position: relative;
   background: transparent;
@@ -239,7 +259,7 @@ md-datepicker {
 .md-datepicker-triangle-button {
   position: absolute;
   right: 0;
-  top: 0;
+  top: 5px;
   -webkit-transform: translateY(-25%) translateX(45%);
           transform: translateY(-25%) translateX(45%); }
   [dir=rtl] .md-datepicker-triangle-button {
@@ -252,7 +272,7 @@ md-datepicker {
             transform: translateY(-25%) translateX(-45%); }
 
 .md-datepicker-triangle-button.md-button.md-icon-button {
-  height: 100%;
+  height: 36px;
   width: 36px;
   position: absolute; }
 
@@ -262,27 +282,32 @@ md-datepicker[disabled] .md-datepicker-input-container {
 md-datepicker[disabled] .md-datepicker-triangle-button {
   display: none; }
 
-.md-datepicker-open .md-datepicker-input-container {
-  margin-left: -12px;
-  margin-bottom: -5px;
-  border: none; }
-  [dir=rtl] .md-datepicker-open .md-datepicker-input-container {
-    margin-left: 0;
-    margin-left: auto;
-    margin-left: initial;
-    margin-right: -12px; }
-
-.md-datepicker-open .md-datepicker-input {
-  margin-left: 24px;
-  height: 40px; }
-  [dir=rtl] .md-datepicker-open .md-datepicker-input {
-    margin-left: 0;
-    margin-left: auto;
-    margin-left: initial;
-    margin-right: 24px; }
-
-.md-datepicker-open .md-datepicker-triangle-button {
-  display: none; }
+.md-datepicker-open {
+  overflow: hidden; }
+  .md-datepicker-open .md-datepicker-input-container {
+    margin-left: -12px;
+    margin-bottom: -5px; }
+    [dir=rtl] .md-datepicker-open .md-datepicker-input-container {
+      margin-left: 0;
+      margin-left: auto;
+      margin-left: initial;
+      margin-right: -12px; }
+  .md-datepicker-open .md-datepicker-input,
+  .md-datepicker-open label:not(.md-no-float):not(._md-container-ignore) {
+    margin-bottom: -5px; }
+  .md-datepicker-open input.md-datepicker-input {
+    margin-left: 24px;
+    height: 40px;
+    border-bottom-color: transparent; }
+    [dir=rtl] .md-datepicker-open input.md-datepicker-input {
+      margin-left: 0;
+      margin-left: auto;
+      margin-left: initial;
+      margin-right: 24px; }
+  .md-datepicker-open .md-datepicker-triangle-button,
+  .md-datepicker-open.md-input-has-value > label,
+  .md-datepicker-open.md-input-has-placeholder > label {
+    display: none; }
 
 .md-datepicker-pos-adjusted .md-datepicker-input-mask {
   display: none; }
