@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-ddc9e8d
+ * v1.1.0-rc.5-master-d6996b7
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -7782,6 +7782,10 @@ angular.module('material.components.chips', [
           var lastColors = {};
 
           var parseColors = function (theme) {
+            if (typeof theme !== 'string') {
+              theme = '';
+            }
+
             if (!attrs.mdColors) {
               attrs.mdColors = '{}';
             }
@@ -31289,4 +31293,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-ddc9e8d"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-d6996b7"}};
