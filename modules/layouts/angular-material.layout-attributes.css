@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-bd1cce4
+ * v1.1.0-rc.5-master-cb59b08
  */
 /*
 *
@@ -363,11 +363,6 @@
   -ms-flex: 1;
       flex: 1;
   box-sizing: border-box; }
-
-@media screen\0 {
-  [flex] {
-    -ms-flex: 1 1 0%;
-        flex: 1 1 0%; } }
 
 [flex-grow] {
   -ms-flex: 1 1 100%;
@@ -1228,14 +1223,7 @@
   [flex-xs] {
     -ms-flex: 1;
         flex: 1;
-    box-sizing: border-box; } }
-
-@media screen\0  and (max-width: 599px) {
-  [flex-xs] {
-    -ms-flex: 1 1 0%;
-        flex: 1 1 0%; } }
-
-@media (max-width: 599px) {
+    box-sizing: border-box; }
   [flex-xs-grow] {
     -ms-flex: 1 1 100%;
         flex: 1 1 100%;
@@ -1965,14 +1953,7 @@
   [flex-gt-xs] {
     -ms-flex: 1;
         flex: 1;
-    box-sizing: border-box; } }
-
-@media screen\0  and (min-width: 600px) {
-  [flex-gt-xs] {
-    -ms-flex: 1 1 0%;
-        flex: 1 1 0%; } }
-
-@media (min-width: 600px) {
+    box-sizing: border-box; }
   [flex-gt-xs-grow] {
     -ms-flex: 1 1 100%;
         flex: 1 1 100%;
@@ -2706,14 +2687,7 @@
   [flex-sm] {
     -ms-flex: 1;
         flex: 1;
-    box-sizing: border-box; } }
-
-@media screen\0  and (min-width: 600px) and (max-width: 959px) {
-  [flex-sm] {
-    -ms-flex: 1 1 0%;
-        flex: 1 1 0%; } }
-
-@media (min-width: 600px) and (max-width: 959px) {
+    box-sizing: border-box; }
   [flex-sm-grow] {
     -ms-flex: 1 1 100%;
         flex: 1 1 100%;
@@ -3443,14 +3417,7 @@
   [flex-gt-sm] {
     -ms-flex: 1;
         flex: 1;
-    box-sizing: border-box; } }
-
-@media screen\0  and (min-width: 960px) {
-  [flex-gt-sm] {
-    -ms-flex: 1 1 0%;
-        flex: 1 1 0%; } }
-
-@media (min-width: 960px) {
+    box-sizing: border-box; }
   [flex-gt-sm-grow] {
     -ms-flex: 1 1 100%;
         flex: 1 1 100%;
@@ -4184,14 +4151,7 @@
   [flex-md] {
     -ms-flex: 1;
         flex: 1;
-    box-sizing: border-box; } }
-
-@media screen\0  and (min-width: 960px) and (max-width: 1279px) {
-  [flex-md] {
-    -ms-flex: 1 1 0%;
-        flex: 1 1 0%; } }
-
-@media (min-width: 960px) and (max-width: 1279px) {
+    box-sizing: border-box; }
   [flex-md-grow] {
     -ms-flex: 1 1 100%;
         flex: 1 1 100%;
@@ -4921,14 +4881,7 @@
   [flex-gt-md] {
     -ms-flex: 1;
         flex: 1;
-    box-sizing: border-box; } }
-
-@media screen\0  and (min-width: 1280px) {
-  [flex-gt-md] {
-    -ms-flex: 1 1 0%;
-        flex: 1 1 0%; } }
-
-@media (min-width: 1280px) {
+    box-sizing: border-box; }
   [flex-gt-md-grow] {
     -ms-flex: 1 1 100%;
         flex: 1 1 100%;
@@ -5662,14 +5615,7 @@
   [flex-lg] {
     -ms-flex: 1;
         flex: 1;
-    box-sizing: border-box; } }
-
-@media screen\0  and (min-width: 1280px) and (max-width: 1919px) {
-  [flex-lg] {
-    -ms-flex: 1 1 0%;
-        flex: 1 1 0%; } }
-
-@media (min-width: 1280px) and (max-width: 1919px) {
+    box-sizing: border-box; }
   [flex-lg-grow] {
     -ms-flex: 1 1 100%;
         flex: 1 1 100%;
@@ -6399,14 +6345,7 @@
   [flex-gt-lg] {
     -ms-flex: 1;
         flex: 1;
-    box-sizing: border-box; } }
-
-@media screen\0  and (min-width: 1920px) {
-  [flex-gt-lg] {
-    -ms-flex: 1 1 0%;
-        flex: 1 1 0%; } }
-
-@media (min-width: 1920px) {
+    box-sizing: border-box; }
   [flex-gt-lg-grow] {
     -ms-flex: 1 1 100%;
         flex: 1 1 100%;
@@ -7134,14 +7073,7 @@
   [flex-xl] {
     -ms-flex: 1;
         flex: 1;
-    box-sizing: border-box; } }
-
-@media screen\0  and (min-width: 1920px) {
-  [flex-xl] {
-    -ms-flex: 1 1 0%;
-        flex: 1 1 0%; } }
-
-@media (min-width: 1920px) {
+    box-sizing: border-box; }
   [flex-xl-grow] {
     -ms-flex: 1 1 100%;
         flex: 1 1 100%;
