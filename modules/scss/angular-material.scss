@@ -2600,9 +2600,10 @@ md-datepicker {
 // If the datepicker is inside of a md-input-container
 ._md-datepicker-floating-label {
   > label:not(.md-no-float):not(._md-container-ignore) {
-    $offset: $md-datepicker-triangle-button-width + $md-datepicker-button-gap + $icon-button-margin + $baseline-grid;
-    @include rtl-prop(left, right, $offset);
-    width: calc(100% - #{$offset + $md-datepicker-triangle-button-width});
+    $offset: $md-datepicker-triangle-button-width * 2 + $md-datepicker-button-gap + $icon-button-margin + $baseline-grid;
+    @include rtl(right, $icon-button-margin, auto);
+    @include rtl(left, auto, $icon-button-margin);
+    width: calc(100% - #{$offset});
   }
 
   > md-datepicker {
@@ -2633,7 +2634,10 @@ md-datepicker {
 
   display: inline-block;
   width: auto;
-  @include rtl-prop(margin-left, margin-right, $md-datepicker-button-gap);
+
+  .md-icon-button + & {
+    @include rtl-prop(margin-left, margin-right, $md-datepicker-button-gap);
+  }
 
   &.md-datepicker-focused {
     border-bottom-width: 2px;
@@ -2762,11 +2766,13 @@ md-datepicker[disabled] {
   overflow: hidden;
 
   .md-datepicker-input-container {
-    @include rtl-prop(margin-left, margin-right, -$md-datepicker-button-gap);
-
     // The negative bottom margin prevents the content around the datepicker
     // from jumping when it gets opened.
     margin-bottom: -$md-datepicker-border-bottom-gap;
+  }
+
+  .md-icon-button + .md-datepicker-input-container {
+    @include rtl-prop(margin-left, margin-right, -$md-datepicker-button-gap);
   }
 
   .md-datepicker-input,
@@ -5185,6 +5191,7 @@ md-input-container.md-input-has-value ._md-select-value {
     position: relative;
     top: 2px;
     speak: none;
+    font-size: 16px;
     transform: scaleY(0.6) scaleX(1);
   }
 
@@ -5254,7 +5261,6 @@ md-option {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: rem(1.6);
   }
   padding: 0 $select-option-padding 0 $select-option-padding;
   height: $select-option-height;
@@ -6712,9 +6718,11 @@ md-toolbar {
   min-height: $baseline-grid * 8;
   width: 100%;
 
-  transition-duration: $swift-ease-in-out-duration;
-  transition-timing-function: $swift-ease-in-out-timing-function;
-  transition-property: background-color, fill, color;
+  &._md-toolbar-transitions {
+    transition-duration: $swift-ease-in-out-duration;
+    transition-timing-function: $swift-ease-in-out-timing-function;
+    transition-property: background-color, fill, color;
+  }
 
   &.md-whiteframe-z1-add, &.md-whiteframe-z1-remove {
     transition: box-shadow $swift-ease-in-out-duration linear;

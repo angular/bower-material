@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-361d541
+ * v1.1.0-rc.5-master-bd1cce4
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -1500,7 +1500,7 @@ function SelectProvider($$interimElementProvider) {
         }
       }
 
-      var left, top, transformOrigin, minWidth;
+      var left, top, transformOrigin, minWidth, fontSize;
       if (shouldOpenAroundTarget) {
         left = targetRect.left;
         top = targetRect.top + targetRect.height;
@@ -1518,6 +1518,8 @@ function SelectProvider($$interimElementProvider) {
           (centeredRect.top + centeredRect.height / 2 - contentNode.scrollTop) + 'px 0px';
 
         minWidth = Math.min(targetRect.width + centeredRect.paddingLeft + centeredRect.paddingRight, maxWidth);
+
+        fontSize = window.getComputedStyle(targetNode)['font-size'];
       }
 
       // Keep left and top within the window
@@ -1531,7 +1533,8 @@ function SelectProvider($$interimElementProvider) {
           styles: {
             left: Math.floor(clamp(bounds.left, left, bounds.right - containerRect.width)),
             top: Math.floor(clamp(bounds.top, top, bounds.bottom - containerRect.height)),
-            'min-width': minWidth
+            'min-width': minWidth,
+            'font-size': fontSize
           }
         },
         dropDown: {

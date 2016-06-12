@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-361d541
+ * v1.1.0-rc.5-master-bd1cce4
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -165,13 +165,13 @@ md-datepicker {
     display: none; }
 
 ._md-datepicker-floating-label > label:not(.md-no-float):not(._md-container-ignore) {
-  left: 62px;
+  right: 6px;
+  left: auto;
   width: calc(100% - 98px); }
   [dir=rtl] ._md-datepicker-floating-label > label:not(.md-no-float):not(._md-container-ignore) {
-    left: 0;
-    left: auto;
-    left: initial;
-    right: 62px; }
+    right: auto; }
+  [dir=rtl] ._md-datepicker-floating-label > label:not(.md-no-float):not(._md-container-ignore) {
+    left: 6px; }
 
 ._md-datepicker-floating-label > md-datepicker {
   overflow: visible; }
@@ -189,13 +189,14 @@ md-datepicker {
   border-bottom-width: 1px;
   border-bottom-style: solid;
   display: inline-block;
-  width: auto;
-  margin-left: 12px; }
-  [dir=rtl] .md-datepicker-input-container {
-    margin-left: 0;
-    margin-left: auto;
-    margin-left: initial;
-    margin-right: 12px; }
+  width: auto; }
+  .md-icon-button + .md-datepicker-input-container {
+    margin-left: 12px; }
+    [dir=rtl] .md-icon-button + .md-datepicker-input-container {
+      margin-left: 0;
+      margin-left: auto;
+      margin-left: initial;
+      margin-right: 12px; }
   .md-datepicker-input-container.md-datepicker-focused {
     border-bottom-width: 2px; }
 
@@ -285,9 +286,10 @@ md-datepicker[disabled] .md-datepicker-triangle-button {
 .md-datepicker-open {
   overflow: hidden; }
   .md-datepicker-open .md-datepicker-input-container {
-    margin-left: -12px;
     margin-bottom: -5px; }
-    [dir=rtl] .md-datepicker-open .md-datepicker-input-container {
+  .md-datepicker-open .md-icon-button + .md-datepicker-input-container {
+    margin-left: -12px; }
+    [dir=rtl] .md-datepicker-open .md-icon-button + .md-datepicker-input-container {
       margin-left: 0;
       margin-left: auto;
       margin-left: initial;

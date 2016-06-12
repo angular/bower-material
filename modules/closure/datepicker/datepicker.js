@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-361d541
+ * v1.1.0-rc.5-master-bd1cce4
  */
 goog.provide('ng.material.components.datepicker');
 goog.require('ng.material.components.icon');
@@ -2056,6 +2056,12 @@ angular.module('material.components.datepicker', [
    * @param {(function(Date): boolean)=} md-date-filter Function expecting a date and returning a boolean whether it can be selected or not.
    * @param {String=} md-placeholder The date input placeholder value.
    * @param {String=} md-open-on-focus When present, the calendar will be opened when the input is focused.
+   * @param {Boolean=} md-is-open Expression that can be used to open the datepicker's calendar on-demand.
+   * @param {String=} md-hide-icons Determines which datepicker icons should be hidden. Note that this may cause the
+   * datepicker to not align properly with other components. **Use at your own risk.** Possible values are:
+   * * `"all"` - Hides all icons.
+   * * `"calendar"` - Only hides the calendar icon.
+   * * `"triangle"` - Only hides the triangle icon.
    * @param {boolean=} ng-disabled Whether the datepicker is disabled.
    * @param {boolean=} ng-required Whether a value is required for the datepicker.
    *
@@ -2078,47 +2084,58 @@ angular.module('material.components.datepicker', [
    */
   function datePickerDirective($$mdSvgRegistry) {
     return {
-      template:
-          // Buttons are not in the tab order because users can open the calendar via keyboard
-          // interaction on the text input, and multiple tab stops for one component (picker)
-          // may be confusing.
+      template: function(tElement, tAttrs) {
+        // Buttons are not in the tab order because users can open the calendar via keyboard
+        // interaction on the text input, and multiple tab stops for one component (picker)
+        // may be confusing.
+        var hiddenIcons = tAttrs.mdHideIcons;
+
+        var calendarButton = (hiddenIcons === 'all' || hiddenIcons === 'calendar') ? '' :
           '<md-button class="md-datepicker-button md-icon-button" type="button" ' +
               'tabindex="-1" aria-hidden="true" ' +
               'ng-click="ctrl.openCalendarPane($event)">' +
             '<md-icon class="md-datepicker-calendar-icon" aria-label="md-calendar" ' +
                      'md-svg-src="' + $$mdSvgRegistry.mdCalendar + '"></md-icon>' +
-          '</md-button>' +
-          '<div class="md-datepicker-input-container" ' +
-              'ng-class="{\'md-datepicker-focused\': ctrl.isFocused}">' +
-            '<input class="md-datepicker-input" aria-haspopup="true" ' +
-                'ng-focus="ctrl.setFocused(true)" ng-blur="ctrl.setFocused(false)">' +
-            '<md-button type="button" md-no-ink ' +
-                'class="md-datepicker-triangle-button md-icon-button" ' +
-                'ng-click="ctrl.openCalendarPane($event)" ' +
-                'aria-label="{{::ctrl.dateLocale.msgOpenCalendar}}">' +
-              '<div class="md-datepicker-expand-triangle"></div>' +
-            '</md-button>' +
-          '</div>' +
+          '</md-button>';
 
-          // This pane will be detached from here and re-attached to the document body.
-          '<div class="md-datepicker-calendar-pane md-whiteframe-z1">' +
-            '<div class="md-datepicker-input-mask">' +
-              '<div class="md-datepicker-input-mask-opaque"></div>' +
-            '</div>' +
-            '<div class="md-datepicker-calendar">' +
-              '<md-calendar role="dialog" aria-label="{{::ctrl.dateLocale.msgCalendar}}" ' +
-                  'md-min-date="ctrl.minDate" md-max-date="ctrl.maxDate"' +
-                  'md-date-filter="ctrl.dateFilter"' +
-                  'ng-model="ctrl.date" ng-if="ctrl.isCalendarOpen">' +
-              '</md-calendar>' +
-            '</div>' +
-          '</div>',
+        var triangleButton = (hiddenIcons === 'all' || hiddenIcons === 'triangle') ? '' :
+          '<md-button type="button" md-no-ink ' +
+              'class="md-datepicker-triangle-button md-icon-button" ' +
+              'ng-click="ctrl.openCalendarPane($event)" ' +
+              'aria-label="{{::ctrl.dateLocale.msgOpenCalendar}}">' +
+            '<div class="md-datepicker-expand-triangle"></div>' +
+          '</md-button>';
+
+        return '' +
+        calendarButton +
+        '<div class="md-datepicker-input-container" ' +
+            'ng-class="{\'md-datepicker-focused\': ctrl.isFocused}">' +
+          '<input class="md-datepicker-input" aria-haspopup="true" ' +
+              'ng-focus="ctrl.setFocused(true)" ng-blur="ctrl.setFocused(false)">' +
+          triangleButton +
+        '</div>' +
+
+        // This pane will be detached from here and re-attached to the document body.
+        '<div class="md-datepicker-calendar-pane md-whiteframe-z1">' +
+          '<div class="md-datepicker-input-mask">' +
+            '<div class="md-datepicker-input-mask-opaque"></div>' +
+          '</div>' +
+          '<div class="md-datepicker-calendar">' +
+            '<md-calendar role="dialog" aria-label="{{::ctrl.dateLocale.msgCalendar}}" ' +
+                'md-min-date="ctrl.minDate" md-max-date="ctrl.maxDate"' +
+                'md-date-filter="ctrl.dateFilter"' +
+                'ng-model="ctrl.date" ng-if="ctrl.isCalendarOpen">' +
+            '</md-calendar>' +
+          '</div>' +
+        '</div>';
+      },
       require: ['ngModel', 'mdDatepicker', '?^mdInputContainer'],
       scope: {
         minDate: '=mdMinDate',
         maxDate: '=mdMaxDate',
         placeholder: '@mdPlaceholder',
-        dateFilter: '=mdDateFilter'
+        dateFilter: '=mdDateFilter',
+        isOpen: '=?mdIsOpen'
       },
       controller: DatePickerCtrl,
       controllerAs: 'ctrl',
@@ -2298,6 +2315,7 @@ angular.module('material.components.datepicker', [
     this.calendarPane.id = 'md-date-pane' + $mdUtil.nextUid();
 
     $mdTheming($element);
+    $mdTheming(angular.element(this.calendarPane));
 
     /** Pre-bound click handler is saved so that the event listener can be removed. */
     this.bodyClickHandler = angular.bind(this, this.handleBodyClick);
@@ -2317,9 +2335,22 @@ angular.module('material.components.datepicker', [
     this.attachInteractionListeners();
 
     var self = this;
+
     $scope.$on('$destroy', function() {
       self.detachCalendarPane();
     });
+
+    if ($attrs.mdIsOpen) {
+      $scope.$watch('ctrl.isOpen', function(shouldBeOpen) {
+        if (shouldBeOpen) {
+          self.openCalendarPane({
+            target: self.inputElement
+          });
+        } else {
+          self.closeCalendarPane();
+        }
+      });
+    }
   }
   DatePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$compile", "$timeout", "$window", "$mdConstant", "$mdTheming", "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF"];
 
@@ -2427,7 +2458,10 @@ angular.module('material.components.datepicker', [
   DatePickerCtrl.prototype.setDisabled = function(isDisabled) {
     this.isDisabled = isDisabled;
     this.inputElement.disabled = isDisabled;
-    this.calendarButton.disabled = isDisabled;
+
+    if (this.calendarButton) {
+      this.calendarButton.disabled = isDisabled;
+    }
   };
 
   /**
@@ -2625,7 +2659,7 @@ angular.module('material.components.datepicker', [
    */
   DatePickerCtrl.prototype.openCalendarPane = function(event) {
     if (!this.isCalendarOpen && !this.isDisabled) {
-      this.isCalendarOpen = true;
+      this.isCalendarOpen = this.isOpen = true;
       this.calendarPaneOpenedFrom = event.target;
 
       // Because the calendar pane is attached directly to the body, it is possible that the
@@ -2674,7 +2708,7 @@ angular.module('material.components.datepicker', [
 
     function detach() {
       self.detachCalendarPane();
-      self.isCalendarOpen = false;
+      self.isCalendarOpen = self.isOpen = false;
       self.ngModelCtrl.$setTouched();
 
       self.documentElement.off('click touchstart', self.bodyClickHandler);

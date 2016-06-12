@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-361d541
+ * v1.1.0-rc.5-master-bd1cce4
  */
 goog.provide('ng.material.components.toolbar');
 goog.require('ng.material.components.content');
@@ -80,6 +80,10 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
 
       element.addClass('_md');     // private md component indicator for styling
       $mdTheming(element);
+
+      $mdUtil.nextTick(function () {
+        element.addClass('_md-toolbar-transitions');     // adding toolbar transitions after digest
+      }, false);
 
       if (angular.isDefined(attr.mdScrollShrink)) {
         setupScrollShrink();

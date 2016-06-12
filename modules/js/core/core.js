@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-361d541
+ * v1.1.0-rc.5-master-bd1cce4
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2054,7 +2054,7 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
 
           return (element.getAttribute('tabindex') != '-1') &&
               !element.hasAttribute('DISABLED') &&
-              (element.hasAttribute('tabindex') || element.hasAttribute('href') ||
+              (element.hasAttribute('tabindex') || element.hasAttribute('href') || element.isContentEditable ||
               (focusableElements.indexOf(element.nodeName) != -1));
         }
       }
@@ -5965,6 +5965,9 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
               break;
             case 'transformOrigin':
               convertToVendor(key, $mdConstant.CSS.TRANSFORM_ORIGIN, value);
+              break;
+            case 'font-size':
+              css['font-size'] = value; // font sizes aren't always in px
               break;
           }
         }

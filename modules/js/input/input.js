@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-361d541
+ * v1.1.0-rc.5-master-bd1cce4
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -353,6 +353,12 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
 
     scope.$watch(isErrorGetter, containerCtrl.setInvalid);
 
+    // When the developer uses the ngValue directive for the input, we have to observe the attribute, because
+    // Angular's ngValue directive is just setting the `value` attribute.
+    if (attr.ngValue) {
+      attr.$observe('value', inputCheckValue);
+    }
+
     ngModelCtrl.$parsers.push(ngModelPipelineCheckValue);
     ngModelCtrl.$formatters.push(ngModelPipelineCheckValue);
 
@@ -698,7 +704,7 @@ function placeholderDirective($compile) {
     // md-select handles placeholders on it's own
     if (element[0].nodeName != 'MD-SELECT') {
       // Move the placeholder expression to the label
-      var newLabel = angular.element('<label ng-click="delegateClick()">' + attr.placeholder + '</label>');
+      var newLabel = angular.element('<label ng-click="delegateClick()" tabindex="-1">' + attr.placeholder + '</label>');
 
       // Note that we unset it via `attr`, in order to get Angular
       // to remove any observers that it might have set up. Otherwise

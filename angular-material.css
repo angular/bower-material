@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-361d541
+ * v1.1.0-rc.5-master-bd1cce4
  */
 html, body {
   height: 100%;
@@ -1504,13 +1504,13 @@ md-datepicker {
     display: none; }
 
 ._md-datepicker-floating-label > label:not(.md-no-float):not(._md-container-ignore) {
-  left: 62px;
+  right: 6px;
+  left: auto;
   width: calc(100% - 98px); }
   [dir=rtl] ._md-datepicker-floating-label > label:not(.md-no-float):not(._md-container-ignore) {
-    left: 0;
-    left: auto;
-    left: initial;
-    right: 62px; }
+    right: auto; }
+  [dir=rtl] ._md-datepicker-floating-label > label:not(.md-no-float):not(._md-container-ignore) {
+    left: 6px; }
 
 ._md-datepicker-floating-label > md-datepicker {
   overflow: visible; }
@@ -1528,13 +1528,14 @@ md-datepicker {
   border-bottom-width: 1px;
   border-bottom-style: solid;
   display: inline-block;
-  width: auto;
-  margin-left: 12px; }
-  [dir=rtl] .md-datepicker-input-container {
-    margin-left: 0;
-    margin-left: auto;
-    margin-left: initial;
-    margin-right: 12px; }
+  width: auto; }
+  .md-icon-button + .md-datepicker-input-container {
+    margin-left: 12px; }
+    [dir=rtl] .md-icon-button + .md-datepicker-input-container {
+      margin-left: 0;
+      margin-left: auto;
+      margin-left: initial;
+      margin-right: 12px; }
   .md-datepicker-input-container.md-datepicker-focused {
     border-bottom-width: 2px; }
 
@@ -1624,9 +1625,10 @@ md-datepicker[disabled] .md-datepicker-triangle-button {
 .md-datepicker-open {
   overflow: hidden; }
   .md-datepicker-open .md-datepicker-input-container {
-    margin-left: -12px;
     margin-bottom: -5px; }
-    [dir=rtl] .md-datepicker-open .md-datepicker-input-container {
+  .md-datepicker-open .md-icon-button + .md-datepicker-input-container {
+    margin-left: -12px; }
+    [dir=rtl] .md-datepicker-open .md-icon-button + .md-datepicker-input-container {
       margin-left: 0;
       margin-left: auto;
       margin-left: initial;
@@ -3656,6 +3658,7 @@ md-input-container.md-input-has-value ._md-select-value > span:not(._md-select-i
     position: relative;
     top: 2px;
     speak: none;
+    font-size: 16px;
     -webkit-transform: scaleY(0.6) scaleX(1);
             transform: scaleY(0.6) scaleX(1); }
   ._md-select-value._md-select-placeholder {
@@ -3723,8 +3726,7 @@ md-option {
     width: auto;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 16px; }
+    text-overflow: ellipsis; }
 
 md-optgroup {
   display: block; }
@@ -4969,10 +4971,11 @@ md-toolbar {
   z-index: 2;
   font-size: 20px;
   min-height: 64px;
-  width: 100%;
-  transition-duration: 0.5s;
-  transition-timing-function: cubic-bezier(0.35, 0, 0.25, 1);
-  transition-property: background-color, fill, color; }
+  width: 100%; }
+  md-toolbar._md-toolbar-transitions {
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0.35, 0, 0.25, 1);
+    transition-property: background-color, fill, color; }
   md-toolbar.md-whiteframe-z1-add, md-toolbar.md-whiteframe-z1-remove {
     transition: box-shadow 0.5s linear; }
   md-toolbar md-toolbar-filler {

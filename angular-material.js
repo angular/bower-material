@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-361d541
+ * v1.1.0-rc.5-master-bd1cce4
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2102,7 +2102,7 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
 
           return (element.getAttribute('tabindex') != '-1') &&
               !element.hasAttribute('DISABLED') &&
-              (element.hasAttribute('tabindex') || element.hasAttribute('href') ||
+              (element.hasAttribute('tabindex') || element.hasAttribute('href') || element.isContentEditable ||
               (focusableElements.indexOf(element.nodeName) != -1));
         }
       }
@@ -6058,6 +6058,9 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
             case 'transformOrigin':
               convertToVendor(key, $mdConstant.CSS.TRANSFORM_ORIGIN, value);
               break;
+            case 'font-size':
+              css['font-size'] = value; // font sizes aren't always in px
+              break;
           }
         }
       });
@@ -7553,8 +7556,10 @@ angular.module('material.components.chips', [
      */
     function applyThemeColors(element, colorExpression) {
       try {
-        // Assign the calculate RGBA color values directly as inline CSS
-        element.css(interpolateColors(colorExpression));
+        if (colorExpression) {
+          // Assign the calculate RGBA color values directly as inline CSS
+          element.css(interpolateColors(colorExpression));
+        }
       } catch (e) {
         $log.error(e.message);
       }
@@ -7753,7 +7758,13 @@ angular.module('material.components.chips', [
         return function (scope, element, attrs, ctrl) {
           var mdThemeController = ctrl[0];
 
+          var lastColors = {};
+
           var parseColors = function (theme) {
+            if (!attrs.mdColors) {
+              attrs.mdColors = '{}';
+            }
+
             /**
              * Json.parse() does not work because the keys are not quoted;
              * use $parse to convert to a hash map
@@ -7785,7 +7796,25 @@ angular.module('material.components.chips', [
               });
             }
 
+            cleanElement(colors);
+
             return colors;
+          };
+
+          var cleanElement = function (colors) {
+            if (!angular.equals(colors, lastColors)) {
+              var keys = Object.keys(lastColors);
+
+              if (lastColors.background && !keys['color']) {
+                keys.push('color');
+              }
+
+              keys.forEach(function (key) {
+                element.css(key, '');
+              });
+            }
+
+            lastColors = colors;
           };
 
           /**
@@ -11177,6 +11206,12 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
 
     scope.$watch(isErrorGetter, containerCtrl.setInvalid);
 
+    // When the developer uses the ngValue directive for the input, we have to observe the attribute, because
+    // Angular's ngValue directive is just setting the `value` attribute.
+    if (attr.ngValue) {
+      attr.$observe('value', inputCheckValue);
+    }
+
     ngModelCtrl.$parsers.push(ngModelPipelineCheckValue);
     ngModelCtrl.$formatters.push(ngModelPipelineCheckValue);
 
@@ -11522,7 +11557,7 @@ function placeholderDirective($compile) {
     // md-select handles placeholders on it's own
     if (element[0].nodeName != 'MD-SELECT') {
       // Move the placeholder expression to the label
-      var newLabel = angular.element('<label ng-click="delegateClick()">' + attr.placeholder + '</label>');
+      var newLabel = angular.element('<label ng-click="delegateClick()" tabindex="-1">' + attr.placeholder + '</label>');
 
       // Note that we unset it via `attr`, in order to get Angular
       // to remove any observers that it might have set up. Otherwise
@@ -17304,7 +17339,7 @@ function SelectProvider($$interimElementProvider) {
         }
       }
 
-      var left, top, transformOrigin, minWidth;
+      var left, top, transformOrigin, minWidth, fontSize;
       if (shouldOpenAroundTarget) {
         left = targetRect.left;
         top = targetRect.top + targetRect.height;
@@ -17322,6 +17357,8 @@ function SelectProvider($$interimElementProvider) {
           (centeredRect.top + centeredRect.height / 2 - contentNode.scrollTop) + 'px 0px';
 
         minWidth = Math.min(targetRect.width + centeredRect.paddingLeft + centeredRect.paddingRight, maxWidth);
+
+        fontSize = window.getComputedStyle(targetNode)['font-size'];
       }
 
       // Keep left and top within the window
@@ -17335,7 +17372,8 @@ function SelectProvider($$interimElementProvider) {
           styles: {
             left: Math.floor(clamp(bounds.left, left, bounds.right - containerRect.width)),
             top: Math.floor(clamp(bounds.top, top, bounds.bottom - containerRect.height)),
-            'min-width': minWidth
+            'min-width': minWidth,
+            'font-size': fontSize
           }
         },
         dropDown: {
@@ -19820,6 +19858,10 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
 
       element.addClass('_md');     // private md component indicator for styling
       $mdTheming(element);
+
+      $mdUtil.nextTick(function () {
+        element.addClass('_md-toolbar-transitions');     // adding toolbar transitions after digest
+      }, false);
 
       if (angular.isDefined(attr.mdScrollShrink)) {
         setupScrollShrink();
@@ -26211,6 +26253,12 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
    * @param {(function(Date): boolean)=} md-date-filter Function expecting a date and returning a boolean whether it can be selected or not.
    * @param {String=} md-placeholder The date input placeholder value.
    * @param {String=} md-open-on-focus When present, the calendar will be opened when the input is focused.
+   * @param {Boolean=} md-is-open Expression that can be used to open the datepicker's calendar on-demand.
+   * @param {String=} md-hide-icons Determines which datepicker icons should be hidden. Note that this may cause the
+   * datepicker to not align properly with other components. **Use at your own risk.** Possible values are:
+   * * `"all"` - Hides all icons.
+   * * `"calendar"` - Only hides the calendar icon.
+   * * `"triangle"` - Only hides the triangle icon.
    * @param {boolean=} ng-disabled Whether the datepicker is disabled.
    * @param {boolean=} ng-required Whether a value is required for the datepicker.
    *
@@ -26233,47 +26281,58 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
    */
   function datePickerDirective($$mdSvgRegistry) {
     return {
-      template:
-          // Buttons are not in the tab order because users can open the calendar via keyboard
-          // interaction on the text input, and multiple tab stops for one component (picker)
-          // may be confusing.
+      template: function(tElement, tAttrs) {
+        // Buttons are not in the tab order because users can open the calendar via keyboard
+        // interaction on the text input, and multiple tab stops for one component (picker)
+        // may be confusing.
+        var hiddenIcons = tAttrs.mdHideIcons;
+
+        var calendarButton = (hiddenIcons === 'all' || hiddenIcons === 'calendar') ? '' :
           '<md-button class="md-datepicker-button md-icon-button" type="button" ' +
               'tabindex="-1" aria-hidden="true" ' +
               'ng-click="ctrl.openCalendarPane($event)">' +
             '<md-icon class="md-datepicker-calendar-icon" aria-label="md-calendar" ' +
                      'md-svg-src="' + $$mdSvgRegistry.mdCalendar + '"></md-icon>' +
-          '</md-button>' +
-          '<div class="md-datepicker-input-container" ' +
-              'ng-class="{\'md-datepicker-focused\': ctrl.isFocused}">' +
-            '<input class="md-datepicker-input" aria-haspopup="true" ' +
-                'ng-focus="ctrl.setFocused(true)" ng-blur="ctrl.setFocused(false)">' +
-            '<md-button type="button" md-no-ink ' +
-                'class="md-datepicker-triangle-button md-icon-button" ' +
-                'ng-click="ctrl.openCalendarPane($event)" ' +
-                'aria-label="{{::ctrl.dateLocale.msgOpenCalendar}}">' +
-              '<div class="md-datepicker-expand-triangle"></div>' +
-            '</md-button>' +
-          '</div>' +
+          '</md-button>';
 
-          // This pane will be detached from here and re-attached to the document body.
-          '<div class="md-datepicker-calendar-pane md-whiteframe-z1">' +
-            '<div class="md-datepicker-input-mask">' +
-              '<div class="md-datepicker-input-mask-opaque"></div>' +
-            '</div>' +
-            '<div class="md-datepicker-calendar">' +
-              '<md-calendar role="dialog" aria-label="{{::ctrl.dateLocale.msgCalendar}}" ' +
-                  'md-min-date="ctrl.minDate" md-max-date="ctrl.maxDate"' +
-                  'md-date-filter="ctrl.dateFilter"' +
-                  'ng-model="ctrl.date" ng-if="ctrl.isCalendarOpen">' +
-              '</md-calendar>' +
-            '</div>' +
-          '</div>',
+        var triangleButton = (hiddenIcons === 'all' || hiddenIcons === 'triangle') ? '' :
+          '<md-button type="button" md-no-ink ' +
+              'class="md-datepicker-triangle-button md-icon-button" ' +
+              'ng-click="ctrl.openCalendarPane($event)" ' +
+              'aria-label="{{::ctrl.dateLocale.msgOpenCalendar}}">' +
+            '<div class="md-datepicker-expand-triangle"></div>' +
+          '</md-button>';
+
+        return '' +
+        calendarButton +
+        '<div class="md-datepicker-input-container" ' +
+            'ng-class="{\'md-datepicker-focused\': ctrl.isFocused}">' +
+          '<input class="md-datepicker-input" aria-haspopup="true" ' +
+              'ng-focus="ctrl.setFocused(true)" ng-blur="ctrl.setFocused(false)">' +
+          triangleButton +
+        '</div>' +
+
+        // This pane will be detached from here and re-attached to the document body.
+        '<div class="md-datepicker-calendar-pane md-whiteframe-z1">' +
+          '<div class="md-datepicker-input-mask">' +
+            '<div class="md-datepicker-input-mask-opaque"></div>' +
+          '</div>' +
+          '<div class="md-datepicker-calendar">' +
+            '<md-calendar role="dialog" aria-label="{{::ctrl.dateLocale.msgCalendar}}" ' +
+                'md-min-date="ctrl.minDate" md-max-date="ctrl.maxDate"' +
+                'md-date-filter="ctrl.dateFilter"' +
+                'ng-model="ctrl.date" ng-if="ctrl.isCalendarOpen">' +
+            '</md-calendar>' +
+          '</div>' +
+        '</div>';
+      },
       require: ['ngModel', 'mdDatepicker', '?^mdInputContainer'],
       scope: {
         minDate: '=mdMinDate',
         maxDate: '=mdMaxDate',
         placeholder: '@mdPlaceholder',
-        dateFilter: '=mdDateFilter'
+        dateFilter: '=mdDateFilter',
+        isOpen: '=?mdIsOpen'
       },
       controller: DatePickerCtrl,
       controllerAs: 'ctrl',
@@ -26453,6 +26512,7 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
     this.calendarPane.id = 'md-date-pane' + $mdUtil.nextUid();
 
     $mdTheming($element);
+    $mdTheming(angular.element(this.calendarPane));
 
     /** Pre-bound click handler is saved so that the event listener can be removed. */
     this.bodyClickHandler = angular.bind(this, this.handleBodyClick);
@@ -26472,9 +26532,22 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
     this.attachInteractionListeners();
 
     var self = this;
+
     $scope.$on('$destroy', function() {
       self.detachCalendarPane();
     });
+
+    if ($attrs.mdIsOpen) {
+      $scope.$watch('ctrl.isOpen', function(shouldBeOpen) {
+        if (shouldBeOpen) {
+          self.openCalendarPane({
+            target: self.inputElement
+          });
+        } else {
+          self.closeCalendarPane();
+        }
+      });
+    }
   }
   DatePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$compile", "$timeout", "$window", "$mdConstant", "$mdTheming", "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF"];
 
@@ -26582,7 +26655,10 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
   DatePickerCtrl.prototype.setDisabled = function(isDisabled) {
     this.isDisabled = isDisabled;
     this.inputElement.disabled = isDisabled;
-    this.calendarButton.disabled = isDisabled;
+
+    if (this.calendarButton) {
+      this.calendarButton.disabled = isDisabled;
+    }
   };
 
   /**
@@ -26780,7 +26856,7 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
    */
   DatePickerCtrl.prototype.openCalendarPane = function(event) {
     if (!this.isCalendarOpen && !this.isDisabled) {
-      this.isCalendarOpen = true;
+      this.isCalendarOpen = this.isOpen = true;
       this.calendarPaneOpenedFrom = event.target;
 
       // Because the calendar pane is attached directly to the body, it is possible that the
@@ -26829,7 +26905,7 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
 
     function detach() {
       self.detachCalendarPane();
-      self.isCalendarOpen = false;
+      self.isCalendarOpen = self.isOpen = false;
       self.ngModelCtrl.$setTouched();
 
       self.documentElement.off('click touchstart', self.bodyClickHandler);
@@ -31173,4 +31249,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-361d541"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-bd1cce4"}};

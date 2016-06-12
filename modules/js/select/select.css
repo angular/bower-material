@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-361d541
+ * v1.1.0-rc.5-master-bd1cce4
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -139,6 +139,7 @@ md-input-container.md-input-has-value ._md-select-value > span:not(._md-select-i
     position: relative;
     top: 2px;
     speak: none;
+    font-size: 16px;
     -webkit-transform: scaleY(0.6) scaleX(1);
             transform: scaleY(0.6) scaleX(1); }
   ._md-select-value._md-select-placeholder {
@@ -206,8 +207,7 @@ md-option {
     width: auto;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 16px; }
+    text-overflow: ellipsis; }
 
 md-optgroup {
   display: block; }

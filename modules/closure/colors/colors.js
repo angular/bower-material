@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-361d541
+ * v1.1.0-rc.5-master-bd1cce4
  */
 goog.provide('ng.material.components.colors');
 goog.require('ng.material.core');
@@ -87,8 +87,10 @@ goog.require('ng.material.core');
      */
     function applyThemeColors(element, colorExpression) {
       try {
-        // Assign the calculate RGBA color values directly as inline CSS
-        element.css(interpolateColors(colorExpression));
+        if (colorExpression) {
+          // Assign the calculate RGBA color values directly as inline CSS
+          element.css(interpolateColors(colorExpression));
+        }
       } catch (e) {
         $log.error(e.message);
       }
@@ -287,7 +289,13 @@ goog.require('ng.material.core');
         return function (scope, element, attrs, ctrl) {
           var mdThemeController = ctrl[0];
 
+          var lastColors = {};
+
           var parseColors = function (theme) {
+            if (!attrs.mdColors) {
+              attrs.mdColors = '{}';
+            }
+
             /**
              * Json.parse() does not work because the keys are not quoted;
              * use $parse to convert to a hash map
@@ -319,7 +327,25 @@ goog.require('ng.material.core');
               });
             }
 
+            cleanElement(colors);
+
             return colors;
+          };
+
+          var cleanElement = function (colors) {
+            if (!angular.equals(colors, lastColors)) {
+              var keys = Object.keys(lastColors);
+
+              if (lastColors.background && !keys['color']) {
+                keys.push('color');
+              }
+
+              keys.forEach(function (key) {
+                element.css(key, '');
+              });
+            }
+
+            lastColors = colors;
           };
 
           /**
