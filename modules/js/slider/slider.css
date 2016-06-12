@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-cb59b08
+ * v1.1.0-rc.5-master-ddc9e8d
  */
 /*  Only used with Theme processes */
 html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
@@ -136,7 +136,12 @@ md-slider {
     -webkit-transform: translate3d(-50%, -50%, 0);
             transform: translate3d(-50%, -50%, 0);
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition-property: left, bottom; }
+    transition-property: left, right, bottom; }
+    [dir=rtl] md-slider ._md-thumb-container {
+      left: 0;
+      left: auto;
+      left: initial;
+      right: 0; }
   md-slider ._md-thumb {
     z-index: 1;
     position: absolute;
@@ -148,6 +153,11 @@ md-slider {
     -webkit-transform: scale(0.7);
             transform: scale(0.7);
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    [dir=rtl] md-slider ._md-thumb {
+      left: 0;
+      left: auto;
+      left: initial;
+      right: -10px; }
     md-slider ._md-thumb:after {
       content: '';
       position: absolute;
@@ -189,6 +199,11 @@ md-slider {
       -webkit-transform: translate3d(0, -8px, 0);
               transform: translate3d(0, -8px, 0);
       transition: all 0.2s cubic-bezier(0.35, 0, 0.25, 1); }
+      [dir=rtl] md-slider ._md-sign:after {
+        left: 0;
+        left: auto;
+        left: initial;
+        right: 0px; }
     md-slider ._md-sign ._md-thumb-text {
       z-index: 1;
       font-size: 12px;
@@ -204,6 +219,11 @@ md-slider {
             transform: scale(0.7);
     opacity: 0;
     transition: all 0.35s cubic-bezier(0.35, 0, 0.25, 1); }
+    [dir=rtl] md-slider ._md-focus-ring {
+      left: 0;
+      left: auto;
+      left: initial;
+      right: -17px; }
   md-slider ._md-disabled-thumb {
     position: absolute;
     left: -14px;
@@ -216,6 +236,11 @@ md-slider {
     border-width: 4px;
     border-style: solid;
     display: none; }
+    [dir=rtl] md-slider ._md-disabled-thumb {
+      left: 0;
+      left: auto;
+      left: initial;
+      right: -14px; }
   md-slider._md-min ._md-sign {
     opacity: 0; }
   md-slider:focus {
@@ -346,6 +371,16 @@ md-slider {
   md-slider[md-invert]:not([md-vertical]) ._md-track-fill {
     left: auto;
     right: 0; }
+    [dir=rtl] md-slider[md-invert]:not([md-vertical]) ._md-track-fill {
+      left: 0;
+      left: auto;
+      left: initial;
+      right: auto; }
+    [dir=rtl] md-slider[md-invert]:not([md-vertical]) ._md-track-fill {
+      right: 0;
+      right: auto;
+      right: initial;
+      left: 0; }
   md-slider[md-invert][md-vertical] ._md-track-fill {
     bottom: auto;
     top: 0; }
@@ -366,8 +401,18 @@ md-slider-container {
     transition-property: color, max-width; }
   md-slider-container > *:first-child:not(md-slider) {
     margin-right: 16px; }
+    [dir=rtl] md-slider-container > *:first-child:not(md-slider) {
+      margin-right: 0;
+      margin-right: auto;
+      margin-right: initial;
+      margin-left: 16px; }
   md-slider-container > *:last-child:not(md-slider) {
     margin-left: 16px; }
+    [dir=rtl] md-slider-container > *:last-child:not(md-slider) {
+      margin-left: 0;
+      margin-left: auto;
+      margin-left: initial;
+      margin-right: 16px; }
   md-slider-container[md-vertical] {
     -ms-flex-direction: column;
         flex-direction: column; }
@@ -381,6 +426,11 @@ md-slider-container {
     padding-left: 15px;
     height: 50px;
     margin-top: -25px; }
+    [dir=rtl] md-slider-container md-input-container input[type="number"] {
+      padding-left: 0;
+      padding-left: auto;
+      padding-left: initial;
+      padding-right: 15px; }
 
 @media screen and (-ms-high-contrast: active) {
   md-slider.md-default-theme ._md-track {

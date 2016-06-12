@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-cb59b08
+ * v1.1.0-rc.5-master-ddc9e8d
  */
 html, body {
   height: 100%;
@@ -2928,48 +2928,6 @@ md-toolbar .md-menu {
   md-menu-content[width="7"] {
     min-width: 448px; } }
 
-/** Matches "md-tabs md-tabs-wrapper" style. */
-.md-nav-bar {
-  border-style: solid;
-  border-width: 0 0 1px;
-  height: 48px;
-  position: relative; }
-
-._md-nav-bar-list {
-  outline: none;
-  list-style: none;
-  margin: 0;
-  padding: 0; }
-
-.md-nav-item:first-of-type {
-  margin-left: 8px; }
-
-.md-button._md-nav-button {
-  line-height: 24px;
-  margin: 0 4px;
-  padding: 12px 16px;
-  transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1); }
-  .md-button._md-nav-button:focus {
-    outline: none; }
-  .md-button._md-nav-button:hover {
-    background-color: inherit; }
-
-md-nav-ink-bar {
-  bottom: 0;
-  height: 2px;
-  left: auto;
-  position: absolute;
-  right: auto;
-  background-color: black; }
-  md-nav-ink-bar._md-left {
-    transition: left 0.125s cubic-bezier(0.35, 0, 0.25, 1), right 0.25s cubic-bezier(0.35, 0, 0.25, 1); }
-  md-nav-ink-bar._md-right {
-    transition: left 0.25s cubic-bezier(0.35, 0, 0.25, 1), right 0.125s cubic-bezier(0.35, 0, 0.25, 1); }
-
-md-nav-extra-content {
-  min-height: 48px;
-  padding-right: 12px; }
-
 md-toolbar.md-menu-toolbar h2.md-toolbar-tools {
   line-height: 1rem;
   height: auto;
@@ -3068,6 +3026,48 @@ md-menu-content._md-menu-bar-menu.md-dense {
           right: auto;
           right: initial;
           left: 28px; }
+
+/** Matches "md-tabs md-tabs-wrapper" style. */
+.md-nav-bar {
+  border-style: solid;
+  border-width: 0 0 1px;
+  height: 48px;
+  position: relative; }
+
+._md-nav-bar-list {
+  outline: none;
+  list-style: none;
+  margin: 0;
+  padding: 0; }
+
+.md-nav-item:first-of-type {
+  margin-left: 8px; }
+
+.md-button._md-nav-button {
+  line-height: 24px;
+  margin: 0 4px;
+  padding: 12px 16px;
+  transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1); }
+  .md-button._md-nav-button:focus {
+    outline: none; }
+  .md-button._md-nav-button:hover {
+    background-color: inherit; }
+
+md-nav-ink-bar {
+  bottom: 0;
+  height: 2px;
+  left: auto;
+  position: absolute;
+  right: auto;
+  background-color: black; }
+  md-nav-ink-bar._md-left {
+    transition: left 0.125s cubic-bezier(0.35, 0, 0.25, 1), right 0.25s cubic-bezier(0.35, 0, 0.25, 1); }
+  md-nav-ink-bar._md-right {
+    transition: left 0.25s cubic-bezier(0.35, 0, 0.25, 1), right 0.125s cubic-bezier(0.35, 0, 0.25, 1); }
+
+md-nav-extra-content {
+  min-height: 48px;
+  padding-right: 12px; }
 
 .md-panel-outer-wrapper {
   height: 100%;
@@ -4065,7 +4065,12 @@ md-slider {
     -webkit-transform: translate3d(-50%, -50%, 0);
             transform: translate3d(-50%, -50%, 0);
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition-property: left, bottom; }
+    transition-property: left, right, bottom; }
+    [dir=rtl] md-slider ._md-thumb-container {
+      left: 0;
+      left: auto;
+      left: initial;
+      right: 0; }
   md-slider ._md-thumb {
     z-index: 1;
     position: absolute;
@@ -4077,6 +4082,11 @@ md-slider {
     -webkit-transform: scale(0.7);
             transform: scale(0.7);
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    [dir=rtl] md-slider ._md-thumb {
+      left: 0;
+      left: auto;
+      left: initial;
+      right: -10px; }
     md-slider ._md-thumb:after {
       content: '';
       position: absolute;
@@ -4118,6 +4128,11 @@ md-slider {
       -webkit-transform: translate3d(0, -8px, 0);
               transform: translate3d(0, -8px, 0);
       transition: all 0.2s cubic-bezier(0.35, 0, 0.25, 1); }
+      [dir=rtl] md-slider ._md-sign:after {
+        left: 0;
+        left: auto;
+        left: initial;
+        right: 0px; }
     md-slider ._md-sign ._md-thumb-text {
       z-index: 1;
       font-size: 12px;
@@ -4133,6 +4148,11 @@ md-slider {
             transform: scale(0.7);
     opacity: 0;
     transition: all 0.35s cubic-bezier(0.35, 0, 0.25, 1); }
+    [dir=rtl] md-slider ._md-focus-ring {
+      left: 0;
+      left: auto;
+      left: initial;
+      right: -17px; }
   md-slider ._md-disabled-thumb {
     position: absolute;
     left: -14px;
@@ -4145,6 +4165,11 @@ md-slider {
     border-width: 4px;
     border-style: solid;
     display: none; }
+    [dir=rtl] md-slider ._md-disabled-thumb {
+      left: 0;
+      left: auto;
+      left: initial;
+      right: -14px; }
   md-slider._md-min ._md-sign {
     opacity: 0; }
   md-slider:focus {
@@ -4275,6 +4300,16 @@ md-slider {
   md-slider[md-invert]:not([md-vertical]) ._md-track-fill {
     left: auto;
     right: 0; }
+    [dir=rtl] md-slider[md-invert]:not([md-vertical]) ._md-track-fill {
+      left: 0;
+      left: auto;
+      left: initial;
+      right: auto; }
+    [dir=rtl] md-slider[md-invert]:not([md-vertical]) ._md-track-fill {
+      right: 0;
+      right: auto;
+      right: initial;
+      left: 0; }
   md-slider[md-invert][md-vertical] ._md-track-fill {
     bottom: auto;
     top: 0; }
@@ -4295,8 +4330,18 @@ md-slider-container {
     transition-property: color, max-width; }
   md-slider-container > *:first-child:not(md-slider) {
     margin-right: 16px; }
+    [dir=rtl] md-slider-container > *:first-child:not(md-slider) {
+      margin-right: 0;
+      margin-right: auto;
+      margin-right: initial;
+      margin-left: 16px; }
   md-slider-container > *:last-child:not(md-slider) {
     margin-left: 16px; }
+    [dir=rtl] md-slider-container > *:last-child:not(md-slider) {
+      margin-left: 0;
+      margin-left: auto;
+      margin-left: initial;
+      margin-right: 16px; }
   md-slider-container[md-vertical] {
     -ms-flex-direction: column;
         flex-direction: column; }
@@ -4310,6 +4355,11 @@ md-slider-container {
     padding-left: 15px;
     height: 50px;
     margin-top: -25px; }
+    [dir=rtl] md-slider-container md-input-container input[type="number"] {
+      padding-left: 0;
+      padding-left: auto;
+      padding-left: initial;
+      padding-right: 15px; }
 
 @media screen and (-ms-high-contrast: active) {
   md-slider.md-default-theme ._md-track {

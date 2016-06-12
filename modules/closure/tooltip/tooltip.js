@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-cb59b08
+ * v1.1.0-rc.5-master-ddc9e8d
  */
 goog.provide('ng.material.components.tooltip');
 goog.require('ng.material.core');
@@ -240,11 +240,19 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
         // Prevent the tooltip from showing when the window is receiving focus.
         if (e.type === 'focus' && elementFocusedOnWindowBlur) {
           elementFocusedOnWindowBlur = false;
-        } else if (e.type === 'touchstart' && scope.visible) {
-          leaveHandler();
         } else if (!scope.visible) {
           parent.on(LEAVE_EVENTS, leaveHandler);
           setVisible(true);
+
+          // If the user is on a touch device, we should bind the tap away after
+          // the `touched` in order to prevent the tooltip being removed immediately.
+          if (e.type === 'touchstart') {
+            parent.one('touchend', function() {
+              $mdUtil.nextTick(function() {
+                $document.one('touchend', leaveHandler);
+              }, false);
+            });
+          }
         }
       };
       var leaveHandler = function () {
