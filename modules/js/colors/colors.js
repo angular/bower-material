@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-cef9c44
+ * v1.1.0-rc.5-master-42833aa
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -364,7 +364,7 @@
             });
           }
 
-          scope.$on('destroy', function () {
+          scope.$on('$destroy', function () {
             unregisterChanges();
           });
 
