@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-42833aa
+ * v1.1.0-rc.5-master-75a86df
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -457,8 +457,9 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
 
         if (!lineHeight) {
           // offsetHeight includes padding which can throw off our value
+          var originalPadding = element[0].style.padding || '';
           lineHeight = element.css('padding', 0).prop('offsetHeight');
-          element.css('padding', null);
+          element[0].style.padding = originalPadding;
         }
 
         if (minRows && lineHeight) {
