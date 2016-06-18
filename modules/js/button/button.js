@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-145ce63
+ * v1.1.0-rc.5-master-563b232
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -152,7 +152,7 @@ function MdButtonDirective($mdButtonInkRipple, $mdTheming, $mdAria, $timeout) {
     $mdButtonInkRipple.attach(scope, element);
 
     // Use async expect to support possible bindings in the button label
-    $mdAria.expectWithText(element, 'aria-label');
+    $mdAria.expectWithoutText(element, 'aria-label');
 
     // For anchor elements, we have to set tabindex manually when the
     // element is disabled

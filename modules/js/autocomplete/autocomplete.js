@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-145ce63
+ * v1.1.0-rc.5-master-563b232
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -85,7 +85,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * Initialize the controller, setup watchers, gather elements
    */
   function init () {
-    $mdUtil.initOptionalProperties($scope, $attrs, { searchText: null, selectedItem: null });
+    $mdUtil.initOptionalProperties($scope, $attrs, { searchText: '', selectedItem: null });
     $mdTheming($element);
     configureWatchers();
     $mdUtil.nextTick(function () {
@@ -314,7 +314,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * When the user's mouse leaves the menu, blur events may hide the menu again.
    */
   function onListLeave () {
-    if (!hasFocus) elements.input.focus();
+    if (!hasFocus && !ctrl.hidden) elements.input.focus();
     noBlur = false;
     ctrl.hidden = shouldHide();
   }

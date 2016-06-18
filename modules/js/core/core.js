@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-145ce63
+ * v1.1.0-rc.5-master-563b232
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1723,7 +1723,8 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
   return {
     expect: expect,
     expectAsync: expectAsync,
-    expectWithText: expectWithText
+    expectWithText: expectWithText,
+    expectWithoutText: expectWithoutText
   };
 
   /**
@@ -1770,6 +1771,15 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
         return getText(element);
       });
     } else {
+      expect(element, attrName, content);
+    }
+  }
+
+  function expectWithoutText(element, attrName) {
+    var content = getText(element);
+    var hasBinding = content.indexOf($interpolate.startSymbol()) > -1;
+
+    if ( !hasBinding && !content) {
       expect(element, attrName, content);
     }
   }
