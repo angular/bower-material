@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-33fef2b
+ * v1.1.0-rc.5-master-8758488
  */
 goog.provide('ng.material.components.datepicker');
 goog.require('ng.material.components.icon');
@@ -2038,7 +2038,6 @@ angular.module('material.components.datepicker', [
   // TODO(jelbourn): something better for mobile (calendar panel takes up entire screen?)
   // TODO(jelbourn): input behavior (masking? auto-complete?)
   // TODO(jelbourn): UTC mode
-  // TODO(jelbourn): RTL
 
 
   angular.module('material.components.datepicker')
@@ -2748,9 +2747,7 @@ angular.module('material.components.datepicker', [
    */
   DatePickerCtrl.prototype.handleBodyClick = function(event) {
     if (this.isCalendarOpen) {
-      // TODO(jelbourn): way want to also include the md-datepicker itself in this check.
-      var closest = this.$mdUtil.getClosest;
-      var isInCalendar = closest(event.target, 'md-calendar-year') || closest(event.target, 'md-calendar-month');
+      var isInCalendar = this.$mdUtil.getClosest(event.target, 'md-calendar');
 
       if (!isInCalendar) {
         this.closeCalendarPane();
