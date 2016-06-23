@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-8758488
+ * v1.1.0-rc.5-master-15da974
  */
 html, body {
   height: 100%;
@@ -118,6 +118,21 @@ input:-webkit-autofill {
             transform: translate(-50%, -50%) scale(1); }
   .md-ripple.md-ripple-active, .md-ripple.md-ripple-full, .md-ripple.md-ripple-visible {
     opacity: 0.20; }
+  .md-ripple.md-ripple-remove {
+    -webkit-animation: md-remove-ripple 0.9s cubic-bezier(0.25, 0.8, 0.25, 1);
+            animation: md-remove-ripple 0.9s cubic-bezier(0.25, 0.8, 0.25, 1); }
+
+@-webkit-keyframes md-remove-ripple {
+  0% {
+    opacity: .15; }
+  100% {
+    opacity: 0; } }
+
+@keyframes md-remove-ripple {
+  0% {
+    opacity: .15; }
+  100% {
+    opacity: 0; } }
 
 .md-padding {
   padding: 8px; }
@@ -1206,20 +1221,20 @@ md-checkbox {
     min-height: 32px; }
   .md-chips:not(.md-readonly) {
     cursor: text; }
-    .md-chips:not(.md-readonly) md-chip:not(.md-readonly) {
-      padding-right: 22px; }
-      [dir=rtl] .md-chips:not(.md-readonly) md-chip:not(.md-readonly) {
+  .md-chips.md-removable md-chip {
+    padding-right: 22px; }
+    [dir=rtl] .md-chips.md-removable md-chip {
+      padding-right: 0;
+      padding-right: auto;
+      padding-right: initial;
+      padding-left: 22px; }
+    .md-chips.md-removable md-chip ._md-chip-content {
+      padding-right: 4px; }
+      [dir=rtl] .md-chips.md-removable md-chip ._md-chip-content {
         padding-right: 0;
         padding-right: auto;
         padding-right: initial;
-        padding-left: 22px; }
-      .md-chips:not(.md-readonly) md-chip:not(.md-readonly) ._md-chip-content {
-        padding-right: 4px; }
-        [dir=rtl] .md-chips:not(.md-readonly) md-chip:not(.md-readonly) ._md-chip-content {
-          padding-right: 0;
-          padding-right: auto;
-          padding-right: initial;
-          padding-left: 4px; }
+        padding-left: 4px; }
   .md-chips md-chip {
     cursor: default;
     border-radius: 16px;

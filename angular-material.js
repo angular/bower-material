@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-8758488
+ * v1.1.0-rc.5-master-15da974
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -4661,6 +4661,7 @@ InkRippleCtrl.prototype.removeRipple = function (ripple) {
   if (index < 0) return;
   this.ripples.splice(this.ripples.indexOf(ripple), 1);
   ripple.removeClass('md-ripple-active');
+  ripple.addClass('md-ripple-remove');
   if (this.ripples.length === 0) this.container.css({ backgroundColor: '' });
   // use a 2-second timeout in order to allow for the animation to finish
   // we don't actually care how long the animation takes
@@ -12274,7 +12275,7 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
           // Append the button wrap before our list-item content, because it will overlay in relative.
           itemContainer.prepend(buttonWrap);
           itemContainer.children().eq(1).append(tEl.contents());
-          
+
           tEl.addClass('_md-button-wrap');
         }
 
@@ -12369,7 +12370,7 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
 
       function postLink($scope, $element, $attr, ctrl) {
         $element.addClass('_md');     // private md component indicator for styling
-        
+
         var proxies       = [],
             firstElement  = $element[0].firstElementChild,
             isButtonWrap  = $element.hasClass('_md-button-wrap'),
@@ -12426,6 +12427,25 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
           }
         }
 
+        function isEventFromControl(event) {
+          var forbiddenControls = ['md-slider'];
+
+          // If there is no path property in the event, then we can assume that the event was not bubbled.
+          if (!event.path) {
+            return forbiddenControls.indexOf(event.target.tagName.toLowerCase()) !== -1;
+          }
+
+          // We iterate the event path up and check for a possible component.
+          // Our maximum index to search, is the list item root.
+          var maxPath = event.path.indexOf($element.children()[0]);
+
+          for (var i = 0; i < maxPath; i++) {
+            if (forbiddenControls.indexOf(event.path[i].tagName.toLowerCase()) !== -1) {
+              return true;
+            }
+          }
+        }
+
         var clickChildKeypressListener = function(e) {
           if (e.target.nodeName != 'INPUT' && e.target.nodeName != 'TEXTAREA' && !e.target.isContentEditable) {
             var keyCode = e.which || e.keyCode;
@@ -12448,6 +12468,10 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
 
         if (proxies.length == 1 && clickChild) {
           $element.children().eq(0).on('click', function(e) {
+            // When the event is coming from an control and it should not trigger the proxied element
+            // then we are skipping.
+            if (isEventFromControl(e)) return;
+
             var parentButton = $mdUtil.getClosest(e.target, 'BUTTON');
             if (!parentButton && clickChild.contains(e.target)) {
               angular.forEach(proxies, function(proxy) {
@@ -17684,6 +17708,11 @@ angular
  * // Sync check to whether given sidenav is locked open
  * // If this is true, the sidenav will be open regardless of close()
  * $mdSidenav(componentId).isLockedOpen();
+ * // On close callback to handle close, backdrop click or escape key pressed
+ * // Callback happens BEFORE the close action occurs.
+ * $mdSidenav(componentId).onClose(function () {
+ *   $log.debug('closing');
+ * });
  * </hljs>
  */
 function SidenavService($mdComponentRegistry, $mdUtil, $q, $log) {
@@ -17726,6 +17755,7 @@ function SidenavService($mdComponentRegistry, $mdUtil, $q, $log) {
         toggle       : rejectFn,
         open         : rejectFn,
         close        : rejectFn,
+        onClose      : angular.noop,
         then : function(callback) {
           return waitForInstance(handle)
             .then(callback || angular.noop);
@@ -18046,6 +18076,8 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $animate, 
         return $q.when(true);
 
       } else {
+        if (scope.isOpen && sidenavCtrl.onCloseCb) sidenavCtrl.onCloseCb();
+
         return $q(function(resolve){
           // Toggle value to force an async `updateIsOpen()` to run
           scope.isOpen = isOpen;
@@ -18109,6 +18141,12 @@ function SidenavController($scope, $element, $attrs, $mdComponentRegistry, $q) {
   // Synchronous getters
   self.isOpen = function() { return !!$scope.isOpen; };
   self.isLockedOpen = function() { return !!$scope.isLockedOpen; };
+
+  // Synchronous setters
+  self.onClose = function (callback) {
+    self.onCloseCb = callback;
+    return self;
+  };
 
   // Async actions
   self.open   = function() { return self.$toggleOpen( true );  };
@@ -23399,7 +23437,6 @@ function MdChipsCtrl ($scope, $mdConstant, $log, $element, $timeout, $mdUtil) {
    * after selecting a chip from the list.
    * @type {boolean}
    */
-  this.useOnSelect = false;
 }
 MdChipsCtrl.$inject = ["$scope", "$mdConstant", "$log", "$element", "$timeout", "$mdUtil"];
 
@@ -23483,10 +23520,15 @@ MdChipsCtrl.prototype.updateChipContents = function(chipIndex, chipContents){
  * Returns true if a chip is currently being edited. False otherwise.
  * @return {boolean}
  */
-MdChipsCtrl.prototype.isEditingChip = function(){
+MdChipsCtrl.prototype.isEditingChip = function() {
   return !!this.$element[0].getElementsByClassName('_md-chip-editing').length;
 };
 
+
+MdChipsCtrl.prototype.isRemovable = function() {
+  return this.readonly ? this.removable :
+         angular.isDefined(this.removable) ? this.removable : true;
+};
 
 /**
  * Handles the keydown event on the chip elements: backspace removes the selected chip, arrow
@@ -23502,6 +23544,8 @@ MdChipsCtrl.prototype.chipKeydown = function (event) {
     case this.$mdConstant.KEY_CODE.DELETE:
       if (this.selectedChip < 0) return;
       event.preventDefault();
+      // Cancel the delete action only after the event cancel. Otherwise the page will go back.
+      if (!this.isRemovable()) return;
       this.removeAndSelectAdjacentChip(this.selectedChip);
       break;
     case this.$mdConstant.KEY_CODE.LEFT_ARROW:
@@ -23944,9 +23988,12 @@ MdChipsCtrl.prototype.hasFocus = function () {
    * @param {string=} placeholder Placeholder text that will be forwarded to the input.
    * @param {string=} secondary-placeholder Placeholder text that will be forwarded to the input,
    *    displayed when there is at least one item in the list
+   * @param {boolean=} md-removable Enables or disables the deletion of chips through the
+   *    removal icon or the Delete/Backspace key. Defaults to true.
    * @param {boolean=} readonly Disables list manipulation (deleting or adding list items), hiding
    *    the input and delete buttons. If no `ng-model` is provided, the chips will automatically be
-   *    marked as readonly.
+   *    marked as readonly.<br/><br/>
+   *    When `md-removable` is not defined, the `md-remove` behavior will be overwritten and disabled.
    * @param {string=} md-enable-chip-edit Set this to "true" to enable editing of chip contents. The user can 
    *    go into edit mode with pressing "space", "enter", or double clicking on the chip. Chip edit is only
    *    supported for chips with basic template.
@@ -24003,7 +24050,9 @@ MdChipsCtrl.prototype.hasFocus = function () {
   var MD_CHIPS_TEMPLATE = '\
       <md-chips-wrap\
           ng-keydown="$mdChipsCtrl.chipKeydown($event)"\
-          ng-class="{ \'md-focused\': $mdChipsCtrl.hasFocus(), \'md-readonly\': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}"\
+          ng-class="{ \'md-focused\': $mdChipsCtrl.hasFocus(), \
+                      \'md-readonly\': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly,\
+                      \'md-removable\': $mdChipsCtrl.isRemovable() }"\
           class="md-chips">\
         <md-chip ng-repeat="$chip in $mdChipsCtrl.items"\
             index="{{$index}}"\
@@ -24014,7 +24063,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
               ng-click="!$mdChipsCtrl.readonly && $mdChipsCtrl.focusChip($index)"\
               ng-focus="!$mdChipsCtrl.readonly && $mdChipsCtrl.selectChip($index)"\
               md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"></div>\
-          <div ng-if="!$mdChipsCtrl.readonly"\
+          <div ng-if="$mdChipsCtrl.isRemovable()"\
                class="_md-chip-remove-container"\
                md-chip-transclude="$mdChipsCtrl.chipRemoveTemplate"></div>\
         </md-chip>\
@@ -24041,7 +24090,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
   var CHIP_REMOVE_TEMPLATE = '\
       <button\
           class="_md-chip-remove"\
-          ng-if="!$mdChipsCtrl.readonly"\
+          ng-if="$mdChipsCtrl.isRemovable()"\
           ng-click="$mdChipsCtrl.removeChipAndFocusInput($$replacedScope.$index)"\
           type="button"\
           aria-hidden="true"\
@@ -24076,6 +24125,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
       compile: compile,
       scope: {
         readonly: '=readonly',
+        removable: '=mdRemovable',
         placeholder: '@',
         mdEnableChipEdit: '@',
         secondaryPlaceholder: '@',
@@ -31506,4 +31556,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-8758488"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-15da974"}};
