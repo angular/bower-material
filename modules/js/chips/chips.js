@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-15da974
+ * v1.1.0-rc.5-master-b9db09d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -551,6 +551,11 @@ MdChipsCtrl.prototype.isEditingChip = function() {
 
 
 MdChipsCtrl.prototype.isRemovable = function() {
+  // Return false if we have static chips
+  if (!this.ngModelCtrl) {
+    return false;
+  }
+
   return this.readonly ? this.removable :
          angular.isDefined(this.removable) ? this.removable : true;
 };

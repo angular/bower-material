@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-15da974
+ * v1.1.0-rc.5-master-b9db09d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -5652,7 +5652,7 @@ function parseRules(theme, colorType, rules) {
   var generatedRules = [];
   var color = theme.colors[colorType];
 
-  var themeNameRegex = new RegExp('.md-' + theme.name + '-theme', 'g');
+  var themeNameRegex = new RegExp('\\.md-' + theme.name + '-theme', 'g');
   // Matches '{{ primary-color }}', etc
   var hueRegex = new RegExp('(\'|")?{{\\s*(' + colorType + ')-(color|contrast)-?(\\d\\.?\\d*)?\\s*}}(\"|\')?','g');
   var simpleVariableRegex = /'?"?\{\{\s*([a-zA-Z]+)-(A?\d+|hue\-[0-3]|shadow|default)-?(\d\.?\d*)?(contrast)?\s*\}\}'?"?/g;
@@ -23526,6 +23526,11 @@ MdChipsCtrl.prototype.isEditingChip = function() {
 
 
 MdChipsCtrl.prototype.isRemovable = function() {
+  // Return false if we have static chips
+  if (!this.ngModelCtrl) {
+    return false;
+  }
+
   return this.readonly ? this.removable :
          angular.isDefined(this.removable) ? this.removable : true;
 };
@@ -31556,4 +31561,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-15da974"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-b9db09d"}};
