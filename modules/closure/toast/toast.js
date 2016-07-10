@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-7f01138
+ * v1.1.0-rc.5-master-d593229
  */
 goog.provide('ng.material.components.toast');
 goog.require('ng.material.components.button');
@@ -165,6 +165,10 @@ MdToastDirective.$inject = ["$mdToast"];
   *        <td>`.theme(string)`</td>
   *        <td>Sets the theme on the toast to the requested theme. Default is `$mdThemingProvider`'s default.</td>
   *      </tr>
+  *      <tr>
+  *        <td>`.toastClass(string)`</td>
+  *        <td>Sets a class on the toast element</td>
+  *      </tr>
   *    </tbody>
   * </table>
   *
@@ -216,6 +220,7 @@ MdToastDirective.$inject = ["$mdToast"];
   *     Available: any combination of `'bottom'`, `'left'`, `'top'`, `'right'`, `'end'` and `'start'`.
   *     The properties `'end'` and `'start'` are dynamic and can be used for RTL support.<br/>
   *     Default combination: `'bottom left'`.
+  *   - `toastClass` - `{string=}`: A class to set on the toast element.
   *   - `controller` - `{string=}`: The controller to associate with this toast.
   *     The controller will be injected the local `$mdToast.hide( )`, which is a function
   *     used to hide the toast.
@@ -277,7 +282,7 @@ function MdToastProvider($$interimElementProvider) {
   var activeToastContent;
   var $mdToast = $$interimElementProvider('$mdToast')
     .setDefaults({
-      methods: ['position', 'hideDelay', 'capsule', 'parent', 'position' ],
+      methods: ['position', 'hideDelay', 'capsule', 'parent', 'position', 'toastClass'],
       options: toastDefaultOptions
     })
     .addPreset('simple', {
@@ -337,6 +342,7 @@ function MdToastProvider($$interimElementProvider) {
     return {
       onShow: onShow,
       onRemove: onRemove,
+      toastClass: '',
       position: 'bottom left',
       themable: true,
       hideDelay: 3000,
@@ -399,10 +405,12 @@ function MdToastProvider($$interimElementProvider) {
         }
 
         element.addClass('_md-' + swipe);
+
         $mdUtil.nextTick($mdToast.cancel);
       };
       options.openClass = toastOpenClass(options.position);
 
+      element.addClass(options.toastClass);
 
       // 'top left' -> 'md-top md-left'
       options.parent.addClass(options.openClass);

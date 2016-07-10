@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-7f01138
+ * v1.1.0-rc.5-master-d593229
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1689,8 +1689,8 @@ angular.module('material.components.datepicker', [
 
       // The default "short" day strings are the first character of each day,
       // e.g., "Monday" => "M".
-      var defaultShortDays = $locale.DATETIME_FORMATS.DAY.map(function(day) {
-        return day[0];
+      var defaultShortDays = $locale.DATETIME_FORMATS.SHORTDAY.map(function(day) {
+        return day.substring(0, 1);
       });
 
       // The default dates are simply the numbers 1 through 31.
@@ -2073,6 +2073,7 @@ angular.module('material.components.datepicker', [
    * * `required`: whether a required date is not set.
    * * `mindate`: whether the selected date is before the minimum allowed date.
    * * `maxdate`: whether the selected date is after the maximum allowed date.
+   * * `debounceInterval`: ms to delay input processing (since last debounce reset); default value 500ms
    *
    * @usage
    * <hljs lang="html">
@@ -2133,7 +2134,8 @@ angular.module('material.components.datepicker', [
         maxDate: '=mdMaxDate',
         placeholder: '@mdPlaceholder',
         dateFilter: '=mdDateFilter',
-        isOpen: '=?mdIsOpen'
+        isOpen: '=?mdIsOpen',
+        debounceInterval: '=mdDebounceInterval'
       },
       controller: DatePickerCtrl,
       controllerAs: 'ctrl',
@@ -2396,9 +2398,11 @@ angular.module('material.components.datepicker', [
     });
 
     self.ngInputElement.on('input', angular.bind(self, self.resizeInputElement));
-    // TODO(chenmike): Add ability for users to specify this interval.
+
+    var debounceInterval = angular.isDefined(this.debounceInterval) ?
+        this.debounceInterval : DEFAULT_DEBOUNCE_INTERVAL;
     self.ngInputElement.on('input', self.$mdUtil.debounce(self.handleInputEvent,
-        DEFAULT_DEBOUNCE_INTERVAL, self));
+        debounceInterval, self));
   };
 
   /** Attach event listeners for user interaction. */

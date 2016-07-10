@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-7f01138
+ * v1.1.0-rc.5-master-d593229
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -216,7 +216,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
  * <hljs lang="js">
  *   $scope.showPrerenderedDialog = function() {
  *     $mdDialog.show({
- *       contentElement: '#myStaticDialog'
+ *       contentElement: '#myStaticDialog',
  *       parent: angular.element(document.body)
  *     });
  *   };

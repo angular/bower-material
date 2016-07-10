@@ -2,19 +2,17 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-7f01138
+ * v1.1.0-rc.5-master-d593229
  */
-/*  Only used with Theme processes */
-html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
-  color: '{{foreground-1}}';
-  background-color: '{{background-color}}'; }
-
+/**
+ * Mixin to create a primary checkbox.
+ * Used by the checkbox and select component.
+ */
 @-webkit-keyframes subheaderStickyHoverIn {
   0% {
     box-shadow: 0 0 0 0 transparent; }
   100% {
     box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); } }
-
 @keyframes subheaderStickyHoverIn {
   0% {
     box-shadow: 0 0 0 0 transparent; }

@@ -2,13 +2,12 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-7f01138
+ * v1.1.0-rc.5-master-d593229
  */
-/*  Only used with Theme processes */
-html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
-  color: '{{foreground-1}}';
-  background-color: '{{background-color}}'; }
-
+/**
+ * Mixin to create a primary checkbox.
+ * Used by the checkbox and select component.
+ */
 md-bottom-sheet {
   position: absolute;
   left: 0;
@@ -110,6 +109,8 @@ md-bottom-sheet {
           -ms-flex: 1 1 14.28571%;
               flex: 1 1 14.28571%;
           max-width: 14.28571%; } }
+      md-bottom-sheet.md-grid md-list-item::before {
+        display: none; }
       md-bottom-sheet.md-grid md-list-item .md-list-item-content {
         display: -ms-flexbox;
         display: flex;

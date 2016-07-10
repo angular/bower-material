@@ -2,13 +2,12 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-7f01138
+ * v1.1.0-rc.5-master-d593229
  */
-/*  Only used with Theme processes */
-html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
-  color: '{{foreground-1}}';
-  background-color: '{{background-color}}'; }
-
+/**
+ * Mixin to create a primary checkbox.
+ * Used by the checkbox and select component.
+ */
 /*
 *
 *  Responsive attributes
@@ -28,16 +27,18 @@ html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
   -ms-flex-preferred-size: auto;
       flex-basis: auto; }
 
-/*  Only used with Theme processes */
-html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
-  color: '{{foreground-1}}';
-  background-color: '{{background-color}}'; }
-
-/*  Only used with Theme processes */
-html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
-  color: '{{foreground-1}}';
-  background-color: '{{background-color}}'; }
-
+/**
+ * Mixin to create a primary checkbox.
+ * Used by the checkbox and select component.
+ */
+/**
+ * Mixin to create a primary checkbox.
+ * Used by the checkbox and select component.
+ */
+/**
+ * Mixin to create a primary checkbox.
+ * Used by the checkbox and select component.
+ */
 html, body {
   height: 100%;
   position: relative; }
@@ -213,21 +214,10 @@ bdo[dir=ltr] {
   direction: ltr;
   unicode-bidi: bidi-override; }
 
-/*  Only used with Theme processes */
-html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
-  color: '{{foreground-1}}';
-  background-color: '{{background-color}}'; }
-
-/*  Only used with Theme processes */
-html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
-  color: '{{foreground-1}}';
-  background-color: '{{background-color}}'; }
-
-/*  Only used with Theme processes */
-html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
-  color: '{{foreground-1}}';
-  background-color: '{{background-color}}'; }
-
+/**
+ * Mixin to create a primary checkbox.
+ * Used by the checkbox and select component.
+ */
 html, body {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
@@ -316,16 +306,14 @@ textarea,
 input {
   font-size: 100%; }
 
-/*  Only used with Theme processes */
-html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
-  color: '{{foreground-1}}';
-  background-color: '{{background-color}}'; }
-
-/*  Only used with Theme processes */
-html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {
-  color: '{{foreground-1}}';
-  background-color: '{{background-color}}'; }
-
+/**
+ * Mixin to create a primary checkbox.
+ * Used by the checkbox and select component.
+ */
+/**
+ * Mixin to create a primary checkbox.
+ * Used by the checkbox and select component.
+ */
 /*
 * Since Layout API uses ng-cloak to hide the dom elements while layouts are adjusted
 *
