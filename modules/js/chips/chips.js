@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d593229
+ * v1.1.0-rc.5-master-82fdd2c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -97,7 +97,7 @@ MdChipCtrl.prototype.init = function(controller) {
  * @return {Object}
  */
 MdChipCtrl.prototype.getChipContent = function() {
-  var chipContents = this.$element[0].getElementsByClassName('_md-chip-content');
+  var chipContents = this.$element[0].getElementsByClassName('md-chip-content');
   return angular.element(chipContents[0]);
 };
 
@@ -237,7 +237,7 @@ angular
 // This hint text is hidden within a chip but used by screen readers to
 // inform the user how they can interact with a chip.
 var DELETE_HINT_TEMPLATE = '\
-    <span ng-if="!$mdChipsCtrl.readonly" class="_md-visually-hidden">\
+    <span ng-if="!$mdChipsCtrl.readonly" class="md-visually-hidden">\
       {{$mdChipsCtrl.deleteHint}}\
     </span>';
 
@@ -272,7 +272,7 @@ function MdChip($mdTheming, $mdUtil) {
 
         angular
           .element(element[0]
-          .querySelector('._md-chip-content'))
+          .querySelector('.md-chip-content'))
           .on('blur', function () {
             chipsController.resetSelectedChip();
             chipsController.$scope.$applyAsync();
@@ -845,7 +845,7 @@ MdChipsCtrl.prototype.selectAndFocusChip = function(index) {
  * Call `focus()` on the chip at `index`
  */
 MdChipsCtrl.prototype.focusChip = function(index) {
-  this.$element[0].querySelector('md-chip[index="' + index + '"] ._md-chip-content').focus();
+  this.$element[0].querySelector('md-chip[index="' + index + '"] .md-chip-content').focus();
 };
 
 /**
@@ -1089,19 +1089,18 @@ MdChipsCtrl.prototype.hasFocus = function () {
         <md-chip ng-repeat="$chip in $mdChipsCtrl.items"\
             index="{{$index}}"\
             ng-class="{\'md-focused\': $mdChipsCtrl.selectedChip == $index, \'md-readonly\': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}">\
-          <div class="_md-chip-content"\
+          <div class="md-chip-content"\
               tabindex="-1"\
               aria-hidden="true"\
               ng-click="!$mdChipsCtrl.readonly && $mdChipsCtrl.focusChip($index)"\
               ng-focus="!$mdChipsCtrl.readonly && $mdChipsCtrl.selectChip($index)"\
               md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"></div>\
           <div ng-if="$mdChipsCtrl.isRemovable()"\
-               class="_md-chip-remove-container"\
+               class="md-chip-remove-container"\
                md-chip-transclude="$mdChipsCtrl.chipRemoveTemplate"></div>\
         </md-chip>\
-        <div class="_md-chip-input-container">\
-          <div ng-if="!$mdChipsCtrl.readonly && $mdChipsCtrl.ngModelCtrl"\
-               md-chip-transclude="$mdChipsCtrl.chipInputTemplate"></div>\
+        <div class="md-chip-input-container" ng-if="!$mdChipsCtrl.readonly && $mdChipsCtrl.ngModelCtrl">\
+          <div md-chip-transclude="$mdChipsCtrl.chipInputTemplate"></div>\
         </div>\
       </md-chips-wrap>';
 
@@ -1121,14 +1120,14 @@ MdChipsCtrl.prototype.hasFocus = function () {
 
   var CHIP_REMOVE_TEMPLATE = '\
       <button\
-          class="_md-chip-remove"\
+          class="md-chip-remove"\
           ng-if="$mdChipsCtrl.isRemovable()"\
           ng-click="$mdChipsCtrl.removeChipAndFocusInput($$replacedScope.$index)"\
           type="button"\
           aria-hidden="true"\
           tabindex="-1">\
         <md-icon md-svg-src="{{ $mdChipsCtrl.mdCloseIcon }}"></md-icon>\
-        <span class="_md-visually-hidden">\
+        <span class="md-visually-hidden">\
           {{$mdChipsCtrl.deleteButtonLabel}}\
         </span>\
       </button>';

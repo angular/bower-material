@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d593229
+ * v1.1.0-rc.5-master-82fdd2c
  */
 goog.provide('ng.material.components.toast');
 goog.require('ng.material.components.button');
@@ -404,8 +404,7 @@ function MdToastProvider($$interimElementProvider) {
           return;
         }
 
-        element.addClass('_md-' + swipe);
-
+        element.addClass('md-' + swipe);
         $mdUtil.nextTick($mdToast.cancel);
       };
       options.openClass = toastOpenClass(options.position);
@@ -421,24 +420,24 @@ function MdToastProvider($$interimElementProvider) {
       }
 
       element.on(SWIPE_EVENTS, options.onSwipe);
-      element.addClass(isSmScreen ? '_md-bottom' : options.position.split(' ').map(function(pos) {
-        return '_md-' + pos;
+      element.addClass(isSmScreen ? 'md-bottom' : options.position.split(' ').map(function(pos) {
+        return 'md-' + pos;
       }).join(' '));
 
-      if (options.parent) options.parent.addClass('_md-toast-animating');
+      if (options.parent) options.parent.addClass('md-toast-animating');
       return $animate.enter(element, options.parent).then(function() {
-        if (options.parent) options.parent.removeClass('_md-toast-animating');
+        if (options.parent) options.parent.removeClass('md-toast-animating');
       });
     }
 
     function onRemove(scope, element, options) {
       element.off(SWIPE_EVENTS, options.onSwipe);
-      if (options.parent) options.parent.addClass('_md-toast-animating');
+      if (options.parent) options.parent.addClass('md-toast-animating');
       if (options.openClass) options.parent.removeClass(options.openClass);
 
       return ((options.$destroy == true) ? element.remove() : $animate.leave(element))
         .then(function () {
-          if (options.parent) options.parent.removeClass('_md-toast-animating');
+          if (options.parent) options.parent.removeClass('md-toast-animating');
           if ($mdUtil.hasComputedStyle(options.parent, 'position', 'static')) {
             options.parent.css('position', '');
           }
@@ -448,10 +447,10 @@ function MdToastProvider($$interimElementProvider) {
     function toastOpenClass(position) {
       // For mobile, always open full-width on bottom
       if (!$mdMedia('gt-xs')) {
-        return '_md-toast-open-bottom';
+        return 'md-toast-open-bottom';
       }
 
-      return '_md-toast-open-' +
+      return 'md-toast-open-' +
         (position.indexOf('top') > -1 ? 'top' : 'bottom');
     }
   }

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d593229
+ * v1.1.0-rc.5-master-82fdd2c
  */
 /**
  * Mixin to create a primary checkbox.
@@ -17,7 +17,7 @@ md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text p,
 md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text p {
   color: '{{foreground-2}}'; }
 
-md-list.md-THEME_NAME-theme ._md-proxy-focus.md-focused div._md-no-style {
+md-list.md-THEME_NAME-theme .md-proxy-focus.md-focused div.md-no-style {
   background-color: '{{background-100}}'; }
 
 md-list.md-THEME_NAME-theme md-list-item .md-avatar-icon {

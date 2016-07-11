@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d593229
+ * v1.1.0-rc.5-master-82fdd2c
  */
 /**
  * Mixin to create a primary checkbox.
@@ -57,14 +57,14 @@ md-toast {
       border-radius: 24px; }
   md-toast.ng-leave-active .md-toast-content {
     transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
-  md-toast._md-swipeleft .md-toast-content, md-toast._md-swiperight .md-toast-content, md-toast._md-swipeup .md-toast-content, md-toast._md-swipedown .md-toast-content {
+  md-toast.md-swipeleft .md-toast-content, md-toast.md-swiperight .md-toast-content, md-toast.md-swipeup .md-toast-content, md-toast.md-swipedown .md-toast-content {
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
   md-toast.ng-enter {
     opacity: 0; }
     md-toast.ng-enter .md-toast-content {
       -webkit-transform: translate3d(0, 100%, 0);
               transform: translate3d(0, 100%, 0); }
-    md-toast.ng-enter._md-top .md-toast-content {
+    md-toast.ng-enter.md-top .md-toast-content {
       -webkit-transform: translate3d(0, -100%, 0);
               transform: translate3d(0, -100%, 0); }
     md-toast.ng-enter.ng-enter-active {
@@ -76,13 +76,13 @@ md-toast {
     opacity: 0;
     -webkit-transform: translate3d(0, 100%, 0);
             transform: translate3d(0, 100%, 0); }
-  md-toast.ng-leave.ng-leave-active._md-swipeup .md-toast-content {
+  md-toast.ng-leave.ng-leave-active.md-swipeup .md-toast-content {
     -webkit-transform: translate3d(0, -50%, 0);
             transform: translate3d(0, -50%, 0); }
-  md-toast.ng-leave.ng-leave-active._md-swipedown .md-toast-content {
+  md-toast.ng-leave.ng-leave-active.md-swipedown .md-toast-content {
     -webkit-transform: translate3d(0, 50%, 0);
             transform: translate3d(0, 50%, 0); }
-  md-toast.ng-leave.ng-leave-active._md-top .md-toast-content {
+  md-toast.ng-leave.ng-leave-active.md-top .md-toast-content {
     -webkit-transform: translate3d(0, -100%, 0);
             transform: translate3d(0, -100%, 0); }
   md-toast .md-action {
@@ -111,10 +111,10 @@ md-toast {
     border-radius: 0;
     bottom: 0;
     padding: 0; }
-    md-toast.ng-leave.ng-leave-active._md-swipeup .md-toast-content {
+    md-toast.ng-leave.ng-leave-active.md-swipeup .md-toast-content {
       -webkit-transform: translate3d(0, -50%, 0);
               transform: translate3d(0, -50%, 0); }
-    md-toast.ng-leave.ng-leave-active._md-swipedown .md-toast-content {
+    md-toast.ng-leave.ng-leave-active.md-swipedown .md-toast-content {
       -webkit-transform: translate3d(0, 50%, 0);
               transform: translate3d(0, 50%, 0); } }
 
@@ -125,13 +125,13 @@ md-toast {
    * When the toast doesn't take up the whole screen,
    * make it rotate when the user swipes it away
    */ }
-    md-toast._md-bottom {
+    md-toast.md-bottom {
       bottom: 0; }
-    md-toast._md-left {
+    md-toast.md-left {
       left: 0; }
-    md-toast._md-right {
+    md-toast.md-right {
       right: 0; }
-    md-toast._md-top {
+    md-toast.md-top {
       top: 0; }
     md-toast._md-start {
       left: 0; }
@@ -147,10 +147,10 @@ md-toast {
         right: auto;
         right: initial;
         left: 0; }
-    md-toast.ng-leave.ng-leave-active._md-swipeleft .md-toast-content {
+    md-toast.ng-leave.ng-leave-active.md-swipeleft .md-toast-content {
       -webkit-transform: translate3d(-50%, 0, 0);
               transform: translate3d(-50%, 0, 0); }
-    md-toast.ng-leave.ng-leave-active._md-swiperight .md-toast-content {
+    md-toast.ng-leave.ng-leave-active.md-swiperight .md-toast-content {
       -webkit-transform: translate3d(50%, 0, 0);
               transform: translate3d(50%, 0, 0); } }
 
@@ -162,5 +162,5 @@ md-toast {
   md-toast {
     border: 1px solid #fff; } }
 
-._md-toast-animating {
+.md-toast-animating {
   overflow: hidden !important; }

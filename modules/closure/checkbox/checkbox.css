@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d593229
+ * v1.1.0-rc.5-master-82fdd2c
  */
 /**
  * Mixin to create a primary checkbox.
@@ -34,16 +34,16 @@ md-checkbox {
   md-checkbox:last-of-type {
     margin-left: 0;
     margin-right: 0; }
-  md-checkbox.md-focused:not([disabled]) ._md-container:before {
+  md-checkbox.md-focused:not([disabled]) .md-container:before {
     left: -8px;
     top: -8px;
     right: -8px;
     bottom: -8px; }
-  md-checkbox.md-focused:not([disabled]):not(.md-checked) ._md-container:before {
+  md-checkbox.md-focused:not([disabled]):not(.md-checked) .md-container:before {
     background-color: rgba(0, 0, 0, 0.12); }
-  md-checkbox.md-align-top-left > div._md-container {
+  md-checkbox.md-align-top-left > div.md-container {
     top: 12px; }
-  md-checkbox ._md-container {
+  md-checkbox .md-container {
     position: absolute;
     top: 50%;
     -webkit-transform: translateY(-50%);
@@ -54,11 +54,11 @@ md-checkbox {
     height: 20px;
     left: 0;
     right: auto; }
-    [dir=rtl] md-checkbox ._md-container {
+    [dir=rtl] md-checkbox .md-container {
       left: auto; }
-    [dir=rtl] md-checkbox ._md-container {
+    [dir=rtl] md-checkbox .md-container {
       right: 0; }
-    md-checkbox ._md-container:before {
+    md-checkbox .md-container:before {
       box-sizing: border-box;
       background-color: transparent;
       border-radius: 50%;
@@ -72,7 +72,7 @@ md-checkbox {
       bottom: 0;
       transition: all 0.5s;
       width: auto; }
-    md-checkbox ._md-container:after {
+    md-checkbox .md-container:after {
       box-sizing: border-box;
       content: '';
       position: absolute;
@@ -80,7 +80,7 @@ md-checkbox {
       right: -10px;
       bottom: -10px;
       left: -10px; }
-    md-checkbox ._md-container .md-ripple-container {
+    md-checkbox .md-container .md-ripple-container {
       position: absolute;
       display: block;
       width: auto;
@@ -89,7 +89,7 @@ md-checkbox {
       top: -15px;
       right: -15px;
       bottom: -15px; }
-  md-checkbox ._md-icon {
+  md-checkbox .md-icon {
     box-sizing: border-box;
     transition: 240ms;
     position: absolute;
@@ -100,9 +100,9 @@ md-checkbox {
     border-width: 2px;
     border-style: solid;
     border-radius: 2px; }
-  md-checkbox.md-checked ._md-icon {
+  md-checkbox.md-checked .md-icon {
     border: none; }
-    md-checkbox.md-checked ._md-icon:after {
+    md-checkbox.md-checked .md-icon:after {
       box-sizing: border-box;
       -webkit-transform: rotate(45deg);
               transform: rotate(45deg);
@@ -119,7 +119,7 @@ md-checkbox {
       content: ''; }
   md-checkbox[disabled] {
     cursor: default; }
-  md-checkbox.md-indeterminate ._md-icon:after {
+  md-checkbox.md-indeterminate .md-icon:after {
     box-sizing: border-box;
     position: absolute;
     top: 50%;
@@ -134,7 +134,7 @@ md-checkbox {
     border-top: 0;
     border-left: 0;
     content: ''; }
-  md-checkbox ._md-label {
+  md-checkbox .md-label {
     box-sizing: border-box;
     position: relative;
     display: inline-block;
@@ -146,7 +146,7 @@ md-checkbox {
             user-select: text;
     margin-left: 30px;
     margin-right: 0; }
-    [dir=rtl] md-checkbox ._md-label {
+    [dir=rtl] md-checkbox .md-label {
       margin-left: 0; }
-    [dir=rtl] md-checkbox ._md-label {
+    [dir=rtl] md-checkbox .md-label {
       margin-right: 30px; }

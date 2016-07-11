@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d593229
+ * v1.1.0-rc.5-master-82fdd2c
  */
 /**
  * Mixin to create a primary checkbox.
@@ -114,7 +114,7 @@ md-fab-speed-dial {
     visibility: hidden; }
   md-fab-speed-dial.md-fling .md-fab-action-item {
     opacity: 1; }
-  md-fab-speed-dial.md-fling._md-animations-waiting .md-fab-action-item {
+  md-fab-speed-dial.md-fling.md-animations-waiting .md-fab-action-item {
     opacity: 0;
     transition-duration: 0s; }
   md-fab-speed-dial.md-scale .md-fab-action-item {

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d593229
+ * v1.1.0-rc.5-master-82fdd2c
  */
 /**
  * Mixin to create a primary checkbox.
@@ -17,9 +17,9 @@ md-radio-button {
   position: relative; }
   md-radio-button[disabled] {
     cursor: default; }
-    md-radio-button[disabled] ._md-container {
+    md-radio-button[disabled] .md-container {
       cursor: default; }
-  md-radio-button ._md-container {
+  md-radio-button .md-container {
     position: absolute;
     top: 50%;
     -webkit-transform: translateY(-50%);
@@ -31,11 +31,11 @@ md-radio-button {
     cursor: pointer;
     left: 0;
     right: auto; }
-    [dir=rtl] md-radio-button ._md-container {
+    [dir=rtl] md-radio-button .md-container {
       left: auto; }
-    [dir=rtl] md-radio-button ._md-container {
+    [dir=rtl] md-radio-button .md-container {
       right: 0; }
-    md-radio-button ._md-container .md-ripple-container {
+    md-radio-button .md-container .md-ripple-container {
       position: absolute;
       display: block;
       width: auto;
@@ -44,7 +44,7 @@ md-radio-button {
       top: -15px;
       right: -15px;
       bottom: -15px; }
-    md-radio-button ._md-container:before {
+    md-radio-button .md-container:before {
       box-sizing: border-box;
       background-color: transparent;
       border-radius: 50%;
@@ -58,9 +58,9 @@ md-radio-button {
       bottom: 0;
       transition: all 0.5s;
       width: auto; }
-  md-radio-button.md-align-top-left > div._md-container {
+  md-radio-button.md-align-top-left > div.md-container {
     top: 12px; }
-  md-radio-button ._md-off {
+  md-radio-button .md-off {
     box-sizing: border-box;
     position: absolute;
     top: 0;
@@ -71,7 +71,7 @@ md-radio-button {
     border-width: 2px;
     border-radius: 50%;
     transition: border-color ease 0.28s; }
-  md-radio-button ._md-on {
+  md-radio-button .md-on {
     box-sizing: border-box;
     position: absolute;
     top: 0;
@@ -83,10 +83,10 @@ md-radio-button {
     transition: transform ease 0.28s;
     -webkit-transform: scale(0);
             transform: scale(0); }
-  md-radio-button.md-checked ._md-on {
+  md-radio-button.md-checked .md-on {
     -webkit-transform: scale(0.5);
             transform: scale(0.5); }
-  md-radio-button ._md-label {
+  md-radio-button .md-label {
     box-sizing: border-box;
     position: relative;
     display: inline-block;
@@ -96,9 +96,9 @@ md-radio-button {
     white-space: normal;
     pointer-events: none;
     width: auto; }
-    [dir=rtl] md-radio-button ._md-label {
+    [dir=rtl] md-radio-button .md-label {
       margin-left: 0; }
-    [dir=rtl] md-radio-button ._md-label {
+    [dir=rtl] md-radio-button .md-label {
       margin-right: 30px; }
 
 md-radio-group.layout-column md-radio-button, md-radio-group.layout-xs-column md-radio-button, md-radio-group.layout-gt-xs-column md-radio-button, md-radio-group.layout-sm-column md-radio-button, md-radio-group.layout-gt-sm-column md-radio-button, md-radio-group.layout-md-column md-radio-button, md-radio-group.layout-gt-md-column md-radio-button, md-radio-group.layout-lg-column md-radio-button, md-radio-group.layout-gt-lg-column md-radio-button, md-radio-group.layout-xl-column md-radio-button {
@@ -120,7 +120,7 @@ md-radio-group.layout-row md-radio-button, md-radio-group.layout-xs-row md-radio
 md-radio-group:focus {
   outline: none; }
 
-md-radio-group.md-focused .md-checked ._md-container:before {
+md-radio-group.md-focused .md-checked .md-container:before {
   left: -8px;
   top: -8px;
   right: -8px;
@@ -137,5 +137,5 @@ md-radio-group.md-focused .md-checked ._md-container:before {
     margin-bottom: 0; }
 
 @media screen and (-ms-high-contrast: active) {
-  md-radio-button.md-default-theme ._md-on {
+  md-radio-button.md-default-theme .md-on {
     background-color: #fff; } }

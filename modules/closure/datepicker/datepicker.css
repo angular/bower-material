@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d593229
+ * v1.1.0-rc.5-master-82fdd2c
  */
 /**
  * Mixin to create a primary checkbox.
@@ -162,13 +162,13 @@ md-datepicker {
   .md-datepicker-input::-ms-clear {
     display: none; }
 
-._md-datepicker-floating-label > label:not(.md-no-float):not(._md-container-ignore) {
+._md-datepicker-floating-label > label:not(.md-no-float):not(.md-container-ignore) {
   right: 18px;
   left: auto;
   width: calc(100% - 84px); }
-  [dir=rtl] ._md-datepicker-floating-label > label:not(.md-no-float):not(._md-container-ignore) {
+  [dir=rtl] ._md-datepicker-floating-label > label:not(.md-no-float):not(.md-container-ignore) {
     right: auto; }
-  [dir=rtl] ._md-datepicker-floating-label > label:not(.md-no-float):not(._md-container-ignore) {
+  [dir=rtl] ._md-datepicker-floating-label > label:not(.md-no-float):not(.md-container-ignore) {
     left: 18px; }
 
 ._md-datepicker-floating-label > md-datepicker {
@@ -292,7 +292,7 @@ md-datepicker[disabled] .md-datepicker-triangle-button {
       margin-left: initial;
       margin-right: -12px; }
   .md-datepicker-open .md-datepicker-input,
-  .md-datepicker-open label:not(.md-no-float):not(._md-container-ignore) {
+  .md-datepicker-open label:not(.md-no-float):not(.md-container-ignore) {
     margin-bottom: -5px; }
   .md-datepicker-open input.md-datepicker-input {
     margin-left: 24px;

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d593229
+ * v1.1.0-rc.5-master-82fdd2c
  */
 goog.provide('ng.material.components.slider');
 goog.require('ng.material.core');
@@ -147,21 +147,21 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     scope: {},
     require: ['?ngModel', '?^mdSliderContainer'],
     template:
-      '<div class="_md-slider-wrapper">' +
-        '<div class="_md-slider-content">' +
-          '<div class="_md-track-container">' +
-            '<div class="_md-track"></div>' +
-            '<div class="_md-track _md-track-fill"></div>' +
-            '<div class="_md-track-ticks"></div>' +
+      '<div class="md-slider-wrapper">' +
+        '<div class="md-slider-content">' +
+          '<div class="md-track-container">' +
+            '<div class="md-track"></div>' +
+            '<div class="md-track md-track-fill"></div>' +
+            '<div class="md-track-ticks"></div>' +
           '</div>' +
-          '<div class="_md-thumb-container">' +
-            '<div class="_md-thumb"></div>' +
-            '<div class="_md-focus-thumb"></div>' +
-            '<div class="_md-focus-ring"></div>' +
-            '<div class="_md-sign">' +
-              '<span class="_md-thumb-text"></span>' +
+          '<div class="md-thumb-container">' +
+            '<div class="md-thumb"></div>' +
+            '<div class="md-focus-thumb"></div>' +
+            '<div class="md-focus-ring"></div>' +
+            '<div class="md-sign">' +
+              '<span class="md-thumb-text"></span>' +
             '</div>' +
-            '<div class="_md-disabled-thumb"></div>' +
+            '<div class="md-disabled-thumb"></div>' +
           '</div>' +
         '</div>' +
       '</div>',
@@ -173,7 +173,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
   // **********************************************************
 
   function compile (tElement, tAttrs) {
-    var wrapper = angular.element(tElement[0].getElementsByClassName('_md-slider-wrapper'));
+    var wrapper = angular.element(tElement[0].getElementsByClassName('md-slider-wrapper'));
 
     var tabIndex = tAttrs.tabindex || 0;
     wrapper.attr('tabindex', tabIndex);
@@ -207,14 +207,14 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
           return element[0].hasAttribute('disabled');
         };
 
-    var thumb = angular.element(element[0].querySelector('._md-thumb'));
-    var thumbText = angular.element(element[0].querySelector('._md-thumb-text'));
+    var thumb = angular.element(element[0].querySelector('.md-thumb'));
+    var thumbText = angular.element(element[0].querySelector('.md-thumb-text'));
     var thumbContainer = thumb.parent();
-    var trackContainer = angular.element(element[0].querySelector('._md-track-container'));
-    var activeTrack = angular.element(element[0].querySelector('._md-track-fill'));
-    var tickContainer = angular.element(element[0].querySelector('._md-track-ticks'));
-    var wrapper = angular.element(element[0].getElementsByClassName('_md-slider-wrapper'));
-    var content = angular.element(element[0].getElementsByClassName('_md-slider-content'));
+    var trackContainer = angular.element(element[0].querySelector('.md-track-container'));
+    var activeTrack = angular.element(element[0].querySelector('.md-track-fill'));
+    var tickContainer = angular.element(element[0].querySelector('.md-track-ticks'));
+    var wrapper = angular.element(element[0].getElementsByClassName('md-slider-wrapper'));
+    var content = angular.element(element[0].getElementsByClassName('md-slider-content'));
     var throttledRefreshDimensions = $mdUtil.throttle(refreshSliderDimensions, 5000);
 
     // Default values, overridable by attrs
@@ -408,7 +408,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
 
     function blurListener() {
       wrapper.removeClass('md-focused');
-      element.removeClass('_md-active');
+      element.removeClass('md-active');
       clearTicks();
     }
 
@@ -476,8 +476,8 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       
       activeTrack.css(vertical ? 'height' : 'width', activeTrackPercent);
 
-      element.toggleClass((invert ? '_md-max' : '_md-min'), percent === 0);
-      element.toggleClass((invert ? '_md-min' : '_md-max'), percent === 1);
+      element.toggleClass((invert ? 'md-max' : 'md-min'), percent === 0);
+      element.toggleClass((invert ? 'md-min' : 'md-max'), percent === 1);
     }
 
     /**
@@ -488,7 +488,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     function onPressDown(ev) {
       if (isDisabled()) return;
 
-      element.addClass('_md-active');
+      element.addClass('md-active');
       element[0].focus();
       refreshSliderDimensions();
 
@@ -502,7 +502,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     function onPressUp(ev) {
       if (isDisabled()) return;
 
-      element.removeClass('_md-dragging');
+      element.removeClass('md-dragging');
 
       var exactVal = percentToValue( positionToPercent( vertical ? ev.pointer.y : ev.pointer.x ));
       var closestVal = minMaxValidator( stepValidator(exactVal) );
@@ -517,7 +517,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
 
       ev.stopPropagation();
 
-      element.addClass('_md-dragging');
+      element.addClass('md-dragging');
       setSliderFromEvent(ev);
     }
     function onDrag(ev) {

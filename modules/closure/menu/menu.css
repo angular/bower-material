@@ -2,40 +2,40 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d593229
+ * v1.1.0-rc.5-master-82fdd2c
  */
 /**
  * Mixin to create a primary checkbox.
  * Used by the checkbox and select component.
  */
-._md-open-menu-container {
+.md-open-menu-container {
   position: fixed;
   left: 0;
   top: 0;
   z-index: 100;
   opacity: 0;
   border-radius: 2px; }
-  ._md-open-menu-container md-menu-divider {
+  .md-open-menu-container md-menu-divider {
     margin-top: 4px;
     margin-bottom: 4px;
     height: 1px;
     min-height: 1px;
     max-height: 1px;
     width: 100%; }
-  ._md-open-menu-container md-menu-content > * {
+  .md-open-menu-container md-menu-content > * {
     opacity: 0; }
-  ._md-open-menu-container:not(._md-clickable) {
+  .md-open-menu-container:not(.md-clickable) {
     pointer-events: none; }
-  ._md-open-menu-container._md-active {
+  .md-open-menu-container.md-active {
     opacity: 1;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     transition-duration: 200ms; }
-    ._md-open-menu-container._md-active > md-menu-content > * {
+    .md-open-menu-container.md-active > md-menu-content > * {
       opacity: 1;
       transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
       transition-duration: 200ms;
       transition-delay: 100ms; }
-  ._md-open-menu-container._md-leave {
+  .md-open-menu-container.md-leave {
     opacity: 0;
     transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
     transition-duration: 250ms; }

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d593229
+ * v1.1.0-rc.5-master-82fdd2c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1185,7 +1185,7 @@ function MdTabs ($$mdSvgRegistry) {
                   'md-scope="::tab.parent"></md-tab-item> ' +
               '<md-ink-bar></md-ink-bar> ' +
             '</md-pagination-wrapper> ' +
-            '<md-tabs-dummy-wrapper class="_md-visually-hidden md-dummy-wrapper"> ' +
+            '<md-tabs-dummy-wrapper class="md-visually-hidden md-dummy-wrapper"> ' +
               '<md-dummy-tab ' +
                   'class="md-tab" ' +
                   'tabindex="-1" ' +

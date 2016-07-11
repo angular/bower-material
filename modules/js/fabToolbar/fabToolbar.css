@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d593229
+ * v1.1.0-rc.5-master-82fdd2c
  */
 /**
  * Mixin to create a primary checkbox.
@@ -40,7 +40,7 @@ md-fab-toolbar {
     bottom: auto;
     left: 20px;
     position: absolute; }
-  md-fab-toolbar ._md-fab-toolbar-wrapper {
+  md-fab-toolbar .md-fab-toolbar-wrapper {
     display: block;
     position: relative;
     overflow: hidden;
@@ -50,7 +50,7 @@ md-fab-toolbar {
     z-index: 20; }
     md-fab-toolbar md-fab-trigger button {
       overflow: visible !important; }
-    md-fab-toolbar md-fab-trigger ._md-fab-toolbar-background {
+    md-fab-toolbar md-fab-trigger .md-fab-toolbar-background {
       display: block;
       position: absolute;
       z-index: 21;
