@@ -2,11 +2,11 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-93e2488
+ * v1.1.0-rc.5-master-2e6d141
  */
-goog.provide('ng.material.components.tabs');
-goog.require('ng.material.components.icon');
-goog.require('ng.material.core');
+goog.provide('ngmaterial.components.tabs');
+goog.require('ngmaterial.components.icon');
+goog.require('ngmaterial.core');
 /**
  * @ngdoc module
  * @name material.components.tabs
@@ -1321,4 +1321,4 @@ function MdTabsTemplate ($compile, $mdUtil) {
 }
 MdTabsTemplate.$inject = ["$compile", "$mdUtil"];
 
-ng.material.components.tabs = angular.module("material.components.tabs");
+ngmaterial.components.tabs = angular.module("material.components.tabs");

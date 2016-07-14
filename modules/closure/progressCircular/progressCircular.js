@@ -2,10 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-93e2488
+ * v1.1.0-rc.5-master-2e6d141
  */
-goog.provide('ng.material.components.progressCircular');
-goog.require('ng.material.core');
+goog.provide('ngmaterial.components.progressCircular');
+goog.require('ngmaterial.core');
 /**
  * @ngdoc module
  * @name material.components.progressCircular
@@ -456,4 +456,4 @@ function MdProgressCircularProvider() {
   }
 }
 
-ng.material.components.progressCircular = angular.module("material.components.progressCircular");
+ngmaterial.components.progressCircular = angular.module("material.components.progressCircular");

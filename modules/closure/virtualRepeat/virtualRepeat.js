@@ -2,11 +2,11 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-93e2488
+ * v1.1.0-rc.5-master-2e6d141
  */
-goog.provide('ng.material.components.virtualRepeat');
-goog.require('ng.material.components.showHide');
-goog.require('ng.material.core');
+goog.provide('ngmaterial.components.virtualRepeat');
+goog.require('ngmaterial.components.showHide');
+goog.require('ngmaterial.core');
 /**
  * @ngdoc module
  * @name material.components.virtualRepeat
@@ -948,4 +948,4 @@ function abstractMethod() {
   throw Error('Non-overridden abstract method called.');
 }
 
-ng.material.components.virtualRepeat = angular.module("material.components.virtualRepeat");
+ngmaterial.components.virtualRepeat = angular.module("material.components.virtualRepeat");

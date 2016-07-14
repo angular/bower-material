@@ -2,10 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-93e2488
+ * v1.1.0-rc.5-master-2e6d141
  */
-goog.provide('ng.material.components.navBar');
-goog.require('ng.material.core');
+goog.provide('ngmaterial.components.navBar');
+goog.require('ngmaterial.core');
 /**
  * @ngdoc module
  * @name material.components.navBar
@@ -547,4 +547,4 @@ MdNavItemController.prototype.hasFocus = function() {
   return this._focused;
 };
 
-ng.material.components.navBar = angular.module("material.components.navBar");
+ngmaterial.components.navBar = angular.module("material.components.navBar");

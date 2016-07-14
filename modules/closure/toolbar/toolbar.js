@@ -2,11 +2,11 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-93e2488
+ * v1.1.0-rc.5-master-2e6d141
  */
-goog.provide('ng.material.components.toolbar');
-goog.require('ng.material.components.content');
-goog.require('ng.material.core');
+goog.provide('ngmaterial.components.toolbar');
+goog.require('ngmaterial.components.content');
+goog.require('ngmaterial.core');
 /**
  * @ngdoc module
  * @name material.components.toolbar
@@ -245,4 +245,4 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
 }
 mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming", "$animate"];
 
-ng.material.components.toolbar = angular.module("material.components.toolbar");
+ngmaterial.components.toolbar = angular.module("material.components.toolbar");

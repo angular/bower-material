@@ -2,11 +2,11 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-93e2488
+ * v1.1.0-rc.5-master-2e6d141
  */
-goog.provide('ng.material.components.toast');
-goog.require('ng.material.components.button');
-goog.require('ng.material.core');
+goog.provide('ngmaterial.components.toast');
+goog.require('ngmaterial.components.button');
+goog.require('ngmaterial.core');
 /**
   * @ngdoc module
   * @name material.components.toast
@@ -458,4 +458,4 @@ function MdToastProvider($$interimElementProvider) {
 }
 MdToastProvider.$inject = ["$$interimElementProvider"];
 
-ng.material.components.toast = angular.module("material.components.toast");
+ngmaterial.components.toast = angular.module("material.components.toast");

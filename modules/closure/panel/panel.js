@@ -2,11 +2,11 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-93e2488
+ * v1.1.0-rc.5-master-2e6d141
  */
-goog.provide('ng.material.components.panel');
-goog.require('ng.material.components.backdrop');
-goog.require('ng.material.core');
+goog.provide('ngmaterial.components.panel');
+goog.require('ngmaterial.components.backdrop');
+goog.require('ngmaterial.core');
 /**
  * @ngdoc module
  * @name material.components.panel
@@ -2334,4 +2334,4 @@ function getElement(el) {
   return angular.element(queryResult);
 }
 
-ng.material.components.panel = angular.module("material.components.panel");
+ngmaterial.components.panel = angular.module("material.components.panel");

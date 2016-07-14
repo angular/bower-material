@@ -2,10 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-93e2488
+ * v1.1.0-rc.5-master-2e6d141
  */
-goog.provide('ng.material.components.icon');
-goog.require('ng.material.core');
+goog.provide('ngmaterial.components.icon');
+goog.require('ngmaterial.core');
 /**
  * @ngdoc module
  * @name material.components.icon
@@ -929,4 +929,4 @@ function MdIconService(config, $templateRequest, $q, $log, $mdUtil, $sce) {
 }
 MdIconService.$inject = ["config", "$templateRequest", "$q", "$log", "$mdUtil", "$sce"];
 
-ng.material.components.icon = angular.module("material.components.icon");
+ngmaterial.components.icon = angular.module("material.components.icon");

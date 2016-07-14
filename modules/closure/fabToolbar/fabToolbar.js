@@ -2,12 +2,12 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-93e2488
+ * v1.1.0-rc.5-master-2e6d141
  */
-goog.provide('ng.material.components.fabToolbar');
-goog.require('ng.material.components.fabActions');
-goog.require('ng.material.components.fabShared');
-goog.require('ng.material.core');
+goog.provide('ngmaterial.components.fabToolbar');
+goog.require('ngmaterial.components.fabActions');
+goog.require('ngmaterial.components.fabShared');
+goog.require('ngmaterial.core');
 (function() {
   'use strict';
 
@@ -206,4 +206,4 @@ goog.require('ng.material.core');
   }
 })();
 
-ng.material.components.fabToolbar = angular.module("material.components.fabToolbar");
+ngmaterial.components.fabToolbar = angular.module("material.components.fabToolbar");

@@ -2,12 +2,12 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-93e2488
+ * v1.1.0-rc.5-master-2e6d141
  */
-goog.provide('ng.material.components.autocomplete');
-goog.require('ng.material.components.icon');
-goog.require('ng.material.components.virtualRepeat');
-goog.require('ng.material.core');
+goog.provide('ngmaterial.components.autocomplete');
+goog.require('ngmaterial.components.icon');
+goog.require('ngmaterial.components.virtualRepeat');
+goog.require('ngmaterial.core');
 /**
  * @ngdoc module
  * @name material.components.autocomplete
@@ -1346,4 +1346,4 @@ function MdHighlight ($interpolate, $parse) {
 }
 MdHighlight.$inject = ["$interpolate", "$parse"];
 
-ng.material.components.autocomplete = angular.module("material.components.autocomplete");
+ngmaterial.components.autocomplete = angular.module("material.components.autocomplete");

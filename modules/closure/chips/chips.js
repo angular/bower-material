@@ -2,11 +2,11 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-93e2488
+ * v1.1.0-rc.5-master-2e6d141
  */
-goog.provide('ng.material.components.chips');
-goog.require('ng.material.components.autocomplete');
-goog.require('ng.material.core');
+goog.provide('ngmaterial.components.chips');
+goog.require('ngmaterial.components.autocomplete');
+goog.require('ngmaterial.core');
 /**
  * @ngdoc module
  * @name material.components.chips
@@ -1503,4 +1503,4 @@ function MdContactChips($mdTheming, $mdUtil) {
 }
 MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
 
-ng.material.components.chips = angular.module("material.components.chips");
+ngmaterial.components.chips = angular.module("material.components.chips");
