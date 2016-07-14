@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-2c14d92
+ * v1.1.0-rc.5-master-fba4f9c
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -713,9 +713,12 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
     $scope.searchText = '';
 
-    // Per http://www.w3schools.com/jsref/event_oninput.asp
+    // Normally, triggering the change / input event is unnecessary, because the browser detects it properly.
+    // But some browsers are not detecting it properly, which means that we have to trigger the event.
+    // Using the `input` is not working properly, because for example IE11 is not supporting the `input` event.
+    // The `change` event is a good alternative and is supported by all supported browsers.
     var eventObj = document.createEvent('CustomEvent');
-    eventObj.initCustomEvent('input', true, true, { value: '' });
+    eventObj.initCustomEvent('change', true, true, { value: '' });
     elements.input.dispatchEvent(eventObj);
 
     // For some reason, firing the above event resets the value of $scope.searchText if
