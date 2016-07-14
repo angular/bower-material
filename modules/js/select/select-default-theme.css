@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-9ccf611
+ * v1.1.0-rc.5-master-2c14d92
  */
 /**
  * Mixin to create a primary checkbox.
@@ -90,7 +90,7 @@ md-select-menu.md-THEME_NAME-theme md-content {
 .md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-ink-ripple {
   color: '{{primary-color-0.87}}'; }
 
-.md-checkbox-enabled.md-THEME_NAME-theme ._md-icon {
+.md-checkbox-enabled.md-THEME_NAME-theme:not(.md-checked) ._md-icon {
   border-color: '{{foreground-2}}'; }
 
 .md-checkbox-enabled.md-THEME_NAME-theme[selected] ._md-icon {
