@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-ff10018
+ * v1.1.0-rc.5-master-9ccf611
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -47,6 +47,10 @@ angular.module('material.components.input', [
  *
  * <b>Exception:</b> Hidden inputs (`<input type="hidden" />`) are ignored and will not throw an error, so
  * you may combine these with other inputs.
+ *
+ * <b>Note:</b> When using `ngMessages` with your input element, make sure the message and container elements
+ * are *block* elements, otherwise animations applied to the messages will not look as intended. Either use a `div` and
+ * apply the `ng-message` and `ng-messages` classes respectively, or use the `md-block` class on your element.
  *
  * @param md-is-error {expression=} When the given expression evaluates to true, the input container
  *   will go into error state. Defaults to erroring if the input has been touched and is invalid.
@@ -214,7 +218,7 @@ function labelDirective() {
  *   <md-input-container>
  *     <label>Favorite Color</label>
  *     <input name="favoriteColor" ng-model="favoriteColor" required>
- *     <div ng-messages="userForm.lastName.$error">
+ *     <div ng-messages="colorForm.favoriteColor.$error">
  *       <div ng-message="required">This is required!</div>
  *     </div>
  *   </md-input-container>

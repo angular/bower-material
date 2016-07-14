@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-ff10018
+ * v1.1.0-rc.5-master-9ccf611
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3623,8 +3623,25 @@ function InterimElementProvider() {
 
     // Register other, special directive functions for the Layout features:
     module
-      .directive('mdLayoutCss'  , disableLayoutDirective )
-      .directive('ngCloak'      ,  buildCloakInterceptor('ng-cloak'))
+
+      .provider('$$mdLayout'     , function() {
+        // Publish internal service for Layouts
+        return {
+          $get : angular.noop,
+          validateAttributeValue : validateAttributeValue,
+          validateAttributeUsage : validateAttributeUsage,
+          /**
+           * Easy way to disable/enable the Layout API.
+           * When disabled, this stops all attribute-to-classname generations
+           */
+          disableLayouts  : function(isDisabled) {
+            config.enabled =  (isDisabled !== true);
+          }
+        };
+      })
+
+      .directive('mdLayoutCss'        , disableLayoutDirective )
+      .directive('ngCloak'            , buildCloakInterceptor('ng-cloak'))
 
       .directive('layoutWrap'   , attributeWithoutValue('layout-wrap'))
       .directive('layoutNowrap' , attributeWithoutValue('layout-nowrap'))
@@ -3648,7 +3665,10 @@ function InterimElementProvider() {
       .directive('hideLtMd'       , warnAttrNotSupported('hide-lt-md'))
       .directive('hideLtLg'       , warnAttrNotSupported('hide-lt-lg'))
       .directive('showLtMd'       , warnAttrNotSupported('show-lt-md'))
-      .directive('showLtLg'       , warnAttrNotSupported('show-lt-lg'));
+      .directive('showLtLg'       , warnAttrNotSupported('show-lt-lg'))
+
+      // Determine if
+      .config( detectDisabledLayouts );
 
     /**
      * Converts snake_case to camelCase.
@@ -3664,6 +3684,21 @@ function InterimElementProvider() {
     }
 
   }
+
+
+  /**
+    * Detect if any of the HTML tags has a [md-layouts-disabled] attribute;
+    * If yes, then immediately disable all layout API features
+    *
+    * Note: this attribute should be specified on either the HTML or BODY tags
+    */
+   /**
+    * @ngInject
+    */
+   function detectDisabledLayouts() {
+     var isDisabled = !!document.querySelector('[md-layouts-disabled]');
+     config.enabled = !isDisabled;
+   }
 
   /**
    * Special directive that will disable ALL Layout conversions of layout
@@ -3686,13 +3721,12 @@ function InterimElementProvider() {
    *
    */
   function disableLayoutDirective() {
+    // Return a 1x-only, first-match attribute directive
+    config.enabled = false;
+
     return {
       restrict : 'A',
-      priority : '900',
-      compile  : function(element, attr) {
-        config.enabled = false;
-        return angular.noop;
-      }
+      priority : '900'
     };
   }
 
@@ -4143,1213 +4177,6 @@ function InterimElementProvider() {
 
   }
   ComponentRegistry.$inject = ["$log", "$q"];
-
-})();
-(function(){
-"use strict";
-
-angular.module('material.core.theming.palette', [])
-.constant('$mdColorPalette', {
-  'red': {
-    '50': '#ffebee',
-    '100': '#ffcdd2',
-    '200': '#ef9a9a',
-    '300': '#e57373',
-    '400': '#ef5350',
-    '500': '#f44336',
-    '600': '#e53935',
-    '700': '#d32f2f',
-    '800': '#c62828',
-    '900': '#b71c1c',
-    'A100': '#ff8a80',
-    'A200': '#ff5252',
-    'A400': '#ff1744',
-    'A700': '#d50000',
-    'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 300 A100',
-    'contrastStrongLightColors': '400 500 600 700 A200 A400 A700'
-  },
-  'pink': {
-    '50': '#fce4ec',
-    '100': '#f8bbd0',
-    '200': '#f48fb1',
-    '300': '#f06292',
-    '400': '#ec407a',
-    '500': '#e91e63',
-    '600': '#d81b60',
-    '700': '#c2185b',
-    '800': '#ad1457',
-    '900': '#880e4f',
-    'A100': '#ff80ab',
-    'A200': '#ff4081',
-    'A400': '#f50057',
-    'A700': '#c51162',
-    'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 A100',
-    'contrastStrongLightColors': '500 600 A200 A400 A700'
-  },
-  'purple': {
-    '50': '#f3e5f5',
-    '100': '#e1bee7',
-    '200': '#ce93d8',
-    '300': '#ba68c8',
-    '400': '#ab47bc',
-    '500': '#9c27b0',
-    '600': '#8e24aa',
-    '700': '#7b1fa2',
-    '800': '#6a1b9a',
-    '900': '#4a148c',
-    'A100': '#ea80fc',
-    'A200': '#e040fb',
-    'A400': '#d500f9',
-    'A700': '#aa00ff',
-    'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 A100',
-    'contrastStrongLightColors': '300 400 A200 A400 A700'
-  },
-  'deep-purple': {
-    '50': '#ede7f6',
-    '100': '#d1c4e9',
-    '200': '#b39ddb',
-    '300': '#9575cd',
-    '400': '#7e57c2',
-    '500': '#673ab7',
-    '600': '#5e35b1',
-    '700': '#512da8',
-    '800': '#4527a0',
-    '900': '#311b92',
-    'A100': '#b388ff',
-    'A200': '#7c4dff',
-    'A400': '#651fff',
-    'A700': '#6200ea',
-    'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 A100',
-    'contrastStrongLightColors': '300 400 A200'
-  },
-  'indigo': {
-    '50': '#e8eaf6',
-    '100': '#c5cae9',
-    '200': '#9fa8da',
-    '300': '#7986cb',
-    '400': '#5c6bc0',
-    '500': '#3f51b5',
-    '600': '#3949ab',
-    '700': '#303f9f',
-    '800': '#283593',
-    '900': '#1a237e',
-    'A100': '#8c9eff',
-    'A200': '#536dfe',
-    'A400': '#3d5afe',
-    'A700': '#304ffe',
-    'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 A100',
-    'contrastStrongLightColors': '300 400 A200 A400'
-  },
-  'blue': {
-    '50': '#e3f2fd',
-    '100': '#bbdefb',
-    '200': '#90caf9',
-    '300': '#64b5f6',
-    '400': '#42a5f5',
-    '500': '#2196f3',
-    '600': '#1e88e5',
-    '700': '#1976d2',
-    '800': '#1565c0',
-    '900': '#0d47a1',
-    'A100': '#82b1ff',
-    'A200': '#448aff',
-    'A400': '#2979ff',
-    'A700': '#2962ff',
-    'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 300 400 A100',
-    'contrastStrongLightColors': '500 600 700 A200 A400 A700'
-  },
-  'light-blue': {
-    '50': '#e1f5fe',
-    '100': '#b3e5fc',
-    '200': '#81d4fa',
-    '300': '#4fc3f7',
-    '400': '#29b6f6',
-    '500': '#03a9f4',
-    '600': '#039be5',
-    '700': '#0288d1',
-    '800': '#0277bd',
-    '900': '#01579b',
-    'A100': '#80d8ff',
-    'A200': '#40c4ff',
-    'A400': '#00b0ff',
-    'A700': '#0091ea',
-    'contrastDefaultColor': 'dark',
-    'contrastLightColors': '600 700 800 900 A700',
-    'contrastStrongLightColors': '600 700 800 A700'
-  },
-  'cyan': {
-    '50': '#e0f7fa',
-    '100': '#b2ebf2',
-    '200': '#80deea',
-    '300': '#4dd0e1',
-    '400': '#26c6da',
-    '500': '#00bcd4',
-    '600': '#00acc1',
-    '700': '#0097a7',
-    '800': '#00838f',
-    '900': '#006064',
-    'A100': '#84ffff',
-    'A200': '#18ffff',
-    'A400': '#00e5ff',
-    'A700': '#00b8d4',
-    'contrastDefaultColor': 'dark',
-    'contrastLightColors': '700 800 900',
-    'contrastStrongLightColors': '700 800 900'
-  },
-  'teal': {
-    '50': '#e0f2f1',
-    '100': '#b2dfdb',
-    '200': '#80cbc4',
-    '300': '#4db6ac',
-    '400': '#26a69a',
-    '500': '#009688',
-    '600': '#00897b',
-    '700': '#00796b',
-    '800': '#00695c',
-    '900': '#004d40',
-    'A100': '#a7ffeb',
-    'A200': '#64ffda',
-    'A400': '#1de9b6',
-    'A700': '#00bfa5',
-    'contrastDefaultColor': 'dark',
-    'contrastLightColors': '500 600 700 800 900',
-    'contrastStrongLightColors': '500 600 700'
-  },
-  'green': {
-    '50': '#e8f5e9',
-    '100': '#c8e6c9',
-    '200': '#a5d6a7',
-    '300': '#81c784',
-    '400': '#66bb6a',
-    '500': '#4caf50',
-    '600': '#43a047',
-    '700': '#388e3c',
-    '800': '#2e7d32',
-    '900': '#1b5e20',
-    'A100': '#b9f6ca',
-    'A200': '#69f0ae',
-    'A400': '#00e676',
-    'A700': '#00c853',
-    'contrastDefaultColor': 'dark',
-    'contrastLightColors': '500 600 700 800 900',
-    'contrastStrongLightColors': '500 600 700'
-  },
-  'light-green': {
-    '50': '#f1f8e9',
-    '100': '#dcedc8',
-    '200': '#c5e1a5',
-    '300': '#aed581',
-    '400': '#9ccc65',
-    '500': '#8bc34a',
-    '600': '#7cb342',
-    '700': '#689f38',
-    '800': '#558b2f',
-    '900': '#33691e',
-    'A100': '#ccff90',
-    'A200': '#b2ff59',
-    'A400': '#76ff03',
-    'A700': '#64dd17',
-    'contrastDefaultColor': 'dark',
-    'contrastLightColors': '700 800 900',
-    'contrastStrongLightColors': '700 800 900'
-  },
-  'lime': {
-    '50': '#f9fbe7',
-    '100': '#f0f4c3',
-    '200': '#e6ee9c',
-    '300': '#dce775',
-    '400': '#d4e157',
-    '500': '#cddc39',
-    '600': '#c0ca33',
-    '700': '#afb42b',
-    '800': '#9e9d24',
-    '900': '#827717',
-    'A100': '#f4ff81',
-    'A200': '#eeff41',
-    'A400': '#c6ff00',
-    'A700': '#aeea00',
-    'contrastDefaultColor': 'dark',
-    'contrastLightColors': '900',
-    'contrastStrongLightColors': '900'
-  },
-  'yellow': {
-    '50': '#fffde7',
-    '100': '#fff9c4',
-    '200': '#fff59d',
-    '300': '#fff176',
-    '400': '#ffee58',
-    '500': '#ffeb3b',
-    '600': '#fdd835',
-    '700': '#fbc02d',
-    '800': '#f9a825',
-    '900': '#f57f17',
-    'A100': '#ffff8d',
-    'A200': '#ffff00',
-    'A400': '#ffea00',
-    'A700': '#ffd600',
-    'contrastDefaultColor': 'dark'
-  },
-  'amber': {
-    '50': '#fff8e1',
-    '100': '#ffecb3',
-    '200': '#ffe082',
-    '300': '#ffd54f',
-    '400': '#ffca28',
-    '500': '#ffc107',
-    '600': '#ffb300',
-    '700': '#ffa000',
-    '800': '#ff8f00',
-    '900': '#ff6f00',
-    'A100': '#ffe57f',
-    'A200': '#ffd740',
-    'A400': '#ffc400',
-    'A700': '#ffab00',
-    'contrastDefaultColor': 'dark'
-  },
-  'orange': {
-    '50': '#fff3e0',
-    '100': '#ffe0b2',
-    '200': '#ffcc80',
-    '300': '#ffb74d',
-    '400': '#ffa726',
-    '500': '#ff9800',
-    '600': '#fb8c00',
-    '700': '#f57c00',
-    '800': '#ef6c00',
-    '900': '#e65100',
-    'A100': '#ffd180',
-    'A200': '#ffab40',
-    'A400': '#ff9100',
-    'A700': '#ff6d00',
-    'contrastDefaultColor': 'dark',
-    'contrastLightColors': '800 900',
-    'contrastStrongLightColors': '800 900'
-  },
-  'deep-orange': {
-    '50': '#fbe9e7',
-    '100': '#ffccbc',
-    '200': '#ffab91',
-    '300': '#ff8a65',
-    '400': '#ff7043',
-    '500': '#ff5722',
-    '600': '#f4511e',
-    '700': '#e64a19',
-    '800': '#d84315',
-    '900': '#bf360c',
-    'A100': '#ff9e80',
-    'A200': '#ff6e40',
-    'A400': '#ff3d00',
-    'A700': '#dd2c00',
-    'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 300 400 A100 A200',
-    'contrastStrongLightColors': '500 600 700 800 900 A400 A700'
-  },
-  'brown': {
-    '50': '#efebe9',
-    '100': '#d7ccc8',
-    '200': '#bcaaa4',
-    '300': '#a1887f',
-    '400': '#8d6e63',
-    '500': '#795548',
-    '600': '#6d4c41',
-    '700': '#5d4037',
-    '800': '#4e342e',
-    '900': '#3e2723',
-    'A100': '#d7ccc8',
-    'A200': '#bcaaa4',
-    'A400': '#8d6e63',
-    'A700': '#5d4037',
-    'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 A100 A200',
-    'contrastStrongLightColors': '300 400'
-  },
-  'grey': {
-    '50': '#fafafa',
-    '100': '#f5f5f5',
-    '200': '#eeeeee',
-    '300': '#e0e0e0',
-    '400': '#bdbdbd',
-    '500': '#9e9e9e',
-    '600': '#757575',
-    '700': '#616161',
-    '800': '#424242',
-    '900': '#212121',
-    'A100': '#ffffff',
-    'A200': '#000000',
-    'A400': '#303030',
-    'A700': '#616161',
-    'contrastDefaultColor': 'dark',
-    'contrastLightColors': '600 700 800 900 A200 A400 A700'
-  },
-  'blue-grey': {
-    '50': '#eceff1',
-    '100': '#cfd8dc',
-    '200': '#b0bec5',
-    '300': '#90a4ae',
-    '400': '#78909c',
-    '500': '#607d8b',
-    '600': '#546e7a',
-    '700': '#455a64',
-    '800': '#37474f',
-    '900': '#263238',
-    'A100': '#cfd8dc',
-    'A200': '#b0bec5',
-    'A400': '#78909c',
-    'A700': '#455a64',
-    'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 300 A100 A200',
-    'contrastStrongLightColors': '400 500 700'
-  }
-});
-
-})();
-(function(){
-"use strict";
-
-/**
- * @ngdoc module
- * @name material.core.theming
- * @description
- * Theming
- */
-angular.module('material.core.theming', ['material.core.theming.palette'])
-  .directive('mdTheme', ThemingDirective)
-  .directive('mdThemable', ThemableDirective)
-  .directive('mdThemesCss', disableThemesDirective )
-  .provider('$mdTheming', ThemingProvider)
-  .run(generateAllThemes);
-
-/**
- * @ngdoc service
- * @name $mdThemingProvider
- * @module material.core.theming
- *
- * @description Provider to configure the `$mdTheming` service.
- *
- * ### Default Theme
- * The `$mdThemingProvider` uses by default the following theme configuration:
- *
- * - Primary Palette: `Primary`
- * - Accent Palette: `Pink`
- * - Warn Palette: `Deep-Orange`
- * - Background Palette: `Grey`
- *
- * If you don't want to use the `md-theme` directive on the elements itself, you may want to overwrite
- * the default theme.<br/>
- * This can be done by using the following markup.
- *
- * <hljs lang="js">
- *   myAppModule.config(function($mdThemingProvider) {
- *     $mdThemingProvider
- *       .theme('default')
- *       .primaryPalette('blue')
- *       .accentPalette('teal')
- *       .warnPalette('red')
- *       .backgroundPalette('grey');
- *   });
- * </hljs>
- *
-
- * ### Dynamic Themes
- *
- * By default, if you change a theme at runtime, the `$mdTheming` service will not detect those changes.<br/>
- * If you have an application, which changes its theme on runtime, you have to enable theme watching.
- *
- * <hljs lang="js">
- *   myAppModule.config(function($mdThemingProvider) {
- *     // Enable theme watching.
- *     $mdThemingProvider.alwaysWatchTheme(true);
- *   });
- * </hljs>
- *
- * ### Custom Theme Styles
- *
- * Sometimes you may want to use your own theme styles for some custom components.<br/>
- * You are able to register your own styles by using the following markup.
- *
- * <hljs lang="js">
- *   myAppModule.config(function($mdThemingProvider) {
- *     // Register our custom stylesheet into the theming provider.
- *     $mdThemingProvider.registerStyles(STYLESHEET);
- *   });
- * </hljs>
- *
- * The `registerStyles` method only accepts strings as value, so you're actually not able to load an external
- * stylesheet file into the `$mdThemingProvider`.
- *
- * If it's necessary to load an external stylesheet, we suggest using a bundler, which supports including raw content,
- * like [raw-loader](https://github.com/webpack/raw-loader) for `webpack`.
- *
- * <hljs lang="js">
- *   myAppModule.config(function($mdThemingProvider) {
- *     // Register your custom stylesheet into the theming provider.
- *     $mdThemingProvider.registerStyles(require('../styles/my-component.theme.css'));
- *   });
- * </hljs>
- */
-
-/**
- * @ngdoc method
- * @name $mdThemingProvider#registerStyles
- * @param {string} styles The styles to be appended to Angular Material's built in theme css.
- */
-/**
- * @ngdoc method
- * @name $mdThemingProvider#setNonce
- * @param {string} nonceValue The nonce to be added as an attribute to the theme style tags.
- * Setting a value allows the use CSP policy without using the unsafe-inline directive.
- */
-
-/**
- * @ngdoc method
- * @name $mdThemingProvider#setDefaultTheme
- * @param {string} themeName Default theme name to be applied to elements. Default value is `default`.
- */
-
-/**
- * @ngdoc method
- * @name $mdThemingProvider#alwaysWatchTheme
- * @param {boolean} watch Whether or not to always watch themes for changes and re-apply
- * classes when they change. Default is `false`. Enabling can reduce performance.
- */
-
-/* Some Example Valid Theming Expressions
- * =======================================
- *
- * Intention group expansion: (valid for primary, accent, warn, background)
- *
- * {{primary-100}} - grab shade 100 from the primary palette
- * {{primary-100-0.7}} - grab shade 100, apply opacity of 0.7
- * {{primary-100-contrast}} - grab shade 100's contrast color
- * {{primary-hue-1}} - grab the shade assigned to hue-1 from the primary palette
- * {{primary-hue-1-0.7}} - apply 0.7 opacity to primary-hue-1
- * {{primary-color}} - Generates .md-hue-1, .md-hue-2, .md-hue-3 with configured shades set for each hue
- * {{primary-color-0.7}} - Apply 0.7 opacity to each of the above rules
- * {{primary-contrast}} - Generates .md-hue-1, .md-hue-2, .md-hue-3 with configured contrast (ie. text) color shades set for each hue
- * {{primary-contrast-0.7}} - Apply 0.7 opacity to each of the above rules
- *
- * Foreground expansion: Applies rgba to black/white foreground text
- *
- * {{foreground-1}} - used for primary text
- * {{foreground-2}} - used for secondary text/divider
- * {{foreground-3}} - used for disabled text
- * {{foreground-4}} - used for dividers
- *
- */
-
-// In memory generated CSS rules; registered by theme.name
-var GENERATED = { };
-
-// In memory storage of defined themes and color palettes (both loaded by CSS, and user specified)
-var PALETTES;
-
-// Text Colors on light and dark backgrounds
-// @see https://www.google.com/design/spec/style/color.html#color-text-background-colors
-var DARK_FOREGROUND = {
-  name: 'dark',
-  '1': 'rgba(0,0,0,0.87)',
-  '2': 'rgba(0,0,0,0.54)',
-  '3': 'rgba(0,0,0,0.38)',
-  '4': 'rgba(0,0,0,0.12)'
-};
-var LIGHT_FOREGROUND = {
-  name: 'light',
-  '1': 'rgba(255,255,255,1.0)',
-  '2': 'rgba(255,255,255,0.7)',
-  '3': 'rgba(255,255,255,0.5)',
-  '4': 'rgba(255,255,255,0.12)'
-};
-
-var DARK_SHADOW = '1px 1px 0px rgba(0,0,0,0.4), -1px -1px 0px rgba(0,0,0,0.4)';
-var LIGHT_SHADOW = '';
-
-var DARK_CONTRAST_COLOR = colorToRgbaArray('rgba(0,0,0,0.87)');
-var LIGHT_CONTRAST_COLOR = colorToRgbaArray('rgba(255,255,255,0.87)');
-var STRONG_LIGHT_CONTRAST_COLOR = colorToRgbaArray('rgb(255,255,255)');
-
-var THEME_COLOR_TYPES = ['primary', 'accent', 'warn', 'background'];
-var DEFAULT_COLOR_TYPE = 'primary';
-
-// A color in a theme will use these hues by default, if not specified by user.
-var LIGHT_DEFAULT_HUES = {
-  'accent': {
-    'default': 'A200',
-    'hue-1': 'A100',
-    'hue-2': 'A400',
-    'hue-3': 'A700'
-  },
-  'background': {
-    'default': '50',
-    'hue-1': 'A100',
-    'hue-2': '100',
-    'hue-3': '300'
-  }
-};
-
-var DARK_DEFAULT_HUES = {
-  'background': {
-    'default': 'A400',
-    'hue-1': '800',
-    'hue-2': '900',
-    'hue-3': 'A200'
-  }
-};
-THEME_COLOR_TYPES.forEach(function(colorType) {
-  // Color types with unspecified default hues will use these default hue values
-  var defaultDefaultHues = {
-    'default': '500',
-    'hue-1': '300',
-    'hue-2': '800',
-    'hue-3': 'A100'
-  };
-  if (!LIGHT_DEFAULT_HUES[colorType]) LIGHT_DEFAULT_HUES[colorType] = defaultDefaultHues;
-  if (!DARK_DEFAULT_HUES[colorType]) DARK_DEFAULT_HUES[colorType] = defaultDefaultHues;
-});
-
-var VALID_HUE_VALUES = [
-  '50', '100', '200', '300', '400', '500', '600',
-  '700', '800', '900', 'A100', 'A200', 'A400', 'A700'
-];
-
-// Whether or not themes are to be generated on-demand (vs. eagerly).
-var generateOnDemand = false;
-
-// Nonce to be added as an attribute to the generated themes style tags.
-var nonce = null;
-var disableTheming = false;
-
-// Custom styles registered to be used in the theming of custom components.
-var registeredStyles = [];
-
-function ThemingProvider($mdColorPalette) {
-  PALETTES = { };
-  var THEMES = { };
-
-  var themingProvider;
-  var defaultTheme = 'default';
-  var alwaysWatchTheme = false;
-
-  // Load JS Defined Palettes
-  angular.extend(PALETTES, $mdColorPalette);
-
-  // Default theme defined in core.js
-
-  ThemingService.$inject = ["$rootScope", "$log"];
-  return themingProvider = {
-    definePalette: definePalette,
-    extendPalette: extendPalette,
-    theme: registerTheme,
-
-    /**
-     * Easy way to disable theming without having to use
-     * `.constant("$MD_THEME_CSS","");` This disables
-     * all dynamic theme style sheet generations and injections...
-     */
-    disableTheming: function() {
-      disableTheming = true;
-    },
-
-    registerStyles: function(styles) {
-      registeredStyles.push(styles);
-    },
-
-    setNonce: function(nonceValue) {
-      nonce = nonceValue;
-    },
-
-    setDefaultTheme: function(theme) {
-      defaultTheme = theme;
-    },
-
-    alwaysWatchTheme: function(alwaysWatch) {
-      alwaysWatchTheme = alwaysWatch;
-    },
-
-    generateThemesOnDemand: function(onDemand) {
-      generateOnDemand = onDemand;
-    },
-
-    $get: ThemingService,
-    _LIGHT_DEFAULT_HUES: LIGHT_DEFAULT_HUES,
-    _DARK_DEFAULT_HUES: DARK_DEFAULT_HUES,
-    _PALETTES: PALETTES,
-    _THEMES: THEMES,
-    _parseRules: parseRules,
-    _rgba: rgba
-  };
-
-  // Example: $mdThemingProvider.definePalette('neonRed', { 50: '#f5fafa', ... });
-  function definePalette(name, map) {
-    map = map || {};
-    PALETTES[name] = checkPaletteValid(name, map);
-    return themingProvider;
-  }
-
-  // Returns an new object which is a copy of a given palette `name` with variables from
-  // `map` overwritten
-  // Example: var neonRedMap = $mdThemingProvider.extendPalette('red', { 50: '#f5fafafa' });
-  function extendPalette(name, map) {
-    return checkPaletteValid(name,  angular.extend({}, PALETTES[name] || {}, map) );
-  }
-
-  // Make sure that palette has all required hues
-  function checkPaletteValid(name, map) {
-    var missingColors = VALID_HUE_VALUES.filter(function(field) {
-      return !map[field];
-    });
-    if (missingColors.length) {
-      throw new Error("Missing colors %1 in palette %2!"
-                      .replace('%1', missingColors.join(', '))
-                      .replace('%2', name));
-    }
-
-    return map;
-  }
-
-  // Register a theme (which is a collection of color palettes to use with various states
-  // ie. warn, accent, primary )
-  // Optionally inherit from an existing theme
-  // $mdThemingProvider.theme('custom-theme').primaryPalette('red');
-  function registerTheme(name, inheritFrom) {
-    if (THEMES[name]) return THEMES[name];
-
-    inheritFrom = inheritFrom || 'default';
-
-    var parentTheme = typeof inheritFrom === 'string' ? THEMES[inheritFrom] : inheritFrom;
-    var theme = new Theme(name);
-
-    if (parentTheme) {
-      angular.forEach(parentTheme.colors, function(color, colorType) {
-        theme.colors[colorType] = {
-          name: color.name,
-          // Make sure a COPY of the hues is given to the child color,
-          // not the same reference.
-          hues: angular.extend({}, color.hues)
-        };
-      });
-    }
-    THEMES[name] = theme;
-
-    return theme;
-  }
-
-  function Theme(name) {
-    var self = this;
-    self.name = name;
-    self.colors = {};
-
-    self.dark = setDark;
-    setDark(false);
-
-    function setDark(isDark) {
-      isDark = arguments.length === 0 ? true : !!isDark;
-
-      // If no change, abort
-      if (isDark === self.isDark) return;
-
-      self.isDark = isDark;
-
-      self.foregroundPalette = self.isDark ? LIGHT_FOREGROUND : DARK_FOREGROUND;
-      self.foregroundShadow = self.isDark ? DARK_SHADOW : LIGHT_SHADOW;
-
-      // Light and dark themes have different default hues.
-      // Go through each existing color type for this theme, and for every
-      // hue value that is still the default hue value from the previous light/dark setting,
-      // set it to the default hue value from the new light/dark setting.
-      var newDefaultHues = self.isDark ? DARK_DEFAULT_HUES : LIGHT_DEFAULT_HUES;
-      var oldDefaultHues = self.isDark ? LIGHT_DEFAULT_HUES : DARK_DEFAULT_HUES;
-      angular.forEach(newDefaultHues, function(newDefaults, colorType) {
-        var color = self.colors[colorType];
-        var oldDefaults = oldDefaultHues[colorType];
-        if (color) {
-          for (var hueName in color.hues) {
-            if (color.hues[hueName] === oldDefaults[hueName]) {
-              color.hues[hueName] = newDefaults[hueName];
-            }
-          }
-        }
-      });
-
-      return self;
-    }
-
-    THEME_COLOR_TYPES.forEach(function(colorType) {
-      var defaultHues = (self.isDark ? DARK_DEFAULT_HUES : LIGHT_DEFAULT_HUES)[colorType];
-      self[colorType + 'Palette'] = function setPaletteType(paletteName, hues) {
-        var color = self.colors[colorType] = {
-          name: paletteName,
-          hues: angular.extend({}, defaultHues, hues)
-        };
-
-        Object.keys(color.hues).forEach(function(name) {
-          if (!defaultHues[name]) {
-            throw new Error("Invalid hue name '%1' in theme %2's %3 color %4. Available hue names: %4"
-              .replace('%1', name)
-              .replace('%2', self.name)
-              .replace('%3', paletteName)
-              .replace('%4', Object.keys(defaultHues).join(', '))
-            );
-          }
-        });
-        Object.keys(color.hues).map(function(key) {
-          return color.hues[key];
-        }).forEach(function(hueValue) {
-          if (VALID_HUE_VALUES.indexOf(hueValue) == -1) {
-            throw new Error("Invalid hue value '%1' in theme %2's %3 color %4. Available hue values: %5"
-              .replace('%1', hueValue)
-              .replace('%2', self.name)
-              .replace('%3', colorType)
-              .replace('%4', paletteName)
-              .replace('%5', VALID_HUE_VALUES.join(', '))
-            );
-          }
-        });
-        return self;
-      };
-
-      self[colorType + 'Color'] = function() {
-        var args = Array.prototype.slice.call(arguments);
-        console.warn('$mdThemingProviderTheme.' + colorType + 'Color() has been deprecated. ' +
-                     'Use $mdThemingProviderTheme.' + colorType + 'Palette() instead.');
-        return self[colorType + 'Palette'].apply(self, args);
-      };
-    });
-  }
-
-  /**
-   * @ngdoc service
-   * @name $mdTheming
-   *
-   * @description
-   *
-   * Service that makes an element apply theming related classes to itself.
-   *
-   * ```js
-   * app.directive('myFancyDirective', function($mdTheming) {
-   *   return {
-   *     restrict: 'e',
-   *     link: function(scope, el, attrs) {
-   *       $mdTheming(el);
-   *     }
-   *   };
-   * });
-   * ```
-   * @param {el=} element to apply theming to
-   */
-  /* @ngInject */
-  function ThemingService($rootScope, $log) {
-        // Allow us to be invoked via a linking function signature.
-    var applyTheme = function (scope, el) {
-          if (el === undefined) { el = scope; scope = undefined; }
-          if (scope === undefined) { scope = $rootScope; }
-          applyTheme.inherit(el, el);
-        };
-
-    applyTheme.THEMES = angular.extend({}, THEMES);
-    applyTheme.PALETTES = angular.extend({}, PALETTES);
-    applyTheme.inherit = inheritTheme;
-    applyTheme.registered = registered;
-    applyTheme.defaultTheme = function() { return defaultTheme; };
-    applyTheme.generateTheme = function(name) { generateTheme(THEMES[name], name, nonce); };
-
-    return applyTheme;
-
-    /**
-     * Determine is specified theme name is a valid, registered theme
-     */
-    function registered(themeName) {
-      if (themeName === undefined || themeName === '') return true;
-      return applyTheme.THEMES[themeName] !== undefined;
-    }
-
-    /**
-     * Get theme name for the element, then update with Theme CSS class
-     */
-    function inheritTheme (el, parent) {
-      var ctrl = parent.controller('mdTheme');
-      var attrThemeValue = el.attr('md-theme-watch');
-      var watchTheme = (alwaysWatchTheme || angular.isDefined(attrThemeValue)) && attrThemeValue != 'false';
-
-      updateThemeClass(lookupThemeName());
-
-      el.on('$destroy', watchTheme ? $rootScope.$watch(lookupThemeName, updateThemeClass) : angular.noop );
-
-      /**
-       * Find the theme name from the parent controller or element data
-       */
-      function lookupThemeName() {
-        // As a few components (dialog) add their controllers later, we should also watch for a controller init.
-        ctrl = parent.controller('mdTheme') || el.data('$mdThemeController');
-        return ctrl && ctrl.$mdTheme || (defaultTheme == 'default' ? '' : defaultTheme);
-      }
-
-      /**
-       * Remove old theme class and apply a new one
-       * NOTE: if not a valid theme name, then the current name is not changed
-       */
-      function updateThemeClass(theme) {
-        if (!theme) return;
-        if (!registered(theme)) {
-          $log.warn('Attempted to use unregistered theme \'' + theme + '\'. ' +
-                    'Register it with $mdThemingProvider.theme().');
-        }
-
-        var oldTheme = el.data('$mdThemeName');
-        if (oldTheme) el.removeClass('md-' + oldTheme +'-theme');
-        el.addClass('md-' + theme + '-theme');
-        el.data('$mdThemeName', theme);
-        if (ctrl) {
-          el.data('$mdThemeController', ctrl);
-        }
-      }
-    }
-
-  }
-}
-ThemingProvider.$inject = ["$mdColorPalette"];
-
-function ThemingDirective($mdTheming, $interpolate, $log) {
-  return {
-    priority: 100,
-    link: {
-      pre: function(scope, el, attrs) {
-        var registeredCallbacks = [];
-        var ctrl = {
-          registerChanges: function (cb, context) {
-            if (context) {
-              cb = angular.bind(context, cb);
-            }
-
-            registeredCallbacks.push(cb);
-
-            return function () {
-              var index = registeredCallbacks.indexOf(cb);
-
-              if (index > -1) {
-                registeredCallbacks.splice(index, 1);
-              }
-            }
-          },
-          $setTheme: function (theme) {
-            if (!$mdTheming.registered(theme)) {
-              $log.warn('attempted to use unregistered theme \'' + theme + '\'');
-            }
-            ctrl.$mdTheme = theme;
-
-            registeredCallbacks.forEach(function (cb) {
-              cb();
-            })
-          }
-        };
-        el.data('$mdThemeController', ctrl);
-        ctrl.$setTheme($interpolate(attrs.mdTheme)(scope));
-        attrs.$observe('mdTheme', ctrl.$setTheme);
-      }
-    }
-  };
-}
-ThemingDirective.$inject = ["$mdTheming", "$interpolate", "$log"];
-
-/**
- * Special directive that will disable ALL runtime Theme style generation and DOM injection
- *
- * <link rel="stylesheet" href="angular-material.min.css">
- * <link rel="stylesheet" href="angular-material.themes.css">
- *
- * <body md-theme-css>
- *  ...
- * </body>
- *
- * Note: Using md-themes-css directive requires the developer to load external
- * theme stylesheets; e.g. custom themes from Material-Tools:
- *
- *       `angular-material.themes.css`
- *
- * Another option is to use the ThemingProvider to configure and disable the attribute
- * conversions; this would obviate the use of the `md-themes-css` directive
- *
- */
-function disableThemesDirective() {
-  return {
-    restrict : 'A',
-    priority : '900',
-    compile  : function() {
-      disableTheming = false;
-      return angular.noop;
-    }
-  };
-}
-
-function ThemableDirective($mdTheming) {
-  return $mdTheming;
-}
-ThemableDirective.$inject = ["$mdTheming"];
-
-function parseRules(theme, colorType, rules) {
-  checkValidPalette(theme, colorType);
-
-  rules = rules.replace(/THEME_NAME/g, theme.name);
-  var generatedRules = [];
-  var color = theme.colors[colorType];
-
-  var themeNameRegex = new RegExp('\\.md-' + theme.name + '-theme', 'g');
-  // Matches '{{ primary-color }}', etc
-  var hueRegex = new RegExp('(\'|")?{{\\s*(' + colorType + ')-(color|contrast)-?(\\d\\.?\\d*)?\\s*}}(\"|\')?','g');
-  var simpleVariableRegex = /'?"?\{\{\s*([a-zA-Z]+)-(A?\d+|hue\-[0-3]|shadow|default)-?(\d\.?\d*)?(contrast)?\s*\}\}'?"?/g;
-  var palette = PALETTES[color.name];
-
-  // find and replace simple variables where we use a specific hue, not an entire palette
-  // eg. "{{primary-100}}"
-  //\(' + THEME_COLOR_TYPES.join('\|') + '\)'
-  rules = rules.replace(simpleVariableRegex, function(match, colorType, hue, opacity, contrast) {
-    if (colorType === 'foreground') {
-      if (hue == 'shadow') {
-        return theme.foregroundShadow;
-      } else {
-        return theme.foregroundPalette[hue] || theme.foregroundPalette['1'];
-      }
-    }
-
-    // `default` is also accepted as a hue-value, because the background palettes are
-    // using it as a name for the default hue.
-    if (hue.indexOf('hue') === 0 || hue === 'default') {
-      hue = theme.colors[colorType].hues[hue];
-    }
-
-    return rgba( (PALETTES[ theme.colors[colorType].name ][hue] || '')[contrast ? 'contrast' : 'value'], opacity );
-  });
-
-  // For each type, generate rules for each hue (ie. default, md-hue-1, md-hue-2, md-hue-3)
-  angular.forEach(color.hues, function(hueValue, hueName) {
-    var newRule = rules
-      .replace(hueRegex, function(match, _, colorType, hueType, opacity) {
-        return rgba(palette[hueValue][hueType === 'color' ? 'value' : 'contrast'], opacity);
-      });
-    if (hueName !== 'default') {
-      newRule = newRule.replace(themeNameRegex, '.md-' + theme.name + '-theme.md-' + hueName);
-    }
-
-    // Don't apply a selector rule to the default theme, making it easier to override
-    // styles of the base-component
-    if (theme.name == 'default') {
-      var themeRuleRegex = /((?:(?:(?: |>|\.|\w|-|:|\(|\)|\[|\]|"|'|=)+) )?)((?:(?:\w|\.|-)+)?)\.md-default-theme((?: |>|\.|\w|-|:|\(|\)|\[|\]|"|'|=)*)/g;
-      newRule = newRule.replace(themeRuleRegex, function(match, prefix, target, suffix) {
-        return match + ', ' + prefix + target + suffix;
-      });
-    }
-    generatedRules.push(newRule);
-  });
-
-  return generatedRules;
-}
-
-var rulesByType = {};
-
-// Generate our themes at run time given the state of THEMES and PALETTES
-function generateAllThemes($injector, $mdTheming) {
-  var head = document.head;
-  var firstChild = head ? head.firstElementChild : null;
-  var themeCss = !disableTheming && $injector.has('$MD_THEME_CSS') ? $injector.get('$MD_THEME_CSS') : '';
-  // Append our custom registered styles to the theme stylesheet.
-  themeCss += registeredStyles.join('');
-
-  if ( !firstChild ) return;
-  if (themeCss.length === 0) return; // no rules, so no point in running this expensive task
-
-  // Expose contrast colors for palettes to ensure that text is always readable
-  angular.forEach(PALETTES, sanitizePalette);
-
-  // MD_THEME_CSS is a string generated by the build process that includes all the themable
-  // components as templates
-
-  // Break the CSS into individual rules
-  var rules = themeCss
-                  .split(/\}(?!(\}|'|"|;))/)
-                  .filter(function(rule) { return rule && rule.trim().length; })
-                  .map(function(rule) { return rule.trim() + '}'; });
-
-
-  var ruleMatchRegex = new RegExp('md-(' + THEME_COLOR_TYPES.join('|') + ')', 'g');
-
-  THEME_COLOR_TYPES.forEach(function(type) {
-    rulesByType[type] = '';
-  });
-
-
-  // Sort the rules based on type, allowing us to do color substitution on a per-type basis
-  rules.forEach(function(rule) {
-    var match = rule.match(ruleMatchRegex);
-    // First: test that if the rule has '.md-accent', it goes into the accent set of rules
-    for (var i = 0, type; type = THEME_COLOR_TYPES[i]; i++) {
-      if (rule.indexOf('.md-' + type) > -1) {
-        return rulesByType[type] += rule;
-      }
-    }
-
-    // If no eg 'md-accent' class is found, try to just find 'accent' in the rule and guess from
-    // there
-    for (i = 0; type = THEME_COLOR_TYPES[i]; i++) {
-      if (rule.indexOf(type) > -1) {
-        return rulesByType[type] += rule;
-      }
-    }
-
-    // Default to the primary array
-    return rulesByType[DEFAULT_COLOR_TYPE] += rule;
-  });
-
-  // If themes are being generated on-demand, quit here. The user will later manually
-  // call generateTheme to do this on a theme-by-theme basis.
-  if (generateOnDemand) return;
-
-  angular.forEach($mdTheming.THEMES, function(theme) {
-    if (!GENERATED[theme.name] && !($mdTheming.defaultTheme() !== 'default' && theme.name === 'default')) {
-      generateTheme(theme, theme.name, nonce);
-    }
-  });
-
-
-  // *************************
-  // Internal functions
-  // *************************
-
-  // The user specifies a 'default' contrast color as either light or dark,
-  // then explicitly lists which hues are the opposite contrast (eg. A100 has dark, A200 has light)
-  function sanitizePalette(palette, name) {
-    var defaultContrast = palette.contrastDefaultColor;
-    var lightColors = palette.contrastLightColors || [];
-    var strongLightColors = palette.contrastStrongLightColors || [];
-    var darkColors = palette.contrastDarkColors || [];
-
-    // These colors are provided as space-separated lists
-    if (typeof lightColors === 'string') lightColors = lightColors.split(' ');
-    if (typeof strongLightColors === 'string') strongLightColors = strongLightColors.split(' ');
-    if (typeof darkColors === 'string') darkColors = darkColors.split(' ');
-
-    // Cleanup after ourselves
-    delete palette.contrastDefaultColor;
-    delete palette.contrastLightColors;
-    delete palette.contrastStrongLightColors;
-    delete palette.contrastDarkColors;
-
-    // Change { 'A100': '#fffeee' } to { 'A100': { value: '#fffeee', contrast:DARK_CONTRAST_COLOR }
-    angular.forEach(palette, function(hueValue, hueName) {
-      if (angular.isObject(hueValue)) return; // Already converted
-      // Map everything to rgb colors
-      var rgbValue = colorToRgbaArray(hueValue);
-      if (!rgbValue) {
-        throw new Error("Color %1, in palette %2's hue %3, is invalid. Hex or rgb(a) color expected."
-                        .replace('%1', hueValue)
-                        .replace('%2', palette.name)
-                        .replace('%3', hueName));
-      }
-
-      palette[hueName] = {
-        value: rgbValue,
-        contrast: getContrastColor()
-      };
-      function getContrastColor() {
-        if (defaultContrast === 'light') {
-          if (darkColors.indexOf(hueName) > -1) {
-            return DARK_CONTRAST_COLOR;
-          } else {
-            return strongLightColors.indexOf(hueName) > -1 ? STRONG_LIGHT_CONTRAST_COLOR
-              : LIGHT_CONTRAST_COLOR;
-          }
-        } else {
-          if (lightColors.indexOf(hueName) > -1) {
-            return strongLightColors.indexOf(hueName) > -1 ? STRONG_LIGHT_CONTRAST_COLOR
-              : LIGHT_CONTRAST_COLOR;
-          } else {
-            return DARK_CONTRAST_COLOR;
-          }
-        }
-      }
-    });
-  }
-}
-generateAllThemes.$inject = ["$injector", "$mdTheming"];
-
-function generateTheme(theme, name, nonce) {
-  var head = document.head;
-  var firstChild = head ? head.firstElementChild : null;
-
-  if (!GENERATED[name]) {
-    // For each theme, use the color palettes specified for
-    // `primary`, `warn` and `accent` to generate CSS rules.
-    THEME_COLOR_TYPES.forEach(function(colorType) {
-      var styleStrings = parseRules(theme, colorType, rulesByType[colorType]);
-      while (styleStrings.length) {
-        var styleContent = styleStrings.shift();
-        if (styleContent) {
-          var style = document.createElement('style');
-          style.setAttribute('md-theme-style', '');
-          if (nonce) {
-            style.setAttribute('nonce', nonce);
-          }
-          style.appendChild(document.createTextNode(styleContent));
-          head.insertBefore(style, firstChild);
-        }
-      }
-    });
-
-    GENERATED[theme.name] = true;
-  }
-
-}
-
-
-function checkValidPalette(theme, colorType) {
-  // If theme attempts to use a palette that doesnt exist, throw error
-  if (!PALETTES[ (theme.colors[colorType] || {}).name ]) {
-    throw new Error(
-      "You supplied an invalid color palette for theme %1's %2 palette. Available palettes: %3"
-                    .replace('%1', theme.name)
-                    .replace('%2', colorType)
-                    .replace('%3', Object.keys(PALETTES).join(', '))
-    );
-  }
-}
-
-function colorToRgbaArray(clr) {
-  if (angular.isArray(clr) && clr.length == 3) return clr;
-  if (/^rgb/.test(clr)) {
-    return clr.replace(/(^\s*rgba?\(|\)\s*$)/g, '').split(',').map(function(value, i) {
-      return i == 3 ? parseFloat(value, 10) : parseInt(value, 10);
-    });
-  }
-  if (clr.charAt(0) == '#') clr = clr.substring(1);
-  if (!/^([a-fA-F0-9]{3}){1,2}$/g.test(clr)) return;
-
-  var dig = clr.length / 3;
-  var red = clr.substr(0, dig);
-  var grn = clr.substr(dig, dig);
-  var blu = clr.substr(dig * 2);
-  if (dig === 1) {
-    red += red;
-    grn += grn;
-    blu += blu;
-  }
-  return [parseInt(red, 16), parseInt(grn, 16), parseInt(blu, 16)];
-}
-
-function rgba(rgbArray, opacity) {
-  if ( !rgbArray ) return "rgb('0,0,0')";
-
-  if (rgbArray.length == 4) {
-    rgbArray = angular.copy(rgbArray);
-    opacity ? rgbArray.pop() : opacity = rgbArray.pop();
-  }
-  return opacity && (typeof opacity == 'number' || (typeof opacity == 'string' && opacity.length)) ?
-    'rgba(' + rgbArray.join(',') + ',' + opacity + ')' :
-    'rgb(' + rgbArray.join(',') + ')';
-}
 
 })();
 (function(){
@@ -5987,6 +4814,1253 @@ function attrNoDirective () {
   }
   MdTabInkRipple.$inject = ["$mdInkRipple"];;
 })();
+
+})();
+(function(){
+"use strict";
+
+angular.module('material.core.theming.palette', [])
+.constant('$mdColorPalette', {
+  'red': {
+    '50': '#ffebee',
+    '100': '#ffcdd2',
+    '200': '#ef9a9a',
+    '300': '#e57373',
+    '400': '#ef5350',
+    '500': '#f44336',
+    '600': '#e53935',
+    '700': '#d32f2f',
+    '800': '#c62828',
+    '900': '#b71c1c',
+    'A100': '#ff8a80',
+    'A200': '#ff5252',
+    'A400': '#ff1744',
+    'A700': '#d50000',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '50 100 200 300 A100',
+    'contrastStrongLightColors': '400 500 600 700 A200 A400 A700'
+  },
+  'pink': {
+    '50': '#fce4ec',
+    '100': '#f8bbd0',
+    '200': '#f48fb1',
+    '300': '#f06292',
+    '400': '#ec407a',
+    '500': '#e91e63',
+    '600': '#d81b60',
+    '700': '#c2185b',
+    '800': '#ad1457',
+    '900': '#880e4f',
+    'A100': '#ff80ab',
+    'A200': '#ff4081',
+    'A400': '#f50057',
+    'A700': '#c51162',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '50 100 200 A100',
+    'contrastStrongLightColors': '500 600 A200 A400 A700'
+  },
+  'purple': {
+    '50': '#f3e5f5',
+    '100': '#e1bee7',
+    '200': '#ce93d8',
+    '300': '#ba68c8',
+    '400': '#ab47bc',
+    '500': '#9c27b0',
+    '600': '#8e24aa',
+    '700': '#7b1fa2',
+    '800': '#6a1b9a',
+    '900': '#4a148c',
+    'A100': '#ea80fc',
+    'A200': '#e040fb',
+    'A400': '#d500f9',
+    'A700': '#aa00ff',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '50 100 200 A100',
+    'contrastStrongLightColors': '300 400 A200 A400 A700'
+  },
+  'deep-purple': {
+    '50': '#ede7f6',
+    '100': '#d1c4e9',
+    '200': '#b39ddb',
+    '300': '#9575cd',
+    '400': '#7e57c2',
+    '500': '#673ab7',
+    '600': '#5e35b1',
+    '700': '#512da8',
+    '800': '#4527a0',
+    '900': '#311b92',
+    'A100': '#b388ff',
+    'A200': '#7c4dff',
+    'A400': '#651fff',
+    'A700': '#6200ea',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '50 100 200 A100',
+    'contrastStrongLightColors': '300 400 A200'
+  },
+  'indigo': {
+    '50': '#e8eaf6',
+    '100': '#c5cae9',
+    '200': '#9fa8da',
+    '300': '#7986cb',
+    '400': '#5c6bc0',
+    '500': '#3f51b5',
+    '600': '#3949ab',
+    '700': '#303f9f',
+    '800': '#283593',
+    '900': '#1a237e',
+    'A100': '#8c9eff',
+    'A200': '#536dfe',
+    'A400': '#3d5afe',
+    'A700': '#304ffe',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '50 100 200 A100',
+    'contrastStrongLightColors': '300 400 A200 A400'
+  },
+  'blue': {
+    '50': '#e3f2fd',
+    '100': '#bbdefb',
+    '200': '#90caf9',
+    '300': '#64b5f6',
+    '400': '#42a5f5',
+    '500': '#2196f3',
+    '600': '#1e88e5',
+    '700': '#1976d2',
+    '800': '#1565c0',
+    '900': '#0d47a1',
+    'A100': '#82b1ff',
+    'A200': '#448aff',
+    'A400': '#2979ff',
+    'A700': '#2962ff',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '50 100 200 300 400 A100',
+    'contrastStrongLightColors': '500 600 700 A200 A400 A700'
+  },
+  'light-blue': {
+    '50': '#e1f5fe',
+    '100': '#b3e5fc',
+    '200': '#81d4fa',
+    '300': '#4fc3f7',
+    '400': '#29b6f6',
+    '500': '#03a9f4',
+    '600': '#039be5',
+    '700': '#0288d1',
+    '800': '#0277bd',
+    '900': '#01579b',
+    'A100': '#80d8ff',
+    'A200': '#40c4ff',
+    'A400': '#00b0ff',
+    'A700': '#0091ea',
+    'contrastDefaultColor': 'dark',
+    'contrastLightColors': '600 700 800 900 A700',
+    'contrastStrongLightColors': '600 700 800 A700'
+  },
+  'cyan': {
+    '50': '#e0f7fa',
+    '100': '#b2ebf2',
+    '200': '#80deea',
+    '300': '#4dd0e1',
+    '400': '#26c6da',
+    '500': '#00bcd4',
+    '600': '#00acc1',
+    '700': '#0097a7',
+    '800': '#00838f',
+    '900': '#006064',
+    'A100': '#84ffff',
+    'A200': '#18ffff',
+    'A400': '#00e5ff',
+    'A700': '#00b8d4',
+    'contrastDefaultColor': 'dark',
+    'contrastLightColors': '700 800 900',
+    'contrastStrongLightColors': '700 800 900'
+  },
+  'teal': {
+    '50': '#e0f2f1',
+    '100': '#b2dfdb',
+    '200': '#80cbc4',
+    '300': '#4db6ac',
+    '400': '#26a69a',
+    '500': '#009688',
+    '600': '#00897b',
+    '700': '#00796b',
+    '800': '#00695c',
+    '900': '#004d40',
+    'A100': '#a7ffeb',
+    'A200': '#64ffda',
+    'A400': '#1de9b6',
+    'A700': '#00bfa5',
+    'contrastDefaultColor': 'dark',
+    'contrastLightColors': '500 600 700 800 900',
+    'contrastStrongLightColors': '500 600 700'
+  },
+  'green': {
+    '50': '#e8f5e9',
+    '100': '#c8e6c9',
+    '200': '#a5d6a7',
+    '300': '#81c784',
+    '400': '#66bb6a',
+    '500': '#4caf50',
+    '600': '#43a047',
+    '700': '#388e3c',
+    '800': '#2e7d32',
+    '900': '#1b5e20',
+    'A100': '#b9f6ca',
+    'A200': '#69f0ae',
+    'A400': '#00e676',
+    'A700': '#00c853',
+    'contrastDefaultColor': 'dark',
+    'contrastLightColors': '500 600 700 800 900',
+    'contrastStrongLightColors': '500 600 700'
+  },
+  'light-green': {
+    '50': '#f1f8e9',
+    '100': '#dcedc8',
+    '200': '#c5e1a5',
+    '300': '#aed581',
+    '400': '#9ccc65',
+    '500': '#8bc34a',
+    '600': '#7cb342',
+    '700': '#689f38',
+    '800': '#558b2f',
+    '900': '#33691e',
+    'A100': '#ccff90',
+    'A200': '#b2ff59',
+    'A400': '#76ff03',
+    'A700': '#64dd17',
+    'contrastDefaultColor': 'dark',
+    'contrastLightColors': '700 800 900',
+    'contrastStrongLightColors': '700 800 900'
+  },
+  'lime': {
+    '50': '#f9fbe7',
+    '100': '#f0f4c3',
+    '200': '#e6ee9c',
+    '300': '#dce775',
+    '400': '#d4e157',
+    '500': '#cddc39',
+    '600': '#c0ca33',
+    '700': '#afb42b',
+    '800': '#9e9d24',
+    '900': '#827717',
+    'A100': '#f4ff81',
+    'A200': '#eeff41',
+    'A400': '#c6ff00',
+    'A700': '#aeea00',
+    'contrastDefaultColor': 'dark',
+    'contrastLightColors': '900',
+    'contrastStrongLightColors': '900'
+  },
+  'yellow': {
+    '50': '#fffde7',
+    '100': '#fff9c4',
+    '200': '#fff59d',
+    '300': '#fff176',
+    '400': '#ffee58',
+    '500': '#ffeb3b',
+    '600': '#fdd835',
+    '700': '#fbc02d',
+    '800': '#f9a825',
+    '900': '#f57f17',
+    'A100': '#ffff8d',
+    'A200': '#ffff00',
+    'A400': '#ffea00',
+    'A700': '#ffd600',
+    'contrastDefaultColor': 'dark'
+  },
+  'amber': {
+    '50': '#fff8e1',
+    '100': '#ffecb3',
+    '200': '#ffe082',
+    '300': '#ffd54f',
+    '400': '#ffca28',
+    '500': '#ffc107',
+    '600': '#ffb300',
+    '700': '#ffa000',
+    '800': '#ff8f00',
+    '900': '#ff6f00',
+    'A100': '#ffe57f',
+    'A200': '#ffd740',
+    'A400': '#ffc400',
+    'A700': '#ffab00',
+    'contrastDefaultColor': 'dark'
+  },
+  'orange': {
+    '50': '#fff3e0',
+    '100': '#ffe0b2',
+    '200': '#ffcc80',
+    '300': '#ffb74d',
+    '400': '#ffa726',
+    '500': '#ff9800',
+    '600': '#fb8c00',
+    '700': '#f57c00',
+    '800': '#ef6c00',
+    '900': '#e65100',
+    'A100': '#ffd180',
+    'A200': '#ffab40',
+    'A400': '#ff9100',
+    'A700': '#ff6d00',
+    'contrastDefaultColor': 'dark',
+    'contrastLightColors': '800 900',
+    'contrastStrongLightColors': '800 900'
+  },
+  'deep-orange': {
+    '50': '#fbe9e7',
+    '100': '#ffccbc',
+    '200': '#ffab91',
+    '300': '#ff8a65',
+    '400': '#ff7043',
+    '500': '#ff5722',
+    '600': '#f4511e',
+    '700': '#e64a19',
+    '800': '#d84315',
+    '900': '#bf360c',
+    'A100': '#ff9e80',
+    'A200': '#ff6e40',
+    'A400': '#ff3d00',
+    'A700': '#dd2c00',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '50 100 200 300 400 A100 A200',
+    'contrastStrongLightColors': '500 600 700 800 900 A400 A700'
+  },
+  'brown': {
+    '50': '#efebe9',
+    '100': '#d7ccc8',
+    '200': '#bcaaa4',
+    '300': '#a1887f',
+    '400': '#8d6e63',
+    '500': '#795548',
+    '600': '#6d4c41',
+    '700': '#5d4037',
+    '800': '#4e342e',
+    '900': '#3e2723',
+    'A100': '#d7ccc8',
+    'A200': '#bcaaa4',
+    'A400': '#8d6e63',
+    'A700': '#5d4037',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '50 100 200 A100 A200',
+    'contrastStrongLightColors': '300 400'
+  },
+  'grey': {
+    '50': '#fafafa',
+    '100': '#f5f5f5',
+    '200': '#eeeeee',
+    '300': '#e0e0e0',
+    '400': '#bdbdbd',
+    '500': '#9e9e9e',
+    '600': '#757575',
+    '700': '#616161',
+    '800': '#424242',
+    '900': '#212121',
+    'A100': '#ffffff',
+    'A200': '#000000',
+    'A400': '#303030',
+    'A700': '#616161',
+    'contrastDefaultColor': 'dark',
+    'contrastLightColors': '600 700 800 900 A200 A400 A700'
+  },
+  'blue-grey': {
+    '50': '#eceff1',
+    '100': '#cfd8dc',
+    '200': '#b0bec5',
+    '300': '#90a4ae',
+    '400': '#78909c',
+    '500': '#607d8b',
+    '600': '#546e7a',
+    '700': '#455a64',
+    '800': '#37474f',
+    '900': '#263238',
+    'A100': '#cfd8dc',
+    'A200': '#b0bec5',
+    'A400': '#78909c',
+    'A700': '#455a64',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '50 100 200 300 A100 A200',
+    'contrastStrongLightColors': '400 500 700'
+  }
+});
+
+})();
+(function(){
+"use strict";
+
+(function(angular) {
+  'use strict';
+/**
+ * @ngdoc module
+ * @name material.core.theming
+ * @description
+ * Theming
+ */
+angular.module('material.core.theming', ['material.core.theming.palette'])
+  .directive('mdTheme', ThemingDirective)
+  .directive('mdThemable', ThemableDirective)
+  .directive('mdThemesDisabled', disableThemesDirective )
+  .provider('$mdTheming', ThemingProvider)
+  .config( detectDisabledThemes )
+  .run(generateAllThemes);
+
+/**
+ * Detect if the HTML or the BODY tags has a [md-themes-disabled] attribute
+ * If yes, then immediately disable all theme stylesheet generation and DOM injection
+ */
+/**
+ * @ngInject
+ */
+function detectDisabledThemes($mdThemingProvider) {
+  var isDisabled = !!document.querySelector('[md-themes-disabled]');
+  $mdThemingProvider.disableTheming(isDisabled);
+}
+detectDisabledThemes.$inject = ["$mdThemingProvider"];
+
+/**
+ * @ngdoc service
+ * @name $mdThemingProvider
+ * @module material.core.theming
+ *
+ * @description Provider to configure the `$mdTheming` service.
+ *
+ * ### Default Theme
+ * The `$mdThemingProvider` uses by default the following theme configuration:
+ *
+ * - Primary Palette: `Primary`
+ * - Accent Palette: `Pink`
+ * - Warn Palette: `Deep-Orange`
+ * - Background Palette: `Grey`
+ *
+ * If you don't want to use the `md-theme` directive on the elements itself, you may want to overwrite
+ * the default theme.<br/>
+ * This can be done by using the following markup.
+ *
+ * <hljs lang="js">
+ *   myAppModule.config(function($mdThemingProvider) {
+ *     $mdThemingProvider
+ *       .theme('default')
+ *       .primaryPalette('blue')
+ *       .accentPalette('teal')
+ *       .warnPalette('red')
+ *       .backgroundPalette('grey');
+ *   });
+ * </hljs>
+ *
+
+ * ### Dynamic Themes
+ *
+ * By default, if you change a theme at runtime, the `$mdTheming` service will not detect those changes.<br/>
+ * If you have an application, which changes its theme on runtime, you have to enable theme watching.
+ *
+ * <hljs lang="js">
+ *   myAppModule.config(function($mdThemingProvider) {
+ *     // Enable theme watching.
+ *     $mdThemingProvider.alwaysWatchTheme(true);
+ *   });
+ * </hljs>
+ *
+ * ### Custom Theme Styles
+ *
+ * Sometimes you may want to use your own theme styles for some custom components.<br/>
+ * You are able to register your own styles by using the following markup.
+ *
+ * <hljs lang="js">
+ *   myAppModule.config(function($mdThemingProvider) {
+ *     // Register our custom stylesheet into the theming provider.
+ *     $mdThemingProvider.registerStyles(STYLESHEET);
+ *   });
+ * </hljs>
+ *
+ * The `registerStyles` method only accepts strings as value, so you're actually not able to load an external
+ * stylesheet file into the `$mdThemingProvider`.
+ *
+ * If it's necessary to load an external stylesheet, we suggest using a bundler, which supports including raw content,
+ * like [raw-loader](https://github.com/webpack/raw-loader) for `webpack`.
+ *
+ * <hljs lang="js">
+ *   myAppModule.config(function($mdThemingProvider) {
+ *     // Register your custom stylesheet into the theming provider.
+ *     $mdThemingProvider.registerStyles(require('../styles/my-component.theme.css'));
+ *   });
+ * </hljs>
+ */
+
+/**
+ * @ngdoc method
+ * @name $mdThemingProvider#registerStyles
+ * @param {string} styles The styles to be appended to Angular Material's built in theme css.
+ */
+/**
+ * @ngdoc method
+ * @name $mdThemingProvider#setNonce
+ * @param {string} nonceValue The nonce to be added as an attribute to the theme style tags.
+ * Setting a value allows the use CSP policy without using the unsafe-inline directive.
+ */
+
+/**
+ * @ngdoc method
+ * @name $mdThemingProvider#setDefaultTheme
+ * @param {string} themeName Default theme name to be applied to elements. Default value is `default`.
+ */
+
+/**
+ * @ngdoc method
+ * @name $mdThemingProvider#alwaysWatchTheme
+ * @param {boolean} watch Whether or not to always watch themes for changes and re-apply
+ * classes when they change. Default is `false`. Enabling can reduce performance.
+ */
+
+/* Some Example Valid Theming Expressions
+ * =======================================
+ *
+ * Intention group expansion: (valid for primary, accent, warn, background)
+ *
+ * {{primary-100}} - grab shade 100 from the primary palette
+ * {{primary-100-0.7}} - grab shade 100, apply opacity of 0.7
+ * {{primary-100-contrast}} - grab shade 100's contrast color
+ * {{primary-hue-1}} - grab the shade assigned to hue-1 from the primary palette
+ * {{primary-hue-1-0.7}} - apply 0.7 opacity to primary-hue-1
+ * {{primary-color}} - Generates .md-hue-1, .md-hue-2, .md-hue-3 with configured shades set for each hue
+ * {{primary-color-0.7}} - Apply 0.7 opacity to each of the above rules
+ * {{primary-contrast}} - Generates .md-hue-1, .md-hue-2, .md-hue-3 with configured contrast (ie. text) color shades set for each hue
+ * {{primary-contrast-0.7}} - Apply 0.7 opacity to each of the above rules
+ *
+ * Foreground expansion: Applies rgba to black/white foreground text
+ *
+ * {{foreground-1}} - used for primary text
+ * {{foreground-2}} - used for secondary text/divider
+ * {{foreground-3}} - used for disabled text
+ * {{foreground-4}} - used for dividers
+ *
+ */
+
+// In memory generated CSS rules; registered by theme.name
+var GENERATED = { };
+
+// In memory storage of defined themes and color palettes (both loaded by CSS, and user specified)
+var PALETTES;
+
+// Text Colors on light and dark backgrounds
+// @see https://www.google.com/design/spec/style/color.html#color-text-background-colors
+var DARK_FOREGROUND = {
+  name: 'dark',
+  '1': 'rgba(0,0,0,0.87)',
+  '2': 'rgba(0,0,0,0.54)',
+  '3': 'rgba(0,0,0,0.38)',
+  '4': 'rgba(0,0,0,0.12)'
+};
+var LIGHT_FOREGROUND = {
+  name: 'light',
+  '1': 'rgba(255,255,255,1.0)',
+  '2': 'rgba(255,255,255,0.7)',
+  '3': 'rgba(255,255,255,0.5)',
+  '4': 'rgba(255,255,255,0.12)'
+};
+
+var DARK_SHADOW = '1px 1px 0px rgba(0,0,0,0.4), -1px -1px 0px rgba(0,0,0,0.4)';
+var LIGHT_SHADOW = '';
+
+var DARK_CONTRAST_COLOR = colorToRgbaArray('rgba(0,0,0,0.87)');
+var LIGHT_CONTRAST_COLOR = colorToRgbaArray('rgba(255,255,255,0.87)');
+var STRONG_LIGHT_CONTRAST_COLOR = colorToRgbaArray('rgb(255,255,255)');
+
+var THEME_COLOR_TYPES = ['primary', 'accent', 'warn', 'background'];
+var DEFAULT_COLOR_TYPE = 'primary';
+
+// A color in a theme will use these hues by default, if not specified by user.
+var LIGHT_DEFAULT_HUES = {
+  'accent': {
+    'default': 'A200',
+    'hue-1': 'A100',
+    'hue-2': 'A400',
+    'hue-3': 'A700'
+  },
+  'background': {
+    'default': '50',
+    'hue-1': 'A100',
+    'hue-2': '100',
+    'hue-3': '300'
+  }
+};
+
+var DARK_DEFAULT_HUES = {
+  'background': {
+    'default': 'A400',
+    'hue-1': '800',
+    'hue-2': '900',
+    'hue-3': 'A200'
+  }
+};
+THEME_COLOR_TYPES.forEach(function(colorType) {
+  // Color types with unspecified default hues will use these default hue values
+  var defaultDefaultHues = {
+    'default': '500',
+    'hue-1': '300',
+    'hue-2': '800',
+    'hue-3': 'A100'
+  };
+  if (!LIGHT_DEFAULT_HUES[colorType]) LIGHT_DEFAULT_HUES[colorType] = defaultDefaultHues;
+  if (!DARK_DEFAULT_HUES[colorType]) DARK_DEFAULT_HUES[colorType] = defaultDefaultHues;
+});
+
+var VALID_HUE_VALUES = [
+  '50', '100', '200', '300', '400', '500', '600',
+  '700', '800', '900', 'A100', 'A200', 'A400', 'A700'
+];
+
+var themeConfig = {
+  disableTheming : false,   // Generate our themes at run time; also disable stylesheet DOM injection
+  generateOnDemand : false, // Whether or not themes are to be generated on-demand (vs. eagerly).
+  registeredStyles : [],    // Custom styles registered to be used in the theming of custom components.
+  nonce : null              // Nonce to be added as an attribute to the generated themes style tags.
+};
+
+/**
+ *
+ */
+function ThemingProvider($mdColorPalette) {
+  PALETTES = { };
+  var THEMES = { };
+
+  var themingProvider;
+
+  var alwaysWatchTheme = false;
+  var defaultTheme = 'default';
+
+  // Load JS Defined Palettes
+  angular.extend(PALETTES, $mdColorPalette);
+
+  // Default theme defined in core.js
+
+  ThemingService.$inject = ["$rootScope", "$log"];
+  return themingProvider = {
+    definePalette: definePalette,
+    extendPalette: extendPalette,
+    theme: registerTheme,
+
+    configuration : function() {
+      // return a read-only clone of the current configuration
+      var locals = { defaultTheme : defaultTheme, alwaysWatchTheme : alwaysWatchTheme };
+      return angular.extend( { }, config, locals );
+    },
+
+    /**
+     * Easy way to disable theming without having to use
+     * `.constant("$MD_THEME_CSS","");` This disables
+     * all dynamic theme style sheet generations and injections...
+     */
+    disableTheming: function(isDisabled) {
+      themeConfig.disableTheming = angular.isUndefined(isDisabled) || !!isDisabled;
+    },
+
+    registerStyles: function(styles) {
+      themeConfig.registeredStyles.push(styles);
+    },
+
+    setNonce: function(nonceValue) {
+      themeConfig.nonce = nonceValue;
+    },
+
+    generateThemesOnDemand: function(onDemand) {
+      themeConfig.generateOnDemand = onDemand;
+    },
+
+    setDefaultTheme: function(theme) {
+      defaultTheme = theme;
+    },
+
+    alwaysWatchTheme: function(alwaysWatch) {
+      alwaysWatchTheme = alwaysWatch;
+    },
+
+    $get: ThemingService,
+    _LIGHT_DEFAULT_HUES: LIGHT_DEFAULT_HUES,
+    _DARK_DEFAULT_HUES: DARK_DEFAULT_HUES,
+    _PALETTES: PALETTES,
+    _THEMES: THEMES,
+    _parseRules: parseRules,
+    _rgba: rgba
+  };
+
+  // Example: $mdThemingProvider.definePalette('neonRed', { 50: '#f5fafa', ... });
+  function definePalette(name, map) {
+    map = map || {};
+    PALETTES[name] = checkPaletteValid(name, map);
+    return themingProvider;
+  }
+
+  // Returns an new object which is a copy of a given palette `name` with variables from
+  // `map` overwritten
+  // Example: var neonRedMap = $mdThemingProvider.extendPalette('red', { 50: '#f5fafafa' });
+  function extendPalette(name, map) {
+    return checkPaletteValid(name,  angular.extend({}, PALETTES[name] || {}, map) );
+  }
+
+  // Make sure that palette has all required hues
+  function checkPaletteValid(name, map) {
+    var missingColors = VALID_HUE_VALUES.filter(function(field) {
+      return !map[field];
+    });
+    if (missingColors.length) {
+      throw new Error("Missing colors %1 in palette %2!"
+                      .replace('%1', missingColors.join(', '))
+                      .replace('%2', name));
+    }
+
+    return map;
+  }
+
+  // Register a theme (which is a collection of color palettes to use with various states
+  // ie. warn, accent, primary )
+  // Optionally inherit from an existing theme
+  // $mdThemingProvider.theme('custom-theme').primaryPalette('red');
+  function registerTheme(name, inheritFrom) {
+    if (THEMES[name]) return THEMES[name];
+
+    inheritFrom = inheritFrom || 'default';
+
+    var parentTheme = typeof inheritFrom === 'string' ? THEMES[inheritFrom] : inheritFrom;
+    var theme = new Theme(name);
+
+    if (parentTheme) {
+      angular.forEach(parentTheme.colors, function(color, colorType) {
+        theme.colors[colorType] = {
+          name: color.name,
+          // Make sure a COPY of the hues is given to the child color,
+          // not the same reference.
+          hues: angular.extend({}, color.hues)
+        };
+      });
+    }
+    THEMES[name] = theme;
+
+    return theme;
+  }
+
+  function Theme(name) {
+    var self = this;
+    self.name = name;
+    self.colors = {};
+
+    self.dark = setDark;
+    setDark(false);
+
+    function setDark(isDark) {
+      isDark = arguments.length === 0 ? true : !!isDark;
+
+      // If no change, abort
+      if (isDark === self.isDark) return;
+
+      self.isDark = isDark;
+
+      self.foregroundPalette = self.isDark ? LIGHT_FOREGROUND : DARK_FOREGROUND;
+      self.foregroundShadow = self.isDark ? DARK_SHADOW : LIGHT_SHADOW;
+
+      // Light and dark themes have different default hues.
+      // Go through each existing color type for this theme, and for every
+      // hue value that is still the default hue value from the previous light/dark setting,
+      // set it to the default hue value from the new light/dark setting.
+      var newDefaultHues = self.isDark ? DARK_DEFAULT_HUES : LIGHT_DEFAULT_HUES;
+      var oldDefaultHues = self.isDark ? LIGHT_DEFAULT_HUES : DARK_DEFAULT_HUES;
+      angular.forEach(newDefaultHues, function(newDefaults, colorType) {
+        var color = self.colors[colorType];
+        var oldDefaults = oldDefaultHues[colorType];
+        if (color) {
+          for (var hueName in color.hues) {
+            if (color.hues[hueName] === oldDefaults[hueName]) {
+              color.hues[hueName] = newDefaults[hueName];
+            }
+          }
+        }
+      });
+
+      return self;
+    }
+
+    THEME_COLOR_TYPES.forEach(function(colorType) {
+      var defaultHues = (self.isDark ? DARK_DEFAULT_HUES : LIGHT_DEFAULT_HUES)[colorType];
+      self[colorType + 'Palette'] = function setPaletteType(paletteName, hues) {
+        var color = self.colors[colorType] = {
+          name: paletteName,
+          hues: angular.extend({}, defaultHues, hues)
+        };
+
+        Object.keys(color.hues).forEach(function(name) {
+          if (!defaultHues[name]) {
+            throw new Error("Invalid hue name '%1' in theme %2's %3 color %4. Available hue names: %4"
+              .replace('%1', name)
+              .replace('%2', self.name)
+              .replace('%3', paletteName)
+              .replace('%4', Object.keys(defaultHues).join(', '))
+            );
+          }
+        });
+        Object.keys(color.hues).map(function(key) {
+          return color.hues[key];
+        }).forEach(function(hueValue) {
+          if (VALID_HUE_VALUES.indexOf(hueValue) == -1) {
+            throw new Error("Invalid hue value '%1' in theme %2's %3 color %4. Available hue values: %5"
+              .replace('%1', hueValue)
+              .replace('%2', self.name)
+              .replace('%3', colorType)
+              .replace('%4', paletteName)
+              .replace('%5', VALID_HUE_VALUES.join(', '))
+            );
+          }
+        });
+        return self;
+      };
+
+      self[colorType + 'Color'] = function() {
+        var args = Array.prototype.slice.call(arguments);
+        console.warn('$mdThemingProviderTheme.' + colorType + 'Color() has been deprecated. ' +
+                     'Use $mdThemingProviderTheme.' + colorType + 'Palette() instead.');
+        return self[colorType + 'Palette'].apply(self, args);
+      };
+    });
+  }
+
+  /**
+   * @ngdoc service
+   * @name $mdTheming
+   *
+   * @description
+   *
+   * Service that makes an element apply theming related classes to itself.
+   *
+   * ```js
+   * app.directive('myFancyDirective', function($mdTheming) {
+   *   return {
+   *     restrict: 'e',
+   *     link: function(scope, el, attrs) {
+   *       $mdTheming(el);
+   *     }
+   *   };
+   * });
+   * ```
+   * @param {el=} element to apply theming to
+   */
+  /* @ngInject */
+  function ThemingService($rootScope, $log) {
+        // Allow us to be invoked via a linking function signature.
+    var applyTheme = function (scope, el) {
+          if (el === undefined) { el = scope; scope = undefined; }
+          if (scope === undefined) { scope = $rootScope; }
+          applyTheme.inherit(el, el);
+        };
+
+    applyTheme.THEMES = angular.extend({}, THEMES);
+    applyTheme.PALETTES = angular.extend({}, PALETTES);
+    applyTheme.inherit = inheritTheme;
+    applyTheme.registered = registered;
+    applyTheme.defaultTheme = function() { return defaultTheme; };
+    applyTheme.generateTheme = function(name) { generateTheme(THEMES[name], name, themeConfig.nonce); };
+
+    return applyTheme;
+
+    /**
+     * Determine is specified theme name is a valid, registered theme
+     */
+    function registered(themeName) {
+      if (themeName === undefined || themeName === '') return true;
+      return applyTheme.THEMES[themeName] !== undefined;
+    }
+
+    /**
+     * Get theme name for the element, then update with Theme CSS class
+     */
+    function inheritTheme (el, parent) {
+      var ctrl = parent.controller('mdTheme');
+      var attrThemeValue = el.attr('md-theme-watch');
+      var watchTheme = (alwaysWatchTheme || angular.isDefined(attrThemeValue)) && attrThemeValue != 'false';
+
+      updateThemeClass(lookupThemeName());
+
+      if ((alwaysWatchTheme && !registerChangeCallback()) || (!alwaysWatchTheme && watchTheme)) {
+        el.on('$destroy', $rootScope.$watch(lookupThemeName, updateThemeClass) );
+      }
+
+      /**
+       * Find the theme name from the parent controller or element data
+       */
+      function lookupThemeName() {
+        // As a few components (dialog) add their controllers later, we should also watch for a controller init.
+        ctrl = parent.controller('mdTheme') || el.data('$mdThemeController');
+        return ctrl && ctrl.$mdTheme || (defaultTheme == 'default' ? '' : defaultTheme);
+      }
+
+      /**
+       * Remove old theme class and apply a new one
+       * NOTE: if not a valid theme name, then the current name is not changed
+       */
+      function updateThemeClass(theme) {
+        if (!theme) return;
+        if (!registered(theme)) {
+          $log.warn('Attempted to use unregistered theme \'' + theme + '\'. ' +
+                    'Register it with $mdThemingProvider.theme().');
+        }
+
+        var oldTheme = el.data('$mdThemeName');
+        if (oldTheme) el.removeClass('md-' + oldTheme +'-theme');
+        el.addClass('md-' + theme + '-theme');
+        el.data('$mdThemeName', theme);
+        if (ctrl) {
+          el.data('$mdThemeController', ctrl);
+        }
+      }
+
+      /**
+       * Register change callback with parent mdTheme controller
+       */
+      function registerChangeCallback() {
+        var parentController = parent.controller('mdTheme');
+        if (!parentController) return false;
+        el.on('$destroy', parentController.registerChanges( function() {
+          updateThemeClass(lookupThemeName());
+        }));
+        return true;
+      }
+    }
+
+  }
+}
+ThemingProvider.$inject = ["$mdColorPalette"];
+
+function ThemingDirective($mdTheming, $interpolate, $log) {
+  return {
+    priority: 100,
+    link: {
+      pre: function(scope, el, attrs) {
+        var registeredCallbacks = [];
+        var ctrl = {
+          registerChanges: function (cb, context) {
+            if (context) {
+              cb = angular.bind(context, cb);
+            }
+
+            registeredCallbacks.push(cb);
+
+            return function () {
+              var index = registeredCallbacks.indexOf(cb);
+
+              if (index > -1) {
+                registeredCallbacks.splice(index, 1);
+              }
+            }
+          },
+          $setTheme: function (theme) {
+            if (!$mdTheming.registered(theme)) {
+              $log.warn('attempted to use unregistered theme \'' + theme + '\'');
+            }
+            ctrl.$mdTheme = theme;
+
+            registeredCallbacks.forEach(function (cb) {
+              cb();
+            })
+          }
+        };
+        el.data('$mdThemeController', ctrl);
+        ctrl.$setTheme($interpolate(attrs.mdTheme)(scope));
+        attrs.$observe('mdTheme', ctrl.$setTheme);
+      }
+    }
+  };
+}
+ThemingDirective.$inject = ["$mdTheming", "$interpolate", "$log"];
+
+/**
+ * Special directive that will disable ALL runtime Theme style generation and DOM injection
+ *
+ * <link rel="stylesheet" href="angular-material.min.css">
+ * <link rel="stylesheet" href="angular-material.themes.css">
+ *
+ * <body md-themes-disabled>
+ *  ...
+ * </body>
+ *
+ * Note: Using md-themes-css directive requires the developer to load external
+ * theme stylesheets; e.g. custom themes from Material-Tools:
+ *
+ *       `angular-material.themes.css`
+ *
+ * Another option is to use the ThemingProvider to configure and disable the attribute
+ * conversions; this would obviate the use of the `md-themes-css` directive
+ *
+ */
+function disableThemesDirective() {
+  themeConfig.disableTheming = true;
+
+  // Return a 1x-only, first-match attribute directive
+  return {
+    restrict : 'A',
+    priority : '900'
+  };
+}
+
+function ThemableDirective($mdTheming) {
+  return $mdTheming;
+}
+ThemableDirective.$inject = ["$mdTheming"];
+
+function parseRules(theme, colorType, rules) {
+  checkValidPalette(theme, colorType);
+
+  rules = rules.replace(/THEME_NAME/g, theme.name);
+  var generatedRules = [];
+  var color = theme.colors[colorType];
+
+  var themeNameRegex = new RegExp('\\.md-' + theme.name + '-theme', 'g');
+  // Matches '{{ primary-color }}', etc
+  var hueRegex = new RegExp('(\'|")?{{\\s*(' + colorType + ')-(color|contrast)-?(\\d\\.?\\d*)?\\s*}}(\"|\')?','g');
+  var simpleVariableRegex = /'?"?\{\{\s*([a-zA-Z]+)-(A?\d+|hue\-[0-3]|shadow|default)-?(\d\.?\d*)?(contrast)?\s*\}\}'?"?/g;
+  var palette = PALETTES[color.name];
+
+  // find and replace simple variables where we use a specific hue, not an entire palette
+  // eg. "{{primary-100}}"
+  //\(' + THEME_COLOR_TYPES.join('\|') + '\)'
+  rules = rules.replace(simpleVariableRegex, function(match, colorType, hue, opacity, contrast) {
+    if (colorType === 'foreground') {
+      if (hue == 'shadow') {
+        return theme.foregroundShadow;
+      } else {
+        return theme.foregroundPalette[hue] || theme.foregroundPalette['1'];
+      }
+    }
+
+    // `default` is also accepted as a hue-value, because the background palettes are
+    // using it as a name for the default hue.
+    if (hue.indexOf('hue') === 0 || hue === 'default') {
+      hue = theme.colors[colorType].hues[hue];
+    }
+
+    return rgba( (PALETTES[ theme.colors[colorType].name ][hue] || '')[contrast ? 'contrast' : 'value'], opacity );
+  });
+
+  // For each type, generate rules for each hue (ie. default, md-hue-1, md-hue-2, md-hue-3)
+  angular.forEach(color.hues, function(hueValue, hueName) {
+    var newRule = rules
+      .replace(hueRegex, function(match, _, colorType, hueType, opacity) {
+        return rgba(palette[hueValue][hueType === 'color' ? 'value' : 'contrast'], opacity);
+      });
+    if (hueName !== 'default') {
+      newRule = newRule.replace(themeNameRegex, '.md-' + theme.name + '-theme.md-' + hueName);
+    }
+
+    // Don't apply a selector rule to the default theme, making it easier to override
+    // styles of the base-component
+    if (theme.name == 'default') {
+      var themeRuleRegex = /((?:(?:(?: |>|\.|\w|-|:|\(|\)|\[|\]|"|'|=)+) )?)((?:(?:\w|\.|-)+)?)\.md-default-theme((?: |>|\.|\w|-|:|\(|\)|\[|\]|"|'|=)*)/g;
+      newRule = newRule.replace(themeRuleRegex, function(match, prefix, target, suffix) {
+        return match + ', ' + prefix + target + suffix;
+      });
+    }
+    generatedRules.push(newRule);
+  });
+
+  return generatedRules;
+}
+
+var rulesByType = {};
+
+// Generate our themes at run time given the state of THEMES and PALETTES
+function generateAllThemes($injector, $mdTheming) {
+  var head = document.head;
+  var firstChild = head ? head.firstElementChild : null;
+  var themeCss = !themeConfig.disableTheming && $injector.has('$MD_THEME_CSS') ? $injector.get('$MD_THEME_CSS') : '';
+
+  // Append our custom registered styles to the theme stylesheet.
+  themeCss += themeConfig.registeredStyles.join('');
+
+  if ( !firstChild ) return;
+  if (themeCss.length === 0) return; // no rules, so no point in running this expensive task
+
+  // Expose contrast colors for palettes to ensure that text is always readable
+  angular.forEach(PALETTES, sanitizePalette);
+
+  // MD_THEME_CSS is a string generated by the build process that includes all the themable
+  // components as templates
+
+  // Break the CSS into individual rules
+  var rules = themeCss
+                  .split(/\}(?!(\}|'|"|;))/)
+                  .filter(function(rule) { return rule && rule.trim().length; })
+                  .map(function(rule) { return rule.trim() + '}'; });
+
+
+  var ruleMatchRegex = new RegExp('md-(' + THEME_COLOR_TYPES.join('|') + ')', 'g');
+
+  THEME_COLOR_TYPES.forEach(function(type) {
+    rulesByType[type] = '';
+  });
+
+
+  // Sort the rules based on type, allowing us to do color substitution on a per-type basis
+  rules.forEach(function(rule) {
+    var match = rule.match(ruleMatchRegex);
+    // First: test that if the rule has '.md-accent', it goes into the accent set of rules
+    for (var i = 0, type; type = THEME_COLOR_TYPES[i]; i++) {
+      if (rule.indexOf('.md-' + type) > -1) {
+        return rulesByType[type] += rule;
+      }
+    }
+
+    // If no eg 'md-accent' class is found, try to just find 'accent' in the rule and guess from
+    // there
+    for (i = 0; type = THEME_COLOR_TYPES[i]; i++) {
+      if (rule.indexOf(type) > -1) {
+        return rulesByType[type] += rule;
+      }
+    }
+
+    // Default to the primary array
+    return rulesByType[DEFAULT_COLOR_TYPE] += rule;
+  });
+
+  // If themes are being generated on-demand, quit here. The user will later manually
+  // call generateTheme to do this on a theme-by-theme basis.
+  if (themeConfig.generateOnDemand) return;
+
+  angular.forEach($mdTheming.THEMES, function(theme) {
+    if (!GENERATED[theme.name] && !($mdTheming.defaultTheme() !== 'default' && theme.name === 'default')) {
+      generateTheme(theme, theme.name, themeConfig.nonce);
+    }
+  });
+
+
+  // *************************
+  // Internal functions
+  // *************************
+
+  // The user specifies a 'default' contrast color as either light or dark,
+  // then explicitly lists which hues are the opposite contrast (eg. A100 has dark, A200 has light)
+  function sanitizePalette(palette, name) {
+    var defaultContrast = palette.contrastDefaultColor;
+    var lightColors = palette.contrastLightColors || [];
+    var strongLightColors = palette.contrastStrongLightColors || [];
+    var darkColors = palette.contrastDarkColors || [];
+
+    // These colors are provided as space-separated lists
+    if (typeof lightColors === 'string') lightColors = lightColors.split(' ');
+    if (typeof strongLightColors === 'string') strongLightColors = strongLightColors.split(' ');
+    if (typeof darkColors === 'string') darkColors = darkColors.split(' ');
+
+    // Cleanup after ourselves
+    delete palette.contrastDefaultColor;
+    delete palette.contrastLightColors;
+    delete palette.contrastStrongLightColors;
+    delete palette.contrastDarkColors;
+
+    // Change { 'A100': '#fffeee' } to { 'A100': { value: '#fffeee', contrast:DARK_CONTRAST_COLOR }
+    angular.forEach(palette, function(hueValue, hueName) {
+      if (angular.isObject(hueValue)) return; // Already converted
+      // Map everything to rgb colors
+      var rgbValue = colorToRgbaArray(hueValue);
+      if (!rgbValue) {
+        throw new Error("Color %1, in palette %2's hue %3, is invalid. Hex or rgb(a) color expected."
+                        .replace('%1', hueValue)
+                        .replace('%2', palette.name)
+                        .replace('%3', hueName));
+      }
+
+      palette[hueName] = {
+        value: rgbValue,
+        contrast: getContrastColor()
+      };
+      function getContrastColor() {
+        if (defaultContrast === 'light') {
+          if (darkColors.indexOf(hueName) > -1) {
+            return DARK_CONTRAST_COLOR;
+          } else {
+            return strongLightColors.indexOf(hueName) > -1 ? STRONG_LIGHT_CONTRAST_COLOR
+              : LIGHT_CONTRAST_COLOR;
+          }
+        } else {
+          if (lightColors.indexOf(hueName) > -1) {
+            return strongLightColors.indexOf(hueName) > -1 ? STRONG_LIGHT_CONTRAST_COLOR
+              : LIGHT_CONTRAST_COLOR;
+          } else {
+            return DARK_CONTRAST_COLOR;
+          }
+        }
+      }
+    });
+  }
+}
+generateAllThemes.$inject = ["$injector", "$mdTheming"];
+
+function generateTheme(theme, name, nonce) {
+  var head = document.head;
+  var firstChild = head ? head.firstElementChild : null;
+
+  if (!GENERATED[name]) {
+    // For each theme, use the color palettes specified for
+    // `primary`, `warn` and `accent` to generate CSS rules.
+    THEME_COLOR_TYPES.forEach(function(colorType) {
+      var styleStrings = parseRules(theme, colorType, rulesByType[colorType]);
+      while (styleStrings.length) {
+        var styleContent = styleStrings.shift();
+        if (styleContent) {
+          var style = document.createElement('style');
+          style.setAttribute('md-theme-style', '');
+          if (nonce) {
+            style.setAttribute('nonce', nonce);
+          }
+          style.appendChild(document.createTextNode(styleContent));
+          head.insertBefore(style, firstChild);
+        }
+      }
+    });
+
+    GENERATED[theme.name] = true;
+  }
+
+}
+
+
+function checkValidPalette(theme, colorType) {
+  // If theme attempts to use a palette that doesnt exist, throw error
+  if (!PALETTES[ (theme.colors[colorType] || {}).name ]) {
+    throw new Error(
+      "You supplied an invalid color palette for theme %1's %2 palette. Available palettes: %3"
+                    .replace('%1', theme.name)
+                    .replace('%2', colorType)
+                    .replace('%3', Object.keys(PALETTES).join(', '))
+    );
+  }
+}
+
+function colorToRgbaArray(clr) {
+  if (angular.isArray(clr) && clr.length == 3) return clr;
+  if (/^rgb/.test(clr)) {
+    return clr.replace(/(^\s*rgba?\(|\)\s*$)/g, '').split(',').map(function(value, i) {
+      return i == 3 ? parseFloat(value, 10) : parseInt(value, 10);
+    });
+  }
+  if (clr.charAt(0) == '#') clr = clr.substring(1);
+  if (!/^([a-fA-F0-9]{3}){1,2}$/g.test(clr)) return;
+
+  var dig = clr.length / 3;
+  var red = clr.substr(0, dig);
+  var grn = clr.substr(dig, dig);
+  var blu = clr.substr(dig * 2);
+  if (dig === 1) {
+    red += red;
+    grn += grn;
+    blu += blu;
+  }
+  return [parseInt(red, 16), parseInt(grn, 16), parseInt(blu, 16)];
+}
+
+function rgba(rgbArray, opacity) {
+  if ( !rgbArray ) return "rgb('0,0,0')";
+
+  if (rgbArray.length == 4) {
+    rgbArray = angular.copy(rgbArray);
+    opacity ? rgbArray.pop() : opacity = rgbArray.pop();
+  }
+  return opacity && (typeof opacity == 'number' || (typeof opacity == 'string' && opacity.length)) ?
+    'rgba(' + rgbArray.join(',') + ',' + opacity + ')' :
+    'rgb(' + rgbArray.join(',') + ')';
+}
+
+
+})(window.angular);
 
 })();
 (function(){
@@ -11060,6 +11134,10 @@ angular.module('material.components.input', [
  * <b>Exception:</b> Hidden inputs (`<input type="hidden" />`) are ignored and will not throw an error, so
  * you may combine these with other inputs.
  *
+ * <b>Note:</b> When using `ngMessages` with your input element, make sure the message and container elements
+ * are *block* elements, otherwise animations applied to the messages will not look as intended. Either use a `div` and
+ * apply the `ng-message` and `ng-messages` classes respectively, or use the `md-block` class on your element.
+ *
  * @param md-is-error {expression=} When the given expression evaluates to true, the input container
  *   will go into error state. Defaults to erroring if the input has been touched and is invalid.
  * @param md-no-float {boolean=} When present, `placeholder` attributes on the input will not be converted to floating
@@ -11226,7 +11304,7 @@ function labelDirective() {
  *   <md-input-container>
  *     <label>Favorite Color</label>
  *     <input name="favoriteColor" ng-model="favoriteColor" required>
- *     <div ng-messages="userForm.lastName.$error">
+ *     <div ng-messages="colorForm.favoriteColor.$error">
  *       <div ng-message="required">This is required!</div>
  *     </div>
  *   </md-input-container>
@@ -22705,7 +22783,8 @@ angular
  *     `$mdBottomsheet` or `$mdSidenav`, which contains the autocomplete, is opening. <br/><br/>
  *     Also the autocomplete will immediately focus the input element.
  * @param {boolean=} md-no-asterisk When present, asterisk will not be appended to the floating label
- * @param {boolean=} md-autoselect If true, the first item will be selected by default
+ * @param {boolean=} md-autoselect If set to true, the first item will be automatically selected
+ *     in the dropdown upon open.
  * @param {string=} md-menu-class This will be applied to the dropdown menu for styling
  * @param {string=} md-floating-label This will add a floating label to autocomplete and wrap it in
  *     `md-input-container`
@@ -31763,4 +31842,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/** * Mixin to create
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-ff10018"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-9ccf611"}};

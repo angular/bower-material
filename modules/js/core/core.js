@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-ff10018
+ * v1.1.0-rc.5-master-9ccf611
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3567,8 +3567,25 @@ function InterimElementProvider() {
 
     // Register other, special directive functions for the Layout features:
     module
-      .directive('mdLayoutCss'  , disableLayoutDirective )
-      .directive('ngCloak'      ,  buildCloakInterceptor('ng-cloak'))
+
+      .provider('$$mdLayout'     , function() {
+        // Publish internal service for Layouts
+        return {
+          $get : angular.noop,
+          validateAttributeValue : validateAttributeValue,
+          validateAttributeUsage : validateAttributeUsage,
+          /**
+           * Easy way to disable/enable the Layout API.
+           * When disabled, this stops all attribute-to-classname generations
+           */
+          disableLayouts  : function(isDisabled) {
+            config.enabled =  (isDisabled !== true);
+          }
+        };
+      })
+
+      .directive('mdLayoutCss'        , disableLayoutDirective )
+      .directive('ngCloak'            , buildCloakInterceptor('ng-cloak'))
 
       .directive('layoutWrap'   , attributeWithoutValue('layout-wrap'))
       .directive('layoutNowrap' , attributeWithoutValue('layout-nowrap'))
@@ -3592,7 +3609,10 @@ function InterimElementProvider() {
       .directive('hideLtMd'       , warnAttrNotSupported('hide-lt-md'))
       .directive('hideLtLg'       , warnAttrNotSupported('hide-lt-lg'))
       .directive('showLtMd'       , warnAttrNotSupported('show-lt-md'))
-      .directive('showLtLg'       , warnAttrNotSupported('show-lt-lg'));
+      .directive('showLtLg'       , warnAttrNotSupported('show-lt-lg'))
+
+      // Determine if
+      .config( detectDisabledLayouts );
 
     /**
      * Converts snake_case to camelCase.
@@ -3608,6 +3628,21 @@ function InterimElementProvider() {
     }
 
   }
+
+
+  /**
+    * Detect if any of the HTML tags has a [md-layouts-disabled] attribute;
+    * If yes, then immediately disable all layout API features
+    *
+    * Note: this attribute should be specified on either the HTML or BODY tags
+    */
+   /**
+    * ngInject
+    */
+   function detectDisabledLayouts() {
+     var isDisabled = !!document.querySelector('[md-layouts-disabled]');
+     config.enabled = !isDisabled;
+   }
 
   /**
    * Special directive that will disable ALL Layout conversions of layout
@@ -3630,13 +3665,12 @@ function InterimElementProvider() {
    *
    */
   function disableLayoutDirective() {
+    // Return a 1x-only, first-match attribute directive
+    config.enabled = false;
+
     return {
       restrict : 'A',
-      priority : '900',
-      compile  : function(element, attr) {
-        config.enabled = false;
-        return angular.noop;
-      }
+      priority : '900'
     };
   }
 
@@ -5061,6 +5095,8 @@ angular.module('material.core.theming.palette', [])
   }
 });
 
+(function(angular) {
+  'use strict';
 /**
  * @ngdoc module
  * @name material.core.theming
@@ -5070,9 +5106,23 @@ angular.module('material.core.theming.palette', [])
 angular.module('material.core.theming', ['material.core.theming.palette'])
   .directive('mdTheme', ThemingDirective)
   .directive('mdThemable', ThemableDirective)
-  .directive('mdThemesCss', disableThemesDirective )
+  .directive('mdThemesDisabled', disableThemesDirective )
   .provider('$mdTheming', ThemingProvider)
+  .config( detectDisabledThemes )
   .run(generateAllThemes);
+
+/**
+ * Detect if the HTML or the BODY tags has a [md-themes-disabled] attribute
+ * If yes, then immediately disable all theme stylesheet generation and DOM injection
+ */
+/**
+ * ngInject
+ */
+function detectDisabledThemes($mdThemingProvider) {
+  var isDisabled = !!document.querySelector('[md-themes-disabled]');
+  $mdThemingProvider.disableTheming(isDisabled);
+}
+detectDisabledThemes.$inject = ["$mdThemingProvider"];
 
 /**
  * @ngdoc service
@@ -5266,23 +5316,24 @@ var VALID_HUE_VALUES = [
   '700', '800', '900', 'A100', 'A200', 'A400', 'A700'
 ];
 
-// Whether or not themes are to be generated on-demand (vs. eagerly).
-var generateOnDemand = false;
+var themeConfig = {
+  disableTheming : false,   // Generate our themes at run time; also disable stylesheet DOM injection
+  generateOnDemand : false, // Whether or not themes are to be generated on-demand (vs. eagerly).
+  registeredStyles : [],    // Custom styles registered to be used in the theming of custom components.
+  nonce : null              // Nonce to be added as an attribute to the generated themes style tags.
+};
 
-// Nonce to be added as an attribute to the generated themes style tags.
-var nonce = null;
-var disableTheming = false;
-
-// Custom styles registered to be used in the theming of custom components.
-var registeredStyles = [];
-
+/**
+ *
+ */
 function ThemingProvider($mdColorPalette) {
   PALETTES = { };
   var THEMES = { };
 
   var themingProvider;
-  var defaultTheme = 'default';
+
   var alwaysWatchTheme = false;
+  var defaultTheme = 'default';
 
   // Load JS Defined Palettes
   angular.extend(PALETTES, $mdColorPalette);
@@ -5295,21 +5346,31 @@ function ThemingProvider($mdColorPalette) {
     extendPalette: extendPalette,
     theme: registerTheme,
 
+    configuration : function() {
+      // return a read-only clone of the current configuration
+      var locals = { defaultTheme : defaultTheme, alwaysWatchTheme : alwaysWatchTheme };
+      return angular.extend( { }, config, locals );
+    },
+
     /**
      * Easy way to disable theming without having to use
      * `.constant("$MD_THEME_CSS","");` This disables
      * all dynamic theme style sheet generations and injections...
      */
-    disableTheming: function() {
-      disableTheming = true;
+    disableTheming: function(isDisabled) {
+      themeConfig.disableTheming = angular.isUndefined(isDisabled) || !!isDisabled;
     },
 
     registerStyles: function(styles) {
-      registeredStyles.push(styles);
+      themeConfig.registeredStyles.push(styles);
     },
 
     setNonce: function(nonceValue) {
-      nonce = nonceValue;
+      themeConfig.nonce = nonceValue;
+    },
+
+    generateThemesOnDemand: function(onDemand) {
+      themeConfig.generateOnDemand = onDemand;
     },
 
     setDefaultTheme: function(theme) {
@@ -5318,10 +5379,6 @@ function ThemingProvider($mdColorPalette) {
 
     alwaysWatchTheme: function(alwaysWatch) {
       alwaysWatchTheme = alwaysWatch;
-    },
-
-    generateThemesOnDemand: function(onDemand) {
-      generateOnDemand = onDemand;
     },
 
     $get: ThemingService,
@@ -5505,7 +5562,7 @@ function ThemingProvider($mdColorPalette) {
     applyTheme.inherit = inheritTheme;
     applyTheme.registered = registered;
     applyTheme.defaultTheme = function() { return defaultTheme; };
-    applyTheme.generateTheme = function(name) { generateTheme(THEMES[name], name, nonce); };
+    applyTheme.generateTheme = function(name) { generateTheme(THEMES[name], name, themeConfig.nonce); };
 
     return applyTheme;
 
@@ -5527,7 +5584,9 @@ function ThemingProvider($mdColorPalette) {
 
       updateThemeClass(lookupThemeName());
 
-      el.on('$destroy', watchTheme ? $rootScope.$watch(lookupThemeName, updateThemeClass) : angular.noop );
+      if ((alwaysWatchTheme && !registerChangeCallback()) || (!alwaysWatchTheme && watchTheme)) {
+        el.on('$destroy', $rootScope.$watch(lookupThemeName, updateThemeClass) );
+      }
 
       /**
        * Find the theme name from the parent controller or element data
@@ -5556,6 +5615,18 @@ function ThemingProvider($mdColorPalette) {
         if (ctrl) {
           el.data('$mdThemeController', ctrl);
         }
+      }
+
+      /**
+       * Register change callback with parent mdTheme controller
+       */
+      function registerChangeCallback() {
+        var parentController = parent.controller('mdTheme');
+        if (!parentController) return false;
+        el.on('$destroy', parentController.registerChanges( function() {
+          updateThemeClass(lookupThemeName());
+        }));
+        return true;
       }
     }
 
@@ -5611,7 +5682,7 @@ ThemingDirective.$inject = ["$mdTheming", "$interpolate", "$log"];
  * <link rel="stylesheet" href="angular-material.min.css">
  * <link rel="stylesheet" href="angular-material.themes.css">
  *
- * <body md-theme-css>
+ * <body md-themes-disabled>
  *  ...
  * </body>
  *
@@ -5625,13 +5696,12 @@ ThemingDirective.$inject = ["$mdTheming", "$interpolate", "$log"];
  *
  */
 function disableThemesDirective() {
+  themeConfig.disableTheming = true;
+
+  // Return a 1x-only, first-match attribute directive
   return {
     restrict : 'A',
-    priority : '900',
-    compile  : function() {
-      disableTheming = false;
-      return angular.noop;
-    }
+    priority : '900'
   };
 }
 
@@ -5704,9 +5774,10 @@ var rulesByType = {};
 function generateAllThemes($injector, $mdTheming) {
   var head = document.head;
   var firstChild = head ? head.firstElementChild : null;
-  var themeCss = !disableTheming && $injector.has('$MD_THEME_CSS') ? $injector.get('$MD_THEME_CSS') : '';
+  var themeCss = !themeConfig.disableTheming && $injector.has('$MD_THEME_CSS') ? $injector.get('$MD_THEME_CSS') : '';
+
   // Append our custom registered styles to the theme stylesheet.
-  themeCss += registeredStyles.join('');
+  themeCss += themeConfig.registeredStyles.join('');
 
   if ( !firstChild ) return;
   if (themeCss.length === 0) return; // no rules, so no point in running this expensive task
@@ -5755,11 +5826,11 @@ function generateAllThemes($injector, $mdTheming) {
 
   // If themes are being generated on-demand, quit here. The user will later manually
   // call generateTheme to do this on a theme-by-theme basis.
-  if (generateOnDemand) return;
+  if (themeConfig.generateOnDemand) return;
 
   angular.forEach($mdTheming.THEMES, function(theme) {
     if (!GENERATED[theme.name] && !($mdTheming.defaultTheme() !== 'default' && theme.name === 'default')) {
-      generateTheme(theme, theme.name, nonce);
+      generateTheme(theme, theme.name, themeConfig.nonce);
     }
   });
 
@@ -5899,6 +5970,9 @@ function rgba(rgbArray, opacity) {
     'rgba(' + rgbArray.join(',') + ',' + opacity + ')' :
     'rgb(' + rgbArray.join(',') + ')';
 }
+
+
+})(window.angular);
 
 // Polyfill angular < 1.4 (provide $animateCss)
 angular

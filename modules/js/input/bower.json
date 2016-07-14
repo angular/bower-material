@@ -1,7 +1,7 @@
 {
   "name": "angular-material-input",
-  "version": "1.1.0-rc.5-master-ff10018",
+  "version": "1.1.0-rc.5-master-9ccf611",
   "dependencies": {
-    "angular-material-core": "1.1.0-rc.5-master-ff10018"
+    "angular-material-core": "1.1.0-rc.5-master-9ccf611"
   }
 }
