@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d897b83
+ * v1.1.0-rc.5-master-ff10018
  */
 goog.provide('ng.material.components.navBar');
 goog.require('ng.material.core');
@@ -114,7 +114,7 @@ function MdNavBar($mdAria) {
     template:
       '<div class="md-nav-bar">' +
         '<nav role="navigation">' +
-          '<ul class="_md-nav-bar-list" layout="row" ng-transclude role="listbox"' +
+          '<ul class="_md-nav-bar-list" ng-transclude role="listbox"' +
             'tabindex="0"' +
             'ng-focus="ctrl.onFocus()"' +
             'ng-blur="ctrl.onBlur()"' +

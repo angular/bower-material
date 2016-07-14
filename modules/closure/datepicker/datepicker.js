@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d897b83
+ * v1.1.0-rc.5-master-ff10018
  */
 goog.provide('ng.material.components.datepicker');
 goog.require('ng.material.components.icon');
@@ -410,6 +410,24 @@ angular.module('material.components.datepicker', [
       date.getDate()
     ].join('-');
   };
+
+  /**
+   * Util to trigger an extra digest on a parent scope, in order to to ensure that
+   * any child virtual repeaters have updated. This is necessary, because the virtual
+   * repeater doesn't update the $index the first time around since the content isn't
+   * in place yet. The case, in which this is an issue, is when the repeater has less
+   * than a page of content (e.g. a month or year view has a min or max date).
+   */
+  CalendarCtrl.prototype.updateVirtualRepeat = function() {
+    var scope = this.$scope;
+    var virtualRepeatResizeListener = scope.$on('$md-resize-enable', function() {
+      if (!scope.$$phase) {
+        scope.$apply();
+      }
+
+      virtualRepeatResizeListener();
+    });
+  };
 })();
 
 (function() {
@@ -563,6 +581,7 @@ angular.module('material.components.datepicker', [
     }
 
     this.attachScopeListeners();
+    calendarCtrl.updateVirtualRepeat();
 
     // Fire the initial render, since we might have missed it the first time it fired.
     calendarCtrl.ngModelCtrl && calendarCtrl.ngModelCtrl.$render();
@@ -1068,7 +1087,7 @@ angular.module('material.components.datepicker', [
    * Controller for the mdCalendar component.
    * ngInject @constructor
    */
-  function CalendarYearCtrl($element, $scope, $animate, $q, $$mdDateUtil, $timeout) {
+  function CalendarYearCtrl($element, $scope, $animate, $q, $$mdDateUtil) {
 
     /** @final {!angular.JQLite} */
     this.$element = $element;
@@ -1084,9 +1103,6 @@ angular.module('material.components.datepicker', [
 
     /** @final */
     this.dateUtil = $$mdDateUtil;
-
-    /** @final */
-    this.$timeout = $timeout;
 
     /** @final {HTMLElement} */
     this.calendarScroller = $element[0].querySelector('.md-virtual-repeat-scroller');
@@ -1111,7 +1127,7 @@ angular.module('material.components.datepicker', [
       self.calendarCtrl.setCurrentView('month', $$mdDateUtil.getTimestampFromNode(this));
     };
   }
-  CalendarYearCtrl.$inject = ["$element", "$scope", "$animate", "$q", "$$mdDateUtil", "$timeout"];
+  CalendarYearCtrl.$inject = ["$element", "$scope", "$animate", "$q", "$$mdDateUtil"];
 
   /**
    * Initialize the controller by saving a reference to the calendar and
@@ -1129,12 +1145,6 @@ angular.module('material.components.datepicker', [
      */
     this.items = { length: 400 };
 
-    if (maxDate && minDate) {
-      // Limit the number of years if min and max dates are set.
-      var numYears = this.dateUtil.getYearDistance(minDate, maxDate) + 1;
-      this.items.length = Math.max(numYears, 1);
-    }
-
     this.firstRenderableDate = this.dateUtil.incrementYears(calendarCtrl.today, - (this.items.length / 2));
 
     if (minDate && minDate > this.firstRenderableDate) {
@@ -1145,13 +1155,14 @@ angular.module('material.components.datepicker', [
       this.firstRenderableDate = this.dateUtil.incrementMonths(maxDate, - (this.items.length - 1));
     }
 
-    // Trigger an extra digest to ensure that the virtual repeater has updated. This
-    // is necessary, because the virtual repeater doesn't update the $index the first
-    // time around since the content isn't in place yet. The case, in which this is an
-    // issues, is when the repeater has less than a page of content (e.g. there's a min
-    // and max date).
-    if (minDate || maxDate) this.$timeout();
+    if (maxDate && minDate) {
+      // Limit the number of years if min and max dates are set.
+      var numYears = this.dateUtil.getYearDistance(this.firstRenderableDate, maxDate) + 1;
+      this.items.length = Math.max(numYears, 1);
+    }
+
     this.attachScopeListeners();
+    calendarCtrl.updateVirtualRepeat();
 
     // Fire the initial render, since we might have missed it the first time it fired.
     calendarCtrl.ngModelCtrl && calendarCtrl.ngModelCtrl.$render();
@@ -1372,7 +1383,7 @@ angular.module('material.components.datepicker', [
 
     var cellText = this.dateLocale.shortMonths[month];
 
-    if (this.dateUtil.isDateWithinRange(firstOfMonth,
+    if (this.dateUtil.isMonthWithinRange(firstOfMonth,
         calendarCtrl.minDate, calendarCtrl.maxDate)) {
       var selectionIndicator = document.createElement('span');
       selectionIndicator.classList.add('md-calendar-date-selection-indicator');
@@ -1760,7 +1771,8 @@ angular.module('material.components.datepicker', [
       incrementYears: incrementYears,
       getYearDistance: getYearDistance,
       clampDate: clampDate,
-      getTimestampFromNode: getTimestampFromNode
+      getTimestampFromNode: getTimestampFromNode,
+      isMonthWithinRange: isMonthWithinRange
     };
 
     /**
@@ -2024,6 +2036,20 @@ angular.module('material.components.datepicker', [
        }
      }
 
+     /**
+      * Checks if a month is within a min and max range, ignoring the date and time components.
+      * If minDate or maxDate are not dates, they are ignored.
+      * @param {Date} date
+      * @param {Date} minDate
+      * @param {Date} maxDate
+      */
+     function isMonthWithinRange(date, minDate, maxDate) {
+       var month = date.getMonth();
+       var year = date.getFullYear();
+
+       return (!minDate || minDate.getFullYear() < year || minDate.getMonth() <= month) &&
+        (!maxDate || maxDate.getFullYear() > year || maxDate.getMonth() >= month);
+     }
   });
 })();
 

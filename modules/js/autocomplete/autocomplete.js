@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d897b83
+ * v1.1.0-rc.5-master-ff10018
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1051,7 +1051,6 @@ function MdAutocomplete ($$mdSvgRegistry) {
 
       return '\
         <md-autocomplete-wrap\
-            layout="row"\
             ng-class="{ \'md-whiteframe-z1\': !floatingLabel, \'md-menu-showing\': !$mdAutocompleteCtrl.hidden }">\
           ' + getInputElement() + '\
           <md-progress-linear\
@@ -1107,7 +1106,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
       function getInputElement () {
         if (attr.mdFloatingLabel) {
           return '\
-            <md-input-container flex ng-if="floatingLabel">\
+            <md-input-container ng-if="floatingLabel">\
               <label>{{floatingLabel}}</label>\
               <input type="search"\
                   ' + (tabindex != null ? 'tabindex="' + tabindex + '"' : '') + '\
@@ -1137,7 +1136,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
             </md-input-container>';
         } else {
           return '\
-            <input flex type="search"\
+            <input type="search"\
                 ' + (tabindex != null ? 'tabindex="' + tabindex + '"' : '') + '\
                 id="{{ inputId || \'input-\' + $mdAutocompleteCtrl.id }}"\
                 name="{{inputName}}"\

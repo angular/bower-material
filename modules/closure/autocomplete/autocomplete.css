@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d897b83
+ * v1.1.0-rc.5-master-ff10018
  */
 /**
  * Mixin to create a primary checkbox.
@@ -84,12 +84,21 @@ md-autocomplete {
       width: 30px;
       height: 30px; }
   md-autocomplete md-autocomplete-wrap {
-    display: block;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: row;
+        flex-direction: row;
+    box-sizing: border-box;
     position: relative;
     overflow: visible;
     height: 40px; }
     md-autocomplete md-autocomplete-wrap.md-menu-showing {
       z-index: 51; }
+    md-autocomplete md-autocomplete-wrap md-input-container, md-autocomplete md-autocomplete-wrap input {
+      -ms-flex: 1 1 0%;
+          flex: 1 1 0%;
+      box-sizing: border-box;
+      min-width: 0; }
     md-autocomplete md-autocomplete-wrap md-progress-linear {
       position: absolute;
       bottom: -2px;

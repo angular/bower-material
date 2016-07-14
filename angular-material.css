@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d897b83
+ * v1.1.0-rc.5-master-ff10018
  */
 /**
  * Mixin to create a primary checkbox.
@@ -367,12 +367,21 @@ md-autocomplete {
       width: 30px;
       height: 30px; }
   md-autocomplete md-autocomplete-wrap {
-    display: block;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: row;
+        flex-direction: row;
+    box-sizing: border-box;
     position: relative;
     overflow: visible;
     height: 40px; }
     md-autocomplete md-autocomplete-wrap.md-menu-showing {
       z-index: 51; }
+    md-autocomplete md-autocomplete-wrap md-input-container, md-autocomplete md-autocomplete-wrap input {
+      -ms-flex: 1 1 0%;
+          flex: 1 1 0%;
+      box-sizing: border-box;
+      min-width: 0; }
     md-autocomplete md-autocomplete-wrap md-progress-linear {
       position: absolute;
       bottom: -2px;
@@ -3058,7 +3067,12 @@ md-menu-content.md-menu-bar-menu.md-dense {
   outline: none;
   list-style: none;
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  box-sizing: border-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+      flex-direction: row; }
 
 .md-nav-item:first-of-type {
   margin-left: 8px; }
@@ -3152,7 +3166,8 @@ md-nav-extra-content {
             transform: rotate(360deg); } }
 
 md-progress-circular {
-  position: relative; }
+  position: relative;
+  display: block; }
   md-progress-circular._md-progress-circular-disabled {
     visibility: hidden; }
   md-progress-circular.md-mode-indeterminate svg {
@@ -4894,6 +4909,7 @@ md-toast {
   md-toast .md-toast-content {
     display: -ms-flexbox;
     display: flex;
+    direction: row;
     -ms-flex-align: center;
         align-items: center;
     max-height: 168px;
@@ -4917,6 +4933,11 @@ md-toast {
     [dir=rtl] md-toast .md-toast-content {
       -ms-flex-pack: end;
           justify-content: flex-end; }
+    md-toast .md-toast-content span {
+      -ms-flex: 1 1 0%;
+          flex: 1 1 0%;
+      box-sizing: border-box;
+      min-width: 0; }
   md-toast.md-capsule {
     border-radius: 24px; }
     md-toast.md-capsule .md-toast-content {

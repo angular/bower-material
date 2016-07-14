@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d897b83
+ * v1.1.0-rc.5-master-ff10018
  */
 /**
  * Mixin to create a primary checkbox.
@@ -28,6 +28,7 @@ md-toast {
   md-toast .md-toast-content {
     display: -ms-flexbox;
     display: flex;
+    direction: row;
     -ms-flex-align: center;
         align-items: center;
     max-height: 168px;
@@ -51,6 +52,11 @@ md-toast {
     [dir=rtl] md-toast .md-toast-content {
       -ms-flex-pack: end;
           justify-content: flex-end; }
+    md-toast .md-toast-content span {
+      -ms-flex: 1 1 0%;
+          flex: 1 1 0%;
+      box-sizing: border-box;
+      min-width: 0; }
   md-toast.md-capsule {
     border-radius: 24px; }
     md-toast.md-capsule .md-toast-content {
