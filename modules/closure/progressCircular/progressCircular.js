@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-2e6d141
+ * v1.1.0-rc.5-master-1663341
  */
 goog.provide('ngmaterial.components.progressCircular');
 goog.require('ngmaterial.core');

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-2e6d141
+ * v1.1.0-rc.5-master-1663341
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -10,7 +10,7 @@
 (function(){
 "use strict";
 
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.layout","material.core.theming.palette","material.core.theming","material.core.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.colors","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.navBar","material.components.panel","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.showHide","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.virtualRepeat","material.components.whiteframe"]);
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.layout","material.core.theming.palette","material.core.theming","material.core.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.colors","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.navBar","material.components.panel","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.showHide","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.virtualRepeat","material.components.whiteframe"]);
 })();
 (function(){
 "use strict";
@@ -16193,56 +16193,6 @@ mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
 
 /**
  * @ngdoc module
- * @name material.components.showHide
- */
-
-// Add additional handlers to ng-show and ng-hide that notify directives
-// contained within that they should recompute their size.
-// These run in addition to Angular's built-in ng-hide and ng-show directives.
-angular.module('material.components.showHide', [
-  'material.core'
-])
-  .directive('ngShow', createDirective('ngShow', true))
-  .directive('ngHide', createDirective('ngHide', false));
-
-
-function createDirective(name, targetValue) {
-  return ['$mdUtil', function($mdUtil) {
-    return {
-      restrict: 'A',
-      multiElement: true,
-      link: function($scope, $element, $attr) {
-        var unregister = $scope.$on('$md-resize-enable', function() {
-          unregister();
-
-          var cachedTransitionStyles = window.getComputedStyle($element[0]);
-
-          $scope.$watch($attr[name], function(value) {
-            if (!!value === targetValue) {
-              $mdUtil.nextTick(function() {
-                $scope.$broadcast('$md-resize');
-              });
-
-              var opts = {
-                cachedTransitionStyles: cachedTransitionStyles
-              };
-
-              $mdUtil.dom.animator.waitTransitionEnd($element, opts).then(function() {
-                $scope.$broadcast('$md-resize');
-              });
-            }
-          });
-        });
-      }
-    };
-  }];
-}
-})();
-(function(){
-"use strict";
-
-/**
- * @ngdoc module
  * @name material.components.select
  */
 
@@ -17877,6 +17827,56 @@ function SelectProvider($$interimElementProvider) {
 }
 SelectProvider.$inject = ["$$interimElementProvider"];
 
+})();
+(function(){
+"use strict";
+
+/**
+ * @ngdoc module
+ * @name material.components.showHide
+ */
+
+// Add additional handlers to ng-show and ng-hide that notify directives
+// contained within that they should recompute their size.
+// These run in addition to Angular's built-in ng-hide and ng-show directives.
+angular.module('material.components.showHide', [
+  'material.core'
+])
+  .directive('ngShow', createDirective('ngShow', true))
+  .directive('ngHide', createDirective('ngHide', false));
+
+
+function createDirective(name, targetValue) {
+  return ['$mdUtil', function($mdUtil) {
+    return {
+      restrict: 'A',
+      multiElement: true,
+      link: function($scope, $element, $attr) {
+        var unregister = $scope.$on('$md-resize-enable', function() {
+          unregister();
+
+          var cachedTransitionStyles = window.getComputedStyle($element[0]);
+
+          $scope.$watch($attr[name], function(value) {
+            if (!!value === targetValue) {
+              $mdUtil.nextTick(function() {
+                $scope.$broadcast('$md-resize');
+              });
+
+              var opts = {
+                cachedTransitionStyles: cachedTransitionStyles
+              };
+
+              $mdUtil.dom.animator.waitTransitionEnd($element, opts).then(function() {
+                $scope.$broadcast('$md-resize');
+              });
+            }
+          });
+        });
+      }
+    };
+  }];
+}
 })();
 (function(){
 "use strict";
@@ -21903,7 +21903,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       hasFocus             = false,
       lastCount            = 0,
       fetchesInProgress    = 0,
-      enableWrapScroll     = null;
+      enableWrapScroll     = null,
+      inputModelCtrl       = null;
 
   //-- public variables with handlers
   defineProperty('hidden', handleHiddenChange, true);
@@ -21955,6 +21956,12 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       focusElement();
       $element.on('focus', focusElement);
     });
+  }
+
+  function updateModelValidators() {
+    if (!$scope.requireMatch || !inputModelCtrl) return;
+
+    inputModelCtrl.$setValidity('md-require-match', !!$scope.selectedItem);
   }
 
   /**
@@ -22088,9 +22095,12 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       wrap:  $element.find('md-autocomplete-wrap')[0],
       root:  document.body
     };
+
     elements.li   = elements.ul.getElementsByTagName('li');
     elements.snap = getSnapTarget();
     elements.$    = getAngularElements(elements);
+
+    inputModelCtrl = elements.$.input.controller('ngModel');
   }
 
   /**
@@ -22193,6 +22203,9 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * @param previousSelectedItem
    */
   function selectedItemChange (selectedItem, previousSelectedItem) {
+
+    updateModelValidators();
+
     if (selectedItem) {
       getDisplayValue(selectedItem).then(function (val) {
         $scope.searchText = val;
@@ -22255,8 +22268,11 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    */
   function handleSearchText (searchText, previousSearchText) {
     ctrl.index = getDefaultIndex();
+
     // do nothing on init
     if (searchText === previousSearchText) return;
+
+    updateModelValidators();
 
     getDisplayValue($scope.selectedItem).then(function (val) {
       // clear selected item if search text no longer matches it
@@ -22599,7 +22615,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
         isList = angular.isArray(items),
         isPromise = !!items.then; // Every promise should contain a `then` property
 
-    if (isList) handleResults(items);
+    if (isList) onResultsRetrieved(items);
     else if (isPromise) handleAsyncResults(items);
 
     function handleAsyncResults(items) {
@@ -22611,7 +22627,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
       $mdUtil.nextTick(function () {
           items
-            .then(handleResults)
+            .then(onResultsRetrieved)
             .finally(function(){
               if (--fetchesInProgress === 0) {
                 setLoading(false);
@@ -22620,21 +22636,16 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       },true, $scope);
     }
 
-    function handleResults (matches) {
-      cache[ term ] = matches;
-      if ((searchText || '') !== ($scope.searchText || '')) return; //-- just cache the results if old request
+    function onResultsRetrieved(matches) {
+      cache[term] = matches;
 
-      ctrl.matches = matches;
-      ctrl.hidden  = shouldHide();
+      // Just cache the results if the request is now outdated.
+      // The request becomes outdated, when the new searchText has changed during the result fetching.
+      if ((searchText || '') !== ($scope.searchText || '')) {
+        return;
+      }
 
-      // If loading is in progress, then we'll end the progress. This is needed for example,
-      // when the `clear` button was clicked, because there we always show the loading process, to prevent flashing.
-      if (ctrl.loading) setLoading(false);
-
-      if ($scope.selectOnMatch) selectItemOnMatch();
-
-      updateMessages();
-      positionDropdown();
+      handleResults(matches);
     }
   }
 
@@ -22700,18 +22711,36 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * results first, then forwards the process to `fetchResults` if necessary.
    */
   function handleQuery () {
-    var searchText = $scope.searchText || '',
-        term       = searchText.toLowerCase();
-    //-- if results are cached, pull in cached results
-    if (!$scope.noCache && cache[ term ]) {
-      ctrl.matches = cache[ term ];
-      updateMessages();
-      setLoading(false);
+    var searchText = $scope.searchText || '';
+    var term = searchText.toLowerCase();
+
+    // If caching is enabled and the current searchText is stored in the cache
+    if (!$scope.noCache && cache[term]) {
+      // The results should be handled as same as a normal un-cached request does.
+      handleResults(cache[term]);
     } else {
       fetchResults(searchText);
     }
 
     ctrl.hidden = shouldHide();
+  }
+
+  /**
+   * Handles the retrieved results by showing them in the autocompletes dropdown.
+   * @param results Retrieved results
+   */
+  function handleResults(results) {
+    ctrl.matches = results;
+    ctrl.hidden  = shouldHide();
+
+    // If loading is in progress, then we'll end the progress. This is needed for example,
+    // when the `clear` button was clicked, because there we always show the loading process, to prevent flashing.
+    if (ctrl.loading) setLoading(false);
+
+    if ($scope.selectOnMatch) selectItemOnMatch();
+
+    updateMessages();
+    positionDropdown();
   }
 
   /**
@@ -22787,6 +22816,8 @@ angular
  * @param {string=} placeholder Placeholder text that will be forwarded to the input.
  * @param {boolean=} md-no-cache Disables the internal caching that happens in autocomplete
  * @param {boolean=} ng-disabled Determines whether or not to disable the input field
+ * @param {boolean=} md-require-match When set to true, the autocomplete will add a validator,
+ *     which will evaluate to false, when no item is currently selected.
  * @param {number=} md-min-length Specifies the minimum length of text before autocomplete will
  *     make suggestions
  * @param {number=} md-delay Specifies the amount of time (in milliseconds) to wait before looking
@@ -22885,6 +22916,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
       itemText:         '&mdItemText',
       placeholder:      '@placeholder',
       noCache:          '=?mdNoCache',
+      requireMatch:     '=?mdRequireMatch',
       selectOnMatch:    '=?mdSelectOnMatch',
       matchInsensitive: '=?mdMatchCaseInsensitive',
       itemChange:       '&?mdSelectedItemChange',
@@ -31854,4 +31886,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/** * Mixin to create
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-2e6d141"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-1663341"}};
