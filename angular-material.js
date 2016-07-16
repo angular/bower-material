@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-1663341
+ * v1.1.0-rc.5-master-4efafcf
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13378,6 +13378,9 @@ angular
  *   - `attachTo` - `{(string|!angular.JQLite|!Element)=}`: The element to
  *     attach the panel to. Defaults to appending to the root element of the
  *     application.
+ *   - `propagateContainerEvents` - `{boolean=}`: Whether pointer or touch
+ *     events should be allowed to propagate 'go through' the container, aka the
+ *     wrapper, of the panel. Defaults to false.
  *   - `panelClass` - `{string=}`: A css class to apply to the panel element.
  *     This class should define any borders, box-shadow, etc. for the panel.
  *   - `zIndex` - `{number=}`: The z-index to place the panel at.
@@ -13578,6 +13581,8 @@ angular
  * Adds a class to the panel. DO NOT use this to hide/show the panel.
  *
  * @param {string} newClass Class to be added.
+ * @param {boolean} toElement Whether or not to add the class to the panel
+ *    element instead of the container.
  */
 
 /**
@@ -13587,6 +13592,8 @@ angular
  * Removes a class from the panel. DO NOT use this to hide/show the panel.
  *
  * @param {string} oldClass Class to be removed.
+ * @param {boolean} fromElement Whether or not to remove the class from the
+ * panel element instead of the container.
  */
 
 /**
@@ -13596,6 +13603,17 @@ angular
  * Toggles a class on the panel. DO NOT use this to hide/show the panel.
  *
  * @param {string} toggleClass Class to be toggled.
+ * @param {boolean} onElement Whether or not to remove the class from the panel
+ *    element instead of the container.
+ */
+
+/**
+ * @ngdoc method
+ * @name MdPanelRef#updatePosition
+ * @description
+ * Updates the position configuration of a panel. Use this to update the
+ * position of a panel that is open, without having to close and re-open the
+ * panel.
  */
 
 /**
@@ -13898,6 +13916,7 @@ function MdPanelService($rootElement, $rootScope, $injector, $window) {
     focusOnOpen: true,
     fullscreen: false,
     hasBackdrop: false,
+    propagateContainerEvents: false,
     transformTemplate: angular.bind(this, this._wrapTemplate),
     trapFocus: false,
     zIndex: defaultZIndex
@@ -14328,14 +14347,18 @@ MdPanelRef.prototype.hide = function() {
  * Add a class to the panel. DO NOT use this to hide/show the panel.
  *
  * @param {string} newClass Class to be added.
+ * @param {boolean} toElement Whether or not to add the class to the panel
+ *    element instead of the container.
  */
-MdPanelRef.prototype.addClass = function(newClass) {
+MdPanelRef.prototype.addClass = function(newClass, toElement) {
   if (!this._panelContainer) {
     throw new Error('Panel does not exist yet. Call open() or attach().');
   }
 
-  if (!this._panelContainer.hasClass(newClass)) {
+  if (!toElement && !this._panelContainer.hasClass(newClass)) {
     this._panelContainer.addClass(newClass);
+  } else if (toElement && !this._panelEl.hasClass(newClass)) {
+    this._panelEl.addClass(newClass);
   }
 };
 
@@ -14344,14 +14367,18 @@ MdPanelRef.prototype.addClass = function(newClass) {
  * Remove a class from the panel. DO NOT use this to hide/show the panel.
  *
  * @param {string} oldClass Class to be removed.
+ * @param {boolean} fromElement Whether or not to remove the class from the
+ *    panel element instead of the container.
  */
-MdPanelRef.prototype.removeClass = function(oldClass) {
+MdPanelRef.prototype.removeClass = function(oldClass, fromElement) {
   if (!this._panelContainer) {
     throw new Error('Panel does not exist yet. Call open() or attach().');
   }
 
-  if (this._panelContainer.hasClass(oldClass)) {
+  if (!fromElement && this._panelContainer.hasClass(oldClass)) {
     this._panelContainer.removeClass(oldClass);
+  } else if (fromElement && this._panelEl.hasClass(oldClass)) {
+    this._panelEl.removeClass(oldClass);
   }
 };
 
@@ -14360,13 +14387,19 @@ MdPanelRef.prototype.removeClass = function(oldClass) {
  * Toggle a class on the panel. DO NOT use this to hide/show the panel.
  *
  * @param {string} toggleClass The class to toggle.
+ * @param {boolean} onElement Whether or not to toggle the class on the panel
+ *    element instead of the container.
  */
-MdPanelRef.prototype.toggleClass = function(toggleClass) {
+MdPanelRef.prototype.toggleClass = function(toggleClass, onElement) {
   if (!this._panelContainer) {
     throw new Error('Panel does not exist yet. Call open() or attach().');
   }
 
-  this._panelContainer.toggleClass(toggleClass);
+  if (!onElement) {
+    this._panelContainer.toggleClass(toggleClass);
+  } else {
+    this._panelEl.toggleClass(toggleClass);
+  }
 };
 
 
@@ -14402,9 +14435,14 @@ MdPanelRef.prototype._createPanel = function() {
           self._panelEl = angular.element(
               self._panelContainer[0].querySelector('.md-panel'));
 
-          // Add a custom CSS class.
+          // Add a custom CSS class to the panel element.
           if (self._config['panelClass']) {
             self._panelEl.addClass(self._config['panelClass']);
+          }
+
+          // Handle click and touch events for the panel container.
+          if (self._config['propagateContainerEvents']) {
+            self._panelContainer.css('pointer-events', 'none');
           }
 
           // Panel may be outside the $rootElement, tell ngAnimate to animate
@@ -14461,6 +14499,20 @@ MdPanelRef.prototype._addStyles = function() {
       resolve(self);
     });
   });
+};
+
+
+/**
+ * Updates the position configuration of a panel
+ * @param {MdPanelPosition} position
+ */
+MdPanelRef.prototype.updatePosition = function(position) {
+  if (!this._panelContainer) {
+    throw new Error('Panel does not exist yet. Call open() or attach().');
+  }
+
+  this._config['position'] = position;
+  this._updatePosition();
 };
 
 
@@ -31886,4 +31938,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/** * Mixin to create
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-1663341"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-4efafcf"}};
