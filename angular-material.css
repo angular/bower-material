@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-4efafcf
+ * v1.1.0-rc.5-master-66065db
  */
 /**
  * Mixin to create a primary checkbox.
@@ -2544,7 +2544,7 @@ md-list-item {
         padding: 0; }
       md-list-item._md-button-wrap > div.md-button:first-child .md-list-item-inner {
         width: 100%;
-        height: 100%; }
+        min-height: inherit; }
   md-list-item.md-no-proxy,
   md-list-item .md-no-style {
     position: relative;
@@ -2920,9 +2920,6 @@ md-menu-item {
       margin-bottom: auto; }
     md-menu-item > .md-button .md-ripple-container {
       border-radius: inherit; }
-
-.md-menu {
-  padding: 8px 0; }
 
 md-toolbar .md-menu {
   height: auto;

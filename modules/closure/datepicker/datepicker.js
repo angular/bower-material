@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-4efafcf
+ * v1.1.0-rc.5-master-66065db
  */
 goog.provide('ngmaterial.components.datepicker');
 goog.require('ngmaterial.components.icon');
@@ -2108,7 +2108,7 @@ angular.module('material.components.datepicker', [
    * </hljs>
    *
    */
-  function datePickerDirective($$mdSvgRegistry) {
+  function datePickerDirective($$mdSvgRegistry, $mdUtil, $mdAria) {
     return {
       template: function(tElement, tAttrs) {
         // Buttons are not in the tab order because users can open the calendar via keyboard
@@ -2197,13 +2197,14 @@ angular.module('material.components.datepicker', [
           }
 
           scope.$watch(mdInputContainer.isErrorGetter || function() {
-            return ngModelCtrl.$invalid && ngModelCtrl.$touched;
+            var parentForm = mdDatePickerCtrl.parentForm;
+            return ngModelCtrl.$invalid && (ngModelCtrl.$touched || (parentForm && parentForm.$submitted));
           }, mdInputContainer.setInvalid);
         }
       }
     };
   }
-  datePickerDirective.$inject = ["$$mdSvgRegistry"];
+  datePickerDirective.$inject = ["$$mdSvgRegistry", "$mdUtil", "$mdAria"];
 
   /** Additional offset for the input's `size` attribute, which is updated based on its content. */
   var EXTRA_INPUT_SIZE = 3;
@@ -2332,6 +2333,9 @@ angular.module('material.components.datepicker', [
     /** @final */
     this.mdInputContainer = null;
 
+    /** @final */
+    this.parentForm = angular.element($mdUtil.getClosest($element, 'form')).controller('form');
+
     /**
      * Element from which the calendar pane was opened. Keep track of this so that we can return
      * focus to it when the pane is closed.
@@ -2378,6 +2382,18 @@ angular.module('material.components.datepicker', [
         }
       });
     }
+
+    if (self.parentForm) {
+      // If invalid, highlights the input when the parent form is submitted.
+      var parentSubmittedWatcher = $scope.$watch(function() {
+        return self.parentForm.$submitted;
+      }, function(isSubmitted) {
+        if (isSubmitted) {
+          self.updateErrorState();
+          parentSubmittedWatcher();
+        }
+      });
+    }
   }
   DatePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$compile", "$timeout", "$window", "$mdConstant", "$mdTheming", "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF"];
 
@@ -2404,6 +2420,9 @@ angular.module('material.components.datepicker', [
       self.resizeInputElement();
       self.updateErrorState();
     };
+
+    // Responds to external error state changes (e.g. ng-required based on another input).
+    ngModelCtrl.$viewChangeListeners.unshift(angular.bind(this, this.updateErrorState));
   };
 
   /**
