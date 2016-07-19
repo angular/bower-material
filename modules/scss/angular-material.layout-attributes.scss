@@ -196,7 +196,7 @@ $layout-breakpoint-lg:     1920px !default;
   outline: none;
   background: transparent;
 
-  // The the "clear X" that IE adds to input[type="search"]
+  // The "clear X" that IE adds to input[type="search"]
   &::-ms-clear {
     display: none;
   }
@@ -427,10 +427,8 @@ $layout-breakpoint-lg:     1920px !default;
   }
 }
 
-/**
- * Mixin to create a primary checkbox.
- * Used by the checkbox and select component.
- */
+// Mixin to create a primary checkbox.
+// Used by the checkbox and select component.
 @mixin checkbox-primary($checkedSelector: '.md-checked') {
   .md-ripple {
     color: '{{primary-600}}';

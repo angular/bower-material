@@ -2,11 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-66065db
- */
-/**
- * Mixin to create a primary checkbox.
- * Used by the checkbox and select component.
+ * v1.1.0-rc.5-master-08eecbe
  */
 @-webkit-keyframes indeterminate-rotate {
   0% {
@@ -15,6 +11,7 @@
   100% {
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg); } }
+
 @keyframes indeterminate-rotate {
   0% {
     -webkit-transform: rotate(0deg);

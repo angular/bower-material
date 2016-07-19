@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-66065db
+ * v1.1.0-rc.5-master-08eecbe
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -296,7 +296,7 @@ function labelDirective() {
 function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture) {
   return {
     restrict: 'E',
-    require: ['^?mdInputContainer', '?ngModel'],
+    require: ['^?mdInputContainer', '?ngModel', '?^form'],
     link: postLink
   };
 
@@ -305,6 +305,7 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
     var containerCtrl = ctrls[0];
     var hasNgModel = !!ctrls[1];
     var ngModelCtrl = ctrls[1] || $mdUtil.fakeNgModel();
+    var parentForm = ctrls[2];
     var isReadonly = angular.isDefined(attr.readonly);
     var mdNoAsterisk = $mdUtil.parseAttributeBoolean(attr.mdNoAsterisk);
     var tagName = element[0].tagName.toLowerCase();
@@ -352,7 +353,7 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
     }
 
     var isErrorGetter = containerCtrl.isErrorGetter || function() {
-      return ngModelCtrl.$invalid && (ngModelCtrl.$touched || $mdUtil.isParentFormSubmitted(element));
+      return ngModelCtrl.$invalid && (ngModelCtrl.$touched || (parentForm && parentForm.$submitted));
     };
 
     scope.$watch(isErrorGetter, containerCtrl.setInvalid);

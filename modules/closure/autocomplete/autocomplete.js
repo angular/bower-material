@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-66065db
+ * v1.1.0-rc.5-master-08eecbe
  */
 goog.provide('ngmaterial.components.autocomplete');
 goog.require('ngmaterial.components.icon');
@@ -351,6 +351,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
         $scope.searchText = val;
         handleSelectedItemChange(selectedItem, previousSelectedItem);
       });
+    } else if (previousSelectedItem) {
+      $scope.searchText = '';
     }
 
     if (selectedItem !== previousSelectedItem) announceItemChange();
@@ -505,21 +507,21 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
         select(ctrl.index);
         break;
       case $mdConstant.KEY_CODE.ESCAPE:
+        event.preventDefault(); // Prevent browser from always clearing input
         if (!shouldProcessEscape()) return;
         event.stopPropagation();
-        event.preventDefault();
 
         clearSelectedItem();
         if ($scope.searchText && hasEscapeOption('clear')) {
           clearSearchText();
         }
 
+        // Manually hide (needed for mdNotFound support)
+        ctrl.hidden = true;
+
         if (hasEscapeOption('blur')) {
           // Force the component to blur if they hit escape
           doBlur(true);
-        } else {
-          // Manually hide (needed for mdNotFound support)
-          ctrl.hidden = true;
         }
 
         break;
@@ -925,6 +927,8 @@ angular
  * In more complex cases, you may want to include other content such as a message to display when
  *     no matches were found.  You can do this by wrapping your template in `md-item-template` and
  *     adding a tag for `md-not-found`.  An example of this is shown below.
+ *
+ * To reset the displayed value you must clear both values for `md-search-text` and `md-selected-item`.
  *
  * ### Validation
  *
