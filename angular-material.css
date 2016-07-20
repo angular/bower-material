@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-212f8c3
+ * v1.1.0-rc.5-master-0356bed
  */
 html, body {
   height: 100%;
@@ -1515,7 +1515,16 @@ md-datepicker {
   display: inline-block;
   box-sizing: border-box;
   background: none;
-  vertical-align: middle; }
+  vertical-align: middle;
+  position: relative; }
+  .md-datepicker-button:before {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    content: '';
+    speak: none; }
 
 .md-datepicker-input {
   font-size: 14px;
@@ -1529,15 +1538,6 @@ md-datepicker {
   .md-datepicker-input::-ms-clear {
     display: none; }
 
-._md-datepicker-floating-label > label:not(.md-no-float):not(.md-container-ignore) {
-  right: 18px;
-  left: auto;
-  width: calc(100% - 84px); }
-  [dir=rtl] ._md-datepicker-floating-label > label:not(.md-no-float):not(.md-container-ignore) {
-    right: auto; }
-  [dir=rtl] ._md-datepicker-floating-label > label:not(.md-no-float):not(.md-container-ignore) {
-    left: 18px; }
-
 ._md-datepicker-floating-label > md-datepicker {
   overflow: visible; }
   ._md-datepicker-floating-label > md-datepicker .md-datepicker-input-container {
@@ -1547,6 +1547,23 @@ md-datepicker {
     margin-top: -2.5px; }
     [dir=rtl] ._md-datepicker-floating-label > md-datepicker .md-datepicker-button {
       float: right; }
+
+._md-datepicker-floating-label._md-datepicker-has-calendar-icon > label:not(.md-no-float):not(.md-container-ignore) {
+  right: 18px;
+  left: auto;
+  width: calc(100% - 84px); }
+  [dir=rtl] ._md-datepicker-floating-label._md-datepicker-has-calendar-icon > label:not(.md-no-float):not(.md-container-ignore) {
+    right: auto; }
+  [dir=rtl] ._md-datepicker-floating-label._md-datepicker-has-calendar-icon > label:not(.md-no-float):not(.md-container-ignore) {
+    left: 18px; }
+
+._md-datepicker-floating-label._md-datepicker-has-calendar-icon .md-input-message-animation {
+  margin-left: 64px; }
+  [dir=rtl] ._md-datepicker-floating-label._md-datepicker-has-calendar-icon .md-input-message-animation {
+    margin-left: 0;
+    margin-left: auto;
+    margin-left: initial;
+    margin-right: 64px; }
 
 .md-datepicker-input-container {
   position: relative;
@@ -1639,7 +1656,8 @@ md-datepicker {
 .md-datepicker-triangle-button.md-button.md-icon-button {
   height: 36px;
   width: 36px;
-  position: absolute; }
+  position: absolute;
+  padding: 8px; }
 
 md-datepicker[disabled] .md-datepicker-input-container {
   border-bottom-color: transparent; }

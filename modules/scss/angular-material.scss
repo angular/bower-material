@@ -2655,6 +2655,7 @@ $md-date-arrow-size: 5px !default; // Size of the triangle on the right side of 
 $md-datepicker-open-animation-duration: 0.2s !default;
 $md-datepicker-triangle-button-width: 36px !default;
 $md-datepicker-input-mask-height: 40px !default;
+$md-datepicker-button-padding: 8px !default;
 
 
 md-datepicker {
@@ -2682,6 +2683,19 @@ md-datepicker {
   box-sizing: border-box;
   background: none;
   vertical-align: middle;
+  position: relative;
+
+  // Captures any of the click events. This is necessary, because the button has a SVG
+  // icon which doesn't propagate the focus event, causing inconsistent behaviour.
+  &:before {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    content: '';
+    speak: none;
+  }
 }
 
 // The input into which the user can type the date.
@@ -2693,14 +2707,6 @@ md-datepicker {
 
 // If the datepicker is inside of a md-input-container
 ._md-datepicker-floating-label {
-  > label:not(.md-no-float):not(.md-container-ignore) {
-    $width-offset: $md-datepicker-triangle-button-width * 2 + $md-datepicker-button-gap;
-    $offset: $md-datepicker-triangle-button-width / 2;
-    @include rtl(right, $offset, auto);
-    @include rtl(left, auto, $offset);
-    width: calc(100% - #{$width-offset});
-  }
-
   > md-datepicker {
     // Prevents the ripple on the triangle from being clipped.
     overflow: visible;
@@ -2713,6 +2719,21 @@ md-datepicker {
       // Prevents the button from wrapping around.
       @include rtl(float, left, right);
       margin-top: -$md-datepicker-border-bottom-gap / 2;
+    }
+  }
+
+  &._md-datepicker-has-calendar-icon {
+    > label:not(.md-no-float):not(.md-container-ignore) {
+      $width-offset: $md-datepicker-triangle-button-width * 2 + $md-datepicker-button-gap;
+      $offset: $md-datepicker-triangle-button-width / 2;
+      @include rtl(right, $offset, auto);
+      @include rtl(left, auto, $offset);
+      width: calc(100% - #{$width-offset});
+    }
+
+    .md-input-message-animation {
+      $margin: $md-datepicker-triangle-button-width + $md-datepicker-button-padding * 2 + $md-datepicker-button-gap;
+      @include rtl-prop(margin-left, margin-right, $margin);
     }
   }
 }
@@ -2842,6 +2863,7 @@ md-datepicker {
   height: $md-datepicker-triangle-button-width;
   width: $md-datepicker-triangle-button-width;
   position: absolute;
+  padding: $md-datepicker-button-padding;
 }
 
 // Disabled state for all elements of the picker.

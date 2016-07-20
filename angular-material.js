@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-212f8c3
+ * v1.1.0-rc.5-master-0356bed
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -27025,8 +27025,10 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
           }
 
           mdInputContainer.setHasPlaceholder(attr.mdPlaceholder);
-          mdInputContainer.element.addClass(INPUT_CONTAINER_CLASS);
           mdInputContainer.input = element;
+          mdInputContainer.element
+            .addClass(INPUT_CONTAINER_CLASS)
+            .toggleClass(HAS_ICON_CLASS, attr.mdHideIcons !== 'calendar' && attr.mdHideIcons !== 'all');
 
           if (!mdInputContainer.label) {
             $mdAria.expect(element, 'aria-label', attr.mdPlaceholder);
@@ -27062,6 +27064,9 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
 
   /** Class applied to the md-input-container, if a datepicker is placed inside it */
   var INPUT_CONTAINER_CLASS = '_md-datepicker-floating-label';
+
+  /** Class to be applied when the calendar icon is enabled. */
+  var HAS_ICON_CLASS = '_md-datepicker-has-calendar-icon';
 
   /** Default time in ms to debounce input event by. */
   var DEFAULT_DEBOUNCE_INTERVAL = 500;
@@ -27569,28 +27574,29 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
     if (this.isCalendarOpen) {
       var self = this;
 
-      self.calendarPaneOpenedFrom.focus();
-      self.calendarPaneOpenedFrom = null;
-
-      if (self.openOnFocus) {
-        // Ensures that all focus events have fired before detaching
-        // the calendar. Prevents the calendar from reopening immediately
-        // in IE when md-open-on-focus is set. Also it needs to trigger
-        // a digest, in order to prevent issues where the calendar wasn't
-        // showing up on the next open.
-        this.$mdUtil.nextTick(detach);
-      } else {
-        detach();
-      }
-    }
-
-    function detach() {
       self.detachCalendarPane();
-      self.isCalendarOpen = self.isOpen = false;
       self.ngModelCtrl.$setTouched();
 
       self.documentElement.off('click touchstart', self.bodyClickHandler);
       window.removeEventListener('resize', self.windowResizeHandler);
+
+      self.calendarPaneOpenedFrom.focus();
+      self.calendarPaneOpenedFrom = null;
+
+      if (self.openOnFocus) {
+        // Ensures that all focus events have fired before resetting
+        // the calendar. Prevents the calendar from reopening immediately
+        // in IE when md-open-on-focus is set. Also it needs to trigger
+        // a digest, in order to prevent issues where the calendar wasn't
+        // showing up on the next open.
+        self.$mdUtil.nextTick(reset);
+      } else {
+        reset();
+      }
+    }
+
+    function reset(){
+      self.isCalendarOpen = self.isOpen = false;
     }
   };
 
@@ -31953,4 +31959,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-212f8c3"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-0356bed"}};
