@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-08eecbe
+ * v1.1.0-rc.5-master-212f8c3
  */
 goog.provide('ngmaterial.components.autocomplete');
 goog.require('ngmaterial.components.icon');
@@ -351,8 +351,6 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
         $scope.searchText = val;
         handleSelectedItemChange(selectedItem, previousSelectedItem);
       });
-    } else if (previousSelectedItem) {
-      $scope.searchText = '';
     }
 
     if (selectedItem !== previousSelectedItem) announceItemChange();
