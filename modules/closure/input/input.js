@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-0356bed
+ * v1.1.0-rc.5-master-dadbcf2
  */
 goog.provide('ngmaterial.components.input');
 goog.require('ngmaterial.core');
@@ -315,7 +315,11 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
       element.attr('aria-hidden', 'true');
       return;
     } else if (containerCtrl.input) {
-      throw new Error("<md-input-container> can only have *one* <input>, <textarea> or <md-select> child element!");
+      if (containerCtrl.input[0].contains(element[0])) {
+        return;
+      } else {
+        throw new Error("<md-input-container> can only have *one* <input>, <textarea> or <md-select> child element!");
+      }
     }
     containerCtrl.input = element;
 

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-0356bed
+ * v1.1.0-rc.5-master-dadbcf2
  */
 goog.provide('ngmaterial.components.virtualRepeat');
 goog.require('ngmaterial.components.showHide');
@@ -136,9 +136,9 @@ function VirtualRepeatContainerController(
     this.topIndex = 0;
   }
 
-  this.scroller = $element[0].getElementsByClassName('md-virtual-repeat-scroller')[0];
-  this.sizer = this.scroller.getElementsByClassName('md-virtual-repeat-sizer')[0];
-  this.offsetter = this.scroller.getElementsByClassName('md-virtual-repeat-offsetter')[0];
+  this.scroller = $element[0].querySelector('.md-virtual-repeat-scroller');
+  this.sizer = this.scroller.querySelector('.md-virtual-repeat-sizer');
+  this.offsetter = this.scroller.querySelector('.md-virtual-repeat-offsetter');
 
   // After the dom stablizes, measure the initial size of the container and
   // make a best effort at re-measuring as it changes.
@@ -632,7 +632,7 @@ VirtualRepeatController.prototype.containerUpdated = function() {
         this.repeatListExpression,
         angular.bind(this, function(items) {
           if (items && items.length) {
-            this.$$rAF(angular.bind(this, this.readItemSize_));
+            this.readItemSize_();
           }
         }));
     if (!this.$rootScope.$$phase) this.$scope.$digest();

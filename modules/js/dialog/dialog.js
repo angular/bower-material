@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-0356bed
+ * v1.1.0-rc.5-master-dadbcf2
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -719,10 +719,10 @@ function MdDialogProvider($$interimElementProvider) {
       captureParentAndFromToElements(options);
       configureAria(dialogElement, options);
       showBackdrop(scope, element, options);
+      activateListeners(element, options);
 
       return dialogPopIn(element, options)
         .then(function() {
-          activateListeners(element, options);
           lockScreenReader(element, options);
           warnDeprecatedActions();
           focusOnOpen();

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-0356bed
+ * v1.1.0-rc.5-master-dadbcf2
  */
 goog.provide('ngmaterial.components.autocomplete');
 goog.require('ngmaterial.components.icon');
@@ -350,6 +350,15 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       getDisplayValue(selectedItem).then(function (val) {
         $scope.searchText = val;
         handleSelectedItemChange(selectedItem, previousSelectedItem);
+      });
+    } else if (previousSelectedItem) {
+      getDisplayValue(previousSelectedItem).then(function(displayValue) {
+        // Clear the searchText, when the selectedItem is set to null.
+        // Do not clear the searchText, when the searchText isn't matching with the previous
+        // selected item.
+        if (displayValue.toLowerCase() === $scope.searchText.toLowerCase()) {
+          $scope.searchText = '';
+        }
       });
     }
 

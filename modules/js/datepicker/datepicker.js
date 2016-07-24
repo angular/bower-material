@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-0356bed
+ * v1.1.0-rc.5-master-dadbcf2
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -78,7 +78,8 @@ angular.module('material.components.datepicker', [
       scope: {
         minDate: '=mdMinDate',
         maxDate: '=mdMaxDate',
-        dateFilter: '=mdDateFilter'
+        dateFilter: '=mdDateFilter',
+        _currentView: '@mdCurrentView'
       },
       require: ['ngModel', 'mdCalendar'],
       controller: CalendarCtrl,
@@ -137,8 +138,13 @@ angular.module('material.components.datepicker', [
     /** @type {!angular.NgModelController} */
     this.ngModelCtrl = null;
 
-    /** @type {String} The currently visible calendar view. */
-    this.currentView = 'month';
+    /**
+     * The currently visible calendar view. Note the prefix on the scope value,
+     * which is necessary, because the datepicker seems to reset the real one value if the
+     * calendar is open, but the value on the datepicker's scope is empty.
+     * @type {String}
+     */
+    this.currentView = this._currentView || 'month';
 
     /** @type {String} Class applied to the selected date cell. */
     this.SELECTED_DATE_CLASS = 'md-calendar-selected-date';
@@ -2081,6 +2087,7 @@ angular.module('material.components.datepicker', [
    * @param {String=} md-placeholder The date input placeholder value.
    * @param {String=} md-open-on-focus When present, the calendar will be opened when the input is focused.
    * @param {Boolean=} md-is-open Expression that can be used to open the datepicker's calendar on-demand.
+   * @param {String=} md-current-view Default open view of the calendar pane. Can be either "month" or "year".
    * @param {String=} md-hide-icons Determines which datepicker icons should be hidden. Note that this may cause the
    * datepicker to not align properly with other components. **Use at your own risk.** Possible values are:
    * * `"all"` - Hides all icons.
@@ -2147,7 +2154,9 @@ angular.module('material.components.datepicker', [
           '</div>' +
           '<div class="md-datepicker-calendar">' +
             '<md-calendar role="dialog" aria-label="{{::ctrl.dateLocale.msgCalendar}}" ' +
-                'md-min-date="ctrl.minDate" md-max-date="ctrl.maxDate"' +
+                'md-current-view="{{::ctrl.currentView}}"' +
+                'md-min-date="ctrl.minDate"' +
+                'md-max-date="ctrl.maxDate"' +
                 'md-date-filter="ctrl.dateFilter"' +
                 'ng-model="ctrl.date" ng-if="ctrl.isCalendarOpen">' +
             '</md-calendar>' +
@@ -2159,6 +2168,7 @@ angular.module('material.components.datepicker', [
         minDate: '=mdMinDate',
         maxDate: '=mdMaxDate',
         placeholder: '@mdPlaceholder',
+        currentView: '@mdCurrentView',
         dateFilter: '=mdDateFilter',
         isOpen: '=?mdIsOpen',
         debounceInterval: '=mdDebounceInterval'
@@ -2260,13 +2270,8 @@ angular.module('material.components.datepicker', [
    *
    * ngInject @constructor
    */
-  function DatePickerCtrl($scope, $element, $attrs, $compile, $timeout, $window,
-      $mdConstant, $mdTheming, $mdUtil, $mdDateLocale, $$mdDateUtil, $$rAF) {
-    /** @final */
-    this.$compile = $compile;
-
-    /** @final */
-    this.$timeout = $timeout;
+  function DatePickerCtrl($scope, $element, $attrs, $window, $mdConstant,
+    $mdTheming, $mdUtil, $mdDateLocale, $$mdDateUtil, $$rAF) {
 
     /** @final */
     this.$window = $window;
@@ -2394,7 +2399,7 @@ angular.module('material.components.datepicker', [
       });
     }
   }
-  DatePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$compile", "$timeout", "$window", "$mdConstant", "$mdTheming", "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF"];
+  DatePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$window", "$mdConstant", "$mdTheming", "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF"];
 
   /**
    * Sets up the controller's reference to ngModelController.
