@@ -463,50 +463,6 @@ $checkbox-border-width: 2px !default;
   }
 }
 
-// Only use when in row layout
-@mixin when-layout-row($element, $parent: '') {
-  @media (max-width: 599px) {
-    #{$parent}.layout-row:not(.layout-xs-column),
-    #{$parent}.layout-xs-row {
-      & > #{$element} { @content; }
-    }
-  }
-  @media (min-width: 600px) and (max-width: 959px) {
-    #{$parent}.layout-row:not(.layout-gt-xs-column),
-    #{$parent}.layout-gt-xs-row,
-    #{$parent}.layout-sm-row {
-      &:not(.layout-sm-column) > #{$element} { @content; }
-    }
-  }
-  @media (min-width: 960px) and (max-width: 1279px) {
-    #{$parent}.layout-row:not(.layout-gt-xs-column):not(.layout-gt-sm-column),
-    #{$parent}.layout-gt-xs-row:not(.layout-gt-sm-column),
-    #{$parent}.layout-gt-sm-row,
-    #{$parent}.layout-md-row {
-      &:not(.layout-md-column) > #{$element} { @content; }
-    }
-  }
-  @media (min-width: 1280px) and (max-width: 1919px) {
-    #{$parent}.layout-row:not(.layout-gt-xs-column):not(.layout-gt-sm-column):not(.layout-gt-md-column),
-    #{$parent}.layout-gt-xs-row:not(.layout-gt-sm-column):not(.layout-gt-md-column),
-    #{$parent}.layout-gt-sm-row:not(.layout-gt-md-column),
-    #{$parent}.layout-gt-md-row,
-    #{$parent}.layout-lg-row {
-      &:not(.layout-lg-column) > #{$element} { @content; }
-    }
-  }
-  @media (min-width: 1920px) {
-    #{$parent}.layout-row:not(.layout-gt-xs-column):not(.layout-gt-sm-column):not(.layout-gt-md-column),
-    #{$parent}.layout-gt-xs-row:not(.layout-gt-sm-column):not(.layout-gt-md-column),
-    #{$parent}.layout-gt-sm-row:not(.layout-gt-md-column),
-    #{$parent}.layout-gt-md-row,
-    #{$parent}.layout-gt-lg-row,
-    #{$parent}.layout-xl-row {
-      &:not(.layout-gt-lg-column):not(.layout-xl-column) > #{$element} { @content; }
-    }
-  }
-}
-
 html, body {
   height: 100%;
   position: relative;
@@ -3111,10 +3067,17 @@ md-divider {
   }
 }
 
-@include when-layout-row(md-divider) {
-  border-top-width: 0;
-  border-right-width: 1px;
-  border-right-style: solid;
+.layout-row,
+.layout-xs-row, .layout-gt-xs-row,
+.layout-sm-row, .layout-gt-sm-row,
+.layout-md-row, .layout-gt-md-row,
+.layout-lg-row, .layout-gt-lg-row,
+.layout-xl-row {
+  & > md-divider {
+    border-top-width: 0;
+    border-right-width: 1px;
+    border-right-style: solid;
+  }
 }
 md-fab-speed-dial {
   position: relative;
@@ -5086,12 +5049,36 @@ md-radio-button {
   }
 }
 
-
-
 md-radio-group {
   /** Layout adjustments for the radio group. */
-  md-radio-button {
-    margin-bottom: $radio-margin;
+  &.layout-column,
+  &.layout-xs-column, &.layout-gt-xs-column,
+  &.layout-sm-column, &.layout-gt-sm-column,
+  &.layout-md-column, &.layout-gt-md-column,
+  &.layout-lg-column, &.layout-gt-lg-column,
+  &.layout-xl-column {
+    md-radio-button {
+      margin-bottom: $radio-margin;
+    }
+  }
+
+  &.layout-row,
+  &.layout-xs-row, &.layout-gt-xs-row,
+  &.layout-sm-row, &.layout-gt-sm-row,
+  &.layout-md-row, &.layout-gt-md-row,
+  &.layout-lg-row, &.layout-gt-lg-row,
+  &.layout-xl-row {
+    md-radio-button {
+      margin-top: 0;
+      margin-bottom: 0;
+      @include rtl(margin-left, 0, $radio-margin);
+      @include rtl(margin-right, $radio-margin, 0);
+
+      &:last-of-type {
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
   }
 
   &:focus {
@@ -5109,18 +5096,6 @@ md-radio-group {
 
   &[disabled] md-radio-button {
     @include md-radio-button-disabled();
-  }
-}
-
-@include when-layout-row(md-radio-button, md-radio-group) {
-  margin-top: 0;
-  margin-bottom: 0;
-  @include rtl(margin-left, 0, $radio-margin);
-  @include rtl(margin-right, $radio-margin, 0);
-
-  &:last-of-type {
-    margin-left: 0;
-    margin-right: 0;
   }
 }
 
