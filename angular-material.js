@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-e93c414
+ * v1.1.0-rc.5-master-0851736
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -326,7 +326,14 @@ function MdConstantFactory($sniffer, $window, $document) {
     });
   }
 
-  return {
+  var self = {
+    isInputKey : function(e) { return (e.keyCode >= 31 && e.keyCode <= 90); },
+    isNumPadKey : function (e){ return (3 === e.location && e.keyCode >= 97 && e.keyCode <= 105); },
+    isNavigationKey : function(e) {
+      var kc = self.KEY_CODE, NAVIGATION_KEYS =  [kc.SPACE, kc.ENTER, kc.UP_ARROW, kc.DOWN_ARROW];
+      return (NAVIGATION_KEYS.indexOf(e.keyCode) != -1);    
+    },
+
     KEY_CODE: {
       COMMA: 188,
       SEMICOLON : 186,
@@ -398,6 +405,8 @@ function MdConstantFactory($sniffer, $window, $document) {
       'print'
     ]
   };
+
+  return self;
 }
 MdConstantFactory.$inject = ["$sniffer", "$window", "$document"];
 
@@ -7499,10 +7508,10 @@ angular
  * @param {expression=} md-indeterminate This determines when the checkbox should be rendered as 'indeterminate'.
  *     If a truthy expression or no value is passed in the checkbox renders in the md-indeterminate state.
  *     If falsy expression is passed in it just looks like a normal unchecked checkbox.
- *     The indeterminate, checked, and unchecked states are mutually exclusive. A box cannot be in any two states at the same time. 
- *     Adding the 'md-indeterminate' attribute overrides any checked/unchecked rendering logic. 
+ *     The indeterminate, checked, and unchecked states are mutually exclusive. A box cannot be in any two states at the same time.
+ *     Adding the 'md-indeterminate' attribute overrides any checked/unchecked rendering logic.
  *     When using the 'md-indeterminate' attribute use 'ng-checked' to define rendering logic instead of using 'ng-model'.
- * @param {expression=} ng-checked If this expression evaluates as truthy, the 'md-checked' css class is added to the checkbox and it 
+ * @param {expression=} ng-checked If this expression evaluates as truthy, the 'md-checked' css class is added to the checkbox and it
  *     will appear checked.
  *
  * @usage
@@ -7524,7 +7533,6 @@ angular
  */
 function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $mdUtil, $timeout) {
   inputDirective = inputDirective[0];
-  var CHECKED_CSS = 'md-checked';
 
   return {
     restrict: 'E',
@@ -7544,32 +7552,35 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
   // **********************************************************
 
   function compile (tElement, tAttrs) {
-    var container = tElement.children();
-    var mdIndeterminateStateEnabled = $mdUtil.parseAttributeBoolean(tAttrs.mdIndeterminate);
-
     tAttrs.$set('tabindex', tAttrs.tabindex || '0');
     tAttrs.$set('type', 'checkbox');
     tAttrs.$set('role', tAttrs.type);
 
-    // Attach a click handler in compile in order to immediately stop propagation
-    // (especially for ng-click) when the checkbox is disabled.
-    tElement.on('click', function(event) {
-      if (this.hasAttribute('disabled')) {
-        event.stopImmediatePropagation();
-      }
-    });
+    return  {
+      pre: function(scope, element) {
+        // Attach a click handler during preLink, in order to immediately stop propagation
+        // (especially for ng-click) when the checkbox is disabled.
+        element.on('click', function(e) {
+          if (this.hasAttribute('disabled')) {
+            e.stopImmediatePropagation();
+          }
+        });
+      },
+      post: postLink
+    };
 
-    // Redirect focus events to the root element, because IE11 is always focusing the container element instead
-    // of the md-checkbox element. This causes issues when using ngModelOptions: `updateOnBlur`
-    container.on('focus', function() {
-      tElement.focus();
-    });
-
-    return function postLink(scope, element, attr, ngModelCtrl) {
+    function postLink(scope, element, attr, ngModelCtrl) {
       var isIndeterminate;
       ngModelCtrl = ngModelCtrl || $mdUtil.fakeNgModel();
       $mdTheming(element);
-      if (mdIndeterminateStateEnabled) {
+
+      // Redirect focus events to the root element, because IE11 is always focusing the container element instead
+      // of the md-checkbox element. This causes issues when using ngModelOptions: `updateOnBlur`
+      element.children().on('focus', function() {
+        element.focus();
+      });
+
+      if ($mdUtil.parseAttributeBoolean(attr.mdIndeterminate)) {
         setIndeterminateState();
         scope.$watch(attr.mdIndeterminate, setIndeterminateState);
       }
@@ -7630,11 +7641,7 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
         var keyCode = ev.which || ev.keyCode;
         if (keyCode === $mdConstant.KEY_CODE.SPACE || keyCode === $mdConstant.KEY_CODE.ENTER) {
           ev.preventDefault();
-
-          if (!element.hasClass('md-focused')) {
-            element.addClass('md-focused');
-          }
-
+          element.addClass('md-focused');
           listener(ev);
         }
       }
@@ -7650,17 +7657,13 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
           // Toggle the checkbox value...
           var viewValue = attr.ngChecked ? attr.checked : !ngModelCtrl.$viewValue;
 
-          ngModelCtrl.$setViewValue( viewValue, ev && ev.type);
+          ngModelCtrl.$setViewValue(viewValue, ev && ev.type);
           ngModelCtrl.$render();
         });
       }
 
       function render() {
-        if(ngModelCtrl.$viewValue && !isIndeterminate) {
-          element.addClass(CHECKED_CSS);
-        } else {
-          element.removeClass(CHECKED_CSS);
-        }
+        element.toggleClass('md-checked', ngModelCtrl.$viewValue && !isIndeterminate);
       }
 
       function setIndeterminateState(newValue) {
@@ -16418,7 +16421,10 @@ angular.module('material.components.select', [
  * </div>
  * </hljs>
  */
-function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $parse) {
+function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $compile, $parse) {
+  var keyCodes = $mdConstant.KEY_CODE;
+  var NAVIGATION_KEYS = [keyCodes.SPACE, keyCodes.ENTER, keyCodes.UP_ARROW, keyCodes.DOWN_ARROW];
+
   return {
     restrict: 'E',
     require: ['^?mdInputContainer', 'mdSelect', 'ngModel', '?^form'],
@@ -16772,14 +16778,14 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
       }
 
       function handleKeypress(e) {
-        var allowedCodes = [32, 13, 38, 40];
-        if (allowedCodes.indexOf(e.keyCode) != -1) {
+        if ($mdConstant.isNavigationKey(e)) {
           // prevent page scrolling on interaction
           e.preventDefault();
           openSelect(e);
         } else {
-          if (e.keyCode <= 90 && e.keyCode >= 31) {
+          if ($mdConstant.isInputKey(e) || $mdConstant.isNumPadKey(e)) {
             e.preventDefault();
+
             var node = selectMenuCtrl.optNodeForKeyboardSearch(e);
             if (!node || node.hasAttribute('disabled')) return;
             var optionCtrl = angular.element(node).controller('mdOption');
@@ -16813,12 +16819,13 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
           ngModelCtrl.$setTouched();
         });
       }
+
     };
   }
 }
-SelectDirective.$inject = ["$mdSelect", "$mdUtil", "$mdTheming", "$mdAria", "$compile", "$parse"];
+SelectDirective.$inject = ["$mdSelect", "$mdUtil", "$mdConstant", "$mdTheming", "$mdAria", "$compile", "$parse"];
 
-function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
+function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
   // We want the scope to be set to 'false' so an isolated scope is not created
   // which would interfere with the md-select-header's access to the
   // parent scope.
@@ -16931,6 +16938,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
     var searchStr = '';
     var clearSearchTimeout, optNodes, optText;
     var CLEAR_SEARCH_AFTER = 300;
+
     self.optNodeForKeyboardSearch = function(e) {
       clearSearchTimeout && clearTimeout(clearSearchTimeout);
       clearSearchTimeout = setTimeout(function() {
@@ -16939,7 +16947,11 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
         optText = undefined;
         optNodes = undefined;
       }, CLEAR_SEARCH_AFTER);
-      searchStr += String.fromCharCode(e.keyCode);
+
+      // Support 1-9 on numpad
+      var keyCode = e.keyCode - ($mdConstant.isNumPadKey(e) ? 48 : 0);
+
+      searchStr += String.fromCharCode(keyCode);
       var search = new RegExp('^' + searchStr, 'i');
       if (!optNodes) {
         optNodes = $element.find('md-option');
@@ -17122,7 +17134,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
   }
 
 }
-SelectMenuDirective.$inject = ["$parse", "$mdUtil", "$mdTheming"];
+SelectMenuDirective.$inject = ["$parse", "$mdUtil", "$mdConstant", "$mdTheming"];
 
 function OptionDirective($mdButtonInkRipple, $mdUtil) {
 
@@ -17301,6 +17313,7 @@ function SelectProvider($$interimElementProvider) {
   function selectDefaultOptions($mdSelect, $mdConstant, $mdUtil, $window, $q, $$rAF, $animateCss, $animate, $document) {
     var ERROR_TARGET_EXPECTED = "$mdSelect.show() expected a target element in options.target but got '{0}'!";
     var animator = $mdUtil.dom.animator;
+    var keyCodes = $mdConstant.KEY_CODE;
 
     return {
       parent: 'body',
@@ -17573,7 +17586,6 @@ function SelectProvider($$interimElementProvider) {
         }
 
         function onMenuKeyDown(ev) {
-          var keyCodes = $mdConstant.KEY_CODE;
           ev.preventDefault();
           ev.stopPropagation();
 
@@ -17602,7 +17614,7 @@ function SelectProvider($$interimElementProvider) {
               $mdUtil.nextTick($mdSelect.hide, true);
               break;
             default:
-              if (ev.keyCode >= 31 && ev.keyCode <= 90) {
+              if ($mdConstant.isInputKey(ev) || $mdConstant.isNumPadKey(ev)) {
                 var optNode = dropDown.controller('mdSelectMenu').optNodeForKeyboardSearch(ev);
                 opts.focusedNode = optNode || opts.focusedNode;
                 optNode && optNode.focus();
@@ -19683,7 +19695,7 @@ function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdG
   };
 
   function mdSwitchCompile(element, attr) {
-    var checkboxLink = checkboxDirective.compile(element, attr);
+    var checkboxLink = checkboxDirective.compile(element, attr).post;
     // No transition on initial load.
     element.addClass('md-dragging');
 
@@ -23803,7 +23815,7 @@ MdChipsCtrl.prototype.inputKeydown = function(event) {
   if (event.keyCode === this.$mdConstant.KEY_CODE.BACKSPACE) {
     // Only select and focus the previous chip, if the current caret position of the
     // input element is at the beginning.
-    if (getCursorPosition(event.target) !== 0) {
+    if (this.getCursorPosition(event.target) !== 0) {
       return;
     }
 
@@ -23837,16 +23849,25 @@ MdChipsCtrl.prototype.inputKeydown = function(event) {
 
 /**
  * Returns the cursor position of the specified input element.
- * If no selection is present it returns -1.
  * @param element HTMLInputElement
  * @returns {Number} Cursor Position of the input.
  */
-function getCursorPosition(element) {
-  if (element.selectionStart === element.selectionEnd) {
-    return element.selectionStart;
+MdChipsCtrl.prototype.getCursorPosition = function(element) {
+  /*
+   * Figure out whether the current input for the chips buffer is valid for using
+   * the selectionStart / end property to retrieve the cursor position.
+   * Some browsers do not allow the use of those attributes, on different input types.
+   */
+  try {
+    if (element.selectionStart === element.selectionEnd) {
+      return element.selectionStart;
+    }
+  } catch (e) {
+    if (!element.value) {
+      return 0;
+    }
   }
-  return -1;
-}
+};
 
 
 /**
@@ -31971,4 +31992,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-e93c414"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-0851736"}};

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-e93c414
+ * v1.1.0-rc.5-master-0851736
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -75,7 +75,7 @@ function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdG
   };
 
   function mdSwitchCompile(element, attr) {
-    var checkboxLink = checkboxDirective.compile(element, attr);
+    var checkboxLink = checkboxDirective.compile(element, attr).post;
     // No transition on initial load.
     element.addClass('md-dragging');
 

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-e93c414
+ * v1.1.0-rc.5-master-0851736
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -179,7 +179,10 @@ angular.module('material.components.select', [
  * </div>
  * </hljs>
  */
-function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $parse) {
+function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $compile, $parse) {
+  var keyCodes = $mdConstant.KEY_CODE;
+  var NAVIGATION_KEYS = [keyCodes.SPACE, keyCodes.ENTER, keyCodes.UP_ARROW, keyCodes.DOWN_ARROW];
+
   return {
     restrict: 'E',
     require: ['^?mdInputContainer', 'mdSelect', 'ngModel', '?^form'],
@@ -533,14 +536,14 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
       }
 
       function handleKeypress(e) {
-        var allowedCodes = [32, 13, 38, 40];
-        if (allowedCodes.indexOf(e.keyCode) != -1) {
+        if ($mdConstant.isNavigationKey(e)) {
           // prevent page scrolling on interaction
           e.preventDefault();
           openSelect(e);
         } else {
-          if (e.keyCode <= 90 && e.keyCode >= 31) {
+          if ($mdConstant.isInputKey(e) || $mdConstant.isNumPadKey(e)) {
             e.preventDefault();
+
             var node = selectMenuCtrl.optNodeForKeyboardSearch(e);
             if (!node || node.hasAttribute('disabled')) return;
             var optionCtrl = angular.element(node).controller('mdOption');
@@ -574,12 +577,13 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
           ngModelCtrl.$setTouched();
         });
       }
+
     };
   }
 }
-SelectDirective.$inject = ["$mdSelect", "$mdUtil", "$mdTheming", "$mdAria", "$compile", "$parse"];
+SelectDirective.$inject = ["$mdSelect", "$mdUtil", "$mdConstant", "$mdTheming", "$mdAria", "$compile", "$parse"];
 
-function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
+function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
   // We want the scope to be set to 'false' so an isolated scope is not created
   // which would interfere with the md-select-header's access to the
   // parent scope.
@@ -692,6 +696,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
     var searchStr = '';
     var clearSearchTimeout, optNodes, optText;
     var CLEAR_SEARCH_AFTER = 300;
+
     self.optNodeForKeyboardSearch = function(e) {
       clearSearchTimeout && clearTimeout(clearSearchTimeout);
       clearSearchTimeout = setTimeout(function() {
@@ -700,7 +705,11 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
         optText = undefined;
         optNodes = undefined;
       }, CLEAR_SEARCH_AFTER);
-      searchStr += String.fromCharCode(e.keyCode);
+
+      // Support 1-9 on numpad
+      var keyCode = e.keyCode - ($mdConstant.isNumPadKey(e) ? 48 : 0);
+
+      searchStr += String.fromCharCode(keyCode);
       var search = new RegExp('^' + searchStr, 'i');
       if (!optNodes) {
         optNodes = $element.find('md-option');
@@ -883,7 +892,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
   }
 
 }
-SelectMenuDirective.$inject = ["$parse", "$mdUtil", "$mdTheming"];
+SelectMenuDirective.$inject = ["$parse", "$mdUtil", "$mdConstant", "$mdTheming"];
 
 function OptionDirective($mdButtonInkRipple, $mdUtil) {
 
@@ -1062,6 +1071,7 @@ function SelectProvider($$interimElementProvider) {
   function selectDefaultOptions($mdSelect, $mdConstant, $mdUtil, $window, $q, $$rAF, $animateCss, $animate, $document) {
     var ERROR_TARGET_EXPECTED = "$mdSelect.show() expected a target element in options.target but got '{0}'!";
     var animator = $mdUtil.dom.animator;
+    var keyCodes = $mdConstant.KEY_CODE;
 
     return {
       parent: 'body',
@@ -1334,7 +1344,6 @@ function SelectProvider($$interimElementProvider) {
         }
 
         function onMenuKeyDown(ev) {
-          var keyCodes = $mdConstant.KEY_CODE;
           ev.preventDefault();
           ev.stopPropagation();
 
@@ -1363,7 +1372,7 @@ function SelectProvider($$interimElementProvider) {
               $mdUtil.nextTick($mdSelect.hide, true);
               break;
             default:
-              if (ev.keyCode >= 31 && ev.keyCode <= 90) {
+              if ($mdConstant.isInputKey(ev) || $mdConstant.isNumPadKey(ev)) {
                 var optNode = dropDown.controller('mdSelectMenu').optNodeForKeyboardSearch(ev);
                 opts.focusedNode = optNode || opts.focusedNode;
                 optNode && optNode.focus();
