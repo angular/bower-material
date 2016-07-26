@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-0851736
+ * v1.1.0-rc.5-master-73a4082
  */
 goog.provide('ngmaterial.components.datepicker');
 goog.require('ngmaterial.components.icon');
@@ -2115,6 +2115,7 @@ angular.module('material.components.datepicker', [
    * </hljs>
    *
    */
+
   function datePickerDirective($$mdSvgRegistry, $mdUtil, $mdAria) {
     return {
       template: function(tElement, tAttrs) {
@@ -2182,6 +2183,7 @@ angular.module('material.components.datepicker', [
         var mdDatePickerCtrl = controllers[1];
         var mdInputContainer = controllers[2];
         var parentForm = controllers[3];
+        var mdNoAsterisk = $mdUtil.parseAttributeBoolean(attr.mdNoAsterisk);
 
         mdDatePickerCtrl.configureNgModel(ngModelCtrl, mdInputContainer);
 
@@ -2207,6 +2209,10 @@ angular.module('material.components.datepicker', [
 
           if (!mdInputContainer.label) {
             $mdAria.expect(element, 'aria-label', attr.mdPlaceholder);
+          } else if(!mdNoAsterisk) {
+            attr.$observe('required', function(value) {
+              mdInputContainer.label.toggleClass('md-required', !!value);
+            });
           }
 
           scope.$watch(mdInputContainer.isErrorGetter || function() {

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-0851736
+ * v1.1.0-rc.5-master-73a4082
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -26978,6 +26978,7 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
    * </hljs>
    *
    */
+
   function datePickerDirective($$mdSvgRegistry, $mdUtil, $mdAria) {
     return {
       template: function(tElement, tAttrs) {
@@ -27045,6 +27046,7 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
         var mdDatePickerCtrl = controllers[1];
         var mdInputContainer = controllers[2];
         var parentForm = controllers[3];
+        var mdNoAsterisk = $mdUtil.parseAttributeBoolean(attr.mdNoAsterisk);
 
         mdDatePickerCtrl.configureNgModel(ngModelCtrl, mdInputContainer);
 
@@ -27070,6 +27072,10 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
 
           if (!mdInputContainer.label) {
             $mdAria.expect(element, 'aria-label', attr.mdPlaceholder);
+          } else if(!mdNoAsterisk) {
+            attr.$observe('required', function(value) {
+              mdInputContainer.label.toggleClass('md-required', !!value);
+            });
           }
 
           scope.$watch(mdInputContainer.isErrorGetter || function() {
@@ -31992,4 +31998,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-0851736"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-73a4082"}};
