@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-73a4082
+ * v1.1.0-rc.5-master-bdc5a08
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -5211,7 +5211,7 @@ detectDisabledThemes.$inject = ["$mdThemingProvider"];
  * @ngdoc method
  * @name $mdThemingProvider#setNonce
  * @param {string} nonceValue The nonce to be added as an attribute to the theme style tags.
- * Setting a value allows the use CSP policy without using the unsafe-inline directive.
+ * Setting a value allows the use of CSP policy without using the unsafe-inline directive.
  */
 
 /**

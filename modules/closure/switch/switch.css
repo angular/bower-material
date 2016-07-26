@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-73a4082
+ * v1.1.0-rc.5-master-bdc5a08
  */
 .md-inline-form md-switch {
   margin-top: 18px;
@@ -19,8 +19,10 @@ md-switch {
           user-select: none;
   height: 30px;
   line-height: 28px;
-  -ms-flex-align: center;
-      align-items: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   margin-left: inherit;
@@ -41,6 +43,7 @@ md-switch {
     md-switch[disabled] .md-container {
       cursor: default; }
   md-switch .md-container {
+    cursor: -webkit-grab;
     cursor: grab;
     width: 36px;
     height: 24px;
@@ -58,6 +61,7 @@ md-switch {
       margin-left: 8px; }
   md-switch:not([disabled]) .md-dragging,
   md-switch:not([disabled]).md-dragging .md-container {
+    cursor: -webkit-grabbing;
     cursor: grabbing; }
   md-switch.md-focused:not([disabled]) .md-thumb:before {
     left: -8px;

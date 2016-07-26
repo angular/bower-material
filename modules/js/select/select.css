@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-73a4082
+ * v1.1.0-rc.5-master-bdc5a08
  */
 md-input-container:not([md-no-float]) .md-select-placeholder span:first-child {
   transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -49,8 +49,9 @@ md-input-container.md-input-focused:not([md-no-float]) .md-select-placeholder sp
 
 md-input-container > md-select {
   margin: 0;
-  -ms-flex-order: 2;
-      order: 2; }
+  -webkit-order: 2;
+      -ms-flex-order: 2;
+          order: 2; }
 
 md-input-container:not(.md-input-has-value) md-select[required] .md-select-value span:first-child:after, md-input-container:not(.md-input-has-value) md-select.ng-required .md-select-value span:first-child:after {
   content: ' *';
@@ -62,6 +63,7 @@ md-input-container.md-input-invalid md-select .md-select-value {
   padding-bottom: 1px; }
 
 md-select {
+  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   margin: 20px 0 26px 0; }
@@ -95,10 +97,12 @@ md-input-container.md-input-has-value .md-select-value > span:not(.md-select-ico
           transform: translate3d(0, 1px, 0); }
 
 .md-select-value {
+  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-align: center;
-      align-items: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   padding: 2px 2px 1px;
   border-bottom-width: 1px;
   border-bottom-style: solid;
@@ -107,12 +111,14 @@ md-input-container.md-input-has-value .md-select-value > span:not(.md-select-ico
   box-sizing: content-box;
   min-width: 64px;
   min-height: 26px;
-  -ms-flex-positive: 1;
-      flex-grow: 1; }
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1; }
   .md-select-value > span:not(.md-select-icon) {
     max-width: 100%;
-    -ms-flex: 1 1 auto;
-        flex: 1 1 auto;
+    -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden; }
@@ -120,8 +126,9 @@ md-input-container.md-input-has-value .md-select-value > span:not(.md-select-ico
       display: inline; }
   .md-select-value .md-select-icon {
     display: block;
-    -ms-flex-align: end;
-        align-items: flex-end;
+    -webkit-align-items: flex-end;
+        -ms-flex-align: end;
+            align-items: flex-end;
     text-align: end;
     width: 24px;
     margin: 0 4px;
@@ -138,20 +145,24 @@ md-input-container.md-input-has-value .md-select-value > span:not(.md-select-ico
     -webkit-transform: scaleY(0.6) scaleX(1);
             transform: scaleY(0.6) scaleX(1); }
   .md-select-value.md-select-placeholder {
+    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -ms-flex-order: 1;
-        order: 1;
+    -webkit-order: 1;
+        -ms-flex-order: 1;
+            order: 1;
     pointer-events: none;
     -webkit-font-smoothing: antialiased;
     padding-left: 2px;
     z-index: 1; }
 
 md-select-menu {
+  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-direction: column;
-      flex-direction: column;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
   max-height: 256px;
   min-height: 48px;
@@ -161,8 +172,9 @@ md-select-menu {
   -webkit-transform: scale(1);
           transform: scale(1); }
   md-select-menu.md-reverse {
-    -ms-flex-direction: column-reverse;
-        flex-direction: column-reverse; }
+    -webkit-flex-direction: column-reverse;
+        -ms-flex-direction: column-reverse;
+            flex-direction: column-reverse; }
   md-select-menu:not(.md-overflow) md-content {
     padding-top: 8px;
     padding-bottom: 8px; }
@@ -180,10 +192,12 @@ md-select-menu {
 md-option {
   cursor: pointer;
   position: relative;
+  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-align: center;
-      align-items: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   width: auto;
   transition: background 0.15s linear;
   padding: 0 16px 0 16px;

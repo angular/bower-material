@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-73a4082
+ * v1.1.0-rc.5-master-bdc5a08
  */
 /** Matches "md-tabs md-tabs-wrapper" style. */
 .md-nav-bar {
@@ -17,10 +17,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-direction: row;
-      flex-direction: row; }
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row; }
 
 .md-nav-item:first-of-type {
   margin-left: 8px; }

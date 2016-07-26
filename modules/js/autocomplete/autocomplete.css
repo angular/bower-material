@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-73a4082
+ * v1.1.0-rc.5-master-bdc5a08
  */
 @-webkit-keyframes md-autocomplete-list-out {
   0% {
@@ -81,10 +81,12 @@ md-autocomplete {
       width: 30px;
       height: 30px; }
   md-autocomplete md-autocomplete-wrap {
+    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -ms-flex-direction: row;
-        flex-direction: row;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
     box-sizing: border-box;
     position: relative;
     overflow: visible;
@@ -92,8 +94,9 @@ md-autocomplete {
     md-autocomplete md-autocomplete-wrap.md-menu-showing {
       z-index: 51; }
     md-autocomplete md-autocomplete-wrap md-input-container, md-autocomplete md-autocomplete-wrap input {
-      -ms-flex: 1 1 0%;
-          flex: 1 1 0%;
+      -webkit-flex: 1 1 0%;
+          -ms-flex: 1 1 0%;
+              flex: 1 1 0%;
       box-sizing: border-box;
       min-width: 0; }
     md-autocomplete md-autocomplete-wrap md-progress-linear {

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-73a4082
+ * v1.1.0-rc.5-master-bdc5a08
  */
 @-webkit-keyframes md-tab-content-hide {
   0% {
@@ -35,8 +35,9 @@ md-tabs {
   border-radius: 2px;
   overflow: hidden;
   position: relative;
-  -ms-flex-negative: 0;
-      flex-shrink: 0; }
+  -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+          flex-shrink: 0; }
   md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
     min-height: 248px; }
   md-tabs[md-align-tabs="bottom"] {
@@ -119,13 +120,16 @@ md-tabs-wrapper {
               transform: translate3d(-50%, -50%, 0) rotate(180deg); }
   md-tabs-wrapper.md-stretch-tabs md-pagination-wrapper {
     width: 100%;
+    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -ms-flex-direction: row;
-        flex-direction: row; }
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row; }
     md-tabs-wrapper.md-stretch-tabs md-pagination-wrapper md-tab-item {
-      -ms-flex-positive: 1;
-          flex-grow: 1; }
+      -webkit-flex-grow: 1;
+          -ms-flex-positive: 1;
+              flex-grow: 1; }
 
 md-tabs-canvas {
   position: relative;
@@ -148,10 +152,12 @@ md-tabs-canvas {
   md-tabs-canvas.md-paginated {
     margin: 0 32px; }
   md-tabs-canvas.md-center-tabs {
+    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -ms-flex-direction: column;
-        flex-direction: column;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
     text-align: center; }
     md-tabs-canvas.md-center-tabs .md-tab {
       float: none;
