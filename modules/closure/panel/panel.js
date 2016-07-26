@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-11ff76b
+ * v1.1.0-rc.5-master-d127991
  */
 goog.provide('ngmaterial.components.panel');
 goog.require('ngmaterial.components.backdrop');
@@ -395,8 +395,8 @@ angular
  * @ngdoc method
  * @name MdPanelPosition#top
  * @description
- * Sets the value of `top` for the panel. Clears any previously set
- * vertical position.
+ * Sets the value of `top` for the panel. Clears any previously set vertical
+ * position.
  * @param {string=} top Value of `top`. Defaults to '0'.
  * @returns {MdPanelPosition}
  */
@@ -405,9 +405,29 @@ angular
  * @ngdoc method
  * @name MdPanelPosition#bottom
  * @description
- * Sets the value of `bottom` for the panel. Clears any previously set
- * vertical position.
+ * Sets the value of `bottom` for the panel. Clears any previously set vertical
+ * position.
  * @param {string=} bottom Value of `bottom`. Defaults to '0'.
+ * @returns {MdPanelPosition}
+ */
+
+/**
+ * @ngdoc method
+ * @name MdPanelPosition#start
+ * @description
+ * Sets the panel to the start of the page - `left` if `ltr` or `right` for `rtl`. Clears any previously set
+ * horizontal position.
+ * @param {string=} start Value of position. Defaults to '0'.
+ * @returns {MdPanelPosition}
+ */
+
+/**
+ * @ngdoc method
+ * @name MdPanelPosition#end
+ * @description
+ * Sets the panel to the end of the page - `right` if `ltr` or `left` for `rtl`. Clears any previously set
+ * horizontal position.
+ * @param {string=} end Value of position. Defaults to '0'.
  * @returns {MdPanelPosition}
  */
 
@@ -723,7 +743,7 @@ MdPanelService.prototype.open = function(config) {
  * @returns {MdPanelPosition}
  */
 MdPanelService.prototype.newPanelPosition = function() {
-  return new MdPanelPosition(this._$window);
+  return new MdPanelPosition(this._$injector);
 };
 
 
@@ -1253,10 +1273,10 @@ MdPanelRef.prototype._updatePosition = function(init) {
       this._panelContainer.addClass(MD_PANEL_HIDDEN);
     }
 
-    this._panelEl.css('top', positionConfig.getTop());
-    this._panelEl.css('bottom', positionConfig.getBottom());
-    this._panelEl.css('left', positionConfig.getLeft());
-    this._panelEl.css('right', positionConfig.getRight());
+    this._panelEl.css(MdPanelPosition.absPosition.TOP, positionConfig.getTop());
+    this._panelEl.css(MdPanelPosition.absPosition.BOTTOM, positionConfig.getBottom());
+    this._panelEl.css(MdPanelPosition.absPosition.LEFT, positionConfig.getLeft());
+    this._panelEl.css(MdPanelPosition.absPosition.RIGHT, positionConfig.getRight());
 
     // Use the vendor prefixed version of transform.
     var prefixedTransform = this._$mdConstant.CSS.TRANSFORM;
@@ -1580,12 +1600,15 @@ MdPanelRef.prototype._done = function(callback, self) {
  *   position: panelPosition
  * });
  *
- * @param {!angular.$window} $window
+ * @param {!angular.$injector} $injector
  * @final @constructor
  */
-function MdPanelPosition($window) {
-  /** @private @const */
-  this._$window = $window;
+function MdPanelPosition($injector) {
+  /** @private @const {!angular.$window} */
+  this._$window = $injector.get('$window');
+
+  /** @private {boolean} */
+  this._isRTL = $injector.get('$mdUtil').bidi() === 'rtl';
 
   /** @private {boolean} */
   this._absolute = false;
@@ -1646,11 +1669,48 @@ MdPanelPosition.yPosition = {
 
 
 /**
+ * Possible values of absolute position.
+ * @enum {string}
+ */
+MdPanelPosition.absPosition = {
+  TOP: 'top',
+  RIGHT: 'right',
+  BOTTOM: 'bottom',
+  LEFT: 'left'
+};
+
+
+/**
  * Sets absolute positioning for the panel.
  * @return {!MdPanelPosition}
  */
 MdPanelPosition.prototype.absolute = function() {
   this._absolute = true;
+  return this;
+};
+
+/**
+ * Sets the value of a position for the panel. Clears any previously set position.
+ * @param {string} position Position to set
+ * @param {string=} value Value of the position. Defaults to '0'.
+ * @returns {MdPanelPosition}
+ * @private
+ */
+MdPanelPosition.prototype._setPosition = function(position, value) {
+  if (position === MdPanelPosition.absPosition.RIGHT || position === MdPanelPosition.absPosition.LEFT) {
+    this._left = this._right = '';
+  }
+  else if (position === MdPanelPosition.absPosition.BOTTOM || position === MdPanelPosition.absPosition.TOP) {
+    this._top = this._bottom = '';
+  }
+  else {
+    var positions = Object.keys(MdPanelPosition.absPosition).join().toLowerCase();
+
+    throw new Error('Position must be one of ' + positions + '.');
+  }
+
+  this['_' +  position] = angular.isString(value) ? value : '0';
+
   return this;
 };
 
@@ -1662,9 +1722,7 @@ MdPanelPosition.prototype.absolute = function() {
  * @returns {MdPanelPosition}
  */
 MdPanelPosition.prototype.top = function(top) {
-  this._bottom = '';
-  this._top = top || '0';
-  return this;
+  return this._setPosition(MdPanelPosition.absPosition.TOP, top);
 };
 
 
@@ -1675,9 +1733,31 @@ MdPanelPosition.prototype.top = function(top) {
  * @returns {MdPanelPosition}
  */
 MdPanelPosition.prototype.bottom = function(bottom) {
-  this._top = '';
-  this._bottom = bottom || '0';
-  return this;
+  return this._setPosition(MdPanelPosition.absPosition.BOTTOM, bottom);
+};
+
+
+/**
+ * Sets the panel to the start of the page - `left` if `ltr` or `right` for `rtl`. Clears any previously set
+ * horizontal position.
+ * @param {string=} start Value of position. Defaults to '0'.
+ * @returns {MdPanelPosition}
+ */
+MdPanelPosition.prototype.start = function(start) {
+  var position = this._isRTL ? MdPanelPosition.absPosition.RIGHT : MdPanelPosition.absPosition.LEFT;
+  return this._setPosition(position, start);
+};
+
+
+/**
+ * Sets the panel to the end of the page - `right` if `ltr` or `left` for `rtl`. Clears any previously set
+ * horizontal position.
+ * @param {string=} end Value of position. Defaults to '0'.
+ * @returns {MdPanelPosition}
+ */
+MdPanelPosition.prototype.end = function(end) {
+  var position = this._isRTL ? MdPanelPosition.absPosition.LEFT : MdPanelPosition.absPosition.RIGHT;
+  return this._setPosition(position, end);
 };
 
 
@@ -1688,9 +1768,7 @@ MdPanelPosition.prototype.bottom = function(bottom) {
  * @returns {MdPanelPosition}
  */
 MdPanelPosition.prototype.left = function(left) {
-  this._right = '';
-  this._left = left || '0';
-  return this;
+  return this._setPosition(MdPanelPosition.absPosition.LEFT, left);
 };
 
 
@@ -1699,11 +1777,9 @@ MdPanelPosition.prototype.left = function(left) {
  * horizontal position.
  * @param {string=} right Value of `right`. Defaults to '0'.
  * @returns {MdPanelPosition}
- */
+*/
 MdPanelPosition.prototype.right = function(right) {
-  this._left = '';
-  this._right = right || '0';
-  return this;
+  return this._setPosition(MdPanelPosition.absPosition.RIGHT, right);
 };
 
 
@@ -1981,6 +2057,36 @@ MdPanelPosition.prototype._setPanelPosition = function(panelEl) {
   }
 };
 
+
+/**
+ * Switching between 'start' and 'end'
+ * @param {string} position Horizontal position of the panel
+ * @returns {string} Reversed position
+ * @private
+ */
+MdPanelPosition.prototype._reverseXPosition = function(position) {
+  if (position === MdPanelPosition.xPosition.CENTER) {
+    return;
+  }
+
+  var start = 'start';
+  var end = 'end';
+
+  return position.indexOf(start) > -1 ? position.replace(start, end) : position.replace(end, start);
+};
+
+
+/**
+ * Handles horizontal positioning in rtl or ltr environments
+ * @param {string} position Horizontal position of the panel
+ * @returns {string} The correct position according the page direction
+ * @private
+ */
+MdPanelPosition.prototype._bidi = function(position) {
+  return this._isRTL ? this._reverseXPosition(position) : position;
+};
+
+
 /**
  * Calculates the panel position based on the created panel element and the
  * provided positioning.
@@ -2000,13 +2106,11 @@ MdPanelPosition.prototype._calculatePanelPosition = function(panelEl, position) 
   var targetRight = targetBounds.right;
   var targetWidth = targetBounds.width;
 
-  switch (position.x) {
+  switch (this._bidi(position.x)) {
     case MdPanelPosition.xPosition.OFFSET_START:
-      // TODO(ErinCoughlan): Change OFFSET_START for rtl vs ltr.
       this._left = targetLeft - panelWidth + 'px';
       break;
     case MdPanelPosition.xPosition.ALIGN_END:
-      // TODO(ErinCoughlan): Change ALIGN_END for rtl vs ltr.
       this._left = targetRight - panelWidth + 'px';
       break;
     case MdPanelPosition.xPosition.CENTER:
@@ -2014,11 +2118,9 @@ MdPanelPosition.prototype._calculatePanelPosition = function(panelEl, position) 
       this._left = left + 'px';
       break;
     case MdPanelPosition.xPosition.ALIGN_START:
-      // TODO(ErinCoughlan): Change ALIGN_START for rtl vs ltr.
       this._left = targetLeft + 'px';
       break;
     case MdPanelPosition.xPosition.OFFSET_END:
-      // TODO(ErinCoughlan): Change OFFSET_END for rtl vs ltr.
       this._left = targetRight + 'px';
       break;
   }
