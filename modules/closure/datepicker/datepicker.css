@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-8568cee
+ * v1.1.0-rc.5-master-f61d53e
  */
 /** Styles for mdCalendar. */
 md-calendar {
@@ -73,6 +73,11 @@ md-calendar {
     padding: 0 24px 0 0; }
   md-calendar-month .md-calendar-month-label:not(.md-calendar-month-label-disabled) {
     cursor: pointer; }
+  .md-calendar-month-label md-icon {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg); }
+  .md-calendar-month-label span {
+    vertical-align: middle; }
 
 .md-calendar-day-header {
   table-layout: fixed;
