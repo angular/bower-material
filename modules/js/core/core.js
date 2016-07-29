@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-446b9ff
+ * v1.1.0-rc.5-master-1eb1037
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -6372,6 +6372,22 @@ if (angular.version.minor >= 4) {
           });
           this._doneCallbacks.length = 0;
           this._state = DONE_COMPLETE_STATE;
+        }
+      }
+    };
+
+    // Polyfill AnimateRunner.all which is used by input animations
+    AnimateRunner.all = function(runners, callback) {
+      var count = 0;
+      var status = true;
+      forEach(runners, function(runner) {
+        runner.done(onProgress);
+      });
+
+      function onProgress(response) {
+        status = status && response;
+        if (++count === runners.length) {
+          callback(status);
         }
       }
     };
