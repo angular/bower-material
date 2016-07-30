@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-1eb1037
+ * v1.1.0-rc.5-master-d9bd266
  */
 goog.provide('ngmaterial.components.datepicker');
 goog.require('ngmaterial.components.icon');
@@ -2376,10 +2376,8 @@ angular.module('material.components.datepicker', [
      */
     this.calendarPaneOpenedFrom = null;
 
+    /** @type {String} Unique id for the calendar pane. */
     this.calendarPane.id = 'md-date-pane' + $mdUtil.nextUid();
-
-    $mdTheming($element);
-    $mdTheming(angular.element(this.calendarPane));
 
     /** Pre-bound click handler is saved so that the event listener can be removed. */
     this.bodyClickHandler = angular.bind(this, this.handleBodyClick);
@@ -2387,12 +2385,18 @@ angular.module('material.components.datepicker', [
     /** Pre-bound resize handler so that the event listener can be removed. */
     this.windowResizeHandler = $mdUtil.debounce(angular.bind(this, this.closeCalendarPane), 100);
 
+    /** Pre-bound handler for the window blur event. Allows for it to be removed later. */
+    this.windowBlurHandler = angular.bind(this, this.handleWindowBlur);
+
     // Unless the user specifies so, the datepicker should not be a tab stop.
     // This is necessary because ngAria might add a tabindex to anything with an ng-model
     // (based on whether or not the user has turned that particular feature on/off).
     if (!$attrs.tabindex) {
       $element.attr('tabindex', '-1');
     }
+
+    $mdTheming($element);
+    $mdTheming(angular.element(this.calendarPane));
 
     this.installPropertyInterceptors();
     this.attachChangeListeners();
@@ -2488,6 +2492,11 @@ angular.module('material.components.datepicker', [
 
     if (self.openOnFocus) {
       self.ngInputElement.on('focus', angular.bind(self, self.openCalendarPane));
+      angular.element(self.$window).on('blur', self.windowBlurHandler);
+
+      $scope.$on('$destroy', function() {
+        angular.element(self.$window).off('blur', self.windowBlurHandler);
+      });
     }
 
     $scope.$on('md-calendar-close', function() {
@@ -2716,8 +2725,8 @@ angular.module('material.components.datepicker', [
     }
 
     if (this.calendarPane.parentNode) {
-      // Use native DOM removal because we do not want any of the angular state of this element
-      // to be disposed.
+      // Use native DOM removal because we do not want any of the
+      // angular state of this element to be disposed.
       this.calendarPane.parentNode.removeChild(this.calendarPane);
     }
   };
@@ -2727,7 +2736,7 @@ angular.module('material.components.datepicker', [
    * @param {Event} event
    */
   DatePickerCtrl.prototype.openCalendarPane = function(event) {
-    if (!this.isCalendarOpen && !this.isDisabled) {
+    if (!this.isCalendarOpen && !this.isDisabled && !this.inputFocusedOnWindowBlur) {
       this.isCalendarOpen = this.isOpen = true;
       this.calendarPaneOpenedFrom = event.target;
 
@@ -2826,6 +2835,15 @@ angular.module('material.components.datepicker', [
 
       this.$scope.$digest();
     }
+  };
+
+  /**
+   * Handles the event when the user navigates away from the current tab. Keeps track of
+   * whether the input was focused when the event happened, in order to prevent the calendar
+   * from re-opening.
+   */
+  DatePickerCtrl.prototype.handleWindowBlur = function() {
+    this.inputFocusedOnWindowBlur = document.activeElement === this.inputElement;
   };
 })();
 

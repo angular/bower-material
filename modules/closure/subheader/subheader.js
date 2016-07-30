@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-1eb1037
+ * v1.1.0-rc.5-master-d9bd266
  */
 goog.provide('ngmaterial.components.subheader');
 goog.require('ngmaterial.components.sticky');
@@ -40,9 +40,20 @@ angular
  * @restrict E
  *
  * @description
- * The `<md-subheader>` directive is a subheader for a section. By default it is sticky.
- * You can make it not sticky by applying the `md-no-sticky` class to the subheader.
+ * The `md-subheader` directive creates a sticky subheader for a section.
  *
+ * Developers are able to disable the stickiness of the subheader by using the following markup
+ *
+ * <hljs lang="html">
+ *   <md-subheader class="md-no-sticky">Not Sticky</md-subheader>
+ * </hljs>
+ *
+ * ### Notes
+ * - The `md-subheader` directive uses the [$mdSticky](/api/service/$mdSticky) service to make the
+ * subheader sticky.
+ *
+ * > Whenever the current browser doesn't support stickiness natively, the subheader
+ * will be compiled twice to create a sticky clone of the subheader.
  *
  * @usage
  * <hljs lang="html">
@@ -65,7 +76,11 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil) {
     link: function postLink(scope, element, attr, controllers, transclude) {
       $mdTheming(element);
       element.addClass('_md');
-      
+
+      // Remove the ngRepeat attribute from the root element, because we don't want to compile
+      // the ngRepeat for the sticky clone again.
+      $mdUtil.prefixer().removeAttribute(element, 'ng-repeat');
+
       var outerHTML = element[0].outerHTML;
 
       function getContent(el) {

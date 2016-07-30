@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-1eb1037
+ * v1.1.0-rc.5-master-d9bd266
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -28,6 +28,9 @@ angular
  *
  * @description
  * The `$mdSticky`service provides a mixin to make elements sticky.
+ *
+ * Whenever the current browser supports stickiness natively, the `$mdSticky` service will just
+ * use the native browser stickiness.
  *
  * By default the `$mdSticky` service compiles the cloned element, when not specified through the `elementClone`
  * parameter, in the same scope as the actual element lives.

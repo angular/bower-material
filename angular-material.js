@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-1eb1037
+ * v1.1.0-rc.5-master-d9bd266
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -870,7 +870,8 @@ function MdPrefixer(initialAttributes, buildSelector) {
   return {
     buildList: _buildList,
     buildSelector: _buildSelector,
-    hasAttribute: _hasAttribute
+    hasAttribute: _hasAttribute,
+    removeAttribute: _removeAttribute
   };
 
   function _buildList(attributes) {
@@ -889,7 +890,7 @@ function MdPrefixer(initialAttributes, buildSelector) {
     attributes = angular.isArray(attributes) ? attributes : [attributes];
 
     return _buildList(attributes)
-      .map(function (item) {
+      .map(function(item) {
         return '[' + item + ']'
       })
       .join(',');
@@ -907,6 +908,14 @@ function MdPrefixer(initialAttributes, buildSelector) {
     }
 
     return false;
+  }
+
+  function _removeAttribute(element, attribute) {
+    element = element[0] || element;
+
+    _buildList(attribute).forEach(function(prefixedAttribute) {
+      element.removeAttribute(prefixedAttribute);
+    });
   }
 }
 })();
@@ -8468,6 +8477,35 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
  *
  * When using a `template` as content element, it will be not compiled upon open.
  * This allows you to compile the element yourself and use it each time the dialog opens.
+ *
+ * ### Custom Presets
+ * Developers are also able to create their own preset, which can be easily used without repeating
+ * their options each time.
+ *
+ * <hljs lang="js">
+ *   $mdDialogProvider.addPreset('testPreset', {
+ *     options: function() {
+ *       return {
+ *         template:
+ *           '<md-dialog>' +
+ *             'This is a custom preset' +
+ *           '</md-dialog>',
+ *         controllerAs: 'dialog',
+ *         bindToController: true,
+ *         clickOutsideToClose: true,
+ *         escapeToClose: true
+ *       };
+ *     }
+ *   });
+ * </hljs>
+ *
+ * After you created your preset at config phase, you can easily access it.
+ *
+ * <hljs lang="js">
+ *   $mdDialog.show(
+ *     $mdDialog.testPreset()
+ *   );
+ * </hljs>
  *
  * ### JavaScript: promise API syntax, custom dialog template
  * <hljs lang="js">
@@ -19211,6 +19249,9 @@ angular
  * @description
  * The `$mdSticky`service provides a mixin to make elements sticky.
  *
+ * Whenever the current browser supports stickiness natively, the `$mdSticky` service will just
+ * use the native browser stickiness.
+ *
  * By default the `$mdSticky` service compiles the cloned element, when not specified through the `elementClone`
  * parameter, in the same scope as the actual element lives.
  *
@@ -19577,9 +19618,20 @@ angular
  * @restrict E
  *
  * @description
- * The `<md-subheader>` directive is a subheader for a section. By default it is sticky.
- * You can make it not sticky by applying the `md-no-sticky` class to the subheader.
+ * The `md-subheader` directive creates a sticky subheader for a section.
  *
+ * Developers are able to disable the stickiness of the subheader by using the following markup
+ *
+ * <hljs lang="html">
+ *   <md-subheader class="md-no-sticky">Not Sticky</md-subheader>
+ * </hljs>
+ *
+ * ### Notes
+ * - The `md-subheader` directive uses the [$mdSticky](/api/service/$mdSticky) service to make the
+ * subheader sticky.
+ *
+ * > Whenever the current browser doesn't support stickiness natively, the subheader
+ * will be compiled twice to create a sticky clone of the subheader.
  *
  * @usage
  * <hljs lang="html">
@@ -19602,7 +19654,11 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil) {
     link: function postLink(scope, element, attr, controllers, transclude) {
       $mdTheming(element);
       element.addClass('_md');
-      
+
+      // Remove the ngRepeat attribute from the root element, because we don't want to compile
+      // the ngRepeat for the sticky clone again.
+      $mdUtil.prefixer().removeAttribute(element, 'ng-repeat');
+
       var outerHTML = element[0].outerHTML;
 
       function getContent(el) {
@@ -19999,6 +20055,35 @@ MdToastDirective.$inject = ["$mdToast"];
   * - The toast's template must have an outer `<md-toast>` element.
   * - For a toast action, use element with class `md-action`.
   * - Add the class `md-capsule` for curved corners.
+  *
+  * ### Custom Presets
+  * Developers are also able to create their own preset, which can be easily used without repeating
+  * their options each time.
+  *
+  * <hljs lang="js">
+  *   $mdToastProvider.addPreset('testPreset', {
+  *     options: function() {
+  *       return {
+  *         template:
+  *           '<md-toast>' +
+  *             '<div class="md-toast-content">' +
+  *               'This is a custom preset' +
+  *             '</div>' +
+  *           '</md-toast>',
+  *         controllerAs: 'toast',
+  *         bindToController: true
+  *       };
+  *     }
+  *   });
+  * </hljs>
+  *
+  * After you created your preset at config phase, you can easily access it.
+  *
+  * <hljs lang="js">
+  *   $mdToast.show(
+  *     $mdToast.testPreset()
+  *   );
+  * </hljs>
   *
   * ## Parent container notes
   *
@@ -21064,8 +21149,21 @@ angular.module('material.components.virtualRepeat', [
  * @description
  * `md-virtual-repeat-container` provides the scroll container for md-virtual-repeat.
  *
- * Virtual repeat is a limited substitute for ng-repeat that renders only
- * enough dom nodes to fill the container and recycling them as the user scrolls.
+ * VirtualRepeat is a limited substitute for ng-repeat that renders only
+ * enough DOM nodes to fill the container and recycling them as the user scrolls.
+ *
+ * Once an element is not visible anymore, the VirtualRepeat recycles it and will reuse it for
+ * another visible item by replacing the previous dataset with the new one.
+ *
+ * **Common Issues**
+ * > When having one-time bindings inside of the view template, the VirtualRepeat will not properly
+ * > update the bindings for new items, since the view will be recycled.
+ *
+ * **Notes:**
+ * > The VirtualRepeat is a similar implementation to the Android
+ * [RecyclerView](https://developer.android.com/reference/android/support/v7/widget/RecyclerView.html)
+ *
+ *
  *
  * @usage
  * <hljs lang="html">
@@ -22997,6 +23095,12 @@ angular
  * - Add a `name` to `md-autocomplete` (to be used on the generated `input`)
  *
  * There is an example below of how this should look.
+ *
+ * ### Notes
+ * The `md-autocomplete` uses the the [VirtualRepeat](/api/directive/mdVirtualRepeatContainer)
+ * directive for displaying the results inside of the dropdown.<br/>
+ * > When encountering issues regarding the item template please take a look at the
+ *   [VirtualRepeatContainer](/api/directive/mdVirtualRepeatContainer) documentation.
  *
  *
  * @param {expression} md-items An expression in the format of `item in items` to iterate over
@@ -27362,10 +27466,8 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
      */
     this.calendarPaneOpenedFrom = null;
 
+    /** @type {String} Unique id for the calendar pane. */
     this.calendarPane.id = 'md-date-pane' + $mdUtil.nextUid();
-
-    $mdTheming($element);
-    $mdTheming(angular.element(this.calendarPane));
 
     /** Pre-bound click handler is saved so that the event listener can be removed. */
     this.bodyClickHandler = angular.bind(this, this.handleBodyClick);
@@ -27373,12 +27475,18 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
     /** Pre-bound resize handler so that the event listener can be removed. */
     this.windowResizeHandler = $mdUtil.debounce(angular.bind(this, this.closeCalendarPane), 100);
 
+    /** Pre-bound handler for the window blur event. Allows for it to be removed later. */
+    this.windowBlurHandler = angular.bind(this, this.handleWindowBlur);
+
     // Unless the user specifies so, the datepicker should not be a tab stop.
     // This is necessary because ngAria might add a tabindex to anything with an ng-model
     // (based on whether or not the user has turned that particular feature on/off).
     if (!$attrs.tabindex) {
       $element.attr('tabindex', '-1');
     }
+
+    $mdTheming($element);
+    $mdTheming(angular.element(this.calendarPane));
 
     this.installPropertyInterceptors();
     this.attachChangeListeners();
@@ -27474,6 +27582,11 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
 
     if (self.openOnFocus) {
       self.ngInputElement.on('focus', angular.bind(self, self.openCalendarPane));
+      angular.element(self.$window).on('blur', self.windowBlurHandler);
+
+      $scope.$on('$destroy', function() {
+        angular.element(self.$window).off('blur', self.windowBlurHandler);
+      });
     }
 
     $scope.$on('md-calendar-close', function() {
@@ -27702,8 +27815,8 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
     }
 
     if (this.calendarPane.parentNode) {
-      // Use native DOM removal because we do not want any of the angular state of this element
-      // to be disposed.
+      // Use native DOM removal because we do not want any of the
+      // angular state of this element to be disposed.
       this.calendarPane.parentNode.removeChild(this.calendarPane);
     }
   };
@@ -27713,7 +27826,7 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
    * @param {Event} event
    */
   DatePickerCtrl.prototype.openCalendarPane = function(event) {
-    if (!this.isCalendarOpen && !this.isDisabled) {
+    if (!this.isCalendarOpen && !this.isDisabled && !this.inputFocusedOnWindowBlur) {
       this.isCalendarOpen = this.isOpen = true;
       this.calendarPaneOpenedFrom = event.target;
 
@@ -27812,6 +27925,15 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
 
       this.$scope.$digest();
     }
+  };
+
+  /**
+   * Handles the event when the user navigates away from the current tab. Keeps track of
+   * whether the input was focused when the event happened, in order to prevent the calendar
+   * from re-opening.
+   */
+  DatePickerCtrl.prototype.handleWindowBlur = function() {
+    this.inputFocusedOnWindowBlur = document.activeElement === this.inputElement;
   };
 })();
 
@@ -32131,4 +32253,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-1eb1037"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-d9bd266"}};

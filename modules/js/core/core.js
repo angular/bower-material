@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-1eb1037
+ * v1.1.0-rc.5-master-d9bd266
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -838,7 +838,8 @@ function MdPrefixer(initialAttributes, buildSelector) {
   return {
     buildList: _buildList,
     buildSelector: _buildSelector,
-    hasAttribute: _hasAttribute
+    hasAttribute: _hasAttribute,
+    removeAttribute: _removeAttribute
   };
 
   function _buildList(attributes) {
@@ -857,7 +858,7 @@ function MdPrefixer(initialAttributes, buildSelector) {
     attributes = angular.isArray(attributes) ? attributes : [attributes];
 
     return _buildList(attributes)
-      .map(function (item) {
+      .map(function(item) {
         return '[' + item + ']'
       })
       .join(',');
@@ -875,6 +876,14 @@ function MdPrefixer(initialAttributes, buildSelector) {
     }
 
     return false;
+  }
+
+  function _removeAttribute(element, attribute) {
+    element = element[0] || element;
+
+    _buildList(attribute).forEach(function(prefixedAttribute) {
+      element.removeAttribute(prefixedAttribute);
+    });
   }
 }
 /*

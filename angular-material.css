@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-1eb1037
+ * v1.1.0-rc.5-master-d9bd266
  */
 html, body {
   height: 100%;
@@ -709,28 +709,34 @@ button.md-button::-moz-focus-inner {
   border: 0; }
 
 .md-button {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  /** Alignment adjustments */
+  min-height: 36px;
+  min-width: 88px;
+  line-height: 36px;
+  vertical-align: middle;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
   border-radius: 3px;
   box-sizing: border-box;
-  color: currentColor;
+  /* Reset default button appearance */
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  position: relative;
   outline: none;
   border: 0;
-  display: inline-block;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
+  /** Custom styling for button */
   padding: 0 6px;
   margin: 6px 8px;
-  line-height: 36px;
-  min-height: 36px;
   background: transparent;
+  color: currentColor;
   white-space: nowrap;
-  min-width: 88px;
-  text-align: center;
+  /* Uppercase text content */
   text-transform: uppercase;
   font-weight: 500;
   font-size: 14px;
@@ -738,7 +744,6 @@ button.md-button::-moz-focus-inner {
   font-variant: inherit;
   font-family: inherit;
   text-decoration: none;
-  cursor: pointer;
   overflow: hidden;
   transition: box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
   .md-button:focus {
