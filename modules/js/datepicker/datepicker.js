@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-07c488c
+ * v1.1.0-rc.5-master-aaf682a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2091,6 +2091,8 @@ angular.module('material.components.datepicker', [
    *
    * @param {Date} ng-model The component's model. Expects a JavaScript Date object.
    * @param {expression=} ng-change Expression evaluated when the model value changes.
+   * @param {expression=} ng-focus Expression evaluated when the input is focused or the calendar is opened.
+   * @param {expression=} ng-blur Expression evaluated when focus is removed from the input or the calendar is closed.
    * @param {Date=} md-min-date Expression representing a min date (inclusive).
    * @param {Date=} md-max-date Expression representing a max date (inclusive).
    * @param {(function(Date): boolean)=} md-date-filter Function expecting a date and returning a boolean whether it can be selected or not.
@@ -2748,6 +2750,7 @@ angular.module('material.components.datepicker', [
 
       this.attachCalendarPane();
       this.focusCalendar();
+      this.evalAttr('ngFocus');
 
       // Attach click listener inside of a timeout because, if this open call was triggered by a
       // click, we don't want it to be immediately propogated up to the body and handled.
@@ -2770,6 +2773,7 @@ angular.module('material.components.datepicker', [
 
       self.detachCalendarPane();
       self.ngModelCtrl.$setTouched();
+      self.evalAttr('ngBlur');
 
       self.documentElement.off('click touchstart', self.bodyClickHandler);
       window.removeEventListener('resize', self.windowResizeHandler);
@@ -2816,6 +2820,13 @@ angular.module('material.components.datepicker', [
     if (!isFocused) {
       this.ngModelCtrl.$setTouched();
     }
+
+    // The ng* expressions shouldn't be evaluated when mdOpenOnFocus is on,
+    // because they also get called when the calendar is opened/closed.
+    if (!this.openOnFocus) {
+      this.evalAttr(isFocused ? 'ngFocus' : 'ngBlur');
+    }
+
     this.isFocused = isFocused;
   };
 
@@ -2843,6 +2854,16 @@ angular.module('material.components.datepicker', [
    */
   DatePickerCtrl.prototype.handleWindowBlur = function() {
     this.inputFocusedOnWindowBlur = document.activeElement === this.inputElement;
+  };
+
+  /**
+   * Evaluates an attribute expression against the parent scope.
+   * @param {String} attr Name of the attribute to be evaluated.
+   */
+  DatePickerCtrl.prototype.evalAttr = function(attr) {
+    if (this.$attrs[attr]) {
+      this.$scope.$parent.$eval(this.$attrs[attr]);
+    }
   };
 })();
 
