@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-d9bd266
+ * v1.1.0-rc.5-master-07c488c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -22174,7 +22174,8 @@ var ITEM_HEIGHT   = 41,
 
 function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming, $window,
                              $animate, $rootElement, $attrs, $q) {
-  //-- private variables
+
+  // Internal Variables.
   var ctrl                 = this,
       itemParts            = $scope.itemsExpr.split(/ in /i),
       itemExpr             = itemParts[ 1 ],
@@ -22188,10 +22189,10 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       enableWrapScroll     = null,
       inputModelCtrl       = null;
 
-  //-- public variables with handlers
+  // Public Exported Variables with handlers
   defineProperty('hidden', handleHiddenChange, true);
 
-  //-- public variables
+  // Public Exported Variables
   ctrl.scope      = $scope;
   ctrl.parent     = $scope.$parent;
   ctrl.itemName   = itemParts[ 0 ];
@@ -22206,7 +22207,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   ctrl.isReadonly = null;
   ctrl.hasNotFound = false;
 
-  //-- public methods
+  // Public Exported Methods
   ctrl.keydown                       = keydown;
   ctrl.blur                          = blur;
   ctrl.focus                         = focus;
@@ -22220,6 +22221,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   ctrl.unregisterSelectedItemWatcher = unregisterSelectedItemWatcher;
   ctrl.notFoundVisible               = notFoundVisible;
   ctrl.loadingIsVisible              = loadingIsVisible;
+  ctrl.positionDropdown              = positionDropdown;
 
   return init();
 
@@ -32253,4 +32255,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-d9bd266"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-07c488c"}};
