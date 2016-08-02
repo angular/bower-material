@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-64bc5b9
+ * v1.1.0-rc.5-master-2d8eb6d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2099,7 +2099,7 @@ var HANDLERS = {};
  * It contains normalized x and y coordinates from DOM events,
  * as well as other information abstracted from the DOM.
  */
- 
+
 var pointer, lastPointer, forceSkipClickHijack = false;
 
 /**
@@ -2173,6 +2173,8 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
   var self = {
     handler: addHandler,
     register: register,
+    isIos: isIos,
+    isAndroid: isAndroid,
     // On mobile w/out jQuery, we normally intercept clicks. Should we skip that?
     isHijackingClicks: (isIos || isAndroid) && !hasJQuery && !forceSkipClickHijack
   };
@@ -2264,7 +2266,7 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
    * Register handlers. These listen to touch/start/move events, interpret them,
    * and dispatch gesture events depending on options & conditions. These are all
    * instances of GestureHandler.
-   * @see GestureHandler 
+   * @see GestureHandler
    */
   return self
     /*
@@ -2623,7 +2625,7 @@ function attachToDocument( $mdGesture, $$MdGestureHandler ) {
      * click event will be sent ~400ms after a touchend event happens.
      * The only way to know if this click is real is to prevent any normal
      * click events, and add a flag to events sent by material so we know not to prevent those.
-     * 
+     *
      * Two exceptions to click events that should be prevented are:
      *  - click events sent by the keyboard (eg form submit)
      *  - events that originate from an Ionic app
@@ -27382,7 +27384,7 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
    * @ngInject @constructor
    */
   function DatePickerCtrl($scope, $element, $attrs, $window, $mdConstant,
-    $mdTheming, $mdUtil, $mdDateLocale, $$mdDateUtil, $$rAF) {
+    $mdTheming, $mdUtil, $mdDateLocale, $$mdDateUtil, $$rAF, $mdGesture) {
 
     /** @final */
     this.$window = $window;
@@ -27476,8 +27478,15 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
     /** Pre-bound click handler is saved so that the event listener can be removed. */
     this.bodyClickHandler = angular.bind(this, this.handleBodyClick);
 
-    /** Pre-bound resize handler so that the event listener can be removed. */
-    this.windowResizeHandler = $mdUtil.debounce(angular.bind(this, this.closeCalendarPane), 100);
+    /**
+     * Name of the event that will trigger a close. Necessary to sniff the browser, because
+     * the resize event doesn't make sense on mobile and can have a negative impact since it
+     * triggers whenever the browser zooms in on a focused input.
+     */
+    this.windowEventName = ($mdGesture.isIos || $mdGesture.isAndroid) ? 'orientationchange' : 'resize';
+
+    /** Pre-bound close handler so that the event listener can be removed. */
+    this.windowEventHandler = $mdUtil.debounce(angular.bind(this, this.closeCalendarPane), 100);
 
     /** Pre-bound handler for the window blur event. Allows for it to be removed later. */
     this.windowBlurHandler = angular.bind(this, this.handleWindowBlur);
@@ -27514,7 +27523,7 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
       });
     }
   }
-  DatePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$window", "$mdConstant", "$mdTheming", "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF"];
+  DatePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$window", "$mdConstant", "$mdTheming", "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF", "$mdGesture"];
 
   /**
    * Sets up the controller's reference to ngModelController.
@@ -27855,7 +27864,7 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
         self.documentElement.on('click touchstart', self.bodyClickHandler);
       }, false);
 
-      window.addEventListener('resize', this.windowResizeHandler);
+      window.addEventListener(this.windowEventName, this.windowEventHandler);
     }
   };
 
@@ -27869,7 +27878,7 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
       self.evalAttr('ngBlur');
 
       self.documentElement.off('click touchstart', self.bodyClickHandler);
-      window.removeEventListener('resize', self.windowResizeHandler);
+      window.removeEventListener(self.windowEventName, self.windowEventHandler);
 
       self.calendarPaneOpenedFrom.focus();
       self.calendarPaneOpenedFrom = null;
@@ -32296,4 +32305,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-64bc5b9"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-2d8eb6d"}};
