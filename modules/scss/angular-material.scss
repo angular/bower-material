@@ -261,15 +261,10 @@ $checkbox-border-width: 2px !default;
   }
 }
 
-@mixin rtl-prop($ltr-prop, $rtl-prop, $value) {
+@mixin rtl-prop($ltr-prop, $rtl-prop, $value, $reset-value) {
   #{$ltr-prop}: $value;
   [dir=rtl] & {
-    // fallback for auto
-    #{$ltr-prop}: 0;
-    // fallback for IE
-    #{$ltr-prop}: auto;
-    #{$ltr-prop}: initial;
-
+    #{$ltr-prop}: $reset-value;
     #{$rtl-prop}: $value;
   }
 }
@@ -828,8 +823,8 @@ input {
     }
 
     #{$offsets} {
-      @if $i != 0 { @include rtl-prop(margin-left, margin-right, #{$i * 5 + '%'}); }
-      @else { @include rtl-prop(margin-left, margin-right, 0); }
+      @if $i != 0 { @include rtl-prop(margin-left, margin-right, #{$i * 5 + '%'}, auto); }
+      @else { @include rtl-prop(margin-left, margin-right, 0, auto); }
     }
   }
 
@@ -861,7 +856,7 @@ input {
     }
 
     #{$offsets} {
-      @include rtl-prop(margin-left, margin-right, calc(200% / 3));
+      @include rtl-prop(margin-left, margin-right, calc(200% / 3), auto);
     }
   }
 }
@@ -932,7 +927,7 @@ input {
 	    > .#{$flexName}-33   , > .#{$flexName}-33     {  flex: 1 1 33.33%;  max-width: 33.33%;  max-height: 100%; box-sizing: border-box; }
 	    > .#{$flexName}-66   , > .#{$flexName}-66     {  flex: 1 1 66.66%;  max-width: 66.66%;  max-height: 100%; box-sizing: border-box; }
 	  }
-	  
+
 	  .layout-column {
 	    > .#{$flexName}-33   , > .#{$flexName}-33     {  flex: 1 1 33.33%;  max-width: 100%;  max-height: 33.33%; box-sizing: border-box; }
 	    > .#{$flexName}-66   , > .#{$flexName}-66     {  flex: 1 1 66.66%;  max-width: 100%;  max-height: 66.66%; box-sizing: border-box; }
@@ -1972,13 +1967,13 @@ md-card {
 
     &:first-child {
       md-card-avatar {
-       @include rtl-prop(margin-right, margin-left, 12px);
+       @include rtl-prop(margin-right, margin-left, 12px, auto);
       }
     }
 
     &:last-child {
       md-card-avatar {
-        @include rtl-prop(margin-left, margin-right, 12px);
+        @include rtl-prop(margin-left, margin-right, 12px, auto);
       }
     }
 
@@ -2125,11 +2120,11 @@ md-card {
         margin: 0 $baseline-grid * .5;
 
         &:first-of-type {
-          @include rtl-prop(margin-left, margin-right, 0);
+          @include rtl-prop(margin-left, margin-right, 0, auto);
         }
 
         &:last-of-type {
-          @include rtl-prop(margin-right, margin-left, 0);
+          @include rtl-prop(margin-right, margin-left, 0, auto);
         }
       }
 
@@ -2138,11 +2133,11 @@ md-card {
         margin-right: 3 * $baseline-grid / 4;
 
         &:first-of-type {
-          @include rtl-prop(margin-left, margin-right, 3 * $baseline-grid / 2);
+          @include rtl-prop(margin-left, margin-right, 3 * $baseline-grid / 2, auto);
         }
 
         &:last-of-type {
-          @include rtl-prop(margin-right, margin-left, 3 * $baseline-grid / 2);
+          @include rtl-prop(margin-right, margin-left, 3 * $baseline-grid / 2, auto);
         }
       }
 
@@ -2274,7 +2269,7 @@ $contact-chip-name-width: rem(12) !default;
       .md-contact-name {
         display: inline-block;
         height: $chip-height;
-        @include rtl-prop(margin-left, margin-right, rem(0.8));
+        @include rtl-prop(margin-left, margin-right, rem(0.8), auto);
       }
     }
   }
@@ -2287,7 +2282,7 @@ $contact-chip-name-width: rem(12) !default;
     margin-top: $contact-chip-suggestion-margin;
   }
   .md-contact-name {
-    @include rtl-prop(margin-left, margin-right, $contact-chip-suggestion-margin);
+    @include rtl-prop(margin-left, margin-right, $contact-chip-suggestion-margin, auto);
     width: $contact-chip-name-width;
   }
   .md-contact-name, .md-contact-email {
@@ -2319,10 +2314,10 @@ $contact-chip-name-width: rem(12) !default;
   &.md-removable {
 
     md-chip {
-      @include rtl-prop(padding-right, padding-left, $chip-remove-padding-right);
+      @include rtl-prop(padding-right, padding-left, $chip-remove-padding-right, 0);
 
       .md-chip-content {
-        @include rtl-prop(padding-right, padding-left, rem(0.4));
+        @include rtl-prop(padding-right, padding-left, rem(0.4), 0);
       }
     }
 
@@ -2360,7 +2355,7 @@ $contact-chip-name-width: rem(12) !default;
     }
     .md-chip-remove-container {
       position: absolute;
-      @include rtl-prop(right, left, 0);
+      @include rtl-prop(right, left, 0, auto);
       line-height: $chip-remove-line-height;
     }
     .md-chip-remove {
@@ -2517,11 +2512,11 @@ $md-calendar-height:
   // because we want the header background and the month dividing border to
   // extend the entire width of the calendar.
   &:first-child {
-    @include rtl-prop(padding-left, padding-right, $md-calendar-side-padding);
+    @include rtl-prop(padding-left, padding-right, $md-calendar-side-padding, 0);
   }
 
   &:last-child {
-    @include rtl-prop(padding-right, padding-left, $md-calendar-side-padding);
+    @include rtl-prop(padding-right, padding-left, $md-calendar-side-padding, 0);
   }
 }
 
@@ -2680,8 +2675,8 @@ md-datepicker {
 
   // Leave room for the down-triangle button to "overflow" it's parent without modifying scrollLeft.
   // This prevents the element from shifting right when opening via the triangle button.
-  @include rtl-prop(padding-right, padding-left, $md-datepicker-triangle-button-width / 2);
-  @include rtl-prop(margin-right, margin-left, -$md-datepicker-triangle-button-width / 2);
+  @include rtl-prop(padding-right, padding-left, $md-datepicker-triangle-button-width / 2, 0);
+  @include rtl-prop(margin-right, margin-left, -$md-datepicker-triangle-button-width / 2, auto);
 
   vertical-align: middle;
 }
@@ -2748,7 +2743,7 @@ md-datepicker {
 
     .md-input-message-animation {
       $margin: $md-datepicker-triangle-button-width + $md-datepicker-button-padding * 2 + $md-datepicker-button-gap;
-      @include rtl-prop(margin-left, margin-right, $margin);
+      @include rtl-prop(margin-left, margin-right, $margin, auto);
     }
   }
 }
@@ -2767,7 +2762,7 @@ md-datepicker {
   width: auto;
 
   .md-icon-button + & {
-    @include rtl-prop(margin-left, margin-right, $md-datepicker-button-gap);
+    @include rtl-prop(margin-left, margin-right, $md-datepicker-button-gap, auto);
   }
 
   &.md-datepicker-focused {
@@ -2865,7 +2860,7 @@ md-datepicker {
 // Button containing the down "disclosure" triangle/arrow.
 .md-datepicker-triangle-button {
   position: absolute;
-  @include rtl-prop(right, left, 0);
+  @include rtl-prop(right, left, 0, auto);
   top: $md-date-arrow-size;
 
   // TODO(jelbourn): This position isn't great on all platforms.
@@ -2903,7 +2898,7 @@ md-datepicker[disabled] {
   }
 
   .md-icon-button + .md-datepicker-input-container {
-    @include rtl-prop(margin-left, margin-right, -$md-datepicker-button-gap);
+    @include rtl-prop(margin-left, margin-right, -$md-datepicker-button-gap, auto);
   }
 
   .md-datepicker-input,
@@ -2914,7 +2909,7 @@ md-datepicker[disabled] {
   // This needs some extra specificity in order to override
   // the focused/invalid border colors.
   input.md-datepicker-input {
-    @include rtl-prop(margin-left, margin-right, 24px);
+    @include rtl-prop(margin-left, margin-right, 24px, auto);
     height: $md-datepicker-input-mask-height;
     border-bottom-color: transparent;
   }
@@ -3078,7 +3073,7 @@ md-divider {
   margin: 0;
 
   &[md-inset] {
-    @include rtl-prop(margin-left, margin-right, $baseline-grid * 10);
+    @include rtl-prop(margin-left, margin-right, $baseline-grid * 10, auto);
   }
 }
 
@@ -3094,6 +3089,7 @@ md-divider {
     border-right-style: solid;
   }
 }
+
 md-fab-speed-dial {
   position: relative;
   display: flex;
@@ -3292,23 +3288,23 @@ md-fab-toolbar {
 
   &.md-left {
     md-fab-trigger {
-      @include rtl-prop(right, left, 0);
+      @include rtl-prop(right, left, 0, auto);
     }
 
     .md-toolbar-tools {
       flex-direction: row-reverse;
 
       > .md-button:first-child {
-        @include rtl-prop(margin-right, margin-left, 0.6rem)
+        @include rtl-prop(margin-right, margin-left, 0.6rem, auto)
       }
 
       > .md-button:first-child {
-        @include rtl-prop(margin-left, margin-right, -0.8rem);
+        @include rtl-prop(margin-left, margin-right, -0.8rem, auto);
       }
 
 
       > .md-button:last-child {
-        @include rtl-prop(margin-right, margin-left, 8px);
+        @include rtl-prop(margin-right, margin-left, 8px, auto);
       }
 
     }
@@ -3316,7 +3312,7 @@ md-fab-toolbar {
 
   &.md-right {
     md-fab-trigger {
-      @include rtl-prop(left, right, 0);
+      @include rtl-prop(left, right, 0, auto);
     }
 
     .md-toolbar-tools {
@@ -3965,10 +3961,10 @@ md-list {
         }
 
         > md-icon:first-child:not(.md-avatar-icon) {
-          @include rtl-prop(margin-right, margin-left, $list-item-primary-width - $list-item-dense-primary-icon-width);
+          @include rtl-prop(margin-right, margin-left, $list-item-primary-width - $list-item-dense-primary-icon-width, auto);
         }
         .md-avatar, .md-avatar-icon {
-          @include rtl-prop(margin-right, margin-left, $list-item-primary-width - $list-item-dense-primary-avatar-width);
+          @include rtl-prop(margin-right, margin-left, $list-item-primary-width - $list-item-dense-primary-avatar-width, auto);
         }
         .md-avatar {
           flex: none;
@@ -3982,7 +3978,7 @@ md-list {
         &, & > .md-no-style {
           .md-list-item-text {
             &.md-offset {
-              @include rtl-prop(margin-left, margin-right, $list-item-primary-width);
+              @include rtl-prop(margin-left, margin-right, $list-item-primary-width, auto);
             }
 
             h3,
@@ -4012,7 +4008,7 @@ md-list {
 
       &.md-3-line {
         &, & > .md-no-style {
-          
+
           min-height: $list-item-dense-three-line-height;
           @include ie11-min-height-flexbug($list-item-dense-three-line-height);
 
@@ -4109,10 +4105,10 @@ md-list-item {
   md-divider {
     position: absolute;
     bottom: 0;
-    @include rtl-prop(left, right, 0);
+    @include rtl-prop(left, right, 0, auto);
     width: 100%;
     &[md-inset] {
-      @include rtl-prop(left, right, $list-item-inset-divider-offset);
+      @include rtl-prop(left, right, $list-item-inset-divider-offset, auto);
       width: calc(100% - #{$list-item-inset-divider-offset});
       margin: 0 !important;
     }
@@ -4152,13 +4148,13 @@ md-list-item {
     }
 
     & > md-icon:first-child:not(.md-avatar-icon) {
-      @include rtl-prop(margin-right, margin-left, $list-item-primary-width - $list-item-primary-icon-width);
+      @include rtl-prop(margin-right, margin-left, $list-item-primary-width - $list-item-primary-icon-width, auto);
     }
 
     & .md-avatar, .md-avatar-icon {
       margin-top: $baseline-grid;
       margin-bottom: $baseline-grid;
-      @include rtl-prop(margin-right, margin-left, $list-item-primary-width - $list-item-primary-avatar-width);
+      @include rtl-prop(margin-right, margin-left, $list-item-primary-width - $list-item-primary-avatar-width, auto);
       border-radius: 50%;
       box-sizing: content-box;
     }
@@ -4204,7 +4200,7 @@ md-list-item {
       .md-button, .md-icon-button {
         &:last-of-type {
           // Reset 6px margin for the button.
-          @include rtl-prop(margin-right, margin-left, 0px);
+          @include rtl-prop(margin-right, margin-left, 0, auto);
         }
       }
 
@@ -4214,7 +4210,7 @@ md-list-item {
 
         &:last-child {
           width: 3 * $baseline-grid;
-          @include rtl-prop(margin-right, margin-left, 0);
+          @include rtl-prop(margin-right, margin-left, 0, auto);
         }
       }
 
@@ -4222,7 +4218,7 @@ md-list-item {
         margin-top: 0;
         margin-bottom: 0;
 
-        @include rtl-prop(margin-right, margin-left, -6px);
+        @include rtl-prop(margin-right, margin-left, -6px, auto);
       }
     }
 
@@ -4250,7 +4246,7 @@ md-list-item {
         overflow: hidden;
 
         &.md-offset {
-          @include rtl-prop(margin-left, margin-right, $list-item-primary-width);
+          @include rtl-prop(margin-left, margin-right, $list-item-primary-width, auto);
         }
 
         h3 {
@@ -4522,7 +4518,7 @@ md-menu-content.md-menu-bar-menu.md-dense {
       padding: 0;
       width: 24px;
       top: 0.75 * $baseline-grid;
-      @include rtl-prop(left, right, 3 * $baseline-grid);
+      @include rtl-prop(left, right, 3 * $baseline-grid, auto);
     }
     > .md-button, .md-menu > .md-button {
       @include rtl(padding, 0 4 * $baseline-grid 0 8 * $baseline-grid, 0 8 * $baseline-grid 0 4 * $baseline-grid);
@@ -4559,7 +4555,7 @@ md-menu-content.md-menu-bar-menu.md-dense {
       text-transform: none;
       font-weight: normal;
       border-radius: 0px;
-      @include rtl-prop(padding-left, padding-right, 2 * $baseline-grid);
+      @include rtl-prop(padding-left, padding-right, 2 * $baseline-grid, 0);
       &:after {
         display: block;
         content: '\25BC';
@@ -4567,7 +4563,7 @@ md-menu-content.md-menu-bar-menu.md-dense {
         top: 0px;
         speak: none;
         @include rtl(transform, rotate(270deg) scaleY(0.45) scaleX(0.9), rotate(90deg) scaleY(0.45) scaleX(0.9));
-        @include rtl-prop(right, left, 3.5 * $baseline-grid);
+        @include rtl-prop(right, left, 3.5 * $baseline-grid, auto);
       }
     }
   }
@@ -5635,7 +5631,7 @@ $slider-sign-top: ($slider-size / 2) - ($slider-thumb-default-scale * $slider-th
 
 @mixin slider-thumb-position($width: $slider-thumb-width, $height: $slider-thumb-height) {
   position: absolute;
-  @include rtl-prop(left, right, (-$width / 2));
+  @include rtl-prop(left, right, (-$width / 2), auto);
   top: ($slider-size / 2) - ($height / 2);
   width: $width;
   height: $height;
@@ -5704,7 +5700,7 @@ md-slider {
    */
   .md-thumb-container {
     position: absolute;
-    @include rtl-prop(left, right, 0);
+    @include rtl-prop(left, right, 0, auto);
     top: 50%;
     transform: translate3d(-50%,-50%,0);
     transition: all .4s cubic-bezier(.25,.8,.25,1);
@@ -5712,7 +5708,7 @@ md-slider {
   }
   .md-thumb {
     z-index: 1;
-    
+
     @include slider-thumb-position($slider-thumb-width, $slider-thumb-height);
 
     // We render thumb in an :after selector to fix an obscure problem with the
@@ -5755,7 +5751,7 @@ md-slider {
     &:after {
       position: absolute;
       content: '';
-      @include rtl-prop(left, right, -($slider-sign-width / 2 - $slider-arrow-width / 2));
+      @include rtl-prop(left, right, -($slider-sign-width / 2 - $slider-arrow-width / 2), auto);
       border-radius: $slider-arrow-height;
       top: 19px;
       border-left: $slider-arrow-width / 2 solid transparent;
@@ -5908,7 +5904,7 @@ md-slider {
     flex-direction: column;
     min-height: $slider-min-size;
     min-width: 0;
-    
+
     .md-slider-wrapper {
       flex: 1;
       padding-top: 12px;
@@ -5998,8 +5994,8 @@ md-slider {
   }
   &[md-invert] {
     &:not([md-vertical]) .md-track-fill {
-      @include rtl-prop(left, right, auto);
-      @include rtl-prop(right, left, 0);
+      @include rtl-prop(left, right, auto, auto);
+      @include rtl-prop(right, left, 0, auto);
     }
     &[md-vertical] {
       .md-track-fill {
@@ -6031,11 +6027,11 @@ md-slider-container {
   }
 
   & > *:first-child:not(md-slider) {
-    @include rtl-prop(margin-right, margin-left, $items-margin);
+    @include rtl-prop(margin-right, margin-left, $items-margin, auto);
   }
 
   & > *:last-child:not(md-slider) {
-    @include rtl-prop(margin-left, margin-right, $items-margin);
+    @include rtl-prop(margin-left, margin-right, $items-margin, auto);
   }
 
   &[md-vertical] {
@@ -6052,7 +6048,7 @@ md-slider-container {
   md-input-container {
     input[type="number"] {
       text-align: center;
-      @include rtl-prop(padding-left, padding-right, 15px); // size of arrows
+      @include rtl-prop(padding-left, padding-right, 15px, 0); // size of arrows
       height: $items-height * 2;
       margin-top: -$items-height;
     }
@@ -6182,7 +6178,7 @@ md-switch {
     @include rtl(margin-left, inherit, 0);
     @include rtl(margin-right, 0, inherit);
   }
-  
+
   &[disabled] {
     cursor: default;
 
@@ -6197,7 +6193,7 @@ md-switch {
     height: $switch-height;
     position: relative;
     user-select: none;
-    @include rtl-prop(margin-right, margin-left, 8px);
+    @include rtl-prop(margin-right, margin-left, 8px, auto);
     float: left;
   }
 
@@ -6425,11 +6421,11 @@ md-tabs-wrapper {
     }
   }
   md-prev-button {
-    @include rtl-prop(left, right, 0);
+    @include rtl-prop(left, right, 0, auto);
     background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE3LjEuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPiA8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPiA8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSIyNHB4IiBoZWlnaHQ9IjI0cHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjQgMjQiIHhtbDpzcGFjZT0icHJlc2VydmUiPiA8ZyBpZD0iSGVhZGVyIj4gPGc+IDxyZWN0IHg9Ii02MTgiIHk9Ii0xMjA4IiBmaWxsPSJub25lIiB3aWR0aD0iMTQwMCIgaGVpZ2h0PSIzNjAwIi8+IDwvZz4gPC9nPiA8ZyBpZD0iTGFiZWwiPiA8L2c+IDxnIGlkPSJJY29uIj4gPGc+IDxwb2x5Z29uIHBvaW50cz0iMTUuNCw3LjQgMTQsNiA4LDEyIDE0LDE4IDE1LjQsMTYuNiAxMC44LDEyIAkJIiBzdHlsZT0iZmlsbDp3aGl0ZTsiLz4gPHJlY3QgZmlsbD0ibm9uZSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ii8+IDwvZz4gPC9nPiA8ZyBpZD0iR3JpZCIgZGlzcGxheT0ibm9uZSI+IDxnIGRpc3BsYXk9ImlubGluZSI+IDwvZz4gPC9nPiA8L3N2Zz4NCg==');
   }
   md-next-button {
-    @include rtl-prop(right, left, 0);
+    @include rtl-prop(right, left, 0, auto);
     background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE3LjEuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPiA8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPiA8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSIyNHB4IiBoZWlnaHQ9IjI0cHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjQgMjQiIHhtbDpzcGFjZT0icHJlc2VydmUiPiA8ZyBpZD0iSGVhZGVyIj4gPGc+IDxyZWN0IHg9Ii02MTgiIHk9Ii0xMzM2IiBmaWxsPSJub25lIiB3aWR0aD0iMTQwMCIgaGVpZ2h0PSIzNjAwIi8+IDwvZz4gPC9nPiA8ZyBpZD0iTGFiZWwiPiA8L2c+IDxnIGlkPSJJY29uIj4gPGc+IDxwb2x5Z29uIHBvaW50cz0iMTAsNiA4LjYsNy40IDEzLjIsMTIgOC42LDE2LjYgMTAsMTggMTYsMTIgCQkiIHN0eWxlPSJmaWxsOndoaXRlOyIvPiA8cmVjdCBmaWxsPSJub25lIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiLz4gPC9nPiA8L2c+IDxnIGlkPSJHcmlkIiBkaXNwbGF5PSJub25lIj4gPGcgZGlzcGxheT0iaW5saW5lIj4gPC9nPiA8L2c+IDwvc3ZnPg0K');
     md-icon {
       transform: translate3d(-50%, -50%, 0) rotate(180deg);
@@ -6456,7 +6452,7 @@ md-tabs-canvas {
   .md-dummy-wrapper {
     position: absolute;
     top: 0;
-    @include rtl-prop(left, right, 0);
+    @include rtl-prop(left, right, 0, auto);
   }
   &.md-paginated {
     margin: 0 $tabs-paginator-width;
@@ -6479,7 +6475,7 @@ md-pagination-wrapper {
   transition: transform $swift-ease-in-out-duration $swift-ease-in-out-timing-function;
   position: absolute;
   width: 999999px;
-  @include rtl-prop(left, right, 0);
+  @include rtl-prop(left, right, 0, auto);
   transform: translate3d(0, 0, 0);
   &.md-center-tabs {
     position: relative;
@@ -6794,11 +6790,11 @@ md-toast {
 
     // Support for RTL alignment
     &._md-start {
-      @include rtl-prop(left, right, 0);
+      @include rtl-prop(left, right, 0, auto);
     }
 
     &._md-end {
-      @include rtl-prop(right, left, 0);
+      @include rtl-prop(right, left, 0, auto);
     }
 
     /*
@@ -6912,7 +6908,7 @@ md-toolbar {
   }
 
   > .md-indent {
-    @include rtl-prop(margin-left, margin-right, $md-toolbar-indent-margin);
+    @include rtl-prop(margin-left, margin-right, $md-toolbar-indent-margin, auto);
   }
 
   ~ md-content {
@@ -6975,16 +6971,16 @@ md-toolbar {
     }
   }
   &> .md-button:first-child {
-    @include rtl-prop(margin-left, margin-right, $icon-button-margin-offset);
+    @include rtl-prop(margin-left, margin-right, $icon-button-margin-offset, auto);
   }
   &> .md-button:last-child {
-    @include rtl-prop(margin-right, margin-left, $icon-button-margin-offset);
+    @include rtl-prop(margin-right, margin-left, $icon-button-margin-offset, auto);
   }
 
   &> md-menu:last-child {
-    @include rtl-prop(margin-right, margin-left, $icon-button-margin-offset);
+    @include rtl-prop(margin-right, margin-left, $icon-button-margin-offset, auto);
     & > .md-button {
-      @include rtl-prop(margin-right, margin-left, 0);
+      @include rtl-prop(margin-right, margin-left, 0, auto);
     }
   }
 
@@ -7143,7 +7139,7 @@ $virtual-repeat-scrollbar-width: 16px !default;
     // Leave room for the scroll bar.
     // TODO: Will probably need to perform measurements at runtime.
     bottom: $virtual-repeat-scrollbar-width;
-    @include rtl-prop(right, left, auto);
+    @include rtl-prop(right, left, auto, auto);
     white-space: nowrap;
   }
 }

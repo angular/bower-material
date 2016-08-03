@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-2d8eb6d
+ * v1.1.0-rc.5-master-9a2c47d
  */
 md-list {
   display: block;
@@ -30,9 +30,7 @@ md-list {
       margin-right: 36px; }
       [dir=rtl] md-list.md-dense md-list-item > md-icon:first-child:not(.md-avatar-icon), [dir=rtl]
       md-list.md-dense md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
-        margin-right: 0;
         margin-right: auto;
-        margin-right: initial;
         margin-left: 36px; }
     md-list.md-dense md-list-item .md-avatar, md-list.md-dense md-list-item .md-avatar-icon,
     md-list.md-dense md-list-item .md-list-item-inner .md-avatar,
@@ -41,23 +39,19 @@ md-list {
       [dir=rtl] md-list.md-dense md-list-item .md-avatar, [dir=rtl] md-list.md-dense md-list-item .md-avatar-icon, [dir=rtl]
       md-list.md-dense md-list-item .md-list-item-inner .md-avatar, [dir=rtl]
       md-list.md-dense md-list-item .md-list-item-inner .md-avatar-icon {
-        margin-right: 0;
         margin-right: auto;
-        margin-right: initial;
         margin-left: 20px; }
     md-list.md-dense md-list-item .md-avatar,
     md-list.md-dense md-list-item .md-list-item-inner .md-avatar {
+      -webkit-box-flex: 0;
       -webkit-flex: none;
-          -ms-flex: none;
               flex: none;
       width: 36px;
       height: 36px; }
   md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-2-line > .md-no-style .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text.md-offset {
     margin-left: 56px; }
     [dir=rtl] md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense md-list-item.md-2-line > .md-no-style .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text.md-offset {
-      margin-left: 0;
       margin-left: auto;
-      margin-left: initial;
       margin-right: 56px; }
   md-list.md-dense md-list-item.md-2-line .md-list-item-text h3,
   md-list.md-dense md-list-item.md-2-line .md-list-item-text h4,
@@ -96,18 +90,19 @@ md-list {
 md-list-item {
   position: relative; }
   md-list-item.md-proxy-focus.md-focused .md-no-style {
+    -webkit-transition: background-color 0.15s linear;
     transition: background-color 0.15s linear; }
   md-list-item._md-button-wrap {
     position: relative; }
     md-list-item._md-button-wrap > div.md-button:first-child {
+      display: -webkit-box;
       display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
+      -webkit-box-align: center;
       -webkit-align-items: center;
-          -ms-flex-align: center;
               align-items: center;
+      -webkit-box-pack: start;
       -webkit-justify-content: flex-start;
-          -ms-flex-pack: start;
               justify-content: flex-start;
       padding: 0 16px;
       margin: 0;
@@ -131,8 +126,8 @@ md-list-item {
   md-list-item .md-no-style {
     position: relative;
     padding: 0px 16px;
+    -webkit-box-flex: 1;
     -webkit-flex: 1 1 auto;
-        -ms-flex: 1 1 auto;
             flex: 1 1 auto; }
     md-list-item.md-no-proxy.md-button,
     md-list-item .md-no-style.md-button {
@@ -142,11 +137,13 @@ md-list-item {
       text-transform: none;
       width: 100%;
       white-space: normal;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
       -webkit-flex-direction: inherit;
-          -ms-flex-direction: inherit;
               flex-direction: inherit;
+      -webkit-box-align: inherit;
       -webkit-align-items: inherit;
-          -ms-flex-align: inherit;
+                  -ms-grid-row-align: inherit;
               align-items: inherit;
       border-radius: 0;
       margin: 0; }
@@ -167,29 +164,25 @@ md-list-item {
     left: 0;
     width: 100%; }
     [dir=rtl] md-list-item md-divider {
-      left: 0;
       left: auto;
-      left: initial;
       right: 0; }
     md-list-item md-divider[md-inset] {
       left: 72px;
       width: calc(100% - 72px);
       margin: 0 !important; }
       [dir=rtl] md-list-item md-divider[md-inset] {
-        left: 0;
         left: auto;
-        left: initial;
         right: 72px; }
   md-list-item,
   md-list-item .md-list-item-inner {
+    display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: start;
     -webkit-justify-content: flex-start;
-        -ms-flex-pack: start;
             justify-content: flex-start;
+    -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
     min-height: 48px;
     height: auto; }
@@ -220,7 +213,6 @@ md-list-item {
     md-list-item .md-list-item-inner > md-checkbox,
     md-list-item .md-list-item-inner md-checkbox.md-secondary {
       -webkit-align-self: center;
-          -ms-flex-item-align: center;
               align-self: center; }
       md-list-item > div.md-primary > md-checkbox .md-label,
       md-list-item > div.md-secondary > md-checkbox .md-label,
@@ -236,9 +228,7 @@ md-list-item {
       margin-right: 32px; }
       [dir=rtl] md-list-item > md-icon:first-child:not(.md-avatar-icon), [dir=rtl]
       md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
-        margin-right: 0;
         margin-right: auto;
-        margin-right: initial;
         margin-left: 32px; }
     md-list-item .md-avatar, md-list-item .md-avatar-icon,
     md-list-item .md-list-item-inner .md-avatar,
@@ -251,14 +241,12 @@ md-list-item {
       [dir=rtl] md-list-item .md-avatar, [dir=rtl] md-list-item .md-avatar-icon, [dir=rtl]
       md-list-item .md-list-item-inner .md-avatar, [dir=rtl]
       md-list-item .md-list-item-inner .md-avatar-icon {
-        margin-right: 0;
         margin-right: auto;
-        margin-right: initial;
         margin-left: 16px; }
     md-list-item .md-avatar,
     md-list-item .md-list-item-inner .md-avatar {
+      -webkit-box-flex: 0;
       -webkit-flex: none;
-          -ms-flex: none;
               flex: none;
       width: 40px;
       height: 40px; }
@@ -283,11 +271,11 @@ md-list-item {
         margin-right: 3px; }
     md-list-item .md-secondary-container,
     md-list-item .md-list-item-inner .md-secondary-container {
+      display: -webkit-box;
       display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
+      -webkit-box-align: center;
       -webkit-align-items: center;
-          -ms-flex-align: center;
               align-items: center;
       margin: auto;
       margin-right: 0;
@@ -301,14 +289,12 @@ md-list-item {
       md-list-item .md-secondary-container .md-button:last-of-type, md-list-item .md-secondary-container .md-icon-button:last-of-type,
       md-list-item .md-list-item-inner .md-secondary-container .md-button:last-of-type,
       md-list-item .md-list-item-inner .md-secondary-container .md-icon-button:last-of-type {
-        margin-right: 0px; }
+        margin-right: 0; }
         [dir=rtl] md-list-item .md-secondary-container .md-button:last-of-type, [dir=rtl] md-list-item .md-secondary-container .md-icon-button:last-of-type, [dir=rtl]
         md-list-item .md-list-item-inner .md-secondary-container .md-button:last-of-type, [dir=rtl]
         md-list-item .md-list-item-inner .md-secondary-container .md-icon-button:last-of-type {
-          margin-right: 0;
           margin-right: auto;
-          margin-right: initial;
-          margin-left: 0px; }
+          margin-left: 0; }
       md-list-item .md-secondary-container md-checkbox,
       md-list-item .md-list-item-inner .md-secondary-container md-checkbox {
         margin-top: 0;
@@ -319,9 +305,7 @@ md-list-item {
           margin-right: 0; }
           [dir=rtl] md-list-item .md-secondary-container md-checkbox:last-child, [dir=rtl]
           md-list-item .md-list-item-inner .md-secondary-container md-checkbox:last-child {
-            margin-right: 0;
             margin-right: auto;
-            margin-right: initial;
             margin-left: 0; }
       md-list-item .md-secondary-container md-switch,
       md-list-item .md-list-item-inner .md-secondary-container md-switch {
@@ -330,30 +314,29 @@ md-list-item {
         margin-right: -6px; }
         [dir=rtl] md-list-item .md-secondary-container md-switch, [dir=rtl]
         md-list-item .md-list-item-inner .md-secondary-container md-switch {
-          margin-right: 0;
           margin-right: auto;
-          margin-right: initial;
           margin-left: -6px; }
     md-list-item > p, md-list-item > .md-list-item-inner > p,
     md-list-item .md-list-item-inner > p,
     md-list-item .md-list-item-inner > .md-list-item-inner > p {
+      -webkit-box-flex: 1;
       -webkit-flex: 1 1 auto;
-          -ms-flex: 1 1 auto;
               flex: 1 1 auto;
       margin: 0; }
   md-list-item.md-2-line, md-list-item.md-2-line > .md-no-style, md-list-item.md-3-line, md-list-item.md-3-line > .md-no-style {
+    -webkit-box-align: start;
     -webkit-align-items: flex-start;
-        -ms-flex-align: start;
+                -ms-grid-row-align: flex-start;
             align-items: flex-start;
+    -webkit-box-pack: center;
     -webkit-justify-content: center;
-        -ms-flex-pack: center;
             justify-content: center; }
     md-list-item.md-2-line.md-long-text, md-list-item.md-2-line > .md-no-style.md-long-text, md-list-item.md-3-line.md-long-text, md-list-item.md-3-line > .md-no-style.md-long-text {
       margin-top: 8px;
       margin-bottom: 8px; }
     md-list-item.md-2-line .md-list-item-text, md-list-item.md-2-line > .md-no-style .md-list-item-text, md-list-item.md-3-line .md-list-item-text, md-list-item.md-3-line > .md-no-style .md-list-item-text {
+      -webkit-box-flex: 1;
       -webkit-flex: 1 1 auto;
-          -ms-flex: 1 1 auto;
               flex: 1 1 auto;
       margin: auto;
       text-overflow: ellipsis;
@@ -361,9 +344,7 @@ md-list-item {
       md-list-item.md-2-line .md-list-item-text.md-offset, md-list-item.md-2-line > .md-no-style .md-list-item-text.md-offset, md-list-item.md-3-line .md-list-item-text.md-offset, md-list-item.md-3-line > .md-no-style .md-list-item-text.md-offset {
         margin-left: 56px; }
         [dir=rtl] md-list-item.md-2-line .md-list-item-text.md-offset, [dir=rtl] md-list-item.md-2-line > .md-no-style .md-list-item-text.md-offset, [dir=rtl] md-list-item.md-3-line .md-list-item-text.md-offset, [dir=rtl] md-list-item.md-3-line > .md-no-style .md-list-item-text.md-offset {
-          margin-left: 0;
           margin-left: auto;
-          margin-left: initial;
           margin-right: 56px; }
       md-list-item.md-2-line .md-list-item-text h3, md-list-item.md-2-line > .md-no-style .md-list-item-text h3, md-list-item.md-3-line .md-list-item-text h3, md-list-item.md-3-line > .md-no-style .md-list-item-text h3 {
         font-size: 16px;
@@ -401,11 +382,10 @@ md-list-item {
       margin-top: 12px; }
     md-list-item.md-2-line > md-icon:first-child, md-list-item.md-2-line > .md-no-style > md-icon:first-child {
       -webkit-align-self: flex-start;
-          -ms-flex-item-align: start;
               align-self: flex-start; }
     md-list-item.md-2-line .md-list-item-text, md-list-item.md-2-line > .md-no-style .md-list-item-text {
+      -webkit-box-flex: 1;
       -webkit-flex: 1 1 auto;
-          -ms-flex: 1 1 auto;
               flex: 1 1 auto; }
   md-list-item.md-3-line, md-list-item.md-3-line > .md-no-style {
     height: auto;

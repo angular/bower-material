@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-2d8eb6d
+ * v1.1.0-rc.5-master-9a2c47d
  */
 .md-panel-outer-wrapper {
   height: 100%;
@@ -24,6 +24,7 @@
 
 ._md-panel-shown .md-panel {
   opacity: 1;
+  -webkit-transition: none;
   transition: none; }
 
 .md-panel {
@@ -31,12 +32,15 @@
   position: fixed; }
   .md-panel._md-panel-shown {
     opacity: 1;
+    -webkit-transition: none;
     transition: none; }
   .md-panel._md-panel-animate-enter {
     opacity: 1;
+    -webkit-transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
     transition: all 0.3s cubic-bezier(0, 0, 0.2, 1); }
   .md-panel._md-panel-animate-leave {
     opacity: 1;
+    -webkit-transition: all 0.3s cubic-bezier(0.4, 0, 1, 1);
     transition: all 0.3s cubic-bezier(0.4, 0, 1, 1); }
   .md-panel._md-panel-animate-scale-out, .md-panel._md-panel-animate-fade-out {
     opacity: 0; }
@@ -46,6 +50,8 @@
     width: 100%; }
   .md-panel._md-opaque-enter {
     opacity: .48;
+    -webkit-transition: opacity 0.3s cubic-bezier(0, 0, 0.2, 1);
     transition: opacity 0.3s cubic-bezier(0, 0, 0.2, 1); }
   .md-panel._md-opaque-leave {
+    -webkit-transition: opacity 0.3s cubic-bezier(0.4, 0, 1, 1);
     transition: opacity 0.3s cubic-bezier(0.4, 0, 1, 1); }

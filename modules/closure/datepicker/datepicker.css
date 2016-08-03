@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-2d8eb6d
+ * v1.1.0-rc.5-master-9a2c47d
  */
 /** Styles for mdCalendar. */
 md-calendar {
@@ -41,20 +41,17 @@ md-calendar {
     padding-left: 16px; }
     [dir=rtl] .md-calendar-date:first-child {
       padding-left: 0;
-      padding-left: auto;
-      padding-left: initial;
       padding-right: 16px; }
   .md-calendar-date:last-child {
     padding-right: 16px; }
     [dir=rtl] .md-calendar-date:last-child {
       padding-right: 0;
-      padding-right: auto;
-      padding-right: initial;
       padding-left: 16px; }
   .md-calendar-date.md-calendar-date-disabled {
     cursor: default; }
 
 .md-calendar-date-selection-indicator {
+  -webkit-transition: background-color, color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: background-color, color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   border-radius: 50%;
   display: inline-block;
@@ -96,15 +93,11 @@ md-calendar {
       padding-left: 16px; }
       [dir=rtl] .md-calendar-day-header th:first-child {
         padding-left: 0;
-        padding-left: auto;
-        padding-left: initial;
         padding-right: 16px; }
     .md-calendar-day-header th:last-child {
       padding-right: 16px; }
       [dir=rtl] .md-calendar-day-header th:last-child {
         padding-right: 0;
-        padding-right: auto;
-        padding-right: initial;
         padding-left: 16px; }
 
 .md-calendar {
@@ -129,13 +122,9 @@ md-datepicker {
   vertical-align: middle; }
   [dir=rtl] md-datepicker {
     padding-right: 0;
-    padding-right: auto;
-    padding-right: initial;
     padding-left: 18px; }
   [dir=rtl] md-datepicker {
-    margin-right: 0;
     margin-right: auto;
-    margin-right: initial;
     margin-left: -18px; }
 
 .md-inline-form md-datepicker {
@@ -190,9 +179,7 @@ md-datepicker {
 ._md-datepicker-floating-label._md-datepicker-has-calendar-icon .md-input-message-animation {
   margin-left: 64px; }
   [dir=rtl] ._md-datepicker-floating-label._md-datepicker-has-calendar-icon .md-input-message-animation {
-    margin-left: 0;
     margin-left: auto;
-    margin-left: initial;
     margin-right: 64px; }
 
 .md-datepicker-input-container {
@@ -205,9 +192,7 @@ md-datepicker {
   .md-icon-button + .md-datepicker-input-container {
     margin-left: 12px; }
     [dir=rtl] .md-icon-button + .md-datepicker-input-container {
-      margin-left: 0;
       margin-left: auto;
-      margin-left: initial;
       margin-right: 12px; }
   .md-datepicker-input-container.md-datepicker-focused {
     border-bottom-width: 2px; }
@@ -227,8 +212,10 @@ md-datepicker {
           transform: scale(0);
   -webkit-transform-origin: 0 0;
           transform-origin: 0 0;
+  -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: -webkit-transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-  transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); }
   .md-datepicker-calendar-pane.md-pane-open {
     -webkit-transform: scale(1);
             transform: scale(1); }
@@ -250,6 +237,7 @@ md-datepicker {
 
 .md-datepicker-calendar {
   opacity: 0;
+  -webkit-transition: opacity 0.2s cubic-bezier(0.5, 0, 0.25, 1);
   transition: opacity 0.2s cubic-bezier(0.5, 0, 0.25, 1); }
   .md-pane-open .md-datepicker-calendar {
     opacity: 1; }
@@ -275,9 +263,7 @@ md-datepicker {
   -webkit-transform: translateY(-25%) translateX(45%);
           transform: translateY(-25%) translateX(45%); }
   [dir=rtl] .md-datepicker-triangle-button {
-    right: 0;
     right: auto;
-    right: initial;
     left: 0; }
   [dir=rtl] .md-datepicker-triangle-button {
     -webkit-transform: translateY(-25%) translateX(-45%);
@@ -302,9 +288,7 @@ md-datepicker[disabled] .md-datepicker-triangle-button {
   .md-datepicker-open .md-icon-button + .md-datepicker-input-container {
     margin-left: -12px; }
     [dir=rtl] .md-datepicker-open .md-icon-button + .md-datepicker-input-container {
-      margin-left: 0;
       margin-left: auto;
-      margin-left: initial;
       margin-right: -12px; }
   .md-datepicker-open .md-datepicker-input,
   .md-datepicker-open label:not(.md-no-float):not(.md-container-ignore) {
@@ -314,9 +298,7 @@ md-datepicker[disabled] .md-datepicker-triangle-button {
     height: 40px;
     border-bottom-color: transparent; }
     [dir=rtl] .md-datepicker-open input.md-datepicker-input {
-      margin-left: 0;
       margin-left: auto;
-      margin-left: initial;
       margin-right: 24px; }
   .md-datepicker-open .md-datepicker-triangle-button,
   .md-datepicker-open.md-input-has-value > label,
@@ -329,9 +311,12 @@ md-datepicker[disabled] .md-datepicker-triangle-button {
 .md-datepicker-calendar-pane .md-calendar {
   -webkit-transform: translateY(-85px);
           transform: translateY(-85px);
+  -webkit-transition: -webkit-transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: -webkit-transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
-  transition-delay: 0.125s; }
+  transition: transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
+  -webkit-transition-delay: 0.125s;
+          transition-delay: 0.125s; }
 
 .md-datepicker-calendar-pane.md-pane-open .md-calendar {
   -webkit-transform: translateY(0);

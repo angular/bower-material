@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-2d8eb6d
+ * v1.1.0-rc.5-master-9a2c47d
  */
 @-webkit-keyframes md-autocomplete-list-out {
   0% {
@@ -81,11 +81,12 @@ md-autocomplete {
       width: 30px;
       height: 30px; }
   md-autocomplete md-autocomplete-wrap {
+    display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
     -webkit-flex-direction: row;
-        -ms-flex-direction: row;
             flex-direction: row;
     box-sizing: border-box;
     position: relative;
@@ -94,8 +95,8 @@ md-autocomplete {
     md-autocomplete md-autocomplete-wrap.md-menu-showing {
       z-index: 51; }
     md-autocomplete md-autocomplete-wrap md-input-container, md-autocomplete md-autocomplete-wrap input {
+      -webkit-box-flex: 1;
       -webkit-flex: 1 1 0%;
-          -ms-flex: 1 1 0%;
               flex: 1 1 0%;
       box-sizing: border-box;
       min-width: 0; }
@@ -114,15 +115,19 @@ md-autocomplete {
         left: 0;
         width: 100%;
         height: 3px;
+        -webkit-transition: none;
         transition: none; }
         md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate .md-container {
+          -webkit-transition: none;
           transition: none;
           height: 3px; }
         md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-enter {
+          -webkit-transition: opacity 0.15s linear;
           transition: opacity 0.15s linear; }
           md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-enter.ng-enter-active {
             opacity: 1; }
         md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-leave {
+          -webkit-transition: opacity 0.15s linear;
           transition: opacity 0.15s linear; }
           md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-leave.ng-leave-active {
             opacity: 0; }
@@ -163,6 +168,7 @@ md-autocomplete {
       -webkit-transform: scale(0);
               transform: scale(0);
       opacity: 0;
+      -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
     md-autocomplete button:focus {
       outline: none; }
@@ -181,14 +187,18 @@ md-autocomplete {
     md-autocomplete button.ng-enter {
       -webkit-transform: scale(0);
               transform: scale(0);
+      -webkit-transition: -webkit-transform 0.15s ease-out;
       transition: -webkit-transform 0.15s ease-out;
-      transition: transform 0.15s ease-out; }
+      transition: transform 0.15s ease-out;
+      transition: transform 0.15s ease-out, -webkit-transform 0.15s ease-out; }
       md-autocomplete button.ng-enter.ng-enter-active {
         -webkit-transform: scale(1);
                 transform: scale(1); }
     md-autocomplete button.ng-leave {
+      -webkit-transition: -webkit-transform 0.15s ease-out;
       transition: -webkit-transform 0.15s ease-out;
-      transition: transform 0.15s ease-out; }
+      transition: transform 0.15s ease-out;
+      transition: transform 0.15s ease-out, -webkit-transform 0.15s ease-out; }
       md-autocomplete button.ng-leave.ng-leave-active {
         -webkit-transform: scale(0);
                 transform: scale(0); }
@@ -218,6 +228,7 @@ md-autocomplete {
     padding: 0 15px;
     line-height: 48px;
     height: 48px;
+    -webkit-transition: background 0.15s linear;
     transition: background 0.15s linear;
     margin: 0;
     white-space: nowrap;

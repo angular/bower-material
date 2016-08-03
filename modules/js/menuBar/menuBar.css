@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-2d8eb6d
+ * v1.1.0-rc.5-master-9a2c47d
  */
 md-toolbar.md-menu-toolbar h2.md-toolbar-tools {
   line-height: 1rem;
@@ -41,9 +41,7 @@ md-menu-content.md-menu-bar-menu.md-dense {
       top: 6px;
       left: 24px; }
       [dir=rtl] md-menu-content.md-menu-bar-menu.md-dense md-menu-item.md-indent > md-icon {
-        left: 0;
         left: auto;
-        left: initial;
         right: 24px; }
     md-menu-content.md-menu-bar-menu.md-dense md-menu-item.md-indent > .md-button, md-menu-content.md-menu-bar-menu.md-dense md-menu-item.md-indent .md-menu > .md-button {
       padding: 0 32px 0 64px; }
@@ -52,19 +50,18 @@ md-menu-content.md-menu-bar-menu.md-dense {
   md-menu-content.md-menu-bar-menu.md-dense .md-button {
     min-height: 0;
     height: 32px;
+    display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex; }
     md-menu-content.md-menu-bar-menu.md-dense .md-button span {
+      -webkit-box-flex: 1;
       -webkit-flex-grow: 1;
-          -ms-flex-positive: 1;
               flex-grow: 1; }
     md-menu-content.md-menu-bar-menu.md-dense .md-button span.md-alt-text {
+      -webkit-box-flex: 0;
       -webkit-flex-grow: 0;
-          -ms-flex-positive: 0;
               flex-grow: 0;
       -webkit-align-self: flex-end;
-          -ms-flex-item-align: end;
               align-self: flex-end;
       margin: 0 8px; }
   md-menu-content.md-menu-bar-menu.md-dense md-menu-divider {
@@ -86,8 +83,6 @@ md-menu-content.md-menu-bar-menu.md-dense {
       padding-left: 16px; }
       [dir=rtl] md-menu-content.md-menu-bar-menu.md-dense .md-menu > .md-button {
         padding-left: 0;
-        padding-left: auto;
-        padding-left: initial;
         padding-right: 16px; }
       md-menu-content.md-menu-bar-menu.md-dense .md-menu > .md-button:after {
         display: block;
@@ -102,7 +97,5 @@ md-menu-content.md-menu-bar-menu.md-dense {
           -webkit-transform: rotate(90deg) scaleY(0.45) scaleX(0.9);
                   transform: rotate(90deg) scaleY(0.45) scaleX(0.9); }
         [dir=rtl] md-menu-content.md-menu-bar-menu.md-dense .md-menu > .md-button:after {
-          right: 0;
           right: auto;
-          right: initial;
           left: 28px; }

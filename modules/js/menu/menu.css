@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-2d8eb6d
+ * v1.1.0-rc.5-master-9a2c47d
  */
 .md-open-menu-container {
   position: fixed;
@@ -24,24 +24,32 @@
     pointer-events: none; }
   .md-open-menu-container.md-active {
     opacity: 1;
+    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition-duration: 200ms; }
+    -webkit-transition-duration: 200ms;
+            transition-duration: 200ms; }
     .md-open-menu-container.md-active > md-menu-content > * {
       opacity: 1;
+      -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
       transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-      transition-duration: 200ms;
-      transition-delay: 100ms; }
+      -webkit-transition-duration: 200ms;
+              transition-duration: 200ms;
+      -webkit-transition-delay: 100ms;
+              transition-delay: 100ms; }
   .md-open-menu-container.md-leave {
     opacity: 0;
+    -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
     transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-    transition-duration: 250ms; }
+    -webkit-transition-duration: 250ms;
+            transition-duration: 250ms; }
 
 md-menu-content {
+  display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-      -ms-flex-direction: column;
           flex-direction: column;
   padding: 8px 0;
   max-height: 304px;
@@ -53,19 +61,19 @@ md-menu-content {
       min-height: 0px; }
 
 md-menu-item {
+  display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
   -webkit-flex-direction: row;
-      -ms-flex-direction: row;
           flex-direction: row;
   min-height: 48px;
   height: 48px;
   -webkit-align-content: center;
-      -ms-flex-line-pack: center;
           align-content: center;
+  -webkit-box-pack: start;
   -webkit-justify-content: flex-start;
-      -ms-flex-pack: start;
           justify-content: flex-start;
   /*
    * We cannot use flex on <button> elements due to a bug in Firefox, so we also can't use it on

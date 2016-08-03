@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-2d8eb6d
+ * v1.1.0-rc.5-master-9a2c47d
  */
 .md-contact-chips .md-chips md-chip {
   padding: 0 25px 0 0; }
@@ -20,9 +20,7 @@
     height: 32px;
     margin-left: 8px; }
     [dir=rtl] .md-contact-chips .md-chips md-chip .md-contact-name {
-      margin-left: 0;
       margin-left: auto;
-      margin-left: initial;
       margin-right: 8px; }
 
 .md-contact-suggestion {
@@ -35,9 +33,7 @@
     margin-left: 8px;
     width: 120px; }
     [dir=rtl] .md-contact-suggestion .md-contact-name {
-      margin-left: 0;
       margin-left: auto;
-      margin-left: initial;
       margin-right: 8px; }
   .md-contact-suggestion .md-contact-name, .md-contact-suggestion .md-contact-email {
     display: inline-block;
@@ -67,15 +63,11 @@
     padding-right: 22px; }
     [dir=rtl] .md-chips.md-removable md-chip {
       padding-right: 0;
-      padding-right: auto;
-      padding-right: initial;
       padding-left: 22px; }
     .md-chips.md-removable md-chip .md-chip-content {
       padding-right: 4px; }
       [dir=rtl] .md-chips.md-removable md-chip .md-chip-content {
         padding-right: 0;
-        padding-right: auto;
-        padding-right: initial;
         padding-left: 4px; }
   .md-chips md-chip {
     cursor: default;
@@ -118,9 +110,7 @@
       right: 0;
       line-height: 22px; }
       [dir=rtl] .md-chips md-chip .md-chip-remove-container {
-        right: 0;
         right: auto;
-        right: initial;
         left: 0; }
     .md-chips md-chip .md-chip-remove {
       text-align: center;

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-2d8eb6d
+ * v1.1.0-rc.5-master-9a2c47d
  */
 md-tooltip {
   position: absolute;
@@ -36,8 +36,10 @@ md-tooltip {
         padding-left: 8px;
         padding-right: 8px; } }
     md-tooltip .md-content.md-show-add {
+      -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      transition-duration: .2s;
+      -webkit-transition-duration: .2s;
+              transition-duration: .2s;
       -webkit-transform: scale(0);
               transform: scale(0);
       opacity: 0; }
@@ -48,14 +50,18 @@ md-tooltip {
       -webkit-transform-origin: center top;
               transform-origin: center top; }
     md-tooltip .md-content.md-show-remove {
+      -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      transition-duration: .2s; }
+      -webkit-transition-duration: .2s;
+              transition-duration: .2s; }
       md-tooltip .md-content.md-show-remove.md-show-remove-active {
         -webkit-transform: scale(0);
                 transform: scale(0);
         opacity: 0; }
   md-tooltip.md-hide {
+    -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
     transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-tooltip.md-show {
+    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     pointer-events: auto; }
