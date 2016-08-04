@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-fc536e9
+ * v1.1.0-rc.5-master-8dcdf82
  */
 md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-THEME_NAME-theme .md-select-value {
   color: '{{primary-color}}'; }
