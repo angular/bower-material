@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-e435e09
+ * v1.1.0-rc.5-master-f969ae5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -18072,7 +18072,7 @@ angular.module('material.components.showHide', [
 
 
 function createDirective(name, targetValue) {
-  return ['$mdUtil', function($mdUtil) {
+  return ['$mdUtil', '$window', function($mdUtil, $window) {
     return {
       restrict: 'A',
       multiElement: true,
@@ -18080,7 +18080,9 @@ function createDirective(name, targetValue) {
         var unregister = $scope.$on('$md-resize-enable', function() {
           unregister();
 
-          var cachedTransitionStyles = window.getComputedStyle($element[0]);
+          var node = $element[0];
+          var cachedTransitionStyles = node.nodeType === $window.Node.ELEMENT_NODE ?
+            $window.getComputedStyle(node) : {};
 
           $scope.$watch($attr[name], function(value) {
             if (!!value === targetValue) {
@@ -18102,6 +18104,7 @@ function createDirective(name, targetValue) {
     };
   }];
 }
+
 })();
 (function(){
 "use strict";
@@ -32300,4 +32303,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-e435e09"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-f969ae5"}};
