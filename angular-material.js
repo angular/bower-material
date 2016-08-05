@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-8080b09
+ * v1.1.0-rc.5-master-9082e4a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13684,13 +13684,6 @@ angular
  * panel.
  *
  * @param {!MdPanelPosition} position
- */
-
-/**
- * @ngdoc method
- * @name MdPanelRef#focusOnOpen
- * @description
- * Focuses the panel content if the focusOnOpen config value is true.
  */
 
 
@@ -32303,4 +32296,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-8080b09"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-9082e4a"}};
