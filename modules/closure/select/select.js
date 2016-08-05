@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-8dcdf82
+ * v1.1.0-rc.5-master-e435e09
  */
 goog.provide('ngmaterial.components.select');
 goog.require('ngmaterial.components.backdrop');
@@ -827,7 +827,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
         // the current option, which will be added, then we can be sure, that the validation
         // of the option has occurred before the option was added properly.
         // This means, that we have to manually trigger a new validation of the current option.
-        if (self.ngModel.$modelValue && self.hashGetter(self.ngModel.$modelValue) === hashKey) {
+        if (angular.isDefined(self.ngModel.$modelValue) && self.hashGetter(self.ngModel.$modelValue) === hashKey) {
           self.ngModel.$validate();
         }
 

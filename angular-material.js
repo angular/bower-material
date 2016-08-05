@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-8dcdf82
+ * v1.1.0-rc.5-master-e435e09
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -17227,7 +17227,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
         // the current option, which will be added, then we can be sure, that the validation
         // of the option has occurred before the option was added properly.
         // This means, that we have to manually trigger a new validation of the current option.
-        if (self.ngModel.$modelValue && self.hashGetter(self.ngModel.$modelValue) === hashKey) {
+        if (angular.isDefined(self.ngModel.$modelValue) && self.hashGetter(self.ngModel.$modelValue) === hashKey) {
           self.ngModel.$validate();
         }
 
@@ -32300,4 +32300,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-8dcdf82"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-e435e09"}};
