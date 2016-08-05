@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-a0c476f
+ * v1.1.0-rc.5-master-8080b09
  */
 goog.provide('ngmaterial.components.panel');
 goog.require('ngmaterial.components.backdrop');
@@ -61,7 +61,7 @@ angular
  *       position: panelPosition,
  *       animation: panelAnimation,
  *       targetEvent: $event,
- *       template: 'dialog-template.html',
+ *       templateUrl: 'dialog-template.html',
  *       clickOutsideToClose: true,
  *       escapeToClose: true,
  *       focusOnOpen: true

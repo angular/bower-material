@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-a0c476f
+ * v1.1.0-rc.5-master-8080b09
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13408,7 +13408,7 @@ angular
  *       position: panelPosition,
  *       animation: panelAnimation,
  *       targetEvent: $event,
- *       template: 'dialog-template.html',
+ *       templateUrl: 'dialog-template.html',
  *       clickOutsideToClose: true,
  *       escapeToClose: true,
  *       focusOnOpen: true
@@ -32303,4 +32303,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-a0c476f"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-8080b09"}};
