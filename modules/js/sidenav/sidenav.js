@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-2ddeb91
+ * v1.1.0-rc.5-master-dfc9ae7
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -381,7 +381,7 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $animate, 
         // parent, to increase the performance. Using 100% as height, will impact the performance heavily.
         var positionStyle = {
           top: scrollTop + 'px',
-          bottom: 'initial',
+          bottom: 'auto',
           height: parent[0].clientHeight + 'px'
         };
 

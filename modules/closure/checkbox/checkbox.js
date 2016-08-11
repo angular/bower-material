@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-2ddeb91
+ * v1.1.0-rc.5-master-dfc9ae7
  */
 goog.provide('ngmaterial.components.checkbox');
 goog.require('ngmaterial.core');
@@ -118,8 +118,8 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
 
       if (attr.ngChecked) {
         scope.$watch(
-            scope.$eval.bind(scope, attr.ngChecked),
-            ngModelCtrl.$setViewValue.bind(ngModelCtrl)
+          scope.$eval.bind(scope, attr.ngChecked),
+          ngModelCtrl.$setViewValue.bind(ngModelCtrl)
         );
       }
 
@@ -194,7 +194,8 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
       }
 
       function render() {
-        element.toggleClass('md-checked', ngModelCtrl.$viewValue && !isIndeterminate);
+        // Cast the $viewValue to a boolean since it could be undefined
+        element.toggleClass('md-checked', !!ngModelCtrl.$viewValue && !isIndeterminate);
       }
 
       function setIndeterminateState(newValue) {
@@ -204,7 +205,7 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
         }
         element.toggleClass('md-indeterminate', isIndeterminate);
       }
-    };
+    }
   }
 }
 MdCheckboxDirective.$inject = ["inputDirective", "$mdAria", "$mdConstant", "$mdTheming", "$mdUtil", "$timeout"];

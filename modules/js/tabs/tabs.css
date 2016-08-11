@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-2ddeb91
+ * v1.1.0-rc.5-master-dfc9ae7
  */
 @-webkit-keyframes md-tab-content-hide {
   0% {
@@ -181,7 +181,7 @@ md-pagination-wrapper {
     right: 0; }
   md-pagination-wrapper.md-center-tabs {
     position: relative;
-    width: initial;
+    width: auto;
     margin: 0 auto; }
 
 md-tabs-content-wrapper {
