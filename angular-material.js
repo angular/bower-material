@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-dfc9ae7
+ * v1.1.0-rc.5-master-776a75e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -22494,7 +22494,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
         $scope.searchText = val;
         handleSelectedItemChange(selectedItem, previousSelectedItem);
       });
-    } else if (previousSelectedItem) {
+    } else if (previousSelectedItem && $scope.searchText) {
       getDisplayValue(previousSelectedItem).then(function(displayValue) {
         // Clear the searchText, when the selectedItem is set to null.
         // Do not clear the searchText, when the searchText isn't matching with the previous
@@ -32272,4 +32272,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-dfc9ae7"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-776a75e"}};
