@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-dff39c0
+ * v1.1.0-master-d07240b
  */
 goog.provide('ngmaterial.core');
 
@@ -868,7 +868,11 @@ function MdPrefixer(initialAttributes, buildSelector) {
   }
 
   function _hasAttribute(element, attribute) {
-    element = element[0] || element;
+    element = _getNativeElement(element);
+
+    if (!element) {
+      return false;
+    }
 
     var prefixedAttrs = _buildList(attribute);
 
@@ -882,12 +886,32 @@ function MdPrefixer(initialAttributes, buildSelector) {
   }
 
   function _removeAttribute(element, attribute) {
-    element = element[0] || element;
+    element = _getNativeElement(element);
+
+    if (!element) {
+      return;
+    }
 
     _buildList(attribute).forEach(function(prefixedAttribute) {
       element.removeAttribute(prefixedAttribute);
     });
   }
+
+  /**
+   * Transforms a jqLite or DOM element into a HTML element.
+   * This is useful when supporting jqLite elements and DOM elements at
+   * same time.
+   * @param element {JQLite|Element} Element to be parsed
+   * @returns {HTMLElement} Parsed HTMLElement
+   */
+  function _getNativeElement(element) {
+    element =  element[0] || element;
+
+    if (element.nodeType) {
+      return element;
+    }
+  }
+
 }
 /*
  * This var has to be outside the angular factory, otherwise when
