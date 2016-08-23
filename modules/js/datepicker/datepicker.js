@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-6cfb542
+ * v1.1.0-master-412bc2c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -784,7 +784,6 @@ angular.module('material.components.datepicker', [
         monthBodyCtrl.calendarCtrl = calendarCtrl;
         monthBodyCtrl.monthCtrl = monthCtrl;
         monthBodyCtrl.arrowIcon = ARROW_ICON.cloneNode(true);
-        monthBodyCtrl.generateContent();
 
         // The virtual-repeat re-uses the same DOM elements, so there are only a limited number
         // of repeated items that are linked, and then those elements have their bindings updated.
@@ -839,8 +838,9 @@ angular.module('material.components.datepicker', [
   CalendarMonthBodyCtrl.prototype.generateContent = function() {
     var date = this.dateUtil.incrementMonths(this.monthCtrl.firstRenderableDate, this.offset);
 
-    this.$element.empty();
-    this.$element.append(this.buildCalendarForMonth(date));
+    this.$element
+      .empty()
+      .append(this.buildCalendarForMonth(date));
 
     if (this.focusAfterAppend) {
       this.focusAfterAppend.classList.add(this.calendarCtrl.FOCUSED_DATE_CLASS);
@@ -1307,10 +1307,9 @@ angular.module('material.components.datepicker', [
 
         yearBodyCtrl.calendarCtrl = calendarCtrl;
         yearBodyCtrl.yearCtrl = yearCtrl;
-        yearBodyCtrl.generateContent();
 
         scope.$watch(function() { return yearBodyCtrl.offset; }, function(offset, oldOffset) {
-          if (offset != oldOffset) {
+          if (offset !== oldOffset) {
             yearBodyCtrl.generateContent();
           }
         });
@@ -1357,8 +1356,9 @@ angular.module('material.components.datepicker', [
   CalendarYearBodyCtrl.prototype.generateContent = function() {
     var date = this.dateUtil.incrementYears(this.yearCtrl.firstRenderableDate, this.offset);
 
-    this.$element.empty();
-    this.$element.append(this.buildCalendarForYear(date));
+    this.$element
+      .empty()
+      .append(this.buildCalendarForYear(date));
 
     if (this.focusAfterAppend) {
       this.focusAfterAppend.classList.add(this.calendarCtrl.FOCUSED_DATE_CLASS);
