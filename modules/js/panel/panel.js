@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-87c4b01
+ * v1.1.0-master-165d4e7
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1115,14 +1115,14 @@ MdPanelRef.prototype.addClass = function(newClass, toElement) {
       'To achieve the same results, use the panelContainer or panelEl ' +
       'JQLite elements that are referenced in MdPanelRef.');
 
-  if (!this._panelContainer) {
+  if (!this.panelContainer) {
     throw new Error('Panel does not exist yet. Call open() or attach().');
   }
 
-  if (!toElement && !this._panelContainer.hasClass(newClass)) {
-    this._panelContainer.addClass(newClass);
-  } else if (toElement && !this._panelEl.hasClass(newClass)) {
-    this._panelEl.addClass(newClass);
+  if (!toElement && !this.panelContainer.hasClass(newClass)) {
+    this.panelContainer.addClass(newClass);
+  } else if (toElement && !this.panelEl.hasClass(newClass)) {
+    this.panelEl.addClass(newClass);
   }
 };
 
@@ -1145,14 +1145,14 @@ MdPanelRef.prototype.removeClass = function(oldClass, fromElement) {
       'To achieve the same results, use the panelContainer or panelEl ' +
       'JQLite elements that are referenced in MdPanelRef.');
 
-  if (!this._panelContainer) {
+  if (!this.panelContainer) {
     throw new Error('Panel does not exist yet. Call open() or attach().');
   }
 
-  if (!fromElement && this._panelContainer.hasClass(oldClass)) {
-    this._panelContainer.removeClass(oldClass);
-  } else if (fromElement && this._panelEl.hasClass(oldClass)) {
-    this._panelEl.removeClass(oldClass);
+  if (!fromElement && this.panelContainer.hasClass(oldClass)) {
+    this.panelContainer.removeClass(oldClass);
+  } else if (fromElement && this.panelEl.hasClass(oldClass)) {
+    this.panelEl.removeClass(oldClass);
   }
 };
 
@@ -1175,14 +1175,14 @@ MdPanelRef.prototype.toggleClass = function(toggleClass, onElement) {
       'To achieve the same results, use the panelContainer or panelEl ' +
       'JQLite elements that are referenced in MdPanelRef.');
 
-  if (!this._panelContainer) {
+  if (!this.panelContainer) {
     throw new Error('Panel does not exist yet. Call open() or attach().');
   }
 
   if (!onElement) {
-    this._panelContainer.toggleClass(toggleClass);
+    this.panelContainer.toggleClass(toggleClass);
   } else {
-    this._panelEl.toggleClass(toggleClass);
+    this.panelEl.toggleClass(toggleClass);
   }
 };
 

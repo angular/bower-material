@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-87c4b01
+ * v1.1.0-master-165d4e7
  */
 goog.provide('ngmaterial.components.colors');
 goog.require('ngmaterial.core');
@@ -14,7 +14,7 @@ goog.require('ngmaterial.core');
    *  or one that should be observed and dynamically interpolated.
    */
   var STATIC_COLOR_EXPRESSION = /^{((\s|,)*?["'a-zA-Z-]+?\s*?:\s*?('|")[a-zA-Z0-9-.]*('|"))+\s*}$/;
-  var colorPalettes = undefined;
+  var colorPalettes = null;
 
   /**
    * @ngdoc module
@@ -158,7 +158,7 @@ goog.require('ngmaterial.core');
 
         rgbColors[key] = parseColor(color);
         if (hasBackground && !hasColorProperty) {
-          rgbColors['color'] = parseColor(color, true);
+          rgbColors.color = parseColor(color, true);
         }
       });
 
@@ -340,7 +340,7 @@ goog.require('ngmaterial.core');
             if (!angular.equals(colors, lastColors)) {
               var keys = Object.keys(lastColors);
 
-              if (lastColors.background && !keys['color']) {
+              if (lastColors.background && !keys.color) {
                 keys.push('color');
               }
 

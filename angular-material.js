@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-87c4b01
+ * v1.1.0-master-165d4e7
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3856,7 +3856,7 @@ function InterimElementProvider() {
       var unwatch = attrs.$observe(attrs.$normalize(className), updateFn);
 
       updateFn(getNormalizedAttrValue(className, attrs, ""));
-      scope.$on("$destroy", function() { unwatch() });
+      scope.$on("$destroy", function() { unwatch(); });
     }
   }
 
@@ -4069,7 +4069,7 @@ function InterimElementProvider() {
 
     attrValue = (attrValue || "");
 
-    if ( attrValue.indexOf("-") == 0 || attrValue.indexOf(" ") == 0) {
+    if ( attrValue.indexOf("-") === 0 || attrValue.indexOf(" ") === 0) {
       // For missing main-axis values
       attrValue = "none" + attrValue;
     }
@@ -5786,7 +5786,7 @@ function ThemingDirective($mdTheming, $interpolate, $log) {
               if (index > -1) {
                 registeredCallbacks.splice(index, 1);
               }
-            }
+            };
           },
           $setTheme: function (theme) {
             if (!$mdTheming.registered(theme)) {
@@ -5796,7 +5796,7 @@ function ThemingDirective($mdTheming, $interpolate, $log) {
 
             registeredCallbacks.forEach(function (cb) {
               cb();
-            })
+            });
           }
         };
         el.data('$mdThemeController', ctrl);
@@ -6318,7 +6318,7 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
 
       if (addTransition) {
         transition = transition || "all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important";
-        css['transition'] = transition;
+        css.transition = transition;
       }
 
       return css;
@@ -6333,7 +6333,7 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
       destination = destination || {};
 
       angular.forEach('left top right bottom width height'.split(' '), function (key) {
-        destination[key] = Math.round(source[key])
+        destination[key] = Math.round(source[key]);
       });
 
       destination.width = destination.width || (destination.right - destination.left);
@@ -6366,7 +6366,7 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
     }
 
   };
-};
+}
 
 
 })();
@@ -7764,7 +7764,7 @@ angular.module('material.components.chips', [
    *  or one that should be observed and dynamically interpolated.
    */
   var STATIC_COLOR_EXPRESSION = /^{((\s|,)*?["'a-zA-Z-]+?\s*?:\s*?('|")[a-zA-Z0-9-.]*('|"))+\s*}$/;
-  var colorPalettes = undefined;
+  var colorPalettes = null;
 
   /**
    * @ngdoc module
@@ -7908,7 +7908,7 @@ angular.module('material.components.chips', [
 
         rgbColors[key] = parseColor(color);
         if (hasBackground && !hasColorProperty) {
-          rgbColors['color'] = parseColor(color, true);
+          rgbColors.color = parseColor(color, true);
         }
       });
 
@@ -8090,7 +8090,7 @@ angular.module('material.components.chips', [
             if (!angular.equals(colors, lastColors)) {
               var keys = Object.keys(lastColors);
 
-              if (lastColors.background && !keys['color']) {
+              if (lastColors.background && !keys.color) {
                 keys.push('color');
               }
 
@@ -8902,9 +8902,9 @@ function MdDialogProvider($$interimElementProvider) {
         };
         this.keypress = function($event) {
           if ($event.keyCode === $mdConstant.KEY_CODE.ENTER) {
-            $mdDialog.hide(this.result)
+            $mdDialog.hide(this.result);
           }
-        }
+        };
       },
       controllerAs: 'dialog',
       bindToController: true,
@@ -9317,13 +9317,14 @@ function MdDialogProvider($$interimElementProvider) {
           else              $animate.leave(options.backdrop);
         }
 
+
         if (options.disableParentScroll) {
           options.restoreScroll();
           delete options.restoreScroll;
         }
 
         options.hideBackdrop = null;
-      }
+      };
     }
 
     /**
@@ -14492,14 +14493,14 @@ MdPanelRef.prototype.addClass = function(newClass, toElement) {
       'To achieve the same results, use the panelContainer or panelEl ' +
       'JQLite elements that are referenced in MdPanelRef.');
 
-  if (!this._panelContainer) {
+  if (!this.panelContainer) {
     throw new Error('Panel does not exist yet. Call open() or attach().');
   }
 
-  if (!toElement && !this._panelContainer.hasClass(newClass)) {
-    this._panelContainer.addClass(newClass);
-  } else if (toElement && !this._panelEl.hasClass(newClass)) {
-    this._panelEl.addClass(newClass);
+  if (!toElement && !this.panelContainer.hasClass(newClass)) {
+    this.panelContainer.addClass(newClass);
+  } else if (toElement && !this.panelEl.hasClass(newClass)) {
+    this.panelEl.addClass(newClass);
   }
 };
 
@@ -14522,14 +14523,14 @@ MdPanelRef.prototype.removeClass = function(oldClass, fromElement) {
       'To achieve the same results, use the panelContainer or panelEl ' +
       'JQLite elements that are referenced in MdPanelRef.');
 
-  if (!this._panelContainer) {
+  if (!this.panelContainer) {
     throw new Error('Panel does not exist yet. Call open() or attach().');
   }
 
-  if (!fromElement && this._panelContainer.hasClass(oldClass)) {
-    this._panelContainer.removeClass(oldClass);
-  } else if (fromElement && this._panelEl.hasClass(oldClass)) {
-    this._panelEl.removeClass(oldClass);
+  if (!fromElement && this.panelContainer.hasClass(oldClass)) {
+    this.panelContainer.removeClass(oldClass);
+  } else if (fromElement && this.panelEl.hasClass(oldClass)) {
+    this.panelEl.removeClass(oldClass);
   }
 };
 
@@ -14552,14 +14553,14 @@ MdPanelRef.prototype.toggleClass = function(toggleClass, onElement) {
       'To achieve the same results, use the panelContainer or panelEl ' +
       'JQLite elements that are referenced in MdPanelRef.');
 
-  if (!this._panelContainer) {
+  if (!this.panelContainer) {
     throw new Error('Panel does not exist yet. Call open() or attach().');
   }
 
   if (!onElement) {
-    this._panelContainer.toggleClass(toggleClass);
+    this.panelContainer.toggleClass(toggleClass);
   } else {
-    this._panelEl.toggleClass(toggleClass);
+    this.panelEl.toggleClass(toggleClass);
   }
 };
 
@@ -19768,7 +19769,7 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil) {
         });
       }
     }
-  }
+  };
 }
 MdSubheaderDirective.$inject = ["$mdSticky", "$compile", "$mdTheming", "$mdUtil"];
 
@@ -27305,6 +27306,7 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
         // interaction on the text input, and multiple tab stops for one component (picker)
         // may be confusing.
         var hiddenIcons = tAttrs.mdHideIcons;
+        var ariaLabelValue = tAttrs.ariaLabel || tAttrs.mdPlaceholder;
 
         var calendarButton = (hiddenIcons === 'all' || hiddenIcons === 'calendar') ? '' :
           '<md-button class="md-datepicker-button md-icon-button" type="button" ' +
@@ -27322,13 +27324,15 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
             '<div class="md-datepicker-expand-triangle"></div>' +
           '</md-button>';
 
-        return '' +
-        calendarButton +
-        '<div class="md-datepicker-input-container" ' +
-            'ng-class="{\'md-datepicker-focused\': ctrl.isFocused}">' +
-          '<input class="md-datepicker-input" aria-haspopup="true" ' +
-              'ng-focus="ctrl.setFocused(true)" ng-blur="ctrl.setFocused(false)">' +
-          triangleButton +
+        return calendarButton +
+        '<div class="md-datepicker-input-container" ng-class="{\'md-datepicker-focused\': ctrl.isFocused}">' +
+          '<input ' +
+            (ariaLabelValue ? 'aria-label="' + ariaLabelValue + '" ' : '') +
+            'class="md-datepicker-input" ' +
+            'aria-haspopup="true" ' +
+            'ng-focus="ctrl.setFocused(true)" ' +
+            'ng-blur="ctrl.setFocused(false)"> ' +
+            triangleButton +
         '</div>' +
 
         // This pane will be detached from here and re-attached to the document body.
@@ -32344,4 +32348,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-87c4b01"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-165d4e7"}};

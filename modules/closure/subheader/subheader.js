@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-87c4b01
+ * v1.1.0-master-165d4e7
  */
 goog.provide('ngmaterial.components.subheader');
 goog.require('ngmaterial.components.sticky');
@@ -119,7 +119,7 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil) {
         });
       }
     }
-  }
+  };
 }
 MdSubheaderDirective.$inject = ["$mdSticky", "$compile", "$mdTheming", "$mdUtil"];
 
