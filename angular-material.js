@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-45d7b77
+ * v1.1.0-master-218c3ec
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -8017,7 +8017,7 @@ angular.module('material.components.chips', [
    * @usage
    * <hljs lang="html">
    *   <div md-colors="{background: 'myTheme-accent-900-0.43'}">
-   *     <div md-colors="{color: 'red-A100', 'border-color': 'primary-600'}">
+   *     <div md-colors="{color: 'red-A100', border-color: 'primary-600'}">
    *       <span>Color demo</span>
    *     </div>
    *   </div>
@@ -32384,4 +32384,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-45d7b77"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-218c3ec"}};
