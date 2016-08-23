@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-a3755d0
+ * v1.1.0-master-4cfd4a1
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -12946,7 +12946,7 @@ angular.module('material.components.navBar', ['material.core'])
  *                                IMPLEMENTATION                             *
  *****************************************************************************/
 
-function MdNavBar($mdAria) {
+function MdNavBar($mdAria, $mdTheming) {
   return {
     restrict: 'E',
     transclude: true,
@@ -12971,13 +12971,14 @@ function MdNavBar($mdAria) {
         '<md-nav-ink-bar></md-nav-ink-bar>' +
       '</div>',
     link: function(scope, element, attrs, ctrl) {
+      $mdTheming(element);
       if (!ctrl.navBarAriaLabel) {
         $mdAria.expectAsync(element, 'aria-label', angular.noop);
       }
     },
   };
 }
-MdNavBar.$inject = ["$mdAria"];
+MdNavBar.$inject = ["$mdAria", "$mdTheming"];
 
 /**
  * Controller for the nav-bar component.
@@ -32433,4 +32434,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-a3755d0"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-4cfd4a1"}};
