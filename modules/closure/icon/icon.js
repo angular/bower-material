@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-6383b52
+ * v1.1.0-master-45d7b77
  */
 goog.provide('ngmaterial.components.icon');
 goog.require('ngmaterial.core');
@@ -85,8 +85,8 @@ angular
  * Material Design Icons:
  *
  * <ul>
- * <li>http://www.google.com/design/icons/</li>
- * <li>https://www.google.com/design/icons/#ic_accessibility</li>
+ * <li>https://design.google.com/icons/</li>
+ * <li>https://design.google.com/icons/#ic_accessibility</li>
  * </ul>
  *
  * <h2 id="material_design_icons">Material Design Icons</h2>
@@ -101,7 +101,7 @@ angular
  *
  * <span class="image_caption">
  *  Click on the image above to link to the
- *  <a href="https://www.google.com/design/icons/#ic_accessibility" target="_blank">Material Design Icon-Selector</a>.
+ *  <a href="https://design.google.com/icons/#ic_accessibility" target="_blank">Material Design Icon-Selector</a>.
  * </span>
  *
  * @param {string} md-font-icon String name of CSS icon associated with the font-face will be used
@@ -394,7 +394,7 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $sce) {
  *
  * </hljs>
  *
- * NOTE: the loaded SVG data is subsequently cached internally for future requests.
+ * > <b>Note:</b> The loaded SVG data is subsequently cached internally for future requests.
  *
  */
 
@@ -688,8 +688,8 @@ function ConfigurationItem(url, viewBoxSize) {
   * };
  * </hljs>
  *
- * NOTE: The `<md-icon />  ` directive internally uses the `$mdIcon` service to query, loaded, and instantiate
- * SVG DOM elements.
+ * > <b>Note:</b> The `<md-icon>` directive internally uses the `$mdIcon` service to query, loaded,
+ *   and instantiate SVG DOM elements.
  */
 
 /* ngInject */

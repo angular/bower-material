@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-6383b52
+ * v1.1.0-master-45d7b77
  */
 goog.provide('ngmaterial.components.subheader');
 goog.require('ngmaterial.components.sticky');
@@ -49,7 +49,7 @@ angular
  * </hljs>
  *
  * ### Notes
- * - The `md-subheader` directive uses the [$mdSticky](/api/service/$mdSticky) service to make the
+ * - The `md-subheader` directive uses the [$mdSticky](api/service/$mdSticky) service to make the
  * subheader sticky.
  *
  * > Whenever the current browser doesn't support stickiness natively, the subheader
@@ -119,7 +119,7 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil) {
         });
       }
     }
-  }
+  };
 }
 MdSubheaderDirective.$inject = ["$mdSticky", "$compile", "$mdTheming", "$mdUtil"];
 

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-6383b52
+ * v1.1.0-master-45d7b77
  */
 goog.provide('ngmaterial.components.datepicker');
 goog.require('ngmaterial.components.icon');
@@ -1503,7 +1503,7 @@ angular.module('material.components.datepicker', [
    *
    * @usage
    * <hljs lang="js">
-   *   myAppModule.config(function($mdDateLocaleProvider) {
+   * myAppModule.config(function($mdDateLocaleProvider) {
    *
    *     // Example of a French localization.
    *     $mdDateLocaleProvider.months = ['janvier', 'février', 'mars', ...];
@@ -1541,12 +1541,10 @@ angular.module('material.components.datepicker', [
    *
    *     $mdDateLocaleProvider.msgCalendar = 'Calendrier';
    *     $mdDateLocaleProvider.msgOpenCalendar = 'Ouvrir le calendrier';
-   *
    * });
    * </hljs>
    *
    */
-
   angular.module('material.components.datepicker').config(["$provide", function($provide) {
     // TODO(jelbourn): Assert provided values are correctly formatted. Need assertions.
 
@@ -2135,6 +2133,7 @@ angular.module('material.components.datepicker', [
         // interaction on the text input, and multiple tab stops for one component (picker)
         // may be confusing.
         var hiddenIcons = tAttrs.mdHideIcons;
+        var ariaLabelValue = tAttrs.ariaLabel || tAttrs.mdPlaceholder;
 
         var calendarButton = (hiddenIcons === 'all' || hiddenIcons === 'calendar') ? '' :
           '<md-button class="md-datepicker-button md-icon-button" type="button" ' +
@@ -2152,13 +2151,15 @@ angular.module('material.components.datepicker', [
             '<div class="md-datepicker-expand-triangle"></div>' +
           '</md-button>';
 
-        return '' +
-        calendarButton +
-        '<div class="md-datepicker-input-container" ' +
-            'ng-class="{\'md-datepicker-focused\': ctrl.isFocused}">' +
-          '<input class="md-datepicker-input" aria-haspopup="true" ' +
-              'ng-focus="ctrl.setFocused(true)" ng-blur="ctrl.setFocused(false)">' +
-          triangleButton +
+        return calendarButton +
+        '<div class="md-datepicker-input-container" ng-class="{\'md-datepicker-focused\': ctrl.isFocused}">' +
+          '<input ' +
+            (ariaLabelValue ? 'aria-label="' + ariaLabelValue + '" ' : '') +
+            'class="md-datepicker-input" ' +
+            'aria-haspopup="true" ' +
+            'ng-focus="ctrl.setFocused(true)" ' +
+            'ng-blur="ctrl.setFocused(false)"> ' +
+            triangleButton +
         '</div>' +
 
         // This pane will be detached from here and re-attached to the document body.

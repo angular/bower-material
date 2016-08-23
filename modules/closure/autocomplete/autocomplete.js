@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-6383b52
+ * v1.1.0-master-45d7b77
  */
 goog.provide('ngmaterial.components.autocomplete');
 goog.require('ngmaterial.components.icon');
@@ -960,10 +960,10 @@ angular
  * There is an example below of how this should look.
  *
  * ### Notes
- * The `md-autocomplete` uses the the [VirtualRepeat](/api/directive/mdVirtualRepeatContainer)
+ * The `md-autocomplete` uses the the [VirtualRepeat](api/directive/mdVirtualRepeatContainer)
  * directive for displaying the results inside of the dropdown.<br/>
  * > When encountering issues regarding the item template please take a look at the
- *   [VirtualRepeatContainer](/api/directive/mdVirtualRepeatContainer) documentation.
+ *   [VirtualRepeatContainer](api/directive/mdVirtualRepeatContainer) documentation.
  *
  *
  * @param {expression} md-items An expression in the format of `item in items` to iterate over
