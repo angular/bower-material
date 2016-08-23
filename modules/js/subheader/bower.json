@@ -1,8 +1,8 @@
 {
   "name": "angular-material-subheader",
-  "version": "1.1.0-master-3cf220a",
+  "version": "1.1.0-master-1c098a6",
   "dependencies": {
-    "angular-material-core": "1.1.0-master-3cf220a",
-    "angular-material-sticky": "1.1.0-master-3cf220a"
+    "angular-material-core": "1.1.0-master-1c098a6",
+    "angular-material-sticky": "1.1.0-master-1c098a6"
   }
 }

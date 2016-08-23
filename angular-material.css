@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-3cf220a
+ * v1.1.0-master-1c098a6
  */
 html, body {
   height: 100%;
@@ -1538,13 +1538,13 @@ md-calendar {
   border-spacing: 0;
   border-collapse: collapse; }
   .md-calendar-day-header th {
+    height: 40px;
     width: 44px;
     text-align: center;
     padding: 0;
     border: none;
     box-sizing: content-box;
-    font-weight: normal;
-    height: 40px; }
+    font-weight: normal; }
     .md-calendar-day-header th:first-child {
       padding-left: 16px; }
       [dir=rtl] .md-calendar-day-header th:first-child {
@@ -3187,7 +3187,7 @@ md-menu-content.md-menu-bar-menu.md-dense {
   md-menu-content.md-menu-bar-menu.md-dense md-menu-divider {
     margin: 8px 0; }
   md-menu-content.md-menu-bar-menu.md-dense md-menu-item > .md-button, md-menu-content.md-menu-bar-menu.md-dense .md-menu > .md-button {
-    text-align: start; }
+    text-align: left; }
     [dir=rtl] md-menu-content.md-menu-bar-menu.md-dense md-menu-item > .md-button, [dir=rtl] md-menu-content.md-menu-bar-menu.md-dense .md-menu > .md-button {
       text-align: right; }
   md-menu-content.md-menu-bar-menu.md-dense .md-menu {
@@ -4570,11 +4570,9 @@ md-slider {
     left: auto;
     right: 0; }
     [dir=rtl] md-slider[md-invert]:not([md-vertical]) .md-track-fill {
-      left: auto;
-      right: auto; }
-    [dir=rtl] md-slider[md-invert]:not([md-vertical]) .md-track-fill {
-      right: auto;
       left: 0; }
+    [dir=rtl] md-slider[md-invert]:not([md-vertical]) .md-track-fill {
+      right: auto; }
   md-slider[md-invert][md-vertical] .md-track-fill {
     bottom: auto;
     top: 0; }

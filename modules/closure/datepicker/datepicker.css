@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-3cf220a
+ * v1.1.0-master-1c098a6
  */
 /** Styles for mdCalendar. */
 md-calendar {
@@ -81,13 +81,13 @@ md-calendar {
   border-spacing: 0;
   border-collapse: collapse; }
   .md-calendar-day-header th {
+    height: 40px;
     width: 44px;
     text-align: center;
     padding: 0;
     border: none;
     box-sizing: content-box;
-    font-weight: normal;
-    height: 40px; }
+    font-weight: normal; }
     .md-calendar-day-header th:first-child {
       padding-left: 16px; }
       [dir=rtl] .md-calendar-day-header th:first-child {

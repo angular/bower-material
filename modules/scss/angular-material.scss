@@ -2494,10 +2494,9 @@ $md-calendar-height:
     ($md-calendar-weeks-to-show * $md-calendar-cell-size) + $md-calendar-header-height !default;
 
 // Styles for date cells, including day-of-the-week header cells.
-@mixin md-calendar-cell() {
-  height: $md-calendar-cell-size;
+@mixin md-calendar-cell($height: $md-calendar-cell-size) {
+  height: $height;
   width: $md-calendar-cell-size;
-
   text-align: center;
 
   // Remove all padding and borders so we can completely
@@ -2625,9 +2624,8 @@ md-calendar {
   @include md-calendar-table();
 
   th {
-    @include md-calendar-cell();
+    @include md-calendar-cell($md-calendar-header-height);
     font-weight: normal;
-    height: $md-calendar-header-height;
   }
 }
 
@@ -4542,7 +4540,6 @@ md-menu-content.md-menu-bar-menu.md-dense {
 
   md-menu-item > .md-button, .md-menu > .md-button {
     @include rtl(text-align, left, right);
-    text-align: start;
   }
 
   .md-menu {
@@ -5993,8 +5990,8 @@ md-slider {
   }
   &[md-invert] {
     &:not([md-vertical]) .md-track-fill {
-      @include rtl-prop(left, right, auto, auto);
-      @include rtl-prop(right, left, 0, auto);
+      @include rtl(left, auto, 0);
+      @include rtl(right, 0, auto);
     }
     &[md-vertical] {
       .md-track-fill {

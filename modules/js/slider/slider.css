@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-3cf220a
+ * v1.1.0-master-1c098a6
  */
 @-webkit-keyframes sliderFocusThumb {
   0% {
@@ -378,11 +378,9 @@ md-slider {
     left: auto;
     right: 0; }
     [dir=rtl] md-slider[md-invert]:not([md-vertical]) .md-track-fill {
-      left: auto;
-      right: auto; }
-    [dir=rtl] md-slider[md-invert]:not([md-vertical]) .md-track-fill {
-      right: auto;
       left: 0; }
+    [dir=rtl] md-slider[md-invert]:not([md-vertical]) .md-track-fill {
+      right: auto; }
   md-slider[md-invert][md-vertical] .md-track-fill {
     bottom: auto;
     top: 0; }

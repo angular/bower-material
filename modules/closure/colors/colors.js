@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-3cf220a
+ * v1.1.0-master-1c098a6
  */
 goog.provide('ngmaterial.components.colors');
 goog.require('ngmaterial.core');
@@ -264,7 +264,7 @@ goog.require('ngmaterial.core');
    * @usage
    * <hljs lang="html">
    *   <div md-colors="{background: 'myTheme-accent-900-0.43'}">
-   *     <div md-colors="{color: 'red-A100', border-color: 'primary-600'}">
+   *     <div md-colors="{color: 'red-A100', 'border-color': 'primary-600'}">
    *       <span>Color demo</span>
    *     </div>
    *   </div>
