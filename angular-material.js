@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-cd40b7e
+ * v1.1.0-master-6cfb542
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -27610,8 +27610,11 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
     // Unless the user specifies so, the datepicker should not be a tab stop.
     // This is necessary because ngAria might add a tabindex to anything with an ng-model
     // (based on whether or not the user has turned that particular feature on/off).
-    if (!$attrs.tabindex) {
-      $element.attr('tabindex', '-1');
+    if ($attrs.tabindex) {
+      this.ngInputElement.attr('tabindex', $attrs.tabindex);
+      $attrs.$set('tabindex', null);
+    } else {
+      $attrs.$set('tabindex', '-1');
     }
 
     $mdTheming($element);
@@ -32384,4 +32387,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-cd40b7e"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-6cfb542"}};
