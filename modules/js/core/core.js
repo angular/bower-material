@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-fce551d
+ * v1.1.0-master-6383b52
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3800,7 +3800,7 @@ function InterimElementProvider() {
       var unwatch = attrs.$observe(attrs.$normalize(className), updateFn);
 
       updateFn(getNormalizedAttrValue(className, attrs, ""));
-      scope.$on("$destroy", function() { unwatch(); });
+      scope.$on("$destroy", function() { unwatch() });
     }
   }
 
@@ -4013,7 +4013,7 @@ function InterimElementProvider() {
 
     attrValue = (attrValue || "");
 
-    if ( attrValue.indexOf("-") === 0 || attrValue.indexOf(" ") === 0) {
+    if ( attrValue.indexOf("-") == 0 || attrValue.indexOf(" ") == 0) {
       // For missing main-axis values
       attrValue = "none" + attrValue;
     }
@@ -5698,7 +5698,7 @@ function ThemingDirective($mdTheming, $interpolate, $log) {
               if (index > -1) {
                 registeredCallbacks.splice(index, 1);
               }
-            };
+            }
           },
           $setTheme: function (theme) {
             if (!$mdTheming.registered(theme)) {
@@ -5708,7 +5708,7 @@ function ThemingDirective($mdTheming, $interpolate, $log) {
 
             registeredCallbacks.forEach(function (cb) {
               cb();
-            });
+            })
           }
         };
         el.data('$mdThemeController', ctrl);
@@ -6226,7 +6226,7 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
 
       if (addTransition) {
         transition = transition || "all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important";
-        css.transition = transition;
+        css['transition'] = transition;
       }
 
       return css;
@@ -6241,7 +6241,7 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
       destination = destination || {};
 
       angular.forEach('left top right bottom width height'.split(' '), function (key) {
-        destination[key] = Math.round(source[key]);
+        destination[key] = Math.round(source[key])
       });
 
       destination.width = destination.width || (destination.right - destination.left);
@@ -6274,7 +6274,7 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
     }
 
   };
-}
+};
 
 
 "use strict";

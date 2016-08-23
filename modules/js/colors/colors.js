@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-fce551d
+ * v1.1.0-master-6383b52
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -15,7 +15,7 @@
    *  or one that should be observed and dynamically interpolated.
    */
   var STATIC_COLOR_EXPRESSION = /^{((\s|,)*?["'a-zA-Z-]+?\s*?:\s*?('|")[a-zA-Z0-9-.]*('|"))+\s*}$/;
-  var colorPalettes = null;
+  var colorPalettes = undefined;
 
   /**
    * @ngdoc module
@@ -159,7 +159,7 @@
 
         rgbColors[key] = parseColor(color);
         if (hasBackground && !hasColorProperty) {
-          rgbColors.color = parseColor(color, true);
+          rgbColors['color'] = parseColor(color, true);
         }
       });
 
@@ -341,7 +341,7 @@
             if (!angular.equals(colors, lastColors)) {
               var keys = Object.keys(lastColors);
 
-              if (lastColors.background && !keys.color) {
+              if (lastColors.background && !keys['color']) {
                 keys.push('color');
               }
 
