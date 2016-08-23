@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-058b4ac
+ * v1.1.0-master-195966f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -380,15 +380,13 @@ angular
  * the models of various input components.
  *
  * @param $scope
- * @param $attrs
  * @param $mdConstant
  * @param $log
  * @param $element
- * @param $timeout
  * @param $mdUtil
  * @constructor
  */
-function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $mdUtil) {
+function MdChipsCtrl ($scope, $mdConstant, $log, $element, $timeout, $mdUtil) {
   /** @type {$timeout} **/
   this.$timeout = $timeout;
 
@@ -426,10 +424,7 @@ function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $md
   this.hasAutocomplete = false;
 
   /** @type {string} */
-  this.enableChipEdit = $mdUtil.parseAttributeBoolean($attrs.mdEnableChipEdit);
-
-  /** @type {string} */
-  this.addOnBlur = $mdUtil.parseAttributeBoolean($attrs.mdAddOnBlur);
+  this.enableChipEdit = $mdUtil.parseAttributeBoolean(this.mdEnableChipEdit);
 
   /**
    * Hidden hint text for how to delete a chip. Used to give context to screen readers.
@@ -474,7 +469,7 @@ function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $md
    * @type {boolean}
    */
 }
-MdChipsCtrl.$inject = ["$scope", "$attrs", "$mdConstant", "$log", "$element", "$timeout", "$mdUtil"];
+MdChipsCtrl.$inject = ["$scope", "$mdConstant", "$log", "$element", "$timeout", "$mdUtil"];
 
 /**
  * Handles the keydown event on the input element: by default <enter> appends
@@ -890,23 +885,6 @@ MdChipsCtrl.prototype.onInputFocus = function () {
 
 MdChipsCtrl.prototype.onInputBlur = function () {
   this.inputHasFocus = false;
-
-  var chipBuffer = this.getChipBuffer().trim();
-
-  // Update the custom chip validators.
-  this.validateModel();
-
-  var isModelValid = this.ngModelCtrl.$valid;
-
-  if (this.userInputNgModelCtrl) {
-    isModelValid &= this.userInputNgModelCtrl.$valid;
-  }
-
-  // Only append the chip and reset the chip buffer if the chips and input ngModel is valid.
-  if (this.addOnBlur && chipBuffer && isModelValid) {
-    this.appendChip(chipBuffer);
-    this.resetChipBuffer();
-  }
 };
 
 /**
@@ -1063,8 +1041,6 @@ MdChipsCtrl.prototype.hasFocus = function () {
    * @param {number=} md-max-chips The maximum number of chips allowed to add through user input.
    *    <br/><br/>The validation property `md-max-chips` can be used when the max chips
    *    amount is reached.
-   * @param {boolean=} md-add-on-blur When set to true, remaining text inside of the input will
-   *    be converted into a new chip on blur.
    * @param {expression} md-transform-chip An expression of form `myFunction($chip)` that when called
    *    expects one of the following return values:
    *    - an object representing the `$chip` input string
@@ -1191,6 +1167,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
         readonly: '=readonly',
         removable: '=mdRemovable',
         placeholder: '@',
+        mdEnableChipEdit: '@',
         secondaryPlaceholder: '@',
         maxChips: '@mdMaxChips',
         transformChip: '&mdTransformChip',
@@ -1326,14 +1303,11 @@ MdChipsCtrl.prototype.hasFocus = function () {
             // input.
             scope.$watch('$mdChipsCtrl.readonly', function(readonly) {
               if (!readonly) {
-
                 $mdUtil.nextTick(function(){
-
-                  if (chipInputTemplate.indexOf('<md-autocomplete') === 0) {
-                    var autocompleteEl = element.find('md-autocomplete');
-                    mdChipsCtrl.configureAutocomplete(autocompleteEl.controller('mdAutocomplete'));
-                  }
-
+                  if (chipInputTemplate.indexOf('<md-autocomplete') === 0)
+                    mdChipsCtrl
+                        .configureAutocomplete(element.find('md-autocomplete')
+                            .controller('mdAutocomplete'));
                   mdChipsCtrl.configureUserInput(element.find('input'));
                 });
               }

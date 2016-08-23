@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-058b4ac
+ * v1.1.0-master-195966f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -10,7 +10,7 @@
 (function(){
 "use strict";
 
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.layout","material.core.meta","material.core.theming.palette","material.core.theming","material.core.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.colors","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.navBar","material.components.panel","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.showHide","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.virtualRepeat","material.components.whiteframe"]);
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.layout","material.core.theming.palette","material.core.theming","material.core.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.colors","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.navBar","material.components.panel","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.showHide","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.virtualRepeat","material.components.whiteframe"]);
 })();
 (function(){
 "use strict";
@@ -4098,130 +4098,6 @@ function InterimElementProvider() {
 (function(){
 "use strict";
 
-/**
- * @ngdoc service
- * @name $$mdMeta
- * @module material.core.meta
- *
- * @description
- *
- * A provider and a service that simplifies meta tags access
- *
- * Note: This is intended only for use with dynamic meta tags such as browser color and title.
- * Tags that are only processed when the page is rendered (such as `charset`, and `http-equiv`)
- * will not work since `$$mdMeta` adds the tags after the page has already been loaded.
- *
- * ```js
- * app.config(function($$mdMetaProvider) {
- *   var removeMeta = $$mdMetaProvider.setMeta('meta-name', 'content');
- *   var metaValue  = $$mdMetaProvider.getMeta('meta-name'); // -> 'content'
- *
- *   removeMeta();
- * });
- *
- * app.controller('myController', function($$mdMeta) {
- *   var removeMeta = $$mdMeta.setMeta('meta-name', 'content');
- *   var metaValue  = $$mdMeta.getMeta('meta-name'); // -> 'content'
- *
- *   removeMeta();
- * });
- * ```
- *
- * @returns {$$mdMeta.$service}
- *
- */
-angular.module('material.core.meta', [])
-  .provider('$$mdMeta', function () {
-    var head = angular.element(document.head);
-    var metaElements = {};
-
-    /**
-     * Checks if the requested element was written manually and maps it
-     *
-     * @param {string} name meta tag 'name' attribute value
-     * @returns {boolean} returns true if there is an element with the requested name
-     */
-    function mapExistingElement(name) {
-      if (metaElements[name]) {
-        return true;
-      }
-
-      var element = document.getElementsByName(name)[0];
-
-      if (!element) {
-        return false;
-      }
-
-      metaElements[name] = angular.element(element);
-
-      return true;
-    }
-
-    /**
-     * @ngdoc method
-     * @name $$mdMeta#setMeta
-     *
-     * @description
-     * Creates meta element with the 'name' and 'content' attributes,
-     * if the meta tag is already created than we replace the 'content' value
-     *
-     * @param {string} name meta tag 'name' attribute value
-     * @param {string} content meta tag 'content' attribute value
-     * @returns {function} remove function
-     *
-     */
-    function setMeta(name, content) {
-      mapExistingElement(name);
-
-      if (!metaElements[name]) {
-        var newMeta = angular.element('<meta name="' + name + '" content="' + content + '"/>');
-        head.append(newMeta);
-        metaElements[name] = newMeta;
-      }
-      else {
-        metaElements[name].attr('content', content);
-      }
-
-      return function () {
-        metaElements[name].attr('content', '');
-        metaElements[name].remove();
-        delete metaElements[name];
-      };
-    }
-
-    /**
-     * @ngdoc method
-     * @name $$mdMeta#getMeta
-     *
-     * @description
-     * Gets the 'content' attribute value of the wanted meta element
-     *
-     * @param {string} name meta tag 'name' attribute value
-     * @returns {string} content attribute value
-     */
-    function getMeta(name) {
-      if (!mapExistingElement(name)) {
-        throw Error('$$mdMeta: could not find a meta tag with the name \'' + name + '\'');
-      }
-
-      return metaElements[name].attr('content');
-    }
-
-    var module = {
-      setMeta: setMeta,
-      getMeta: getMeta
-    };
-
-    return angular.extend({}, module, {
-      $get: function () {
-        return module;
-      }
-    });
-  });
-})();
-(function(){
-"use strict";
-
   /**
    * @ngdoc module
    * @name material.core.componentRegistry
@@ -5361,7 +5237,7 @@ angular.module('material.core.theming.palette', [])
  * @description
  * Theming
  */
-angular.module('material.core.theming', ['material.core.theming.palette', 'material.core.meta'])
+angular.module('material.core.theming', ['material.core.theming.palette'])
   .directive('mdTheme', ThemingDirective)
   .directive('mdThemable', ThemableDirective)
   .directive('mdThemesDisabled', disableThemesDirective )
@@ -5449,29 +5325,6 @@ detectDisabledThemes.$inject = ["$mdThemingProvider"];
  *     $mdThemingProvider.registerStyles(require('../styles/my-component.theme.css'));
  *   });
  * </hljs>
- *
- * ### Browser color
- *
- * Enables browser header coloring
- * for more info please visit:
- * https://developers.google.com/web/fundamentals/design-and-ui/browser-customization/theme-color
- *
- * Options parameter: <br/>
- * `theme`   - A defined theme via `$mdThemeProvider` to use the palettes from. Default is `default` theme. <br/>
- * `palette` - Can be any one of the basic material design palettes, extended defined palettes and 'primary',
- *             'accent', 'background' and 'warn'. Default is `primary`. <br/>
- * `hue`     - The hue from the selected palette. Default is `800`<br/>
- *
- * <hljs lang="js">
- *   myAppModule.config(function($mdThemingProvider) {
- *     // Enable browser color
- *     $mdThemingProvider.enableBrowserColor({
- *       theme: 'myTheme', // Default is 'default'
- *       palette: 'accent', // Default is 'primary', any basic material palette and extended palettes are available
- *       hue: '200' // Default is '800'
- *     });
- *   });
- * </hljs>
  */
 
 /**
@@ -5497,17 +5350,6 @@ detectDisabledThemes.$inject = ["$mdThemingProvider"];
  * @name $mdThemingProvider#alwaysWatchTheme
  * @param {boolean} watch Whether or not to always watch themes for changes and re-apply
  * classes when they change. Default is `false`. Enabling can reduce performance.
- */
-
-/**
- * @ngdoc method
- * @name $mdThemingProvider#enableBrowserColor
- * @param {Object=} options Options object for the browser color<br/>
- * `theme`   - A defined theme via `$mdThemeProvider` to use the palettes from. Default is `default` theme. <br/>
- * `palette` - Can be any one of the basic material design palettes, extended defined palettes and 'primary',
- *             'accent', 'background' and 'warn'. Default is `primary`. <br/>
- * `hue`     - The hue from the selected palette. Default is `800`<br/>
- * @returns {Function} remove function of the browser color
  */
 
 /* Some Example Valid Theming Expressions
@@ -5618,7 +5460,7 @@ var themeConfig = {
 /**
  *
  */
-function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
+function ThemingProvider($mdColorPalette) {
   PALETTES = { };
   var THEMES = { };
 
@@ -5631,53 +5473,6 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
   angular.extend(PALETTES, $mdColorPalette);
 
   // Default theme defined in core.js
-
-  /**
-   * Adds `theme-color` and `msapplication-navbutton-color` meta tags with the color parameter
-   * @param {string} color Hex value of the wanted browser color
-   * @returns {Function} Remove function of the meta tags
-   */
-  var setBrowserColor = function (color) {
-    // Chrome, Firefox OS and Opera
-    var removeChrome = $$mdMetaProvider.setMeta('theme-color', color);
-    // Windows Phone
-    var removeWindows = $$mdMetaProvider.setMeta('msapplication-navbutton-color', color);
-
-    return function () {
-      removeChrome();
-      removeWindows();
-    }
-  };
-
-  /**
-   * Enables browser header coloring
-   * for more info please visit:
-   * https://developers.google.com/web/fundamentals/design-and-ui/browser-customization/theme-color
-   *
-   * The default color is `800` from `primary` palette of the `default` theme
-   *
-   * options are:
-   * `theme`   - A defined theme via `$mdThemeProvider` to use the palettes from. Default is `default` theme
-   * `palette` - Can be any one of the basic material design palettes, extended defined palettes and 'primary',
-   *             'accent', 'background' and 'warn'. Default is `primary`
-   * `hue`     - The hue from the selected palette. Default is `800`
-   *
-   * @param {Object=} options Options object for the browser color
-   * @returns {Function} remove function of the browser color
-   */
-  var enableBrowserColor = function (options) {
-    options = angular.isObject(options) ? options : {};
-
-    var theme = options.theme || 'default';
-    var hue = options.hue || '800';
-
-    var palette = PALETTES[options.palette] ||
-      PALETTES[THEMES[theme].colors[options.palette || 'primary'].name];
-
-    var color = angular.isObject(palette[hue]) ? palette[hue].hex : palette[hue];
-
-    return setBrowserColor(color);
-  };
 
   ThemingService.$inject = ["$rootScope", "$log"];
   return themingProvider = {
@@ -5719,8 +5514,6 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
     alwaysWatchTheme: function(alwaysWatch) {
       alwaysWatchTheme = alwaysWatch;
     },
-
-    enableBrowserColor: enableBrowserColor,
 
     $get: ThemingService,
     _LIGHT_DEFAULT_HUES: LIGHT_DEFAULT_HUES,
@@ -5904,7 +5697,6 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
     applyTheme.registered = registered;
     applyTheme.defaultTheme = function() { return defaultTheme; };
     applyTheme.generateTheme = function(name) { generateTheme(THEMES[name], name, themeConfig.nonce); };
-    applyTheme.setBrowserColor = enableBrowserColor;
 
     return applyTheme;
 
@@ -5974,7 +5766,7 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
 
   }
 }
-ThemingProvider.$inject = ["$mdColorPalette", "$$mdMetaProvider"];
+ThemingProvider.$inject = ["$mdColorPalette"];
 
 function ThemingDirective($mdTheming, $interpolate, $log) {
   return {
@@ -6213,7 +6005,6 @@ function generateAllThemes($injector, $mdTheming) {
       }
 
       palette[hueName] = {
-        hex: palette[hueName],
         value: rgbValue,
         contrast: getContrastColor()
       };
@@ -24294,15 +24085,13 @@ angular
  * the models of various input components.
  *
  * @param $scope
- * @param $attrs
  * @param $mdConstant
  * @param $log
  * @param $element
- * @param $timeout
  * @param $mdUtil
  * @constructor
  */
-function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $mdUtil) {
+function MdChipsCtrl ($scope, $mdConstant, $log, $element, $timeout, $mdUtil) {
   /** @type {$timeout} **/
   this.$timeout = $timeout;
 
@@ -24340,10 +24129,7 @@ function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $md
   this.hasAutocomplete = false;
 
   /** @type {string} */
-  this.enableChipEdit = $mdUtil.parseAttributeBoolean($attrs.mdEnableChipEdit);
-
-  /** @type {string} */
-  this.addOnBlur = $mdUtil.parseAttributeBoolean($attrs.mdAddOnBlur);
+  this.enableChipEdit = $mdUtil.parseAttributeBoolean(this.mdEnableChipEdit);
 
   /**
    * Hidden hint text for how to delete a chip. Used to give context to screen readers.
@@ -24388,7 +24174,7 @@ function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $md
    * @type {boolean}
    */
 }
-MdChipsCtrl.$inject = ["$scope", "$attrs", "$mdConstant", "$log", "$element", "$timeout", "$mdUtil"];
+MdChipsCtrl.$inject = ["$scope", "$mdConstant", "$log", "$element", "$timeout", "$mdUtil"];
 
 /**
  * Handles the keydown event on the input element: by default <enter> appends
@@ -24804,23 +24590,6 @@ MdChipsCtrl.prototype.onInputFocus = function () {
 
 MdChipsCtrl.prototype.onInputBlur = function () {
   this.inputHasFocus = false;
-
-  var chipBuffer = this.getChipBuffer().trim();
-
-  // Update the custom chip validators.
-  this.validateModel();
-
-  var isModelValid = this.ngModelCtrl.$valid;
-
-  if (this.userInputNgModelCtrl) {
-    isModelValid &= this.userInputNgModelCtrl.$valid;
-  }
-
-  // Only append the chip and reset the chip buffer if the chips and input ngModel is valid.
-  if (this.addOnBlur && chipBuffer && isModelValid) {
-    this.appendChip(chipBuffer);
-    this.resetChipBuffer();
-  }
 };
 
 /**
@@ -24981,8 +24750,6 @@ MdChipsCtrl.prototype.hasFocus = function () {
    * @param {number=} md-max-chips The maximum number of chips allowed to add through user input.
    *    <br/><br/>The validation property `md-max-chips` can be used when the max chips
    *    amount is reached.
-   * @param {boolean=} md-add-on-blur When set to true, remaining text inside of the input will
-   *    be converted into a new chip on blur.
    * @param {expression} md-transform-chip An expression of form `myFunction($chip)` that when called
    *    expects one of the following return values:
    *    - an object representing the `$chip` input string
@@ -25109,6 +24876,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
         readonly: '=readonly',
         removable: '=mdRemovable',
         placeholder: '@',
+        mdEnableChipEdit: '@',
         secondaryPlaceholder: '@',
         maxChips: '@mdMaxChips',
         transformChip: '&mdTransformChip',
@@ -25244,14 +25012,11 @@ MdChipsCtrl.prototype.hasFocus = function () {
             // input.
             scope.$watch('$mdChipsCtrl.readonly', function(readonly) {
               if (!readonly) {
-
                 $mdUtil.nextTick(function(){
-
-                  if (chipInputTemplate.indexOf('<md-autocomplete') === 0) {
-                    var autocompleteEl = element.find('md-autocomplete');
-                    mdChipsCtrl.configureAutocomplete(autocompleteEl.controller('mdAutocomplete'));
-                  }
-
+                  if (chipInputTemplate.indexOf('<md-autocomplete') === 0)
+                    mdChipsCtrl
+                        .configureAutocomplete(element.find('md-autocomplete')
+                            .controller('mdAutocomplete'));
                   mdChipsCtrl.configureUserInput(element.find('input'));
                 });
               }
@@ -32669,4 +32434,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-058b4ac"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-195966f"}};
