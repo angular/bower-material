@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-0d7fbad
+ * v1.1.0-master-bd4034d
  */
 html, body {
   height: 100%;
@@ -1530,6 +1530,9 @@ md-calendar {
   .md-calendar-month-label md-icon {
     -webkit-transform: rotate(180deg);
             transform: rotate(180deg); }
+    [dir=rtl] .md-calendar-month-label md-icon {
+      -webkit-transform: none;
+              transform: none; }
   .md-calendar-month-label span {
     vertical-align: middle; }
 

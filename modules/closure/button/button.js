@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-0d7fbad
+ * v1.1.0-master-bd4034d
  */
 goog.provide('ngmaterial.components.button');
 goog.require('ngmaterial.core');
@@ -13,6 +13,8 @@ goog.require('ngmaterial.core');
  *
  * Button
  */
+MdButtonDirective.$inject = ["$mdButtonInkRipple", "$mdTheming", "$mdAria", "$timeout"];
+MdAnchorDirective.$inject = ["$mdTheming"];
 angular
     .module('material.components.button', [ 'material.core' ])
     .directive('mdButton', MdButtonDirective)
@@ -44,7 +46,6 @@ function MdAnchorDirective($mdTheming) {
     }
   };
 }
-MdAnchorDirective.$inject = ["$mdTheming"];
 
 
 /**
@@ -192,6 +193,5 @@ function MdButtonDirective($mdButtonInkRipple, $mdTheming, $mdAria, $timeout) {
   }
 
 }
-MdButtonDirective.$inject = ["$mdButtonInkRipple", "$mdTheming", "$mdAria", "$timeout"];
 
 ngmaterial.components.button = angular.module("material.components.button");

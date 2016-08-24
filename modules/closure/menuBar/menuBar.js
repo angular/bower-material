@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-0d7fbad
+ * v1.1.0-master-bd4034d
  */
 goog.provide('ngmaterial.components.menuBar');
 goog.require('ngmaterial.components.menu');
@@ -18,6 +18,7 @@ angular.module('material.components.menuBar', [
 ]);
 
 
+MenuBarController.$inject = ["$scope", "$rootScope", "$element", "$attrs", "$mdConstant", "$document", "$mdUtil", "$timeout"];
 angular
   .module('material.components.menuBar')
   .controller('MenuBarController', MenuBarController);
@@ -42,7 +43,6 @@ function MenuBarController($scope, $rootScope, $element, $attrs, $mdConstant, $d
     self[methodName] = angular.bind(self, self[methodName]);
   });
 }
-MenuBarController.$inject = ["$scope", "$rootScope", "$element", "$attrs", "$mdConstant", "$document", "$mdUtil", "$timeout"];
 
 MenuBarController.prototype.init = function() {
   var $element = this.$element;
@@ -355,6 +355,7 @@ MenuBarController.prototype.getOpenMenuIndex = function() {
  *
  */
 
+MenuBarDirective.$inject = ["$mdUtil", "$mdTheming"];
 angular
   .module('material.components.menuBar')
   .directive('mdMenuBar', MenuBarDirective);
@@ -406,7 +407,6 @@ function MenuBarDirective($mdUtil, $mdTheming) {
   };
 
 }
-MenuBarDirective.$inject = ["$mdUtil", "$mdTheming"];
 
 
 angular
@@ -426,6 +426,7 @@ function MenuDividerDirective() {
 }
 
 
+MenuItemController.$inject = ["$scope", "$element", "$attrs"];
 angular
   .module('material.components.menuBar')
   .controller('MenuItemController', MenuItemController);
@@ -439,7 +440,6 @@ function MenuItemController($scope, $element, $attrs) {
   this.$attrs = $attrs;
   this.$scope = $scope;
 }
-MenuItemController.$inject = ["$scope", "$element", "$attrs"];
 
 MenuItemController.prototype.init = function(ngModel) {
   var $element = this.$element;
@@ -532,6 +532,7 @@ MenuItemController.prototype.handleClick = function(e) {
 };
 
 
+MenuItemDirective.$inject = ["$mdUtil"];
 angular
   .module('material.components.menuBar')
   .directive('mdMenuItem', MenuItemDirective);
@@ -597,6 +598,5 @@ function MenuItemDirective($mdUtil) {
     }
   };
 }
-MenuItemDirective.$inject = ["$mdUtil"];
 
 ngmaterial.components.menuBar = angular.module("material.components.menuBar");
