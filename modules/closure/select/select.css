@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-d230aec
+ * v1.1.0-master-f265a0e
  */
 md-input-container:not([md-no-float]) .md-select-placeholder span:first-child {
   -webkit-transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -62,7 +62,7 @@ md-input-container > md-select {
   -webkit-order: 2;
           order: 2; }
 
-md-input-container:not(.md-input-has-value) md-select[required] .md-select-value span:first-child:after, md-input-container:not(.md-input-has-value) md-select.ng-required .md-select-value span:first-child:after {
+md-input-container:not(.md-input-has-value) md-select[required]:not(.md-no-asterisk) .md-select-value span:first-child:after, md-input-container:not(.md-input-has-value) md-select.ng-required:not(.md-no-asterisk) .md-select-value span:first-child:after {
   content: ' *';
   font-size: 13px;
   vertical-align: top; }
@@ -76,7 +76,7 @@ md-select {
   display: -webkit-flex;
   display: flex;
   margin: 20px 0 26px 0; }
-  md-select[required].ng-invalid .md-select-value span:first-child:after, md-select.ng-required.ng-invalid .md-select-value span:first-child:after {
+  md-select[required].ng-invalid:not(.md-no-asterisk) .md-select-value span:first-child:after, md-select.ng-required.ng-invalid:not(.md-no-asterisk) .md-select-value span:first-child:after {
     content: ' *';
     font-size: 13px;
     vertical-align: top; }
