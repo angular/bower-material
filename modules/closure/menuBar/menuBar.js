@@ -2,9 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-bd70022
+ * v1.1.0-master-04124d8
  */
 goog.provide('ngmaterial.components.menuBar');
+goog.require('ngmaterial.components.icon');
 goog.require('ngmaterial.components.menu');
 goog.require('ngmaterial.core');
 /**
@@ -14,6 +15,7 @@ goog.require('ngmaterial.core');
 
 angular.module('material.components.menuBar', [
   'material.core',
+  'material.components.icon',
   'material.components.menu'
 ]);
 
@@ -532,13 +534,13 @@ MenuItemController.prototype.handleClick = function(e) {
 };
 
 
-MenuItemDirective.$inject = ["$mdUtil"];
+MenuItemDirective.$inject = ["$mdUtil", "$$mdSvgRegistry"];
 angular
   .module('material.components.menuBar')
   .directive('mdMenuItem', MenuItemDirective);
 
  /* ngInject */
-function MenuItemDirective($mdUtil) {
+function MenuItemDirective($mdUtil, $$mdSvgRegistry) {
   return {
     controller: 'MenuItemController',
     require: ['mdMenuItem', '?ngModel'],
@@ -552,11 +554,13 @@ function MenuItemDirective($mdUtil) {
       if ((type == 'checkbox' || type == 'radio') && templateEl.hasClass(inMenuBarClass)) {
         var text = templateEl[0].textContent;
         var buttonEl = angular.element('<md-button type="button"></md-button>');
-            buttonEl.html(text);
-            buttonEl.attr('tabindex', '0');
+        var iconTemplate = '<md-icon md-svg-src="' + $$mdSvgRegistry.mdChecked + '"></md-icon>';
+
+        buttonEl.html(text);
+        buttonEl.attr('tabindex', '0');
 
         templateEl.html('');
-        templateEl.append(angular.element('<md-icon md-svg-icon="check"></md-icon>'));
+        templateEl.append(angular.element(iconTemplate));
         templateEl.append(buttonEl);
         templateEl.addClass('md-indent').removeClass(inMenuBarClass);
 

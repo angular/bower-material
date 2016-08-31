@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-bd70022
+ * v1.1.0-master-04124d8
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13059,6 +13059,7 @@ angular.module('material.components.menu', [
 
 angular.module('material.components.menuBar', [
   'material.core',
+  'material.components.icon',
   'material.components.menu'
 ]);
 
@@ -28724,7 +28725,8 @@ MdIconService.$inject = ["config", "$templateRequest", "$q", "$log", "$mdUtil", 
         'mdCancel':      'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxnPjxwYXRoIGQ9Ik0xMiAyYy01LjUzIDAtMTAgNC40Ny0xMCAxMHM0LjQ3IDEwIDEwIDEwIDEwLTQuNDcgMTAtMTAtNC40Ny0xMC0xMC0xMHptNSAxMy41OWwtMS40MSAxLjQxLTMuNTktMy41OS0zLjU5IDMuNTktMS40MS0xLjQxIDMuNTktMy41OS0zLjU5LTMuNTkgMS40MS0xLjQxIDMuNTkgMy41OSAzLjU5LTMuNTkgMS40MSAxLjQxLTMuNTkgMy41OSAzLjU5IDMuNTl6Ii8+PC9nPjwvc3ZnPg==',
         'mdMenu':        'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGQ9Ik0zLDZIMjFWOEgzVjZNMywxMUgyMVYxM0gzVjExTTMsMTZIMjFWMThIM1YxNloiIC8+PC9zdmc+',
         'mdToggleArrow': 'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNDggNDgiPjxwYXRoIGQ9Ik0yNCAxNmwtMTIgMTIgMi44MyAyLjgzIDkuMTctOS4xNyA5LjE3IDkuMTcgMi44My0yLjgzeiIvPjxwYXRoIGQ9Ik0wIDBoNDh2NDhoLTQ4eiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==',
-        'mdCalendar':    'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTkgM2gtMVYxaC0ydjJIOFYxSDZ2Mkg1Yy0xLjExIDAtMS45OS45LTEuOTkgMkwzIDE5YzAgMS4xLjg5IDIgMiAyaDE0YzEuMSAwIDItLjkgMi0yVjVjMC0xLjEtLjktMi0yLTJ6bTAgMTZINVY4aDE0djExek03IDEwaDV2NUg3eiIvPjwvc3ZnPg=='
+        'mdCalendar':    'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTkgM2gtMVYxaC0ydjJIOFYxSDZ2Mkg1Yy0xLjExIDAtMS45OS45LTEuOTkgMkwzIDE5YzAgMS4xLjg5IDIgMiAyaDE0YzEuMSAwIDItLjkgMi0yVjVjMC0xLjEtLjktMi0yLTJ6bTAgMTZINVY4aDE0djExek03IDEwaDV2NUg3eiIvPjwvc3ZnPg==',
+        'mdChecked':     'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxnPjxwYXRoIGQ9Ik05IDE2LjE3TDQuODMgMTJsLTEuNDIgMS40MUw5IDE5IDIxIDdsLTEuNDEtMS40MXoiLz48L2c+PC9zdmc+'
     })
     .provider('$mdIcon', MdIconProvider);
 
@@ -30887,13 +30889,13 @@ MenuItemController.prototype.handleClick = function(e) {
 "use strict";
 
 
-MenuItemDirective.$inject = ["$mdUtil"];
+MenuItemDirective.$inject = ["$mdUtil", "$$mdSvgRegistry"];
 angular
   .module('material.components.menuBar')
   .directive('mdMenuItem', MenuItemDirective);
 
  /* @ngInject */
-function MenuItemDirective($mdUtil) {
+function MenuItemDirective($mdUtil, $$mdSvgRegistry) {
   return {
     controller: 'MenuItemController',
     require: ['mdMenuItem', '?ngModel'],
@@ -30907,11 +30909,13 @@ function MenuItemDirective($mdUtil) {
       if ((type == 'checkbox' || type == 'radio') && templateEl.hasClass(inMenuBarClass)) {
         var text = templateEl[0].textContent;
         var buttonEl = angular.element('<md-button type="button"></md-button>');
-            buttonEl.html(text);
-            buttonEl.attr('tabindex', '0');
+        var iconTemplate = '<md-icon md-svg-src="' + $$mdSvgRegistry.mdChecked + '"></md-icon>';
+
+        buttonEl.html(text);
+        buttonEl.attr('tabindex', '0');
 
         templateEl.html('');
-        templateEl.append(angular.element('<md-icon md-svg-icon="check"></md-icon>'));
+        templateEl.append(angular.element(iconTemplate));
         templateEl.append(buttonEl);
         templateEl.addClass('md-indent').removeClass(inMenuBarClass);
 
@@ -32746,4 +32750,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-bd70022"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-04124d8"}};
