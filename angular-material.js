@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-0d2386c
+ * v1.1.0-master-9b9059a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -9225,6 +9225,10 @@ function MdDialogProvider($$interimElementProvider) {
       // Those option changes need to be done, before the compilation has started, because otherwise
       // the option changes will be not available in the $mdCompilers locales.
       detectTheming(options);
+
+      if (options.contentElement) {
+        options.restoreContentElement = installContentElement(options);
+      }
     }
 
     function beforeShow(scope, element, options, controller) {
@@ -9247,29 +9251,6 @@ function MdDialogProvider($$interimElementProvider) {
     /** Show method for dialogs */
     function onShow(scope, element, options, controller) {
       angular.element($document[0].body).addClass('md-dialog-is-showing');
-
-      if (options.contentElement) {
-        var contentEl = options.contentElement;
-
-        if (angular.isString(contentEl)) {
-          contentEl = document.querySelector(contentEl);
-          options.elementInsertionSibling = contentEl.nextElementSibling;
-          options.elementInsertionParent = contentEl.parentNode;
-        } else {
-          contentEl = contentEl[0] || contentEl;
-          // When the element is not visible in the DOM, then we can treat is as same
-          // as a normal dialog would do. Removing it at close etc.
-          // ---
-          // When the element is visible in the DOM, then we restore it at close of the dialog.
-          if (document.contains(contentEl)) {
-            options.elementInsertionSibling = contentEl.nextElementSibling;
-            options.elementInsertionParent = contentEl.parentNode;
-          }
-        }
-
-        options.elementInsertionEntry = contentEl;
-        element = angular.element(contentEl);
-      }
 
       var dialogElement = element.find('md-dialog');
 
@@ -9359,26 +9340,6 @@ function MdDialogProvider($$interimElementProvider) {
         return dialogPopOut(element, options);
       }
 
-      function removeContentElement() {
-        if (!options.contentElement) return;
-
-        options.reverseContainerStretch();
-
-        if (!options.elementInsertionParent) {
-          // When the contentElement has no parent, then it's a virtual DOM element, which should
-          // be removed at close, as same as normal templates inside of a dialog.
-          options.elementInsertionEntry.parentNode.removeChild(options.elementInsertionEntry);
-        } else if (!options.elementInsertionSibling) {
-          // When the contentElement doesn't have any sibling, then it can be simply appended to the
-          // parent, because it plays no role, which index it had before.
-          options.elementInsertionParent.appendChild(options.elementInsertionEntry);
-        } else {
-          // When the contentElement has a sibling, which marks the previous position of the contentElement
-          // in the DOM, we insert it correctly before the sibling, to have the same index as before.
-          options.elementInsertionParent.insertBefore(options.elementInsertionEntry, options.elementInsertionSibling);
-        }
-      }
-
       /**
        * Detach the element
        */
@@ -9388,7 +9349,8 @@ function MdDialogProvider($$interimElementProvider) {
         if (!options.contentElement) {
           element.remove();
         } else {
-          removeContentElement();
+          options.reverseContainerStretch();
+          options.restoreContentElement();
         }
 
         if (!options.$destroy) options.origin.focus();
@@ -9409,6 +9371,56 @@ function MdDialogProvider($$interimElementProvider) {
         options.theme = (targetEl.controller('mdTheme') || {}).$mdTheme || options.theme;
       }
 
+    }
+
+    /**
+     * Installs a content element to the current $$interimElement provider options.
+     * @returns {Function} Function to restore the content element at its old DOM location.
+     */
+    function installContentElement(options) {
+      var contentEl = options.contentElement;
+      var restoreFn = null;
+
+      if (angular.isString(contentEl)) {
+        contentEl = document.querySelector(contentEl);
+        restoreFn = createRestoreFn(contentEl);
+      } else {
+        contentEl = contentEl[0] || contentEl;
+
+        // When the element is visible in the DOM, then we restore it at close of the dialog.
+        // Otherwise it will be removed from the DOM after close.
+        if (document.contains(contentEl)) {
+          restoreFn = createRestoreFn(contentEl);
+        } else {
+          restoreFn = function() {
+            contentEl.parentNode.removeChild(contentEl);
+          }
+        }
+      }
+
+      // Overwrite the options to use the content element.
+      options.element = angular.element(contentEl);
+      options.skipCompile = true;
+
+      return restoreFn;
+
+      function createRestoreFn(element) {
+        var parent = element.parentNode;
+        var nextSibling = element.nextElementSibling;
+
+        return function() {
+          if (!nextSibling) {
+            // When the element didn't had any sibling, then it can be simply appended to the
+            // parent, because it plays no role, which index it had before.
+            parent.appendChild(element);
+          } else {
+            // When the element had a sibling, which marks the previous position of the element
+            // in the DOM, we insert it correctly before the sibling, to have the same index as
+            // before.
+            parent.insertBefore(element, nextSibling);
+          }
+        }
+      }
     }
 
     /**
@@ -22865,20 +22877,16 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       positionDropdown();
 
       if (elements) {
-        $mdUtil.nextTick(function () {
-          $mdUtil.disableScrollAround(elements.ul);
-          enableWrapScroll = disableElementScrollEvents(angular.element(elements.wrap));
-        }, false, $scope);
+        $mdUtil.disableScrollAround(elements.ul);
+        enableWrapScroll = disableElementScrollEvents(angular.element(elements.wrap));
       }
     } else if (hidden && !oldHidden) {
-      $mdUtil.nextTick(function () {
-        $mdUtil.enableScrolling();
+      $mdUtil.enableScrolling();
 
-        if (enableWrapScroll) {
-          enableWrapScroll();
-          enableWrapScroll = null;
-        }
-      }, false, $scope);
+      if (enableWrapScroll) {
+        enableWrapScroll();
+        enableWrapScroll = null;
+      }
     }
   }
 
@@ -23936,41 +23944,119 @@ MdHighlightCtrl.$inject = ["$scope", "$element", "$attrs"];angular
     .controller('MdHighlightCtrl', MdHighlightCtrl);
 
 function MdHighlightCtrl ($scope, $element, $attrs) {
-  this.init = init;
+  this.$scope = $scope;
+  this.$element = $element;
+  this.$attrs = $attrs;
 
-  function init (termExpr, unsafeTextExpr) {
-    var text = null,
-        regex = null,
-        flags = $attrs.mdHighlightFlags || '',
-        watcher = $scope.$watch(function($scope) {
-          return {
-            term: termExpr($scope),
-            unsafeText: unsafeTextExpr($scope)
-          };
-        }, function (state, prevState) {
-          if (text === null || state.unsafeText !== prevState.unsafeText) {
-            text = angular.element('<div>').text(state.unsafeText).html();
-          }
-          if (regex === null || state.term !== prevState.term) {
-            regex = getRegExp(state.term, flags);
-          }
-
-          $element.html(text.replace(regex, '<span class="highlight">$&</span>'));
-        }, true);
-    $element.on('$destroy', watcher);
-  }
-
-  function sanitize (term) {
-    return term && term.toString().replace(/[\\\^\$\*\+\?\.\(\)\|\{}\[\]]/g, '\\$&');
-  }
-
-  function getRegExp (text, flags) {
-    var startFlag = '', endFlag = '';
-    if (flags.indexOf('^') >= 0) startFlag = '^';
-    if (flags.indexOf('$') >= 0) endFlag = '$';
-    return new RegExp(startFlag + sanitize(text) + endFlag, flags.replace(/[\$\^]/g, ''));
-  }
+  // Cache the Regex to avoid rebuilding each time.
+  this.regex = null;
 }
+
+MdHighlightCtrl.prototype.init = function(unsafeTermFn, unsafeContentFn) {
+
+  this.flags = this.$attrs.mdHighlightFlags || '';
+
+  this.unregisterFn = this.$scope.$watch(function($scope) {
+    return {
+      term: unsafeTermFn($scope),
+      contentText: unsafeContentFn($scope)
+    };
+  }.bind(this), this.onRender.bind(this), true);
+
+  this.$element.on('$destroy', this.unregisterFn);
+};
+
+/**
+ * Triggered once a new change has been recognized and the highlighted
+ * text needs to be updated.
+ */
+MdHighlightCtrl.prototype.onRender = function(state, prevState) {
+
+  var contentText = state.contentText;
+
+  /* Update the regex if it's outdated, because we don't want to rebuilt it constantly. */
+  if (this.regex === null || state.term !== prevState.term) {
+    this.regex = this.createRegex(state.term, this.flags);
+  }
+
+  /* If a term is available apply the regex to the content */
+  if (state.term) {
+    this.applyRegex(contentText);
+  } else {
+    this.$element.text(contentText);
+  }
+
+};
+
+/**
+ * Decomposes the specified text into different tokens (whether match or not).
+ * Breaking down the string guarantees proper XSS protection due to the native browser
+ * escaping of unsafe text.
+ */
+MdHighlightCtrl.prototype.applyRegex = function(text) {
+  var tokens = this.resolveTokens(text);
+
+  this.$element.empty();
+
+  tokens.forEach(function (token) {
+
+    if (token.isMatch) {
+      var tokenEl = angular.element('<span class="highlight">').text(token.text);
+
+      this.$element.append(tokenEl);
+    } else {
+      this.$element.append(document.createTextNode(token));
+    }
+
+  }.bind(this));
+
+};
+
+  /**
+ * Decomposes the specified text into different tokens by running the regex against the text.
+ */
+MdHighlightCtrl.prototype.resolveTokens = function(string) {
+  var tokens = [];
+  var lastIndex = 0;
+
+  // Use replace here, because it supports global and single regular expressions at same time.
+  string.replace(this.regex, function(match, index) {
+    appendToken(lastIndex, index);
+
+    tokens.push({
+      text: match,
+      isMatch: true
+    });
+
+    lastIndex = index + match.length;
+  });
+
+  // Append the missing text as a token.
+  appendToken(lastIndex);
+
+  return tokens;
+
+  function appendToken(from, to) {
+    var targetText = string.slice(from, to);
+    targetText && tokens.push(targetText);
+  }
+};
+
+/** Creates a regex for the specified text with the given flags. */
+MdHighlightCtrl.prototype.createRegex = function(term, flags) {
+  var startFlag = '', endFlag = '';
+  var regexTerm = this.sanitizeRegex(term);
+
+  if (flags.indexOf('^') >= 0) startFlag = '^';
+  if (flags.indexOf('$') >= 0) endFlag = '$';
+
+  return new RegExp(startFlag + regexTerm + endFlag, flags.replace(/[$\^]/g, ''));
+};
+
+/** Sanitizes a regex by removing all common RegExp identifiers */
+MdHighlightCtrl.prototype.sanitizeRegex = function(term) {
+  return term && term.toString().replace(/[\\\^\$\*\+\?\.\(\)\|\{}\[\]]/g, '\\$&');
+};
 
 })();
 (function(){
@@ -24016,10 +24102,10 @@ function MdHighlight ($interpolate, $parse) {
     controller: 'MdHighlightCtrl',
     compile: function mdHighlightCompile(tElement, tAttr) {
       var termExpr = $parse(tAttr.mdHighlightText);
-      var unsafeTextExpr = $interpolate(tElement.html());
+      var unsafeContentExpr = $interpolate(tElement.html());
 
       return function mdHighlightLink(scope, element, attr, ctrl) {
-        ctrl.init(termExpr, unsafeTextExpr);
+        ctrl.init(termExpr, unsafeContentExpr);
       };
     }
   };
@@ -32877,4 +32963,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-0d2386c"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-9b9059a"}};

@@ -1207,12 +1207,6 @@ input {
     @include layout-for-name($name);
 }
 
-/* IE10-IE11 column-flex bug fix (set proper default value) */
-.layout-column > .flex {
-	-ms-flex-basis: auto;
-	flex-basis: auto;
-}
-
 $autocomplete-option-height: 48px !default;
 
 @keyframes md-autocomplete-list-out {
