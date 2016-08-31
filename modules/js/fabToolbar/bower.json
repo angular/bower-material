@@ -1,9 +1,9 @@
 {
   "name": "angular-material-fabToolbar",
-  "version": "1.1.0-master-18afebe",
+  "version": "1.1.0-master-7c4b434",
   "dependencies": {
-    "angular-material-core": "1.1.0-master-18afebe",
-    "angular-material-fabShared": "1.1.0-master-18afebe",
-    "angular-material-fabActions": "1.1.0-master-18afebe"
+    "angular-material-core": "1.1.0-master-7c4b434",
+    "angular-material-fabShared": "1.1.0-master-7c4b434",
+    "angular-material-fabActions": "1.1.0-master-7c4b434"
   }
 }

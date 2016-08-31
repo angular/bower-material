@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-18afebe
+ * v1.1.0-master-7c4b434
  */
 goog.provide('ngmaterial.components.menuBar');
 goog.require('ngmaterial.components.icon');
@@ -88,6 +88,7 @@ MenuBarController.prototype.init = function() {
   }));
 
   $scope.$on('$destroy', function() {
+    self.disableOpenOnHover();
     while (deregisterFns.length) {
       deregisterFns.shift()();
     }
@@ -104,17 +105,23 @@ MenuBarController.prototype.setKeyboardMode = function(enabled) {
 
 MenuBarController.prototype.enableOpenOnHover = function() {
   if (this.openOnHoverEnabled) return;
-  this.openOnHoverEnabled = true;
 
-  var parentToolbar;
-  if (parentToolbar = this.parentToolbar) {
-    parentToolbar.dataset.mdRestoreStyle = parentToolbar.getAttribute('style');
-    parentToolbar.style.position = 'relative';
-    parentToolbar.style.zIndex = 100;
+  var self = this;
+
+  self.openOnHoverEnabled = true;
+
+  if (self.parentToolbar) {
+    self.parentToolbar.classList.add('md-has-open-menu');
+
+    // Needs to be on the next tick so it doesn't close immediately.
+    self.$mdUtil.nextTick(function() {
+      angular.element(self.parentToolbar).on('click', self.handleParentClick);
+    }, false);
   }
+
   angular
-    .element(this.getMenus())
-    .on('mouseenter', this.handleMenuHover);
+    .element(self.getMenus())
+    .on('mouseenter', self.handleMenuHover);
 };
 
 MenuBarController.prototype.handleMenuHover = function(e) {
@@ -124,14 +131,16 @@ MenuBarController.prototype.handleMenuHover = function(e) {
   }
 };
 
-
 MenuBarController.prototype.disableOpenOnHover = function() {
   if (!this.openOnHoverEnabled) return;
+
   this.openOnHoverEnabled = false;
-  var parentToolbar;
-  if (parentToolbar = this.parentToolbar) {
-    parentToolbar.style.cssText = parentToolbar.dataset.mdRestoreStyle || '';
+
+  if (this.parentToolbar) {
+    this.parentToolbar.classList.remove('md-has-open-menu');
+    angular.element(this.parentToolbar).off('click', this.handleParentClick);
   }
+
   angular
     .element(this.getMenus())
     .off('mouseenter', this.handleMenuHover);
@@ -248,7 +257,6 @@ MenuBarController.prototype.getFocusedMenuIndex = function() {
 
   var focusedIndex = this.getMenus().indexOf(focusedEl);
   return focusedIndex;
-
 };
 
 MenuBarController.prototype.getOpenMenuIndex = function() {
@@ -259,7 +267,13 @@ MenuBarController.prototype.getOpenMenuIndex = function() {
   return -1;
 };
 
+MenuBarController.prototype.handleParentClick = function(event) {
+  var openMenu = this.querySelector('md-menu.md-open');
 
+  if (openMenu && !openMenu.contains(event.target)) {
+    angular.element(openMenu).controller('mdMenu').close();
+  }
+};
 
 
 
