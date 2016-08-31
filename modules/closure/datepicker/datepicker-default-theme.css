@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-14fa477
+ * v1.1.0-master-d0a7765
  */
 /** Theme styles for mdCalendar. */
 .md-calendar.md-THEME_NAME-theme {
@@ -77,9 +77,11 @@
 .md-THEME_NAME-theme .md-datepicker-open.md-warn .md-datepicker-calendar-icon, .md-warn .md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon {
   color: '{{warn-A700}}'; }
 
-.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-input-container,
-.md-THEME_NAME-theme .md-datepicker-input-mask-opaque {
-  background: '{{background-hue-1}}'; }
-
 .md-THEME_NAME-theme .md-datepicker-calendar {
   background: '{{background-A100}}'; }
+
+.md-THEME_NAME-theme .md-datepicker-input-mask-opaque {
+  box-shadow: 0 0 0 9999px "{{background-hue-1}}"; }
+
+.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-input-container {
+  background: "{{background-hue-1}}"; }
