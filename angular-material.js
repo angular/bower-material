@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-39812c8
+ * v1.1.0-master-69607e0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3778,7 +3778,7 @@ function InterimElementProvider() {
 
   /**
    * Tail-hook ngCloak to delay the uncloaking while Layout transformers
-   * finish processing. Eliminates flicker with Material.Layoouts
+   * finish processing. Eliminates flicker with Material.Layouts
    */
   function buildCloakInterceptor(className) {
     return [ '$timeout', function($timeout){
@@ -32750,4 +32750,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-39812c8"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-69607e0"}};
