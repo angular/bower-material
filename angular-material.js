@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-d086e2b
+ * v1.1.0-master-7e21118
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -12356,11 +12356,15 @@ function ngMessageAnimation($$AnimateRunner, $animateCss, $mdUtil) {
 
   return {
     enter: function(element, done) {
-      return showMessage(element);
+      var animator = showMessage(element);
+
+      animator.start().done(done);
     },
 
     leave: function(element, done) {
-      return hideMessage(element);
+      var animator = hideMessage(element);
+
+      animator.start().done(done);
     }
   }
 }
@@ -12418,7 +12422,6 @@ function showMessage(element) {
 function hideMessage(element) {
   var height = element[0].offsetHeight;
   var styles = window.getComputedStyle(element[0]);
-  //var styles = { opacity: element.css('opacity') };
 
   // If we are already hidden, just return an empty animation
   if (styles.opacity == 0) {
@@ -32754,4 +32757,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-d086e2b"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-7e21118"}};
