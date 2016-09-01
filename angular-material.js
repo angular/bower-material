@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-3854c4a
+ * v1.1.0-master-b26c01c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -32091,7 +32091,17 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
       tab = elements.tabs[ i ];
       if (tab.offsetLeft + tab.offsetWidth > totalWidth) break;
     }
-    ctrl.offsetLeft = fixOffset(tab.offsetLeft);
+    
+    if (viewportWidth > tab.offsetWidth) {
+      //Canvas width *greater* than tab width: usual positioning
+      ctrl.offsetLeft = fixOffset(tab.offsetLeft);
+    } else {
+      /**
+       * Canvas width *smaller* than tab width: positioning at the *end* of current tab to let 
+       * pagination "for loop" to proceed correctly on next tab when nextPage() is called again
+       */
+      ctrl.offsetLeft = fixOffset(tab.offsetLeft + (tab.offsetWidth - viewportWidth + 1));
+    }
   }
 
   /**
@@ -32104,7 +32114,17 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
       tab = elements.tabs[ i ];
       if (tab.offsetLeft + tab.offsetWidth >= ctrl.offsetLeft) break;
     }
-    ctrl.offsetLeft = fixOffset(tab.offsetLeft + tab.offsetWidth - elements.canvas.clientWidth);
+    
+    if (elements.canvas.clientWidth > tab.offsetWidth) {
+      //Canvas width *greater* than tab width: usual positioning
+      ctrl.offsetLeft = fixOffset(tab.offsetLeft + tab.offsetWidth - elements.canvas.clientWidth);
+    } else {
+      /**
+       * Canvas width *smaller* than tab width: positioning at the *beginning* of current tab to let 
+       * pagination "for loop" to break correctly on previous tab when previousPage() is called again
+       */
+      ctrl.offsetLeft = fixOffset(tab.offsetLeft);  
+    }
   }
 
   /**
@@ -32910,4 +32930,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-3854c4a"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-b26c01c"}};
