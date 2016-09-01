@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-master-b26c01c
+ * v1.1.0-master-904b455
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -7857,10 +7857,10 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
       }
 
       if (attr.ngChecked) {
-        scope.$watch(
-          scope.$eval.bind(scope, attr.ngChecked),
-          ngModelCtrl.$setViewValue.bind(ngModelCtrl)
-        );
+        scope.$watch(scope.$eval.bind(scope, attr.ngChecked), function(value) {
+          ngModelCtrl.$setViewValue(value);
+          ngModelCtrl.$render();
+        });
       }
 
       $$watchExpr('ngDisabled', 'tabindex', {
@@ -11518,19 +11518,21 @@ function mdInputContainerDirective($mdTheming, $parse) {
 
   return {
     restrict: 'E',
-    link: postLink,
+    compile: compile,
     controller: ContainerCtrl
   };
 
-  function postLink(scope, element) {
-    $mdTheming(element);
-
+  function compile(tElement) {
     // Check for both a left & right icon
-    var leftIcon = element[0].querySelector(LEFT_SELECTORS);
-    var rightIcon = element[0].querySelector(RIGHT_SELECTORS);
+    var leftIcon = tElement[0].querySelector(LEFT_SELECTORS);
+    var rightIcon = tElement[0].querySelector(RIGHT_SELECTORS);
 
-    if (leftIcon) { element.addClass('md-icon-left'); }
-    if (rightIcon) { element.addClass('md-icon-right'); }
+    if (leftIcon) { tElement.addClass('md-icon-left'); }
+    if (rightIcon) { tElement.addClass('md-icon-right'); }
+
+    return function postLink(scope, element) {
+      $mdTheming(element);
+    };
   }
 
   function ContainerCtrl($scope, $element, $attrs, $animate) {
@@ -11957,7 +11959,8 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
         var container = containerCtrl.element;
         var dragGestureHandler = $mdGesture.register(handle, 'drag', { horizontal: false });
 
-        element.after(handle);
+
+        element.wrap('<div class="md-resize-wrapper">').after(handle);
         handle.on('mousedown', onMouseDown);
 
         container
@@ -32930,4 +32933,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-b26c01c"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-master-904b455"}};
