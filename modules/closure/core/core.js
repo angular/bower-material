@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-11fd03f
+ * v1.1.1-master-f7d6d10
  */
 goog.provide('ngmaterial.core');
 
@@ -187,9 +187,8 @@ angular.module('material.core')
 function MdAutofocusDirective() {
   return {
     restrict: 'A',
-
     link: postLink
-  }
+  };
 }
 
 function postLink(scope, element, attrs) {
@@ -272,8 +271,9 @@ function ColorUtilFactory() {
     hexToRgba: hexToRgba,
     rgbToRgba: rgbToRgba,
     rgbaToRgb: rgbaToRgb
-  }
+  };
 }
+
 
 MdConstantFactory.$inject = ["$sniffer", "$window", "$document"];angular.module('material.core')
 .factory('$mdConstant', MdConstantFactory);
@@ -806,7 +806,7 @@ function mdMediaFactory($mdConstant, $rootScope, $window) {
     });
 
     return function unwatch() {
-      unwatchFns.forEach(function(fn) { fn(); })
+      unwatchFns.forEach(function(fn) { fn(); });
     };
   }
 
@@ -862,7 +862,7 @@ function MdPrefixer(initialAttributes, buildSelector) {
 
     return _buildList(attributes)
       .map(function(item) {
-        return '[' + item + ']'
+        return '[' + item + ']';
       })
       .join(',');
   }
@@ -913,6 +913,7 @@ function MdPrefixer(initialAttributes, buildSelector) {
   }
 
 }
+
 /*
  * This var has to be outside the angular factory, otherwise when
  * there are multiple material apps on the same page, each app
@@ -3426,14 +3427,14 @@ function InterimElementProvider() {
             autoHideTimer = $timeout(service.hide, options.hideDelay) ;
             cancelAutoHide = function() {
               $timeout.cancel(autoHideTimer);
-            }
+            };
           }
 
           // Cache for subsequent use
           options.cancelAutoHide = function() {
             cancelAutoHide();
             options.cancelAutoHide = undefined;
-          }
+          };
         }
 
         /**
@@ -3477,7 +3478,7 @@ function InterimElementProvider() {
               // Trigger callback *before* the remove operation starts
               announceRemoving(element, action);
 
-              if ( options.$destroy == true ) {
+              if ( options.$destroy ) {
 
                 // For $destroy, onRemove should be synchronous
                 resolve(element);
@@ -4323,10 +4324,10 @@ angular.module('material.core.meta', [])
         return {
           isMenuItem: element.hasClass('md-menu-item'),
           dimBackground: true
-        }
+        };
       }
-    };
-  };
+    }
+  }
 })();
 
 (function() {
@@ -4360,8 +4361,8 @@ angular.module('material.core.meta', [])
         dimBackground: false,
         fitRipple: true
       }, options));
-    };
-  };
+    }
+  }
 })();
 
 (function() {
@@ -4396,8 +4397,8 @@ angular.module('material.core.meta', [])
         outline: false,
         rippleSize: 'full'
       }, options));
-    };
-  };
+    }
+  }
 })();
 
 /**
@@ -4896,8 +4897,8 @@ function attrNoDirective () {
         outline: false,
         rippleSize: 'full'
       }, options));
-    };
-  };
+    }
+  }
 })();
 
 angular.module('material.core.theming.palette', [])
@@ -5558,7 +5559,7 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
     return function () {
       removeChrome();
       removeWindows();
-    }
+    };
   };
 
   /**
@@ -6557,12 +6558,11 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
 }
 
 
-"use strict";
-
 if (angular.version.minor >= 4) {
   angular.module('material.core.animate', []);
 } else {
 (function() {
+  "use strict";
 
   var forEach = angular.forEach;
 
@@ -6577,7 +6577,7 @@ if (angular.version.minor >= 4) {
   var $$ForceReflowFactory = ['$document', function($document) {
     return function() {
       return $document[0].body.clientWidth + 1;
-    }
+    };
   }];
 
   var $$rAFMutexFactory = ['$$rAF', function($$rAF) {
@@ -6855,7 +6855,7 @@ if (angular.version.minor >= 4) {
               return runner;
             }
           }
-        }
+        };
       }
 
       function applyClasses(element, options) {
@@ -6871,7 +6871,7 @@ if (angular.version.minor >= 4) {
 
       function computeTimings(element) {
         var node = getDomNode(element);
-        var cs = $window.getComputedStyle(node)
+        var cs = $window.getComputedStyle(node);
         var tdr = parseMaxTime(cs[prop('transitionDuration')]);
         var adr = parseMaxTime(cs[prop('animationDuration')]);
         var tdy = parseMaxTime(cs[prop('transitionDelay')]);

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-11fd03f
+ * v1.1.1-master-f7d6d10
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -53,7 +53,7 @@
           children.wrap('<div class="md-fab-action-item">');
         }
       }
-    }
+    };
   }
 
 })();

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-11fd03f
+ * v1.1.1-master-f7d6d10
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -950,7 +950,7 @@ function ngMessagesAnimation($$AnimateRunner, $animateCss, $mdUtil) {
         done();
       }
     }
-  }
+  };
 }
 
 function ngMessageAnimation($$AnimateRunner, $animateCss, $mdUtil) {
@@ -968,7 +968,7 @@ function ngMessageAnimation($$AnimateRunner, $animateCss, $mdUtil) {
 
       animator.start().done(done);
     }
-  }
+  };
 }
 
 function showInputMessages(element, done) {
@@ -1026,7 +1026,7 @@ function hideMessage(element) {
   var styles = window.getComputedStyle(element[0]);
 
   // If we are already hidden, just return an empty animation
-  if (styles.opacity == 0) {
+  if (parseInt(styles.opacity) === 0) {
     return $animateCss(element, {});
   }
 

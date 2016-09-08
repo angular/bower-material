@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-11fd03f
+ * v1.1.1-master-f7d6d10
  */
 goog.provide('ngmaterial.components.fabShared');
 goog.require('ngmaterial.core');
@@ -513,7 +513,7 @@ goog.require('ngmaterial.core');
         runAnimation(element);
         delayDone(done);
       }
-    }
+    };
   }
 
   function MdFabSpeedDialScaleAnimation($timeout) {
@@ -556,7 +556,7 @@ goog.require('ngmaterial.core');
         runAnimation(element);
         delayDone(done);
       }
-    }
+    };
   }
 })();
 

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-11fd03f
+ * v1.1.1-master-f7d6d10
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -196,9 +196,8 @@ angular.module('material.core')
 function MdAutofocusDirective() {
   return {
     restrict: 'A',
-
     link: postLink
-  }
+  };
 }
 
 function postLink(scope, element, attrs) {
@@ -285,8 +284,9 @@ function ColorUtilFactory() {
     hexToRgba: hexToRgba,
     rgbToRgba: rgbToRgba,
     rgbaToRgb: rgbaToRgb
-  }
+  };
 }
+
 })();
 (function(){
 "use strict";
@@ -831,7 +831,7 @@ function mdMediaFactory($mdConstant, $rootScope, $window) {
     });
 
     return function unwatch() {
-      unwatchFns.forEach(function(fn) { fn(); })
+      unwatchFns.forEach(function(fn) { fn(); });
     };
   }
 
@@ -891,7 +891,7 @@ function MdPrefixer(initialAttributes, buildSelector) {
 
     return _buildList(attributes)
       .map(function(item) {
-        return '[' + item + ']'
+        return '[' + item + ']';
       })
       .join(',');
   }
@@ -942,6 +942,7 @@ function MdPrefixer(initialAttributes, buildSelector) {
   }
 
 }
+
 })();
 (function(){
 "use strict";
@@ -3475,14 +3476,14 @@ function InterimElementProvider() {
             autoHideTimer = $timeout(service.hide, options.hideDelay) ;
             cancelAutoHide = function() {
               $timeout.cancel(autoHideTimer);
-            }
+            };
           }
 
           // Cache for subsequent use
           options.cancelAutoHide = function() {
             cancelAutoHide();
             options.cancelAutoHide = undefined;
-          }
+          };
         }
 
         /**
@@ -3526,7 +3527,7 @@ function InterimElementProvider() {
               // Trigger callback *before* the remove operation starts
               announceRemoving(element, action);
 
-              if ( options.$destroy == true ) {
+              if ( options.$destroy ) {
 
                 // For $destroy, onRemove should be synchronous
                 resolve(element);
@@ -4388,10 +4389,10 @@ angular.module('material.core.meta', [])
         return {
           isMenuItem: element.hasClass('md-menu-item'),
           dimBackground: true
-        }
+        };
       }
-    };
-  };
+    }
+  }
 })();
 
 })();
@@ -4429,8 +4430,8 @@ angular.module('material.core.meta', [])
         dimBackground: false,
         fitRipple: true
       }, options));
-    };
-  };
+    }
+  }
 })();
 
 })();
@@ -4469,8 +4470,8 @@ angular.module('material.core.meta', [])
         outline: false,
         rippleSize: 'full'
       }, options));
-    };
-  };
+    }
+  }
 })();
 
 })();
@@ -4977,8 +4978,8 @@ function attrNoDirective () {
         outline: false,
         rippleSize: 'full'
       }, options));
-    };
-  };
+    }
+  }
 })();
 
 })();
@@ -5647,7 +5648,7 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
     return function () {
       removeChrome();
       removeWindows();
-    }
+    };
   };
 
   /**
@@ -6654,12 +6655,11 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
 (function(){
 "use strict";
 
-"use strict";
-
 if (angular.version.minor >= 4) {
   angular.module('material.core.animate', []);
 } else {
 (function() {
+  "use strict";
 
   var forEach = angular.forEach;
 
@@ -6674,7 +6674,7 @@ if (angular.version.minor >= 4) {
   var $$ForceReflowFactory = ['$document', function($document) {
     return function() {
       return $document[0].body.clientWidth + 1;
-    }
+    };
   }];
 
   var $$rAFMutexFactory = ['$$rAF', function($$rAF) {
@@ -6952,7 +6952,7 @@ if (angular.version.minor >= 4) {
               return runner;
             }
           }
-        }
+        };
       }
 
       function applyClasses(element, options) {
@@ -6968,7 +6968,7 @@ if (angular.version.minor >= 4) {
 
       function computeTimings(element) {
         var node = getDomNode(element);
-        var cs = $window.getComputedStyle(node)
+        var cs = $window.getComputedStyle(node);
         var tdr = parseMaxTime(cs[prop('transitionDuration')]);
         var adr = parseMaxTime(cs[prop('animationDuration')]);
         var tdy = parseMaxTime(cs[prop('transitionDelay')]);
@@ -9931,7 +9931,7 @@ function MdDividerDirective($mdTheming) {
           children.wrap('<div class="md-fab-action-item">');
         }
       }
-    }
+    };
   }
 
 })();
@@ -10451,7 +10451,7 @@ function MdDividerDirective($mdTheming) {
         runAnimation(element);
         delayDone(done);
       }
-    }
+    };
   }
 
   function MdFabSpeedDialScaleAnimation($timeout) {
@@ -10494,7 +10494,7 @@ function MdDividerDirective($mdTheming) {
         runAnimation(element);
         delayDone(done);
       }
-    }
+    };
   }
 })();
 
@@ -10696,7 +10696,7 @@ function MdDividerDirective($mdTheming) {
         runAnimation(element, className, done);
         done();
       }
-    }
+    };
   }
 })();
 
@@ -12428,7 +12428,7 @@ function ngMessagesAnimation($$AnimateRunner, $animateCss, $mdUtil) {
         done();
       }
     }
-  }
+  };
 }
 
 function ngMessageAnimation($$AnimateRunner, $animateCss, $mdUtil) {
@@ -12446,7 +12446,7 @@ function ngMessageAnimation($$AnimateRunner, $animateCss, $mdUtil) {
 
       animator.start().done(done);
     }
-  }
+  };
 }
 
 function showInputMessages(element, done) {
@@ -12504,7 +12504,7 @@ function hideMessage(element) {
   var styles = window.getComputedStyle(element[0]);
 
   // If we are already hidden, just return an empty animation
-  if (styles.opacity == 0) {
+  if (parseInt(styles.opacity) === 0) {
     return $animateCss(element, {});
   }
 
@@ -13413,7 +13413,7 @@ MdNavBarController.prototype._getTabs = function() {
   var linkArray = Array.prototype.slice.call(
       this._navBarEl.querySelectorAll('.md-nav-item'));
   return linkArray.map(function(el) {
-    return angular.element(el).controller('mdNavItem')
+    return angular.element(el).controller('mdNavItem');
   });
 };
 
@@ -13436,7 +13436,7 @@ MdNavBarController.prototype._getTabByName = function(name) {
  */
 MdNavBarController.prototype._getSelectedTab = function() {
   return this._findTab(function(tab) {
-    return tab.isSelected()
+    return tab.isSelected();
   });
 };
 
@@ -13446,7 +13446,7 @@ MdNavBarController.prototype._getSelectedTab = function() {
  */
 MdNavBarController.prototype.getFocusedTab = function() {
   return this._findTab(function(tab) {
-    return tab.hasFocus()
+    return tab.hasFocus();
   });
 };
 
@@ -27358,7 +27358,7 @@ function MdContactChips($mdTheming, $mdUtil) {
         // d.toLocaleString(); // == "10/7/1992, 11:00:00 PM"
         var localeTime = date.toLocaleTimeString();
         var formatDate = date;
-        if (date.getHours() == 0 &&
+        if (date.getHours() === 0 &&
             (localeTime.indexOf('11:') !== -1 || localeTime.indexOf('23:') !== -1)) {
           formatDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 1, 0, 0);
         }
@@ -27681,7 +27681,7 @@ function MdContactChips($mdTheming, $mdUtil) {
      * @return {boolean} Whether the date is a valid Date.
      */
     function isValidDate(date) {
-      return date != null && date.getTime && !isNaN(date.getTime());
+      return date && date.getTime && !isNaN(date.getTime());
     }
 
     /**
@@ -29923,7 +29923,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  *
  * ### Auto Focus
  * By default, when a menu opens, `md-menu` focuses the first button in the menu content.
- * 
+ *
  * But sometimes you would like to focus another specific menu item instead of the first.<br/>
  * This can be done by applying the `md-autofocus` directive on the given element.
  *
@@ -29941,7 +29941,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  * Sometimes you would like to be able to click on a menu item without having the menu
  * close. To do this, ngMaterial exposes the `md-prevent-menu-close` attribute which
  * can be added to a button inside a menu to stop the menu from automatically closing.
- * You can then close the menu programatically by injecting `$mdMenu` and calling 
+ * You can then close the menu programatically by injecting `$mdMenu` and calling
  * `$mdMenu.hide()`.
  *
  * <hljs lang="html">
@@ -30030,7 +30030,7 @@ function MenuDirective($mdUtil) {
 
   function link(scope, element, attr, ctrls) {
     var mdMenuCtrl = ctrls[0];
-    var isInMenuBar = ctrls[1] != undefined;
+    var isInMenuBar = !!ctrls[1];
     // Move everything into a md-menu-container and pass it to the controller
     var menuContainer = angular.element( '<div class="_md md-open-menu-container md-whiteframe-z2"></div>');
     var menuContents = element.children()[1];
@@ -30251,7 +30251,7 @@ function MenuProvider($$interimElementProvider) {
           $window.removeEventListener('resize', repositionMenu);
           $window.removeEventListener('orientationchange', repositionMenu);
 
-        }
+        };
       }
 
       /**
@@ -30360,7 +30360,7 @@ function MenuProvider($$interimElementProvider) {
               }
               break;
             }
-          } while (target = target.parentNode)
+          } while (target = target.parentNode);
 
           function close() {
             scope.$apply(function() {
@@ -31728,12 +31728,12 @@ function MdTab () {
       var label = firstChild(element, 'md-tab-label'),
           body  = firstChild(element, 'md-tab-body');
 
-      if (label.length == 0) {
+      if (label.length === 0) {
         label = angular.element('<md-tab-label></md-tab-label>');
         if (attr.label) label.text(attr.label);
         else label.append(element.contents());
 
-        if (body.length == 0) {
+        if (body.length === 0) {
           var contents = element.contents().detach();
           body         = angular.element('<md-tab-body></md-tab-body>');
           body.append(contents);
@@ -31844,7 +31844,7 @@ function MdTabScroll ($parse) {
         });
       };
     }
-  }
+  };
 }
 
 })();
@@ -32517,7 +32517,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   function adjustOffset (index) {
     var elements = getElements();
 
-    if (index == null) index = ctrl.focusIndex;
+    if (!angular.isNumber(index)) index = ctrl.focusIndex;
     if (!elements.tabs[ index ]) return;
     if (ctrl.shouldCenterTabs) return;
     var tab         = elements.tabs[ index ],
@@ -32808,7 +32808,7 @@ function MdTabs ($$mdSvgRegistry) {
       selectedIndex: '=?mdSelected'
     },
     template:         function (element, attr) {
-      attr[ "$mdTabsTemplate" ] = element.html();
+      attr.$mdTabsTemplate = element.html();
       return '' +
         '<md-tabs-wrapper> ' +
           '<md-tab-data></md-tab-data> ' +
@@ -33026,4 +33026,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-11fd03f"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-f7d6d10"}};
