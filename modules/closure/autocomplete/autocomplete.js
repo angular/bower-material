@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-f7d6d10
+ * v1.1.1-master-b114302
  */
 goog.provide('ngmaterial.components.autocomplete');
 goog.require('ngmaterial.components.icon');
@@ -26,8 +26,8 @@ MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$
     .module('material.components.autocomplete')
     .controller('MdAutocompleteCtrl', MdAutocompleteCtrl);
 
-var ITEM_HEIGHT   = 41,
-    MAX_HEIGHT    = 5.5 * ITEM_HEIGHT,
+var ITEM_HEIGHT   = 48,
+    MAX_ITEMS     = 5,
     MENU_PADDING  = 8,
     INPUT_PADDING = 2; // Padding provided by `md-input-container`
 
@@ -116,7 +116,12 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * @returns {*}
    */
   function positionDropdown () {
-    if (!elements) return $mdUtil.nextTick(positionDropdown, false, $scope);
+    if (!elements) {
+      return $mdUtil.nextTick(positionDropdown, false, $scope);
+    }
+
+    var dropdownHeight = ($scope.dropdownItems || MAX_ITEMS) * ITEM_HEIGHT;
+
     var hrect  = elements.wrap.getBoundingClientRect(),
         vrect  = elements.snap.getBoundingClientRect(),
         root   = elements.root.getBoundingClientRect(),
@@ -136,14 +141,14 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       minWidth: width + 'px',
       maxWidth: Math.max(hrect.right - root.left, root.right - hrect.left) - MENU_PADDING + 'px'
     };
-    if (top > bot && root.height - hrect.bottom - MENU_PADDING < MAX_HEIGHT) {
+    if (top > bot && root.height - hrect.bottom - MENU_PADDING < dropdownHeight) {
       styles.top       = 'auto';
       styles.bottom    = bot + 'px';
-      styles.maxHeight = Math.min(MAX_HEIGHT, hrect.top - root.top - MENU_PADDING) + 'px';
+      styles.maxHeight = Math.min(dropdownHeight, hrect.top - root.top - MENU_PADDING) + 'px';
     } else {
       styles.top       = (top - offset) + 'px';
       styles.bottom    = 'auto';
-      styles.maxHeight = Math.min(MAX_HEIGHT, root.bottom + $mdUtil.scrollTop() - hrect.bottom - MENU_PADDING) + 'px';
+      styles.maxHeight = Math.min(dropdownHeight, root.bottom + $mdUtil.scrollTop() - hrect.bottom - MENU_PADDING) + 'px';
     }
 
     elements.$.scrollContainer.css(styles);
@@ -1034,6 +1039,10 @@ MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
  *     will select on case-insensitive match
  * @param {string=} md-escape-options Override escape key logic. Default is `blur clear`.<br/>
  *     Options: `blur | clear`, `none`
+ * @param {string=} md-dropdown-items Specifies the maximum amount of items to be shown in
+ *     the dropdown.<br/><br/>
+ *     When the dropdown doesn't fit into the viewport, the dropdown will shrink
+ *     as less as possible.
  *
  * @usage
  * ### Basic Example
@@ -1117,7 +1126,8 @@ function MdAutocomplete ($$mdSvgRegistry) {
       autoselect:       '=?mdAutoselect',
       menuClass:        '@?mdMenuClass',
       inputId:          '@?mdInputId',
-      escapeOptions:    '@?mdEscapeOptions'
+      escapeOptions:    '@?mdEscapeOptions',
+      dropdownItems:    '=?mdDropdownItems'
     },
     compile: function(tElement, tAttrs) {
       var attributes = ['md-select-on-focus', 'md-no-asterisk', 'ng-trim'];
