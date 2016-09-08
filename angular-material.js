@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-151378d
+ * v1.1.1-master-399016d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -22649,7 +22649,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   function updateModelValidators() {
     if (!$scope.requireMatch || !inputModelCtrl) return;
 
-    inputModelCtrl.$setValidity('md-require-match', !!$scope.selectedItem);
+    inputModelCtrl.$setValidity('md-require-match', !!$scope.selectedItem || !$scope.searchText);
   }
 
   /**
@@ -32947,4 +32947,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-151378d"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-399016d"}};

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-151378d
+ * v1.1.1-master-399016d
  */
 goog.provide('ngmaterial.components.autocomplete');
 goog.require('ngmaterial.components.icon');
@@ -108,7 +108,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   function updateModelValidators() {
     if (!$scope.requireMatch || !inputModelCtrl) return;
 
-    inputModelCtrl.$setValidity('md-require-match', !!$scope.selectedItem);
+    inputModelCtrl.$setValidity('md-require-match', !!$scope.selectedItem || !$scope.searchText);
   }
 
   /**
