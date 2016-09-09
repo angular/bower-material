@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-0592dfa
+ * v1.1.1-master-fc7e9b3
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -591,7 +591,8 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
 
         function onDrag(ev) {
           if (!isDragging) return;
-          element.css('height', startHeight + (ev.pointer.y - dragStart) - $mdUtil.scrollTop() + 'px');
+
+          element.css('height', (startHeight + ev.pointer.distanceY) + 'px');
         }
 
         function onDragEnd(ev) {

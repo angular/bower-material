@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-0592dfa
+ * v1.1.1-master-fc7e9b3
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1189,8 +1189,11 @@ function MdDialogProvider($$interimElementProvider) {
         height: container.css('height')
       };
 
+      // If the body is fixed, determine the distance to the viewport in relative from the parent.
+      var parentTop = Math.abs(options.parent[0].getBoundingClientRect().top);
+
       container.css({
-        top: (isFixed ? $mdUtil.scrollTop(options.parent) : 0) + 'px',
+        top: (isFixed ? parentTop : 0) + 'px',
         height: height ? height + 'px' : '100%'
       });
 

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-0592dfa
+ * v1.1.1-master-fc7e9b3
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1083,18 +1083,12 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     },
 
     /**
-     * Calculate the positive scroll offset
-     * TODO: Check with pinch-zoom in IE/Chrome;
-     *       https://code.google.com/p/chromium/issues/detail?id=496285
+     * Determines the absolute position of the viewport.
+     * Useful when making client rectangles absolute.
+     * @returns {number}
      */
-    scrollTop: function(element) {
-      element = angular.element(element || $document[0].body);
-
-      var body = (element[0] == $document[0].body) ? $document[0].body : undefined;
-      var scrollTop = body ? body.scrollTop + body.parentElement.scrollTop : 0;
-
-      // Calculate the positive scroll offset
-      return scrollTop || Math.abs(element[0].getBoundingClientRect().top);
+    getViewportTop: function() {
+      return window.scrollY || window.pageYOffset || 0;
     },
 
     /**
@@ -1201,37 +1195,39 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
       // Converts the body to a position fixed block and translate it to the proper scroll position
       function disableBodyScroll() {
-        var htmlNode = body.parentNode;
-        var restoreHtmlStyle = htmlNode.style.cssText || '';
-        var restoreBodyStyle = body.style.cssText || '';
-        var scrollOffset = $mdUtil.scrollTop(body);
+        var documentElement = $document[0].documentElement;
+
+        var prevDocumentStyle = documentElement.style.cssText || '';
+        var prevBodyStyle = body.style.cssText || '';
+
+        var viewportTop = $mdUtil.getViewportTop();
         var clientWidth = body.clientWidth;
 
         if (body.scrollHeight > body.clientHeight + 1) {
-          applyStyles(body, {
+
+          angular.element(body).css({
             position: 'fixed',
             width: '100%',
-            top: -scrollOffset + 'px'
+            top: -viewportTop + 'px'
           });
 
-          htmlNode.style.overflowY = 'scroll';
+          documentElement.style.overflowY = 'scroll';
         }
 
-        if (body.clientWidth < clientWidth) applyStyles(body, {overflow: 'hidden'});
+        if (body.clientWidth < clientWidth) {
+          body.style.overflow = 'hidden';
+        }
 
         return function restoreScroll() {
-          body.style.cssText = restoreBodyStyle;
-          htmlNode.style.cssText = restoreHtmlStyle;
-          body.scrollTop = scrollOffset;
-          htmlNode.scrollTop = scrollOffset;
+          // Reset the inline style CSS to the previous.
+          body.style.cssText = prevBodyStyle;
+          documentElement.style.cssText = prevDocumentStyle;
+
+          // The body loses its scroll position while being fixed.
+          body.scrollTop = viewportTop;
         };
       }
 
-      function applyStyles(el, styles) {
-        for (var key in styles) {
-          el.style[key] = styles[key];
-        }
-      }
     },
     enableScrolling: function() {
       var method = this.disableScrollAround._enableScrolling;
@@ -9738,8 +9734,11 @@ function MdDialogProvider($$interimElementProvider) {
         height: container.css('height')
       };
 
+      // If the body is fixed, determine the distance to the viewport in relative from the parent.
+      var parentTop = Math.abs(options.parent[0].getBoundingClientRect().top);
+
       container.css({
-        top: (isFixed ? $mdUtil.scrollTop(options.parent) : 0) + 'px',
+        top: (isFixed ? parentTop : 0) + 'px',
         height: height ? height + 'px' : '100%'
       });
 
@@ -12069,7 +12068,8 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
 
         function onDrag(ev) {
           if (!isDragging) return;
-          element.css('height', startHeight + (ev.pointer.y - dragStart) - $mdUtil.scrollTop() + 'px');
+
+          element.css('height', (startHeight + ev.pointer.distanceY) + 'px');
         }
 
         function onDragEnd(ev) {
@@ -22756,9 +22756,11 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       styles.bottom    = bot + 'px';
       styles.maxHeight = Math.min(dropdownHeight, hrect.top - root.top - MENU_PADDING) + 'px';
     } else {
+      var bottomSpace = root.bottom - hrect.bottom - MENU_PADDING + $mdUtil.getViewportTop();
+
       styles.top       = (top - offset) + 'px';
       styles.bottom    = 'auto';
-      styles.maxHeight = Math.min(dropdownHeight, root.bottom + $mdUtil.scrollTop() - hrect.bottom - MENU_PADDING) + 'px';
+      styles.maxHeight = Math.min(dropdownHeight, bottomSpace) + 'px';
     }
 
     elements.$.scrollContainer.css(styles);
@@ -33036,4 +33038,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-0592dfa"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-fc7e9b3"}};
