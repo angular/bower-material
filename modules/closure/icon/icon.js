@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-989f81e
+ * v1.1.1-master-f861609
  */
 goog.provide('ngmaterial.components.icon');
 goog.require('ngmaterial.core');
@@ -56,7 +56,7 @@ angular
  * like `"social:cake"`.
  *
  * When using SVGs, both external SVGs (via URLs) or sets of SVGs [from icon sets] can be
- * easily loaded and used.When use font-icons, developers must following three (3) simple steps:
+ * easily loaded and used. When using font-icons, developers must follow three (3) simple steps:
  *
  * <ol>
  * <li>Load the font library. e.g.<br/>
