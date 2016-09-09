@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-1f14cc4
+ * v1.1.1-master-9936185
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1460,7 +1460,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
       if ( angular.isString(validateWith) ) {
         var tagName = validateWith.toUpperCase();
         validateWith = function(el) {
-          return el.nodeName === tagName;
+          return el.nodeName.toUpperCase() === tagName;
         };
       }
 
@@ -1726,18 +1726,18 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
       function scrollChunk() {
         var newPosition = calculateNewPosition();
-        
+
         element.scrollTop = newPosition;
-        
+
         if (scrollingDown ? newPosition < scrollEnd : newPosition > scrollEnd) {
           $$rAF(scrollChunk);
         }
       }
-      
+
       function calculateNewPosition() {
         var duration = 1000;
         var currentTime = $mdUtil.now() - startTime;
-        
+
         return ease(currentTime, scrollStart, scrollChange, duration);
       }
 
@@ -1747,7 +1747,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
         if (currentTime > duration) {
           return start + change;
         }
-        
+
         var ts = (currentTime /= duration) * currentTime;
         var tc = ts * currentTime;
 
@@ -33036,4 +33036,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-1f14cc4"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-9936185"}};
