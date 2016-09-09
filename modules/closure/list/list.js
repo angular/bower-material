@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-fc7e9b3
+ * v1.1.1-master-ad82012
  */
 goog.provide('ngmaterial.components.list');
 goog.require('ngmaterial.core');
@@ -127,7 +127,18 @@ function mdListDirective($mdTheming) {
  * - `md-menu` (Open)
  *
  * This means, when using a supported proxy item inside of `md-list-item`, the list item will
- * become clickable and executes the associated action of the proxy element on click.
+ * automatically become clickable and executes the associated action of the proxy element on click.
+ *
+ * It is possible to disable this behavior by applying the `md-no-proxy` class to the list item.
+ *
+ * <hljs lang="html">
+ *   <md-list-item class="md-no-proxy">
+ *     <span>No Proxy List</span>
+ *     <md-checkbox class="md-secondary"></md-checkbox>
+ *   </md-list-item>
+ * </hljs>
+ *
+ * Here are a few examples of proxy elements inside of a list item.
  *
  * <hljs lang="html">
  *   <md-list-item>
@@ -244,18 +255,21 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
 
       if (tAttrs.ngClick || tAttrs.ngDblclick ||  tAttrs.ngHref || tAttrs.href || tAttrs.uiSref || tAttrs.ngAttrUiSref) {
         wrapIn('button');
-      } else {
+      } else if (!tEl.hasClass('md-no-proxy')) {
+
         for (var i = 0, type; type = proxiedTypes[i]; ++i) {
           if (proxyElement = tEl[0].querySelector(type)) {
             hasProxiedElement = true;
             break;
           }
         }
+
         if (hasProxiedElement) {
           wrapIn('div');
-        } else if (!tEl[0].querySelector('md-button:not(.md-secondary):not(.md-exclude)')) {
+        } else {
           tEl.addClass('md-no-proxy');
         }
+
       }
 
       wrapSecondaryItems();
@@ -441,12 +455,13 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
             firstElement  = $element[0].firstElementChild,
             isButtonWrap  = $element.hasClass('_md-button-wrap'),
             clickChild    = isButtonWrap ? firstElement.firstElementChild : firstElement,
-            hasClick      = clickChild && hasClickEvent(clickChild);
+            hasClick      = clickChild && hasClickEvent(clickChild),
+            noProxies     = $element.hasClass('md-no-proxy');
 
         computeProxies();
         computeClickable();
 
-        if ($element.hasClass('md-proxy-focus') && proxies.length) {
+        if (proxies.length) {
           angular.forEach(proxies, function(proxy) {
             proxy = angular.element(proxy);
 
@@ -469,7 +484,8 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
 
 
         function computeProxies() {
-          if (firstElement && firstElement.children && !hasClick) {
+
+          if (firstElement && firstElement.children && !hasClick && !noProxies) {
 
             angular.forEach(proxiedTypes, function(type) {
 
