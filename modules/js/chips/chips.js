@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-a1e68d5
+ * v1.1.1-master-a3b3e7b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -401,6 +401,9 @@ function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $md
 
   /** @type {angular.$scope} */
   this.parent = $scope.$parent;
+
+  /** @type {$mdUtil} */
+  this.$mdUtil = $mdUtil;
 
   /** @type {$log} */
   this.$log = $log;
