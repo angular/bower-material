@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-08319e7
+ * v1.1.1-master-a1e68d5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13361,7 +13361,7 @@ function MdNavBarController($element, $scope, $timeout, $mdConstant) {
  * @private
  */
 MdNavBarController.prototype._initTabs = function() {
-  this._inkbar = angular.element(this._navBarEl.getElementsByTagName('md-nav-ink-bar')[0]);
+  this._inkbar = angular.element(this._navBarEl.querySelector('md-nav-ink-bar'));
 
   var self = this;
   this._$timeout(function() {
@@ -21289,7 +21289,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     $mdTheming(element);
 
     var parent        = $mdUtil.getParentWithPointerEvents(element),
-        content       = angular.element(element[0].getElementsByClassName('md-content')[0]),
+        content       = angular.element(element[0].querySelector('.md-content')),
         tooltipParent = angular.element(document.body),
         showTimeout   = null,
         debouncedOnResize = $$rAF.throttle(function () { updatePosition(); });
@@ -24824,7 +24824,7 @@ MdChipsCtrl.prototype.updateChipContents = function(chipIndex, chipContents){
  * @return {boolean}
  */
 MdChipsCtrl.prototype.isEditingChip = function() {
-  return !!this.$element[0].getElementsByClassName('_md-chip-editing').length;
+  return !!this.$element[0].querySelector('._md-chip-editing');
 };
 
 
@@ -24846,7 +24846,7 @@ MdChipsCtrl.prototype.isRemovable = function() {
 MdChipsCtrl.prototype.chipKeydown = function (event) {
   if (this.getChipBuffer()) return;
   if (this.isEditingChip()) return;
-  
+
   switch (event.keyCode) {
     case this.$mdConstant.KEY_CODE.BACKSPACE:
     case this.$mdConstant.KEY_CODE.DELETE:
@@ -33139,4 +33139,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-08319e7"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-a1e68d5"}};

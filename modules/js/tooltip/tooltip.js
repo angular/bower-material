@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-08319e7
+ * v1.1.1-master-a1e68d5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -78,7 +78,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     $mdTheming(element);
 
     var parent        = $mdUtil.getParentWithPointerEvents(element),
-        content       = angular.element(element[0].getElementsByClassName('md-content')[0]),
+        content       = angular.element(element[0].querySelector('.md-content')),
         tooltipParent = angular.element(document.body),
         showTimeout   = null,
         debouncedOnResize = $$rAF.throttle(function () { updatePosition(); });
