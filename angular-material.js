@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-07532a0
+ * v1.1.1-master-72d0685
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -10325,16 +10325,16 @@ function MdDividerDirective($mdTheming) {
    * <hljs lang="html">
    * <md-fab-speed-dial md-direction="up" class="md-fling">
    *   <md-fab-trigger>
-   *     <md-button aria-label="Add..."><md-icon icon="/img/icons/plus.svg"></md-icon></md-button>
+   *     <md-button aria-label="Add..."><md-icon md-svg-src="/img/icons/plus.svg"></md-icon></md-button>
    *   </md-fab-trigger>
    *
    *   <md-fab-actions>
    *     <md-button aria-label="Add User">
-   *       <md-icon icon="/img/icons/user.svg"></md-icon>
+   *       <md-icon md-svg-src="/img/icons/user.svg"></md-icon>
    *     </md-button>
    *
    *     <md-button aria-label="Add Group">
-   *       <md-icon icon="/img/icons/group.svg"></md-icon>
+   *       <md-icon md-svg-src="/img/icons/group.svg"></md-icon>
    *     </md-button>
    *   </md-fab-actions>
    * </md-fab-speed-dial>
@@ -10557,17 +10557,17 @@ function MdDividerDirective($mdTheming) {
    * <hljs lang="html">
    * <md-fab-toolbar md-direction='left'>
    *   <md-fab-trigger>
-   *     <md-button aria-label="Add..."><md-icon icon="/img/icons/plus.svg"></md-icon></md-button>
+   *     <md-button aria-label="Add..."><md-icon md-svg-src="/img/icons/plus.svg"></md-icon></md-button>
    *   </md-fab-trigger>
    *
    *   <md-toolbar>
    *    <md-fab-actions>
    *      <md-button aria-label="Add User">
-   *        <md-icon icon="/img/icons/user.svg"></md-icon>
+   *        <md-icon md-svg-src="/img/icons/user.svg"></md-icon>
    *      </md-button>
    *
    *      <md-button aria-label="Add Group">
-   *        <md-icon icon="/img/icons/group.svg"></md-icon>
+   *        <md-icon md-svg-src="/img/icons/group.svg"></md-icon>
    *      </md-button>
    *    </md-fab-actions>
    *   </md-toolbar>
@@ -21248,7 +21248,7 @@ angular
  *   <md-tooltip>
  *     Play Music
  *   </md-tooltip>
- *   <md-icon icon="img/icons/ic_play_arrow_24px.svg"></md-icon>
+ *   <md-icon md-svg-src="img/icons/ic_play_arrow_24px.svg"></md-icon>
  * </md-button>
  * </hljs>
  *
@@ -33140,4 +33140,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-07532a0"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-72d0685"}};

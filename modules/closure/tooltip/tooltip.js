@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-07532a0
+ * v1.1.1-master-72d0685
  */
 goog.provide('ngmaterial.components.tooltip');
 goog.require('ngmaterial.core');
@@ -33,7 +33,7 @@ angular
  *   <md-tooltip>
  *     Play Music
  *   </md-tooltip>
- *   <md-icon icon="img/icons/ic_play_arrow_24px.svg"></md-icon>
+ *   <md-icon md-svg-src="img/icons/ic_play_arrow_24px.svg"></md-icon>
  * </md-button>
  * </hljs>
  *
