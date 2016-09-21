@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-bbb9ec5
+ * v1.1.1-master-5cdceeb
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -18904,7 +18904,7 @@ function createDirective(name, targetValue) {
  */
 SidenavService.$inject = ["$mdComponentRegistry", "$mdUtil", "$q", "$log"];
 SidenavDirective.$inject = ["$mdMedia", "$mdUtil", "$mdConstant", "$mdTheming", "$animate", "$compile", "$parse", "$log", "$q", "$document", "$window"];
-SidenavController.$inject = ["$scope", "$element", "$attrs", "$mdComponentRegistry", "$q"];
+SidenavController.$inject = ["$scope", "$attrs", "$mdComponentRegistry", "$q", "$interpolate"];
 angular
   .module('material.components.sidenav', [
     'material.core',
@@ -19152,8 +19152,7 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming,
     },
     controller: '$mdSidenavController',
     compile: function(element) {
-      element.addClass('md-closed');
-      element.attr('tabIndex', '-1');
+      element.addClass('md-closed').attr('tabIndex', '-1');
       return postLink;
     }
   };
@@ -19398,9 +19397,8 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming,
  * @ngdoc controller
  * @name SidenavController
  * @module material.components.sidenav
- *
  */
-function SidenavController($scope, $element, $attrs, $mdComponentRegistry, $q) {
+function SidenavController($scope, $attrs, $mdComponentRegistry, $q, $interpolate) {
 
   var self = this;
 
@@ -19422,7 +19420,23 @@ function SidenavController($scope, $element, $attrs, $mdComponentRegistry, $q) {
   self.toggle = function() { return self.$toggleOpen( !$scope.isOpen );  };
   self.$toggleOpen = function(value) { return $q.when($scope.isOpen = value); };
 
-  self.destroy = $mdComponentRegistry.register(self, $attrs.mdComponentId);
+  // Evaluate the component id.
+  var rawId = $attrs.mdComponentId;
+  var hasDataBinding = rawId && rawId.indexOf($interpolate.startSymbol()) > -1;
+  var componentId = hasDataBinding ? $interpolate(rawId)($scope.$parent) : rawId;
+
+  // Register the component.
+  self.destroy = $mdComponentRegistry.register(self, componentId);
+
+  // Watch and update the component, if the id has changed.
+  if (hasDataBinding) {
+    $attrs.$observe('mdComponentId', function(id) {
+      if (id && id !== self.$$mdHandle) {
+        self.destroy(); // `destroy` only deregisters the old component id so we can add the new one.
+        self.destroy = $mdComponentRegistry.register(self, id);
+      }
+    });
+  }
 }
 
 })();
@@ -33457,4 +33471,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-bbb9ec5"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-5cdceeb"}};
