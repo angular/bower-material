@@ -1,7 +1,7 @@
 {
   "name": "angular-material-colors",
-  "version": "1.1.1-master-1f32ccb",
+  "version": "1.1.1-master-bbb9ec5",
   "dependencies": {
-    "angular-material-core": "1.1.1-master-1f32ccb"
+    "angular-material-core": "1.1.1-master-bbb9ec5"
   }
 }
