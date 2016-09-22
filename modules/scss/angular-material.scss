@@ -898,14 +898,14 @@ input {
     $value : #{$i * 5 + '%'};
 
     .#{$flexName}-#{$i * 5} {
-      flex: 1 1 #{$value};
+      flex: 1 1 100%;
       max-width: #{$value};
       max-height: 100%;
       box-sizing: border-box;
     }
 
     .layout-row > .#{$flexName}-#{$i * 5} {
-      flex: 1 1 #{$value};
+      flex: 1 1 100%;
       max-width: #{$value};
       max-height: 100%;
       box-sizing: border-box;
@@ -915,7 +915,7 @@ input {
     }
 
     .layout-column > .#{$flexName}-#{$i * 5} {
-      flex: 1 1 #{$value};
+      flex: 1 1 100%;
       max-width: 100%;
       max-height: #{$value};
       box-sizing: border-box;
@@ -932,7 +932,7 @@ input {
 	  }
 
     .layout#{$name}-row > .#{$flexName}-#{$i * 5} {
-      flex: 1 1 #{$value};
+      flex: 1 1 100%;
       max-width: #{$value};
       max-height: 100%;
       box-sizing: border-box;
@@ -942,7 +942,7 @@ input {
     }
 
     .layout#{$name}-column > .#{$flexName}-#{$i * 5} {
-      flex: 1 1 #{$value};
+      flex: 1 1 100%;
       max-width: 100%;
       max-height: #{$value};
       box-sizing: border-box;
@@ -954,8 +954,8 @@ input {
   }
 
   .layout#{$name}-row {
-    > .#{$flexName}-33   , > .#{$flexName}-33     {  flex: 1 1 33.33%;  max-width: 33.33%;  max-height: 100%; box-sizing: border-box; }
-    > .#{$flexName}-66   , > .#{$flexName}-66     {  flex: 1 1 66.66%;  max-width: 66.66%;  max-height: 100%; box-sizing: border-box; }
+    > .#{$flexName}-33   , > .#{$flexName}-33     {  flex: 1 1 100%;  max-width: 33.33%;  max-height: 100%; box-sizing: border-box; }
+    > .#{$flexName}-66   , > .#{$flexName}-66     {  flex: 1 1 100%;  max-width: 66.66%;  max-height: 100%; box-sizing: border-box; }
 
     // Bug workaround for http://crbug.com/546034 - flex issues on Chrome 48
     > .flex                                       { min-width: 0;   }
@@ -963,8 +963,8 @@ input {
   }
 
   .layout#{$name}-column {
-    > .#{$flexName}-33   , > .#{$flexName}-33     {  flex: 1 1 33.33%;  max-width: 100%;  max-height: 33.33%; box-sizing: border-box; }
-    > .#{$flexName}-66   , > .#{$flexName}-66     {  flex: 1 1 66.66%;  max-width: 100%;  max-height: 66.66%; box-sizing: border-box; }
+    > .#{$flexName}-33   , > .#{$flexName}-33     {  flex: 1 1 100%;  max-width: 100%;  max-height: 33.33%; box-sizing: border-box; }
+    > .#{$flexName}-66   , > .#{$flexName}-66     {  flex: 1 1 100%;  max-width: 100%;  max-height: 66.66%; box-sizing: border-box; }
 
     // Bug workaround for http://crbug.com/546034 - flex issues on Chrome 48
     > .flex                                       { min-height: 0;   }
@@ -3408,66 +3408,6 @@ md-grid-list {
 }
 
 
-md-icon {
-  margin: auto;
-  background-repeat: no-repeat no-repeat;
-  display: inline-block;
-  vertical-align: middle;
-  fill: currentColor;
-  height: $icon-size;
-  width: $icon-size;
-
-  // The icons should not shrink on smaller viewports.
-  min-height: $icon-size;
-  min-width: $icon-size;
-
-  svg {
-    pointer-events: none;
-    display: block;
-  }
-
-  &[md-font-icon] {
-    line-height: $icon-size;
-    width: auto;
-  }
-}
-
-//
-//@font-face {
-//  font-family:"material";
-//  src:url("/dist/material-font/material.eot");
-//  font-weight:normal;
-//  font-style:normal;
-//}
-//
-//@font-face {
-//  font-family:"material";
-//  src:url("/dist/material-font/material.eot");
-//  src:url("/dist/material-font/material.eot?#iefix") format("embedded-opentype"),
-//    url("/dist/material-font/material.woff") format("woff"),
-//    url("/dist/material-font/material.ttf") format("truetype"),
-//    url("/dist/material-font/material.svg?#material") format("svg");
-//  font-weight:normal;
-//  font-style:normal;
-//}
-//
-///* Bootstrap Overrides */
-//[class^="icon-"]:before,
-//[class*=" icon-"]:before {
-//  font-family:"material";
-//  display:inline-block;
-//  vertical-align:middle;
-//  line-height:1;
-//  font-weight:normal;
-//  font-style:normal;
-//  speak:none;
-//  text-decoration:inherit;
-//  text-transform:none;
-//  text-rendering:optimizeLegibility;
-//  -webkit-font-smoothing:antialiased;
-//  -moz-osx-font-smoothing:grayscale;
-//}
-
 $input-container-padding: 2px !default;
 
 $input-label-default-offset: 24px !default;
@@ -3865,6 +3805,66 @@ md-input-container {
     fill: #fff;
   }
 }
+
+md-icon {
+  margin: auto;
+  background-repeat: no-repeat no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+  fill: currentColor;
+  height: $icon-size;
+  width: $icon-size;
+
+  // The icons should not shrink on smaller viewports.
+  min-height: $icon-size;
+  min-width: $icon-size;
+
+  svg {
+    pointer-events: none;
+    display: block;
+  }
+
+  &[md-font-icon] {
+    line-height: $icon-size;
+    width: auto;
+  }
+}
+
+//
+//@font-face {
+//  font-family:"material";
+//  src:url("/dist/material-font/material.eot");
+//  font-weight:normal;
+//  font-style:normal;
+//}
+//
+//@font-face {
+//  font-family:"material";
+//  src:url("/dist/material-font/material.eot");
+//  src:url("/dist/material-font/material.eot?#iefix") format("embedded-opentype"),
+//    url("/dist/material-font/material.woff") format("woff"),
+//    url("/dist/material-font/material.ttf") format("truetype"),
+//    url("/dist/material-font/material.svg?#material") format("svg");
+//  font-weight:normal;
+//  font-style:normal;
+//}
+//
+///* Bootstrap Overrides */
+//[class^="icon-"]:before,
+//[class*=" icon-"]:before {
+//  font-family:"material";
+//  display:inline-block;
+//  vertical-align:middle;
+//  line-height:1;
+//  font-weight:normal;
+//  font-style:normal;
+//  speak:none;
+//  text-decoration:inherit;
+//  text-transform:none;
+//  text-rendering:optimizeLegibility;
+//  -webkit-font-smoothing:antialiased;
+//  -moz-osx-font-smoothing:grayscale;
+//}
 
 $dense-baseline-grid: $baseline-grid / 2 !default;
 
