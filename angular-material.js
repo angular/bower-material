@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-0ce8a57
+ * v1.1.1-master-d208ac5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -14795,6 +14795,7 @@ MdPanelService.prototype.create = function(config) {
 
   var panelRef = new MdPanelRef(this._config, this._$injector);
   this._trackedPanels[config.id] = panelRef;
+  this._config.scope.$on('$destroy', angular.bind(panelRef, panelRef.detach));
 
   return panelRef;
 };
@@ -33611,4 +33612,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-0ce8a57"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-d208ac5"}};
