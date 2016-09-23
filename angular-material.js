@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-d208ac5
+ * v1.1.1-master-b5c412c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -28807,6 +28807,18 @@ function MdContactChips($mdTheming, $mdUtil) {
 
     // Responds to external error state changes (e.g. ng-required based on another input).
     ngModelCtrl.$viewChangeListeners.unshift(angular.bind(this, this.updateErrorState));
+
+    // Forwards any events from the input to the root element. This is necessary to get `updateOn`
+    // working for events that don't bubble (e.g. 'blur') since Angular binds the handlers to
+    // the `<md-datepicker>`.
+    var updateOn = ngModelCtrl.$options && ngModelCtrl.$options.updateOn;
+
+    if (updateOn) {
+      this.ngInputElement.on(
+        updateOn,
+        angular.bind(this.$element, this.$element.triggerHandler, updateOn)
+      );
+    }
   };
 
   /**
@@ -33612,4 +33624,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-d208ac5"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-b5c412c"}};
