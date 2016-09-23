@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-b3133f0
+ * v1.1.1-master-0ce8a57
  */
 html, body {
   height: 100%;
@@ -1757,27 +1757,6 @@ md-datepicker[disabled] .md-datepicker-triangle-button {
   -webkit-transform: translateY(0);
           transform: translateY(0); }
 
-md-divider {
-  display: block;
-  border-top-width: 1px;
-  border-top-style: solid;
-  margin: 0; }
-  md-divider[md-inset] {
-    margin-left: 80px; }
-    [dir=rtl] md-divider[md-inset] {
-      margin-left: auto;
-      margin-right: 80px; }
-
-.layout-row > md-divider,
-.layout-xs-row > md-divider, .layout-gt-xs-row > md-divider,
-.layout-sm-row > md-divider, .layout-gt-sm-row > md-divider,
-.layout-md-row > md-divider, .layout-gt-md-row > md-divider,
-.layout-lg-row > md-divider, .layout-gt-lg-row > md-divider,
-.layout-xl-row > md-divider {
-  border-top-width: 0;
-  border-right-width: 1px;
-  border-right-style: solid; }
-
 .md-dialog-is-showing {
   max-height: 100%; }
 
@@ -1903,6 +1882,27 @@ md-dialog {
     min-height: 100%;
     min-width: 100%;
     border-radius: 0; } }
+
+md-divider {
+  display: block;
+  border-top-width: 1px;
+  border-top-style: solid;
+  margin: 0; }
+  md-divider[md-inset] {
+    margin-left: 80px; }
+    [dir=rtl] md-divider[md-inset] {
+      margin-left: auto;
+      margin-right: 80px; }
+
+.layout-row > md-divider,
+.layout-xs-row > md-divider, .layout-gt-xs-row > md-divider,
+.layout-sm-row > md-divider, .layout-gt-sm-row > md-divider,
+.layout-md-row > md-divider, .layout-gt-md-row > md-divider,
+.layout-lg-row > md-divider, .layout-gt-lg-row > md-divider,
+.layout-xl-row > md-divider {
+  border-top-width: 0;
+  border-right-width: 1px;
+  border-right-style: solid; }
 
 md-fab-speed-dial {
   position: relative;
