@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-df9b9cd
+ * v1.1.1-master-ebc8ace
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3415,7 +3415,7 @@ function InterimElementProvider() {
         }
 
         // Hide the latest showing interim element.
-        return closeElement(showingInterims.pop());
+        return closeElement(showingInterims[showingInterims.length - 1]);
 
         function closeElement(interim) {
 
@@ -33557,4 +33557,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-df9b9cd"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-ebc8ace"}};
