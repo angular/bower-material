@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-ebc8ace
+ * v1.1.1-master-9d434e3
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -89,7 +89,8 @@ function rAFDecorator($delegate) {
   return $delegate;
 }
 
-angular.module('material.core')
+
+MdAutofocusDirective.$inject = ["$parse"];angular.module('material.core')
   .directive('mdAutofocus', MdAutofocusDirective)
 
   // Support the deprecated md-auto-focus and md-sidenav-focus as well
@@ -181,20 +182,42 @@ angular.module('material.core')
  * </div>
  * </hljs>
  **/
-function MdAutofocusDirective() {
+function MdAutofocusDirective($parse) {
   return {
     restrict: 'A',
-    link: postLink
+    link: {
+      pre: preLink
+    }
   };
-}
 
-function postLink(scope, element, attrs) {
-  var attr = attrs.mdAutoFocus || attrs.mdAutofocus || attrs.mdSidenavFocus;
+  function preLink(scope, element, attr) {
+    var attrExp = attr.mdAutoFocus || attr.mdAutofocus || attr.mdSidenavFocus;
 
-  // Setup a watcher on the proper attribute to update a class we can check for in $mdUtil
-  scope.$watch(attr, function(canAutofocus) {
-    element.toggleClass('md-autofocus', canAutofocus);
-  });
+    // Initially update the expression by manually parsing the expression as per $watch source.
+    updateExpression($parse(attrExp)(scope));
+
+    // Only watch the expression if it is not empty.
+    if (attrExp) {
+      scope.$watch(attrExp, updateExpression);
+    }
+
+    /**
+     * Updates the autofocus class which is used to determine whether the attribute
+     * expression evaluates to true or false.
+     * @param {string|boolean} value Attribute Value
+     */
+    function updateExpression(value) {
+
+      // Rather than passing undefined to the jqLite toggle class function we explicitly set the
+      // value to true. Otherwise the class will be just toggled instead of being forced.
+      if (angular.isUndefined(value)) {
+        value = true;
+      }
+
+      element.toggleClass('md-autofocus', !!value);
+    }
+  }
+
 }
 
 /**
