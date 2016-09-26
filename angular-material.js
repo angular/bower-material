@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-a73ab43
+ * v1.1.1-master-62df3c8
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1073,25 +1073,6 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     now: window.performance ?
       angular.bind(window.performance, window.performance.now) : Date.now || function() {
       return new Date().getTime();
-    },
-
-    /**
-     * Cross-version compatibility method to retrieve an option of a ngModel controller,
-     * which supports the breaking changes in the AngularJS snapshot (SHA 87a2ff76af5d0a9268d8eb84db5755077d27c84c).
-     * @param {!angular.ngModelCtrl} ngModelCtrl
-     * @param {!string} optionName
-     * @returns {Object|undefined}
-     */
-    getModelOption: function (ngModelCtrl, optionName) {
-      if (!ngModelCtrl.$options) {
-        return;
-      }
-
-      var $options = ngModelCtrl.$options;
-
-      // The newer versions of Angular introduced a `getOption function and made the option values no longer
-      // visible on the $options object.
-      return $options.getOption ? $options.getOption(optionName) : $options[optionName]
     },
 
     /**
@@ -16473,15 +16454,11 @@ MdPanelPosition.prototype.getTransform = function() {
 MdPanelPosition.prototype._isOnscreen = function(panelEl) {
   // this works because we always use fixed positioning for the panel,
   // which is relative to the viewport.
+  // TODO(gmoothart): take into account _translateX and _translateY to the
+  // extent feasible.
+
   var left = parseInt(this.getLeft());
   var top = parseInt(this.getTop());
-
-  if (this._translateX.length || this._translateY.length) {
-    var offsets = getComputedTranslations(panelEl);
-    left += offsets.x;
-    top += offsets.y;
-  }
-
   var right = left + panelEl[0].offsetWidth;
   var bottom = top + panelEl[0].offsetHeight;
 
@@ -16987,33 +16964,6 @@ function getElement(el) {
   var queryResult = angular.isString(el) ?
       document.querySelector(el) : el;
   return angular.element(queryResult);
-}
-
-/**
- * Gets the computed values for an element's translateX and translateY in px.
- * @param {!angular.JQLite|!Element} el
- * @return {{x: number, y: number}}
- */
-function getComputedTranslations(el) {
-  // The transform being returned by `getComputedStyle` is in the format:
-  // `matrix(a, b, c, d, translateX, translateY)` if defined and `none`
-  // if the element doesn't have a transform.
-  var transform = getComputedStyle(el[0] || el).transform;
-  var openIndex = transform.indexOf('(');
-  var closeIndex = transform.lastIndexOf(')');
-  var output = { x: 0, y: 0 };
-
-  if (openIndex > -1 && closeIndex > -1) {
-    var parsedValues = transform
-      .substring(openIndex + 1, closeIndex)
-      .split(', ')
-      .slice(-2);
-
-    output.x = parseInt(parsedValues[0]);
-    output.y = parseInt(parsedValues[1]);
-  }
-
-  return output;
 }
 
 })();
@@ -18353,11 +18303,9 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
 
       // Allow users to provide `ng-model="foo" ng-model-options="{trackBy: 'foo.id'}"` so
       // that we can properly compare objects set on the model to the available options
-      var trackByOption = $mdUtil.getModelOption(ngModel, 'trackBy');
-
-      if (trackByOption) {
+      if (ngModel.$options && ngModel.$options.trackBy) {
         var trackByLocals = {};
-        var trackByParsed = $parse(trackByOption);
+        var trackByParsed = $parse(ngModel.$options.trackBy);
         self.hashGetter = function(value, valueScope) {
           trackByLocals.$value = value;
           return trackByParsed(valueScope || $scope, trackByLocals);
@@ -18473,7 +18421,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
           values.push(self.selected[hashKey]);
         }
       }
-      var usingTrackBy = $mdUtil.getModelOption(self.ngModel, 'trackBy');
+      var usingTrackBy = self.ngModel.$options && self.ngModel.$options.trackBy;
 
       var newVal = self.isMultiple ? values : values[0];
       var prevVal = self.ngModel.$modelValue;
@@ -29130,7 +29078,7 @@ function MdContactChips($mdTheming, $mdUtil) {
     // Forwards any events from the input to the root element. This is necessary to get `updateOn`
     // working for events that don't bubble (e.g. 'blur') since Angular binds the handlers to
     // the `<md-datepicker>`.
-    var updateOn = self.$mdUtil.getModelOption(ngModelCtrl, 'updateOn');
+    var updateOn = ngModelCtrl.$options && ngModelCtrl.$options.updateOn;
 
     if (updateOn) {
       this.ngInputElement.on(
@@ -33943,4 +33891,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-a73ab43"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-62df3c8"}};

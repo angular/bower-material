@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-a73ab43
+ * v1.1.1-master-62df3c8
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2511,7 +2511,7 @@ angular.module('material.components.datepicker', [
     // Forwards any events from the input to the root element. This is necessary to get `updateOn`
     // working for events that don't bubble (e.g. 'blur') since Angular binds the handlers to
     // the `<md-datepicker>`.
-    var updateOn = self.$mdUtil.getModelOption(ngModelCtrl, 'updateOn');
+    var updateOn = ngModelCtrl.$options && ngModelCtrl.$options.updateOn;
 
     if (updateOn) {
       this.ngInputElement.on(

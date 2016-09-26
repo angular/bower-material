@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-a73ab43
+ * v1.1.1-master-62df3c8
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -748,11 +748,9 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
 
       // Allow users to provide `ng-model="foo" ng-model-options="{trackBy: 'foo.id'}"` so
       // that we can properly compare objects set on the model to the available options
-      var trackByOption = $mdUtil.getModelOption(ngModel, 'trackBy');
-
-      if (trackByOption) {
+      if (ngModel.$options && ngModel.$options.trackBy) {
         var trackByLocals = {};
-        var trackByParsed = $parse(trackByOption);
+        var trackByParsed = $parse(ngModel.$options.trackBy);
         self.hashGetter = function(value, valueScope) {
           trackByLocals.$value = value;
           return trackByParsed(valueScope || $scope, trackByLocals);
@@ -868,7 +866,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
           values.push(self.selected[hashKey]);
         }
       }
-      var usingTrackBy = $mdUtil.getModelOption(self.ngModel, 'trackBy');
+      var usingTrackBy = self.ngModel.$options && self.ngModel.$options.trackBy;
 
       var newVal = self.isMultiple ? values : values[0];
       var prevVal = self.ngModel.$modelValue;
