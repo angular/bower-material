@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-35b7033
+ * v1.1.1-master-3d73e2d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -9075,6 +9075,9 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  *
  * ### Pre-Rendered Dialogs
  * By using the `contentElement` option, it is possible to use an already existing element in the DOM.
+ *
+ * > Pre-rendered dialogs will be not linked to any scope and will not instantiate any new controller.<br/>
+ * > You can manually link the elements to a scope or instantiate a controller from the template (`ng-controller`)
  *
  * <hljs lang="js">
  *   $scope.showPrerenderedDialog = function() {
@@ -33624,4 +33627,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-35b7033"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-3d73e2d"}};
