@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-bee04f3
+ * v1.1.1-master-24ac328
  */
 goog.provide('ngmaterial.core');
 
@@ -1037,9 +1037,28 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
   var $mdUtil = {
     dom: {},
-    now: window.performance ?
+    now: window.performance && window.performance.now ?
       angular.bind(window.performance, window.performance.now) : Date.now || function() {
       return new Date().getTime();
+    },
+
+    /**
+     * Cross-version compatibility method to retrieve an option of a ngModel controller,
+     * which supports the breaking changes in the AngularJS snapshot (SHA 87a2ff76af5d0a9268d8eb84db5755077d27c84c).
+     * @param {!angular.ngModelCtrl} ngModelCtrl
+     * @param {!string} optionName
+     * @returns {Object|undefined}
+     */
+    getModelOption: function (ngModelCtrl, optionName) {
+      if (!ngModelCtrl.$options) {
+        return;
+      }
+
+      var $options = ngModelCtrl.$options;
+
+      // The newer versions of Angular introduced a `getOption function and made the option values no longer
+      // visible on the $options object.
+      return $options.getOption ? $options.getOption(optionName) : $options[optionName]
     },
 
     /**

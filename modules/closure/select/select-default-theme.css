@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-bee04f3
+ * v1.1.1-master-24ac328
  */
 md-input-container md-select.md-THEME_NAME-theme .md-select-value span:first-child:after {
   color: '{{warn-A700}}'; }
