@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-26340e3
+ * v1.1.1-master-a445b76
  */
 goog.provide('ngmaterial.components.card');
 goog.require('ngmaterial.core');
@@ -55,8 +55,8 @@ angular.module('material.components.card', [
  *    - `md-media-sm` - Class for small image
  *    - `md-media-md` - Class for medium image
  *    - `md-media-lg` - Class for large image
+ *    - `md-media-xl` - Class for extra large image
  * * `<md-card-content>` - Card content
- *  - `md-media-xl` - Class for extra large image
  * * `<md-card-actions>` - Card actions
  *  - `<md-card-icon-actions>` - Icon actions
  *
