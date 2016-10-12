@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-d553919
+ * v1.1.1-master-24370e7
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -15,7 +15,7 @@
  * A Sidenav QP component.
  */
 SidenavService.$inject = ["$mdComponentRegistry", "$mdUtil", "$q", "$log"];
-SidenavDirective.$inject = ["$mdMedia", "$mdUtil", "$mdConstant", "$mdTheming", "$animate", "$compile", "$parse", "$log", "$q", "$document", "$window"];
+SidenavDirective.$inject = ["$mdMedia", "$mdUtil", "$mdConstant", "$mdTheming", "$mdInteraction", "$animate", "$compile", "$parse", "$log", "$q", "$document", "$window"];
 SidenavController.$inject = ["$scope", "$attrs", "$mdComponentRegistry", "$q", "$interpolate"];
 angular
   .module('material.components.sidenav', [
@@ -255,8 +255,8 @@ function SidenavFocusDirective() {
  *   - `<md-sidenav md-is-locked-open="$mdMedia('min-width: 1000px')"></md-sidenav>`
  *   - `<md-sidenav md-is-locked-open="$mdMedia('sm')"></md-sidenav>` (locks open on small screens)
  */
-function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming,
-  $animate, $compile, $parse, $log, $q, $document, $window) {
+function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInteraction, $animate, $compile,
+                          $parse, $log, $q, $document, $window) {
   return {
     restrict: 'E',
     scope: {
@@ -276,6 +276,7 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming,
     var lastParentOverFlow;
     var backdrop;
     var disableScrollTarget = null;
+    var triggeringInteractionType;
     var triggeringElement = null;
     var previousContainerStyles;
     var promise = $q.when(true);
@@ -367,6 +368,7 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming,
       if ( isOpen ) {
         // Capture upon opening..
         triggeringElement = $document[0].activeElement;
+        triggeringInteractionType = $mdInteraction.getLastInteractionType();
       }
 
       disableParentScroll(isOpen);
@@ -466,9 +468,9 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming,
             // When the current `updateIsOpen()` animation finishes
             promise.then(function(result) {
 
-              if ( !scope.isOpen ) {
+              if ( !scope.isOpen && triggeringElement && triggeringInteractionType === 'keyboard') {
                 // reset focus to originating element (if available) upon close
-                triggeringElement && triggeringElement.focus();
+                triggeringElement.focus();
                 triggeringElement = null;
               }
 
