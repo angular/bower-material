@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-e0463c0
+ * v1.1.1-master-7706162
  */
 goog.provide('ngmaterial.components.panel');
 goog.require('ngmaterial.components.backdrop');
@@ -2097,6 +2097,9 @@ function MdPanelPosition($injector) {
   /** @private {boolean} */
   this._isRTL = $injector.get('$mdUtil').bidi() === 'rtl';
 
+  /** @private @const {!angular.$mdConstant} */
+  this._$mdConstant = $injector.get('$mdConstant');
+
   /** @private {boolean} */
   this._absolute = false;
 
@@ -2485,7 +2488,8 @@ MdPanelPosition.prototype._isOnscreen = function(panelEl) {
   var top = parseInt(this.getTop());
 
   if (this._translateX.length || this._translateY.length) {
-    var offsets = getComputedTranslations(panelEl);
+    var prefixedTransform = this._$mdConstant.CSS.TRANSFORM;
+    var offsets = getComputedTranslations(panelEl, prefixedTransform);
     left += offsets.x;
     top += offsets.y;
   }
@@ -3000,13 +3004,14 @@ function getElement(el) {
 /**
  * Gets the computed values for an element's translateX and translateY in px.
  * @param {!angular.JQLite|!Element} el
+ * @param {string} property
  * @return {{x: number, y: number}}
  */
-function getComputedTranslations(el) {
+function getComputedTranslations(el, property) {
   // The transform being returned by `getComputedStyle` is in the format:
   // `matrix(a, b, c, d, translateX, translateY)` if defined and `none`
   // if the element doesn't have a transform.
-  var transform = getComputedStyle(el[0] || el).transform;
+  var transform = getComputedStyle(el[0] || el)[property];
   var openIndex = transform.indexOf('(');
   var closeIndex = transform.lastIndexOf(')');
   var output = { x: 0, y: 0 };
