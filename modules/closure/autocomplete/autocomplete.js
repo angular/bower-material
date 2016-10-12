@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-3387109
+ * v1.1.1-master-14ab34c
  */
 goog.provide('ngmaterial.components.autocomplete');
 goog.require('ngmaterial.components.icon');
@@ -22,7 +22,7 @@ angular.module('material.components.autocomplete', [
 ]);
 
 
-MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$mdTheming", "$window", "$animate", "$rootElement", "$attrs", "$q", "$log"];angular
+MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$mdTheming", "$window", "$animate", "$rootElement", "$attrs", "$q", "$log", "$mdLiveAnnouncer"];angular
     .module('material.components.autocomplete')
     .controller('MdAutocompleteCtrl', MdAutocompleteCtrl);
 
@@ -32,7 +32,7 @@ var ITEM_HEIGHT   = 48,
     INPUT_PADDING = 2; // Padding provided by `md-input-container`
 
 function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming, $window,
-                             $animate, $rootElement, $attrs, $q, $log) {
+                             $animate, $rootElement, $attrs, $q, $log, $mdLiveAnnouncer) {
 
   // Internal Variables.
   var ctrl                 = this,
@@ -43,7 +43,6 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       noBlur               = false,
       selectedItemWatchers = [],
       hasFocus             = false,
-      lastCount            = 0,
       fetchesInProgress    = 0,
       enableWrapScroll     = null,
       inputModelCtrl       = null;
@@ -59,7 +58,6 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   ctrl.loading    = false;
   ctrl.hidden     = true;
   ctrl.index      = null;
-  ctrl.messages   = [];
   ctrl.id         = $mdUtil.nextUid();
   ctrl.isDisabled = null;
   ctrl.isRequired = null;
@@ -81,6 +79,15 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   ctrl.notFoundVisible               = notFoundVisible;
   ctrl.loadingIsVisible              = loadingIsVisible;
   ctrl.positionDropdown              = positionDropdown;
+
+  /**
+   * Report types to be used for the $mdLiveAnnouncer
+   * @enum {number} Unique flag id.
+   */
+  var ReportType = {
+    Count: 1,
+    Selected: 2
+  };
 
   return init();
 
@@ -292,6 +299,10 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     if (!hidden && oldHidden) {
       positionDropdown();
 
+      // Report in polite mode, because the screenreader should finish the default description of
+      // the input. element.
+      reportMessages(true, ReportType.Count | ReportType.Selected);
+
       if (elements) {
         $mdUtil.disableScrollAround(elements.ul);
         enableWrapScroll = disableElementScrollEvents(angular.element(elements.wrap));
@@ -438,14 +449,17 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       if (searchText !== val) {
         $scope.selectedItem = null;
 
+
         // trigger change event if available
         if (searchText !== previousSearchText) announceTextChange();
 
         // cancel results if search text is not long enough
         if (!isMinLengthMet()) {
           ctrl.matches = [];
+
           setLoading(false);
-          updateMessages();
+          reportMessages(false, ReportType.Count);
+
         } else {
           handleQuery();
         }
@@ -505,7 +519,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
         event.preventDefault();
         ctrl.index   = Math.min(ctrl.index + 1, ctrl.matches.length - 1);
         updateScroll();
-        updateMessages();
+        reportMessages(false, ReportType.Selected);
         break;
       case $mdConstant.KEY_CODE.UP_ARROW:
         if (ctrl.loading) return;
@@ -513,7 +527,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
         event.preventDefault();
         ctrl.index   = ctrl.index < 0 ? ctrl.matches.length - 1 : Math.max(0, ctrl.index - 1);
         updateScroll();
-        updateMessages();
+        reportMessages(false, ReportType.Selected);
         break;
       case $mdConstant.KEY_CODE.TAB:
         // If we hit tab, assume that we've left the list so it will close
@@ -830,13 +844,29 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     }
   }
 
+
   /**
-   * Updates the ARIA messages
+   * Reports given message types to supported screenreaders.
+   * @param {boolean} isPolite Whether the announcement should be polite.
+   * @param {!number} types Message flags to be reported to the screenreader.
    */
-  function updateMessages () {
-    getCurrentDisplayValue().then(function (msg) {
-      ctrl.messages = [ getCountMessage(), msg ];
+  function reportMessages(isPolite, types) {
+
+    var politeness = isPolite ? 'polite' : 'assertive';
+    var messages = [];
+
+    if (types & ReportType.Selected && ctrl.index !== -1) {
+      messages.push(getCurrentDisplayValue());
+    }
+
+    if (types & ReportType.Count) {
+      messages.push($q.resolve(getCountMessage()));
+    }
+
+    $q.all(messages).then(function(data) {
+      $mdLiveAnnouncer.announce(data.join(' '), politeness);
     });
+
   }
 
   /**
@@ -844,8 +874,6 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * @returns {*}
    */
   function getCountMessage () {
-    if (lastCount === ctrl.matches.length) return '';
-    lastCount = ctrl.matches.length;
     switch (ctrl.matches.length) {
       case 0:
         return 'There are no matches available.';
@@ -920,8 +948,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
     if ($scope.selectOnMatch) selectItemOnMatch();
 
-    updateMessages();
     positionDropdown();
+    reportMessages(true, ReportType.Count);
   }
 
   /**
@@ -1223,13 +1251,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
                   </li>' + noItemsTemplate + '\
             </ul>\
           </md-virtual-repeat-container>\
-        </md-autocomplete-wrap>\
-        <aria-status\
-            class="md-visually-hidden"\
-            role="status"\
-            aria-live="assertive">\
-          <p ng-repeat="message in $mdAutocompleteCtrl.messages track by $index" ng-if="message">{{message}}</p>\
-        </aria-status>';
+        </md-autocomplete-wrap>';
 
       function getItemTemplate() {
         var templateTag = element.find('md-item-template').detach(),
