@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-ff86bba
+ * v1.1.1-master-da6baac
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -543,17 +543,17 @@ MenuItemController.prototype.handleClick = function(e) {
 };
 
 
-MenuItemDirective.$inject = ["$mdUtil", "$$mdSvgRegistry"];
+MenuItemDirective.$inject = ["$mdUtil", "$mdConstant", "$$mdSvgRegistry"];
 angular
   .module('material.components.menuBar')
   .directive('mdMenuItem', MenuItemDirective);
 
  /* ngInject */
-function MenuItemDirective($mdUtil, $$mdSvgRegistry) {
+function MenuItemDirective($mdUtil, $mdConstant, $$mdSvgRegistry) {
   return {
     controller: 'MenuItemController',
     require: ['mdMenuItem', '?ngModel'],
-    priority: 210, // ensure that our post link runs after ngAria
+    priority: $mdConstant.BEFORE_NG_ARIA,
     compile: function(templateEl, templateAttrs) {
       var type = templateAttrs.type;
       var inMenuBarClass = 'md-in-menu-bar';
