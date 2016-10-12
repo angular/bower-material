@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-24370e7
+ * v1.1.1-master-3387109
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3357,7 +3357,7 @@ function InterimElementProvider() {
      * all interim elements will come with the 'build' preset
      */
     provider.addPreset('build', {
-      methods: ['controller', 'controllerAs', 'resolve',
+      methods: ['controller', 'controllerAs', 'resolve', 'multiple',
         'template', 'templateUrl', 'themable', 'transformTemplate', 'parent', 'contentElement']
     });
 
@@ -34151,4 +34151,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-24370e7"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-3387109"}};
