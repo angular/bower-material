@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-14ab34c
+ * v1.1.1-master-ff86bba
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -11,7 +11,7 @@
  * @ngdoc module
  * @name material.components.tooltip
  */
-MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdUtil", "$mdTheming", "$animate", "$interpolate", "$mdConstant", "$$mdTooltipRegistry"];
+MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdUtil", "$mdTheming", "$animate", "$interpolate", "$$mdTooltipRegistry"];
 angular
   .module('material.components.tooltip', [ 'material.core' ])
   .directive('mdTooltip', MdTooltipDirective)
@@ -45,7 +45,7 @@ angular
  * @param {string=} md-direction Which direction would you like the tooltip to go?  Supports left, right, top, and bottom.  Defaults to bottom.
  */
 function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdTheming, $animate,
-  $interpolate, $mdConstant, $$mdTooltipRegistry) {
+  $interpolate, $$mdTooltipRegistry) {
 
   var ENTER_EVENTS = 'focus touchstart mouseenter';
   var LEAVE_EVENTS = 'blur touchcancel mouseleave';
@@ -56,7 +56,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
   return {
     restrict: 'E',
     transclude: true,
-    priority: $mdConstant.BEFORE_NG_ARIA,
+    priority: 210, // Before ngAria
     template: '<div class="md-content _md" ng-transclude></div>',
     scope: {
       delay: '=?mdDelay',

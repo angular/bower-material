@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-14ab34c
+ * v1.1.1-master-ff86bba
  */
 goog.provide('ngmaterial.components.switch');
 goog.require('ngmaterial.components.checkbox');
@@ -61,7 +61,7 @@ function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdG
 
   return {
     restrict: 'E',
-    priority: $mdConstant.BEFORE_NG_ARIA,
+    priority: 210, // Run before ngAria
     transclude: true,
     template:
       '<div class="md-container">' +

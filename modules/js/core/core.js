@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-14ab34c
+ * v1.1.1-master-ff86bba
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -356,7 +356,7 @@ function MdConstantFactory($sniffer, $window, $document) {
     isNumPadKey : function (e){ return (3 === e.location && e.keyCode >= 97 && e.keyCode <= 105); },
     isNavigationKey : function(e) {
       var kc = self.KEY_CODE, NAVIGATION_KEYS =  [kc.SPACE, kc.ENTER, kc.UP_ARROW, kc.DOWN_ARROW];
-      return (NAVIGATION_KEYS.indexOf(e.keyCode) != -1);
+      return (NAVIGATION_KEYS.indexOf(e.keyCode) != -1);    
     },
 
     /**
@@ -366,11 +366,6 @@ function MdConstantFactory($sniffer, $window, $document) {
      * goes over the max, meaning that we'd have to binary search for the value.
      */
     ELEMENT_MAX_PIXELS: 1533917,
-
-    /**
-     * Priority for a directive that should run before the directives from ngAria.
-     */
-    BEFORE_NG_ARIA: 210,
 
     /**
      * Common Keyboard actions and their associated keycode.

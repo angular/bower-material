@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-14ab34c
+ * v1.1.1-master-ff86bba
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -376,7 +376,7 @@ function MdConstantFactory($sniffer, $window, $document) {
     isNumPadKey : function (e){ return (3 === e.location && e.keyCode >= 97 && e.keyCode <= 105); },
     isNavigationKey : function(e) {
       var kc = self.KEY_CODE, NAVIGATION_KEYS =  [kc.SPACE, kc.ENTER, kc.UP_ARROW, kc.DOWN_ARROW];
-      return (NAVIGATION_KEYS.indexOf(e.keyCode) != -1);
+      return (NAVIGATION_KEYS.indexOf(e.keyCode) != -1);    
     },
 
     /**
@@ -386,11 +386,6 @@ function MdConstantFactory($sniffer, $window, $document) {
      * goes over the max, meaning that we'd have to binary search for the value.
      */
     ELEMENT_MAX_PIXELS: 1533917,
-
-    /**
-     * Priority for a directive that should run before the directives from ngAria.
-     */
-    BEFORE_NG_ARIA: 210,
 
     /**
      * Common Keyboard actions and their associated keycode.
@@ -8471,7 +8466,7 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
     restrict: 'E',
     transclude: true,
     require: '?ngModel',
-    priority: $mdConstant.BEFORE_NG_ARIA,
+    priority: 210, // Run before ngAria
     template:
       '<div class="md-container" md-ink-ripple md-ink-ripple-checkbox>' +
         '<div class="md-icon"></div>' +
@@ -21377,7 +21372,7 @@ function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdG
 
   return {
     restrict: 'E',
-    priority: $mdConstant.BEFORE_NG_ARIA,
+    priority: 210, // Run before ngAria
     transclude: true,
     template:
       '<div class="md-container">' +
@@ -22256,7 +22251,7 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
  * @ngdoc module
  * @name material.components.tooltip
  */
-MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdUtil", "$mdTheming", "$animate", "$interpolate", "$mdConstant", "$$mdTooltipRegistry"];
+MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdUtil", "$mdTheming", "$animate", "$interpolate", "$$mdTooltipRegistry"];
 angular
   .module('material.components.tooltip', [ 'material.core' ])
   .directive('mdTooltip', MdTooltipDirective)
@@ -22290,7 +22285,7 @@ angular
  * @param {string=} md-direction Which direction would you like the tooltip to go?  Supports left, right, top, and bottom.  Defaults to bottom.
  */
 function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdTheming, $animate,
-  $interpolate, $mdConstant, $$mdTooltipRegistry) {
+  $interpolate, $$mdTooltipRegistry) {
 
   var ENTER_EVENTS = 'focus touchstart mouseenter';
   var LEAVE_EVENTS = 'blur touchcancel mouseleave';
@@ -22301,7 +22296,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
   return {
     restrict: 'E',
     transclude: true,
-    priority: $mdConstant.BEFORE_NG_ARIA,
+    priority: 210, // Before ngAria
     template: '<div class="md-content _md" ng-transclude></div>',
     scope: {
       delay: '=?mdDelay',
@@ -32381,17 +32376,17 @@ MenuItemController.prototype.handleClick = function(e) {
 "use strict";
 
 
-MenuItemDirective.$inject = ["$mdUtil", "$mdConstant", "$$mdSvgRegistry"];
+MenuItemDirective.$inject = ["$mdUtil", "$$mdSvgRegistry"];
 angular
   .module('material.components.menuBar')
   .directive('mdMenuItem', MenuItemDirective);
 
  /* @ngInject */
-function MenuItemDirective($mdUtil, $mdConstant, $$mdSvgRegistry) {
+function MenuItemDirective($mdUtil, $$mdSvgRegistry) {
   return {
     controller: 'MenuItemController',
     require: ['mdMenuItem', '?ngModel'],
-    priority: $mdConstant.BEFORE_NG_ARIA,
+    priority: 210, // ensure that our post link runs after ngAria
     compile: function(templateEl, templateAttrs) {
       var type = templateAttrs.type;
       var inMenuBarClass = 'md-in-menu-bar';
@@ -34272,4 +34267,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-14ab34c"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-ff86bba"}};
