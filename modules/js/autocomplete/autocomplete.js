@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-974acd3
+ * v1.1.1-master-c9a215b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1074,6 +1074,10 @@ MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
  *     the dropdown.<br/><br/>
  *     When the dropdown doesn't fit into the viewport, the dropdown will shrink
  *     as less as possible.
+ * @param {string=} ng-trim If set to false, the search text will be not trimmed automatically.
+ *     Defaults to true.
+ * @param {string=} ng-pattern Adds the pattern validator to the ngModel of the search text.
+ *     [ngPattern Directive](https://docs.angularjs.org/api/ng/directive/ngPattern)
  *
  * @usage
  * ### Basic Example
@@ -1189,7 +1193,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
       dropdownItems:    '=?mdDropdownItems'
     },
     compile: function(tElement, tAttrs) {
-      var attributes = ['md-select-on-focus', 'md-no-asterisk', 'ng-trim'];
+      var attributes = ['md-select-on-focus', 'md-no-asterisk', 'ng-trim', 'ng-pattern'];
       var input = tElement.find('input');
 
       attributes.forEach(function(attribute) {
