@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-7090a1f
+ * v1.1.1-master-1e4ba35
  */
 goog.provide('ngmaterial.components.menuBar');
 goog.require('ngmaterial.components.icon');
@@ -291,7 +291,7 @@ MenuBarController.prototype.handleParentClick = function(event) {
  * <hljs lang="html">
  * <md-menu-bar>
  *   <md-menu>
- *     <button ng-click="$mdOpenMenu()">
+ *     <button ng-click="$mdMenu.open()">
  *       File
  *     </button>
  *     <md-menu-content>
@@ -304,7 +304,7 @@ MenuBarController.prototype.handleParentClick = function(event) {
  *       <md-menu-item>
  *       <md-menu-item>
  *         <md-menu>
- *           <md-button ng-click="$mdOpenMenu()">New</md-button>
+ *           <md-button ng-click="$mdMenu.open()">New</md-button>
  *           <md-menu-content>
  *             <md-menu-item><md-button ng-click="ctrl.sampleAction('New Document', $event)">Document</md-button></md-menu-item>
  *             <md-menu-item><md-button ng-click="ctrl.sampleAction('New Spreadsheet', $event)">Spreadsheet</md-button></md-menu-item>
@@ -331,7 +331,7 @@ MenuBarController.prototype.handleParentClick = function(event) {
  * <hljs lang="html">
  * <md-menu-bar>
  *  <md-menu>
- *    <button ng-click="$mdOpenMenu()">
+ *    <button ng-click="$mdMenu.open()">
  *      Sample Menu
  *    </button>
  *    <md-menu-content>
@@ -353,7 +353,7 @@ MenuBarController.prototype.handleParentClick = function(event) {
  * <hljs lang="html">
  * <md-menu-item>
  *   <md-menu>
- *     <button ng-click="$mdOpenMenu()">New</md-button>
+ *     <button ng-click="$mdMenu.open()">New</md-button>
  *     <md-menu-content>
  *       <md-menu-item><md-button ng-click="ctrl.sampleAction('New Document', $event)">Document</md-button></md-menu-item>
  *       <md-menu-item><md-button ng-click="ctrl.sampleAction('New Spreadsheet', $event)">Spreadsheet</md-button></md-menu-item>
