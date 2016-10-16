@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-1e4ba35
+ * v1.1.1-master-2c286b4
  */
 goog.provide('ngmaterial.components.dialog');
 goog.require('ngmaterial.components.backdrop');
@@ -738,18 +738,8 @@ function MdDialogProvider($$interimElementProvider) {
       return dialogPopIn(element, options)
         .then(function() {
           lockScreenReader(element, options);
-          warnDeprecatedActions();
           focusOnOpen();
         });
-
-      /**
-       * Check to see if they used the deprecated .md-actions class and log a warning
-       */
-      function warnDeprecatedActions() {
-        if (element[0].querySelector('.md-actions')) {
-          $log.warn('Using a class of md-actions is deprecated, please use <md-dialog-actions>.');
-        }
-      }
 
       /**
        * For alerts, focus on content... otherwise focus on
@@ -768,14 +758,7 @@ function MdDialogProvider($$interimElementProvider) {
          * If we find no actions at all, log a warning to the console.
          */
         function findCloseButton() {
-          var closeButton = element[0].querySelector('.dialog-close');
-
-          if (!closeButton) {
-            var actionButtons = element[0].querySelectorAll('.md-actions button, md-dialog-actions button');
-            closeButton = actionButtons[actionButtons.length - 1];
-          }
-
-          return closeButton;
+          return element[0].querySelector('.dialog-close, md-dialog-actions button:last-child');
         }
       }
     }
