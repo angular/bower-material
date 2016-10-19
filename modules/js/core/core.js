@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-db7ef71
+ * v1.1.1-master-757d649
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -5884,7 +5884,7 @@ function detectDisabledThemes($mdThemingProvider) {
  * ### Default Theme
  * The `$mdThemingProvider` uses by default the following theme configuration:
  *
- * - Primary Palette: `Primary`
+ * - Primary Palette: `Blue`
  * - Accent Palette: `Pink`
  * - Warn Palette: `Deep-Orange`
  * - Background Palette: `Grey`
