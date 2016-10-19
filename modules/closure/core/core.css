@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-26cd552
+ * v1.1.1-master-db7ef71
  */
 /*
 *
@@ -663,7 +663,6 @@ input {
           align-content: stretch;
   -webkit-box-align: stretch;
   -webkit-align-items: stretch;
-              -ms-grid-row-align: stretch;
           align-items: stretch; }
 
 .layout-align-start,
@@ -717,7 +716,6 @@ input {
 .layout-align-space-around-start {
   -webkit-box-align: start;
   -webkit-align-items: flex-start;
-              -ms-grid-row-align: flex-start;
           align-items: flex-start;
   -webkit-align-content: flex-start;
           align-content: flex-start; }
@@ -729,7 +727,6 @@ input {
 .layout-align-space-around-center {
   -webkit-box-align: center;
   -webkit-align-items: center;
-              -ms-grid-row-align: center;
           align-items: center;
   -webkit-align-content: center;
           align-content: center;
@@ -750,7 +747,6 @@ input {
 .layout-align-space-around-end {
   -webkit-box-align: end;
   -webkit-align-items: flex-end;
-              -ms-grid-row-align: flex-end;
           align-items: flex-end;
   -webkit-align-content: flex-end;
           align-content: flex-end; }
@@ -762,7 +758,6 @@ input {
 .layout-align-space-around-stretch {
   -webkit-box-align: stretch;
   -webkit-align-items: stretch;
-              -ms-grid-row-align: stretch;
           align-items: stretch;
   -webkit-align-content: stretch;
           align-content: stretch; }
@@ -2736,7 +2731,6 @@ input {
             align-content: stretch;
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch; }
   .layout-align-xs-start,
   .layout-align-xs-start-start,
@@ -2784,7 +2778,6 @@ input {
   .layout-align-xs-space-around-start {
     -webkit-box-align: start;
     -webkit-align-items: flex-start;
-                -ms-grid-row-align: flex-start;
             align-items: flex-start;
     -webkit-align-content: flex-start;
             align-content: flex-start; }
@@ -2795,7 +2788,6 @@ input {
   .layout-align-xs-space-around-center {
     -webkit-box-align: center;
     -webkit-align-items: center;
-                -ms-grid-row-align: center;
             align-items: center;
     -webkit-align-content: center;
             align-content: center;
@@ -2814,7 +2806,6 @@ input {
   .layout-align-xs-space-around-end {
     -webkit-box-align: end;
     -webkit-align-items: flex-end;
-                -ms-grid-row-align: flex-end;
             align-items: flex-end;
     -webkit-align-content: flex-end;
             align-content: flex-end; }
@@ -2825,7 +2816,6 @@ input {
   .layout-align-xs-space-around-stretch {
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch;
     -webkit-align-content: stretch;
             align-content: stretch; }
@@ -4519,7 +4509,6 @@ input {
             align-content: stretch;
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch; }
   .layout-align-gt-xs-start,
   .layout-align-gt-xs-start-start,
@@ -4567,7 +4556,6 @@ input {
   .layout-align-gt-xs-space-around-start {
     -webkit-box-align: start;
     -webkit-align-items: flex-start;
-                -ms-grid-row-align: flex-start;
             align-items: flex-start;
     -webkit-align-content: flex-start;
             align-content: flex-start; }
@@ -4578,7 +4566,6 @@ input {
   .layout-align-gt-xs-space-around-center {
     -webkit-box-align: center;
     -webkit-align-items: center;
-                -ms-grid-row-align: center;
             align-items: center;
     -webkit-align-content: center;
             align-content: center;
@@ -4597,7 +4584,6 @@ input {
   .layout-align-gt-xs-space-around-end {
     -webkit-box-align: end;
     -webkit-align-items: flex-end;
-                -ms-grid-row-align: flex-end;
             align-items: flex-end;
     -webkit-align-content: flex-end;
             align-content: flex-end; }
@@ -4608,7 +4594,6 @@ input {
   .layout-align-gt-xs-space-around-stretch {
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch;
     -webkit-align-content: stretch;
             align-content: stretch; }
@@ -6306,7 +6291,6 @@ input {
             align-content: stretch;
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch; }
   .layout-align-sm-start,
   .layout-align-sm-start-start,
@@ -6354,7 +6338,6 @@ input {
   .layout-align-sm-space-around-start {
     -webkit-box-align: start;
     -webkit-align-items: flex-start;
-                -ms-grid-row-align: flex-start;
             align-items: flex-start;
     -webkit-align-content: flex-start;
             align-content: flex-start; }
@@ -6365,7 +6348,6 @@ input {
   .layout-align-sm-space-around-center {
     -webkit-box-align: center;
     -webkit-align-items: center;
-                -ms-grid-row-align: center;
             align-items: center;
     -webkit-align-content: center;
             align-content: center;
@@ -6384,7 +6366,6 @@ input {
   .layout-align-sm-space-around-end {
     -webkit-box-align: end;
     -webkit-align-items: flex-end;
-                -ms-grid-row-align: flex-end;
             align-items: flex-end;
     -webkit-align-content: flex-end;
             align-content: flex-end; }
@@ -6395,7 +6376,6 @@ input {
   .layout-align-sm-space-around-stretch {
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch;
     -webkit-align-content: stretch;
             align-content: stretch; }
@@ -8089,7 +8069,6 @@ input {
             align-content: stretch;
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch; }
   .layout-align-gt-sm-start,
   .layout-align-gt-sm-start-start,
@@ -8137,7 +8116,6 @@ input {
   .layout-align-gt-sm-space-around-start {
     -webkit-box-align: start;
     -webkit-align-items: flex-start;
-                -ms-grid-row-align: flex-start;
             align-items: flex-start;
     -webkit-align-content: flex-start;
             align-content: flex-start; }
@@ -8148,7 +8126,6 @@ input {
   .layout-align-gt-sm-space-around-center {
     -webkit-box-align: center;
     -webkit-align-items: center;
-                -ms-grid-row-align: center;
             align-items: center;
     -webkit-align-content: center;
             align-content: center;
@@ -8167,7 +8144,6 @@ input {
   .layout-align-gt-sm-space-around-end {
     -webkit-box-align: end;
     -webkit-align-items: flex-end;
-                -ms-grid-row-align: flex-end;
             align-items: flex-end;
     -webkit-align-content: flex-end;
             align-content: flex-end; }
@@ -8178,7 +8154,6 @@ input {
   .layout-align-gt-sm-space-around-stretch {
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch;
     -webkit-align-content: stretch;
             align-content: stretch; }
@@ -9876,7 +9851,6 @@ input {
             align-content: stretch;
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch; }
   .layout-align-md-start,
   .layout-align-md-start-start,
@@ -9924,7 +9898,6 @@ input {
   .layout-align-md-space-around-start {
     -webkit-box-align: start;
     -webkit-align-items: flex-start;
-                -ms-grid-row-align: flex-start;
             align-items: flex-start;
     -webkit-align-content: flex-start;
             align-content: flex-start; }
@@ -9935,7 +9908,6 @@ input {
   .layout-align-md-space-around-center {
     -webkit-box-align: center;
     -webkit-align-items: center;
-                -ms-grid-row-align: center;
             align-items: center;
     -webkit-align-content: center;
             align-content: center;
@@ -9954,7 +9926,6 @@ input {
   .layout-align-md-space-around-end {
     -webkit-box-align: end;
     -webkit-align-items: flex-end;
-                -ms-grid-row-align: flex-end;
             align-items: flex-end;
     -webkit-align-content: flex-end;
             align-content: flex-end; }
@@ -9965,7 +9936,6 @@ input {
   .layout-align-md-space-around-stretch {
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch;
     -webkit-align-content: stretch;
             align-content: stretch; }
@@ -11659,7 +11629,6 @@ input {
             align-content: stretch;
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch; }
   .layout-align-gt-md-start,
   .layout-align-gt-md-start-start,
@@ -11707,7 +11676,6 @@ input {
   .layout-align-gt-md-space-around-start {
     -webkit-box-align: start;
     -webkit-align-items: flex-start;
-                -ms-grid-row-align: flex-start;
             align-items: flex-start;
     -webkit-align-content: flex-start;
             align-content: flex-start; }
@@ -11718,7 +11686,6 @@ input {
   .layout-align-gt-md-space-around-center {
     -webkit-box-align: center;
     -webkit-align-items: center;
-                -ms-grid-row-align: center;
             align-items: center;
     -webkit-align-content: center;
             align-content: center;
@@ -11737,7 +11704,6 @@ input {
   .layout-align-gt-md-space-around-end {
     -webkit-box-align: end;
     -webkit-align-items: flex-end;
-                -ms-grid-row-align: flex-end;
             align-items: flex-end;
     -webkit-align-content: flex-end;
             align-content: flex-end; }
@@ -11748,7 +11714,6 @@ input {
   .layout-align-gt-md-space-around-stretch {
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch;
     -webkit-align-content: stretch;
             align-content: stretch; }
@@ -13446,7 +13411,6 @@ input {
             align-content: stretch;
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch; }
   .layout-align-lg-start,
   .layout-align-lg-start-start,
@@ -13494,7 +13458,6 @@ input {
   .layout-align-lg-space-around-start {
     -webkit-box-align: start;
     -webkit-align-items: flex-start;
-                -ms-grid-row-align: flex-start;
             align-items: flex-start;
     -webkit-align-content: flex-start;
             align-content: flex-start; }
@@ -13505,7 +13468,6 @@ input {
   .layout-align-lg-space-around-center {
     -webkit-box-align: center;
     -webkit-align-items: center;
-                -ms-grid-row-align: center;
             align-items: center;
     -webkit-align-content: center;
             align-content: center;
@@ -13524,7 +13486,6 @@ input {
   .layout-align-lg-space-around-end {
     -webkit-box-align: end;
     -webkit-align-items: flex-end;
-                -ms-grid-row-align: flex-end;
             align-items: flex-end;
     -webkit-align-content: flex-end;
             align-content: flex-end; }
@@ -13535,7 +13496,6 @@ input {
   .layout-align-lg-space-around-stretch {
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch;
     -webkit-align-content: stretch;
             align-content: stretch; }
@@ -15229,7 +15189,6 @@ input {
             align-content: stretch;
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch; }
   .layout-align-gt-lg-start,
   .layout-align-gt-lg-start-start,
@@ -15277,7 +15236,6 @@ input {
   .layout-align-gt-lg-space-around-start {
     -webkit-box-align: start;
     -webkit-align-items: flex-start;
-                -ms-grid-row-align: flex-start;
             align-items: flex-start;
     -webkit-align-content: flex-start;
             align-content: flex-start; }
@@ -15288,7 +15246,6 @@ input {
   .layout-align-gt-lg-space-around-center {
     -webkit-box-align: center;
     -webkit-align-items: center;
-                -ms-grid-row-align: center;
             align-items: center;
     -webkit-align-content: center;
             align-content: center;
@@ -15307,7 +15264,6 @@ input {
   .layout-align-gt-lg-space-around-end {
     -webkit-box-align: end;
     -webkit-align-items: flex-end;
-                -ms-grid-row-align: flex-end;
             align-items: flex-end;
     -webkit-align-content: flex-end;
             align-content: flex-end; }
@@ -15318,7 +15274,6 @@ input {
   .layout-align-gt-lg-space-around-stretch {
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch;
     -webkit-align-content: stretch;
             align-content: stretch; }
@@ -17010,7 +16965,6 @@ input {
             align-content: stretch;
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch; }
   .layout-align-xl-start,
   .layout-align-xl-start-start,
@@ -17058,7 +17012,6 @@ input {
   .layout-align-xl-space-around-start {
     -webkit-box-align: start;
     -webkit-align-items: flex-start;
-                -ms-grid-row-align: flex-start;
             align-items: flex-start;
     -webkit-align-content: flex-start;
             align-content: flex-start; }
@@ -17069,7 +17022,6 @@ input {
   .layout-align-xl-space-around-center {
     -webkit-box-align: center;
     -webkit-align-items: center;
-                -ms-grid-row-align: center;
             align-items: center;
     -webkit-align-content: center;
             align-content: center;
@@ -17088,7 +17040,6 @@ input {
   .layout-align-xl-space-around-end {
     -webkit-box-align: end;
     -webkit-align-items: flex-end;
-                -ms-grid-row-align: flex-end;
             align-items: flex-end;
     -webkit-align-content: flex-end;
             align-content: flex-end; }
@@ -17099,7 +17050,6 @@ input {
   .layout-align-xl-space-around-stretch {
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
-                -ms-grid-row-align: stretch;
             align-items: stretch;
     -webkit-align-content: stretch;
             align-content: stretch; }
