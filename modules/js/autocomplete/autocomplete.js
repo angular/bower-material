@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-e3619e6
+ * v1.1.1-master-8f8274a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -136,7 +136,13 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
         left   = hrect.left - root.left,
         width  = hrect.width,
         offset = getVerticalOffset(),
+        position = $scope.dropdownPosition,
         styles;
+
+    // Automatically determine dropdown placement based on available space in viewport.
+    if (!position) {
+      position = (top > bot && root.height - hrect.bottom - MENU_PADDING < dropdownHeight) ? 'top' : 'bottom';
+    }
     // Adjust the width to account for the padding provided by `md-input-container`
     if ($attrs.mdFloatingLabel) {
       left += INPUT_PADDING;
@@ -147,7 +153,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       minWidth: width + 'px',
       maxWidth: Math.max(hrect.right - root.left, root.right - hrect.left) - MENU_PADDING + 'px'
     };
-    if (top > bot && root.height - hrect.bottom - MENU_PADDING < dropdownHeight) {
+
+    if (position === 'top') {
       styles.top       = 'auto';
       styles.bottom    = bot + 'px';
       styles.maxHeight = Math.min(dropdownHeight, hrect.top - root.top - MENU_PADDING) + 'px';
@@ -1100,6 +1107,7 @@ MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
  *     the dropdown.<br/><br/>
  *     When the dropdown doesn't fit into the viewport, the dropdown will shrink
  *     as less as possible.
+ * @param {string=} md-dropdown-position Overrides the default dropdown position. Options: `top`, `bottom`.
  * @param {string=} ng-trim If set to false, the search text will be not trimmed automatically.
  *     Defaults to true.
  * @param {string=} ng-pattern Adds the pattern validator to the ngModel of the search text.
@@ -1216,7 +1224,8 @@ function MdAutocomplete ($$mdSvgRegistry) {
       menuClass:        '@?mdMenuClass',
       inputId:          '@?mdInputId',
       escapeOptions:    '@?mdEscapeOptions',
-      dropdownItems:    '=?mdDropdownItems'
+      dropdownItems:    '=?mdDropdownItems',
+      dropdownPosition: '@?mdDropdownPosition'
     },
     compile: function(tElement, tAttrs) {
       var attributes = ['md-select-on-focus', 'md-no-asterisk', 'ng-trim', 'ng-pattern'];

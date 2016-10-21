@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-e3619e6
+ * v1.1.1-master-8f8274a
  */
 html, body {
   height: 100%;
@@ -284,6 +284,58 @@ input {
 *
 *
 */
+.md-panel-outer-wrapper {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%; }
+
+._md-panel-hidden {
+  display: none; }
+
+._md-panel-fullscreen {
+  border-radius: 0;
+  left: 0;
+  min-height: 100%;
+  min-width: 100%;
+  position: fixed;
+  top: 0; }
+
+._md-panel-shown .md-panel {
+  opacity: 1;
+  -webkit-transition: none;
+  transition: none; }
+
+.md-panel {
+  opacity: 0;
+  position: fixed; }
+  .md-panel._md-panel-shown {
+    opacity: 1;
+    -webkit-transition: none;
+    transition: none; }
+  .md-panel._md-panel-animate-enter {
+    opacity: 1;
+    -webkit-transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0, 0, 0.2, 1); }
+  .md-panel._md-panel-animate-leave {
+    opacity: 1;
+    -webkit-transition: all 0.3s cubic-bezier(0.4, 0, 1, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 1, 1); }
+  .md-panel._md-panel-animate-scale-out, .md-panel._md-panel-animate-fade-out {
+    opacity: 0; }
+  .md-panel._md-panel-backdrop {
+    height: 100%;
+    position: absolute;
+    width: 100%; }
+  .md-panel._md-opaque-enter {
+    opacity: .48;
+    -webkit-transition: opacity 0.3s cubic-bezier(0, 0, 0.2, 1);
+    transition: opacity 0.3s cubic-bezier(0, 0, 0.2, 1); }
+  .md-panel._md-opaque-leave {
+    -webkit-transition: opacity 0.3s cubic-bezier(0.4, 0, 1, 1);
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 1, 1); }
+
 @-webkit-keyframes md-autocomplete-list-out {
   0% {
     -webkit-animation-timing-function: linear;
@@ -296,6 +348,7 @@ input {
   100% {
     height: 0;
     opacity: 0; } }
+
 @keyframes md-autocomplete-list-out {
   0% {
     -webkit-animation-timing-function: linear;
@@ -3254,62 +3307,13 @@ md-nav-ink-bar {
   md-nav-ink-bar._md-right {
     -webkit-transition: left 0.25s cubic-bezier(0.35, 0, 0.25, 1), right 0.125s cubic-bezier(0.35, 0, 0.25, 1);
     transition: left 0.25s cubic-bezier(0.35, 0, 0.25, 1), right 0.125s cubic-bezier(0.35, 0, 0.25, 1); }
+  md-nav-ink-bar.ng-animate {
+    -webkit-transition: none;
+    transition: none; }
 
 md-nav-extra-content {
   min-height: 48px;
   padding-right: 12px; }
-
-.md-panel-outer-wrapper {
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 100%; }
-
-._md-panel-hidden {
-  display: none; }
-
-._md-panel-fullscreen {
-  border-radius: 0;
-  left: 0;
-  min-height: 100%;
-  min-width: 100%;
-  position: fixed;
-  top: 0; }
-
-._md-panel-shown .md-panel {
-  opacity: 1;
-  -webkit-transition: none;
-  transition: none; }
-
-.md-panel {
-  opacity: 0;
-  position: fixed; }
-  .md-panel._md-panel-shown {
-    opacity: 1;
-    -webkit-transition: none;
-    transition: none; }
-  .md-panel._md-panel-animate-enter {
-    opacity: 1;
-    -webkit-transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
-    transition: all 0.3s cubic-bezier(0, 0, 0.2, 1); }
-  .md-panel._md-panel-animate-leave {
-    opacity: 1;
-    -webkit-transition: all 0.3s cubic-bezier(0.4, 0, 1, 1);
-    transition: all 0.3s cubic-bezier(0.4, 0, 1, 1); }
-  .md-panel._md-panel-animate-scale-out, .md-panel._md-panel-animate-fade-out {
-    opacity: 0; }
-  .md-panel._md-panel-backdrop {
-    height: 100%;
-    position: absolute;
-    width: 100%; }
-  .md-panel._md-opaque-enter {
-    opacity: .48;
-    -webkit-transition: opacity 0.3s cubic-bezier(0, 0, 0.2, 1);
-    transition: opacity 0.3s cubic-bezier(0, 0, 0.2, 1); }
-  .md-panel._md-opaque-leave {
-    -webkit-transition: opacity 0.3s cubic-bezier(0.4, 0, 1, 1);
-    transition: opacity 0.3s cubic-bezier(0.4, 0, 1, 1); }
 
 @-webkit-keyframes indeterminate-rotate {
   0% {
@@ -4120,30 +4124,40 @@ md-sidenav {
     display: flex;
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }
-  md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-left, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-right, md-sidenav.md-locked-open-remove.md-closed {
+  md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-left, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-right {
     position: static;
     display: -webkit-box;
     display: -webkit-flex;
     display: flex;
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }
+  md-sidenav.md-locked-open-remove.md-closed {
+    position: static;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0); }
+  md-sidenav.md-closed.md-locked-open-add {
+    position: static;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0); }
+  md-sidenav.md-closed.md-locked-open-add:not(.md-locked-open-add-active) {
+    -webkit-transition: width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2), min-width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    transition: width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2), min-width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    width: 0 !important;
+    min-width: 0 !important; }
+  md-sidenav.md-closed.md-locked-open-add-active {
+    -webkit-transition: width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2), min-width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    transition: width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2), min-width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
   md-sidenav.md-locked-open-remove-active {
     -webkit-transition: width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2), min-width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
     transition: width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2), min-width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
     width: 0 !important;
     min-width: 0 !important; }
-  md-sidenav.md-closed.md-locked-open-add {
-    width: 0 !important;
-    min-width: 0 !important;
-    -webkit-transform: translate3d(0%, 0, 0);
-            transform: translate3d(0%, 0, 0); }
-  md-sidenav.md-closed.md-locked-open-add-active {
-    -webkit-transition: width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2), min-width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-    transition: width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2), min-width 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-    width: 320px;
-    min-width: 320px;
-    -webkit-transform: translate3d(0%, 0, 0);
-            transform: translate3d(0%, 0, 0); }
 
 .md-sidenav-backdrop.md-locked-open {
   display: none; }

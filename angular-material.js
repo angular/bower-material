@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-e3619e6
+ * v1.1.1-master-8f8274a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -10,7 +10,7 @@
 (function(){
 "use strict";
 
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.interaction","material.core.layout","material.core.meta","material.core.theming.palette","material.core.theming","material.core.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.colors","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.navBar","material.components.panel","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.showHide","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.virtualRepeat","material.components.whiteframe"]);
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.interaction","material.core.layout","material.core.meta","material.core.theming.palette","material.core.theming","material.core.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.colors","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.navBar","material.components.panel","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.showHide","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.virtualRepeat","material.components.whiteframe"]);
 })();
 (function(){
 "use strict";
@@ -335,20 +335,19 @@ function ColorUtilFactory() {
 (function(){
 "use strict";
 
-
-MdConstantFactory.$inject = ["$sniffer", "$window", "$document"];angular.module('material.core')
+angular.module('material.core')
 .factory('$mdConstant', MdConstantFactory);
 
 /**
  * Factory function that creates the grab-bag $mdConstant service.
  * @ngInject
  */
-function MdConstantFactory($sniffer, $window, $document) {
+function MdConstantFactory() {
 
-  var vendorPrefix = $sniffer.vendorPrefix;
+  var prefixTestEl = document.createElement('div');
+  var vendorPrefix = getVendorPrefix(prefixTestEl);
   var isWebkit = /webkit/i.test(vendorPrefix);
   var SPECIAL_CHARS_REGEXP = /([:\-_]+(.))/g;
-  var prefixTestEl = document.createElement('div');
 
   function vendorProperty(name) {
     // Add a dash between the prefix and name, to be able to transform the string into camelcase.
@@ -356,19 +355,30 @@ function MdConstantFactory($sniffer, $window, $document) {
     var ucPrefix = camelCase(prefixedName);
     var lcPrefix = ucPrefix.charAt(0).toLowerCase() + ucPrefix.substring(1);
 
-    return hasStyleProperty(name)     ? name     :       // The current browser supports the un-prefixed property
-           hasStyleProperty(ucPrefix) ? ucPrefix :       // The current browser only supports the prefixed property.
-           hasStyleProperty(lcPrefix) ? lcPrefix : name; // Some browsers are only supporting the prefix in lowercase.
+    return hasStyleProperty(prefixTestEl, name)     ? name     :       // The current browser supports the un-prefixed property
+           hasStyleProperty(prefixTestEl, ucPrefix) ? ucPrefix :       // The current browser only supports the prefixed property.
+           hasStyleProperty(prefixTestEl, lcPrefix) ? lcPrefix : name; // Some browsers are only supporting the prefix in lowercase.
   }
 
-  function hasStyleProperty(property) {
-    return angular.isDefined(prefixTestEl.style[property]);
+  function hasStyleProperty(testElement, property) {
+    return angular.isDefined(testElement.style[property]);
   }
 
   function camelCase(input) {
     return input.replace(SPECIAL_CHARS_REGEXP, function(matches, separator, letter, offset) {
       return offset ? letter.toUpperCase() : letter;
     });
+  }
+
+  function getVendorPrefix(testElement) {
+    var prop, match;
+    var vendorRegex = /^(Moz|webkit|ms)(?=[A-Z])/;
+
+    for (prop in testElement.style) {
+      if (match = vendorRegex.exec(prop)) {
+        return match[0];
+      }
+    }
   }
 
   var self = {
@@ -1300,20 +1310,25 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
         var viewportTop = $mdUtil.getViewportTop();
         var clientWidth = body.clientWidth;
+        var hasVerticalScrollbar = body.scrollHeight > body.clientHeight + 1;
 
-        if (body.scrollHeight > body.clientHeight + 1) {
-
+        if (hasVerticalScrollbar) {
           angular.element(body).css({
             position: 'fixed',
             width: '100%',
             top: -viewportTop + 'px'
           });
-
-          documentElement.style.overflowY = 'scroll';
         }
 
         if (body.clientWidth < clientWidth) {
           body.style.overflow = 'hidden';
+        }
+
+        // This should be applied after the manipulation to the body, because
+        // adding a scrollbar can potentially resize it, causing the measurement
+        // to change.
+        if (hasVerticalScrollbar) {
+          documentElement.style.overflowY = 'scroll';
         }
 
         return function restoreScroll() {
@@ -8465,7 +8480,7 @@ function mdCardDirective($mdTheming) {
  * @name material.components.checkbox
  * @description Checkbox module!
  */
-MdCheckboxDirective.$inject = ["inputDirective", "$mdAria", "$mdConstant", "$mdTheming", "$mdUtil", "$timeout"];
+MdCheckboxDirective.$inject = ["inputDirective", "$mdAria", "$mdConstant", "$mdTheming", "$mdUtil", "$mdInteraction"];
 angular
   .module('material.components.checkbox', ['material.core'])
   .directive('mdCheckbox', MdCheckboxDirective);
@@ -8517,7 +8532,7 @@ angular
  * </hljs>
  *
  */
-function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $mdUtil, $timeout) {
+function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $mdUtil, $mdInteraction) {
   inputDirective = inputDirective[0];
 
   return {
@@ -8593,17 +8608,10 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
         0: {}
       }, attr, [ngModelCtrl]);
 
-      scope.mouseActive = false;
       element.on('click', listener)
         .on('keypress', keypressHandler)
-        .on('mousedown', function() {
-          scope.mouseActive = true;
-          $timeout(function() {
-            scope.mouseActive = false;
-          }, 100);
-        })
         .on('focus', function() {
-          if (scope.mouseActive === false) {
+          if ($mdInteraction.getLastInteractionType() === 'keyboard') {
             element.addClass('md-focused');
           }
         })
@@ -13793,6 +13801,7 @@ angular.module('material.components.navBar', ['material.core'])
  *
  * @param {string=} mdSelectedNavItem The name of the current tab; this must
  * match the name attribute of `<md-nav-item>`
+ * @param {boolean=} mdNoInkBar If set to true, the ink bar will be hidden.
  * @param {string=} navBarAriaLabel An aria-label for the nav-bar
  *
  * @usage
@@ -13858,6 +13867,7 @@ function MdNavBar($mdAria, $mdTheming) {
     bindToController: true,
     scope: {
       'mdSelectedNavItem': '=?',
+      'mdNoInkBar': '=?',
       'navBarAriaLabel': '@?',
     },
     template:
@@ -13871,7 +13881,7 @@ function MdNavBar($mdAria, $mdTheming) {
             'aria-label="{{ctrl.navBarAriaLabel}}">' +
           '</ul>' +
         '</nav>' +
-        '<md-nav-ink-bar></md-nav-ink-bar>' +
+        '<md-nav-ink-bar ng-hide="ctrl.mdNoInkBar"></md-nav-ink-bar>' +
       '</div>',
     link: function(scope, element, attrs, ctrl) {
       $mdTheming(element);
@@ -13997,7 +14007,7 @@ MdNavBarController.prototype._updateInkBarStyles = function(tab, newIndex, oldIn
 
   this._inkbar.css({display: newIndex < 0 ? 'none' : ''});
 
-  if(tab){
+  if (tab) {
     var tabEl = tab.getButtonEl();
     var left = tabEl.offsetLeft;
 
@@ -14314,6 +14324,7 @@ angular
  *                            PUBLIC DOCUMENTATION                           *
  *****************************************************************************/
 
+
 /**
  * @ngdoc service
  * @name $mdPanel
@@ -14393,6 +14404,8 @@ angular
  *     [$sce service](https://docs.angularjs.org/api/ng/service/$sce).
  *   - `templateUrl` - `{string=}`: The URL that will be used as the content of
  *     the panel.
+ *   - `contentElement` - `{(string|!angular.JQLite|!Element)=}`: Pre-compiled
+ *     element to be used as the panel's content.
  *   - `controller` - `{(function|string)=}`: The controller to associate with
  *     the panel. The controller can inject a reference to the returned
  *     panelRef, which allows the panel to be closed, hidden, and shown. Any
@@ -14455,10 +14468,11 @@ angular
  *     on when the panel closes. This is commonly the element which triggered
  *     the opening of the panel. If you do not use `origin`, you need to control
  *     the focus manually.
- *   - `groupName` - `{string=}`: Name of a panel group. This group name is used
- *     for configuring the number of open panels and identifying specific
- *     behaviors for groups. For instance, all tooltips could be identified
- *     using the same groupName.
+ *   - `groupName` - `{(string|!Array<string>)=}`: A group name or an array of
+ *     group names. The group name is used for creating a group of panels. The
+ *     group is used for configuring the number of open panels and identifying
+ *     specific behaviors for groups. For instance, all tooltips could be
+ *     identified using the same groupName.
  *
  * @returns {!MdPanelRef} panelRef
  */
@@ -14985,6 +14999,7 @@ angular
  *                               MdPanelAnimation                            *
  *****************************************************************************/
 
+
 /**
  * @ngdoc type
  * @name MdPanelAnimation
@@ -15195,7 +15210,12 @@ MdPanelService.prototype.create = function(config) {
   this._config.scope.$on('$destroy', angular.bind(panelRef, panelRef.detach));
 
   if (this._config.groupName) {
-    panelRef.addToGroup(this._config.groupName);
+    if (angular.isString(this._config.groupName)) {
+      this._config.groupName = [this._config.groupName];
+    }
+    angular.forEach(this._config.groupName, function(group) {
+      panelRef.addToGroup(group);
+    });
   }
 
   return panelRef;
@@ -15287,7 +15307,7 @@ MdPanelService.prototype.setGroupMaxOpen = function(groupName, maxOpen) {
  * @private
  */
 MdPanelService.prototype._openCountExceedsMaxOpen = function(groupName) {
-  if (groupName && this._groups[groupName]) {
+  if (this._groups[groupName]) {
     var group = this._groups[groupName];
     return group.maxOpen > 0 && group.openPanels.length > group.maxOpen;
   }
@@ -15301,9 +15321,7 @@ MdPanelService.prototype._openCountExceedsMaxOpen = function(groupName) {
  * @private
  */
 MdPanelService.prototype._closeFirstOpenedPanel = function(groupName) {
-  if (groupName) {
-    this._groups[groupName].openPanels[0].close();
-  }
+  this._groups[groupName].openPanels[0].close();
 };
 
 
@@ -15325,6 +15343,24 @@ MdPanelService.prototype._wrapTemplate = function(origTemplate) {
       '<div class="md-panel-outer-wrapper">' +
       '  <div class="md-panel" style="left: -9999px;">' + template + '</div>' +
       '</div>';
+};
+
+
+/**
+ * Wraps a content element in a md-panel-outer wrapper and
+ * positions it off-screen. Allows for proper control over positoning
+ * and animations.
+ * @param {!angular.JQLite} contentElement Element to be wrapped.
+ * @return {!angular.JQLite} Wrapper element.
+ * @private
+ */
+MdPanelService.prototype._wrapContentElement = function(contentElement) {
+  var wrapper = angular.element('<div class="md-panel-outer-wrapper">');
+
+  contentElement.addClass('md-panel').css('left', '-9999px');
+  wrapper.append(contentElement);
+
+  return wrapper;
 };
 
 
@@ -15417,6 +15453,23 @@ function MdPanelRef(config, $injector) {
    * @private {!Object}
    */
   this._interceptors = Object.create(null);
+
+  /**
+   * Cleanup function, provided by `$mdCompiler` and assigned after the element
+   * has been compiled. When `contentElement` is used, the function is used to
+   * restore the element to it's proper place in the DOM.
+   * @private {!Function}
+   */
+  this._compilerCleanup = null;
+
+  /**
+   * Cache for saving and restoring element inline styles, CSS classes etc.
+   * @type {{styles: string, classes: string}}
+   */
+  this._restoreCache = {
+    styles: '',
+    classes: ''
+  };
 }
 
 
@@ -15437,8 +15490,12 @@ MdPanelRef.prototype.open = function() {
     var done = self._done(resolve, self);
     var show = self._simpleBind(self.show, self);
     var checkGroupMaxOpen = function() {
-      if (self._$mdPanel._openCountExceedsMaxOpen(self.config.groupName)) {
-        self._$mdPanel._closeFirstOpenedPanel(self.config.groupName);
+      if (self.config.groupName) {
+        angular.forEach(self.config.groupName, function(group) {
+          if (self._$mdPanel._openCountExceedsMaxOpen(group)) {
+            self._$mdPanel._closeFirstOpenedPanel(group);
+          }
+        });
       }
     };
 
@@ -15531,6 +15588,14 @@ MdPanelRef.prototype.detach = function() {
       self._bottomFocusTrap.parentNode.removeChild(self._bottomFocusTrap);
     }
 
+    if (self._restoreCache.classes) {
+      self.panelEl[0].className = self._restoreCache.classes;
+    }
+
+    // Either restore the saved styles or clear the ones set by mdPanel.
+    self.panelEl[0].style.cssText = self._restoreCache.styles || '';
+
+    self._compilerCleanup();
     self.panelContainer.remove();
     self.isAttached = false;
     return self._$q.when(self);
@@ -15558,8 +15623,11 @@ MdPanelRef.prototype.detach = function() {
  * Destroys the panel. The Panel cannot be opened again after this.
  */
 MdPanelRef.prototype.destroy = function() {
+  var self = this;
   if (this.config.groupName) {
-    this.removeFromGroup(this.config.groupName);
+    angular.forEach(this.config.groupName, function(group) {
+      self.removeFromGroup(group);
+    });
   }
   this.config.scope.$destroy();
   this.config.locals = null;
@@ -15594,8 +15662,9 @@ MdPanelRef.prototype.show = function() {
     var onOpenComplete = self.config['onOpenComplete'] || angular.noop;
     var addToGroupOpen = function() {
       if (self.config.groupName) {
-        var group = self._$mdPanel._groups[self.config.groupName];
-        group.openPanels.push(self);
+        angular.forEach(self.config.groupName, function(group) {
+          self._$mdPanel._groups[group].openPanels.push(self);
+        });
       }
     };
 
@@ -15636,11 +15705,14 @@ MdPanelRef.prototype.hide = function() {
     };
     var removeFromGroupOpen = function() {
       if (self.config.groupName) {
-        var group = self._$mdPanel._groups[self.config.groupName];
-        var index = group.openPanels.indexOf(self);
-        if (index > -1) {
-          group.openPanels.splice(index, 1);
-        }
+        var group, index;
+        angular.forEach(self.config.groupName, function(group) {
+          group = self._$mdPanel._groups[group];
+          index = group.openPanels.indexOf(self);
+          if (index > -1) {
+            group.openPanels.splice(index, 1);
+          }
+        });
       }
     };
     var focusOnOrigin = function() {
@@ -15757,6 +15829,51 @@ MdPanelRef.prototype.toggleClass = function(toggleClass, onElement) {
 
 
 /**
+ * Compiles the panel, according to the passed in config and appends it to
+ * the DOM. Helps normalize differences in the compilation process between
+ * using a string template and a content element.
+ * @returns {!angular.$q.Promise<!MdPanelRef>} Promise that is resolved when
+ *     the element has been compiled and added to the DOM.
+ * @private
+ */
+MdPanelRef.prototype._compile = function() {
+  var self = this;
+
+  // Compile the element via $mdCompiler. Note that when using a
+  // contentElement, the element isn't actually being compiled, rather the
+  // compiler saves it's place in the DOM and provides a way of restoring it.
+  return self._$mdCompiler.compile(self.config).then(function(compileData) {
+    var config = self.config;
+
+    if (config.contentElement) {
+      var panelEl = compileData.element;
+
+      // Since mdPanel modifies the inline styles and CSS classes, we need
+      // to save them in order to be able to restore on close.
+      self._restoreCache.styles = panelEl[0].style.cssText;
+      self._restoreCache.classes = panelEl[0].className;
+
+      self.panelContainer = self._$mdPanel._wrapContentElement(panelEl);
+      self.panelEl = panelEl;
+    } else {
+      self.panelContainer = compileData.link(config['scope']);
+      self.panelEl = angular.element(
+        self.panelContainer[0].querySelector('.md-panel')
+      );
+    }
+
+    // Save a reference to the cleanup function from the compiler.
+    self._compilerCleanup = compileData.cleanup;
+
+    // Attach the panel to the proper place in the DOM.
+    getElement(self.config['attachTo']).append(self.panelContainer);
+
+    return self;
+  });
+};
+
+
+/**
  * Creates a panel and adds it to the dom.
  * @returns {!angular.$q.Promise} A promise that is resolved when the panel is
  *     created.
@@ -15771,44 +15888,41 @@ MdPanelRef.prototype._createPanel = function() {
     }
 
     self.config.locals.mdPanelRef = self;
-    self._$mdCompiler.compile(self.config)
-        .then(function(compileData) {
-          self.panelContainer = compileData.link(self.config['scope']);
-          getElement(self.config['attachTo']).append(self.panelContainer);
 
-          if (self.config['disableParentScroll']) {
-            self._restoreScroll = self._$mdUtil.disableScrollAround(
-              null,
-              self.panelContainer,
-              { disableScrollMask: true }
-            );
-          }
+    self._compile().then(function() {
+      if (self.config['disableParentScroll']) {
+        self._restoreScroll = self._$mdUtil.disableScrollAround(
+          null,
+          self.panelContainer,
+          { disableScrollMask: true }
+        );
+      }
 
-          self.panelEl = angular.element(
-              self.panelContainer[0].querySelector('.md-panel'));
+      // Add a custom CSS class to the panel element.
+      if (self.config['panelClass']) {
+        self.panelEl.addClass(self.config['panelClass']);
+      }
 
-          // Add a custom CSS class to the panel element.
-          if (self.config['panelClass']) {
-            self.panelEl.addClass(self.config['panelClass']);
-          }
+      // Handle click and touch events for the panel container.
+      if (self.config['propagateContainerEvents']) {
+        self.panelContainer.css('pointer-events', 'none');
+      }
 
-          // Handle click and touch events for the panel container.
-          if (self.config['propagateContainerEvents']) {
-            self.panelContainer.css('pointer-events', 'none');
-          }
+      // Panel may be outside the $rootElement, tell ngAnimate to animate
+      // regardless.
+      if (self._$animate.pin) {
+        self._$animate.pin(
+          self.panelContainer,
+          getElement(self.config['attachTo'])
+        );
+      }
 
-          // Panel may be outside the $rootElement, tell ngAnimate to animate
-          // regardless.
-          if (self._$animate.pin) {
-            self._$animate.pin(self.panelContainer,
-                getElement(self.config['attachTo']));
-          }
+      self._configureTrapFocus();
+      self._addStyles().then(function() {
+        resolve(self);
+      }, reject);
+    }, reject);
 
-          self._configureTrapFocus();
-          self._addStyles().then(function() {
-            resolve(self);
-          }, reject);
-        }, reject);
   });
 };
 
@@ -16184,6 +16298,7 @@ MdPanelRef.prototype._animateClose = function() {
   });
 };
 
+
 /**
  * Registers a interceptor with the panel. The callback should return a promise,
  * which will allow the action to continue when it gets resolved, or will
@@ -16213,6 +16328,7 @@ MdPanelRef.prototype.registerInterceptor = function(type, callback) {
 
   return this;
 };
+
 
 /**
  * Removes a registered interceptor.
@@ -16468,6 +16584,7 @@ MdPanelPosition.prototype.absolute = function() {
   this._absolute = true;
   return this;
 };
+
 
 /**
  * Sets the value of a position for the panel. Clears any previously set
@@ -17337,6 +17454,7 @@ MdPanelAnimation.prototype._getBoundingClientRect = function(element) {
  *                                Util Methods                               *
  *****************************************************************************/
 
+
 /**
  * Returns the angular element associated with a css selector or element.
  * @param el {string|!angular.JQLite|!Element}
@@ -17347,6 +17465,7 @@ function getElement(el) {
       document.querySelector(el) : el;
   return angular.element(queryResult);
 }
+
 
 /**
  * Gets the computed values for an element's translateX and translateY in px.
@@ -19634,6 +19753,59 @@ function SelectProvider($$interimElementProvider) {
 
 /**
  * @ngdoc module
+ * @name material.components.showHide
+ */
+
+// Add additional handlers to ng-show and ng-hide that notify directives
+// contained within that they should recompute their size.
+// These run in addition to Angular's built-in ng-hide and ng-show directives.
+angular.module('material.components.showHide', [
+  'material.core'
+])
+  .directive('ngShow', createDirective('ngShow', true))
+  .directive('ngHide', createDirective('ngHide', false));
+
+
+function createDirective(name, targetValue) {
+  return ['$mdUtil', '$window', function($mdUtil, $window) {
+    return {
+      restrict: 'A',
+      multiElement: true,
+      link: function($scope, $element, $attr) {
+        var unregister = $scope.$on('$md-resize-enable', function() {
+          unregister();
+
+          var node = $element[0];
+          var cachedTransitionStyles = node.nodeType === $window.Node.ELEMENT_NODE ?
+            $window.getComputedStyle(node) : {};
+
+          $scope.$watch($attr[name], function(value) {
+            if (!!value === targetValue) {
+              $mdUtil.nextTick(function() {
+                $scope.$broadcast('$md-resize');
+              });
+
+              var opts = {
+                cachedTransitionStyles: cachedTransitionStyles
+              };
+
+              $mdUtil.dom.animator.waitTransitionEnd($element, opts).then(function() {
+                $scope.$broadcast('$md-resize');
+              });
+            }
+          });
+        });
+      }
+    };
+  }];
+}
+
+})();
+(function(){
+"use strict";
+
+/**
+ * @ngdoc module
  * @name material.components.sidenav
  *
  * @description
@@ -20176,59 +20348,6 @@ function SidenavController($scope, $attrs, $mdComponentRegistry, $q, $interpolat
       }
     });
   }
-}
-
-})();
-(function(){
-"use strict";
-
-/**
- * @ngdoc module
- * @name material.components.showHide
- */
-
-// Add additional handlers to ng-show and ng-hide that notify directives
-// contained within that they should recompute their size.
-// These run in addition to Angular's built-in ng-hide and ng-show directives.
-angular.module('material.components.showHide', [
-  'material.core'
-])
-  .directive('ngShow', createDirective('ngShow', true))
-  .directive('ngHide', createDirective('ngHide', false));
-
-
-function createDirective(name, targetValue) {
-  return ['$mdUtil', '$window', function($mdUtil, $window) {
-    return {
-      restrict: 'A',
-      multiElement: true,
-      link: function($scope, $element, $attr) {
-        var unregister = $scope.$on('$md-resize-enable', function() {
-          unregister();
-
-          var node = $element[0];
-          var cachedTransitionStyles = node.nodeType === $window.Node.ELEMENT_NODE ?
-            $window.getComputedStyle(node) : {};
-
-          $scope.$watch($attr[name], function(value) {
-            if (!!value === targetValue) {
-              $mdUtil.nextTick(function() {
-                $scope.$broadcast('$md-resize');
-              });
-
-              var opts = {
-                cachedTransitionStyles: cachedTransitionStyles
-              };
-
-              $mdUtil.dom.animator.waitTransitionEnd($element, opts).then(function() {
-                $scope.$broadcast('$md-resize');
-              });
-            }
-          });
-        });
-      }
-    };
-  }];
 }
 
 })();
@@ -24006,7 +24125,13 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
         left   = hrect.left - root.left,
         width  = hrect.width,
         offset = getVerticalOffset(),
+        position = $scope.dropdownPosition,
         styles;
+
+    // Automatically determine dropdown placement based on available space in viewport.
+    if (!position) {
+      position = (top > bot && root.height - hrect.bottom - MENU_PADDING < dropdownHeight) ? 'top' : 'bottom';
+    }
     // Adjust the width to account for the padding provided by `md-input-container`
     if ($attrs.mdFloatingLabel) {
       left += INPUT_PADDING;
@@ -24017,7 +24142,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       minWidth: width + 'px',
       maxWidth: Math.max(hrect.right - root.left, root.right - hrect.left) - MENU_PADDING + 'px'
     };
-    if (top > bot && root.height - hrect.bottom - MENU_PADDING < dropdownHeight) {
+
+    if (position === 'top') {
       styles.top       = 'auto';
       styles.bottom    = bot + 'px';
       styles.maxHeight = Math.min(dropdownHeight, hrect.top - root.top - MENU_PADDING) + 'px';
@@ -24974,6 +25100,7 @@ MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
  *     the dropdown.<br/><br/>
  *     When the dropdown doesn't fit into the viewport, the dropdown will shrink
  *     as less as possible.
+ * @param {string=} md-dropdown-position Overrides the default dropdown position. Options: `top`, `bottom`.
  * @param {string=} ng-trim If set to false, the search text will be not trimmed automatically.
  *     Defaults to true.
  * @param {string=} ng-pattern Adds the pattern validator to the ngModel of the search text.
@@ -25090,7 +25217,8 @@ function MdAutocomplete ($$mdSvgRegistry) {
       menuClass:        '@?mdMenuClass',
       inputId:          '@?mdInputId',
       escapeOptions:    '@?mdEscapeOptions',
-      dropdownItems:    '=?mdDropdownItems'
+      dropdownItems:    '=?mdDropdownItems',
+      dropdownPosition: '@?mdDropdownPosition'
     },
     compile: function(tElement, tAttrs) {
       var attributes = ['md-select-on-focus', 'md-no-asterisk', 'ng-trim', 'ng-pattern'];
@@ -28560,7 +28688,8 @@ function MdContactChips($mdTheming, $mdUtil) {
    * @property {(Array<string>)=} firstDayOfWeek The first day of the week. Sunday = 0, Monday = 1,
    *    etc.
    * @property {(function(string): Date)=} parseDate Function to parse a date object from a string.
-   * @property {(function(Date): string)=} formatDate Function to format a date object to a string.
+   * @property {(function(Date, string): string)=} formatDate Function to format a date object to a
+   *     string. The datepicker directive also provides the time zone, if it was specified.
    * @property {(function(Date): string)=} monthHeaderFormatter Function that returns the label for
    *     a month given a date.
    * @property {(function(Date): string)=} monthFormatter Function that returns the full name of a month
@@ -28700,9 +28829,10 @@ function MdContactChips($mdTheming, $mdUtil) {
       /**
        * Default date-to-string formatting function.
        * @param {!Date} date
+       * @param {string=} timezone
        * @returns {string}
        */
-      function defaultFormatDate(date) {
+      function defaultFormatDate(date, timezone) {
         if (!date) {
           return '';
         }
@@ -28719,7 +28849,7 @@ function MdContactChips($mdTheming, $mdUtil) {
           formatDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 1, 0, 0);
         }
 
-        return $filter('date')(formatDate, 'M/d/yyyy');
+        return $filter('date')(formatDate, 'M/d/yyyy', timezone);
       }
 
       /**
@@ -29572,11 +29702,7 @@ function MdContactChips($mdTheming, $mdUtil) {
             'Currently the model is a: ' + (typeof value));
       }
 
-      self.date = value;
-      self.inputElement.value = self.dateLocale.formatDate(value);
-      self.mdInputContainer && self.mdInputContainer.setHasValue(!!value);
-      self.resizeInputElement();
-      self.updateErrorState();
+      self.onExternalChange(value);
 
       return value;
     });
@@ -29607,12 +29733,8 @@ function MdContactChips($mdTheming, $mdUtil) {
 
     self.$scope.$on('md-calendar-change', function(event, date) {
       self.setModelValue(date);
-      self.date = date;
-      self.inputElement.value = self.dateLocale.formatDate(date);
-      self.mdInputContainer && self.mdInputContainer.setHasValue(!!date);
+      self.onExternalChange(date);
       self.closeCalendarPane();
-      self.resizeInputElement();
-      self.updateErrorState();
     });
 
     self.ngInputElement.on('input', angular.bind(self, self.resizeInputElement));
@@ -30023,7 +30145,23 @@ function MdContactChips($mdTheming, $mdUtil) {
    * @param {Date=} value Date to be set as the model value.
    */
   DatePickerCtrl.prototype.setModelValue = function(value) {
-    this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd'));
+    var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
+    this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone));
+  };
+
+  /**
+   * Updates the datepicker when a model change occurred externally.
+   * @param {Date=} value Value that was set to the model.
+   */
+  DatePickerCtrl.prototype.onExternalChange = function(value) {
+    var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
+
+    this.date = value;
+    this.inputElement.value = this.dateLocale.formatDate(value, timezone);
+    this.mdInputContainer && this.mdInputContainer.setHasValue(!!value);
+    this.closeCalendarPane();
+    this.resizeInputElement();
+    this.updateErrorState();
   };
 })();
 
@@ -32698,11 +32836,7 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
       });
 
       if (angular.isUndefined(attrs.mdMode)) {
-        var hasValue = angular.isDefined(attrs.value);
-        var mode = hasValue ? MODE_DETERMINATE : MODE_INDETERMINATE;
-        var info = "Auto-adding the missing md-mode='{0}' to the ProgressCircular element";
-
-          // $log.debug( $mdUtil.supplant(info, [mode]) );
+        var mode = attrs.hasOwnProperty('value') ? MODE_DETERMINATE : MODE_INDETERMINATE;
         attrs.$set('mdMode', mode);
       } else {
         attrs.$set('mdMode', attrs.mdMode.trim());
@@ -32749,8 +32883,8 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
       if (isDisabled === true || isDisabled === false){
         return isDisabled;
       }
-      return angular.isDefined(element.attr('disabled'));
 
+      return angular.isDefined(element.attr('disabled'));
     }], function(newValues, oldValues) {
       var mode = newValues[1];
       var isDisabled = newValues[2];
@@ -32787,6 +32921,7 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
     scope.$watch('mdDiameter', function(newValue) {
       var diameter = getSize(newValue);
       var strokeWidth = getStroke(diameter);
+      var value = clamp(scope.value);
       var transformOrigin = (diameter / 2) + 'px';
       var dimensions = {
         width: diameter + 'px',
@@ -32811,6 +32946,8 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
 
       element.css(dimensions);
       path.css('stroke-width',  strokeWidth + 'px');
+
+      renderCircle(value, value);
     });
 
     function renderCircle(animateFrom, animateTo, easing, duration, rotation) {
@@ -34425,4 +34562,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-e3619e6"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-8f8274a"}};

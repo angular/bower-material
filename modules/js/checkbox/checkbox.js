@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-e3619e6
+ * v1.1.1-master-8f8274a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -12,7 +12,7 @@
  * @name material.components.checkbox
  * @description Checkbox module!
  */
-MdCheckboxDirective.$inject = ["inputDirective", "$mdAria", "$mdConstant", "$mdTheming", "$mdUtil", "$timeout"];
+MdCheckboxDirective.$inject = ["inputDirective", "$mdAria", "$mdConstant", "$mdTheming", "$mdUtil", "$mdInteraction"];
 angular
   .module('material.components.checkbox', ['material.core'])
   .directive('mdCheckbox', MdCheckboxDirective);
@@ -64,7 +64,7 @@ angular
  * </hljs>
  *
  */
-function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $mdUtil, $timeout) {
+function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $mdUtil, $mdInteraction) {
   inputDirective = inputDirective[0];
 
   return {
@@ -140,17 +140,10 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
         0: {}
       }, attr, [ngModelCtrl]);
 
-      scope.mouseActive = false;
       element.on('click', listener)
         .on('keypress', keypressHandler)
-        .on('mousedown', function() {
-          scope.mouseActive = true;
-          $timeout(function() {
-            scope.mouseActive = false;
-          }, 100);
-        })
         .on('focus', function() {
-          if (scope.mouseActive === false) {
+          if ($mdInteraction.getLastInteractionType() === 'keyboard') {
             element.addClass('md-focused');
           }
         })

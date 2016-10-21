@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-e3619e6
+ * v1.1.1-master-8f8274a
  */
 goog.provide('ngmaterial.components.datepicker');
 goog.require('ngmaterial.components.icon');
@@ -1495,7 +1495,8 @@ angular.module('material.components.datepicker', [
    * @property {(Array<string>)=} firstDayOfWeek The first day of the week. Sunday = 0, Monday = 1,
    *    etc.
    * @property {(function(string): Date)=} parseDate Function to parse a date object from a string.
-   * @property {(function(Date): string)=} formatDate Function to format a date object to a string.
+   * @property {(function(Date, string): string)=} formatDate Function to format a date object to a
+   *     string. The datepicker directive also provides the time zone, if it was specified.
    * @property {(function(Date): string)=} monthHeaderFormatter Function that returns the label for
    *     a month given a date.
    * @property {(function(Date): string)=} monthFormatter Function that returns the full name of a month
@@ -1635,9 +1636,10 @@ angular.module('material.components.datepicker', [
       /**
        * Default date-to-string formatting function.
        * @param {!Date} date
+       * @param {string=} timezone
        * @returns {string}
        */
-      function defaultFormatDate(date) {
+      function defaultFormatDate(date, timezone) {
         if (!date) {
           return '';
         }
@@ -1654,7 +1656,7 @@ angular.module('material.components.datepicker', [
           formatDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 1, 0, 0);
         }
 
-        return $filter('date')(formatDate, 'M/d/yyyy');
+        return $filter('date')(formatDate, 'M/d/yyyy', timezone);
       }
 
       /**
@@ -2499,11 +2501,7 @@ angular.module('material.components.datepicker', [
             'Currently the model is a: ' + (typeof value));
       }
 
-      self.date = value;
-      self.inputElement.value = self.dateLocale.formatDate(value);
-      self.mdInputContainer && self.mdInputContainer.setHasValue(!!value);
-      self.resizeInputElement();
-      self.updateErrorState();
+      self.onExternalChange(value);
 
       return value;
     });
@@ -2534,12 +2532,8 @@ angular.module('material.components.datepicker', [
 
     self.$scope.$on('md-calendar-change', function(event, date) {
       self.setModelValue(date);
-      self.date = date;
-      self.inputElement.value = self.dateLocale.formatDate(date);
-      self.mdInputContainer && self.mdInputContainer.setHasValue(!!date);
+      self.onExternalChange(date);
       self.closeCalendarPane();
-      self.resizeInputElement();
-      self.updateErrorState();
     });
 
     self.ngInputElement.on('input', angular.bind(self, self.resizeInputElement));
@@ -2950,7 +2944,23 @@ angular.module('material.components.datepicker', [
    * @param {Date=} value Date to be set as the model value.
    */
   DatePickerCtrl.prototype.setModelValue = function(value) {
-    this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd'));
+    var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
+    this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone));
+  };
+
+  /**
+   * Updates the datepicker when a model change occurred externally.
+   * @param {Date=} value Value that was set to the model.
+   */
+  DatePickerCtrl.prototype.onExternalChange = function(value) {
+    var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
+
+    this.date = value;
+    this.inputElement.value = this.dateLocale.formatDate(value, timezone);
+    this.mdInputContainer && this.mdInputContainer.setHasValue(!!value);
+    this.closeCalendarPane();
+    this.resizeInputElement();
+    this.updateErrorState();
   };
 })();
 

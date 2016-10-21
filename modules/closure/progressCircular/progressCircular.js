@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-e3619e6
+ * v1.1.1-master-8f8274a
  */
 goog.provide('ngmaterial.components.progressCircular');
 goog.require('ngmaterial.core');
@@ -104,11 +104,7 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
       });
 
       if (angular.isUndefined(attrs.mdMode)) {
-        var hasValue = angular.isDefined(attrs.value);
-        var mode = hasValue ? MODE_DETERMINATE : MODE_INDETERMINATE;
-        var info = "Auto-adding the missing md-mode='{0}' to the ProgressCircular element";
-
-          // $log.debug( $mdUtil.supplant(info, [mode]) );
+        var mode = attrs.hasOwnProperty('value') ? MODE_DETERMINATE : MODE_INDETERMINATE;
         attrs.$set('mdMode', mode);
       } else {
         attrs.$set('mdMode', attrs.mdMode.trim());
@@ -155,8 +151,8 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
       if (isDisabled === true || isDisabled === false){
         return isDisabled;
       }
-      return angular.isDefined(element.attr('disabled'));
 
+      return angular.isDefined(element.attr('disabled'));
     }], function(newValues, oldValues) {
       var mode = newValues[1];
       var isDisabled = newValues[2];
@@ -193,6 +189,7 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
     scope.$watch('mdDiameter', function(newValue) {
       var diameter = getSize(newValue);
       var strokeWidth = getStroke(diameter);
+      var value = clamp(scope.value);
       var transformOrigin = (diameter / 2) + 'px';
       var dimensions = {
         width: diameter + 'px',
@@ -217,6 +214,8 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
 
       element.css(dimensions);
       path.css('stroke-width',  strokeWidth + 'px');
+
+      renderCircle(value, value);
     });
 
     function renderCircle(animateFrom, animateTo, easing, duration, rotation) {

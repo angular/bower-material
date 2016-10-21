@@ -1205,6 +1205,75 @@ input {
     @include layout-for-name($name);
 }
 
+.md-panel-outer-wrapper {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+._md-panel-hidden {
+  display: none;
+}
+
+._md-panel-fullscreen {
+  border-radius: 0;
+  left: 0;
+  min-height: 100%;
+  min-width: 100%;
+  position: fixed;
+  top: 0;
+}
+
+// Only used when no animations are present.
+._md-panel-shown .md-panel {
+  opacity: 1;
+  transition: none;
+}
+
+.md-panel {
+  opacity: 0;
+  position: fixed;
+
+  &._md-panel-shown {
+    // Only used when custom animations are present.
+    // Overridden by the default animations.
+    opacity: 1;
+    transition: none;
+  }
+
+  &._md-panel-animate-enter {
+    opacity: 1;
+    transition: $material-enter;
+  }
+
+  &._md-panel-animate-leave {
+    opacity: 1;
+    transition: $material-leave;
+  }
+
+  &._md-panel-animate-scale-out,
+  &._md-panel-animate-fade-out {
+    opacity: 0;
+  }
+
+  &._md-panel-backdrop {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+  }
+
+  &._md-opaque-enter {
+    opacity: .48;
+    transition: opacity $material-enter-duration $material-enter-timing-function;
+  }
+
+  &._md-opaque-leave {
+    transition: opacity $material-leave-duration $material-leave-timing-function;
+  }
+}
+
 // The default item height is also specified in the JavaScript.
 $md-autocomplete-item-height: 48px !default;
 
@@ -4612,80 +4681,19 @@ md-nav-ink-bar {
     transition: left $duration $swift-ease-in-out-timing-function,
         right ($duration * $multiplier) $swift-ease-in-out-timing-function;
   }
+
+  // By default $ngAnimate looks for transition durations on the element, when using ng-hide, ng-if, ng-show.
+  // The ink bar has a transition duration applied, which means, that $ngAnimate delays the hide process.
+  // To avoid this, we need to reset the transition, when $ngAnimate looks for the duration.
+  &.ng-animate {
+    transition: none;
+  }
+
 }
 
 md-nav-extra-content {
   min-height: 48px;
   padding-right: 12px;
-}
-
-.md-panel-outer-wrapper {
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 100%;
-}
-
-._md-panel-hidden {
-  display: none;
-}
-
-._md-panel-fullscreen {
-  border-radius: 0;
-  left: 0;
-  min-height: 100%;
-  min-width: 100%;
-  position: fixed;
-  top: 0;
-}
-
-// Only used when no animations are present.
-._md-panel-shown .md-panel {
-  opacity: 1;
-  transition: none;
-}
-
-.md-panel {
-  opacity: 0;
-  position: fixed;
-
-  &._md-panel-shown {
-    // Only used when custom animations are present.
-    // Overridden by the default animations.
-    opacity: 1;
-    transition: none;
-  }
-
-  &._md-panel-animate-enter {
-    opacity: 1;
-    transition: $material-enter;
-  }
-
-  &._md-panel-animate-leave {
-    opacity: 1;
-    transition: $material-leave;
-  }
-
-  &._md-panel-animate-scale-out,
-  &._md-panel-animate-fade-out {
-    opacity: 0;
-  }
-
-  &._md-panel-backdrop {
-    height: 100%;
-    position: absolute;
-    width: 100%;
-  }
-
-  &._md-opaque-enter {
-    opacity: .48;
-    transition: opacity $material-enter-duration $material-enter-timing-function;
-  }
-
-  &._md-opaque-leave {
-    transition: opacity $material-leave-duration $material-leave-timing-function;
-  }
 }
 
 $progress-circular-indeterminate-duration: 2.9s !default;
@@ -5449,20 +5457,30 @@ md-sidenav {
     list-style: none;
   }
 
+  // Animation Comment Syntax: [mdLockedOpen]|[mdClosed]
+  // mdLockedOpen states: unlocked, locked, any
+  // mdClosed states: open, closed, any
+  // Default state: unlocked|open
+
+  // unlocked|closed
   &.md-closed {
     display: none;
   }
+
+  // any|open <=> any|closed
   &.md-closed-add,
   &.md-closed-remove {
     display: flex;
     transition: 0.2s ease-in all;
   }
 
+  // any|open <=> any|closed (animating)
   &.md-closed-add.md-closed-add-active,
   &.md-closed-remove.md-closed-remove-active {
     transition: $swift-ease-out;
   }
 
+  // unlocked|any <=> locked|any
   &.md-locked-open-add,
   &.md-locked-open-remove {
     position: static;
@@ -5470,34 +5488,50 @@ md-sidenav {
     transform: translate3d(0, 0, 0);
   }
 
+  // locked|any
   &.md-locked-open,
   &.md-locked-open.md-closed,
   &.md-locked-open.md-closed.md-sidenav-left,
-  &.md-locked-open.md-closed.md-sidenav-right,
+  &.md-locked-open.md-closed.md-sidenav-right {
+    position: static;
+    display: flex;
+    transform: translate3d(0, 0, 0);
+  }
+
+  // locked|closed => unlock|closed
   &.md-locked-open-remove.md-closed {
     position: static;
     display: flex;
     transform: translate3d(0, 0, 0);
   }
+
+  // unlocked|closed => locked|closed
+  &.md-closed.md-locked-open-add {
+    position: static;
+    display: flex;
+    transform: translate3d(0%, 0, 0);
+  }
+
+  // unlocked|closed => locked|closed (pre-animation)
+  &.md-closed.md-locked-open-add:not(.md-locked-open-add-active) {
+    transition: width $swift-ease-in-duration $swift-ease-in-timing-function,
+                min-width $swift-ease-in-duration $swift-ease-in-timing-function;
+    width: 0 !important;
+    min-width: 0 !important;
+  }
+
+  // unlocked|closed => locked|closed (animating)
+  &.md-closed.md-locked-open-add-active {
+    transition: width $swift-ease-in-duration $swift-ease-in-timing-function,
+                min-width $swift-ease-in-duration $swift-ease-in-timing-function;
+  }
+
+  // locked|any => unlocked|any (animating)
   &.md-locked-open-remove-active {
     transition: width $swift-ease-in-duration $swift-ease-in-timing-function,
                 min-width $swift-ease-in-duration $swift-ease-in-timing-function;
     width: 0 !important;
     min-width: 0 !important;
-  }
-
-  &.md-closed.md-locked-open-add {
-    width: 0 !important;
-    min-width: 0 !important;
-    transform: translate3d(0%, 0, 0);
-  }
-
-  &.md-closed.md-locked-open-add-active {
-    transition: width $swift-ease-in-duration $swift-ease-in-timing-function,
-                min-width $swift-ease-in-duration $swift-ease-in-timing-function;
-    width: $sidenav-mobile-width;
-    min-width: $sidenav-mobile-width;
-    transform: translate3d(0%, 0, 0);
   }
 
   @extend .md-sidenav-left;

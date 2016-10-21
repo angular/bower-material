@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-e3619e6
+ * v1.1.1-master-8f8274a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -315,20 +315,19 @@ function ColorUtilFactory() {
   };
 }
 
-
-MdConstantFactory.$inject = ["$sniffer", "$window", "$document"];angular.module('material.core')
+angular.module('material.core')
 .factory('$mdConstant', MdConstantFactory);
 
 /**
  * Factory function that creates the grab-bag $mdConstant service.
  * ngInject
  */
-function MdConstantFactory($sniffer, $window, $document) {
+function MdConstantFactory() {
 
-  var vendorPrefix = $sniffer.vendorPrefix;
+  var prefixTestEl = document.createElement('div');
+  var vendorPrefix = getVendorPrefix(prefixTestEl);
   var isWebkit = /webkit/i.test(vendorPrefix);
   var SPECIAL_CHARS_REGEXP = /([:\-_]+(.))/g;
-  var prefixTestEl = document.createElement('div');
 
   function vendorProperty(name) {
     // Add a dash between the prefix and name, to be able to transform the string into camelcase.
@@ -336,19 +335,30 @@ function MdConstantFactory($sniffer, $window, $document) {
     var ucPrefix = camelCase(prefixedName);
     var lcPrefix = ucPrefix.charAt(0).toLowerCase() + ucPrefix.substring(1);
 
-    return hasStyleProperty(name)     ? name     :       // The current browser supports the un-prefixed property
-           hasStyleProperty(ucPrefix) ? ucPrefix :       // The current browser only supports the prefixed property.
-           hasStyleProperty(lcPrefix) ? lcPrefix : name; // Some browsers are only supporting the prefix in lowercase.
+    return hasStyleProperty(prefixTestEl, name)     ? name     :       // The current browser supports the un-prefixed property
+           hasStyleProperty(prefixTestEl, ucPrefix) ? ucPrefix :       // The current browser only supports the prefixed property.
+           hasStyleProperty(prefixTestEl, lcPrefix) ? lcPrefix : name; // Some browsers are only supporting the prefix in lowercase.
   }
 
-  function hasStyleProperty(property) {
-    return angular.isDefined(prefixTestEl.style[property]);
+  function hasStyleProperty(testElement, property) {
+    return angular.isDefined(testElement.style[property]);
   }
 
   function camelCase(input) {
     return input.replace(SPECIAL_CHARS_REGEXP, function(matches, separator, letter, offset) {
       return offset ? letter.toUpperCase() : letter;
     });
+  }
+
+  function getVendorPrefix(testElement) {
+    var prop, match;
+    var vendorRegex = /^(Moz|webkit|ms)(?=[A-Z])/;
+
+    for (prop in testElement.style) {
+      if (match = vendorRegex.exec(prop)) {
+        return match[0];
+      }
+    }
   }
 
   var self = {
@@ -1264,20 +1274,25 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
         var viewportTop = $mdUtil.getViewportTop();
         var clientWidth = body.clientWidth;
+        var hasVerticalScrollbar = body.scrollHeight > body.clientHeight + 1;
 
-        if (body.scrollHeight > body.clientHeight + 1) {
-
+        if (hasVerticalScrollbar) {
           angular.element(body).css({
             position: 'fixed',
             width: '100%',
             top: -viewportTop + 'px'
           });
-
-          documentElement.style.overflowY = 'scroll';
         }
 
         if (body.clientWidth < clientWidth) {
           body.style.overflow = 'hidden';
+        }
+
+        // This should be applied after the manipulation to the body, because
+        // adding a scrollbar can potentially resize it, causing the measurement
+        // to change.
+        if (hasVerticalScrollbar) {
+          documentElement.style.overflowY = 'scroll';
         }
 
         return function restoreScroll() {
