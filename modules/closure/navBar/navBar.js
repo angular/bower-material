@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-db90283
+ * v1.1.1-master-72b4f10
  */
 goog.provide('ngmaterial.components.navBar');
 goog.require('ngmaterial.core');
@@ -402,27 +402,44 @@ function MdNavItem($$rAF) {
     controllerAs: 'ctrl',
     replace: true,
     transclude: true,
-    template:
-      '<li class="md-nav-item" role="option" aria-selected="{{ctrl.isSelected()}}">' +
-        '<md-button ng-if="ctrl.mdNavSref" class="_md-nav-button md-accent"' +
-          'ng-class="ctrl.getNgClassMap()"' +
-          'tabindex="-1"' +
-          'ui-sref="{{ctrl.mdNavSref}}">' +
-          '<span ng-transclude class="_md-nav-button-text"></span>' +
-        '</md-button>' +
-        '<md-button ng-if="ctrl.mdNavHref" class="_md-nav-button md-accent"' +
-          'ng-class="ctrl.getNgClassMap()"' +
-          'tabindex="-1"' +
-          'ng-href="{{ctrl.mdNavHref}}">' +
-          '<span ng-transclude class="_md-nav-button-text"></span>' +
-        '</md-button>' +
-        '<md-button ng-if="ctrl.mdNavClick" class="_md-nav-button md-accent"' +
-          'ng-class="ctrl.getNgClassMap()"' +
-          'tabindex="-1"' +
-          'ng-click="ctrl.mdNavClick()">' +
-          '<span ng-transclude class="_md-nav-button-text"></span>' +
-        '</md-button>' +
-      '</li>',
+    template: function(tElement, tAttrs) {
+      var hasNavClick = tAttrs.mdNavClick;
+      var hasNavHref = tAttrs.mdNavHref;
+      var hasNavSref = tAttrs.mdNavSref;
+      var navigationAttribute;
+      var buttonTemplate;
+
+      // Cannot specify more than one nav attribute
+      if ((hasNavClick ? 1:0) + (hasNavHref ? 1:0) + (hasNavSref ? 1:0) > 1) {
+        throw Error(
+          'Must not specify more than one of the md-nav-click, md-nav-href, ' +
+          'or md-nav-sref attributes per nav-item directive.'
+        );
+      }
+
+      if (hasNavClick) {
+        navigationAttribute = 'ng-click="ctrl.mdNavClick()"';
+      } else if (hasNavHref) {
+        navigationAttribute = 'ng-href="{{ctrl.mdNavHref}}"';
+      } else if (hasNavSref) {
+        navigationAttribute = 'ui-sref="{{ctrl.mdNavSref}}"';
+      }
+
+      if (navigationAttribute) {
+        buttonTemplate = '' +
+          '<md-button class="_md-nav-button md-accent" ' +
+            'ng-class="ctrl.getNgClassMap()" ' +
+            'tabindex="-1" ' +
+            navigationAttribute + '>' +
+            '<span ng-transclude class="_md-nav-button-text"></span>' +
+          '</md-button>';
+      }
+
+      return '' +
+        '<li class="md-nav-item" role="option" aria-selected="{{ctrl.isSelected()}}">' +
+          (buttonTemplate || '') +
+        '</li>';
+    },
     scope: {
       'mdNavClick': '&?',
       'mdNavHref': '@?',
@@ -465,10 +482,13 @@ function MdNavItemController($element) {
   this._$element = $element;
 
   // Data-bound variables
+
   /** @const {?Function} */
   this.mdNavClick;
+
   /** @const {?string} */
   this.mdNavHref;
+
   /** @const {?string} */
   this.name;
 
@@ -478,17 +498,6 @@ function MdNavItemController($element) {
 
   /** @private {boolean} */
   this._focused = false;
-
-  var hasNavClick = !!($element.attr('md-nav-click'));
-  var hasNavHref = !!($element.attr('md-nav-href'));
-  var hasNavSref = !!($element.attr('md-nav-sref'));
-
-  // Cannot specify more than one nav attribute
-  if ((hasNavClick ? 1:0) + (hasNavHref ? 1:0) + (hasNavSref ? 1:0) > 1) {
-    throw Error(
-        'Must specify exactly one of md-nav-click, md-nav-href, ' +
-        'md-nav-sref for nav-item directive');
-  }
 }
 
 /**

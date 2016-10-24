@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-db90283
+ * v1.1.1-master-72b4f10
  */
 goog.provide('ngmaterial.core');
 
@@ -2477,8 +2477,6 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
   var self = {
     handler: addHandler,
     register: register,
-    isIos: isIos,
-    isAndroid: isAndroid,
     // On mobile w/out jQuery, we normally intercept clicks. Should we skip that?
     isHijackingClicks: (isIos || isAndroid) && !hasJQuery && !forceSkipClickHijack
   };

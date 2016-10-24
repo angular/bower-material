@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-db90283
+ * v1.1.1-master-72b4f10
  */
 goog.provide('ngmaterial.components.datepicker');
 goog.require('ngmaterial.components.icon');
@@ -2100,7 +2100,7 @@ angular.module('material.components.datepicker', [
   // TODO(jelbourn): input behavior (masking? auto-complete?)
 
 
-  DatePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$window", "$mdConstant", "$mdTheming", "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF", "$mdGesture", "$filter"];
+  DatePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$window", "$mdConstant", "$mdTheming", "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF", "$filter"];
   datePickerDirective.$inject = ["$$mdSvgRegistry", "$mdUtil", "$mdAria", "inputDirective"];
   angular.module('material.components.datepicker')
       .directive('mdDatepicker', datePickerDirective);
@@ -2310,13 +2310,16 @@ angular.module('material.components.datepicker', [
    */
   var CALENDAR_PANE_WIDTH = 360;
 
+  /** Used for checking whether the current user agent is on iOS or Android. */
+  var IS_MOBILE_REGEX = /ipad|iphone|ipod|android/i;
+
   /**
    * Controller for md-datepicker.
    *
    * ngInject @constructor
    */
   function DatePickerCtrl($scope, $element, $attrs, $window, $mdConstant,
-    $mdTheming, $mdUtil, $mdDateLocale, $$mdDateUtil, $$rAF, $mdGesture, $filter) {
+    $mdTheming, $mdUtil, $mdDateLocale, $$mdDateUtil, $$rAF, $filter) {
 
     /** @final */
     this.$window = $window;
@@ -2415,7 +2418,9 @@ angular.module('material.components.datepicker', [
      * the resize event doesn't make sense on mobile and can have a negative impact since it
      * triggers whenever the browser zooms in on a focused input.
      */
-    this.windowEventName = ($mdGesture.isIos || $mdGesture.isAndroid) ? 'orientationchange' : 'resize';
+    this.windowEventName = IS_MOBILE_REGEX.test(
+      navigator.userAgent || navigator.vendor || window.opera
+    ) ? 'orientationchange' : 'resize';
 
     /** Pre-bound close handler so that the event listener can be removed. */
     this.windowEventHandler = $mdUtil.debounce(angular.bind(this, this.closeCalendarPane), 100);

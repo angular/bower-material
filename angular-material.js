@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-db90283
+ * v1.1.1-master-72b4f10
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2521,8 +2521,6 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
   var self = {
     handler: addHandler,
     register: register,
-    isIos: isIos,
-    isAndroid: isAndroid,
     // On mobile w/out jQuery, we normally intercept clicks. Should we skip that?
     isHijackingClicks: (isIos || isAndroid) && !hasJQuery && !forceSkipClickHijack
   };
@@ -14155,27 +14153,44 @@ function MdNavItem($$rAF) {
     controllerAs: 'ctrl',
     replace: true,
     transclude: true,
-    template:
-      '<li class="md-nav-item" role="option" aria-selected="{{ctrl.isSelected()}}">' +
-        '<md-button ng-if="ctrl.mdNavSref" class="_md-nav-button md-accent"' +
-          'ng-class="ctrl.getNgClassMap()"' +
-          'tabindex="-1"' +
-          'ui-sref="{{ctrl.mdNavSref}}">' +
-          '<span ng-transclude class="_md-nav-button-text"></span>' +
-        '</md-button>' +
-        '<md-button ng-if="ctrl.mdNavHref" class="_md-nav-button md-accent"' +
-          'ng-class="ctrl.getNgClassMap()"' +
-          'tabindex="-1"' +
-          'ng-href="{{ctrl.mdNavHref}}">' +
-          '<span ng-transclude class="_md-nav-button-text"></span>' +
-        '</md-button>' +
-        '<md-button ng-if="ctrl.mdNavClick" class="_md-nav-button md-accent"' +
-          'ng-class="ctrl.getNgClassMap()"' +
-          'tabindex="-1"' +
-          'ng-click="ctrl.mdNavClick()">' +
-          '<span ng-transclude class="_md-nav-button-text"></span>' +
-        '</md-button>' +
-      '</li>',
+    template: function(tElement, tAttrs) {
+      var hasNavClick = tAttrs.mdNavClick;
+      var hasNavHref = tAttrs.mdNavHref;
+      var hasNavSref = tAttrs.mdNavSref;
+      var navigationAttribute;
+      var buttonTemplate;
+
+      // Cannot specify more than one nav attribute
+      if ((hasNavClick ? 1:0) + (hasNavHref ? 1:0) + (hasNavSref ? 1:0) > 1) {
+        throw Error(
+          'Must not specify more than one of the md-nav-click, md-nav-href, ' +
+          'or md-nav-sref attributes per nav-item directive.'
+        );
+      }
+
+      if (hasNavClick) {
+        navigationAttribute = 'ng-click="ctrl.mdNavClick()"';
+      } else if (hasNavHref) {
+        navigationAttribute = 'ng-href="{{ctrl.mdNavHref}}"';
+      } else if (hasNavSref) {
+        navigationAttribute = 'ui-sref="{{ctrl.mdNavSref}}"';
+      }
+
+      if (navigationAttribute) {
+        buttonTemplate = '' +
+          '<md-button class="_md-nav-button md-accent" ' +
+            'ng-class="ctrl.getNgClassMap()" ' +
+            'tabindex="-1" ' +
+            navigationAttribute + '>' +
+            '<span ng-transclude class="_md-nav-button-text"></span>' +
+          '</md-button>';
+      }
+
+      return '' +
+        '<li class="md-nav-item" role="option" aria-selected="{{ctrl.isSelected()}}">' +
+          (buttonTemplate || '') +
+        '</li>';
+    },
     scope: {
       'mdNavClick': '&?',
       'mdNavHref': '@?',
@@ -14218,10 +14233,13 @@ function MdNavItemController($element) {
   this._$element = $element;
 
   // Data-bound variables
+
   /** @const {?Function} */
   this.mdNavClick;
+
   /** @const {?string} */
   this.mdNavHref;
+
   /** @const {?string} */
   this.name;
 
@@ -14231,17 +14249,6 @@ function MdNavItemController($element) {
 
   /** @private {boolean} */
   this._focused = false;
-
-  var hasNavClick = !!($element.attr('md-nav-click'));
-  var hasNavHref = !!($element.attr('md-nav-href'));
-  var hasNavSref = !!($element.attr('md-nav-sref'));
-
-  // Cannot specify more than one nav attribute
-  if ((hasNavClick ? 1:0) + (hasNavHref ? 1:0) + (hasNavSref ? 1:0) > 1) {
-    throw Error(
-        'Must specify exactly one of md-nav-click, md-nav-href, ' +
-        'md-nav-sref for nav-item directive');
-  }
 }
 
 /**
@@ -19842,7 +19849,7 @@ function createDirective(name, targetValue) {
  * A Sidenav QP component.
  */
 SidenavService.$inject = ["$mdComponentRegistry", "$mdUtil", "$q", "$log"];
-SidenavDirective.$inject = ["$mdMedia", "$mdUtil", "$mdConstant", "$mdTheming", "$mdInteraction", "$animate", "$compile", "$parse", "$log", "$q", "$document", "$window"];
+SidenavDirective.$inject = ["$mdMedia", "$mdUtil", "$mdConstant", "$mdTheming", "$mdInteraction", "$animate", "$compile", "$parse", "$log", "$q", "$document", "$window", "$$rAF"];
 SidenavController.$inject = ["$scope", "$attrs", "$mdComponentRegistry", "$q", "$interpolate"];
 angular
   .module('material.components.sidenav', [
@@ -20082,8 +20089,8 @@ function SidenavFocusDirective() {
  *   - `<md-sidenav md-is-locked-open="$mdMedia('min-width: 1000px')"></md-sidenav>`
  *   - `<md-sidenav md-is-locked-open="$mdMedia('sm')"></md-sidenav>` (locks open on small screens)
  */
-function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInteraction, $animate, $compile,
-                          $parse, $log, $q, $document, $window) {
+function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInteraction, $animate,
+                          $compile, $parse, $log, $q, $document, $window, $$rAF) {
   return {
     restrict: 'E',
     scope: {
@@ -20207,8 +20214,12 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInterac
       ]).then(function() {
         // Perform focus when animations are ALL done...
         if (scope.isOpen) {
-          // Notifies child components that the sidenav was opened.
-          ngWindow.triggerHandler('resize');
+          $$rAF(function() {
+            // Notifies child components that the sidenav was opened. Should wait
+            // a frame in order to allow for the element height to be computed.
+            ngWindow.triggerHandler('resize');
+          });
+
           focusEl && focusEl.focus();
         }
 
@@ -29331,7 +29342,7 @@ function MdContactChips($mdTheming, $mdUtil) {
   // TODO(jelbourn): input behavior (masking? auto-complete?)
 
 
-  DatePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$window", "$mdConstant", "$mdTheming", "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF", "$mdGesture", "$filter"];
+  DatePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$window", "$mdConstant", "$mdTheming", "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF", "$filter"];
   datePickerDirective.$inject = ["$$mdSvgRegistry", "$mdUtil", "$mdAria", "inputDirective"];
   angular.module('material.components.datepicker')
       .directive('mdDatepicker', datePickerDirective);
@@ -29541,13 +29552,16 @@ function MdContactChips($mdTheming, $mdUtil) {
    */
   var CALENDAR_PANE_WIDTH = 360;
 
+  /** Used for checking whether the current user agent is on iOS or Android. */
+  var IS_MOBILE_REGEX = /ipad|iphone|ipod|android/i;
+
   /**
    * Controller for md-datepicker.
    *
    * @ngInject @constructor
    */
   function DatePickerCtrl($scope, $element, $attrs, $window, $mdConstant,
-    $mdTheming, $mdUtil, $mdDateLocale, $$mdDateUtil, $$rAF, $mdGesture, $filter) {
+    $mdTheming, $mdUtil, $mdDateLocale, $$mdDateUtil, $$rAF, $filter) {
 
     /** @final */
     this.$window = $window;
@@ -29646,7 +29660,9 @@ function MdContactChips($mdTheming, $mdUtil) {
      * the resize event doesn't make sense on mobile and can have a negative impact since it
      * triggers whenever the browser zooms in on a focused input.
      */
-    this.windowEventName = ($mdGesture.isIos || $mdGesture.isAndroid) ? 'orientationchange' : 'resize';
+    this.windowEventName = IS_MOBILE_REGEX.test(
+      navigator.userAgent || navigator.vendor || window.opera
+    ) ? 'orientationchange' : 'resize';
 
     /** Pre-bound close handler so that the event listener can be removed. */
     this.windowEventHandler = $mdUtil.debounce(angular.bind(this, this.closeCalendarPane), 100);
@@ -34592,4 +34608,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-db90283"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-72b4f10"}};
