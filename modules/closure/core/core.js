@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-79d272d
+ * v1.1.1-master-a1f2e17
  */
 goog.provide('ngmaterial.core');
 
@@ -2477,8 +2477,6 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
   var self = {
     handler: addHandler,
     register: register,
-    isIos: isIos,
-    isAndroid: isAndroid,
     // On mobile w/out jQuery, we normally intercept clicks. Should we skip that?
     isHijackingClicks: (isIos || isAndroid) && !hasJQuery && !forceSkipClickHijack
   };
@@ -3141,7 +3139,7 @@ function getEventPoint(ev) {
  * @description
  * User interaction detection to provide proper accessibility.
  */
-MdInteractionService.$inject = ["$timeout"];
+MdInteractionService.$inject = ["$timeout", "$mdUtil"];
 angular
   .module('material.core.interaction', [])
   .service('$mdInteraction', MdInteractionService);
@@ -3171,13 +3169,15 @@ angular
  * </hljs>
  *
  */
-function MdInteractionService($timeout) {
+function MdInteractionService($timeout, $mdUtil) {
   this.$timeout = $timeout;
+  this.$mdUtil = $mdUtil;
 
   this.bodyElement = angular.element(document.body);
   this.isBuffering = false;
   this.bufferTimeout = null;
   this.lastInteractionType = null;
+  this.lastInteractionTime = null;
 
   // Type Mappings for the different events
   // There will be three three interaction types
@@ -3225,7 +3225,7 @@ MdInteractionService.prototype.initializeEvents = function() {
 
 /**
  * Event listener for normal interaction events, which should be tracked.
- * @param event {MouseEvent|KeyboardEvent|PointerEvent}
+ * @param event {MouseEvent|KeyboardEvent|PointerEvent|TouchEvent}
  */
 MdInteractionService.prototype.onInputEvent = function(event) {
   if (this.isBuffering) {
@@ -3239,6 +3239,7 @@ MdInteractionService.prototype.onInputEvent = function(event) {
   }
 
   this.lastInteractionType = type;
+  this.lastInteractionTime = this.$mdUtil.now();
 };
 
 /**
@@ -3268,6 +3269,21 @@ MdInteractionService.prototype.onBufferInputEvent = function(event) {
 MdInteractionService.prototype.getLastInteractionType = function() {
   return this.lastInteractionType;
 };
+
+/**
+ * @ngdoc method
+ * @name $mdInteraction#isUserInvoked
+ * @description Method to detect whether any interaction happened recently or not.
+ * @param {number=} checkDelay Time to check for any interaction to have been triggered.
+ * @returns {boolean} Whether there was any interaction or not.
+ */
+MdInteractionService.prototype.isUserInvoked = function(checkDelay) {
+  var delay = angular.isNumber(checkDelay) ? checkDelay : 15;
+
+  // Check for any interaction to be within the specified check time.
+  return this.lastInteractionTime >= this.$mdUtil.now() - delay;
+};
+
 angular.module('material.core')
   .provider('$$interimElement', InterimElementProvider);
 
