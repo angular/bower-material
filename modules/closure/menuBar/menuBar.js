@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-dbc52d0
+ * v1.1.1-master-af041da
  */
 goog.provide('ngmaterial.components.menuBar');
 goog.require('ngmaterial.components.icon');
@@ -20,7 +20,7 @@ angular.module('material.components.menuBar', [
 ]);
 
 
-MenuBarController['$inject'] = ["$scope", "$rootScope", "$element", "$attrs", "$mdConstant", "$document", "$mdUtil", "$timeout"];
+MenuBarController.$inject = ["$scope", "$rootScope", "$element", "$attrs", "$mdConstant", "$document", "$mdUtil", "$timeout"];
 angular
   .module('material.components.menuBar')
   .controller('MenuBarController', MenuBarController);
@@ -367,7 +367,7 @@ MenuBarController.prototype.handleParentClick = function(event) {
  *
  */
 
-MenuBarDirective['$inject'] = ["$mdUtil", "$mdTheming"];
+MenuBarDirective.$inject = ["$mdUtil", "$mdTheming"];
 angular
   .module('material.components.menuBar')
   .directive('mdMenuBar', MenuBarDirective);
@@ -438,7 +438,7 @@ function MenuDividerDirective() {
 }
 
 
-MenuItemController['$inject'] = ["$scope", "$element", "$attrs"];
+MenuItemController.$inject = ["$scope", "$element", "$attrs"];
 angular
   .module('material.components.menuBar')
   .controller('MenuItemController', MenuItemController);
@@ -544,7 +544,7 @@ MenuItemController.prototype.handleClick = function(e) {
 };
 
 
-MenuItemDirective['$inject'] = ["$mdUtil", "$mdConstant", "$$mdSvgRegistry"];
+MenuItemDirective.$inject = ["$mdUtil", "$mdConstant", "$$mdSvgRegistry"];
 angular
   .module('material.components.menuBar')
   .directive('mdMenuItem', MenuItemDirective);

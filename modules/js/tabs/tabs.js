@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-dbc52d0
+ * v1.1.1-master-af041da
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -188,7 +188,7 @@ function MdTabLabel () {
 
 
 
-MdTabScroll['$inject'] = ["$parse"];angular.module('material.components.tabs')
+MdTabScroll.$inject = ["$parse"];angular.module('material.components.tabs')
     .directive('mdTabScroll', MdTabScroll);
 
 function MdTabScroll ($parse) {
@@ -206,7 +206,7 @@ function MdTabScroll ($parse) {
 }
 
 
-MdTabsController['$inject'] = ["$scope", "$element", "$window", "$mdConstant", "$mdTabInkRipple", "$mdUtil", "$animateCss", "$attrs", "$compile", "$mdTheming"];angular
+MdTabsController.$inject = ["$scope", "$element", "$window", "$mdConstant", "$mdTabInkRipple", "$mdUtil", "$animateCss", "$attrs", "$compile", "$mdTheming"];angular
     .module('material.components.tabs')
     .controller('MdTabsController', MdTabsController);
 
@@ -1159,7 +1159,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
  * </hljs>
  *
  */
-MdTabs['$inject'] = ["$$mdSvgRegistry"];
+MdTabs.$inject = ["$$mdSvgRegistry"];
 angular
     .module('material.components.tabs')
     .directive('mdTabs', MdTabs);
@@ -1276,7 +1276,7 @@ function MdTabs ($$mdSvgRegistry) {
 }
 
 
-MdTabsDummyWrapper['$inject'] = ["$mdUtil", "$window"];angular
+MdTabsDummyWrapper.$inject = ["$mdUtil", "$window"];angular
   .module('material.components.tabs')
   .directive('mdTabsDummyWrapper', MdTabsDummyWrapper);
 
@@ -1333,7 +1333,7 @@ function MdTabsDummyWrapper ($mdUtil, $window) {
 }
 
 
-MdTabsTemplate['$inject'] = ["$compile", "$mdUtil"];angular
+MdTabsTemplate.$inject = ["$compile", "$mdUtil"];angular
     .module('material.components.tabs')
     .directive('mdTabsTemplate', MdTabsTemplate);
 
