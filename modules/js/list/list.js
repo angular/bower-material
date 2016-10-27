@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-25b7680
+ * v1.1.1-master-c93fdad
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13,9 +13,9 @@
  * @description
  * List module
  */
-MdListController.$inject = ["$scope", "$element", "$mdListInkRipple"];
-mdListDirective.$inject = ["$mdTheming"];
-mdListItemDirective.$inject = ["$mdAria", "$mdConstant", "$mdUtil", "$timeout"];
+MdListController['$inject'] = ["$scope", "$element", "$mdListInkRipple"];
+mdListDirective['$inject'] = ["$mdTheming"];
+mdListItemDirective['$inject'] = ["$mdAria", "$mdConstant", "$mdUtil", "$timeout"];
 angular.module('material.components.list', [
   'material.core'
 ])

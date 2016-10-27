@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-25b7680
+ * v1.1.1-master-c93fdad
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -12,8 +12,8 @@
  * @name material.components.radioButton
  * @description radioButton module!
  */
-mdRadioGroupDirective.$inject = ["$mdUtil", "$mdConstant", "$mdTheming", "$timeout"];
-mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
+mdRadioGroupDirective['$inject'] = ["$mdUtil", "$mdConstant", "$mdTheming", "$timeout"];
+mdRadioButtonDirective['$inject'] = ["$mdAria", "$mdUtil", "$mdTheming"];
 angular.module('material.components.radioButton', [
   'material.core'
 ])

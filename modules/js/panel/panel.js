@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-25b7680
+ * v1.1.1-master-c93fdad
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -11,7 +11,7 @@
  * @ngdoc module
  * @name material.components.panel
  */
-MdPanelService.$inject = ["$rootElement", "$rootScope", "$injector", "$window"];
+MdPanelService['$inject'] = ["$rootElement", "$rootScope", "$injector", "$window"];
 angular
   .module('material.components.panel', [
     'material.core',

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-25b7680
+ * v1.1.1-master-c93fdad
  */
 goog.provide('ngmaterial.components.whiteframe');
 goog.require('ngmaterial.core');
@@ -10,7 +10,7 @@ goog.require('ngmaterial.core');
  * @ngdoc module
  * @name material.components.whiteframe
  */
-MdWhiteframeDirective.$inject = ["$log"];
+MdWhiteframeDirective['$inject'] = ["$log"];
 angular
   .module('material.components.whiteframe', ['material.core'])
   .directive('mdWhiteframe', MdWhiteframeDirective);
