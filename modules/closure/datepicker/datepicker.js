@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-af041da
+ * v1.1.1-master-b3b8fab
  */
 goog.provide('ngmaterial.components.datepicker');
 goog.require('ngmaterial.components.icon');
@@ -43,7 +43,7 @@ angular.module('material.components.datepicker', [
    *   <md-calendar ng-model="birthday"></md-calendar>
    * </hljs>
    */
-  CalendarCtrl.$inject = ["$element", "$scope", "$$mdDateUtil", "$mdUtil", "$mdConstant", "$mdTheming", "$$rAF", "$attrs", "$mdDateLocale"];
+  CalendarCtrl['$inject'] = ["$element", "$scope", "$$mdDateUtil", "$mdUtil", "$mdConstant", "$mdTheming", "$$rAF", "$attrs", "$mdDateLocale"];
   angular.module('material.components.datepicker')
     .directive('mdCalendar', calendarDirective);
 
@@ -473,7 +473,7 @@ angular.module('material.components.datepicker', [
 (function() {
   'use strict';
 
-  CalendarMonthCtrl.$inject = ["$element", "$scope", "$animate", "$q", "$$mdDateUtil", "$mdDateLocale"];
+  CalendarMonthCtrl['$inject'] = ["$element", "$scope", "$animate", "$q", "$$mdDateUtil", "$mdDateLocale"];
   angular.module('material.components.datepicker')
     .directive('mdCalendarMonth', calendarDirective);
 
@@ -505,7 +505,13 @@ angular.module('material.components.datepicker', [
                   'md-month-offset="$index" ' +
                   'class="md-calendar-month" ' +
                   'md-start-index="monthCtrl.getSelectedMonthIndex()" ' +
-                  'md-item-size="' + TBODY_HEIGHT + '"></tbody>' +
+                  'md-item-size="' + TBODY_HEIGHT + '">' +
+
+                // The <tr> ensures that the <tbody> will always have the
+                // proper height, even if it's empty. If it's content is
+                // compiled, the <tr> will be overwritten.
+                '<tr aria-hidden="true" style="height:' + TBODY_HEIGHT + 'px;"></tr>' +
+              '</tbody>' +
             '</table>' +
           '</md-virtual-repeat-container>' +
         '</div>',
@@ -778,8 +784,8 @@ angular.module('material.components.datepicker', [
 (function() {
   'use strict';
 
-  mdCalendarMonthBodyDirective.$inject = ["$compile", "$$mdSvgRegistry"];
-  CalendarMonthBodyCtrl.$inject = ["$element", "$$mdDateUtil", "$mdDateLocale"];
+  mdCalendarMonthBodyDirective['$inject'] = ["$compile", "$$mdSvgRegistry"];
+  CalendarMonthBodyCtrl['$inject'] = ["$element", "$$mdDateUtil", "$mdDateLocale"];
   angular.module('material.components.datepicker')
       .directive('mdCalendarMonthBody', mdCalendarMonthBodyDirective);
 
@@ -1081,7 +1087,7 @@ angular.module('material.components.datepicker', [
 (function() {
   'use strict';
 
-  CalendarYearCtrl.$inject = ["$element", "$scope", "$animate", "$q", "$$mdDateUtil"];
+  CalendarYearCtrl['$inject'] = ["$element", "$scope", "$animate", "$q", "$$mdDateUtil"];
   angular.module('material.components.datepicker')
     .directive('mdCalendarYear', calendarDirective);
 
@@ -1104,7 +1110,11 @@ angular.module('material.components.datepicker', [
                   'md-virtual-repeat="i in yearCtrl.items" ' +
                   'md-year-offset="$index" class="md-calendar-year" ' +
                   'md-start-index="yearCtrl.getFocusedYearIndex()" ' +
-                  'md-item-size="' + TBODY_HEIGHT + '"></tbody>' +
+                  'md-item-size="' + TBODY_HEIGHT + '">' +
+                // The <tr> ensures that the <tbody> will have the proper
+                // height, even though it may be empty.
+                '<tr aria-hidden="true" style="height:' + TBODY_HEIGHT + 'px;"></tr>' +
+              '</tbody>' +
             '</table>' +
           '</md-virtual-repeat-container>' +
         '</div>',
@@ -1292,7 +1302,7 @@ angular.module('material.components.datepicker', [
 (function() {
   'use strict';
 
-  CalendarYearBodyCtrl.$inject = ["$element", "$$mdDateUtil", "$mdDateLocale"];
+  CalendarYearBodyCtrl['$inject'] = ["$element", "$$mdDateUtil", "$mdDateLocale"];
   angular.module('material.components.datepicker')
       .directive('mdCalendarYearBody', mdCalendarYearDirective);
 
@@ -1770,7 +1780,7 @@ angular.module('material.components.datepicker', [
 
       return service;
     };
-    DateLocaleProvider.prototype.$get.$inject = ["$locale", "$filter"];
+    DateLocaleProvider.prototype.$get['$inject'] = ["$locale", "$filter"];
 
     $provide.provider('$mdDateLocale', new DateLocaleProvider());
   }]);
@@ -2100,8 +2110,8 @@ angular.module('material.components.datepicker', [
   // TODO(jelbourn): input behavior (masking? auto-complete?)
 
 
-  DatePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$window", "$mdConstant", "$mdTheming", "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF", "$filter"];
-  datePickerDirective.$inject = ["$$mdSvgRegistry", "$mdUtil", "$mdAria", "inputDirective"];
+  DatePickerCtrl['$inject'] = ["$scope", "$element", "$attrs", "$window", "$mdConstant", "$mdTheming", "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF", "$filter"];
+  datePickerDirective['$inject'] = ["$$mdSvgRegistry", "$mdUtil", "$mdAria", "inputDirective"];
   angular.module('material.components.datepicker')
       .directive('mdDatepicker', datePickerDirective);
 
@@ -2116,6 +2126,8 @@ angular.module('material.components.datepicker', [
    * @param {expression=} ng-change Expression evaluated when the model value changes.
    * @param {expression=} ng-focus Expression evaluated when the input is focused or the calendar is opened.
    * @param {expression=} ng-blur Expression evaluated when focus is removed from the input or the calendar is closed.
+   * @param {boolean=} ng-disabled Whether the datepicker is disabled.
+   * @param {boolean=} ng-required Whether a value is required for the datepicker.
    * @param {Date=} md-min-date Expression representing a min date (inclusive).
    * @param {Date=} md-max-date Expression representing a max date (inclusive).
    * @param {(function(Date): boolean)=} md-date-filter Function expecting a date and returning a boolean whether it can be selected or not.
@@ -2128,8 +2140,9 @@ angular.module('material.components.datepicker', [
    * * `"all"` - Hides all icons.
    * * `"calendar"` - Only hides the calendar icon.
    * * `"triangle"` - Only hides the triangle icon.
-   * @param {boolean=} ng-disabled Whether the datepicker is disabled.
-   * @param {boolean=} ng-required Whether a value is required for the datepicker.
+   * @param {Object=} md-date-locale Allows for the values from the `$mdDateLocaleProvider` to be
+   * ovewritten on a per-element basis (e.g. `msgOpenCalendar` can be overwritten with
+   * `md-date-locale="{ msgOpenCalendar: 'Open a special calendar' }"`).
    *
    * @description
    * `<md-datepicker>` is a component used to select a single date.
@@ -2171,7 +2184,7 @@ angular.module('material.components.datepicker', [
           '<md-button type="button" md-no-ink ' +
               'class="md-datepicker-triangle-button md-icon-button" ' +
               'ng-click="ctrl.openCalendarPane($event)" ' +
-              'aria-label="{{::ctrl.dateLocale.msgOpenCalendar}}">' +
+              'aria-label="{{::ctrl.locale.msgOpenCalendar}}">' +
             '<div class="md-datepicker-expand-triangle"></div>' +
           '</md-button>';
 
@@ -2194,7 +2207,7 @@ angular.module('material.components.datepicker', [
             '<div class="md-datepicker-input-mask-opaque"></div>' +
           '</div>' +
           '<div class="md-datepicker-calendar">' +
-            '<md-calendar role="dialog" aria-label="{{::ctrl.dateLocale.msgCalendar}}" ' +
+            '<md-calendar role="dialog" aria-label="{{::ctrl.locale.msgCalendar}}" ' +
                 'md-current-view="{{::ctrl.currentView}}"' +
                 'md-min-date="ctrl.minDate"' +
                 'md-max-date="ctrl.maxDate"' +
@@ -2212,7 +2225,8 @@ angular.module('material.components.datepicker', [
         currentView: '@mdCurrentView',
         dateFilter: '=mdDateFilter',
         isOpen: '=?mdIsOpen',
-        debounceInterval: '=mdDebounceInterval'
+        debounceInterval: '=mdDebounceInterval',
+        dateLocale: '=mdDateLocale'
       },
       controller: DatePickerCtrl,
       controllerAs: 'ctrl',
@@ -2325,9 +2339,6 @@ angular.module('material.components.datepicker', [
     this.$window = $window;
 
     /** @final */
-    this.dateLocale = $mdDateLocale;
-
-    /** @final */
     this.dateUtil = $$mdDateUtil;
 
     /** @final */
@@ -2338,6 +2349,13 @@ angular.module('material.components.datepicker', [
 
     /** @final */
     this.$$rAF = $$rAF;
+
+    /**
+     * Holds locale-specific formatters, parsers, labels etc. Allows
+     * the user to override specific ones from the $mdDateLocale provider.
+     * @type {!Object}
+     */
+    this.locale = this.dateLocale ? angular.extend({}, $mdDateLocale, this.dateLocale) : $mdDateLocale;
 
     /**
      * The root document element. This is used for attaching a top-level click handler to
@@ -2677,14 +2695,14 @@ angular.module('material.components.datepicker', [
    */
   DatePickerCtrl.prototype.handleInputEvent = function() {
     var inputString = this.inputElement.value;
-    var parsedDate = inputString ? this.dateLocale.parseDate(inputString) : null;
+    var parsedDate = inputString ? this.locale.parseDate(inputString) : null;
     this.dateUtil.setDateTimeToMidnight(parsedDate);
 
     // An input string is valid if it is either empty (representing no date)
     // or if it parses to a valid date that the user is allowed to select.
     var isValidInput = inputString == '' || (
       this.dateUtil.isValidDate(parsedDate) &&
-      this.dateLocale.isDateComplete(inputString) &&
+      this.locale.isDateComplete(inputString) &&
       this.isDateEnabled(parsedDate)
     );
 
@@ -2961,7 +2979,7 @@ angular.module('material.components.datepicker', [
     var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
 
     this.date = value;
-    this.inputElement.value = this.dateLocale.formatDate(value, timezone);
+    this.inputElement.value = this.locale.formatDate(value, timezone);
     this.mdInputContainer && this.mdInputContainer.setHasValue(!!value);
     this.closeCalendarPane();
     this.resizeInputElement();

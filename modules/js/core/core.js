@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-af041da
+ * v1.1.1-master-b3b8fab
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -11,10 +11,10 @@
  * Initialization function that validates environment
  * requirements.
  */
-DetectNgTouch.$inject = ["$log", "$injector"];
-MdCoreConfigure.$inject = ["$provide", "$mdThemingProvider"];
-rAFDecorator.$inject = ["$delegate"];
-qDecorator.$inject = ["$delegate"];
+DetectNgTouch['$inject'] = ["$log", "$injector"];
+MdCoreConfigure['$inject'] = ["$provide", "$mdThemingProvider"];
+rAFDecorator['$inject'] = ["$delegate"];
+qDecorator['$inject'] = ["$delegate"];
 angular
   .module('material.core', [
     'ngAnimate',
@@ -111,7 +111,7 @@ function qDecorator($delegate) {
 }
 
 
-MdAutofocusDirective.$inject = ["$parse"];angular.module('material.core')
+MdAutofocusDirective['$inject'] = ["$parse"];angular.module('material.core')
   .directive('mdAutofocus', MdAutofocusDirective)
 
   // Support the deprecated md-auto-focus and md-sidenav-focus as well
@@ -696,7 +696,7 @@ function MdConstantFactory() {
 
 
 
-mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];angular.module('material.core')
+mdMediaFactory['$inject'] = ["$mdConstant", "$rootScope", "$window"];angular.module('material.core')
 .factory('$mdMedia', mdMediaFactory);
 
 /**
@@ -994,7 +994,7 @@ function MdPrefixer(initialAttributes, buildSelector) {
  * will create its own instance of this array and the app's IDs
  * will not be unique.
  */
-UtilFactory.$inject = ["$document", "$timeout", "$compile", "$rootScope", "$$mdAnimate", "$interpolate", "$log", "$rootElement", "$window", "$$rAF"];
+UtilFactory['$inject'] = ["$document", "$timeout", "$compile", "$rootScope", "$$mdAnimate", "$interpolate", "$log", "$rootElement", "$window", "$$rAF"];
 var nextUniqueId = 0;
 
 /**
@@ -1888,7 +1888,7 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
  * @description
  * Aria Expectations for ngMaterial components.
  */
-MdAriaService.$inject = ["$$rAF", "$log", "$window", "$interpolate"];
+MdAriaService['$inject'] = ["$$rAF", "$log", "$window", "$interpolate"];
 angular
   .module('material.core')
   .provider('$mdAria', MdAriaProvider);
@@ -2067,7 +2067,7 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
  * @description
  * Angular Material template and element compiler.
  */
-MdCompilerService.$inject = ["$q", "$templateRequest", "$injector", "$compile", "$controller"];
+MdCompilerService['$inject'] = ["$q", "$templateRequest", "$injector", "$compile", "$controller"];
 angular
   .module('material.core')
   .service('$mdCompiler', MdCompilerService);
@@ -2391,8 +2391,8 @@ MdCompilerService.prototype._fetchContentElement = function(options) {
 
 
 
-MdGesture.$inject = ["$$MdGestureHandler", "$$rAF", "$timeout"];
-attachToDocument.$inject = ["$mdGesture", "$$MdGestureHandler"];var HANDLERS = {};
+MdGesture['$inject'] = ["$$MdGestureHandler", "$$rAF", "$timeout"];
+attachToDocument['$inject'] = ["$mdGesture", "$$MdGestureHandler"];var HANDLERS = {};
 
 /* The state of the current 'pointer'
  * The pointer represents the state of the current touch.
@@ -3135,7 +3135,7 @@ function getEventPoint(ev) {
  * @description
  * User interaction detection to provide proper accessibility.
  */
-MdInteractionService.$inject = ["$timeout", "$mdUtil"];
+MdInteractionService['$inject'] = ["$timeout", "$mdUtil"];
 angular
   .module('material.core.interaction', [])
   .service('$mdInteraction', MdInteractionService);
@@ -3308,7 +3308,7 @@ angular.module('material.core')
  */
 
 function InterimElementProvider() {
-  InterimElementFactory.$inject = ["$document", "$q", "$rootScope", "$timeout", "$rootElement", "$animate", "$mdUtil", "$mdCompiler", "$mdTheming", "$injector", "$exceptionHandler"];
+  InterimElementFactory['$inject'] = ["$document", "$q", "$rootScope", "$timeout", "$rootElement", "$animate", "$mdUtil", "$mdCompiler", "$mdTheming", "$injector", "$exceptionHandler"];
   createInterimElementProvider.$get = InterimElementFactory;
   return createInterimElementProvider;
 
@@ -3318,7 +3318,7 @@ function InterimElementProvider() {
    * as well as configuration of 'preset' methods (eg dialog.basic(): basic is a preset method)
    */
   function createInterimElementProvider(interimFactoryName) {
-    factory.$inject = ["$$interimElement", "$injector"];
+    factory['$inject'] = ["$$interimElement", "$injector"];
     var EXPOSED_METHODS = ['onHide', 'onShow', 'onRemove'];
 
     var customMethods = {};
@@ -4565,7 +4565,7 @@ function InterimElementProvider() {
  * @description
  * Angular Material Live Announcer to provide accessibility for Voice Readers.
  */
-MdLiveAnnouncer.$inject = ["$timeout"];
+MdLiveAnnouncer['$inject'] = ["$timeout"];
 angular
   .module('material.core')
   .service('$mdLiveAnnouncer', MdLiveAnnouncer);
@@ -4777,7 +4777,7 @@ angular.module('material.core.meta', [])
    * A component instance registration service.
    * Note: currently this as a private service in the SideNav component.
    */
-  ComponentRegistry.$inject = ["$log", "$q"];
+  ComponentRegistry['$inject'] = ["$log", "$q"];
   angular.module('material.core')
     .factory('$mdComponentRegistry', ComponentRegistry);
 
@@ -4911,7 +4911,7 @@ angular.module('material.core.meta', [])
    * @param {object=} options (Optional) Configuration options to override the default ripple configuration
    */
 
-  MdButtonInkRipple.$inject = ["$mdInkRipple"];
+  MdButtonInkRipple['$inject'] = ["$mdInkRipple"];
   angular.module('material.core')
     .factory('$mdButtonInkRipple', MdButtonInkRipple);
 
@@ -4957,7 +4957,7 @@ angular.module('material.core.meta', [])
    * @param {object=} options (Optional) Configuration options to override the defaultripple configuration
    */
 
-  MdCheckboxInkRipple.$inject = ["$mdInkRipple"];
+  MdCheckboxInkRipple['$inject'] = ["$mdInkRipple"];
   angular.module('material.core')
     .factory('$mdCheckboxInkRipple', MdCheckboxInkRipple);
 
@@ -4992,7 +4992,7 @@ angular.module('material.core.meta', [])
    * @param {object=} options (Optional) Configuration options to override the defaultripple configuration
    */
 
-  MdListInkRipple.$inject = ["$mdInkRipple"];
+  MdListInkRipple['$inject'] = ["$mdInkRipple"];
   angular.module('material.core')
     .factory('$mdListInkRipple', MdListInkRipple);
 
@@ -5018,8 +5018,8 @@ angular.module('material.core.meta', [])
  * @description
  * Ripple
  */
-InkRippleCtrl.$inject = ["$scope", "$element", "rippleOptions", "$window", "$timeout", "$mdUtil", "$mdColorUtil"];
-InkRippleDirective.$inject = ["$mdButtonInkRipple", "$mdCheckboxInkRipple"];
+InkRippleCtrl['$inject'] = ["$scope", "$element", "rippleOptions", "$window", "$timeout", "$mdUtil", "$mdColorUtil"];
+InkRippleDirective['$inject'] = ["$mdButtonInkRipple", "$mdCheckboxInkRipple"];
 angular.module('material.core')
     .provider('$mdInkRipple', InkRippleProvider)
     .directive('mdInkRipple', InkRippleDirective)
@@ -5492,7 +5492,7 @@ function attrNoDirective () {
    * @param {object=} options (Optional) Configuration options to override the defaultripple configuration
    */
 
-  MdTabInkRipple.$inject = ["$mdInkRipple"];
+  MdTabInkRipple['$inject'] = ["$mdInkRipple"];
   angular.module('material.core')
     .factory('$mdTabInkRipple', MdTabInkRipple);
 
@@ -5880,11 +5880,11 @@ angular.module('material.core.theming.palette', [])
  * @description
  * Theming
  */
-detectDisabledThemes.$inject = ["$mdThemingProvider"];
-ThemingDirective.$inject = ["$mdTheming", "$interpolate", "$parse", "$mdUtil", "$q", "$log"];
-ThemableDirective.$inject = ["$mdTheming"];
-ThemingProvider.$inject = ["$mdColorPalette", "$$mdMetaProvider"];
-generateAllThemes.$inject = ["$injector", "$mdTheming"];
+detectDisabledThemes['$inject'] = ["$mdThemingProvider"];
+ThemingDirective['$inject'] = ["$mdTheming", "$interpolate", "$parse", "$mdUtil", "$q", "$log"];
+ThemableDirective['$inject'] = ["$mdTheming"];
+ThemingProvider['$inject'] = ["$mdColorPalette", "$$mdMetaProvider"];
+generateAllThemes['$inject'] = ["$injector", "$mdTheming"];
 angular.module('material.core.theming', ['material.core.theming.palette', 'material.core.meta'])
   .directive('mdTheme', ThemingDirective)
   .directive('mdThemable', ThemableDirective)
@@ -6142,7 +6142,7 @@ var themeConfig = {
  *
  */
 function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
-  ThemingService.$inject = ["$rootScope", "$mdUtil", "$q", "$log"];
+  ThemingService['$inject'] = ["$rootScope", "$mdUtil", "$q", "$log"];
   PALETTES = { };
   var THEMES = { };
 
@@ -6504,6 +6504,11 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
         return angular.extend({}, PALETTES);
       }
     });
+    Object.defineProperty(applyTheme, 'ALWAYS_WATCH', {
+      get: function () {
+        return alwaysWatchTheme;
+      }
+    });
     applyTheme.inherit = inheritTheme;
     applyTheme.registered = registered;
     applyTheme.defaultTheme = function() { return defaultTheme; };
@@ -6554,8 +6559,9 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
       updateThemeClass(lookupThemeName());
 
       if (ctrl) {
-        var watchTheme =
-          alwaysWatchTheme || ctrl.$shouldWatch || $mdUtil.parseAttributeBoolean(el.attr('md-theme-watch'));
+        var watchTheme = alwaysWatchTheme ||
+                         ctrl.$shouldWatch ||
+                         $mdUtil.parseAttributeBoolean(el.attr('md-theme-watch'));
 
         var unwatch = ctrl.registerChanges(function (name) {
           updateThemeClass(name);
@@ -6603,10 +6609,27 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
 
 function ThemingDirective($mdTheming, $interpolate, $parse, $mdUtil, $q, $log) {
   return {
-    priority: 100,
+    priority: 101, // has to be more than 100 to be before interpolation (issue on IE)
     link: {
       pre: function(scope, el, attrs) {
         var registeredCallbacks = [];
+
+        var startSymbol = $interpolate.startSymbol();
+        var endSymbol = $interpolate.endSymbol();
+
+        var theme = attrs.mdTheme.trim();
+
+        var hasInterpolation =
+          theme.substr(0, startSymbol.length) === startSymbol &&
+          theme.lastIndexOf(endSymbol) === theme.length - endSymbol.length;
+
+        var oneTimeOperator = '::';
+        var oneTimeBind = attrs.mdTheme
+            .split(startSymbol).join('')
+            .split(endSymbol).join('')
+            .trim()
+            .substr(0, oneTimeOperator.length) === oneTimeOperator;
+
         var ctrl = {
           registerChanges: function (cb, context) {
             if (context) {
@@ -6628,38 +6651,49 @@ function ThemingDirective($mdTheming, $interpolate, $parse, $mdUtil, $q, $log) {
               $log.warn('attempted to use unregistered theme \'' + theme + '\'');
             }
 
-
             ctrl.$mdTheme = theme;
 
             // Iterating backwards to support unregistering during iteration
             // http://stackoverflow.com/a/9882349/890293
-            registeredCallbacks.reverse().forEach(function (cb) {
-              cb(theme);
-            });
+            // we don't use `reverse()` of array because it mutates the array and we don't want it to get re-indexed
+            for (var i = registeredCallbacks.length; i--;) {
+              registeredCallbacks[i](theme);
+            }
           },
-          $shouldWatch: $mdUtil.parseAttributeBoolean(el.attr('md-theme-watch'))
+          $shouldWatch: $mdUtil.parseAttributeBoolean(el.attr('md-theme-watch')) ||
+                        $mdTheming.ALWAYS_WATCH ||
+                        (hasInterpolation && !oneTimeBind)
         };
 
         el.data('$mdThemeController', ctrl);
 
-        var getThemeInterpolation = function () { return $interpolate(attrs.mdTheme)(scope); };
+        var getTheme = function () {
+          var interpolation = $interpolate(attrs.mdTheme)(scope);
+          return $parse(interpolation)(scope) || interpolation;
+        };
 
-        var setParsedTheme = function (interpolation) {
-          var theme = $parse(interpolation)(scope) || interpolation;
-
+        var setParsedTheme = function (theme) {
           if (typeof theme === 'string') {
             return ctrl.$setTheme(theme);
           }
 
-          $q.when( (typeof theme === 'function') ?  theme() : theme )
+          $q.when( angular.isFunction(theme) ?  theme() : theme )
             .then(function(name){
-              ctrl.$setTheme(name)
+              ctrl.$setTheme(name);
             });
         };
 
-        setParsedTheme(getThemeInterpolation());
+        setParsedTheme(getTheme());
 
-        scope.$watch(getThemeInterpolation, setParsedTheme);
+        var unwatch = scope.$watch(getTheme, function(theme) {
+          if (theme) {
+            setParsedTheme(theme);
+
+            if (!ctrl.$shouldWatch) {
+              unwatch();
+            }
+          }
+        });
       }
     }
   };

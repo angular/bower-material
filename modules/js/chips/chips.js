@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-af041da
+ * v1.1.1-master-b3b8fab
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -20,7 +20,7 @@ angular.module('material.components.chips', [
 ]);
 
 
-MdChipCtrl.$inject = ["$scope", "$element", "$mdConstant", "$timeout", "$mdUtil"];angular
+MdChipCtrl['$inject'] = ["$scope", "$element", "$mdConstant", "$timeout", "$mdUtil"];angular
   .module('material.components.chips')
   .controller('MdChipCtrl', MdChipCtrl);
 
@@ -214,7 +214,7 @@ MdChipCtrl.prototype.chipMouseDown = function() {
 };
 
 
-MdChip.$inject = ["$mdTheming", "$mdUtil"];angular
+MdChip['$inject'] = ["$mdTheming", "$mdUtil"];angular
     .module('material.components.chips')
     .directive('mdChip', MdChip);
 
@@ -284,7 +284,7 @@ function MdChip($mdTheming, $mdUtil) {
 }
 
 
-MdChipRemove.$inject = ["$timeout"];angular
+MdChipRemove['$inject'] = ["$timeout"];angular
     .module('material.components.chips')
     .directive('mdChipRemove', MdChipRemove);
 
@@ -344,7 +344,7 @@ function MdChipRemove ($timeout) {
 }
 
 
-MdChipTransclude.$inject = ["$compile"];angular
+MdChipTransclude['$inject'] = ["$compile"];angular
     .module('material.components.chips')
     .directive('mdChipTransclude', MdChipTransclude);
 
@@ -371,7 +371,7 @@ function MdChipTransclude ($compile) {
 }
 
 
-MdChipsCtrl.$inject = ["$scope", "$attrs", "$mdConstant", "$log", "$element", "$timeout", "$mdUtil"];angular
+MdChipsCtrl['$inject'] = ["$scope", "$attrs", "$mdConstant", "$log", "$element", "$timeout", "$mdUtil"];angular
     .module('material.components.chips')
     .controller('MdChipsCtrl', MdChipsCtrl);
 
@@ -977,7 +977,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
 };
 
   
-  MdChips.$inject = ["$mdTheming", "$mdUtil", "$compile", "$log", "$timeout", "$$mdSvgRegistry"];angular
+  MdChips['$inject'] = ["$mdTheming", "$mdUtil", "$compile", "$log", "$timeout", "$$mdSvgRegistry"];angular
       .module('material.components.chips')
       .directive('mdChips', MdChips);
 
@@ -1416,7 +1416,7 @@ MdContactChipsCtrl.prototype.filterSelectedContacts = function(contact) {
 };
 
 
-MdContactChips.$inject = ["$mdTheming", "$mdUtil"];angular
+MdContactChips['$inject'] = ["$mdTheming", "$mdUtil"];angular
   .module('material.components.chips')
   .directive('mdContactChips', MdContactChips);
 

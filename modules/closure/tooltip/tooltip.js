@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-af041da
+ * v1.1.1-master-b3b8fab
  */
 goog.provide('ngmaterial.components.tooltip');
 goog.require('ngmaterial.core');
@@ -10,7 +10,7 @@ goog.require('ngmaterial.core');
  * @ngdoc module
  * @name material.components.tooltip
  */
-MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdUtil", "$mdTheming", "$animate", "$interpolate", "$mdConstant", "$$mdTooltipRegistry"];
+MdTooltipDirective['$inject'] = ["$timeout", "$window", "$$rAF", "$document", "$mdUtil", "$mdTheming", "$animate", "$interpolate", "$mdConstant", "$$mdTooltipRegistry"];
 angular
   .module('material.components.tooltip', [ 'material.core' ])
   .directive('mdTooltip', MdTooltipDirective)

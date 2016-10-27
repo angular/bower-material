@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-af041da
+ * v1.1.1-master-b3b8fab
  */
 goog.provide('ngmaterial.components.sidenav');
 goog.require('ngmaterial.components.backdrop');
@@ -14,9 +14,9 @@ goog.require('ngmaterial.core');
  * @description
  * A Sidenav QP component.
  */
-SidenavService.$inject = ["$mdComponentRegistry", "$mdUtil", "$q", "$log"];
-SidenavDirective.$inject = ["$mdMedia", "$mdUtil", "$mdConstant", "$mdTheming", "$mdInteraction", "$animate", "$compile", "$parse", "$log", "$q", "$document", "$window", "$$rAF"];
-SidenavController.$inject = ["$scope", "$attrs", "$mdComponentRegistry", "$q", "$interpolate"];
+SidenavService['$inject'] = ["$mdComponentRegistry", "$mdUtil", "$q", "$log"];
+SidenavDirective['$inject'] = ["$mdMedia", "$mdUtil", "$mdConstant", "$mdTheming", "$mdInteraction", "$animate", "$compile", "$parse", "$log", "$q", "$document", "$window", "$$rAF"];
+SidenavController['$inject'] = ["$scope", "$attrs", "$mdComponentRegistry", "$q", "$interpolate"];
 angular
   .module('material.components.sidenav', [
     'material.core',

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-af041da
+ * v1.1.1-master-b3b8fab
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -6604,6 +6604,11 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
         return angular.extend({}, PALETTES);
       }
     });
+    Object.defineProperty(applyTheme, 'ALWAYS_WATCH', {
+      get: function () {
+        return alwaysWatchTheme;
+      }
+    });
     applyTheme.inherit = inheritTheme;
     applyTheme.registered = registered;
     applyTheme.defaultTheme = function() { return defaultTheme; };
@@ -6654,8 +6659,9 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
       updateThemeClass(lookupThemeName());
 
       if (ctrl) {
-        var watchTheme =
-          alwaysWatchTheme || ctrl.$shouldWatch || $mdUtil.parseAttributeBoolean(el.attr('md-theme-watch'));
+        var watchTheme = alwaysWatchTheme ||
+                         ctrl.$shouldWatch ||
+                         $mdUtil.parseAttributeBoolean(el.attr('md-theme-watch'));
 
         var unwatch = ctrl.registerChanges(function (name) {
           updateThemeClass(name);
@@ -6703,10 +6709,27 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
 
 function ThemingDirective($mdTheming, $interpolate, $parse, $mdUtil, $q, $log) {
   return {
-    priority: 100,
+    priority: 101, // has to be more than 100 to be before interpolation (issue on IE)
     link: {
       pre: function(scope, el, attrs) {
         var registeredCallbacks = [];
+
+        var startSymbol = $interpolate.startSymbol();
+        var endSymbol = $interpolate.endSymbol();
+
+        var theme = attrs.mdTheme.trim();
+
+        var hasInterpolation =
+          theme.substr(0, startSymbol.length) === startSymbol &&
+          theme.lastIndexOf(endSymbol) === theme.length - endSymbol.length;
+
+        var oneTimeOperator = '::';
+        var oneTimeBind = attrs.mdTheme
+            .split(startSymbol).join('')
+            .split(endSymbol).join('')
+            .trim()
+            .substr(0, oneTimeOperator.length) === oneTimeOperator;
+
         var ctrl = {
           registerChanges: function (cb, context) {
             if (context) {
@@ -6728,38 +6751,49 @@ function ThemingDirective($mdTheming, $interpolate, $parse, $mdUtil, $q, $log) {
               $log.warn('attempted to use unregistered theme \'' + theme + '\'');
             }
 
-
             ctrl.$mdTheme = theme;
 
             // Iterating backwards to support unregistering during iteration
             // http://stackoverflow.com/a/9882349/890293
-            registeredCallbacks.reverse().forEach(function (cb) {
-              cb(theme);
-            });
+            // we don't use `reverse()` of array because it mutates the array and we don't want it to get re-indexed
+            for (var i = registeredCallbacks.length; i--;) {
+              registeredCallbacks[i](theme);
+            }
           },
-          $shouldWatch: $mdUtil.parseAttributeBoolean(el.attr('md-theme-watch'))
+          $shouldWatch: $mdUtil.parseAttributeBoolean(el.attr('md-theme-watch')) ||
+                        $mdTheming.ALWAYS_WATCH ||
+                        (hasInterpolation && !oneTimeBind)
         };
 
         el.data('$mdThemeController', ctrl);
 
-        var getThemeInterpolation = function () { return $interpolate(attrs.mdTheme)(scope); };
+        var getTheme = function () {
+          var interpolation = $interpolate(attrs.mdTheme)(scope);
+          return $parse(interpolation)(scope) || interpolation;
+        };
 
-        var setParsedTheme = function (interpolation) {
-          var theme = $parse(interpolation)(scope) || interpolation;
-
+        var setParsedTheme = function (theme) {
           if (typeof theme === 'string') {
             return ctrl.$setTheme(theme);
           }
 
-          $q.when( (typeof theme === 'function') ?  theme() : theme )
+          $q.when( angular.isFunction(theme) ?  theme() : theme )
             .then(function(name){
-              ctrl.$setTheme(name)
+              ctrl.$setTheme(name);
             });
         };
 
-        setParsedTheme(getThemeInterpolation());
+        setParsedTheme(getTheme());
 
-        scope.$watch(getThemeInterpolation, setParsedTheme);
+        var unwatch = scope.$watch(getTheme, function(theme) {
+          if (theme) {
+            setParsedTheme(theme);
+
+            if (!ctrl.$shouldWatch) {
+              unwatch();
+            }
+          }
+        });
       }
     }
   };
@@ -9788,7 +9822,7 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
 function MdDialogProvider($$interimElementProvider) {
   // Elements to capture and redirect focus when the user presses tab at the dialog boundary.
   advancedDialogOptions.$inject = ["$mdDialog", "$mdConstant"];
-  dialogDefaultOptions.$inject = ["$mdDialog", "$mdAria", "$mdUtil", "$mdConstant", "$animate", "$document", "$window", "$rootElement", "$log", "$injector", "$mdTheming"];
+  dialogDefaultOptions.$inject = ["$mdDialog", "$mdAria", "$mdUtil", "$mdConstant", "$animate", "$document", "$window", "$rootElement", "$log", "$injector", "$mdTheming", "$interpolate"];
   var topFocusTrap, bottomFocusTrap;
 
   return $$interimElementProvider('$mdDialog')
@@ -9817,7 +9851,7 @@ function MdDialogProvider($$interimElementProvider) {
   function advancedDialogOptions($mdDialog, $mdConstant) {
     return {
       template: [
-        '<md-dialog md-theme="{{ dialog.theme }}" aria-label="{{ dialog.ariaLabel }}" ng-class="dialog.css">',
+        '<md-dialog md-theme="{{ dialog.theme || dialog.defaultTheme }}" aria-label="{{ dialog.ariaLabel }}" ng-class="dialog.css">',
         '  <md-dialog-content class="md-dialog-content" role="document" tabIndex="-1">',
         '    <h2 class="md-title">{{ dialog.title }}</h2>',
         '    <div ng-if="::dialog.mdHtmlContent" class="md-dialog-content-body" ',
@@ -9867,7 +9901,7 @@ function MdDialogProvider($$interimElementProvider) {
 
   /* @ngInject */
   function dialogDefaultOptions($mdDialog, $mdAria, $mdUtil, $mdConstant, $animate, $document, $window, $rootElement,
-                                $log, $injector, $mdTheming) {
+                                $log, $injector, $mdTheming, $interpolate) {
 
     return {
       hasBackdrop: true,
@@ -9890,7 +9924,10 @@ function MdDialogProvider($$interimElementProvider) {
         // an element outside of the container, and the focus trap won't work probably..
         // Also the tabindex is needed for the `escapeToClose` functionality, because
         // the keyDown event can't be triggered when the focus is outside of the container.
-        return '<div class="md-dialog-container" tabindex="-1">' + validatedTemplate(template) + '</div>';
+        var startSymbol = $interpolate.startSymbol();
+        var endSymbol = $interpolate.endSymbol();
+        var theme = startSymbol + (options.themeWatch ? '' : '::') + 'theme' + endSymbol;
+        return '<div class="md-dialog-container" tabindex="-1" md-theme="' + theme + '">' + validatedTemplate(template) + '</div>';
 
         /**
          * The specified template should contain a <md-dialog> wrapper element....
@@ -9909,6 +9946,8 @@ function MdDialogProvider($$interimElementProvider) {
       // Automatically apply the theme, if the user didn't specify a theme explicitly.
       // Those option changes need to be done, before the compilation has started, because otherwise
       // the option changes will be not available in the $mdCompilers locales.
+      options.defaultTheme = $mdTheming.defaultTheme();
+
       detectTheming(options);
     }
 
@@ -10027,19 +10066,34 @@ function MdDialogProvider($$interimElementProvider) {
     }
 
     function detectTheming(options) {
-      // Only detect the theming, if the developer didn't specify the theme specifically.
-      if (options.theme) return;
-
-      options.theme = $mdTheming.defaultTheme();
-
+      // Once the user specifies a targetEvent, we will automatically try to find the correct
+      // nested theme.
+      var targetEl;
       if (options.targetEvent && options.targetEvent.target) {
-        var targetEl = angular.element(options.targetEvent.target);
-
-        // Once the user specifies a targetEvent, we will automatically try to find the correct
-        // nested theme.
-        options.theme = (targetEl.controller('mdTheme') || {}).$mdTheme || options.theme;
+        targetEl = angular.element(options.targetEvent.target);
       }
 
+      var themeCtrl = targetEl && targetEl.controller('mdTheme');
+
+      if (!themeCtrl) {
+        return;
+      }
+
+      options.themeWatch = themeCtrl.$shouldWatch;
+
+      var theme = options.theme || themeCtrl.$mdTheme;
+
+      if (theme) {
+        options.scope.theme = theme;
+      }
+
+      var unwatch = themeCtrl.registerChanges(function (newTheme) {
+        options.scope.theme = newTheme;
+
+        if (!options.themeWatch) {
+          unwatch();
+        }
+      });
     }
 
     /**
@@ -27762,7 +27816,13 @@ function MdContactChips($mdTheming, $mdUtil) {
                   'md-month-offset="$index" ' +
                   'class="md-calendar-month" ' +
                   'md-start-index="monthCtrl.getSelectedMonthIndex()" ' +
-                  'md-item-size="' + TBODY_HEIGHT + '"></tbody>' +
+                  'md-item-size="' + TBODY_HEIGHT + '">' +
+
+                // The <tr> ensures that the <tbody> will always have the
+                // proper height, even if it's empty. If it's content is
+                // compiled, the <tr> will be overwritten.
+                '<tr aria-hidden="true" style="height:' + TBODY_HEIGHT + 'px;"></tr>' +
+              '</tbody>' +
             '</table>' +
           '</md-virtual-repeat-container>' +
         '</div>',
@@ -28369,7 +28429,11 @@ function MdContactChips($mdTheming, $mdUtil) {
                   'md-virtual-repeat="i in yearCtrl.items" ' +
                   'md-year-offset="$index" class="md-calendar-year" ' +
                   'md-start-index="yearCtrl.getFocusedYearIndex()" ' +
-                  'md-item-size="' + TBODY_HEIGHT + '"></tbody>' +
+                  'md-item-size="' + TBODY_HEIGHT + '">' +
+                // The <tr> ensures that the <tbody> will have the proper
+                // height, even though it may be empty.
+                '<tr aria-hidden="true" style="height:' + TBODY_HEIGHT + 'px;"></tr>' +
+              '</tbody>' +
             '</table>' +
           '</md-virtual-repeat-container>' +
         '</div>',
@@ -29397,6 +29461,8 @@ function MdContactChips($mdTheming, $mdUtil) {
    * @param {expression=} ng-change Expression evaluated when the model value changes.
    * @param {expression=} ng-focus Expression evaluated when the input is focused or the calendar is opened.
    * @param {expression=} ng-blur Expression evaluated when focus is removed from the input or the calendar is closed.
+   * @param {boolean=} ng-disabled Whether the datepicker is disabled.
+   * @param {boolean=} ng-required Whether a value is required for the datepicker.
    * @param {Date=} md-min-date Expression representing a min date (inclusive).
    * @param {Date=} md-max-date Expression representing a max date (inclusive).
    * @param {(function(Date): boolean)=} md-date-filter Function expecting a date and returning a boolean whether it can be selected or not.
@@ -29409,8 +29475,9 @@ function MdContactChips($mdTheming, $mdUtil) {
    * * `"all"` - Hides all icons.
    * * `"calendar"` - Only hides the calendar icon.
    * * `"triangle"` - Only hides the triangle icon.
-   * @param {boolean=} ng-disabled Whether the datepicker is disabled.
-   * @param {boolean=} ng-required Whether a value is required for the datepicker.
+   * @param {Object=} md-date-locale Allows for the values from the `$mdDateLocaleProvider` to be
+   * ovewritten on a per-element basis (e.g. `msgOpenCalendar` can be overwritten with
+   * `md-date-locale="{ msgOpenCalendar: 'Open a special calendar' }"`).
    *
    * @description
    * `<md-datepicker>` is a component used to select a single date.
@@ -29452,7 +29519,7 @@ function MdContactChips($mdTheming, $mdUtil) {
           '<md-button type="button" md-no-ink ' +
               'class="md-datepicker-triangle-button md-icon-button" ' +
               'ng-click="ctrl.openCalendarPane($event)" ' +
-              'aria-label="{{::ctrl.dateLocale.msgOpenCalendar}}">' +
+              'aria-label="{{::ctrl.locale.msgOpenCalendar}}">' +
             '<div class="md-datepicker-expand-triangle"></div>' +
           '</md-button>';
 
@@ -29475,7 +29542,7 @@ function MdContactChips($mdTheming, $mdUtil) {
             '<div class="md-datepicker-input-mask-opaque"></div>' +
           '</div>' +
           '<div class="md-datepicker-calendar">' +
-            '<md-calendar role="dialog" aria-label="{{::ctrl.dateLocale.msgCalendar}}" ' +
+            '<md-calendar role="dialog" aria-label="{{::ctrl.locale.msgCalendar}}" ' +
                 'md-current-view="{{::ctrl.currentView}}"' +
                 'md-min-date="ctrl.minDate"' +
                 'md-max-date="ctrl.maxDate"' +
@@ -29493,7 +29560,8 @@ function MdContactChips($mdTheming, $mdUtil) {
         currentView: '@mdCurrentView',
         dateFilter: '=mdDateFilter',
         isOpen: '=?mdIsOpen',
-        debounceInterval: '=mdDebounceInterval'
+        debounceInterval: '=mdDebounceInterval',
+        dateLocale: '=mdDateLocale'
       },
       controller: DatePickerCtrl,
       controllerAs: 'ctrl',
@@ -29606,9 +29674,6 @@ function MdContactChips($mdTheming, $mdUtil) {
     this.$window = $window;
 
     /** @final */
-    this.dateLocale = $mdDateLocale;
-
-    /** @final */
     this.dateUtil = $$mdDateUtil;
 
     /** @final */
@@ -29619,6 +29684,13 @@ function MdContactChips($mdTheming, $mdUtil) {
 
     /** @final */
     this.$$rAF = $$rAF;
+
+    /**
+     * Holds locale-specific formatters, parsers, labels etc. Allows
+     * the user to override specific ones from the $mdDateLocale provider.
+     * @type {!Object}
+     */
+    this.locale = this.dateLocale ? angular.extend({}, $mdDateLocale, this.dateLocale) : $mdDateLocale;
 
     /**
      * The root document element. This is used for attaching a top-level click handler to
@@ -29958,14 +30030,14 @@ function MdContactChips($mdTheming, $mdUtil) {
    */
   DatePickerCtrl.prototype.handleInputEvent = function() {
     var inputString = this.inputElement.value;
-    var parsedDate = inputString ? this.dateLocale.parseDate(inputString) : null;
+    var parsedDate = inputString ? this.locale.parseDate(inputString) : null;
     this.dateUtil.setDateTimeToMidnight(parsedDate);
 
     // An input string is valid if it is either empty (representing no date)
     // or if it parses to a valid date that the user is allowed to select.
     var isValidInput = inputString == '' || (
       this.dateUtil.isValidDate(parsedDate) &&
-      this.dateLocale.isDateComplete(inputString) &&
+      this.locale.isDateComplete(inputString) &&
       this.isDateEnabled(parsedDate)
     );
 
@@ -30242,7 +30314,7 @@ function MdContactChips($mdTheming, $mdUtil) {
     var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
 
     this.date = value;
-    this.inputElement.value = this.dateLocale.formatDate(value, timezone);
+    this.inputElement.value = this.locale.formatDate(value, timezone);
     this.mdInputContainer && this.mdInputContainer.setHasValue(!!value);
     this.closeCalendarPane();
     this.resizeInputElement();
@@ -33520,6 +33592,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   ctrl.hasFocus          = false;
   ctrl.lastClick         = true;
   ctrl.shouldCenterTabs  = shouldCenterTabs();
+  ctrl.tabContentPrefix  = 'tab-content-';
 
   // define public methods
   ctrl.updatePagination   = $mdUtil.debounce(updatePagination, 100);
@@ -33810,7 +33883,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
       tab = elements.tabs[ i ];
       if (tab.offsetLeft + tab.offsetWidth > totalWidth) break;
     }
-    
+
     if (viewportWidth > tab.offsetWidth) {
       //Canvas width *greater* than tab width: usual positioning
       ctrl.offsetLeft = fixOffset(tab.offsetLeft);
@@ -33833,7 +33906,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
       tab = elements.tabs[ i ];
       if (tab.offsetLeft + tab.offsetWidth >= ctrl.offsetLeft) break;
     }
-    
+
     if (elements.canvas.clientWidth > tab.offsetWidth) {
       //Canvas width *greater* than tab width: usual positioning
       ctrl.offsetLeft = fixOffset(tab.offsetLeft + tab.offsetWidth - elements.canvas.clientWidth);
@@ -33909,7 +33982,8 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
             return !ctrl.lastClick
                 && ctrl.hasFocus && this.getIndex() === ctrl.focusIndex;
           },
-          id:           $mdUtil.nextUid()
+          id:           $mdUtil.nextUid(),
+          hasContent: !!(tabData.template && tabData.template.trim())
         },
         tab       = angular.extend(proto, tabData);
     if (angular.isDefined(index)) {
@@ -33917,10 +33991,13 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
     } else {
       ctrl.tabs.push(tab);
     }
+
     processQueue();
     updateHasContent();
     $mdUtil.nextTick(function () {
       updatePagination();
+      setAriaControls(tab);
+
       // if autoselect is enabled, select the newly added tab
       if (hasLoaded && ctrl.autoselect) $mdUtil.nextTick(function () {
         $mdUtil.nextTick(function () { select(ctrl.tabs.indexOf(tab)); });
@@ -34175,9 +34252,14 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    */
   function updateHasContent () {
     var hasContent  = false;
-    angular.forEach(ctrl.tabs, function (tab) {
-      if (tab.template) hasContent = true;
-    });
+
+    for (var i = 0; i < ctrl.tabs.length; i++) {
+      if (ctrl.tabs[i].hasContent) {
+        hasContent = true;
+        break;
+      }
+    }
+
     ctrl.hasContent = hasContent;
   }
 
@@ -34326,6 +34408,18 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
     var elements = getElements();
     var options = { colorElement: angular.element(elements.inkBar) };
     $mdTabInkRipple.attach(scope, element, options);
+  }
+
+  /**
+   * Sets the `aria-controls` attribute to the elements that
+   * correspond to the passed-in tab.
+   * @param tab
+   */
+  function setAriaControls (tab) {
+    if (tab.hasContent) {
+      var nodes = $element[0].querySelectorAll('[md-tab-id="' + tab.id + '"]');
+      angular.element(nodes).attr('aria-controls', ctrl.tabContentPrefix + tab.id);
+    }
   }
 }
 
@@ -34484,7 +34578,7 @@ function MdTabs ($$mdSvgRegistry) {
                   'class="md-tab" ' +
                   'ng-repeat="tab in $mdTabsCtrl.tabs" ' +
                   'role="tab" ' +
-                  'aria-controls="tab-content-{{::tab.id}}" ' +
+                  'md-tab-id="{{::tab.id}}"' +
                   'aria-selected="{{tab.isActive()}}" ' +
                   'aria-disabled="{{tab.scope.disabled || \'false\'}}" ' +
                   'ng-click="$mdTabsCtrl.select(tab.getIndex())" ' +
@@ -34505,7 +34599,7 @@ function MdTabs ($$mdSvgRegistry) {
                   'class="md-tab" ' +
                   'tabindex="-1" ' +
                   'id="tab-item-{{::tab.id}}" ' +
-                  'aria-controls="tab-content-{{::tab.id}}" ' +
+                  'md-tab-id="{{::tab.id}}"' +
                   'aria-selected="{{tab.isActive()}}" ' +
                   'aria-disabled="{{tab.scope.disabled || \'false\'}}" ' +
                   'ng-focus="$mdTabsCtrl.hasFocus = true" ' +
@@ -34518,13 +34612,13 @@ function MdTabs ($$mdSvgRegistry) {
         '</md-tabs-wrapper> ' +
         '<md-tabs-content-wrapper ng-show="$mdTabsCtrl.hasContent && $mdTabsCtrl.selectedIndex >= 0" class="_md"> ' +
           '<md-tab-content ' +
-              'id="tab-content-{{::tab.id}}" ' +
+              'id="{{:: $mdTabsCtrl.tabContentPrefix + tab.id}}" ' +
               'class="_md" ' +
               'role="tabpanel" ' +
               'aria-labelledby="tab-item-{{::tab.id}}" ' +
               'md-swipe-left="$mdTabsCtrl.swipeContent && $mdTabsCtrl.incrementIndex(1)" ' +
               'md-swipe-right="$mdTabsCtrl.swipeContent && $mdTabsCtrl.incrementIndex(-1)" ' +
-              'ng-if="$mdTabsCtrl.hasContent" ' +
+              'ng-if="tab.hasContent" ' +
               'ng-repeat="(index, tab) in $mdTabsCtrl.tabs" ' +
               'ng-class="{ ' +
                 '\'md-no-transition\': $mdTabsCtrl.lastSelectedIndex == null, ' +
@@ -34659,4 +34753,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-af041da"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-b3b8fab"}};

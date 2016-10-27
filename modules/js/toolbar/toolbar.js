@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-af041da
+ * v1.1.1-master-b3b8fab
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -11,7 +11,7 @@
  * @ngdoc module
  * @name material.components.toolbar
  */
-mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming", "$animate"];
+mdToolbarDirective['$inject'] = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming", "$animate"];
 angular.module('material.components.toolbar', [
   'material.core',
   'material.components.content'

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-af041da
+ * v1.1.1-master-b3b8fab
  */
 goog.provide('ngmaterial.components.autocomplete');
 goog.require('ngmaterial.components.icon');
@@ -22,7 +22,7 @@ angular.module('material.components.autocomplete', [
 ]);
 
 
-MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$mdTheming", "$window", "$animate", "$rootElement", "$attrs", "$q", "$log", "$mdLiveAnnouncer"];angular
+MdAutocompleteCtrl['$inject'] = ["$scope", "$element", "$mdUtil", "$mdConstant", "$mdTheming", "$window", "$animate", "$rootElement", "$attrs", "$q", "$log", "$mdLiveAnnouncer"];angular
     .module('material.components.autocomplete')
     .controller('MdAutocompleteCtrl', MdAutocompleteCtrl);
 
@@ -992,7 +992,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 }
 
 
-MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
+MdAutocomplete['$inject'] = ["$$mdSvgRegistry"];angular
     .module('material.components.autocomplete')
     .directive('mdAutocomplete', MdAutocomplete);
 
@@ -1377,7 +1377,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
 }
 
 
-MdAutocompleteItemScopeDirective.$inject = ["$compile", "$mdUtil"];angular
+MdAutocompleteItemScopeDirective['$inject'] = ["$compile", "$mdUtil"];angular
   .module('material.components.autocomplete')
   .directive('mdAutocompleteParentScope', MdAutocompleteItemScopeDirective);
 
@@ -1453,7 +1453,7 @@ function MdAutocompleteItemScopeDirective($compile, $mdUtil) {
   }
 }
 
-MdHighlightCtrl.$inject = ["$scope", "$element", "$attrs"];angular
+MdHighlightCtrl['$inject'] = ["$scope", "$element", "$attrs"];angular
     .module('material.components.autocomplete')
     .controller('MdHighlightCtrl', MdHighlightCtrl);
 
@@ -1573,7 +1573,7 @@ MdHighlightCtrl.prototype.sanitizeRegex = function(term) {
 };
 
 
-MdHighlight.$inject = ["$interpolate", "$parse"];angular
+MdHighlight['$inject'] = ["$interpolate", "$parse"];angular
     .module('material.components.autocomplete')
     .directive('mdHighlightText', MdHighlight);
 

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-af041da
+ * v1.1.1-master-b3b8fab
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -14,7 +14,7 @@
    * @ngdoc module
    * @name material.components.fabActions
    */
-  MdFabActionsDirective.$inject = ["$mdUtil"];
+  MdFabActionsDirective['$inject'] = ["$mdUtil"];
   angular
     .module('material.components.fabActions', ['material.core'])
     .directive('mdFabActions', MdFabActionsDirective);

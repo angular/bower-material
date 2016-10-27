@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-af041da
+ * v1.1.1-master-b3b8fab
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13,10 +13,10 @@
  */
 
 
-MdNavBarController.$inject = ["$element", "$scope", "$timeout", "$mdConstant"];
-MdNavItem.$inject = ["$$rAF"];
-MdNavItemController.$inject = ["$element"];
-MdNavBar.$inject = ["$mdAria", "$mdTheming"];
+MdNavBarController['$inject'] = ["$element", "$scope", "$timeout", "$mdConstant"];
+MdNavItem['$inject'] = ["$$rAF"];
+MdNavItemController['$inject'] = ["$element"];
+MdNavBar['$inject'] = ["$mdAria", "$mdTheming"];
 angular.module('material.components.navBar', ['material.core'])
     .controller('MdNavBarController', MdNavBarController)
     .directive('mdNavBar', MdNavBar)

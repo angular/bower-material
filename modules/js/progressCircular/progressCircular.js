@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-af041da
+ * v1.1.1-master-b3b8fab
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -60,7 +60,7 @@ angular.module('material.components.progressCircular', ['material.core']);
  * </hljs>
  */
 
-MdProgressCircularDirective.$inject = ["$window", "$mdProgressCircular", "$mdTheming", "$mdUtil", "$interval", "$log"];
+MdProgressCircularDirective['$inject'] = ["$window", "$mdProgressCircular", "$mdTheming", "$mdUtil", "$interval", "$log"];
 angular
   .module('material.components.progressCircular')
   .directive('mdProgressCircular', MdProgressCircularDirective);
