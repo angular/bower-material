@@ -1,7 +1,7 @@
 {
   "name": "angular-material-input",
-  "version": "1.1.1-master-e807a3b",
+  "version": "1.1.1-master-a636476",
   "dependencies": {
-    "angular-material-core": "1.1.1-master-e807a3b"
+    "angular-material-core": "1.1.1-master-a636476"
   }
 }
