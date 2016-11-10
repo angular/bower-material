@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-a636476
+ * v1.1.1-master-f6dedff
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -209,6 +209,25 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  *     }
  *   }
  * })(angular);
+ * </hljs>
+ *
+ * ### Multiple Dialogs
+ * Using the `multiple` option for the `$mdDialog` service allows developers to show multiple dialogs
+ * at the same time.
+ *
+ * <hljs lang="js">
+ *   // From plain options
+ *   $mdDialog.show({
+ *     multiple: true
+ *   });
+ *
+ *   // From a dialog preset
+ *   $mdDialog.show(
+ *     $mdDialog
+ *       .alert()
+ *       .multiple(true)
+ *   );
+ *
  * </hljs>
  *
  * ### Pre-Rendered Dialogs
@@ -578,7 +597,7 @@ function MdDialogProvider($$interimElementProvider) {
   return $$interimElementProvider('$mdDialog')
     .setDefaults({
       methods: ['disableParentScroll', 'hasBackdrop', 'clickOutsideToClose', 'escapeToClose',
-          'targetEvent', 'closeTo', 'openFrom', 'parent', 'fullscreen'],
+          'targetEvent', 'closeTo', 'openFrom', 'parent', 'fullscreen', 'multiple'],
       options: dialogDefaultOptions
     })
     .addPreset('alert', {
