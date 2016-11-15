@@ -456,6 +456,22 @@ $checkbox-border-width: 2px !default;
   }
 }
 
+@mixin dense($prop, $normal, $dense) {
+  #{$prop}: $normal;
+  .md-dense > &:not(.md-dense-disabled),
+  .md-dense :not(.md-dense-disabled) &:not(.md-dense-disabled) {
+    #{$prop}: $dense;
+  }
+}
+
+@mixin dense-rtl($prop, $ltr-normal, $rtl-normal, $ltr-dense, $rtl-dense) {
+  @include rtl($prop, $ltr-normal, $rtl-normal);
+  .md-dense > &:not(.md-dense-disabled),
+  .md-dense :not(.md-dense-disabled) &:not(.md-dense-disabled) {
+    @include rtl($prop, $ltr-dense, $rtl-dense);
+  }
+}
+
 html, body {
   height: 100%;
   position: relative;
@@ -1736,11 +1752,18 @@ md-bottom-sheet {
   }
 }
 
-$button-border-radius: 3px !default;
+// Material Design Button
+// https://material.google.com/components/buttons.html
+
+$button-border-radius: 2px !default;
 $button-fab-border-radius: 50% !default;
 $button-icon-border-radius: $button-fab-border-radius !default;
 
+$button-font-size: $body-font-size-base !default;
+$button-font-size-dense: $body-font-size-base * 13/14 !default;
+
 $button-line-height: rem(3.60) !default;
+$button-line-height-dense: rem(3.20) !default;
 $button-margin: rem(0.600) rem(0.800) !default;
 $button-min-width: rem(8.800) !default;
 $button-padding: 0 $button-left-right-padding !default;
@@ -1769,9 +1792,9 @@ button.md-button::-moz-focus-inner {
   cursor: pointer;
 
   /** Alignment adjustments */
-  min-height: $button-line-height;
+  @include dense(min-height, $button-line-height, $button-line-height-dense);
   min-width: $button-min-width;
-  line-height: $button-line-height;
+  @include dense(line-height, $button-line-height, $button-line-height-dense);
 
   vertical-align: middle;
   align-items: center;
@@ -1796,7 +1819,7 @@ button.md-button::-moz-focus-inner {
   /* Uppercase text content */
   text-transform: uppercase;
   font-weight: 500;
-  font-size: $body-font-size-base;
+  @include dense(font-size, $button-font-size, $button-font-size-dense);
   font-style: inherit;
   font-variant: inherit;
   font-family: inherit;

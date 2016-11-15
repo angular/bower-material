@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-2bbf401
+ * v1.1.1-master-25dd787
  */
 button.md-button::-moz-focus-inner {
   border: 0; }
@@ -20,7 +20,7 @@ button.md-button::-moz-focus-inner {
   -webkit-align-items: center;
           align-items: center;
   text-align: center;
-  border-radius: 3px;
+  border-radius: 2px;
   box-sizing: border-box;
   /* Reset default button appearance */
   -webkit-user-select: none;
@@ -46,6 +46,15 @@ button.md-button::-moz-focus-inner {
   overflow: hidden;
   -webkit-transition: box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  .md-dense > .md-button:not(.md-dense-disabled),
+  .md-dense :not(.md-dense-disabled) .md-button:not(.md-dense-disabled) {
+    min-height: 32px; }
+  .md-dense > .md-button:not(.md-dense-disabled),
+  .md-dense :not(.md-dense-disabled) .md-button:not(.md-dense-disabled) {
+    line-height: 32px; }
+  .md-dense > .md-button:not(.md-dense-disabled),
+  .md-dense :not(.md-dense-disabled) .md-button:not(.md-dense-disabled) {
+    font-size: 13px; }
   .md-button:focus {
     outline: none; }
   .md-button:hover, .md-button:focus {
@@ -131,7 +140,7 @@ button.md-button::-moz-focus-inner {
   .md-button:not([disabled]).md-raised:active, .md-button:not([disabled]).md-fab:active {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4); }
   .md-button .md-ripple-container {
-    border-radius: 3px;
+    border-radius: 2px;
     background-clip: padding-box;
     overflow: hidden;
     -webkit-mask-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC"); }
