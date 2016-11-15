@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-454b974
+ * v1.1.1-master-2c367f7
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -70,7 +70,7 @@ angular.module('material.components.navBar', ['material.core'])
  *</hljs>
  * <hljs lang="js">
  * (function() {
- *   'use strict';
+ *   ‘use strict’;
  *
  *    $rootScope.$on('$routeChangeSuccess', function(event, current) {
  *      $scope.currentLink = getCurrentLinkFromRoute(current);
@@ -135,6 +135,7 @@ function MdNavBar($mdAria, $mdTheming) {
           '<ul class="_md-nav-bar-list" ng-transclude role="listbox"' +
             'tabindex="0"' +
             'ng-focus="ctrl.onFocus()"' +
+            'ng-blur="ctrl.onBlur()"' +
             'ng-keydown="ctrl.onKeydown($event)"' +
             'aria-label="{{ctrl.navBarAriaLabel}}">' +
           '</ul>' +
@@ -345,6 +346,16 @@ MdNavBarController.prototype.onFocus = function() {
 };
 
 /**
+ * Clear tab focus when focus leaves the nav bar.
+ */
+MdNavBarController.prototype.onBlur = function() {
+  var tab = this.getFocusedTab();
+  if (tab) {
+    tab.setFocused(false);
+  }
+};
+
+/**
  * Move focus from oldTab to newTab.
  * @param {!NavItemController} oldTab
  * @param {!NavItemController} newTab
@@ -427,14 +438,13 @@ function MdNavItem($$rAF) {
       } else if (hasNavSref) {
         navigationAttribute = 'ui-sref="{{ctrl.mdNavSref}}"';
       }
-
+      
       navigationOptions = hasSrefOpts ? 'ui-sref-opts="{{ctrl.srefOpts}}" ' : '';
 
       if (navigationAttribute) {
         buttonTemplate = '' +
           '<md-button class="_md-nav-button md-accent" ' +
             'ng-class="ctrl.getNgClassMap()" ' +
-            'ng-blur="ctrl.setFocused(false)" ' +
             'tabindex="-1" ' +
             navigationOptions +
             navigationAttribute + '>' +
@@ -457,19 +467,20 @@ function MdNavItem($$rAF) {
       'name': '@',
     },
     link: function(scope, element, attrs, controllers) {
+      var mdNavItem = controllers[0];
+      var mdNavBar = controllers[1];
+
       // When accessing the element's contents synchronously, they
       // may not be defined yet because of transclusion. There is a higher
       // chance that it will be accessible if we wait one frame.
       $$rAF(function() {
-        var mdNavItem = controllers[0];
-        var mdNavBar = controllers[1];
-        var navButton = angular.element(element[0].querySelector('._md-nav-button'));
-
         if (!mdNavItem.name) {
           mdNavItem.name = angular.element(element[0]
               .querySelector('._md-nav-button-text')).text().trim();
         }
 
+        var navButton = angular.element(element[0]
+            .querySelector('._md-nav-button'));
         navButton.on('click', function() {
           mdNavBar.mdSelectedNavItem = mdNavItem.name;
           scope.$apply();
@@ -564,10 +575,6 @@ MdNavItemController.prototype.isSelected = function() {
  */
 MdNavItemController.prototype.setFocused = function(isFocused) {
   this._focused = isFocused;
-
-  if (isFocused) {
-    this.getButtonEl().focus();
-  }
 };
 
 /**
