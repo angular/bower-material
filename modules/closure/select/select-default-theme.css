@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-ce5f7c2
+ * v1.1.1-master-b0df030
  */
 md-input-container md-select.md-THEME_NAME-theme .md-select-value span:first-child:after {
   color: '{{warn-A700}}'; }
@@ -64,6 +64,11 @@ md-select.md-THEME_NAME-theme[disabled] .md-select-value {
   color: '{{foreground-3}}'; }
   md-select.md-THEME_NAME-theme[disabled] .md-select-value.md-select-placeholder {
     color: '{{foreground-3}}'; }
+
+md-select.md-THEME_NAME-theme .md-select-icon {
+  color: '{{foreground-3}}'; }
+  md-select.md-THEME_NAME-theme .md-select-icon:hover {
+    color: '{{foreground-2}}'; }
 
 md-select-menu.md-THEME_NAME-theme md-content {
   background: '{{background-A100}}'; }
