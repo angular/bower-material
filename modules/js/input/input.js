@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-2c367f7
+ * v1.1.1-master-ce5f7c2
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -17,10 +17,10 @@ mdMaxlengthDirective['$inject'] = ["$animate", "$mdUtil"];
 placeholderDirective['$inject'] = ["$compile"];
 ngMessageDirective['$inject'] = ["$mdUtil"];
 mdSelectOnFocusDirective['$inject'] = ["$timeout"];
-mdInputInvalidMessagesAnimation['$inject'] = ["$$AnimateRunner", "$animateCss", "$mdUtil"];
-ngMessagesAnimation['$inject'] = ["$$AnimateRunner", "$animateCss", "$mdUtil"];
-ngMessageAnimation['$inject'] = ["$$AnimateRunner", "$animateCss", "$mdUtil"];
-angular.module('material.components.input', [
+mdInputInvalidMessagesAnimation['$inject'] = ["$$AnimateRunner", "$animateCss", "$mdUtil", "$log"];
+ngMessagesAnimation['$inject'] = ["$$AnimateRunner", "$animateCss", "$mdUtil", "$log"];
+ngMessageAnimation['$inject'] = ["$$AnimateRunner", "$animateCss", "$mdUtil", "$log"];
+var inputModule = angular.module('material.components.input', [
     'material.core'
   ])
   .directive('mdInputContainer', mdInputContainerDirective)
@@ -36,12 +36,26 @@ angular.module('material.components.input', [
 
   .animation('.md-input-invalid', mdInputInvalidMessagesAnimation)
   .animation('.md-input-messages-animation', ngMessagesAnimation)
-  .animation('.md-input-message-animation', ngMessageAnimation)
+  .animation('.md-input-message-animation', ngMessageAnimation);
+
+// If we are running inside of tests; expose some extra services so that we can test them
+if (window._mdMocksIncluded) {
+  inputModule.service('$$mdInput', function() {
+    return {
+      // special accessor to internals... useful for testing
+      messages: {
+        show        : showInputMessages,
+        hide        : hideInputMessages,
+        getElement  : getMessagesElement
+      }
+    }
+  })
 
   // Register a service for each animation so that we can easily inject them into unit tests
   .service('mdInputInvalidAnimation', mdInputInvalidMessagesAnimation)
   .service('mdInputMessagesAnimation', ngMessagesAnimation)
   .service('mdInputMessageAnimation', ngMessageAnimation);
+}
 
 /**
  * @ngdoc directive
@@ -909,10 +923,10 @@ function ngMessageDirective($mdUtil) {
   }
 }
 
-var $$AnimateRunner, $animateCss, $mdUtil;
+var $$AnimateRunner, $animateCss, $mdUtil, $log;
 
-function mdInputInvalidMessagesAnimation($$AnimateRunner, $animateCss, $mdUtil) {
-  saveSharedServices($$AnimateRunner, $animateCss, $mdUtil);
+function mdInputInvalidMessagesAnimation($$AnimateRunner, $animateCss, $mdUtil, $log) {
+  saveSharedServices($$AnimateRunner, $animateCss, $mdUtil, $log);
 
   return {
     addClass: function(element, className, done) {
@@ -923,8 +937,8 @@ function mdInputInvalidMessagesAnimation($$AnimateRunner, $animateCss, $mdUtil) 
   };
 }
 
-function ngMessagesAnimation($$AnimateRunner, $animateCss, $mdUtil) {
-  saveSharedServices($$AnimateRunner, $animateCss, $mdUtil);
+function ngMessagesAnimation($$AnimateRunner, $animateCss, $mdUtil, $log) {
+  saveSharedServices($$AnimateRunner, $animateCss, $mdUtil, $log);
 
   return {
     enter: function(element, done) {
@@ -953,8 +967,8 @@ function ngMessagesAnimation($$AnimateRunner, $animateCss, $mdUtil) {
   };
 }
 
-function ngMessageAnimation($$AnimateRunner, $animateCss, $mdUtil) {
-  saveSharedServices($$AnimateRunner, $animateCss, $mdUtil);
+function ngMessageAnimation($$AnimateRunner, $animateCss, $mdUtil, $log) {
+  saveSharedServices($$AnimateRunner, $animateCss, $mdUtil, $log);
 
   return {
     enter: function(element, done) {
@@ -974,8 +988,15 @@ function ngMessageAnimation($$AnimateRunner, $animateCss, $mdUtil) {
 function showInputMessages(element, done) {
   var animators = [], animator;
   var messages = getMessagesElement(element);
+  var children = messages.children();
 
-  angular.forEach(messages.children(), function(child) {
+  if (messages.length == 0 || children.length == 0) {
+    $log.warn('mdInput messages show animation called on invalid messages element: ', element);
+    done();
+    return;
+  }
+
+  angular.forEach(children, function(child) {
     animator = showMessage(angular.element(child));
 
     animators.push(animator.start());
@@ -987,8 +1008,15 @@ function showInputMessages(element, done) {
 function hideInputMessages(element, done) {
   var animators = [], animator;
   var messages = getMessagesElement(element);
+  var children = messages.children();
 
-  angular.forEach(messages.children(), function(child) {
+  if (messages.length == 0 || children.length == 0) {
+    $log.warn('mdInput messages hide animation called on invalid messages element: ', element);
+    done();
+    return;
+  }
+
+  angular.forEach(children, function(child) {
     animator = hideMessage(angular.element(child));
 
     animators.push(animator.start());
@@ -1047,6 +1075,11 @@ function getInputElement(element) {
 }
 
 function getMessagesElement(element) {
+  // If we ARE the messages element, just return ourself
+  if (element.hasClass('md-input-messages-animation')) {
+    return element;
+  }
+
   // If we are a ng-message element, we need to traverse up the DOM tree
   if (element.hasClass('md-input-message-animation')) {
     return angular.element($mdUtil.getClosest(element, function(node) {
@@ -1058,10 +1091,11 @@ function getMessagesElement(element) {
   return angular.element(element[0].querySelector('.md-input-messages-animation'));
 }
 
-function saveSharedServices(_$$AnimateRunner_, _$animateCss_, _$mdUtil_) {
+function saveSharedServices(_$$AnimateRunner_, _$animateCss_, _$mdUtil_, _$log_) {
   $$AnimateRunner = _$$AnimateRunner_;
   $animateCss = _$animateCss_;
   $mdUtil = _$mdUtil_;
+  $log = _$log_;
 }
 
 })(window, window.angular);
