@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-b0df030
+ * v1.1.1-master-d89a682
  */
 @-webkit-keyframes md-tab-content-hide {
   0% {
@@ -117,9 +117,6 @@ md-tabs-wrapper {
               transform: translate3d(-50%, -50%, 0) rotate(180deg); }
   md-tabs-wrapper.md-stretch-tabs md-pagination-wrapper {
     width: 100%;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
     -webkit-flex-direction: row;
@@ -162,7 +159,9 @@ md-tabs-canvas {
 
 md-pagination-wrapper {
   height: 48px;
-  display: block;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
   -webkit-transition: -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
   transition: -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
   transition: transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
@@ -194,7 +193,9 @@ md-tabs-content-wrapper {
   overflow: hidden; }
 
 md-tab-content {
-  display: block;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
   position: absolute;
   top: 0;
   left: 0;
@@ -243,9 +244,13 @@ md-tab-content {
       -webkit-transition-delay: 0.5s;
               transition-delay: 0.5s;
       visibility: hidden; }
-  md-tab-content > div.ng-leave {
-    -webkit-animation: 1s md-tab-content-hide;
-            animation: 1s md-tab-content-hide; }
+  md-tab-content > div {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 0 100%;
+            flex: 1 0 100%; }
+    md-tab-content > div.ng-leave {
+      -webkit-animation: 1s md-tab-content-hide;
+              animation: 1s md-tab-content-hide; }
 
 md-ink-bar {
   position: absolute;
