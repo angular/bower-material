@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-1d77c92
+ * v1.1.1-master-d774b76
  */
 html, body {
   height: 100%;
@@ -1581,15 +1581,7 @@ md-calendar {
 md-datepicker {
   white-space: nowrap;
   overflow: hidden;
-  padding-right: 18px;
-  margin-right: -18px;
   vertical-align: middle; }
-  [dir=rtl] md-datepicker {
-    padding-right: 0;
-    padding-left: 18px; }
-  [dir=rtl] md-datepicker {
-    margin-right: auto;
-    margin-left: -18px; }
 
 .md-inline-form md-datepicker {
   margin-top: 12px; }
@@ -1650,6 +1642,16 @@ md-datepicker {
   [dir=rtl] ._md-datepicker-floating-label._md-datepicker-has-calendar-icon .md-input-message-animation {
     margin-left: auto;
     margin-right: 64px; }
+
+._md-datepicker-has-triangle-icon {
+  padding-right: 18px;
+  margin-right: -18px; }
+  [dir=rtl] ._md-datepicker-has-triangle-icon {
+    padding-right: 0;
+    padding-left: 18px; }
+  [dir=rtl] ._md-datepicker-has-triangle-icon {
+    margin-right: auto;
+    margin-left: -18px; }
 
 .md-datepicker-input-container {
   position: relative;
