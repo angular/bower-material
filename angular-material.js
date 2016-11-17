@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-61bd95e
+ * v1.1.1-master-a6f0de7
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -14911,6 +14911,16 @@ angular
  * @returns {!MdPanelRef}
  */
 
+ /**
+  * @ngdoc method
+  * @name MdPanelRef#updateAnimation
+  * @description
+  * Updates the animation configuration for a panel. You can use this to change
+  * the panel's animation without having to re-create it.
+  *
+  * @param {!MdPanelAnimation} animation
+  */
+
 
 /*****************************************************************************
  *                               MdPanelPosition                            *
@@ -16412,6 +16422,19 @@ MdPanelRef.prototype._configureTrapFocus = function() {
     // md-panel element (as a sibling).
     element[0].parentNode.insertBefore(this._topFocusTrap, element[0]);
     element.after(this._bottomFocusTrap);
+  }
+};
+
+
+/**
+ * Updates the animation of a panel.
+ * @param {!MdPanelAnimation} animation
+ */
+MdPanelRef.prototype.updateAnimation = function(animation) {
+  this.config['animation'] = animation;
+
+  if (this._backdropRef) {
+    this._backdropRef.config.animation.duration(animation._rawDuration);
   }
 };
 
@@ -34999,4 +35022,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-61bd95e"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-a6f0de7"}};
