@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-d774b76
+ * v1.1.1-master-61bd95e
  */
 goog.provide('ngmaterial.components.panel');
 goog.require('ngmaterial.components.backdrop');
@@ -1857,15 +1857,17 @@ MdPanelRef.prototype._configureEscapeToClose = function() {
  */
 MdPanelRef.prototype._configureClickOutsideToClose = function() {
   if (this.config['clickOutsideToClose']) {
-    var target = this.panelContainer;
-    var sourceElem;
+    var target = this.config['propagateContainerEvents'] ?
+        angular.element(document.body) :
+        this.panelContainer;
+    var sourceEl;
 
     // Keep track of the element on which the mouse originally went down
     // so that we can only close the backdrop when the 'click' started on it.
-    // A simple 'click' handler does not work,
-    // it sets the target object as the element the mouse went down on.
+    // A simple 'click' handler does not work, it sets the target object as the
+    // element the mouse went down on.
     var mousedownHandler = function(ev) {
-      sourceElem = ev.target;
+      sourceEl = ev.target;
     };
 
     // We check if our original element and the target is the backdrop
@@ -1873,7 +1875,15 @@ MdPanelRef.prototype._configureClickOutsideToClose = function() {
     // panel we don't want to panel to close.
     var self = this;
     var mouseupHandler = function(ev) {
-      if (sourceElem === target[0] && ev.target === target[0]) {
+      if (self.config['propagateContainerEvents']) {
+
+        // We check if the sourceEl of the event is the panel element or one
+        // of it's children. If it is not, then close the panel.
+        if (sourceEl !== self.panelEl[0] && !self.panelEl[0].contains(sourceEl)) {
+          self.close();
+        }
+
+      } else if (sourceEl === target[0] && ev.target === target[0]) {
         ev.stopPropagation();
         ev.preventDefault();
 
@@ -2754,6 +2764,7 @@ MdPanelPosition.prototype._constrainToViewport = function(panelEl) {
   }
 };
 
+
 /**
  * Switches between 'start' and 'end'.
  * @param {string} position Horizontal position of the panel
@@ -2943,6 +2954,7 @@ MdPanelAnimation.prototype.closeTo = function(closeTo) {
   return this;
 };
 
+
 /**
  * Specifies the duration of the animation in milliseconds.
  * @param {number|{open: number, close: number}} duration
@@ -2967,6 +2979,7 @@ MdPanelAnimation.prototype.duration = function(duration) {
     if (angular.isNumber(value)) return value / 1000;
   }
 };
+
 
 /**
  * Returns the element and bounds for the animation target.
