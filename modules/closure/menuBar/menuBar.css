@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-34b3310
+ * v1.1.1-master-471b850
  */
 md-toolbar.md-menu-toolbar h2.md-toolbar-tools {
   line-height: 1rem;
@@ -53,21 +53,16 @@ md-menu-content.md-menu-bar-menu.md-dense {
         padding: 0 64px 0 32px; }
   md-menu-content.md-menu-bar-menu.md-dense .md-button {
     min-height: 0;
-    height: 32px;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: flex; }
+    height: 32px; }
     md-menu-content.md-menu-bar-menu.md-dense .md-button span {
-      -webkit-box-flex: 1;
-      -webkit-flex-grow: 1;
-              flex-grow: 1; }
+      float: left; }
+      [dir=rtl] md-menu-content.md-menu-bar-menu.md-dense .md-button span {
+        float: right; }
     md-menu-content.md-menu-bar-menu.md-dense .md-button span.md-alt-text {
-      -webkit-box-flex: 0;
-      -webkit-flex-grow: 0;
-              flex-grow: 0;
-      -webkit-align-self: flex-end;
-              align-self: flex-end;
+      float: right;
       margin: 0 8px; }
+      [dir=rtl] md-menu-content.md-menu-bar-menu.md-dense .md-button span.md-alt-text {
+        float: left; }
   md-menu-content.md-menu-bar-menu.md-dense md-menu-divider {
     margin: 8px 0; }
   md-menu-content.md-menu-bar-menu.md-dense md-menu-item > .md-button, md-menu-content.md-menu-bar-menu.md-dense .md-menu > .md-button {
