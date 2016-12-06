@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-471b850
+ * v1.1.1-master-7563b47
  */
 goog.provide('ngmaterial.components.tooltip');
 goog.require('ngmaterial.components.panel');
@@ -99,7 +99,6 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $interpolate,
 
     // Remove the element from its current DOM position.
     element.detach();
-    element.attr('role', 'tooltip');
 
     updatePosition();
     bindEvents();
@@ -395,7 +394,9 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $interpolate,
         panelRef = $mdPanel.create(panelConfig);
       }
 
-      panelRef.open();
+      panelRef.open().then(function() {
+        panelRef.panelEl.attr('role', 'tooltip');
+      });
     }
 
     function hideTooltip() {
