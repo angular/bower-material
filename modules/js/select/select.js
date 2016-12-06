@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-f7ecb4f
+ * v1.1.1-master-38eaa52
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -83,7 +83,7 @@ angular.module('material.components.select', [
  * `value="null"` will require the test `ng-if="myValue != 'null'"` rather than `ng-if="!myValue"`.
  *
  * @param {expression} ng-model The model!
- * @param {boolean=} multiple Whether it's multiple.
+ * @param {boolean=} multiple When set to true, allows for more than one option to be selected. The model is an array with the selected choices.
  * @param {expression=} md-on-close Expression to be evaluated when the select is closed.
  * @param {expression=} md-on-open Expression to be evaluated when opening the select.
  * Will hide the select options and show a spinner until the evaluated promise resolves.
