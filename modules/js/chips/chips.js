@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-1e45c44
+ * v1.1.1-master-455c679
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1458,6 +1458,8 @@ MdContactChips['$inject'] = ["$mdTheming", "$mdUtil"];angular
  *    contact's email address.
  * @param {string} md-contact-image The field name of the contact object representing the
  *    contact's image.
+ * @param {number=} md-min-length Specifies the minimum length of text before autocomplete will
+ *    make suggestions
  *
  *
  * @param {expression=} filter-selected Whether to filter selected contacts from the list of
@@ -1492,6 +1494,7 @@ var MD_CONTACT_CHIPS_TEMPLATE = '\
               md-items="item in $mdContactChipsCtrl.queryContact($mdContactChipsCtrl.searchText)"\
               md-item-text="$mdContactChipsCtrl.itemName(item)"\
               md-no-cache="true"\
+              md-min-length="$mdContactChipsCtrl.minLength"\
               md-autoselect\
               placeholder="{{$mdContactChipsCtrl.contacts.length == 0 ?\
                   $mdContactChipsCtrl.placeholder : $mdContactChipsCtrl.secondaryPlaceholder}}">\
@@ -1547,6 +1550,7 @@ function MdContactChips($mdTheming, $mdUtil) {
       contactEmail: '@mdContactEmail',
       contacts: '=ngModel',
       requireMatch: '=?mdRequireMatch',
+      minLength: '=?mdMinLength',
       highlightFlags: '@?mdHighlightFlags'
     }
   };
