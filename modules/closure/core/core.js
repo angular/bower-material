@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-38eaa52
+ * v1.1.1-master-eac3bfb
  */
 goog.provide('ngmaterial.core');
 
@@ -4012,6 +4012,11 @@ function InterimElementProvider() {
               if (options.$destroy) {
                 // For $destroy, onRemove should be synchronous
                 resolve(element);
+
+                if (!options.preserveScope && options.scope ) {
+                  // scope destroy should still be be done after the current digest is done
+                  action.then( function() { options.scope.$destroy(); });
+                }
               } else {
                 // Wait until transition-out is done
                 action.then(function () {
