@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-491d139
+ * v1.1.1-master-0b72ab9
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -22908,8 +22908,9 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $interpolate,
 
     function addAriaLabel(override) {
       if (override || !parent.attr('aria-label')) {
-        var rawText = override || element.text().trim();
-        var interpolatedText = $interpolate(rawText)(parent.scope());
+        // Only interpolate the text from the HTML element because otherwise the custom text
+        // could be interpolated twice and cause XSS violations.
+        var interpolatedText = override || $interpolate(element.text().trim())(parent.scope);
         parent.attr('aria-label', interpolatedText);
       }
     }
@@ -35200,4 +35201,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-491d139"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1-master-0b72ab9"}};
