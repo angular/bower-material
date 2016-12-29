@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-0b72ab9
+ * v1.1.1-master-8801ef8
  */
 goog.provide('ngmaterial.core');
 
@@ -2364,7 +2364,9 @@ MdCompilerService.prototype._fetchContentElement = function(options) {
       restoreFn = createRestoreFn(contentEl);
     } else {
       restoreFn = function() {
-        contentEl.parentNode.removeChild(contentEl);
+        if (contentEl.parentNode) {
+          contentEl.parentNode.removeChild(contentEl);
+        }
       }
     }
   }

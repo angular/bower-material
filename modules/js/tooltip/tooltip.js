@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-0b72ab9
+ * v1.1.1-master-8801ef8
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -371,7 +371,6 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $interpolate,
       if (!panelRef) {
         var id = 'tooltip-' + $mdUtil.nextUid();
         var attachTo = angular.element(document.body);
-        var content = element.html().trim();
         var panelAnimation = $mdPanel.newPanelAnimation()
             .openFrom(parent)
             .closeTo(parent)
@@ -383,7 +382,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $interpolate,
         var panelConfig = {
           id: id,
           attachTo: attachTo,
-          template: content,
+          contentElement: element,
           propagateContainerEvents: true,
           panelClass: 'md-tooltip ' + origin,
           animation: panelAnimation,
