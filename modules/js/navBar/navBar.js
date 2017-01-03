@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-d8263f2
+ * v1.1.1-master-b38d928
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -235,6 +235,11 @@ MdNavBarController.prototype._initTabs = function() {
 MdNavBarController.prototype._updateTabs = function(newValue, oldValue) {
   var self = this;
   var tabs = this._getTabs();
+
+  // this._getTabs can return null if nav-bar has not yet been initialized
+  if(!tabs)
+    return;
+
   var oldIndex = -1;
   var newIndex = -1;
   var newTab = this._getTabByName(newValue);
@@ -279,11 +284,12 @@ MdNavBarController.prototype._updateInkBarStyles = function(tab, newIndex, oldIn
  * @private
  */
 MdNavBarController.prototype._getTabs = function() {
-  var linkArray = Array.prototype.slice.call(
-      this._navBarEl.querySelectorAll('.md-nav-item'));
-  return linkArray.map(function(el) {
-    return angular.element(el).controller('mdNavItem');
-  });
+  var controllers = Array.prototype.slice.call(
+    this._navBarEl.querySelectorAll('.md-nav-item'))
+    .map(function(el) {
+      return angular.element(el).controller('mdNavItem')
+    });
+  return controllers.indexOf(undefined) ? controllers : null;
 };
 
 /**
