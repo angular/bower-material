@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-085c5fd
+ * v1.1.1-master-dd2c8a9
  */
 goog.provide('ngmaterial.components.menu');
 goog.require('ngmaterial.components.backdrop');
@@ -633,7 +633,7 @@ function MenuProvider($$interimElementProvider) {
 
       if (opts.menuContentEl[0]) {
         // Inherit the theme from the target element.
-        $mdTheming(opts.menuContentEl, opts.target);
+        $mdTheming.inherit(opts.menuContentEl, opts.target);
       } else {
         $log.warn(
           '$mdMenu: Menu elements should always contain a `md-menu-content` element,' +
