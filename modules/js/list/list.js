@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-4417564
+ * v1.1.1-master-16c2512
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -268,11 +268,9 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
         if (hasProxiedElement) {
           wrapIn('div');
         } else {
-          tEl.addClass('md-no-proxy md-list-item-content');
+          tEl.addClass('md-no-proxy');
         }
 
-      } else {
-        tEl.addClass('md-list-item-content');
       }
 
       wrapSecondaryItems();
@@ -328,16 +326,20 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
 
       function wrapIn(type) {
         if (type == 'div') {
-          itemContainer = angular.element('<div class="md-no-style md-list-item-content">');
+          itemContainer = angular.element('<div class="md-no-style md-list-item-inner">');
           itemContainer.append(tEl.contents());
           tEl.addClass('md-proxy-focus');
         } else {
           // Element which holds the default list-item content.
-          itemContainer = angular.element('<div class="md-list-item-content">');
+          itemContainer = angular.element(
+            '<div class="md-button md-no-style">'+
+            '   <div class="md-list-item-inner"></div>'+
+            '</div>'
+          );
 
           // Button which shows ripple and executes primary action.
           var buttonWrap = angular.element(
-            '<md-button class="md-button-wrap-executor md-no-style">'
+            '<md-button class="md-no-style"></md-button>'
           );
 
           // Expect the root element to have a label set. If not set, determine the label from the text content.
@@ -352,10 +354,11 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
             buttonWrap.addClass('md-no-focus');
           }
 
-          itemContainer.append(tEl.contents());
+          // Append the button wrap before our list-item content, because it will overlay in relative.
+          itemContainer.prepend(buttonWrap);
+          itemContainer.children().eq(1).append(tEl.contents());
 
-          tEl.addClass('md-button-wrap');
-          tEl.prepend(buttonWrap)
+          tEl.addClass('_md-button-wrap');
         }
 
         tEl[0].setAttribute('tabindex', '-1');
@@ -373,11 +376,9 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
       }
 
       function wrapSecondaryItem(secondaryItem, container) {
-        // If the current secondary item is not a button or proxied element,
-        // but contains a ng-click attribute, the secondary item will be automatically
-        // wrapped inside of a button.
-        if (secondaryItem && !isButton(secondaryItem) && !isProxiedElement(secondaryItem)
-            && secondaryItem.hasAttribute('ng-click')) {
+        // If the current secondary item is not a button, but contains a ng-click attribute,
+        // the secondary item will be automatically wrapped inside of a button.
+        if (secondaryItem && !isButton(secondaryItem) && secondaryItem.hasAttribute('ng-click')) {
 
           $mdAria.expect(secondaryItem, 'aria-label');
           var buttonWrapper = angular.element('<md-button class="md-secondary md-icon-button">');
@@ -393,8 +394,7 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
           secondaryItem = buttonWrapper[0];
         }
 
-        if (secondaryItem && !tAttrs.ngClick && !hasClickEvent(secondaryItem)
-            && isProxiedElement(secondaryItem)) {
+        if (secondaryItem && (!hasClickEvent(secondaryItem) || (!tAttrs.ngClick && isProxiedElement(secondaryItem)))) {
           // In this case we remove the secondary class, so we can identify it later, when we searching for the
           // proxy items.
           angular.element(secondaryItem).removeClass('md-secondary');
@@ -455,7 +455,7 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
 
         var proxies       = [],
             firstElement  = $element[0].firstElementChild,
-            isButtonWrap  = $element.hasClass('md-button-wrap'),
+            isButtonWrap  = $element.hasClass('_md-button-wrap'),
             clickChild    = isButtonWrap ? firstElement.firstElementChild : firstElement,
             hasClick      = clickChild && hasClickEvent(clickChild),
             noProxies     = $element.hasClass('md-no-proxy');

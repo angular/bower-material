@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-4417564
+ * v1.1.1-master-16c2512
  */
 md-toolbar {
   box-sizing: border-box;
@@ -54,9 +54,9 @@ md-toolbar {
     [dir=rtl] md-toolbar > .md-indent {
       margin-left: auto;
       margin-right: 64px; }
-  md-toolbar ~ md-content > md-list, md-toolbar ~ md-content md-list.md-dense {
+  md-toolbar ~ md-content > md-list {
     padding: 0; }
-    md-toolbar ~ md-content > md-list md-list-item:last-child md-divider, md-toolbar ~ md-content md-list.md-dense md-list-item:last-child md-divider {
+    md-toolbar ~ md-content > md-list md-list-item:last-child md-divider {
       display: none; }
 
 .md-toolbar-tools {
