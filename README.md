@@ -99,6 +99,7 @@ under `/bower_components/angular-material/`.
 	<script src="/node_modules/angular/angular.js"></script>
 	<script src="/node_modules/angular-aria/angular-aria.js"></script>
 	<script src="/node_modules/angular-animate/angular-animate.js"></script>
+	<script src="/node_modules/angular-messages/angular-messages.js"></script>
 	<script src="/node_modules/angular-material/angular-material.js"></script>
 	<script>
 
@@ -131,6 +132,7 @@ under `/bower_components/angular-material/`.
 	<script src="/bower_components/angular/angular.js"></script>
 	<script src="/bower_components/angular-aria/angular-aria.js"></script>
 	<script src="/bower_components/angular-animate/angular-animate.js"></script>
+	<script src="/bower_components/angular-messages/angular-messages.js"></script>
 	<script src="/bower_components/angular-material/angular-material.js"></script>
 	<script>
 
@@ -164,12 +166,13 @@ This is especially useful when using online tools such as CodePen, Plunkr, or js
   <body>
   
     <!-- Angular Material Dependencies -->
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-aria.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-messages.min.js"></script>
     
     <!-- Angular Material Javascript now available via Google CDN; version 0.9.4 used here -->
-    <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.js"></script>
     
   </body>
 ```
