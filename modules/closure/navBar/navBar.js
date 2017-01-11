@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-bb90ce9
+ * v1.1.1-master-3556d57
  */
 goog.provide('ngmaterial.components.navBar');
 goog.require('ngmaterial.core');
@@ -13,7 +13,7 @@ goog.require('ngmaterial.core');
 
 
 MdNavBarController['$inject'] = ["$element", "$scope", "$timeout", "$mdConstant"];
-MdNavItem['$inject'] = ["$mdAria", "$$rAF"];
+MdNavItem['$inject'] = ["$$rAF"];
 MdNavItemController['$inject'] = ["$element"];
 MdNavBar['$inject'] = ["$mdAria", "$mdTheming"];
 angular.module('material.components.navBar', ['material.core'])
@@ -106,7 +106,6 @@ angular.module('material.components.navBar', ['material.core'])
  *     (https://ui-router.github.io/docs/latest/interfaces/transition.transitionoptions.html).
  * @param {string=} name The name of this link. Used by the nav bar to know
  *     which link is currently selected.
- * @param {string=} aria-label Adds alternative text for accessibility
  *
  * @usage
  * See `<md-nav-bar>` for usage.
@@ -400,7 +399,7 @@ MdNavBarController.prototype.onKeydown = function(e) {
 /**
  * ngInject
  */
-function MdNavItem($mdAria, $$rAF) {
+function MdNavItem($$rAF) {
   return {
     restrict: 'E',
     require: ['mdNavItem', '^mdNavBar'],
@@ -480,8 +479,6 @@ function MdNavItem($mdAria, $$rAF) {
           mdNavBar.mdSelectedNavItem = mdNavItem.name;
           scope.$apply();
         });
-
-        $mdAria.expectWithText(element, 'aria-label');
       });
     }
   };
