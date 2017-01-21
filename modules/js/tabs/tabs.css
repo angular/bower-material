@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-685b902
+ * v1.1.1-master-2c9a5cc
  */
 @-webkit-keyframes md-tab-content-hide {
   0% {
@@ -247,7 +247,8 @@ md-tab-content {
   md-tab-content > div {
     -webkit-box-flex: 1;
     -webkit-flex: 1 0 100%;
-            flex: 1 0 100%; }
+            flex: 1 0 100%;
+    min-width: 0; }
     md-tab-content > div.ng-leave {
       -webkit-animation: 1s md-tab-content-hide;
               animation: 1s md-tab-content-hide; }
