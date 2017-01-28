@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.1-master-2c9a5cc
+ * v1.1.1-master-e96293a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -762,8 +762,18 @@ function MdDialogProvider($$interimElementProvider) {
       return dialogPopIn(element, options)
         .then(function() {
           lockScreenReader(element, options);
+          warnDeprecatedActions();
           focusOnOpen();
         });
+
+      /**
+       * Check to see if they used the deprecated .md-actions class and log a warning
+       */
+      function warnDeprecatedActions() {
+        if (element[0].querySelector('.md-actions')) {
+          $log.warn('Using a class of md-actions is deprecated, please use <md-dialog-actions>.');
+        }
+      }
 
       /**
        * For alerts, focus on content... otherwise focus on
