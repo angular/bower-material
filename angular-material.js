@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.2-master-b2562cf
+ * v1.1.2-master-2240114
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -19524,7 +19524,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
       var newVal = self.isMultiple ? values : values[0];
       var prevVal = self.ngModel.$modelValue;
 
-      if (usingTrackBy ? !angular.equals(prevVal, newVal) : prevVal !== newVal) {
+      if (usingTrackBy ? !angular.equals(prevVal, newVal) : (prevVal + '') !== newVal) {
         self.ngModel.$setViewValue(newVal);
         self.ngModel.$render();
       }
@@ -35746,4 +35746,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.2-master-b2562cf"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.2-master-2240114"}};
