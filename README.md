@@ -1,5 +1,5 @@
-This repository is used only for Angular Material v1.x library deployments and localized installs using `npm` and `bower`. The actual component source-code for this library is in the
-[main Angular Material repository](https://github.com/angular/material).
+This repository is used only for AngularJS Material v1.x library deployments and localized installs using `npm` and `bower`. The actual component source-code for this library is in the
+[main AngularJS Material repository](https://github.com/angular/material).
 
 > Please file issues and pull requests against that `angular/material` repository only. Do not file issues here on the deployment repository.
 
@@ -8,15 +8,15 @@ This repository is used only for Angular Material v1.x library deployments and l
 Included in this repository are the:
 
 * **[SCSS files](https://github.com/angular/bower-material/tree/master/modules/scss)** which are used to build the *.css files
-* **[Layout files](https://github.com/angular/bower-material/tree/master/modules/layouts)** which are used with the Angular Material (Flexbox) Layout API. 
+* **[Layout files](https://github.com/angular/bower-material/tree/master/modules/layouts)** which are used with the AngularJS Material (Flexbox) Layout API. 
 
 > Note these are already included in the `angular-material.css` files. These copies are for direct developer access and contain IE flexbox fixes; as needed.
 
-## Installing Angular Material
+## Installing AngularJS Material
 
 You can install this package locally either with `npm`, `jspm`, or `bower` (deprecated). 
 
-> Please note that Angular Material requires **Angular 1.3.x** or higher. 
+> Please note that AngularJS Material requires **AngularJS 1.3.x** to **AngularJS 1.6.x**. 
 
 ### npm
 
@@ -74,9 +74,9 @@ bower install angular-material --save
 bower update
 ```
 
-## Using the Angular Material Library
+## Using the AngularJS Material Library
 
-Now that you have installed the Angular libraries, simply include the scripts and 
+Now that you have installed the AngularJS libraries, simply include the scripts and 
 stylesheet in your main HTML file, in the order shown in the example below. Note that npm 
 will install the files under `/node_modules/angular-material/` and bower will install them 
 under `/bower_components/angular-material/`.
