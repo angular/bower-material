@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-e06284a
+ * v1.1.3-master-0e5b849
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -9981,6 +9981,7 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  *      in parallel the close animations.
  *   - `fullscreen` `{boolean=}`: An option to toggle whether the dialog should show in fullscreen
  *      or not. Defaults to `false`.
+ *   - `multiple` `{boolean=}`: An option to allow this dialog to display over one that's currently open.
  * @returns {promise} A promise that can be resolved with `$mdDialog.hide()` or
  * rejected with `$mdDialog.cancel()`.
  */
@@ -15975,7 +15976,7 @@ MdPanelService.prototype._wrapTemplate = function(origTemplate) {
   // height and width for positioning.
   return '' +
       '<div class="md-panel-outer-wrapper">' +
-      '  <div class="md-panel" style="left: -9999px;">' + template + '</div>' +
+      '  <div class="md-panel _md-panel-offscreen">' + template + '</div>' +
       '</div>';
 };
 
@@ -15991,7 +15992,7 @@ MdPanelService.prototype._wrapTemplate = function(origTemplate) {
 MdPanelService.prototype._wrapContentElement = function(contentElement) {
   var wrapper = angular.element('<div class="md-panel-outer-wrapper">');
 
-  contentElement.addClass('md-panel').css('left', '-9999px');
+  contentElement.addClass('md-panel _md-panel-offscreen');
   wrapper.append(contentElement);
 
   return wrapper;
@@ -16584,8 +16585,8 @@ MdPanelRef.prototype._addStyles = function() {
       // Theme the element and container.
       self._setTheming();
 
-      // Remove left: -9999px and add hidden class.
-      self.panelEl.css('left', '');
+      // Remove offscreen class and add hidden class.
+      self.panelEl.removeClass('_md-panel-offscreen');
       self.panelContainer.addClass(MD_PANEL_HIDDEN);
 
       resolve(self);
@@ -28398,7 +28399,7 @@ function MdContactChips($mdTheming, $mdUtil) {
    *
    * @description
    * `<md-calendar>` is a component that renders a calendar that can be used to select a date.
-   * It is a part of the `<md-datepicker` pane, however it can also be used on it's own.
+   * It is a part of the `<md-datepicker>` pane, however it can also be used on it's own.
    *
    * @usage
    *
@@ -34532,7 +34533,7 @@ function MdProgressCircularProvider() {
  * @restrict E
  *
  * @description
- * Use the `<md-tab>` a nested directive used within `<md-tabs>` to specify a tab with a **label** and optional *view content*.
+ * The `<md-tab>` is a nested directive used within `<md-tabs>` to specify a tab with a **label** and optional *view content*.
  *
  * If the `label` attribute is not specified, then an optional `<md-tab-label>` tag can be used to specify more
  * complex tab header markup. If neither the **label** nor the **md-tab-label** are specified, then the nested
@@ -35919,4 +35920,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.3-master-e06284a"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.3-master-0e5b849"}};

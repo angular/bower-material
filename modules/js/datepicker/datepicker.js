@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-e06284a
+ * v1.1.3-master-0e5b849
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -34,7 +34,7 @@ angular.module('material.components.datepicker', [
    *
    * @description
    * `<md-calendar>` is a component that renders a calendar that can be used to select a date.
-   * It is a part of the `<md-datepicker` pane, however it can also be used on it's own.
+   * It is a part of the `<md-datepicker>` pane, however it can also be used on it's own.
    *
    * @usage
    *

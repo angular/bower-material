@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-e06284a
+ * v1.1.3-master-0e5b849
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1319,7 +1319,7 @@ MdPanelService.prototype._wrapTemplate = function(origTemplate) {
   // height and width for positioning.
   return '' +
       '<div class="md-panel-outer-wrapper">' +
-      '  <div class="md-panel" style="left: -9999px;">' + template + '</div>' +
+      '  <div class="md-panel _md-panel-offscreen">' + template + '</div>' +
       '</div>';
 };
 
@@ -1335,7 +1335,7 @@ MdPanelService.prototype._wrapTemplate = function(origTemplate) {
 MdPanelService.prototype._wrapContentElement = function(contentElement) {
   var wrapper = angular.element('<div class="md-panel-outer-wrapper">');
 
-  contentElement.addClass('md-panel').css('left', '-9999px');
+  contentElement.addClass('md-panel _md-panel-offscreen');
   wrapper.append(contentElement);
 
   return wrapper;
@@ -1928,8 +1928,8 @@ MdPanelRef.prototype._addStyles = function() {
       // Theme the element and container.
       self._setTheming();
 
-      // Remove left: -9999px and add hidden class.
-      self.panelEl.css('left', '');
+      // Remove offscreen class and add hidden class.
+      self.panelEl.removeClass('_md-panel-offscreen');
       self.panelContainer.addClass(MD_PANEL_HIDDEN);
 
       resolve(self);
