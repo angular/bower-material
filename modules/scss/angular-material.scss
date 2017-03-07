@@ -1290,6 +1290,236 @@ input {
   }
 }
 
+// The default item height is also specified in the JavaScript.
+$md-autocomplete-item-height: 48px !default;
+$md-autocomplete-clear-size: 30px !default;
+$md-autocomplete-input-offset: 20px !default;
+
+md-autocomplete {
+  border-radius: 2px;
+  display: block;
+  height: 40px;
+  position: relative;
+  overflow: visible;
+  min-width: 190px;
+  &[disabled] {
+    input {
+      cursor: default;
+    }
+  }
+  &[md-floating-label] {
+    border-radius: 0;
+    background: transparent;
+    height: auto;
+
+    md-input-container {
+      padding-bottom: 0;
+    }
+    md-autocomplete-wrap {
+      height: auto;
+    }
+
+    .md-show-clear-button {
+
+      button {
+        display: block;
+        position: absolute;
+        right: 0;
+        top: $md-autocomplete-input-offset;
+        width: $md-autocomplete-clear-size;
+        height: $md-autocomplete-clear-size;
+      }
+
+      input {
+        // Add padding to the end of the input to avoid overlapping with the clear button.
+        @include rtl-prop(padding-right, padding-left, $md-autocomplete-clear-size, 0);
+      }
+    }
+
+  }
+  md-autocomplete-wrap {
+
+    // Layout [layout='row']
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+
+    position: relative;
+    overflow: visible;
+    height: 40px;
+    &.md-menu-showing {
+      z-index: $z-index-backdrop + 1;
+    }
+
+    md-input-container, input {
+      // Layout [flex]
+      flex: 1 1 0%;
+      box-sizing: border-box;
+      min-width : 0;
+    }
+
+    md-progress-linear {
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      // When `md-inline` is present, we adjust the offset to go over the `ng-message` space
+      &.md-inline {
+        bottom: 40px;
+        right: 2px;
+        left: 2px;
+        width: auto;
+      }
+      .md-mode-indeterminate {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        transition: none;
+
+        .md-container {
+          transition: none;
+          height: 3px;
+        }
+        &.ng-enter {
+          transition: opacity 0.15s linear;
+          &.ng-enter-active {
+            opacity: 1;
+          }
+        }
+        &.ng-leave {
+          transition: opacity 0.15s linear;
+          &.ng-leave-active {
+            opacity: 0;
+          }
+        }
+      }
+    }
+  }
+  input:not(.md-input) {
+    @include md-flat-input();
+    width: 100%;
+    padding: 0 15px;
+    line-height: 40px;
+    height: 40px;
+  }
+  .md-show-clear-button button {
+    position: relative;
+    line-height: 20px;
+    text-align: center;
+    width: $md-autocomplete-clear-size;
+    height: $md-autocomplete-clear-size;
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    padding: 0;
+    font-size: 12px;
+    background: transparent;
+    margin: auto 5px;
+    &:after {
+      content: '';
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      bottom: -6px;
+      left: -6px;
+      border-radius: 50%;
+      transform: scale(0);
+      opacity: 0;
+      transition: $swift-ease-out;
+    }
+    &:focus {
+      outline: none;
+
+      &:after {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    md-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate3d(-50%, -50%, 0) scale(0.9);
+      path {
+        stroke-width: 0;
+      }
+    }
+    &.ng-enter {
+      transform: scale(0);
+      transition: transform 0.15s ease-out;
+      &.ng-enter-active {
+        transform: scale(1);
+      }
+    }
+    &.ng-leave {
+      transition: transform 0.15s ease-out;
+      &.ng-leave-active {
+        transform: scale(0);
+      }
+    }
+  }
+  // IE Only
+  @media screen and (-ms-high-contrast: active) {
+    $border-color: #fff;
+
+    input {
+      border: 1px solid $border-color;
+    }
+    li:focus {
+      color: #fff;
+    }
+  }
+}
+
+.md-virtual-repeat-container.md-autocomplete-suggestions-container {
+  position: absolute;
+  box-shadow: 0 2px 5px rgba(black, 0.25);
+  z-index: $z-index-tooltip;
+
+  // Expand the virtualRepeatContainer as much as the max-height from the JavaScript allows.
+  // This is necessary for the virtualRepeatContainer to be able to grow back.
+  height: 100%;
+}
+
+.md-virtual-repeat-container.md-not-found {
+  height: $md-autocomplete-item-height;
+}
+
+.md-autocomplete-suggestions {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+
+  li {
+    font-size: 14px;
+    overflow: hidden;
+    padding: 0 15px;
+    line-height: $md-autocomplete-item-height;
+    height: $md-autocomplete-item-height;
+    transition: background 0.15s linear;
+    margin: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:not(.md-not-found-wrapper) {
+      cursor: pointer;
+    }
+  }
+}
+
+// IE Only
+@media screen and (-ms-high-contrast: active) {
+  md-autocomplete,
+  .md-autocomplete-suggestions {
+    border: 1px solid #fff;
+  }
+}
+
 // !!Important - Theme-based Background-color can be configured in backdrop-theme.scss
 //             - Animate background-color opacity only for `.md-opaque` styles
 
@@ -2086,236 +2316,6 @@ md-checkbox {
   }
 }
 
-// The default item height is also specified in the JavaScript.
-$md-autocomplete-item-height: 48px !default;
-$md-autocomplete-clear-size: 30px !default;
-$md-autocomplete-input-offset: 20px !default;
-
-md-autocomplete {
-  border-radius: 2px;
-  display: block;
-  height: 40px;
-  position: relative;
-  overflow: visible;
-  min-width: 190px;
-  &[disabled] {
-    input {
-      cursor: default;
-    }
-  }
-  &[md-floating-label] {
-    border-radius: 0;
-    background: transparent;
-    height: auto;
-
-    md-input-container {
-      padding-bottom: 0;
-    }
-    md-autocomplete-wrap {
-      height: auto;
-    }
-
-    .md-show-clear-button {
-
-      button {
-        display: block;
-        position: absolute;
-        right: 0;
-        top: $md-autocomplete-input-offset;
-        width: $md-autocomplete-clear-size;
-        height: $md-autocomplete-clear-size;
-      }
-
-      input {
-        // Add padding to the end of the input to avoid overlapping with the clear button.
-        @include rtl-prop(padding-right, padding-left, $md-autocomplete-clear-size, 0);
-      }
-    }
-
-  }
-  md-autocomplete-wrap {
-
-    // Layout [layout='row']
-    display: flex;
-    flex-direction: row;
-    box-sizing: border-box;
-
-    position: relative;
-    overflow: visible;
-    height: 40px;
-    &.md-menu-showing {
-      z-index: $z-index-backdrop + 1;
-    }
-
-    md-input-container, input {
-      // Layout [flex]
-      flex: 1 1 0%;
-      box-sizing: border-box;
-      min-width : 0;
-    }
-
-    md-progress-linear {
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      // When `md-inline` is present, we adjust the offset to go over the `ng-message` space
-      &.md-inline {
-        bottom: 40px;
-        right: 2px;
-        left: 2px;
-        width: auto;
-      }
-      .md-mode-indeterminate {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        transition: none;
-
-        .md-container {
-          transition: none;
-          height: 3px;
-        }
-        &.ng-enter {
-          transition: opacity 0.15s linear;
-          &.ng-enter-active {
-            opacity: 1;
-          }
-        }
-        &.ng-leave {
-          transition: opacity 0.15s linear;
-          &.ng-leave-active {
-            opacity: 0;
-          }
-        }
-      }
-    }
-  }
-  input:not(.md-input) {
-    @include md-flat-input();
-    width: 100%;
-    padding: 0 15px;
-    line-height: 40px;
-    height: 40px;
-  }
-  .md-show-clear-button button {
-    position: relative;
-    line-height: 20px;
-    text-align: center;
-    width: $md-autocomplete-clear-size;
-    height: $md-autocomplete-clear-size;
-    cursor: pointer;
-    border: none;
-    border-radius: 50%;
-    padding: 0;
-    font-size: 12px;
-    background: transparent;
-    margin: auto 5px;
-    &:after {
-      content: '';
-      position: absolute;
-      top: -6px;
-      right: -6px;
-      bottom: -6px;
-      left: -6px;
-      border-radius: 50%;
-      transform: scale(0);
-      opacity: 0;
-      transition: $swift-ease-out;
-    }
-    &:focus {
-      outline: none;
-
-      &:after {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-    md-icon {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate3d(-50%, -50%, 0) scale(0.9);
-      path {
-        stroke-width: 0;
-      }
-    }
-    &.ng-enter {
-      transform: scale(0);
-      transition: transform 0.15s ease-out;
-      &.ng-enter-active {
-        transform: scale(1);
-      }
-    }
-    &.ng-leave {
-      transition: transform 0.15s ease-out;
-      &.ng-leave-active {
-        transform: scale(0);
-      }
-    }
-  }
-  // IE Only
-  @media screen and (-ms-high-contrast: active) {
-    $border-color: #fff;
-
-    input {
-      border: 1px solid $border-color;
-    }
-    li:focus {
-      color: #fff;
-    }
-  }
-}
-
-.md-virtual-repeat-container.md-autocomplete-suggestions-container {
-  position: absolute;
-  box-shadow: 0 2px 5px rgba(black, 0.25);
-  z-index: $z-index-tooltip;
-
-  // Expand the virtualRepeatContainer as much as the max-height from the JavaScript allows.
-  // This is necessary for the virtualRepeatContainer to be able to grow back.
-  height: 100%;
-}
-
-.md-virtual-repeat-container.md-not-found {
-  height: $md-autocomplete-item-height;
-}
-
-.md-autocomplete-suggestions {
-  margin: 0;
-  list-style: none;
-  padding: 0;
-
-  li {
-    font-size: 14px;
-    overflow: hidden;
-    padding: 0 15px;
-    line-height: $md-autocomplete-item-height;
-    height: $md-autocomplete-item-height;
-    transition: background 0.15s linear;
-    margin: 0;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-
-    &:focus {
-      outline: none;
-    }
-
-    &:not(.md-not-found-wrapper) {
-      cursor: pointer;
-    }
-  }
-}
-
-// IE Only
-@media screen and (-ms-high-contrast: active) {
-  md-autocomplete,
-  .md-autocomplete-suggestions {
-    border: 1px solid #fff;
-  }
-}
-
 $chip-font-size: rem(1.6) !default;
 $chip-height: rem(3.2) !default;
 $chip-padding: 0 rem(1.2) 0 rem(1.2) !default;
@@ -2551,175 +2551,6 @@ md-content {
 }
 
 
-
-md-divider {
-  display: block;
-  border-top-width: 1px;
-  border-top-style: solid;
-  margin: 0;
-
-  &[md-inset] {
-    @include rtl-prop(margin-left, margin-right, $baseline-grid * 10, auto);
-  }
-}
-
-.layout-row,
-.layout-xs-row, .layout-gt-xs-row,
-.layout-sm-row, .layout-gt-sm-row,
-.layout-md-row, .layout-gt-md-row,
-.layout-lg-row, .layout-gt-lg-row,
-.layout-xl-row {
-  & > md-divider {
-    border-top-width: 0;
-    border-right-width: 1px;
-    border-right-style: solid;
-  }
-}
-
-md-fab-speed-dial {
-  position: relative;
-  display: flex;
-  align-items: center;
-
-  // Include the top/left/bottom/right fab positions and set the z-index for absolute positioning
-  @include fab-all-positions();
-  z-index: $z-index-fab;
-
-  // Allow users to enable/disable hovering over the entire speed dial (i.e. the empty space where
-  // items will eventually appear)
-  &:not(.md-hover-full) {
-    // Turn off pointer events when closed
-    pointer-events: none;
-
-    md-fab-trigger, .md-fab-action-item {
-      // Always make the trigger and action items always have pointer events (the tooltip looks
-      // for the first parent with pointer-events, so we must set this for tooltips to work)
-      pointer-events: auto;
-    }
-
-    &.md-is-open {
-      // Turn on pointer events when open
-      pointer-events: auto;
-    }
-  }
-
-  ._md-css-variables {
-    z-index: $z-index-fab;
-  }
-
-  &.md-is-open {
-    .md-fab-action-item {
-      align-items: center;
-    }
-  }
-
-  md-fab-actions {
-    display: flex;
-
-    // Set the height so that the z-index in the JS animation works
-    height: auto;
-
-    .md-fab-action-item {
-      transition: $swift-ease-in;
-    }
-  }
-
-  &.md-down {
-    flex-direction: column;
-
-    md-fab-trigger {
-      order: 1;
-    }
-
-    md-fab-actions {
-      flex-direction: column;
-      order: 2;
-    }
-  }
-
-  &.md-up {
-    flex-direction: column;
-
-    md-fab-trigger {
-      order: 2;
-    }
-
-    md-fab-actions {
-      flex-direction: column-reverse;
-      order: 1;
-    }
-  }
-
-  &.md-left {
-    flex-direction: row;
-
-    md-fab-trigger {
-      order: 2;
-    }
-
-    md-fab-actions {
-      flex-direction: row-reverse;
-      order: 1;
-
-      .md-fab-action-item {
-        transition: $swift-ease-in;
-      }
-    }
-  }
-
-  &.md-right {
-    flex-direction: row;
-
-    md-fab-trigger {
-      order: 1;
-    }
-
-    md-fab-actions {
-      flex-direction: row;
-      order: 2;
-
-      .md-fab-action-item {
-        transition: $swift-ease-in;
-      }
-    }
-  }
-
-  /*
-   * Hide some graphics glitches if switching animation types
-   */
-  &.md-fling-remove, &.md-scale-remove {
-    .md-fab-action-item > * {
-      visibility: hidden;
-    }
-  }
-
-  /*
-   * Handle the animations
-   */
-  &.md-fling {
-    .md-fab-action-item {
-      opacity: 1;
-    }
-  }
-
-  // For the initial animation, set the duration to be instant
-  &.md-fling.md-animations-waiting {
-    .md-fab-action-item {
-      opacity: 0;
-      transition-duration: 0s;
-    }
-  }
-
-  &.md-scale {
-    .md-fab-action-item {
-      transform: scale(0);
-      transition: $swift-ease-in;
-
-      // Make the scale animation a bit faster since we are delaying each item
-      transition-duration: $swift-ease-in-duration / 2.1;
-    }
-  }
-}
 
 /** Styles for mdCalendar. */
 $md-calendar-cell-size: 44px !default;
@@ -3159,6 +2990,299 @@ md-datepicker[disabled] {
   }
 }
 
+$dialog-padding: $baseline-grid * 3 !default;
+
+.md-dialog-is-showing {
+  max-height: 100%;
+}
+
+.md-dialog-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: $z-index-dialog;
+  overflow: hidden;
+}
+
+md-dialog {
+
+  &.md-transition-in {
+    opacity: 1;
+    transition: $swift-ease-out;
+    transform: translate(0,0) scale(1.0);
+  }
+  &.md-transition-out {
+    opacity: 0;
+    transition: $swift-ease-out;
+    transform: translate(0,100%) scale(0.2);
+  }
+
+  opacity: 0;
+  min-width: 240px;
+  max-width: 80%;
+  max-height: 80%;
+  position: relative;
+  overflow: auto; // stop content from leaking out of dialog parent and fix IE
+
+  box-shadow: $whiteframe-shadow-13dp;
+
+  display: flex;
+  flex-direction: column;
+
+  &> form {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+
+  .md-dialog-content {
+    padding: $dialog-padding;
+  }
+
+  md-dialog-content {
+    order: 1;
+    flex-direction: column;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+
+    &:not([layout=row]) > *:first-child:not(.md-subheader) {
+      margin-top: 0;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    .md-subheader {
+      margin: 0;
+    }
+
+    .md-dialog-content-body {
+      width:100%;
+    }
+
+    .md-prompt-input-container {
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  .md-actions, md-dialog-actions {
+    display: flex;
+    order: 2;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 0;
+    @include rtl(padding-right, $baseline-grid, $baseline-grid * 2);
+    @include rtl(padding-left, $baseline-grid * 2, $baseline-grid);
+    min-height: $baseline-grid * 6.5;
+    overflow: hidden;
+
+    .md-button {
+      margin-bottom: $baseline-grid;
+      @include rtl(margin-left, $baseline-grid, 0);
+      @include rtl(margin-right, 0, $baseline-grid);
+      margin-top: $baseline-grid;
+    }
+  }
+  &.md-content-overflow {
+    .md-actions, md-dialog-actions {
+      border-top-width: 1px;
+      border-top-style: solid;
+    }
+  }
+
+}
+
+@media screen and (-ms-high-contrast: active) {
+  md-dialog {
+    border: 1px solid #fff;
+  }
+}
+
+@media (max-width: $layout-breakpoint-sm - 1) {
+  md-dialog.md-dialog-fullscreen {
+    min-height: 100%;
+    min-width: 100%;
+    border-radius: 0;
+  }
+}
+
+md-divider {
+  display: block;
+  border-top-width: 1px;
+  border-top-style: solid;
+  margin: 0;
+
+  &[md-inset] {
+    @include rtl-prop(margin-left, margin-right, $baseline-grid * 10, auto);
+  }
+}
+
+.layout-row,
+.layout-xs-row, .layout-gt-xs-row,
+.layout-sm-row, .layout-gt-sm-row,
+.layout-md-row, .layout-gt-md-row,
+.layout-lg-row, .layout-gt-lg-row,
+.layout-xl-row {
+  & > md-divider {
+    border-top-width: 0;
+    border-right-width: 1px;
+    border-right-style: solid;
+  }
+}
+
+md-fab-speed-dial {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  // Include the top/left/bottom/right fab positions and set the z-index for absolute positioning
+  @include fab-all-positions();
+  z-index: $z-index-fab;
+
+  // Allow users to enable/disable hovering over the entire speed dial (i.e. the empty space where
+  // items will eventually appear)
+  &:not(.md-hover-full) {
+    // Turn off pointer events when closed
+    pointer-events: none;
+
+    md-fab-trigger, .md-fab-action-item {
+      // Always make the trigger and action items always have pointer events (the tooltip looks
+      // for the first parent with pointer-events, so we must set this for tooltips to work)
+      pointer-events: auto;
+    }
+
+    &.md-is-open {
+      // Turn on pointer events when open
+      pointer-events: auto;
+    }
+  }
+
+  ._md-css-variables {
+    z-index: $z-index-fab;
+  }
+
+  &.md-is-open {
+    .md-fab-action-item {
+      align-items: center;
+    }
+  }
+
+  md-fab-actions {
+    display: flex;
+
+    // Set the height so that the z-index in the JS animation works
+    height: auto;
+
+    .md-fab-action-item {
+      transition: $swift-ease-in;
+    }
+  }
+
+  &.md-down {
+    flex-direction: column;
+
+    md-fab-trigger {
+      order: 1;
+    }
+
+    md-fab-actions {
+      flex-direction: column;
+      order: 2;
+    }
+  }
+
+  &.md-up {
+    flex-direction: column;
+
+    md-fab-trigger {
+      order: 2;
+    }
+
+    md-fab-actions {
+      flex-direction: column-reverse;
+      order: 1;
+    }
+  }
+
+  &.md-left {
+    flex-direction: row;
+
+    md-fab-trigger {
+      order: 2;
+    }
+
+    md-fab-actions {
+      flex-direction: row-reverse;
+      order: 1;
+
+      .md-fab-action-item {
+        transition: $swift-ease-in;
+      }
+    }
+  }
+
+  &.md-right {
+    flex-direction: row;
+
+    md-fab-trigger {
+      order: 1;
+    }
+
+    md-fab-actions {
+      flex-direction: row;
+      order: 2;
+
+      .md-fab-action-item {
+        transition: $swift-ease-in;
+      }
+    }
+  }
+
+  /*
+   * Hide some graphics glitches if switching animation types
+   */
+  &.md-fling-remove, &.md-scale-remove {
+    .md-fab-action-item > * {
+      visibility: hidden;
+    }
+  }
+
+  /*
+   * Handle the animations
+   */
+  &.md-fling {
+    .md-fab-action-item {
+      opacity: 1;
+    }
+  }
+
+  // For the initial animation, set the duration to be instant
+  &.md-fling.md-animations-waiting {
+    .md-fab-action-item {
+      opacity: 0;
+      transition-duration: 0s;
+    }
+  }
+
+  &.md-scale {
+    .md-fab-action-item {
+      transform: scale(0);
+      transition: $swift-ease-in;
+
+      // Make the scale animation a bit faster since we are delaying each item
+      transition-duration: $swift-ease-in-duration / 2.1;
+    }
+  }
+}
+
 $button-fab-width: rem(5.600) !default;
 $icon-button-margin: rem(0.600) !default;
 
@@ -3365,650 +3489,6 @@ md-grid-list {
   }
 }
 
-
-$dense-baseline-grid: $baseline-grid / 2 !default;
-
-$list-h3-margin: 0 0 0px 0 !default;
-$list-h4-margin: 3px 0 1px 0 !default;
-$list-h4-font-weight: 400 !default;
-$list-header-line-height: 1.2em !default;
-$list-p-margin: 0 0 0 0 !default;
-$list-p-line-height: 1.6em !default;
-
-$list-padding-top: $baseline-grid !default;
-$list-padding-right: 0px !default;
-$list-padding-left: 0px !default;
-$list-padding-bottom: $baseline-grid !default;
-
-$item-padding-top: 0px !default;
-$item-padding-right: 0px !default;
-$item-padding-left: 0px !default;
-$item-padding-bottom: 0px !default;
-$list-item-padding-vertical: 0px !default;
-$list-item-padding-horizontal: $baseline-grid * 2 !default;
-$list-item-primary-width: $baseline-grid * 7 !default;
-$list-item-primary-avatar-width: $baseline-grid * 5 !default;
-$list-item-primary-icon-width: $baseline-grid * 3 !default;
-$list-item-secondary-left-margin: $baseline-grid * 2 !default;
-$list-item-secondary-button-width: $baseline-grid * 6 !default;
-$list-item-inset-divider-offset: 9 * $baseline-grid !default;
-$list-item-height: 6 * $baseline-grid !default;
-$list-item-two-line-height: 9 * $baseline-grid !default;
-$list-item-three-line-height: 11 * $baseline-grid !default;
-
-$list-item-dense-height: 12 * $dense-baseline-grid !default;
-$list-item-dense-two-line-height: 15 * $dense-baseline-grid !default;
-$list-item-dense-three-line-height: 19 * $dense-baseline-grid !default;
-$list-item-dense-primary-icon-width: $dense-baseline-grid * 5 !default;
-$list-item-dense-primary-avatar-width: $dense-baseline-grid * 9 !default;
-$list-item-dense-header-font-size: round($subhead-font-size-base * 0.8) !default;
-$list-item-dense-font-size: round($body-font-size-base * 0.85) !default;
-$list-item-dense-line-height: 1.05 !default;
-
-md-list {
-  display: block;
-  padding: $list-padding-top $list-padding-right $list-padding-bottom $list-padding-left;
-
-  .md-subheader {
-    font-size: $body-font-size-base;
-    font-weight: 500;
-    letter-spacing: 0.010em;
-    line-height: $list-header-line-height;
-  }
-
-  &.md-dense {
-    md-list-item {
-      &,
-      .md-list-item-inner {
-        min-height: $list-item-dense-height;
-        @include ie11-min-height-flexbug($list-item-dense-height);
-
-
-        // Layout for controls in primary or secondary divs, or auto-infered first child
-
-        md-icon:first-child {
-          width: $list-item-dense-primary-icon-width;
-          height: $list-item-dense-primary-icon-width;
-        }
-
-        > md-icon:first-child:not(.md-avatar-icon) {
-          @include rtl-prop(margin-right, margin-left, $list-item-primary-width - $list-item-dense-primary-icon-width, auto);
-        }
-        .md-avatar, .md-avatar-icon {
-          @include rtl-prop(margin-right, margin-left, $list-item-primary-width - $list-item-dense-primary-avatar-width, auto);
-        }
-        .md-avatar {
-          flex: none;
-          width: $list-item-dense-primary-avatar-width;
-          height: $list-item-dense-primary-avatar-width;
-        }
-      }
-
-      &.md-2-line,
-      &.md-3-line {
-        &, & > .md-no-style {
-          .md-list-item-text {
-            &.md-offset {
-              @include rtl-prop(margin-left, margin-right, $list-item-primary-width, auto);
-            }
-
-            h3,
-            h4,
-            p {
-              line-height: $list-item-dense-line-height;
-              font-size: $list-item-dense-font-size;
-            }
-
-            h3 {
-              font-size: $list-item-dense-header-font-size;
-            }
-          }
-        }
-      }
-
-      &.md-2-line {
-        &, & > .md-no-style {
-          min-height: $list-item-dense-two-line-height;
-          @include ie11-min-height-flexbug($list-item-dense-two-line-height);
-
-          > .md-avatar, .md-avatar-icon {
-            margin-top: $baseline-grid * 1.5;
-          }
-        }
-      }
-
-      &.md-3-line {
-        &, & > .md-no-style {
-
-          min-height: $list-item-dense-three-line-height;
-          @include ie11-min-height-flexbug($list-item-dense-three-line-height);
-
-          > md-icon:first-child,
-          > .md-avatar {
-            margin-top: $baseline-grid * 2;
-          }
-        }
-      }
-    }
-  }
-}
-
-md-list-item {
-  // Ensure nested dividers are properly positioned
-  position: relative;
-
-  &.md-proxy-focus.md-focused .md-no-style {
-    transition: background-color 0.15s linear;
-  }
-
-  &._md-button-wrap {
-    position: relative;
-
-    > div.md-button:first-child {
-      // Layout - Vertically align the item content.
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-
-      padding: 0 16px;
-      margin: 0;
-
-      font-weight: 400;
-      @include rtl(text-align, left, right);
-      border: medium none;
-
-      // The button executor should fill the whole list item.
-      > .md-button:first-child {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-
-        margin: 0;
-        padding: 0;
-      }
-
-      .md-list-item-inner {
-        // The list item content should fill the complete width.
-        width: 100%;
-        min-height: inherit;
-      }
-
-    }
-
-  }
-
-  &.md-no-proxy,
-  .md-no-style {
-    position: relative;
-    padding: $list-item-padding-vertical $list-item-padding-horizontal;
-
-    // Layout [flex='auto']
-    flex: 1 1 auto;
-
-    &.md-button {
-      font-size: inherit;
-      height: inherit;
-      @include rtl(text-align, left, right);
-      text-transform: none;
-      width: 100%;
-      white-space: normal;
-      flex-direction: inherit;
-      align-items: inherit;
-      border-radius: 0;
-      margin: 0;
-
-      & > .md-ripple-container {
-        border-radius: 0;
-      }
-    }
-    &:focus {
-      outline: none
-    }
-  }
-  &.md-clickable:hover {
-    cursor: pointer;
-  }
-
-  md-divider {
-    position: absolute;
-    bottom: 0;
-    @include rtl-prop(left, right, 0, auto);
-    width: 100%;
-    &[md-inset] {
-      @include rtl-prop(left, right, $list-item-inset-divider-offset, auto);
-      width: calc(100% - #{$list-item-inset-divider-offset});
-      margin: 0 !important;
-    }
-  }
-
-  &,
-  .md-list-item-inner {
-
-    // Layout [flex layout-align='start center']
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-
-    min-height: $list-item-height;
-    @include ie11-min-height-flexbug($list-item-height);
-
-    height: auto;
-
-    // Layout for controls in primary or secondary divs, or auto-infered first child
-    & > div.md-primary > md-icon:not(.md-avatar-icon),
-    & > div.md-secondary > md-icon:not(.md-avatar-icon),
-    & > md-icon:first-child:not(.md-avatar-icon),
-    > md-icon.md-secondary:not(.md-avatar-icon) {
-      width: $list-item-primary-icon-width;
-      margin-top: 16px;
-      margin-bottom: 12px;
-      box-sizing: content-box;
-    }
-    & > div.md-primary > md-checkbox,
-    & > div.md-secondary > md-checkbox,
-    & > md-checkbox,
-    md-checkbox.md-secondary {
-      align-self: center;
-      .md-label {
-        display: none;
-      }
-    }
-
-    & > md-icon:first-child:not(.md-avatar-icon) {
-      @include rtl-prop(margin-right, margin-left, $list-item-primary-width - $list-item-primary-icon-width, auto);
-    }
-
-    & .md-avatar, .md-avatar-icon {
-      margin-top: $baseline-grid;
-      margin-bottom: $baseline-grid;
-      @include rtl-prop(margin-right, margin-left, $list-item-primary-width - $list-item-primary-avatar-width, auto);
-      border-radius: 50%;
-      box-sizing: content-box;
-    }
-    & .md-avatar {
-      flex: none;
-      width: $list-item-primary-avatar-width;
-      height: $list-item-primary-avatar-width;
-    }
-    & .md-avatar-icon {
-      padding: 8px;
-
-      // Set the width/height to the same as the icon to fix issue on iOS Safari where the
-      // height: 100% was causing it to be larger than it's parent
-      svg {
-        width: $icon-size;
-        height: $icon-size;
-      }
-    }
-
-    & > md-checkbox {
-      width: 3 * $baseline-grid;
-      @include rtl(margin-left, 3px, 29px);
-      @include rtl(margin-right, 29px, 3px);
-      margin-top: 16px;
-    }
-
-    .md-secondary-container {
-      display: flex;
-      align-items: center;
-
-      // Per W3C: https://www.w3.org/TR/css-flexbox/#flex-common
-      // By default, flex items won’t shrink below their minimum content size.
-      // Safari doesn't follow that specification due to a bug and expects the developer to
-      // explicitly disable flex shrinking.
-      flex-shrink: 0;
-
-      // Using margin auto to move them to the end of the list item is more elegant, because it has
-      // a lower priority than a flex filler and isn't introducing any overflow issues.
-      // The margin on the top is important to align multiple secondary items vertically.
-      margin: auto;
-
-      @include rtl(margin-right, 0, auto);
-      @include rtl(margin-left, auto, 0);
-
-      .md-button, .md-icon-button {
-        &:last-of-type {
-          // Reset 6px margin for the button.
-          @include rtl-prop(margin-right, margin-left, 0, auto);
-        }
-      }
-
-      md-checkbox {
-        margin-top: 0;
-        margin-bottom: 0;
-
-        &:last-child {
-          width: 3 * $baseline-grid;
-          @include rtl-prop(margin-right, margin-left, 0, auto);
-        }
-      }
-
-      md-switch {
-        margin-top: 0;
-        margin-bottom: 0;
-
-        @include rtl-prop(margin-right, margin-left, -6px, auto);
-      }
-    }
-
-    & > p, & > .md-list-item-inner > p {
-      flex: 1 1 auto;
-      margin: 0;
-    }
-  }
-
-  &.md-2-line,
-  &.md-3-line {
-    &, & > .md-no-style {
-      align-items: flex-start;
-      justify-content: center;
-
-      &.md-long-text {
-        margin-top: $baseline-grid;
-        margin-bottom: $baseline-grid;
-      }
-
-      .md-list-item-text {
-        flex: 1 1 auto;
-        margin: auto;
-        text-overflow: ellipsis;
-        overflow: hidden;
-
-        &.md-offset {
-          @include rtl-prop(margin-left, margin-right, $list-item-primary-width, auto);
-        }
-
-        h3 {
-          font-size: $subhead-font-size-base;
-          font-weight: 400;
-          letter-spacing: 0.010em;
-          margin: $list-h3-margin;
-          line-height: $list-header-line-height;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-        h4 {
-          font-size: $body-font-size-base;
-          letter-spacing: 0.010em;
-          margin: $list-h4-margin;
-          font-weight: $list-h4-font-weight;
-          line-height: $list-header-line-height;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-        p {
-          font-size: $body-font-size-base;
-          font-weight: 500;
-          letter-spacing: 0.010em;
-          margin: $list-p-margin;
-          line-height: $list-p-line-height;
-        }
-      }
-    }
-  }
-
-  &.md-2-line {
-    &, & > .md-no-style {
-      height: auto;
-
-      min-height: $list-item-two-line-height;
-      @include ie11-min-height-flexbug($list-item-two-line-height);
-
-      > .md-avatar, .md-avatar-icon {
-        margin-top: $baseline-grid * 1.5;
-      }
-
-      > md-icon:first-child {
-        align-self: flex-start;
-      }
-
-      .md-list-item-text {
-        flex: 1 1 auto;
-      }
-    }
-  }
-
-  &.md-3-line {
-    &, & > .md-no-style {
-      height: auto;
-
-      min-height: $list-item-three-line-height;
-      @include ie11-min-height-flexbug($list-item-three-line-height);
-
-      > md-icon:first-child,
-      > .md-avatar {
-        margin-top: $baseline-grid * 2;
-      }
-    }
-  }
-}
-
-$dialog-padding: $baseline-grid * 3 !default;
-
-.md-dialog-is-showing {
-  max-height: 100%;
-}
-
-.md-dialog-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: $z-index-dialog;
-  overflow: hidden;
-}
-
-md-dialog {
-
-  &.md-transition-in {
-    opacity: 1;
-    transition: $swift-ease-out;
-    transform: translate(0,0) scale(1.0);
-  }
-  &.md-transition-out {
-    opacity: 0;
-    transition: $swift-ease-out;
-    transform: translate(0,100%) scale(0.2);
-  }
-
-  opacity: 0;
-  min-width: 240px;
-  max-width: 80%;
-  max-height: 80%;
-  position: relative;
-  overflow: auto; // stop content from leaking out of dialog parent and fix IE
-
-  box-shadow: $whiteframe-shadow-13dp;
-
-  display: flex;
-  flex-direction: column;
-
-  &> form {
-    display: flex;
-    flex-direction: column;
-    overflow: auto;
-  }
-
-  .md-dialog-content {
-    padding: $dialog-padding;
-  }
-
-  md-dialog-content {
-    order: 1;
-    flex-direction: column;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-
-    &:not([layout=row]) > *:first-child:not(.md-subheader) {
-      margin-top: 0;
-    }
-
-    &:focus {
-      outline: none;
-    }
-
-    .md-subheader {
-      margin: 0;
-    }
-
-    .md-dialog-content-body {
-      width:100%;
-    }
-
-    .md-prompt-input-container {
-      width: 100%;
-      box-sizing: border-box;
-    }
-  }
-
-  .md-actions, md-dialog-actions {
-    display: flex;
-    order: 2;
-    box-sizing: border-box;
-    align-items: center;
-    justify-content: flex-end;
-    margin-bottom: 0;
-    @include rtl(padding-right, $baseline-grid, $baseline-grid * 2);
-    @include rtl(padding-left, $baseline-grid * 2, $baseline-grid);
-    min-height: $baseline-grid * 6.5;
-    overflow: hidden;
-
-    .md-button {
-      margin-bottom: $baseline-grid;
-      @include rtl(margin-left, $baseline-grid, 0);
-      @include rtl(margin-right, 0, $baseline-grid);
-      margin-top: $baseline-grid;
-    }
-  }
-  &.md-content-overflow {
-    .md-actions, md-dialog-actions {
-      border-top-width: 1px;
-      border-top-style: solid;
-    }
-  }
-
-}
-
-@media screen and (-ms-high-contrast: active) {
-  md-dialog {
-    border: 1px solid #fff;
-  }
-}
-
-@media (max-width: $layout-breakpoint-sm - 1) {
-  md-dialog.md-dialog-fullscreen {
-    min-height: 100%;
-    min-width: 100%;
-    border-radius: 0;
-  }
-}
-
-md-toolbar {
-  &.md-menu-toolbar {
-    h2.md-toolbar-tools {
-      line-height: 1rem;
-      height: auto;
-      padding: 3.5 * $baseline-grid;
-      padding-bottom: 1.5 * $baseline-grid;
-    }
-  }
-
-  // Used to allow hovering from one menu to the
-  // next when inside of a toolbar.
-  &.md-has-open-menu {
-    position: relative;
-    z-index: $z-index-menu;
-  }
-}
-
-md-menu-bar {
-  padding: 0 2.5 * $baseline-grid;
-  display: block;
-  position: relative;
-  z-index: 2;
-  .md-menu {
-    display: inline-block;
-    padding: 0;
-    position: relative;
-  }
-  button {
-    font-size: rem(1.4);
-    padding: 0 1.25 * $baseline-grid;
-    margin: 0;
-    border: 0;
-    background-color: transparent;
-    height: 5 * $baseline-grid;
-  }
-
-  md-backdrop.md-menu-backdrop {
-    z-index: -2;
-  }
-}
-
-md-menu-content.md-menu-bar-menu.md-dense {
-  max-height: none;
-  padding: 2 * $baseline-grid 0;
-  md-menu-item.md-indent {
-    position: relative;
-    > md-icon {
-      position: absolute;
-      padding: 0;
-      width: 24px;
-      top: 0.75 * $baseline-grid;
-      @include rtl-prop(left, right, 3 * $baseline-grid, auto);
-    }
-    > .md-button, .md-menu > .md-button {
-      @include rtl(padding, 0 4 * $baseline-grid 0 8 * $baseline-grid, 0 8 * $baseline-grid 0 4 * $baseline-grid);
-    }
-  }
-  .md-button {
-    min-height: 0;
-    height: 4 * $baseline-grid;
-    span {
-      @include rtl(float, left, right);
-    }
-    span.md-alt-text {
-      @include rtl(float, right, left);
-      margin: 0 $baseline-grid;
-    }
-  }
-  md-menu-divider {
-    margin: $baseline-grid 0;
-  }
-
-  md-menu-item > .md-button, .md-menu > .md-button {
-    @include rtl(text-align, left, right);
-  }
-
-  .md-menu {
-    padding: 0;
-    > .md-button {
-      position: relative;
-      margin: 0;
-      width: 100%;
-      text-transform: none;
-      font-weight: normal;
-      border-radius: 0px;
-      @include rtl-prop(padding-left, padding-right, 2 * $baseline-grid, 0);
-      &:after {
-        display: block;
-        content: '\25BC';
-        position: absolute;
-        top: 0px;
-        speak: none;
-        @include rtl(transform, rotate(270deg) scaleY(0.45) scaleX(0.9), rotate(90deg) scaleY(0.45) scaleX(0.9));
-        @include rtl-prop(right, left, 3.5 * $baseline-grid, auto);
-      }
-    }
-  }
-}
 
 md-icon {
   margin: auto;
@@ -4468,79 +3948,424 @@ md-input-container {
   }
 }
 
-/** Matches "md-tabs md-tabs-wrapper" style. */
-$md-nav-bar-height: 48px;
+$dense-baseline-grid: $baseline-grid / 2 !default;
 
-.md-nav-bar {
-  border-style: solid;
-  border-width: 0 0 1px;
-  height: $md-nav-bar-height;
+$list-h3-margin: 0 0 0px 0 !default;
+$list-h4-margin: 3px 0 1px 0 !default;
+$list-h4-font-weight: 400 !default;
+$list-header-line-height: 1.2em !default;
+$list-p-margin: 0 0 0 0 !default;
+$list-p-line-height: 1.6em !default;
+
+$list-padding-top: $baseline-grid !default;
+$list-padding-right: 0px !default;
+$list-padding-left: 0px !default;
+$list-padding-bottom: $baseline-grid !default;
+
+$item-padding-top: 0px !default;
+$item-padding-right: 0px !default;
+$item-padding-left: 0px !default;
+$item-padding-bottom: 0px !default;
+$list-item-padding-vertical: 0px !default;
+$list-item-padding-horizontal: $baseline-grid * 2 !default;
+$list-item-primary-width: $baseline-grid * 7 !default;
+$list-item-primary-avatar-width: $baseline-grid * 5 !default;
+$list-item-primary-icon-width: $baseline-grid * 3 !default;
+$list-item-secondary-left-margin: $baseline-grid * 2 !default;
+$list-item-secondary-button-width: $baseline-grid * 6 !default;
+$list-item-inset-divider-offset: 9 * $baseline-grid !default;
+$list-item-height: 6 * $baseline-grid !default;
+$list-item-two-line-height: 9 * $baseline-grid !default;
+$list-item-three-line-height: 11 * $baseline-grid !default;
+
+$list-item-dense-height: 12 * $dense-baseline-grid !default;
+$list-item-dense-two-line-height: 15 * $dense-baseline-grid !default;
+$list-item-dense-three-line-height: 19 * $dense-baseline-grid !default;
+$list-item-dense-primary-icon-width: $dense-baseline-grid * 5 !default;
+$list-item-dense-primary-avatar-width: $dense-baseline-grid * 9 !default;
+$list-item-dense-header-font-size: round($subhead-font-size-base * 0.8) !default;
+$list-item-dense-font-size: round($body-font-size-base * 0.85) !default;
+$list-item-dense-line-height: 1.05 !default;
+
+md-list {
+  display: block;
+  padding: $list-padding-top $list-padding-right $list-padding-bottom $list-padding-left;
+
+  .md-subheader {
+    font-size: $body-font-size-base;
+    font-weight: 500;
+    letter-spacing: 0.010em;
+    line-height: $list-header-line-height;
+  }
+
+  &.md-dense {
+    md-list-item {
+      &,
+      .md-list-item-inner {
+        min-height: $list-item-dense-height;
+        @include ie11-min-height-flexbug($list-item-dense-height);
+
+
+        // Layout for controls in primary or secondary divs, or auto-infered first child
+
+        md-icon:first-child {
+          width: $list-item-dense-primary-icon-width;
+          height: $list-item-dense-primary-icon-width;
+        }
+
+        > md-icon:first-child:not(.md-avatar-icon) {
+          @include rtl-prop(margin-right, margin-left, $list-item-primary-width - $list-item-dense-primary-icon-width, auto);
+        }
+        .md-avatar, .md-avatar-icon {
+          @include rtl-prop(margin-right, margin-left, $list-item-primary-width - $list-item-dense-primary-avatar-width, auto);
+        }
+        .md-avatar {
+          flex: none;
+          width: $list-item-dense-primary-avatar-width;
+          height: $list-item-dense-primary-avatar-width;
+        }
+      }
+
+      &.md-2-line,
+      &.md-3-line {
+        &, & > .md-no-style {
+          .md-list-item-text {
+            &.md-offset {
+              @include rtl-prop(margin-left, margin-right, $list-item-primary-width, auto);
+            }
+
+            h3,
+            h4,
+            p {
+              line-height: $list-item-dense-line-height;
+              font-size: $list-item-dense-font-size;
+            }
+
+            h3 {
+              font-size: $list-item-dense-header-font-size;
+            }
+          }
+        }
+      }
+
+      &.md-2-line {
+        &, & > .md-no-style {
+          min-height: $list-item-dense-two-line-height;
+          @include ie11-min-height-flexbug($list-item-dense-two-line-height);
+
+          > .md-avatar, .md-avatar-icon {
+            margin-top: $baseline-grid * 1.5;
+          }
+        }
+      }
+
+      &.md-3-line {
+        &, & > .md-no-style {
+
+          min-height: $list-item-dense-three-line-height;
+          @include ie11-min-height-flexbug($list-item-dense-three-line-height);
+
+          > md-icon:first-child,
+          > .md-avatar {
+            margin-top: $baseline-grid * 2;
+          }
+        }
+      }
+    }
+  }
+}
+
+md-list-item {
+  // Ensure nested dividers are properly positioned
   position: relative;
-}
 
-._md-nav-bar-list {
-  outline: none;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-
-  // Layout [layout='row']
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-}
-
-.md-nav-item:first-of-type {
-  margin-left: 8px;
-}
-
-// override button styles to look more like tabs
-.md-button._md-nav-button {
-  line-height: 24px;
-  margin: 0 4px;
-  padding: 12px 16px;
-  transition: background-color 0.35s $swift-ease-in-out-timing-function;
-
-  &:focus {
-    outline: none;
+  &.md-proxy-focus.md-focused .md-no-style {
+    transition: background-color 0.15s linear;
   }
 
-  &:hover {
-    background-color: inherit;
+  &._md-button-wrap {
+    position: relative;
+
+    > div.md-button:first-child {
+      // Layout - Vertically align the item content.
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      padding: 0 16px;
+      margin: 0;
+
+      font-weight: 400;
+      @include rtl(text-align, left, right);
+      border: medium none;
+
+      // The button executor should fill the whole list item.
+      > .md-button:first-child {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+
+        margin: 0;
+        padding: 0;
+      }
+
+      .md-list-item-inner {
+        // The list item content should fill the complete width.
+        width: 100%;
+        min-height: inherit;
+      }
+
+    }
+
   }
-}
 
-md-nav-ink-bar {
-  $duration: $swift-ease-in-out-duration * 0.5;
-  $multiplier: 0.5;
-  bottom: 0;
-  height: 2px;
-  left: auto;
-  position: absolute;
-  right: auto;
-  background-color: black;
+  &.md-no-proxy,
+  .md-no-style {
+    position: relative;
+    padding: $list-item-padding-vertical $list-item-padding-horizontal;
 
-  &._md-left {
-    transition: left ($duration * $multiplier) $swift-ease-in-out-timing-function,
-        right $duration $swift-ease-in-out-timing-function;
+    // Layout [flex='auto']
+    flex: 1 1 auto;
+
+    &.md-button {
+      font-size: inherit;
+      height: inherit;
+      @include rtl(text-align, left, right);
+      text-transform: none;
+      width: 100%;
+      white-space: normal;
+      flex-direction: inherit;
+      align-items: inherit;
+      border-radius: 0;
+      margin: 0;
+
+      & > .md-ripple-container {
+        border-radius: 0;
+      }
+    }
+    &:focus {
+      outline: none
+    }
   }
-  &._md-right {
-    transition: left $duration $swift-ease-in-out-timing-function,
-        right ($duration * $multiplier) $swift-ease-in-out-timing-function;
+  &.md-clickable:hover {
+    cursor: pointer;
   }
 
-  // By default $ngAnimate looks for transition durations on the element, when using ng-hide, ng-if, ng-show.
-  // The ink bar has a transition duration applied, which means, that $ngAnimate delays the hide process.
-  // To avoid this, we need to reset the transition, when $ngAnimate looks for the duration.
-  &.ng-animate {
-    transition: none;
+  md-divider {
+    position: absolute;
+    bottom: 0;
+    @include rtl-prop(left, right, 0, auto);
+    width: 100%;
+    &[md-inset] {
+      @include rtl-prop(left, right, $list-item-inset-divider-offset, auto);
+      width: calc(100% - #{$list-item-inset-divider-offset});
+      margin: 0 !important;
+    }
   }
 
-}
+  &,
+  .md-list-item-inner {
 
-md-nav-extra-content {
-  min-height: 48px;
-  padding-right: 12px;
+    // Layout [flex layout-align='start center']
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    min-height: $list-item-height;
+    @include ie11-min-height-flexbug($list-item-height);
+
+    height: auto;
+
+    // Layout for controls in primary or secondary divs, or auto-infered first child
+    & > div.md-primary > md-icon:not(.md-avatar-icon),
+    & > div.md-secondary > md-icon:not(.md-avatar-icon),
+    & > md-icon:first-child:not(.md-avatar-icon),
+    > md-icon.md-secondary:not(.md-avatar-icon) {
+      width: $list-item-primary-icon-width;
+      margin-top: 16px;
+      margin-bottom: 12px;
+      box-sizing: content-box;
+    }
+    & > div.md-primary > md-checkbox,
+    & > div.md-secondary > md-checkbox,
+    & > md-checkbox,
+    md-checkbox.md-secondary {
+      align-self: center;
+      .md-label {
+        display: none;
+      }
+    }
+
+    & > md-icon:first-child:not(.md-avatar-icon) {
+      @include rtl-prop(margin-right, margin-left, $list-item-primary-width - $list-item-primary-icon-width, auto);
+    }
+
+    & .md-avatar, .md-avatar-icon {
+      margin-top: $baseline-grid;
+      margin-bottom: $baseline-grid;
+      @include rtl-prop(margin-right, margin-left, $list-item-primary-width - $list-item-primary-avatar-width, auto);
+      border-radius: 50%;
+      box-sizing: content-box;
+    }
+    & .md-avatar {
+      flex: none;
+      width: $list-item-primary-avatar-width;
+      height: $list-item-primary-avatar-width;
+    }
+    & .md-avatar-icon {
+      padding: 8px;
+
+      // Set the width/height to the same as the icon to fix issue on iOS Safari where the
+      // height: 100% was causing it to be larger than it's parent
+      svg {
+        width: $icon-size;
+        height: $icon-size;
+      }
+    }
+
+    & > md-checkbox {
+      width: 3 * $baseline-grid;
+      @include rtl(margin-left, 3px, 29px);
+      @include rtl(margin-right, 29px, 3px);
+      margin-top: 16px;
+    }
+
+    .md-secondary-container {
+      display: flex;
+      align-items: center;
+
+      // Per W3C: https://www.w3.org/TR/css-flexbox/#flex-common
+      // By default, flex items won’t shrink below their minimum content size.
+      // Safari doesn't follow that specification due to a bug and expects the developer to
+      // explicitly disable flex shrinking.
+      flex-shrink: 0;
+
+      // Using margin auto to move them to the end of the list item is more elegant, because it has
+      // a lower priority than a flex filler and isn't introducing any overflow issues.
+      // The margin on the top is important to align multiple secondary items vertically.
+      margin: auto;
+
+      @include rtl(margin-right, 0, auto);
+      @include rtl(margin-left, auto, 0);
+
+      .md-button, .md-icon-button {
+        &:last-of-type {
+          // Reset 6px margin for the button.
+          @include rtl-prop(margin-right, margin-left, 0, auto);
+        }
+      }
+
+      md-checkbox {
+        margin-top: 0;
+        margin-bottom: 0;
+
+        &:last-child {
+          width: 3 * $baseline-grid;
+          @include rtl-prop(margin-right, margin-left, 0, auto);
+        }
+      }
+
+      md-switch {
+        margin-top: 0;
+        margin-bottom: 0;
+
+        @include rtl-prop(margin-right, margin-left, -6px, auto);
+      }
+    }
+
+    & > p, & > .md-list-item-inner > p {
+      flex: 1 1 auto;
+      margin: 0;
+    }
+  }
+
+  &.md-2-line,
+  &.md-3-line {
+    &, & > .md-no-style {
+      align-items: flex-start;
+      justify-content: center;
+
+      &.md-long-text {
+        margin-top: $baseline-grid;
+        margin-bottom: $baseline-grid;
+      }
+
+      .md-list-item-text {
+        flex: 1 1 auto;
+        margin: auto;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        &.md-offset {
+          @include rtl-prop(margin-left, margin-right, $list-item-primary-width, auto);
+        }
+
+        h3 {
+          font-size: $subhead-font-size-base;
+          font-weight: 400;
+          letter-spacing: 0.010em;
+          margin: $list-h3-margin;
+          line-height: $list-header-line-height;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        h4 {
+          font-size: $body-font-size-base;
+          letter-spacing: 0.010em;
+          margin: $list-h4-margin;
+          font-weight: $list-h4-font-weight;
+          line-height: $list-header-line-height;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        p {
+          font-size: $body-font-size-base;
+          font-weight: 500;
+          letter-spacing: 0.010em;
+          margin: $list-p-margin;
+          line-height: $list-p-line-height;
+        }
+      }
+    }
+  }
+
+  &.md-2-line {
+    &, & > .md-no-style {
+      height: auto;
+
+      min-height: $list-item-two-line-height;
+      @include ie11-min-height-flexbug($list-item-two-line-height);
+
+      > .md-avatar, .md-avatar-icon {
+        margin-top: $baseline-grid * 1.5;
+      }
+
+      > md-icon:first-child {
+        align-self: flex-start;
+      }
+
+      .md-list-item-text {
+        flex: 1 1 auto;
+      }
+    }
+  }
+
+  &.md-3-line {
+    &, & > .md-no-style {
+      height: auto;
+
+      min-height: $list-item-three-line-height;
+      @include ie11-min-height-flexbug($list-item-three-line-height);
+
+      > md-icon:first-child,
+      > .md-avatar {
+        margin-top: $baseline-grid * 2;
+      }
+    }
+  }
 }
 
 $menu-border-radius: 2px !default;
@@ -4701,6 +4526,209 @@ md-toolbar {
   }
 }
 
+
+md-toolbar {
+  &.md-menu-toolbar {
+    h2.md-toolbar-tools {
+      line-height: 1rem;
+      height: auto;
+      padding: 3.5 * $baseline-grid;
+      padding-bottom: 1.5 * $baseline-grid;
+    }
+  }
+
+  // Used to allow hovering from one menu to the
+  // next when inside of a toolbar.
+  &.md-has-open-menu {
+    position: relative;
+    z-index: $z-index-menu;
+  }
+}
+
+md-menu-bar {
+  padding: 0 2.5 * $baseline-grid;
+  display: block;
+  position: relative;
+  z-index: 2;
+  .md-menu {
+    display: inline-block;
+    padding: 0;
+    position: relative;
+  }
+  button {
+    font-size: rem(1.4);
+    padding: 0 1.25 * $baseline-grid;
+    margin: 0;
+    border: 0;
+    background-color: transparent;
+    height: 5 * $baseline-grid;
+  }
+
+  md-backdrop.md-menu-backdrop {
+    z-index: -2;
+  }
+}
+
+md-menu-content.md-menu-bar-menu.md-dense {
+  max-height: none;
+  padding: 2 * $baseline-grid 0;
+  md-menu-item.md-indent {
+    position: relative;
+    > md-icon {
+      position: absolute;
+      padding: 0;
+      width: 24px;
+      top: 0.75 * $baseline-grid;
+      @include rtl-prop(left, right, 3 * $baseline-grid, auto);
+    }
+    > .md-button, .md-menu > .md-button {
+      @include rtl(padding, 0 4 * $baseline-grid 0 8 * $baseline-grid, 0 8 * $baseline-grid 0 4 * $baseline-grid);
+    }
+  }
+  .md-button {
+    min-height: 0;
+    height: 4 * $baseline-grid;
+    span {
+      @include rtl(float, left, right);
+    }
+    span.md-alt-text {
+      @include rtl(float, right, left);
+      margin: 0 $baseline-grid;
+    }
+  }
+  md-menu-divider {
+    margin: $baseline-grid 0;
+  }
+
+  md-menu-item > .md-button, .md-menu > .md-button {
+    @include rtl(text-align, left, right);
+  }
+
+  .md-menu {
+    padding: 0;
+    > .md-button {
+      position: relative;
+      margin: 0;
+      width: 100%;
+      text-transform: none;
+      font-weight: normal;
+      border-radius: 0px;
+      @include rtl-prop(padding-left, padding-right, 2 * $baseline-grid, 0);
+      &:after {
+        display: block;
+        content: '\25BC';
+        position: absolute;
+        top: 0px;
+        speak: none;
+        @include rtl(transform, rotate(270deg) scaleY(0.45) scaleX(0.9), rotate(90deg) scaleY(0.45) scaleX(0.9));
+        @include rtl-prop(right, left, 3.5 * $baseline-grid, auto);
+      }
+    }
+  }
+}
+
+/** Matches "md-tabs md-tabs-wrapper" style. */
+$md-nav-bar-height: 48px;
+
+.md-nav-bar {
+  border-style: solid;
+  border-width: 0 0 1px;
+  height: $md-nav-bar-height;
+  position: relative;
+}
+
+._md-nav-bar-list {
+  outline: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  // Layout [layout='row']
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+}
+
+.md-nav-item:first-of-type {
+  margin-left: 8px;
+}
+
+// override button styles to look more like tabs
+.md-button._md-nav-button {
+  line-height: 24px;
+  margin: 0 4px;
+  padding: 12px 16px;
+  transition: background-color 0.35s $swift-ease-in-out-timing-function;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    background-color: inherit;
+  }
+}
+
+md-nav-ink-bar {
+  $duration: $swift-ease-in-out-duration * 0.5;
+  $multiplier: 0.5;
+  bottom: 0;
+  height: 2px;
+  left: auto;
+  position: absolute;
+  right: auto;
+  background-color: black;
+
+  &._md-left {
+    transition: left ($duration * $multiplier) $swift-ease-in-out-timing-function,
+        right $duration $swift-ease-in-out-timing-function;
+  }
+  &._md-right {
+    transition: left $duration $swift-ease-in-out-timing-function,
+        right ($duration * $multiplier) $swift-ease-in-out-timing-function;
+  }
+
+  // By default $ngAnimate looks for transition durations on the element, when using ng-hide, ng-if, ng-show.
+  // The ink bar has a transition duration applied, which means, that $ngAnimate delays the hide process.
+  // To avoid this, we need to reset the transition, when $ngAnimate looks for the duration.
+  &.ng-animate {
+    transition: none;
+  }
+
+}
+
+md-nav-extra-content {
+  min-height: 48px;
+  padding-right: 12px;
+}
+
+$progress-circular-indeterminate-duration: 1568.63ms !default;
+
+@keyframes indeterminate-rotate {
+    0%       { transform: rotate(0deg); }
+    100%     { transform: rotate(360deg); }
+}
+
+// Used to avoid unnecessary layout
+md-progress-circular {
+    position: relative;
+    display: block;
+
+    &._md-progress-circular-disabled {
+        visibility: hidden;
+    }
+
+    &.md-mode-indeterminate svg {
+        animation: indeterminate-rotate $progress-circular-indeterminate-duration linear infinite;
+    }
+
+    svg {
+        position: absolute;
+        overflow: visible;
+        top: 0;
+        left: 0;
+    }
+}
 
 $progress-linear-bar-height: 5px !default;
 
@@ -5097,32 +5125,322 @@ md-radio-group {
   }
 }
 
-$progress-circular-indeterminate-duration: 1568.63ms !default;
+$select-checkbox-border-radius: 2px !default;
+$select-checkbox-border-width: 2px !default;
+$select-checkbox-width: rem(1.4) !default;
+$select-option-height: 48px !default;
+$select-option-padding: 16px !default;
+$select-container-padding: 16px !default;
+$select-container-transition-duration: 350ms !default;
 
-@keyframes indeterminate-rotate {
-    0%       { transform: rotate(0deg); }
-    100%     { transform: rotate(360deg); }
+$select-max-visible-options: 5 !default;
+
+// Fixes the animations with the floating label when select is inside an input container
+md-input-container {
+  &:not([md-no-float]) {
+    .md-select-placeholder span:first-child {
+      transition: transform $swift-ease-out-duration $swift-ease-out-timing-function;
+      @include rtl(transform-origin, left top, right top);
+    }
+  }
+  &.md-input-focused {
+    &:not([md-no-float]) {
+      .md-select-placeholder span:first-child {
+        transform: translateY(-22px) translateX(-2px) scale(0.75);
+      }
+    }
+  }
 }
 
-// Used to avoid unnecessary layout
-md-progress-circular {
-    position: relative;
+.md-select-menu-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: $z-index-select;
+  opacity: 0;
+  display: none;
+
+  // Fix 1px alignment issue to line up with text inputs (and spec)
+  transform: translateY(-1px);
+
+  // Don't let the user select a new choice while it's animating
+  &:not(.md-clickable) {
+    pointer-events: none;
+  }
+
+  md-progress-circular {
+    display: table;
+    margin: 3*$baseline-grid auto !important;
+  }
+
+
+  // enter: md-select scales in, then options fade in.
+  &.md-active {
     display: block;
-
-    &._md-progress-circular-disabled {
-        visibility: hidden;
+    opacity: 1;
+    md-select-menu {
+      transition: $swift-ease-out;
+      transition-duration: 150ms;
+      > * {
+        opacity: 1;
+        transition: $swift-ease-in;
+        transition-duration: 150ms;
+        transition-delay: 100ms;
+      }
     }
+  }
 
-    &.md-mode-indeterminate svg {
-        animation: indeterminate-rotate $progress-circular-indeterminate-duration linear infinite;
-    }
+  // leave: the container fades out
+  &.md-leave {
+    opacity: 0;
+    transition: $swift-ease-in;
+    transition-duration: 250ms;
+  }
+}
 
-    svg {
-        position: absolute;
-        overflow: visible;
-        top: 0;
-        left: 0;
+md-input-container > md-select {
+  margin: 0;
+  order: 2;
+}
+
+
+// Show the asterisk on the placeholder if the element is required
+//
+// NOTE: When the input has a value and uses a floating label, the floating label will show the
+// asterisk denoting that it is required
+md-input-container:not(.md-input-has-value) {
+  md-select[required]:not(.md-no-asterisk), md-select.ng-required:not(.md-no-asterisk) {
+    .md-select-value span:first-child:after {
+      content: ' *';
+      font-size: 13px;
+      vertical-align: top;
     }
+  }
+}
+
+md-input-container.md-input-invalid {
+  md-select {
+    .md-select-value {
+      border-bottom-style: solid;
+      padding-bottom: 1px;
+    }
+  }
+}
+
+md-select {
+  display: flex;
+  margin: 2.5*$baseline-grid 0 3*$baseline-grid + 2 0;
+
+  &[required], &.ng-required {
+    &.ng-invalid:not(.md-no-asterisk) {
+      .md-select-value span:first-child:after {
+        content: ' *';
+        font-size: 13px;
+        vertical-align: top;
+      }
+    }
+  }
+
+  &[disabled] .md-select-value {
+    background-position: 0 bottom;
+    // This background-size is coordinated with a linear-gradient set in select-theme.scss
+    // to create a dotted line under the input.
+    background-size: 4px 1px;
+    background-repeat: repeat-x;
+    margin-bottom: -1px; // Shift downward so dotted line is positioned the same as other bottom borders
+  }
+
+  &:focus {
+    outline: none;
+  }
+  &[disabled]:hover {
+    cursor: default;
+  }
+  &:not([disabled]) {
+    &:hover {
+      cursor: pointer
+    }
+    &.ng-invalid.ng-touched {
+      .md-select-value {
+        border-bottom-style: solid;
+        padding-bottom: 1px;
+      }
+    }
+    &:focus {
+      .md-select-value {
+        border-bottom-width: 2px;
+        border-bottom-style: solid;
+        padding-bottom: 0;
+      }
+      &.ng-invalid.ng-touched {
+        .md-select-value {
+          padding-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+// Fix value by 1px to align with standard text inputs (and spec)
+md-input-container.md-input-has-value .md-select-value {
+  > span:not(.md-select-icon) {
+    transform: translate3d(0, 1px, 0);
+  }
+}
+
+.md-select-value {
+  display: flex;
+  align-items: center;
+  padding: 2px 2px 1px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  background-color: rgba(0,0,0,0);
+  position: relative;
+  box-sizing: content-box;
+  min-width: 8 * $baseline-grid;
+  min-height: 26px;
+  flex-grow: 1;
+
+
+  > span:not(.md-select-icon) {
+    max-width: 100%;
+    flex: 1 1 auto;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    .md-text {
+      display: inline;
+    }
+  }
+
+  .md-select-icon {
+    display: block;
+    align-items: flex-end;
+    text-align: end;
+    width: 3 * $baseline-grid;
+    margin: 0 .5 * $baseline-grid;
+    transform: translate3d(0, -2px, 0);
+    font-size: 1.2rem;
+  }
+
+  .md-select-icon:after {
+    display: block;
+    content: '\25BC';
+    position: relative;
+    top: 2px;
+    speak: none;
+    font-size: 13px;
+    transform: scaleY(0.5) scaleX(1);
+  }
+
+  &.md-select-placeholder {
+    display: flex;
+    order: 1;
+    pointer-events: none;
+    -webkit-font-smoothing: antialiased;
+    padding-left: 2px;
+    z-index: 1;
+  }
+}
+
+md-select-menu {
+  display: flex;
+  flex-direction: column;
+  &.md-reverse {
+    flex-direction: column-reverse;
+  }
+
+  &:not(.md-overflow) {
+    md-content {
+      padding-top: $baseline-grid;
+      padding-bottom: $baseline-grid;
+    }
+  }
+
+  box-shadow: $whiteframe-shadow-1dp;
+  max-height: ($select-option-height * $select-max-visible-options) + 2 * $baseline-grid;
+  min-height: $select-option-height;
+  overflow-y: hidden;
+
+  @include rtl(transform-origin, left top, right top);
+
+  transform: scale(1.0);
+
+  md-content {
+    min-width: 136px;
+    min-height: $select-option-height;
+    max-height: ($select-option-height * $select-max-visible-options) + 2 * $baseline-grid;
+    overflow-y: auto;
+  }
+  > * {
+    opacity: 0;
+  }
+}
+
+md-option {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: auto;
+  transition: background 0.15s linear;
+
+  &[disabled] {
+    cursor: default;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  .md-text {
+    @include not-selectable();
+    width: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  padding: 0 $select-option-padding 0 $select-option-padding;
+  height: $select-option-height;
+}
+
+md-optgroup {
+  display: block;
+  label {
+    display: block;
+    font-size: rem(1.4);
+    text-transform: uppercase;
+    padding: $baseline-grid * 2;
+    font-weight: 500;
+  }
+  md-option {
+    padding-left: $select-option-padding * 2;
+    padding-right: $select-option-padding * 2;
+  }
+}
+
+@media screen and (-ms-high-contrast: active) {
+  .md-select-backdrop {
+    background-color: transparent;
+  }
+  md-select-menu {
+    border: 1px solid #fff;
+  }
+}
+
+md-select-menu[multiple] {
+  md-option.md-checkbox-enabled {
+    @include rtl(padding-left, $select-option-padding * 2.5, $select-option-padding);
+    @include rtl(padding-right, $select-option-padding, $select-option-padding * 2.5);
+
+    @include checkbox-container('[selected]');
+
+    .md-container {
+      @include rtl(margin-left, $select-option-padding * (2 / 3), auto);
+      @include rtl(margin-right, auto, $select-option-padding * (2 / 3));
+    }
+  }
 }
 
 $sidenav-mobile-width: 320px !default;
@@ -5766,324 +6084,6 @@ md-slider-container {
   }
 }
 
-
-$select-checkbox-border-radius: 2px !default;
-$select-checkbox-border-width: 2px !default;
-$select-checkbox-width: rem(1.4) !default;
-$select-option-height: 48px !default;
-$select-option-padding: 16px !default;
-$select-container-padding: 16px !default;
-$select-container-transition-duration: 350ms !default;
-
-$select-max-visible-options: 5 !default;
-
-// Fixes the animations with the floating label when select is inside an input container
-md-input-container {
-  &:not([md-no-float]) {
-    .md-select-placeholder span:first-child {
-      transition: transform $swift-ease-out-duration $swift-ease-out-timing-function;
-      @include rtl(transform-origin, left top, right top);
-    }
-  }
-  &.md-input-focused {
-    &:not([md-no-float]) {
-      .md-select-placeholder span:first-child {
-        transform: translateY(-22px) translateX(-2px) scale(0.75);
-      }
-    }
-  }
-}
-
-.md-select-menu-container {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: $z-index-select;
-  opacity: 0;
-  display: none;
-
-  // Fix 1px alignment issue to line up with text inputs (and spec)
-  transform: translateY(-1px);
-
-  // Don't let the user select a new choice while it's animating
-  &:not(.md-clickable) {
-    pointer-events: none;
-  }
-
-  md-progress-circular {
-    display: table;
-    margin: 3*$baseline-grid auto !important;
-  }
-
-
-  // enter: md-select scales in, then options fade in.
-  &.md-active {
-    display: block;
-    opacity: 1;
-    md-select-menu {
-      transition: $swift-ease-out;
-      transition-duration: 150ms;
-      > * {
-        opacity: 1;
-        transition: $swift-ease-in;
-        transition-duration: 150ms;
-        transition-delay: 100ms;
-      }
-    }
-  }
-
-  // leave: the container fades out
-  &.md-leave {
-    opacity: 0;
-    transition: $swift-ease-in;
-    transition-duration: 250ms;
-  }
-}
-
-md-input-container > md-select {
-  margin: 0;
-  order: 2;
-}
-
-
-// Show the asterisk on the placeholder if the element is required
-//
-// NOTE: When the input has a value and uses a floating label, the floating label will show the
-// asterisk denoting that it is required
-md-input-container:not(.md-input-has-value) {
-  md-select[required]:not(.md-no-asterisk), md-select.ng-required:not(.md-no-asterisk) {
-    .md-select-value span:first-child:after {
-      content: ' *';
-      font-size: 13px;
-      vertical-align: top;
-    }
-  }
-}
-
-md-input-container.md-input-invalid {
-  md-select {
-    .md-select-value {
-      border-bottom-style: solid;
-      padding-bottom: 1px;
-    }
-  }
-}
-
-md-select {
-  display: flex;
-  margin: 2.5*$baseline-grid 0 3*$baseline-grid + 2 0;
-
-  &[required], &.ng-required {
-    &.ng-invalid:not(.md-no-asterisk) {
-      .md-select-value span:first-child:after {
-        content: ' *';
-        font-size: 13px;
-        vertical-align: top;
-      }
-    }
-  }
-
-  &[disabled] .md-select-value {
-    background-position: 0 bottom;
-    // This background-size is coordinated with a linear-gradient set in select-theme.scss
-    // to create a dotted line under the input.
-    background-size: 4px 1px;
-    background-repeat: repeat-x;
-    margin-bottom: -1px; // Shift downward so dotted line is positioned the same as other bottom borders
-  }
-
-  &:focus {
-    outline: none;
-  }
-  &[disabled]:hover {
-    cursor: default;
-  }
-  &:not([disabled]) {
-    &:hover {
-      cursor: pointer
-    }
-    &.ng-invalid.ng-touched {
-      .md-select-value {
-        border-bottom-style: solid;
-        padding-bottom: 1px;
-      }
-    }
-    &:focus {
-      .md-select-value {
-        border-bottom-width: 2px;
-        border-bottom-style: solid;
-        padding-bottom: 0;
-      }
-      &.ng-invalid.ng-touched {
-        .md-select-value {
-          padding-bottom: 0;
-        }
-      }
-    }
-  }
-}
-
-// Fix value by 1px to align with standard text inputs (and spec)
-md-input-container.md-input-has-value .md-select-value {
-  > span:not(.md-select-icon) {
-    transform: translate3d(0, 1px, 0);
-  }
-}
-
-.md-select-value {
-  display: flex;
-  align-items: center;
-  padding: 2px 2px 1px;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  background-color: rgba(0,0,0,0);
-  position: relative;
-  box-sizing: content-box;
-  min-width: 8 * $baseline-grid;
-  min-height: 26px;
-  flex-grow: 1;
-
-
-  > span:not(.md-select-icon) {
-    max-width: 100%;
-    flex: 1 1 auto;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-
-    .md-text {
-      display: inline;
-    }
-  }
-
-  .md-select-icon {
-    display: block;
-    align-items: flex-end;
-    text-align: end;
-    width: 3 * $baseline-grid;
-    margin: 0 .5 * $baseline-grid;
-    transform: translate3d(0, -2px, 0);
-    font-size: 1.2rem;
-  }
-
-  .md-select-icon:after {
-    display: block;
-    content: '\25BC';
-    position: relative;
-    top: 2px;
-    speak: none;
-    font-size: 13px;
-    transform: scaleY(0.5) scaleX(1);
-  }
-
-  &.md-select-placeholder {
-    display: flex;
-    order: 1;
-    pointer-events: none;
-    -webkit-font-smoothing: antialiased;
-    padding-left: 2px;
-    z-index: 1;
-  }
-}
-
-md-select-menu {
-  display: flex;
-  flex-direction: column;
-  &.md-reverse {
-    flex-direction: column-reverse;
-  }
-
-  &:not(.md-overflow) {
-    md-content {
-      padding-top: $baseline-grid;
-      padding-bottom: $baseline-grid;
-    }
-  }
-
-  box-shadow: $whiteframe-shadow-1dp;
-  max-height: ($select-option-height * $select-max-visible-options) + 2 * $baseline-grid;
-  min-height: $select-option-height;
-  overflow-y: hidden;
-
-  @include rtl(transform-origin, left top, right top);
-
-  transform: scale(1.0);
-
-  md-content {
-    min-width: 136px;
-    min-height: $select-option-height;
-    max-height: ($select-option-height * $select-max-visible-options) + 2 * $baseline-grid;
-    overflow-y: auto;
-  }
-  > * {
-    opacity: 0;
-  }
-}
-
-md-option {
-  cursor: pointer;
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: auto;
-  transition: background 0.15s linear;
-
-  &[disabled] {
-    cursor: default;
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  .md-text {
-    @include not-selectable();
-    width: auto;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  padding: 0 $select-option-padding 0 $select-option-padding;
-  height: $select-option-height;
-}
-
-md-optgroup {
-  display: block;
-  label {
-    display: block;
-    font-size: rem(1.4);
-    text-transform: uppercase;
-    padding: $baseline-grid * 2;
-    font-weight: 500;
-  }
-  md-option {
-    padding-left: $select-option-padding * 2;
-    padding-right: $select-option-padding * 2;
-  }
-}
-
-@media screen and (-ms-high-contrast: active) {
-  .md-select-backdrop {
-    background-color: transparent;
-  }
-  md-select-menu {
-    border: 1px solid #fff;
-  }
-}
-
-md-select-menu[multiple] {
-  md-option.md-checkbox-enabled {
-    @include rtl(padding-left, $select-option-padding * 2.5, $select-option-padding);
-    @include rtl(padding-right, $select-option-padding, $select-option-padding * 2.5);
-
-    @include checkbox-container('[selected]');
-
-    .md-container {
-      @include rtl(margin-left, $select-option-padding * (2 / 3), auto);
-      @include rtl(margin-right, auto, $select-option-padding * (2 / 3));
-    }
-  }
-}
 
 .md-sticky-clone {
   z-index: 2;
@@ -7131,6 +7131,64 @@ $tooltip-max-width: 32px !default;
     width: 0;
   }
 }
+$virtual-repeat-scrollbar-width: 16px !default;
+
+.md-virtual-repeat-container {
+  box-sizing: border-box;
+  display: block;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+
+  .md-virtual-repeat-scroller {
+    bottom: 0;
+    box-sizing: border-box;
+    left: 0;
+    margin: 0;
+    overflow-x: hidden;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .md-virtual-repeat-sizer {
+    box-sizing: border-box;
+    height: 1px;
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 1px;
+  }
+
+  .md-virtual-repeat-offsetter {
+    box-sizing: border-box;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
+.md-virtual-repeat-container.md-orient-horizontal {
+  .md-virtual-repeat-scroller {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .md-virtual-repeat-offsetter {
+    // Leave room for the scroll bar.
+    // TODO: Will probably need to perform measurements at runtime.
+    bottom: $virtual-repeat-scrollbar-width;
+    @include rtl-prop(right, left, auto, auto);
+    white-space: nowrap;
+  }
+}
+
 .md-whiteframe-1dp, .md-whiteframe-z1 {
   box-shadow: $whiteframe-shadow-1dp;
 }
@@ -7213,64 +7271,6 @@ $tooltip-max-width: 32px !default;
 @media print {
   md-whiteframe, [md-whiteframe] {
     background-color: #ffffff;
-  }
-}
-
-$virtual-repeat-scrollbar-width: 16px !default;
-
-.md-virtual-repeat-container {
-  box-sizing: border-box;
-  display: block;
-  margin: 0;
-  overflow: hidden;
-  padding: 0;
-  position: relative;
-
-  .md-virtual-repeat-scroller {
-    bottom: 0;
-    box-sizing: border-box;
-    left: 0;
-    margin: 0;
-    overflow-x: hidden;
-    padding: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .md-virtual-repeat-sizer {
-    box-sizing: border-box;
-    height: 1px;
-    display: block;
-    margin: 0;
-    padding: 0;
-    width: 1px;
-  }
-
-  .md-virtual-repeat-offsetter {
-    box-sizing: border-box;
-    left: 0;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
-}
-
-.md-virtual-repeat-container.md-orient-horizontal {
-  .md-virtual-repeat-scroller {
-    overflow-x: auto;
-    overflow-y: hidden;
-  }
-
-  .md-virtual-repeat-offsetter {
-    // Leave room for the scroll bar.
-    // TODO: Will probably need to perform measurements at runtime.
-    bottom: $virtual-repeat-scrollbar-width;
-    @include rtl-prop(right, left, auto, auto);
-    white-space: nowrap;
   }
 }
 
