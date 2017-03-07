@@ -1,8 +1,8 @@
 /*!
- * Angular Material Design
+ * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-810df2b
+ * v1.1.3-master-9889ed5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -513,7 +513,7 @@ MdIconService['$inject'] = ["config", "$templateRequest", "$q", "$log", "$mdUtil
  * @name $mdIconProvider#defaultFontSet
  *
  * @description
- * When using Font-Icons, Angular Material assumes the the Material Design icons will be used and automatically
+ * When using Font-Icons, AngularJS Material assumes the the Material Design icons will be used and automatically
  * configures the default font-set == 'material-icons'. Note that the font-set references the font-icon library
  * class style that should be applied to the `<md-icon>`.
  *

@@ -1,8 +1,8 @@
 /*!
- * Angular Material Design
+ * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-810df2b
+ * v1.1.3-master-9889ed5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -43,7 +43,7 @@ angular.module('material.components.tabs', [
  * @restrict E
  *
  * @description
- * Use the `<md-tab>` a nested directive used within `<md-tabs>` to specify a tab with a **label** and optional *view content*.
+ * The `<md-tab>` is a nested directive used within `<md-tabs>` to specify a tab with a **label** and optional *view content*.
  *
  * If the `label` attribute is not specified, then an optional `<md-tab-label>` tag can be used to specify more
  * complex tab header markup. If neither the **label** nor the **md-tab-label** are specified, then the nested
@@ -245,14 +245,14 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   ctrl.updateTabOrder     = $mdUtil.debounce(updateTabOrder, 100);
   ctrl.getFocusedTabId    = getFocusedTabId;
 
-  // For Angular 1.4 and older, where there are no lifecycle hooks but bindings are pre-assigned,
+  // For AngularJS 1.4 and older, where there are no lifecycle hooks but bindings are pre-assigned,
   // manually call the $onInit hook.
   if (angular.version.major === 1 && angular.version.minor <= 4) {
     this.$onInit();
   }
 
   /**
-   * Angular Lifecycle hook for newer Angular versions.
+   * AngularJS Lifecycle hook for newer AngularJS versions.
    * Bindings are not guaranteed to have been assigned in the controller, but they are in the $onInit hook.
    */
   function $onInit() {
@@ -343,7 +343,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   }
 
   /**
-   * Creates a one-way binding manually rather than relying on Angular's isolated scope
+   * Creates a one-way binding manually rather than relying on AngularJS's isolated scope
    * @param key
    * @param handler
    */
