@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-e63221b
+ * v1.1.3-master-1874e80
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -8118,26 +8118,9 @@ function MdBottomSheetDirective($mdBottomSheet) {
  * app.controller('MyController', function($scope, $mdBottomSheet) {
  *   $scope.openBottomSheet = function() {
  *     $mdBottomSheet.show({
- *       template: '<md-bottom-sheet>' +
- *       'Hello! <md-button ng-click="closeBottomSheet()">Close</md-button>' +
- *       '</md-bottom-sheet>'
- *     })
- *
- *     // Fires when the hide() method is used
- *     .then(function() {
- *       console.log('You clicked the button to close the bottom sheet!');
- *     })
- *
- *     // Fires when the cancel() method is used
- *     .catch(function() {
- *       console.log('You hit escape or clicked the backdrop to close.');
+ *       template: '<md-bottom-sheet>Hello!</md-bottom-sheet>'
  *     });
  *   };
- *
- *   $scope.closeBottomSheet = function($scope, $mdBottomSheet) {
- *     $mdBottomSheet.hide();
- *   }
- *
  * });
  * </hljs>
  */
@@ -8148,14 +8131,6 @@ function MdBottomSheetDirective($mdBottomSheet) {
  *
  * @description
  * Show a bottom sheet with the specified options.
- *
- * <em><b>Note:</b> You should <b>always</b> provide a `.catch()` method in case the user hits the
- * `esc` key or clicks the background to close. In this case, the `cancel()` method will
- * automatically be called on the bottom sheet which will `reject()` the promise. See the @usage
- * section above for an example.
- *
- * Newer versions of Angular will throw a `Possibly unhandled rejection` exception if you forget
- * this.</em>
  *
  * @param {object} options An options object, with the following properties:
  *
@@ -8197,10 +8172,7 @@ function MdBottomSheetDirective($mdBottomSheet) {
  *
  * @description
  * Hide the existing bottom sheet and resolve the promise returned from
- * `$mdBottomSheet.show()`. This call will close the most recently opened/current bottomsheet (if
- * any).
- *
- * <em><b>Note:</b> Use a `.then()` on your `.show()` to handle this callback.</em>
+ * `$mdBottomSheet.show()`. This call will close the most recently opened/current bottomsheet (if any).
  *
  * @param {*=} response An argument for the resolved promise.
  *
@@ -8213,8 +8185,6 @@ function MdBottomSheetDirective($mdBottomSheet) {
  * @description
  * Hide the existing bottom sheet and reject the promise returned from
  * `$mdBottomSheet.show()`.
- *
- * <em><b>Note:</b> Use a `.catch()` on your `.show()` to handle this callback.</em>
  *
  * @param {*=} response An argument for the rejected promise.
  *
@@ -10011,7 +9981,6 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  *      in parallel the close animations.
  *   - `fullscreen` `{boolean=}`: An option to toggle whether the dialog should show in fullscreen
  *      or not. Defaults to `false`.
- *   - `multiple` `{boolean=}`: An option to allow this dialog to display over one that's currently open.
  * @returns {promise} A promise that can be resolved with `$mdDialog.hide()` or
  * rejected with `$mdDialog.cancel()`.
  */
@@ -28429,7 +28398,7 @@ function MdContactChips($mdTheming, $mdUtil) {
    *
    * @description
    * `<md-calendar>` is a component that renders a calendar that can be used to select a date.
-   * It is a part of the `<md-datepicker>` pane, however it can also be used on it's own.
+   * It is a part of the `<md-datepicker` pane, however it can also be used on it's own.
    *
    * @usage
    *
@@ -35950,4 +35919,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.3-master-e63221b"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.3-master-1874e80"}};
