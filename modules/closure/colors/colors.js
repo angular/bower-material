@@ -1,8 +1,8 @@
 /*!
- * AngularJS Material Design
+ * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-e06284a
+ * v1.1.3-master-fb98c14
  */
 goog.provide('ngmaterial.components.colors');
 goog.require('ngmaterial.core');
@@ -36,7 +36,7 @@ goog.require('ngmaterial.core');
    * @module material.components.colors
    *
    * @description
-   * With only defining themes, one couldn't get non AngularJS Material elements colored with Material colors,
+   * With only defining themes, one couldn't get non ngMaterial elements colored with Material colors,
    * `$mdColors` service is used by the md-color directive to convert the 1..n color expressions to RGBA values and will apply
    * those values to element as CSS property values.
    *
