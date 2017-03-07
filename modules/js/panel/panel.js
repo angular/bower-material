@@ -1,8 +1,8 @@
 /*!
- * AngularJS Material Design
+ * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-976f557
+ * v1.1.3-master-810df2b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -226,7 +226,7 @@ angular
  *     interaction when there is no backdrop and events are propagated. Defaults
  *     to an arbitrary string that is not tracked.
  *   - `template` - `{string=}`: HTML template to show in the panel. This
- *     **must** be trusted HTML with respect to AngularJS’s
+ *     **must** be trusted HTML with respect to Angular’s
  *     [$sce service](https://docs.angularjs.org/api/ng/service/$sce).
  *   - `templateUrl` - `{string=}`: The URL that will be used as the content of
  *     the panel.
@@ -997,7 +997,7 @@ function clearPresets() {
 
 
 /**
- * Represents the `$get` method of the AngularJS provider. From here, a new
+ * Represents the `$get` method of the Angular provider. From here, a new
  * reference to the MdPanelService is returned where the needed arguments are
  * passed in including the MdPanelProvider `_presets`.
  * @param {!Object} _presets
@@ -1319,7 +1319,7 @@ MdPanelService.prototype._wrapTemplate = function(origTemplate) {
   // height and width for positioning.
   return '' +
       '<div class="md-panel-outer-wrapper">' +
-      '  <div class="md-panel _md-panel-offscreen">' + template + '</div>' +
+      '  <div class="md-panel" style="left: -9999px;">' + template + '</div>' +
       '</div>';
 };
 
@@ -1335,7 +1335,7 @@ MdPanelService.prototype._wrapTemplate = function(origTemplate) {
 MdPanelService.prototype._wrapContentElement = function(contentElement) {
   var wrapper = angular.element('<div class="md-panel-outer-wrapper">');
 
-  contentElement.addClass('md-panel _md-panel-offscreen');
+  contentElement.addClass('md-panel').css('left', '-9999px');
   wrapper.append(contentElement);
 
   return wrapper;
@@ -1734,7 +1734,7 @@ MdPanelRef.prototype.hide = function() {
 MdPanelRef.prototype.addClass = function(newClass, toElement) {
   this._$log.warn(
       'mdPanel: The addClass method is in the process of being deprecated. ' +
-      'Full deprecation is scheduled for the AngularJS Material 1.2 release. ' +
+      'Full deprecation is scheduled for the Angular Material 1.2 release. ' +
       'To achieve the same results, use the panelContainer or panelEl ' +
       'JQLite elements that are referenced in MdPanelRef.');
 
@@ -1765,7 +1765,7 @@ MdPanelRef.prototype.addClass = function(newClass, toElement) {
 MdPanelRef.prototype.removeClass = function(oldClass, fromElement) {
   this._$log.warn(
       'mdPanel: The removeClass method is in the process of being deprecated. ' +
-      'Full deprecation is scheduled for the AngularJS Material 1.2 release. ' +
+      'Full deprecation is scheduled for the Angular Material 1.2 release. ' +
       'To achieve the same results, use the panelContainer or panelEl ' +
       'JQLite elements that are referenced in MdPanelRef.');
 
@@ -1796,7 +1796,7 @@ MdPanelRef.prototype.removeClass = function(oldClass, fromElement) {
 MdPanelRef.prototype.toggleClass = function(toggleClass, onElement) {
   this._$log.warn(
       'mdPanel: The toggleClass method is in the process of being deprecated. ' +
-      'Full deprecation is scheduled for the AngularJS Material 1.2 release. ' +
+      'Full deprecation is scheduled for the Angular Material 1.2 release. ' +
       'To achieve the same results, use the panelContainer or panelEl ' +
       'JQLite elements that are referenced in MdPanelRef.');
 
@@ -1928,8 +1928,8 @@ MdPanelRef.prototype._addStyles = function() {
       // Theme the element and container.
       self._setTheming();
 
-      // Remove offscreen class and add hidden class.
-      self.panelEl.removeClass('_md-panel-offscreen');
+      // Remove left: -9999px and add hidden class.
+      self.panelEl.css('left', '');
       self.panelContainer.addClass(MD_PANEL_HIDDEN);
 
       resolve(self);

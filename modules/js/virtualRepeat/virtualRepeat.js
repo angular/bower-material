@@ -1,8 +1,8 @@
 /*!
- * AngularJS Material Design
+ * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-976f557
+ * v1.1.3-master-810df2b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -137,7 +137,7 @@ function VirtualRepeatContainerController($$rAF, $mdUtil, $mdConstant, $parse, $
   this.maxElementPixels = $mdConstant.ELEMENT_MAX_PIXELS;
 
   if (this.$attrs.mdTopIndex) {
-    /** @type {function(angular.Scope): number} Binds to topIndex on AngularJS scope */
+    /** @type {function(angular.Scope): number} Binds to topIndex on Angular scope */
     this.bindTopIndex = $parse(this.$attrs.mdTopIndex);
     /** @type {number} The index of the item that is at the top of the scroll container */
     this.topIndex = this.bindTopIndex(this.$scope);

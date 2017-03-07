@@ -1,8 +1,8 @@
 /*!
- * AngularJS Material Design
+ * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-976f557
+ * v1.1.3-master-810df2b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1429,7 +1429,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
     return {
       template: function(element, attrs) {
         // Clone the element into an attribute. By prepending the attribute
-        // name with '$', AngularJS won't write it into the DOM. The cloned
+        // name with '$', Angular won't write it into the DOM. The cloned
         // element propagates to the link function via the attrs argument,
         // where various contained-elements can be consumed.
         attrs['$mdUserTemplate'] = element.clone();

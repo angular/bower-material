@@ -1,8 +1,8 @@
 /*!
- * AngularJS Material Design
+ * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-976f557
+ * v1.1.3-master-810df2b
  */
 goog.provide('ngmaterial.components.tabs');
 goog.require('ngmaterial.components.icon');
@@ -245,14 +245,14 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   ctrl.updateTabOrder     = $mdUtil.debounce(updateTabOrder, 100);
   ctrl.getFocusedTabId    = getFocusedTabId;
 
-  // For AngularJS 1.4 and older, where there are no lifecycle hooks but bindings are pre-assigned,
+  // For Angular 1.4 and older, where there are no lifecycle hooks but bindings are pre-assigned,
   // manually call the $onInit hook.
   if (angular.version.major === 1 && angular.version.minor <= 4) {
     this.$onInit();
   }
 
   /**
-   * AngularJS Lifecycle hook for newer AngularJS versions.
+   * Angular Lifecycle hook for newer Angular versions.
    * Bindings are not guaranteed to have been assigned in the controller, but they are in the $onInit hook.
    */
   function $onInit() {
@@ -343,7 +343,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   }
 
   /**
-   * Creates a one-way binding manually rather than relying on AngularJS's isolated scope
+   * Creates a one-way binding manually rather than relying on Angular's isolated scope
    * @param key
    * @param handler
    */
