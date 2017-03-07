@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-0e5b849
+ * v1.1.3-master-9889ed5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -28399,7 +28399,7 @@ function MdContactChips($mdTheming, $mdUtil) {
    *
    * @description
    * `<md-calendar>` is a component that renders a calendar that can be used to select a date.
-   * It is a part of the `<md-datepicker>` pane, however it can also be used on it's own.
+   * It is a part of the `<md-datepicker` pane, however it can also be used on it's own.
    *
    * @usage
    *
@@ -35920,4 +35920,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.3-master-0e5b849"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.3-master-9889ed5"}};
