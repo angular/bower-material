@@ -1,8 +1,8 @@
 {
   "name": "angular-material-switch",
-  "version": "1.1.3-master-e3d7fbb",
+  "version": "1.1.3-master-88e0c8f",
   "dependencies": {
-    "angular-material-core": "1.1.3-master-e3d7fbb",
-    "angular-material-checkbox": "1.1.3-master-e3d7fbb"
+    "angular-material-core": "1.1.3-master-88e0c8f",
+    "angular-material-checkbox": "1.1.3-master-88e0c8f"
   }
 }
