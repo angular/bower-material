@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-e1bb097
+ * v1.1.3-master-0f3ef64
  */
 goog.provide('ngmaterial.components.tabs');
 goog.require('ngmaterial.components.icon');
