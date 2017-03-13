@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-eecc541
+ * v1.1.3-master-fa02e4e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -4552,7 +4552,7 @@ function InterimElementProvider() {
       var value = validateAttributeValue(className, newValue || "");
       if ( angular.isDefined(value) ) {
         if (lastClass) element.removeClass(lastClass);
-        lastClass = !value ? className : className + "-" + value.replace(WHITESPACE, "-");
+        lastClass = !value ? className : className + "-" + value.trim().replace(WHITESPACE, "-");
         element.addClass(lastClass);
       }
     };
@@ -4599,7 +4599,7 @@ function InterimElementProvider() {
    * fallback value
    */
   function validateAttributeValue(className, value, updateFn) {
-    var origValue = value;
+    var origValue;
 
     if (!needsInterpolation(value)) {
       switch (className.replace(SUFFIXES,"")) {
@@ -4644,7 +4644,7 @@ function InterimElementProvider() {
       }
     }
 
-    return value;
+    return value ? value.trim() : "";
   }
 
   /**
@@ -4671,7 +4671,7 @@ function InterimElementProvider() {
 
   function getNormalizedAttrValue(className, attrs, defaultVal) {
     var normalizedAttr = attrs.$normalize(className);
-    return attrs[normalizedAttr] ? attrs[normalizedAttr].replace(WHITESPACE, "-") : defaultVal || null;
+    return attrs[normalizedAttr] ? attrs[normalizedAttr].trim().replace(WHITESPACE, "-") : defaultVal || null;
   }
 
   function findIn(item, list, replaceWith) {
