@@ -2556,444 +2556,6 @@ md-content {
 
 
 
-/** Styles for mdCalendar. */
-$md-calendar-cell-size: 44px !default;
-$md-calendar-header-height: 40px !default;
-$md-calendar-cell-emphasis-size: 40px !default;
-$md-calendar-side-padding: 16px !default;
-$md-calendar-weeks-to-show: 7 !default;
-
-$md-calendar-month-label-padding: 8px !default;
-$md-calendar-month-label-font-size: 14px !default;
-
-$md-calendar-scroll-cue-shadow-radius: 6px !default;
-
-$md-calendar-width: (7 * $md-calendar-cell-size) + (2 * $md-calendar-side-padding) !default;
-$md-calendar-height:
-    ($md-calendar-weeks-to-show * $md-calendar-cell-size) + $md-calendar-header-height !default;
-
-// Styles for date cells, including day-of-the-week header cells.
-@mixin md-calendar-cell($height: $md-calendar-cell-size) {
-  height: $height;
-  width: $md-calendar-cell-size;
-  text-align: center;
-
-  // Remove all padding and borders so we can completely
-  // control the size of the table cells.
-  padding: 0;
-  border: none;
-
-  // Prevent issues if somebody is applying box-sizing: border-box; eveywhere.
-  box-sizing: content-box;
-
-  // The left / right padding is applied to the cells instead of the wrapper
-  // because we want the header background and the month dividing border to
-  // extend the entire width of the calendar.
-  &:first-child {
-    @include rtl-prop(padding-left, padding-right, $md-calendar-side-padding, 0);
-  }
-
-  &:last-child {
-    @include rtl-prop(padding-right, padding-left, $md-calendar-side-padding, 0);
-  }
-}
-
-// Styles for tables used in mdCalendar (the day-of-the-week header and the table of dates itself).
-@mixin md-calendar-table() {
-  // Fixed table layout makes IE faster.
-  // https://msdn.microsoft.com/en-us/library/ms533020(VS.85).aspx
-  table-layout: fixed;
-  border-spacing: 0;
-  border-collapse: collapse;
-}
-
-md-calendar {
-  font-size: 13px;
-  user-select: none;
-}
-
-// Wrap the scroll with overflow: hidden in order to hide the scrollbar.
-// The inner .md-calendar-scroll-container will using a padding-right to push the
-// scrollbar into the hidden area (done with javascript).
-.md-calendar-scroll-mask {
-  display: inline-block;
-  overflow: hidden;
-  height: $md-calendar-weeks-to-show * $md-calendar-cell-size;
-
-  // The actual scrolling element.
-  .md-virtual-repeat-scroller {
-    // These two properties are needed to get touch momentum to work.
-    // See https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-
-  // Offsetter is the element that is translateY'ed into view of the user and contains the
-  // calendar content.
-  .md-virtual-repeat-offsetter {
-    width: 100%;
-  }
-}
-
-// Contains the scrolling element (this is the md-virtual-repeat-container).
-.md-calendar-scroll-container {
-  // Add an inset shadow to help cue users that the calendar is scrollable. Use a negative x
-  // offset to push the vertical edge shadow off to the right so that it's cut off by the edge
-  // of the calendar container.
-  box-shadow: inset -3px 3px $md-calendar-scroll-cue-shadow-radius rgba(black, 0.2);
-
-  display: inline-block;
-  height: $md-calendar-weeks-to-show * $md-calendar-cell-size;
-
-  // Add the shadow radius to the width so that the shadow os pushed off to the side and cut off.
-  width: $md-calendar-width + $md-calendar-scroll-cue-shadow-radius;
-}
-
-// A single date cell in the calendar table.
-.md-calendar-date {
-  @include md-calendar-cell();
-
-  &.md-calendar-date-disabled {
-    cursor: default;
-  }
-}
-
-// Circle element inside of every date cell used to indicate selection or focus.
-.md-calendar-date-selection-indicator {
-  transition: background-color, color $swift-ease-out-duration $swift-ease-out-timing-function;
-
-  border-radius: 50%;
-  display: inline-block;
-
-  width: $md-calendar-cell-emphasis-size;
-  height: $md-calendar-cell-emphasis-size;
-  line-height: $md-calendar-cell-emphasis-size;
-
-  .md-calendar-date:not(.md-disabled) & {
-    cursor: pointer;
-  }
-}
-
-// The label above each month (containing the month name and the year, e.g. "Jun 2014").
-.md-calendar-month-label {
-  height: $md-calendar-cell-size;
-  font-size: $md-calendar-month-label-font-size;
-  font-weight: 500; // Roboto Medium
-  @include rtl(padding, 0 0 0 $md-calendar-side-padding + $md-calendar-month-label-padding, rtl-value( 0 0 0 $md-calendar-side-padding + $md-calendar-month-label-padding));
-
-  md-calendar-month &:not(.md-calendar-month-label-disabled) {
-    cursor: pointer;
-  }
-
-  md-icon {
-    @include rtl(transform, rotate(180deg), none);
-  }
-
-  span {
-    vertical-align: middle;
-  }
-}
-
-// Table containing the day-of-the-week header.
-.md-calendar-day-header {
-  @include md-calendar-table();
-
-  th {
-    @include md-calendar-cell($md-calendar-header-height);
-    font-weight: normal;
-  }
-}
-
-// Primary table containing all date cells. Each month is a tbody in this table.
-.md-calendar {
-  @include md-calendar-table();
-
-  // Divider between months.
-  tr:last-child td {
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-  }
-
-  // The divider between months doesn't actually change the height of the tbody in which the
-  // border appear; it changes the height of the following tbody. The causes the first-child to be
-  // 1px shorter than the other months. We fix this by adding an invisible border-top.
-  &:first-child {
-    border-top: 1px solid transparent;
-  }
-
-  // Explicitly set vertical-align to avoid conflicting with popular CSS resets. When
-  // vertical-align:baseline is set, month headers are misaligned. Also reset the box-sizing,
-  // in case the user set it to border-box.
-  // http://meyerweb.com/eric/tools/css/reset/
-  tbody, td, tr {
-    vertical-align: middle;
-    box-sizing: content-box;
-  }
-}
-
-/** Styles for mdDatepicker. */
-$md-datepicker-button-gap: 12px !default;  // Space between the text input and the calendar-icon button.
-$md-datepicker-border-bottom-gap: 5px !default;  // Space between input and the grey underline.
-$md-date-arrow-size: 5px !default; // Size of the triangle on the right side of the input.
-$md-datepicker-open-animation-duration: 0.2s !default;
-$md-datepicker-triangle-button-width: 36px !default;
-$md-datepicker-input-mask-height: 40px !default;
-$md-datepicker-button-padding: 8px !default;
-
-
-md-datepicker {
-  // Don't let linebreaks happen between the open icon-button and the input.
-  white-space: nowrap;
-  overflow: hidden;
-  vertical-align: middle;
-}
-
-.md-inline-form {
-  md-datepicker {
-    margin-top: 12px;
-  }
-}
-
-// The calendar icon button used to open the calendar pane.
-.md-datepicker-button {
-  display: inline-block;
-  box-sizing: border-box;
-  background: none;
-  vertical-align: middle;
-  position: relative;
-
-  // Captures any of the click events. This is necessary, because the button has a SVG
-  // icon which doesn't propagate the focus event, causing inconsistent behaviour.
-  &:before {
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    content: '';
-    speak: none;
-  }
-}
-
-// The input into which the user can type the date.
-.md-datepicker-input {
-  @include md-flat-input();
-  min-width: 120px;
-  max-width: $md-calendar-width - $md-datepicker-button-gap;
-  padding: 0 0 $md-datepicker-border-bottom-gap;
-}
-
-// If the datepicker is inside of a md-input-container
-._md-datepicker-floating-label {
-  > md-datepicker {
-    // Prevents the ripple on the triangle from being clipped.
-    overflow: visible;
-
-    .md-datepicker-input-container {
-      border: none;
-    }
-
-    .md-datepicker-button {
-      // Prevents the button from wrapping around, as well as it pushing
-      // down the error messages more than they should be.
-      @include rtl(float, left, right);
-      margin-top: $button-left-right-padding * -2;
-      top: $button-left-right-padding * 2 - $md-datepicker-border-bottom-gap / 2;
-    }
-  }
-
-  .md-input {
-    float: none;
-  }
-
-  &._md-datepicker-has-calendar-icon {
-    > label:not(.md-no-float):not(.md-container-ignore) {
-      $width-offset: $md-datepicker-triangle-button-width * 2 + $md-datepicker-button-gap;
-      $offset: $md-datepicker-triangle-button-width / 2;
-      @include rtl(right, $offset, auto);
-      @include rtl(left, auto, $offset);
-      width: calc(100% - #{$width-offset});
-    }
-
-    .md-input-message-animation {
-      $margin: $md-datepicker-triangle-button-width + $md-datepicker-button-padding * 2 + $md-datepicker-button-gap;
-      @include rtl-prop(margin-left, margin-right, $margin, auto);
-    }
-  }
-}
-
-._md-datepicker-has-triangle-icon {
-  // Leave room for the down-triangle button to "overflow" it's parent without modifying scrollLeft.
-  // This prevents the element from shifting right when opening via the triangle button.
-  @include rtl-prop(padding-right, padding-left, $md-datepicker-triangle-button-width / 2, 0);
-  @include rtl-prop(margin-right, margin-left, -$md-datepicker-triangle-button-width / 2, auto);
-}
-
-// Container for the datepicker input.
-.md-datepicker-input-container {
-  // Position relative in order to absolutely position the down-triangle button within.
-  position: relative;
-
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-
-  display: inline-block;
-  width: auto;
-
-  .md-icon-button + & {
-    @include rtl-prop(margin-left, margin-right, $md-datepicker-button-gap, auto);
-  }
-
-  &.md-datepicker-focused {
-    border-bottom-width: 2px;
-  }
-}
-
-.md-datepicker-is-showing .md-scroll-mask {
-  z-index: $z-index-calendar-pane - 1;
-}
-
-// Floating pane that contains the calendar at the bottom of the input.
-.md-datepicker-calendar-pane {
-  // On most browsers the `scale(0)` below prevents this element from
-  // overflowing it's parent, however IE and Edge seem to disregard it.
-  // The `left: -100%` pulls the element back in order to ensure that
-  // it doesn't cause an overflow.
-  position: absolute;
-  top: 0;
-  left: -100%;
-  z-index: $z-index-calendar-pane;
-  border-width: 1px;
-  border-style: solid;
-  background: transparent;
-
-  transform: scale(0);
-  transform-origin: 0 0;
-  transition: transform $md-datepicker-open-animation-duration $swift-ease-out-timing-function;
-
-  &.md-pane-open {
-    transform: scale(1);
-  }
-}
-
-// Portion of the floating panel that sits, invisibly, on top of the input.
-.md-datepicker-input-mask {
-  height: $md-datepicker-input-mask-height;
-  width: $md-calendar-width;
-  position: relative;
-  overflow: hidden;
-
-  background: transparent;
-  pointer-events: none;
-  cursor: text;
-}
-
-// The calendar portion of the floating pane (vs. the input mask).
-.md-datepicker-calendar {
-  opacity: 0;
-  // Use a modified timing function (from swift-ease-out) so that the opacity part of the
-  // animation doesn't come in as quickly so that the floating pane doesn't ever seem to
-  // cover up the trigger input.
-  transition: opacity $md-datepicker-open-animation-duration cubic-bezier(0.5, 0, 0.25, 1);
-
-  .md-pane-open & {
-    opacity: 1;
-  }
-
-  md-calendar:focus {
-    outline: none;
-  }
-}
-
-// Down triangle/arrow indicating that the datepicker can be opened.
-// We can do this entirely with CSS without needing to load an icon.
-// See https://css-tricks.com/snippets/css/css-triangle/
-.md-datepicker-expand-triangle {
-  // Center the triangle inside of the button so that the
-  // ink ripple origin looks correct.
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  width: 0;
-  height: 0;
-  border-left: $md-date-arrow-size solid transparent;
-  border-right: $md-date-arrow-size solid transparent;
-  border-top: $md-date-arrow-size solid;
-}
-
-// Button containing the down "disclosure" triangle/arrow.
-.md-datepicker-triangle-button {
-  position: absolute;
-  @include rtl-prop(right, left, 0, auto);
-  bottom: -$md-date-arrow-size / 2;
-
-  // TODO(jelbourn): This position isn't great on all platforms.
-  @include rtl(transform, translateX(45%), translateX(-45%));
-}
-
-// Need crazy specificity to override .md-button.md-icon-button.
-// Only apply this high specificity to the property we need to override.
-.md-datepicker-triangle-button.md-button.md-icon-button {
-  height: $md-datepicker-triangle-button-width;
-  width: $md-datepicker-triangle-button-width;
-  position: absolute;
-  padding: $md-datepicker-button-padding;
-}
-
-// Disabled state for all elements of the picker.
-md-datepicker[disabled] {
-  .md-datepicker-input-container {
-    border-bottom-color: transparent;
-  }
-
-  .md-datepicker-triangle-button {
-    display: none;
-  }
-}
-
-// Open state for all of the elements of the picker.
-.md-datepicker-open {
-  overflow: hidden;
-
-  .md-datepicker-input-container,
-  input.md-input {
-    border-bottom-color: transparent;
-  }
-
-  .md-datepicker-triangle-button,
-  &.md-input-has-value > label,
-  &.md-input-has-placeholder > label {
-    display: none;
-  }
-}
-
-// When the position of the floating calendar pane is adjusted to remain inside
-// of the viewport, hide the inputput mask, as the text input will no longer be
-// directly underneath it.
-.md-datepicker-pos-adjusted .md-datepicker-input-mask {
-  display: none;
-}
-
-// Animate the calendar inside of the floating calendar pane such that it appears to "scroll" into
-// view while the pane is opening. This is done as a cue to users that the calendar is scrollable.
-.md-datepicker-calendar-pane {
-  .md-calendar {
-    transform: translateY(-85px);
-    transition: transform 0.65s $swift-ease-out-timing-function;
-    transition-delay: 0.125s;
-  }
-
-  &.md-pane-open .md-calendar {
-    transform: translateY(0);
-  }
-}
-
 $dialog-padding: $baseline-grid * 3 !default;
 
 .md-dialog-is-showing {
@@ -3493,66 +3055,6 @@ md-grid-list {
   }
 }
 
-
-md-icon {
-  margin: auto;
-  background-repeat: no-repeat no-repeat;
-  display: inline-block;
-  vertical-align: middle;
-  fill: currentColor;
-  height: $icon-size;
-  width: $icon-size;
-
-  // The icons should not shrink on smaller viewports.
-  min-height: $icon-size;
-  min-width: $icon-size;
-
-  svg {
-    pointer-events: none;
-    display: block;
-  }
-
-  &[md-font-icon] {
-    line-height: $icon-size;
-    width: auto;
-  }
-}
-
-//
-//@font-face {
-//  font-family:"material";
-//  src:url("/dist/material-font/material.eot");
-//  font-weight:normal;
-//  font-style:normal;
-//}
-//
-//@font-face {
-//  font-family:"material";
-//  src:url("/dist/material-font/material.eot");
-//  src:url("/dist/material-font/material.eot?#iefix") format("embedded-opentype"),
-//    url("/dist/material-font/material.woff") format("woff"),
-//    url("/dist/material-font/material.ttf") format("truetype"),
-//    url("/dist/material-font/material.svg?#material") format("svg");
-//  font-weight:normal;
-//  font-style:normal;
-//}
-//
-///* Bootstrap Overrides */
-//[class^="icon-"]:before,
-//[class*=" icon-"]:before {
-//  font-family:"material";
-//  display:inline-block;
-//  vertical-align:middle;
-//  line-height:1;
-//  font-weight:normal;
-//  font-style:normal;
-//  speak:none;
-//  text-decoration:inherit;
-//  text-transform:none;
-//  text-rendering:optimizeLegibility;
-//  -webkit-font-smoothing:antialiased;
-//  -moz-osx-font-smoothing:grayscale;
-//}
 
 $input-container-padding: 2px !default;
 
@@ -4372,165 +3874,6 @@ md-list-item {
   }
 }
 
-$menu-border-radius: 2px !default;
-$max-visible-items: 6 !default;
-$menu-item-height: 6 * $baseline-grid !default;
-$dense-menu-item-height: 4 * $baseline-grid !default;
-$max-menu-height: 2 * $baseline-grid + $max-visible-items * $menu-item-height !default;
-$max-dense-menu-height: 2 * $baseline-grid + $max-visible-items * $dense-menu-item-height !default;
-
-.md-open-menu-container {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: $z-index-menu;
-  opacity: 0;
-  border-radius: $menu-border-radius;
-
-  md-menu-divider {
-    margin-top: $baseline-grid / 2;
-    margin-bottom: $baseline-grid / 2;
-    height: 1px;
-    min-height: 1px;
-    max-height: 1px;
-    width: 100%;
-  }
-
-  md-menu-content > * {
-    opacity: 0;
-  }
-
-  // Don't let the user click something until it's animated
-  &:not(.md-clickable) {
-    pointer-events: none;
-  }
-
-  // enter: menu scales in, then list fade in.
-  &.md-active {
-    opacity: 1;
-    transition: $swift-ease-out;
-    transition-duration: 200ms;
-    > md-menu-content > * {
-      opacity: 1;
-      transition: $swift-ease-in;
-      transition-duration: 200ms;
-      transition-delay: 100ms;
-    }
-  }
-  // leave: the container fades out
-  &.md-leave {
-    opacity: 0;
-    transition: $swift-ease-in;
-    transition-duration: 250ms;
-  }
-}
-
-md-menu-content {
-  display: flex;
-  flex-direction: column;
-  padding: $baseline-grid 0;
-  max-height: $max-menu-height;
-  overflow-y: auto;
-  &.md-dense {
-    max-height: $max-dense-menu-height;
-    md-menu-item {
-      height: $dense-menu-item-height;
-      min-height: 0px;
-    }
-  }
-}
-
-md-menu-item {
-  display: flex;
-  flex-direction: row;
-  min-height: $menu-item-height;
-  height: $menu-item-height;
-  align-content: center;
-  justify-content: flex-start;
-
-  > * {
-    width: 100%;
-    margin: auto 0;
-    padding-left: 2*$baseline-grid;
-    padding-right: 2*$baseline-grid;
-  }
-
-  /*
-   * We cannot use flex on <button> elements due to a bug in Firefox, so we also can't use it on
-   * <a> elements. Add some top padding to fix alignment since buttons automatically align their
-   * text vertically.
-   */
-  > a.md-button {
-    padding-top: 5px;
-  }
-
-  > .md-button {
-    // Firefox-specific reset styling to fix alignment issues (see #8464)
-    &::-moz-focus-inner {
-      padding: 0;
-      border: 0
-    }
-
-    @include rtl(text-align, left, right);
-
-    display: inline-block;
-    border-radius: 0;
-    margin: auto 0;
-    font-size: (2*$baseline-grid) - 1;
-    text-transform: none;
-    font-weight: 400;
-    height: 100%;
-    padding-left: 2*$baseline-grid;
-    padding-right: 2*$baseline-grid;
-    width:100%;
-    md-icon {
-      @include rtl(margin, auto 2*$baseline-grid auto 0,  auto 0 auto 2*$baseline-grid);
-    }
-    p {
-      display:inline-block;
-      margin: auto;
-    }
-    span {
-      margin-top: auto;
-      margin-bottom: auto;
-    }
-    .md-ripple-container {
-      border-radius: inherit;
-    }
-  }
-}
-
-md-toolbar {
-  .md-menu {
-    height: auto;
-    margin: auto;
-    padding: 0;
-  }
-}
-
-@media (max-width: $layout-breakpoint-sm - 1) {
-  md-menu-content {
-    min-width: 112px;
-  }
-  @for $i from 3 through 7 {
-    md-menu-content[width="#{$i}"] {
-      min-width: $i * 56px;
-    }
-  }
-}
-
-@media (min-width: $layout-breakpoint-sm) {
-  md-menu-content {
-    min-width: 96px;
-  }
-  @for $i from 3 through 7 {
-    md-menu-content[width="#{$i}"] {
-      min-width: $i * 64px;
-    }
-  }
-}
-
-
 md-toolbar {
   &.md-menu-toolbar {
     h2.md-toolbar-tools {
@@ -4706,33 +4049,65 @@ md-nav-extra-content {
   padding-right: 12px;
 }
 
-$progress-circular-indeterminate-duration: 1568.63ms !default;
+md-icon {
+  margin: auto;
+  background-repeat: no-repeat no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+  fill: currentColor;
+  height: $icon-size;
+  width: $icon-size;
 
-@keyframes indeterminate-rotate {
-    0%       { transform: rotate(0deg); }
-    100%     { transform: rotate(360deg); }
-}
+  // The icons should not shrink on smaller viewports.
+  min-height: $icon-size;
+  min-width: $icon-size;
 
-// Used to avoid unnecessary layout
-md-progress-circular {
-    position: relative;
+  svg {
+    pointer-events: none;
     display: block;
+  }
 
-    &._md-progress-circular-disabled {
-        visibility: hidden;
-    }
-
-    &.md-mode-indeterminate svg {
-        animation: indeterminate-rotate $progress-circular-indeterminate-duration linear infinite;
-    }
-
-    svg {
-        position: absolute;
-        overflow: visible;
-        top: 0;
-        left: 0;
-    }
+  &[md-font-icon] {
+    line-height: $icon-size;
+    width: auto;
+  }
 }
+
+//
+//@font-face {
+//  font-family:"material";
+//  src:url("/dist/material-font/material.eot");
+//  font-weight:normal;
+//  font-style:normal;
+//}
+//
+//@font-face {
+//  font-family:"material";
+//  src:url("/dist/material-font/material.eot");
+//  src:url("/dist/material-font/material.eot?#iefix") format("embedded-opentype"),
+//    url("/dist/material-font/material.woff") format("woff"),
+//    url("/dist/material-font/material.ttf") format("truetype"),
+//    url("/dist/material-font/material.svg?#material") format("svg");
+//  font-weight:normal;
+//  font-style:normal;
+//}
+//
+///* Bootstrap Overrides */
+//[class^="icon-"]:before,
+//[class*=" icon-"]:before {
+//  font-family:"material";
+//  display:inline-block;
+//  vertical-align:middle;
+//  line-height:1;
+//  font-weight:normal;
+//  font-style:normal;
+//  speak:none;
+//  text-decoration:inherit;
+//  text-transform:none;
+//  text-rendering:optimizeLegibility;
+//  -webkit-font-smoothing:antialiased;
+//  -moz-osx-font-smoothing:grayscale;
+//}
 
 $progress-linear-bar-height: 5px !default;
 
@@ -7107,13 +6482,12 @@ $tooltip-max-width: 32px !default;
   }
   &.md-show {
     transition: $swift-ease-out;
-    transition-duration: 150ms;
     transform: scale(1);
     opacity: 0.9;
   }
   &.md-hide {
     transition: $swift-ease-in;
-    transition-duration: 150ms;
+    transition-duration: .1s;
     transform: scale(0);
     opacity: 0;
   }
@@ -7191,6 +6565,631 @@ $virtual-repeat-scrollbar-width: 16px !default;
     bottom: $virtual-repeat-scrollbar-width;
     @include rtl-prop(right, left, auto, auto);
     white-space: nowrap;
+  }
+}
+
+$progress-circular-indeterminate-duration: 1568.63ms !default;
+
+@keyframes indeterminate-rotate {
+    0%       { transform: rotate(0deg); }
+    100%     { transform: rotate(360deg); }
+}
+
+// Used to avoid unnecessary layout
+md-progress-circular {
+    position: relative;
+    display: block;
+
+    &._md-progress-circular-disabled {
+        visibility: hidden;
+    }
+
+    &.md-mode-indeterminate svg {
+        animation: indeterminate-rotate $progress-circular-indeterminate-duration linear infinite;
+    }
+
+    svg {
+        position: absolute;
+        overflow: visible;
+        top: 0;
+        left: 0;
+    }
+}
+
+$menu-border-radius: 2px !default;
+$max-visible-items: 6 !default;
+$menu-item-height: 6 * $baseline-grid !default;
+$dense-menu-item-height: 4 * $baseline-grid !default;
+$max-menu-height: 2 * $baseline-grid + $max-visible-items * $menu-item-height !default;
+$max-dense-menu-height: 2 * $baseline-grid + $max-visible-items * $dense-menu-item-height !default;
+
+.md-open-menu-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: $z-index-menu;
+  opacity: 0;
+  border-radius: $menu-border-radius;
+
+  md-menu-divider {
+    margin-top: $baseline-grid / 2;
+    margin-bottom: $baseline-grid / 2;
+    height: 1px;
+    min-height: 1px;
+    max-height: 1px;
+    width: 100%;
+  }
+
+  md-menu-content > * {
+    opacity: 0;
+  }
+
+  // Don't let the user click something until it's animated
+  &:not(.md-clickable) {
+    pointer-events: none;
+  }
+
+  // enter: menu scales in, then list fade in.
+  &.md-active {
+    opacity: 1;
+    transition: $swift-ease-out;
+    transition-duration: 200ms;
+    > md-menu-content > * {
+      opacity: 1;
+      transition: $swift-ease-in;
+      transition-duration: 200ms;
+      transition-delay: 100ms;
+    }
+  }
+  // leave: the container fades out
+  &.md-leave {
+    opacity: 0;
+    transition: $swift-ease-in;
+    transition-duration: 250ms;
+  }
+}
+
+md-menu-content {
+  display: flex;
+  flex-direction: column;
+  padding: $baseline-grid 0;
+  max-height: $max-menu-height;
+  overflow-y: auto;
+  &.md-dense {
+    max-height: $max-dense-menu-height;
+    md-menu-item {
+      height: $dense-menu-item-height;
+      min-height: 0px;
+    }
+  }
+}
+
+md-menu-item {
+  display: flex;
+  flex-direction: row;
+  min-height: $menu-item-height;
+  height: $menu-item-height;
+  align-content: center;
+  justify-content: flex-start;
+
+  > * {
+    width: 100%;
+    margin: auto 0;
+    padding-left: 2*$baseline-grid;
+    padding-right: 2*$baseline-grid;
+  }
+
+  /*
+   * We cannot use flex on <button> elements due to a bug in Firefox, so we also can't use it on
+   * <a> elements. Add some top padding to fix alignment since buttons automatically align their
+   * text vertically.
+   */
+  > a.md-button {
+    padding-top: 5px;
+  }
+
+  > .md-button {
+    // Firefox-specific reset styling to fix alignment issues (see #8464)
+    &::-moz-focus-inner {
+      padding: 0;
+      border: 0
+    }
+
+    @include rtl(text-align, left, right);
+
+    display: inline-block;
+    border-radius: 0;
+    margin: auto 0;
+    font-size: (2*$baseline-grid) - 1;
+    text-transform: none;
+    font-weight: 400;
+    height: 100%;
+    padding-left: 2*$baseline-grid;
+    padding-right: 2*$baseline-grid;
+    width:100%;
+    md-icon {
+      @include rtl(margin, auto 2*$baseline-grid auto 0,  auto 0 auto 2*$baseline-grid);
+    }
+    p {
+      display:inline-block;
+      margin: auto;
+    }
+    span {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+    .md-ripple-container {
+      border-radius: inherit;
+    }
+  }
+}
+
+md-toolbar {
+  .md-menu {
+    height: auto;
+    margin: auto;
+    padding: 0;
+  }
+}
+
+@media (max-width: $layout-breakpoint-sm - 1) {
+  md-menu-content {
+    min-width: 112px;
+  }
+  @for $i from 3 through 7 {
+    md-menu-content[width="#{$i}"] {
+      min-width: $i * 56px;
+    }
+  }
+}
+
+@media (min-width: $layout-breakpoint-sm) {
+  md-menu-content {
+    min-width: 96px;
+  }
+  @for $i from 3 through 7 {
+    md-menu-content[width="#{$i}"] {
+      min-width: $i * 64px;
+    }
+  }
+}
+
+
+/** Styles for mdCalendar. */
+$md-calendar-cell-size: 44px !default;
+$md-calendar-header-height: 40px !default;
+$md-calendar-cell-emphasis-size: 40px !default;
+$md-calendar-side-padding: 16px !default;
+$md-calendar-weeks-to-show: 7 !default;
+
+$md-calendar-month-label-padding: 8px !default;
+$md-calendar-month-label-font-size: 14px !default;
+
+$md-calendar-scroll-cue-shadow-radius: 6px !default;
+
+$md-calendar-width: (7 * $md-calendar-cell-size) + (2 * $md-calendar-side-padding) !default;
+$md-calendar-height:
+    ($md-calendar-weeks-to-show * $md-calendar-cell-size) + $md-calendar-header-height !default;
+
+// Styles for date cells, including day-of-the-week header cells.
+@mixin md-calendar-cell($height: $md-calendar-cell-size) {
+  height: $height;
+  width: $md-calendar-cell-size;
+  text-align: center;
+
+  // Remove all padding and borders so we can completely
+  // control the size of the table cells.
+  padding: 0;
+  border: none;
+
+  // Prevent issues if somebody is applying box-sizing: border-box; eveywhere.
+  box-sizing: content-box;
+
+  // The left / right padding is applied to the cells instead of the wrapper
+  // because we want the header background and the month dividing border to
+  // extend the entire width of the calendar.
+  &:first-child {
+    @include rtl-prop(padding-left, padding-right, $md-calendar-side-padding, 0);
+  }
+
+  &:last-child {
+    @include rtl-prop(padding-right, padding-left, $md-calendar-side-padding, 0);
+  }
+}
+
+// Styles for tables used in mdCalendar (the day-of-the-week header and the table of dates itself).
+@mixin md-calendar-table() {
+  // Fixed table layout makes IE faster.
+  // https://msdn.microsoft.com/en-us/library/ms533020(VS.85).aspx
+  table-layout: fixed;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+md-calendar {
+  font-size: 13px;
+  user-select: none;
+}
+
+// Wrap the scroll with overflow: hidden in order to hide the scrollbar.
+// The inner .md-calendar-scroll-container will using a padding-right to push the
+// scrollbar into the hidden area (done with javascript).
+.md-calendar-scroll-mask {
+  display: inline-block;
+  overflow: hidden;
+  height: $md-calendar-weeks-to-show * $md-calendar-cell-size;
+
+  // The actual scrolling element.
+  .md-virtual-repeat-scroller {
+    // These two properties are needed to get touch momentum to work.
+    // See https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  // Offsetter is the element that is translateY'ed into view of the user and contains the
+  // calendar content.
+  .md-virtual-repeat-offsetter {
+    width: 100%;
+  }
+}
+
+// Contains the scrolling element (this is the md-virtual-repeat-container).
+.md-calendar-scroll-container {
+  // Add an inset shadow to help cue users that the calendar is scrollable. Use a negative x
+  // offset to push the vertical edge shadow off to the right so that it's cut off by the edge
+  // of the calendar container.
+  box-shadow: inset -3px 3px $md-calendar-scroll-cue-shadow-radius rgba(black, 0.2);
+
+  display: inline-block;
+  height: $md-calendar-weeks-to-show * $md-calendar-cell-size;
+
+  // Add the shadow radius to the width so that the shadow os pushed off to the side and cut off.
+  width: $md-calendar-width + $md-calendar-scroll-cue-shadow-radius;
+}
+
+// A single date cell in the calendar table.
+.md-calendar-date {
+  @include md-calendar-cell();
+
+  &.md-calendar-date-disabled {
+    cursor: default;
+  }
+}
+
+// Circle element inside of every date cell used to indicate selection or focus.
+.md-calendar-date-selection-indicator {
+  transition: background-color, color $swift-ease-out-duration $swift-ease-out-timing-function;
+
+  border-radius: 50%;
+  display: inline-block;
+
+  width: $md-calendar-cell-emphasis-size;
+  height: $md-calendar-cell-emphasis-size;
+  line-height: $md-calendar-cell-emphasis-size;
+
+  .md-calendar-date:not(.md-disabled) & {
+    cursor: pointer;
+  }
+}
+
+// The label above each month (containing the month name and the year, e.g. "Jun 2014").
+.md-calendar-month-label {
+  height: $md-calendar-cell-size;
+  font-size: $md-calendar-month-label-font-size;
+  font-weight: 500; // Roboto Medium
+  @include rtl(padding, 0 0 0 $md-calendar-side-padding + $md-calendar-month-label-padding, rtl-value( 0 0 0 $md-calendar-side-padding + $md-calendar-month-label-padding));
+
+  md-calendar-month &:not(.md-calendar-month-label-disabled) {
+    cursor: pointer;
+  }
+
+  md-icon {
+    @include rtl(transform, rotate(180deg), none);
+  }
+
+  span {
+    vertical-align: middle;
+  }
+}
+
+// Table containing the day-of-the-week header.
+.md-calendar-day-header {
+  @include md-calendar-table();
+
+  th {
+    @include md-calendar-cell($md-calendar-header-height);
+    font-weight: normal;
+  }
+}
+
+// Primary table containing all date cells. Each month is a tbody in this table.
+.md-calendar {
+  @include md-calendar-table();
+
+  // Divider between months.
+  tr:last-child td {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+  }
+
+  // The divider between months doesn't actually change the height of the tbody in which the
+  // border appear; it changes the height of the following tbody. The causes the first-child to be
+  // 1px shorter than the other months. We fix this by adding an invisible border-top.
+  &:first-child {
+    border-top: 1px solid transparent;
+  }
+
+  // Explicitly set vertical-align to avoid conflicting with popular CSS resets. When
+  // vertical-align:baseline is set, month headers are misaligned. Also reset the box-sizing,
+  // in case the user set it to border-box.
+  // http://meyerweb.com/eric/tools/css/reset/
+  tbody, td, tr {
+    vertical-align: middle;
+    box-sizing: content-box;
+  }
+}
+
+/** Styles for mdDatepicker. */
+$md-datepicker-button-gap: 12px !default;  // Space between the text input and the calendar-icon button.
+$md-datepicker-border-bottom-gap: 5px !default;  // Space between input and the grey underline.
+$md-date-arrow-size: 5px !default; // Size of the triangle on the right side of the input.
+$md-datepicker-open-animation-duration: 0.2s !default;
+$md-datepicker-triangle-button-width: 36px !default;
+$md-datepicker-input-mask-height: 40px !default;
+$md-datepicker-button-padding: 8px !default;
+
+
+md-datepicker {
+  // Don't let linebreaks happen between the open icon-button and the input.
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.md-inline-form {
+  md-datepicker {
+    margin-top: 12px;
+  }
+}
+
+// The calendar icon button used to open the calendar pane.
+.md-datepicker-button {
+  display: inline-block;
+  box-sizing: border-box;
+  background: none;
+  vertical-align: middle;
+  position: relative;
+
+  // Captures any of the click events. This is necessary, because the button has a SVG
+  // icon which doesn't propagate the focus event, causing inconsistent behaviour.
+  &:before {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    content: '';
+    speak: none;
+  }
+}
+
+// The input into which the user can type the date.
+.md-datepicker-input {
+  @include md-flat-input();
+  min-width: 120px;
+  max-width: $md-calendar-width - $md-datepicker-button-gap;
+  padding: 0 0 $md-datepicker-border-bottom-gap;
+}
+
+// If the datepicker is inside of a md-input-container
+._md-datepicker-floating-label {
+  > md-datepicker {
+    // Prevents the ripple on the triangle from being clipped.
+    overflow: visible;
+
+    .md-datepicker-input-container {
+      border: none;
+    }
+
+    .md-datepicker-button {
+      // Prevents the button from wrapping around, as well as it pushing
+      // down the error messages more than they should be.
+      @include rtl(float, left, right);
+      margin-top: $button-left-right-padding * -2;
+      top: $button-left-right-padding * 2 - $md-datepicker-border-bottom-gap / 2;
+    }
+  }
+
+  .md-input {
+    float: none;
+  }
+
+  &._md-datepicker-has-calendar-icon {
+    > label:not(.md-no-float):not(.md-container-ignore) {
+      $width-offset: $md-datepicker-triangle-button-width * 2 + $md-datepicker-button-gap;
+      $offset: $md-datepicker-triangle-button-width / 2;
+      @include rtl(right, $offset, auto);
+      @include rtl(left, auto, $offset);
+      width: calc(100% - #{$width-offset});
+    }
+
+    .md-input-message-animation {
+      $margin: $md-datepicker-triangle-button-width + $md-datepicker-button-padding * 2 + $md-datepicker-button-gap;
+      @include rtl-prop(margin-left, margin-right, $margin, auto);
+    }
+  }
+}
+
+._md-datepicker-has-triangle-icon {
+  // Leave room for the down-triangle button to "overflow" it's parent without modifying scrollLeft.
+  // This prevents the element from shifting right when opening via the triangle button.
+  @include rtl-prop(padding-right, padding-left, $md-datepicker-triangle-button-width / 2, 0);
+  @include rtl-prop(margin-right, margin-left, -$md-datepicker-triangle-button-width / 2, auto);
+}
+
+// Container for the datepicker input.
+.md-datepicker-input-container {
+  // Position relative in order to absolutely position the down-triangle button within.
+  position: relative;
+
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+
+  display: inline-block;
+  width: auto;
+
+  .md-icon-button + & {
+    @include rtl-prop(margin-left, margin-right, $md-datepicker-button-gap, auto);
+  }
+
+  &.md-datepicker-focused {
+    border-bottom-width: 2px;
+  }
+}
+
+.md-datepicker-is-showing .md-scroll-mask {
+  z-index: $z-index-calendar-pane - 1;
+}
+
+// Floating pane that contains the calendar at the bottom of the input.
+.md-datepicker-calendar-pane {
+  // On most browsers the `scale(0)` below prevents this element from
+  // overflowing it's parent, however IE and Edge seem to disregard it.
+  // The `left: -100%` pulls the element back in order to ensure that
+  // it doesn't cause an overflow.
+  position: absolute;
+  top: 0;
+  left: -100%;
+  z-index: $z-index-calendar-pane;
+  border-width: 1px;
+  border-style: solid;
+  background: transparent;
+
+  transform: scale(0);
+  transform-origin: 0 0;
+  transition: transform $md-datepicker-open-animation-duration $swift-ease-out-timing-function;
+
+  &.md-pane-open {
+    transform: scale(1);
+  }
+}
+
+// Portion of the floating panel that sits, invisibly, on top of the input.
+.md-datepicker-input-mask {
+  height: $md-datepicker-input-mask-height;
+  width: $md-calendar-width;
+  position: relative;
+  overflow: hidden;
+
+  background: transparent;
+  pointer-events: none;
+  cursor: text;
+}
+
+// The calendar portion of the floating pane (vs. the input mask).
+.md-datepicker-calendar {
+  opacity: 0;
+  // Use a modified timing function (from swift-ease-out) so that the opacity part of the
+  // animation doesn't come in as quickly so that the floating pane doesn't ever seem to
+  // cover up the trigger input.
+  transition: opacity $md-datepicker-open-animation-duration cubic-bezier(0.5, 0, 0.25, 1);
+
+  .md-pane-open & {
+    opacity: 1;
+  }
+
+  md-calendar:focus {
+    outline: none;
+  }
+}
+
+// Down triangle/arrow indicating that the datepicker can be opened.
+// We can do this entirely with CSS without needing to load an icon.
+// See https://css-tricks.com/snippets/css/css-triangle/
+.md-datepicker-expand-triangle {
+  // Center the triangle inside of the button so that the
+  // ink ripple origin looks correct.
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 0;
+  height: 0;
+  border-left: $md-date-arrow-size solid transparent;
+  border-right: $md-date-arrow-size solid transparent;
+  border-top: $md-date-arrow-size solid;
+}
+
+// Button containing the down "disclosure" triangle/arrow.
+.md-datepicker-triangle-button {
+  position: absolute;
+  @include rtl-prop(right, left, 0, auto);
+  bottom: -$md-date-arrow-size / 2;
+
+  // TODO(jelbourn): This position isn't great on all platforms.
+  @include rtl(transform, translateX(45%), translateX(-45%));
+}
+
+// Need crazy specificity to override .md-button.md-icon-button.
+// Only apply this high specificity to the property we need to override.
+.md-datepicker-triangle-button.md-button.md-icon-button {
+  height: $md-datepicker-triangle-button-width;
+  width: $md-datepicker-triangle-button-width;
+  position: absolute;
+  padding: $md-datepicker-button-padding;
+}
+
+// Disabled state for all elements of the picker.
+md-datepicker[disabled] {
+  .md-datepicker-input-container {
+    border-bottom-color: transparent;
+  }
+
+  .md-datepicker-triangle-button {
+    display: none;
+  }
+}
+
+// Open state for all of the elements of the picker.
+.md-datepicker-open {
+  overflow: hidden;
+
+  .md-datepicker-input-container,
+  input.md-input {
+    border-bottom-color: transparent;
+  }
+
+  .md-datepicker-triangle-button,
+  &.md-input-has-value > label,
+  &.md-input-has-placeholder > label {
+    display: none;
+  }
+}
+
+// When the position of the floating calendar pane is adjusted to remain inside
+// of the viewport, hide the inputput mask, as the text input will no longer be
+// directly underneath it.
+.md-datepicker-pos-adjusted .md-datepicker-input-mask {
+  display: none;
+}
+
+// Animate the calendar inside of the floating calendar pane such that it appears to "scroll" into
+// view while the pane is opening. This is done as a cue to users that the calendar is scrollable.
+.md-datepicker-calendar-pane {
+  .md-calendar {
+    transform: translateY(-85px);
+    transition: transform 0.65s $swift-ease-out-timing-function;
+    transition-delay: 0.125s;
+  }
+
+  &.md-pane-open .md-calendar {
+    transform: translateY(0);
   }
 }
 
