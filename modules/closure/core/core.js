@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-9f198c9
+ * v1.1.3-master-eecc541
  */
 goog.provide('ngmaterial.core');
 
@@ -3102,8 +3102,10 @@ function attachToDocument( $mdGesture, $$MdGestureHandler ) {
 
   function clickHijacker(ev) {
     var isKeyClick = ev.clientX === 0 && ev.clientY === 0;
+    var isSubmitEvent = ev.target && ev.target.type === 'submit';
     if (!isKeyClick && !ev.$material && !ev.isIonicTap
-      && !isInputEventFromLabelClick(ev)) {
+      && !isInputEventFromLabelClick(ev)
+      && !isSubmitEvent) {
       ev.preventDefault();
       ev.stopPropagation();
       lastLabelClickPos = null;
