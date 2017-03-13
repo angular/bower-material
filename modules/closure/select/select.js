@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-fa02e4e
+ * v1.1.3-master-ed10a6e
  */
 goog.provide('ngmaterial.components.select');
 goog.require('ngmaterial.components.backdrop');
@@ -21,7 +21,7 @@ goog.require('ngmaterial.core');
 
 SelectDirective['$inject'] = ["$mdSelect", "$mdUtil", "$mdConstant", "$mdTheming", "$mdAria", "$parse", "$sce", "$injector"];
 SelectMenuDirective['$inject'] = ["$parse", "$mdUtil", "$mdConstant", "$mdTheming"];
-OptionDirective['$inject'] = ["$mdButtonInkRipple", "$mdUtil"];
+OptionDirective['$inject'] = ["$mdButtonInkRipple", "$mdUtil", "$mdTheming"];
 SelectProvider['$inject'] = ["$$interimElementProvider"];
 var SELECT_EDGE_MARGIN = 8;
 var selectNextId = 0;
@@ -935,7 +935,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
 
 }
 
-function OptionDirective($mdButtonInkRipple, $mdUtil) {
+function OptionDirective($mdButtonInkRipple, $mdUtil, $mdTheming) {
 
   OptionController['$inject'] = ["$element"];
   return {
@@ -968,6 +968,8 @@ function OptionDirective($mdButtonInkRipple, $mdUtil) {
   function postLink(scope, element, attr, ctrls) {
     var optionCtrl = ctrls[0];
     var selectCtrl = ctrls[1];
+
+    $mdTheming(element);
 
     if (selectCtrl.isMultiple) {
       element.addClass('md-checkbox-enabled');

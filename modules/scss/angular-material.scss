@@ -1294,236 +1294,6 @@ input {
   }
 }
 
-// The default item height is also specified in the JavaScript.
-$md-autocomplete-item-height: 48px !default;
-$md-autocomplete-clear-size: 30px !default;
-$md-autocomplete-input-offset: 20px !default;
-
-md-autocomplete {
-  border-radius: 2px;
-  display: block;
-  height: 40px;
-  position: relative;
-  overflow: visible;
-  min-width: 190px;
-  &[disabled] {
-    input {
-      cursor: default;
-    }
-  }
-  &[md-floating-label] {
-    border-radius: 0;
-    background: transparent;
-    height: auto;
-
-    md-input-container {
-      padding-bottom: 0;
-    }
-    md-autocomplete-wrap {
-      height: auto;
-    }
-
-    .md-show-clear-button {
-
-      button {
-        display: block;
-        position: absolute;
-        right: 0;
-        top: $md-autocomplete-input-offset;
-        width: $md-autocomplete-clear-size;
-        height: $md-autocomplete-clear-size;
-      }
-
-      input {
-        // Add padding to the end of the input to avoid overlapping with the clear button.
-        @include rtl-prop(padding-right, padding-left, $md-autocomplete-clear-size, 0);
-      }
-    }
-
-  }
-  md-autocomplete-wrap {
-
-    // Layout [layout='row']
-    display: flex;
-    flex-direction: row;
-    box-sizing: border-box;
-
-    position: relative;
-    overflow: visible;
-    height: 40px;
-    &.md-menu-showing {
-      z-index: $z-index-backdrop + 1;
-    }
-
-    md-input-container, input {
-      // Layout [flex]
-      flex: 1 1 0%;
-      box-sizing: border-box;
-      min-width : 0;
-    }
-
-    md-progress-linear {
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      // When `md-inline` is present, we adjust the offset to go over the `ng-message` space
-      &.md-inline {
-        bottom: 40px;
-        right: 2px;
-        left: 2px;
-        width: auto;
-      }
-      .md-mode-indeterminate {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        transition: none;
-
-        .md-container {
-          transition: none;
-          height: 3px;
-        }
-        &.ng-enter {
-          transition: opacity 0.15s linear;
-          &.ng-enter-active {
-            opacity: 1;
-          }
-        }
-        &.ng-leave {
-          transition: opacity 0.15s linear;
-          &.ng-leave-active {
-            opacity: 0;
-          }
-        }
-      }
-    }
-  }
-  input:not(.md-input) {
-    @include md-flat-input();
-    width: 100%;
-    padding: 0 15px;
-    line-height: 40px;
-    height: 40px;
-  }
-  .md-show-clear-button button {
-    position: relative;
-    line-height: 20px;
-    text-align: center;
-    width: $md-autocomplete-clear-size;
-    height: $md-autocomplete-clear-size;
-    cursor: pointer;
-    border: none;
-    border-radius: 50%;
-    padding: 0;
-    font-size: 12px;
-    background: transparent;
-    margin: auto 5px;
-    &:after {
-      content: '';
-      position: absolute;
-      top: -6px;
-      right: -6px;
-      bottom: -6px;
-      left: -6px;
-      border-radius: 50%;
-      transform: scale(0);
-      opacity: 0;
-      transition: $swift-ease-out;
-    }
-    &:focus {
-      outline: none;
-
-      &:after {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-    md-icon {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate3d(-50%, -50%, 0) scale(0.9);
-      path {
-        stroke-width: 0;
-      }
-    }
-    &.ng-enter {
-      transform: scale(0);
-      transition: transform 0.15s ease-out;
-      &.ng-enter-active {
-        transform: scale(1);
-      }
-    }
-    &.ng-leave {
-      transition: transform 0.15s ease-out;
-      &.ng-leave-active {
-        transform: scale(0);
-      }
-    }
-  }
-  // IE Only
-  @media screen and (-ms-high-contrast: active) {
-    $border-color: #fff;
-
-    input {
-      border: 1px solid $border-color;
-    }
-    li:focus {
-      color: #fff;
-    }
-  }
-}
-
-.md-virtual-repeat-container.md-autocomplete-suggestions-container {
-  position: absolute;
-  box-shadow: 0 2px 5px rgba(black, 0.25);
-  z-index: $z-index-tooltip;
-
-  // Expand the virtualRepeatContainer as much as the max-height from the JavaScript allows.
-  // This is necessary for the virtualRepeatContainer to be able to grow back.
-  height: 100%;
-}
-
-.md-virtual-repeat-container.md-not-found {
-  height: $md-autocomplete-item-height;
-}
-
-.md-autocomplete-suggestions {
-  margin: 0;
-  list-style: none;
-  padding: 0;
-
-  li {
-    font-size: 14px;
-    overflow: hidden;
-    padding: 0 15px;
-    line-height: $md-autocomplete-item-height;
-    height: $md-autocomplete-item-height;
-    transition: background 0.15s linear;
-    margin: 0;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-
-    &:focus {
-      outline: none;
-    }
-
-    &:not(.md-not-found-wrapper) {
-      cursor: pointer;
-    }
-  }
-}
-
-// IE Only
-@media screen and (-ms-high-contrast: active) {
-  md-autocomplete,
-  .md-autocomplete-suggestions {
-    border: 1px solid #fff;
-  }
-}
-
 // !!Important - Theme-based Background-color can be configured in backdrop-theme.scss
 //             - Animate background-color opacity only for `.md-opaque` styles
 
@@ -2320,217 +2090,6 @@ md-checkbox {
   }
 }
 
-$chip-font-size: rem(1.6) !default;
-$chip-height: rem(3.2) !default;
-$chip-padding: 0 rem(1.2) 0 rem(1.2) !default;
-$chip-input-padding: 0 !default;
-$chip-remove-padding-right: rem(2.2) !default;
-$chip-remove-line-height: rem(2.2) !default;
-$chip-margin: rem(0.8) rem(0.8) 0 0 !default;
-$chip-wrap-padding: 0 0 rem(0.8) rem(0.3) !default;
-$chip-delete-icon-size: rem(1.8) !default;
-$contact-chip-padding: 0 rem(2.5) 0 0 !default;
-$contact-chip-suggestion-image-height: rem(4.0) !default;
-$contact-chip-suggestion-margin: rem(0.8) !default;
-$contact-chip-name-width: rem(12) !default;
-
-.md-contact-chips {
-  .md-chips {
-    md-chip {
-      @include rtl(padding, $contact-chip-padding, rtl-value($contact-chip-padding));
-      .md-contact-avatar {
-        @include rtl(float, left, right);
-        img {
-          height: $chip-height;
-          border-radius: $chip-height / 2;
-        }
-      }
-      .md-contact-name {
-        display: inline-block;
-        height: $chip-height;
-        @include rtl-prop(margin-left, margin-right, rem(0.8), auto);
-      }
-    }
-  }
-}
-.md-contact-suggestion {
-  height: ($contact-chip-suggestion-margin * 2) + $contact-chip-suggestion-image-height;
-  img {
-    height: $contact-chip-suggestion-image-height;
-    border-radius: $contact-chip-suggestion-image-height / 2;
-    margin-top: $contact-chip-suggestion-margin;
-  }
-  .md-contact-name {
-    @include rtl-prop(margin-left, margin-right, $contact-chip-suggestion-margin, auto);
-    width: $contact-chip-name-width;
-  }
-  .md-contact-name, .md-contact-email {
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
-.md-contact-chips-suggestions li {
-  height: 100%;
-}
-.md-chips {
-  @include pie-clearfix();
-
-  display: block;
-  font-family: $font-family;
-  font-size: $chip-font-size;
-  @include rtl(padding, $chip-wrap-padding, rtl-value($chip-wrap-padding));
-  vertical-align: middle;
-
-  &.md-readonly .md-chip-input-container {
-    min-height: $chip-height;
-  }
-
-  &:not(.md-readonly) {
-    cursor: text;
-  }
-
-  &.md-removable {
-
-    md-chip {
-      @include rtl-prop(padding-right, padding-left, $chip-remove-padding-right, 0);
-
-      .md-chip-content {
-        @include rtl-prop(padding-right, padding-left, rem(0.4), 0);
-      }
-    }
-
-  }
-
-  md-chip {
-    cursor: default;
-    border-radius: $chip-height / 2;
-    display: block;
-    height: $chip-height;
-    line-height: $chip-height;
-    @include rtl(margin, $chip-margin, rtl-value($chip-margin));
-    padding: $chip-padding;
-    @include rtl(float, left, right);
-    box-sizing: border-box;
-    max-width: 100%;
-    position: relative;
-
-    .md-chip-content {
-      display: block;
-      @include rtl(float, left, right);
-      white-space: nowrap;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      &:focus {
-        outline: none;
-      }
-    }
-    &._md-chip-content-edit-is-enabled {
-      -webkit-user-select: none; /* webkit (safari, chrome) browsers */
-      -moz-user-select: none; /* mozilla browsers */
-      -khtml-user-select: none; /* webkit (konqueror) browsers */
-      -ms-user-select: none; /* IE10+ */
-    }
-    .md-chip-remove-container {
-      position: absolute;
-      @include rtl-prop(right, left, 0, auto);
-      line-height: $chip-remove-line-height;
-    }
-    .md-chip-remove {
-      text-align: center;
-      width: $chip-height;
-      height: $chip-height;
-      min-width: 0;
-      padding: 0;
-      background: transparent;
-      border: none;
-      box-shadow: none;
-      margin: 0;
-      position: relative;
-      md-icon {
-        height: $chip-delete-icon-size;
-        width: $chip-delete-icon-size;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate3d(-50%, -50%, 0);
-      }
-    }
-  }
-  .md-chip-input-container {
-    display: block;
-    line-height: $chip-height;
-    @include rtl(margin, $chip-margin, rtl-value($chip-margin));
-    padding: $chip-input-padding;
-    @include rtl(float, left, right);
-    input {
-      &:not([type]),&[type="email"],&[type="number"],&[type="tel"],&[type="url"],&[type="text"] {
-        border: 0;
-        height: $chip-height;
-        line-height: $chip-height;
-        padding: 0;
-        &:focus {
-          outline: none;
-        }
-      }
-    }
-    md-autocomplete, md-autocomplete-wrap {
-      background: transparent;
-      height: $chip-height;
-    }
-    md-autocomplete {
-      md-autocomplete-wrap {
-        box-shadow: none;
-      }
-      input {
-        position: relative;
-      }
-    }
-    input {
-      border:0;
-      height: $chip-height;
-      line-height: $chip-height;
-      padding: 0;
-      &:focus {
-        outline:none;
-      }
-    }
-    md-autocomplete, md-autocomplete-wrap {
-      height: $chip-height;
-    }
-    md-autocomplete {
-      box-shadow: none;
-      input {
-        position: relative;
-      }
-    }
-    &:not(:first-child) {
-      @include rtl(margin, $chip-margin, rtl-value($chip-margin));
-    }
-    input {
-      background:transparent;
-      border-width: 0;
-    }
-  }
-  md-autocomplete {
-    button {
-      display: none;
-    }
-  }
-}
-// IE only
-@media screen and (-ms-high-contrast: active) {
-  .md-chip-input-container,
-  md-chip {
-    border: 1px solid #fff;
-  }
-  .md-chip-input-container md-autocomplete {
-    border: none;
-  }
-}
-
-
 md-content {
 
   display: block;
@@ -2994,130 +2553,6 @@ md-datepicker[disabled] {
   }
 }
 
-$dialog-padding: $baseline-grid * 3 !default;
-
-.md-dialog-is-showing {
-  max-height: 100%;
-}
-
-.md-dialog-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: $z-index-dialog;
-  overflow: hidden;
-}
-
-md-dialog {
-
-  &.md-transition-in {
-    opacity: 1;
-    transition: $swift-ease-out;
-    transform: translate(0,0) scale(1.0);
-  }
-  &.md-transition-out {
-    opacity: 0;
-    transition: $swift-ease-out;
-    transform: translate(0,100%) scale(0.2);
-  }
-
-  opacity: 0;
-  min-width: 240px;
-  max-width: 80%;
-  max-height: 80%;
-  position: relative;
-  overflow: auto; // stop content from leaking out of dialog parent and fix IE
-
-  box-shadow: $whiteframe-shadow-13dp;
-
-  display: flex;
-  flex-direction: column;
-
-  &> form {
-    display: flex;
-    flex-direction: column;
-    overflow: auto;
-  }
-
-  .md-dialog-content {
-    padding: $dialog-padding;
-  }
-
-  md-dialog-content {
-    order: 1;
-    flex-direction: column;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-
-    &:not([layout=row]) > *:first-child:not(.md-subheader) {
-      margin-top: 0;
-    }
-
-    &:focus {
-      outline: none;
-    }
-
-    .md-subheader {
-      margin: 0;
-    }
-
-    .md-dialog-content-body {
-      width:100%;
-    }
-
-    .md-prompt-input-container {
-      width: 100%;
-      box-sizing: border-box;
-    }
-  }
-
-  .md-actions, md-dialog-actions {
-    display: flex;
-    order: 2;
-    box-sizing: border-box;
-    align-items: center;
-    justify-content: flex-end;
-    margin-bottom: 0;
-    @include rtl(padding-right, $baseline-grid, $baseline-grid * 2);
-    @include rtl(padding-left, $baseline-grid * 2, $baseline-grid);
-    min-height: $baseline-grid * 6.5;
-    overflow: hidden;
-
-    .md-button {
-      margin-bottom: $baseline-grid;
-      @include rtl(margin-left, $baseline-grid, 0);
-      @include rtl(margin-right, 0, $baseline-grid);
-      margin-top: $baseline-grid;
-    }
-  }
-  &.md-content-overflow {
-    .md-actions, md-dialog-actions {
-      border-top-width: 1px;
-      border-top-style: solid;
-    }
-  }
-
-}
-
-@media screen and (-ms-high-contrast: active) {
-  md-dialog {
-    border: 1px solid #fff;
-  }
-}
-
-@media (max-width: $layout-breakpoint-sm - 1) {
-  md-dialog.md-dialog-fullscreen {
-    min-height: 100%;
-    min-width: 100%;
-    border-radius: 0;
-  }
-}
-
 md-divider {
   display: block;
   border-top-width: 1px;
@@ -3494,65 +2929,216 @@ md-grid-list {
 }
 
 
-md-icon {
-  margin: auto;
-  background-repeat: no-repeat no-repeat;
-  display: inline-block;
+$chip-font-size: rem(1.6) !default;
+$chip-height: rem(3.2) !default;
+$chip-padding: 0 rem(1.2) 0 rem(1.2) !default;
+$chip-input-padding: 0 !default;
+$chip-remove-padding-right: rem(2.2) !default;
+$chip-remove-line-height: rem(2.2) !default;
+$chip-margin: rem(0.8) rem(0.8) 0 0 !default;
+$chip-wrap-padding: 0 0 rem(0.8) rem(0.3) !default;
+$chip-delete-icon-size: rem(1.8) !default;
+$contact-chip-padding: 0 rem(2.5) 0 0 !default;
+$contact-chip-suggestion-image-height: rem(4.0) !default;
+$contact-chip-suggestion-margin: rem(0.8) !default;
+$contact-chip-name-width: rem(12) !default;
+
+.md-contact-chips {
+  .md-chips {
+    md-chip {
+      @include rtl(padding, $contact-chip-padding, rtl-value($contact-chip-padding));
+      .md-contact-avatar {
+        @include rtl(float, left, right);
+        img {
+          height: $chip-height;
+          border-radius: $chip-height / 2;
+        }
+      }
+      .md-contact-name {
+        display: inline-block;
+        height: $chip-height;
+        @include rtl-prop(margin-left, margin-right, rem(0.8), auto);
+      }
+    }
+  }
+}
+.md-contact-suggestion {
+  height: ($contact-chip-suggestion-margin * 2) + $contact-chip-suggestion-image-height;
+  img {
+    height: $contact-chip-suggestion-image-height;
+    border-radius: $contact-chip-suggestion-image-height / 2;
+    margin-top: $contact-chip-suggestion-margin;
+  }
+  .md-contact-name {
+    @include rtl-prop(margin-left, margin-right, $contact-chip-suggestion-margin, auto);
+    width: $contact-chip-name-width;
+  }
+  .md-contact-name, .md-contact-email {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+.md-contact-chips-suggestions li {
+  height: 100%;
+}
+.md-chips {
+  @include pie-clearfix();
+
+  display: block;
+  font-family: $font-family;
+  font-size: $chip-font-size;
+  @include rtl(padding, $chip-wrap-padding, rtl-value($chip-wrap-padding));
   vertical-align: middle;
-  fill: currentColor;
-  height: $icon-size;
-  width: $icon-size;
 
-  // The icons should not shrink on smaller viewports.
-  min-height: $icon-size;
-  min-width: $icon-size;
-
-  svg {
-    pointer-events: none;
-    display: block;
+  &.md-readonly .md-chip-input-container {
+    min-height: $chip-height;
   }
 
-  &[md-font-icon] {
-    line-height: $icon-size;
-    width: auto;
+  &:not(.md-readonly) {
+    cursor: text;
+  }
+
+  &.md-removable {
+
+    md-chip {
+      @include rtl-prop(padding-right, padding-left, $chip-remove-padding-right, 0);
+
+      .md-chip-content {
+        @include rtl-prop(padding-right, padding-left, rem(0.4), 0);
+      }
+    }
+
+  }
+
+  md-chip {
+    cursor: default;
+    border-radius: $chip-height / 2;
+    display: block;
+    height: $chip-height;
+    line-height: $chip-height;
+    @include rtl(margin, $chip-margin, rtl-value($chip-margin));
+    padding: $chip-padding;
+    @include rtl(float, left, right);
+    box-sizing: border-box;
+    max-width: 100%;
+    position: relative;
+
+    .md-chip-content {
+      display: block;
+      @include rtl(float, left, right);
+      white-space: nowrap;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      &:focus {
+        outline: none;
+      }
+    }
+    &._md-chip-content-edit-is-enabled {
+      -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+      -moz-user-select: none; /* mozilla browsers */
+      -khtml-user-select: none; /* webkit (konqueror) browsers */
+      -ms-user-select: none; /* IE10+ */
+    }
+    .md-chip-remove-container {
+      position: absolute;
+      @include rtl-prop(right, left, 0, auto);
+      line-height: $chip-remove-line-height;
+    }
+    .md-chip-remove {
+      text-align: center;
+      width: $chip-height;
+      height: $chip-height;
+      min-width: 0;
+      padding: 0;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      margin: 0;
+      position: relative;
+      md-icon {
+        height: $chip-delete-icon-size;
+        width: $chip-delete-icon-size;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate3d(-50%, -50%, 0);
+      }
+    }
+  }
+  .md-chip-input-container {
+    display: block;
+    line-height: $chip-height;
+    @include rtl(margin, $chip-margin, rtl-value($chip-margin));
+    padding: $chip-input-padding;
+    @include rtl(float, left, right);
+    input {
+      &:not([type]),&[type="email"],&[type="number"],&[type="tel"],&[type="url"],&[type="text"] {
+        border: 0;
+        height: $chip-height;
+        line-height: $chip-height;
+        padding: 0;
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+    md-autocomplete, md-autocomplete-wrap {
+      background: transparent;
+      height: $chip-height;
+    }
+    md-autocomplete {
+      md-autocomplete-wrap {
+        box-shadow: none;
+      }
+      input {
+        position: relative;
+      }
+    }
+    input {
+      border:0;
+      height: $chip-height;
+      line-height: $chip-height;
+      padding: 0;
+      &:focus {
+        outline:none;
+      }
+    }
+    md-autocomplete, md-autocomplete-wrap {
+      height: $chip-height;
+    }
+    md-autocomplete {
+      box-shadow: none;
+      input {
+        position: relative;
+      }
+    }
+    &:not(:first-child) {
+      @include rtl(margin, $chip-margin, rtl-value($chip-margin));
+    }
+    input {
+      background:transparent;
+      border-width: 0;
+    }
+  }
+  md-autocomplete {
+    button {
+      display: none;
+    }
+  }
+}
+// IE only
+@media screen and (-ms-high-contrast: active) {
+  .md-chip-input-container,
+  md-chip {
+    border: 1px solid #fff;
+  }
+  .md-chip-input-container md-autocomplete {
+    border: none;
   }
 }
 
-//
-//@font-face {
-//  font-family:"material";
-//  src:url("/dist/material-font/material.eot");
-//  font-weight:normal;
-//  font-style:normal;
-//}
-//
-//@font-face {
-//  font-family:"material";
-//  src:url("/dist/material-font/material.eot");
-//  src:url("/dist/material-font/material.eot?#iefix") format("embedded-opentype"),
-//    url("/dist/material-font/material.woff") format("woff"),
-//    url("/dist/material-font/material.ttf") format("truetype"),
-//    url("/dist/material-font/material.svg?#material") format("svg");
-//  font-weight:normal;
-//  font-style:normal;
-//}
-//
-///* Bootstrap Overrides */
-//[class^="icon-"]:before,
-//[class*=" icon-"]:before {
-//  font-family:"material";
-//  display:inline-block;
-//  vertical-align:middle;
-//  line-height:1;
-//  font-weight:normal;
-//  font-style:normal;
-//  speak:none;
-//  text-decoration:inherit;
-//  text-transform:none;
-//  text-rendering:optimizeLegibility;
-//  -webkit-font-smoothing:antialiased;
-//  -moz-osx-font-smoothing:grayscale;
-//}
 
 $input-container-padding: 2px !default;
 
@@ -7135,63 +6721,189 @@ $tooltip-max-width: 32px !default;
     width: 0;
   }
 }
-$virtual-repeat-scrollbar-width: 16px !default;
+$dialog-padding: $baseline-grid * 3 !default;
 
-.md-virtual-repeat-container {
-  box-sizing: border-box;
-  display: block;
-  margin: 0;
+.md-dialog-is-showing {
+  max-height: 100%;
+}
+
+.md-dialog-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: $z-index-dialog;
   overflow: hidden;
-  padding: 0;
+}
+
+md-dialog {
+
+  &.md-transition-in {
+    opacity: 1;
+    transition: $swift-ease-out;
+    transform: translate(0,0) scale(1.0);
+  }
+  &.md-transition-out {
+    opacity: 0;
+    transition: $swift-ease-out;
+    transform: translate(0,100%) scale(0.2);
+  }
+
+  opacity: 0;
+  min-width: 240px;
+  max-width: 80%;
+  max-height: 80%;
   position: relative;
+  overflow: auto; // stop content from leaking out of dialog parent and fix IE
 
-  .md-virtual-repeat-scroller {
-    bottom: 0;
-    box-sizing: border-box;
-    left: 0;
-    margin: 0;
-    overflow-x: hidden;
-    padding: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
+  box-shadow: $whiteframe-shadow-13dp;
+
+  display: flex;
+  flex-direction: column;
+
+  &> form {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+
+  .md-dialog-content {
+    padding: $dialog-padding;
+  }
+
+  md-dialog-content {
+    order: 1;
+    flex-direction: column;
+    overflow: auto;
     -webkit-overflow-scrolling: touch;
+
+    &:not([layout=row]) > *:first-child:not(.md-subheader) {
+      margin-top: 0;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    .md-subheader {
+      margin: 0;
+    }
+
+    .md-dialog-content-body {
+      width:100%;
+    }
+
+    .md-prompt-input-container {
+      width: 100%;
+      box-sizing: border-box;
+    }
   }
 
-  .md-virtual-repeat-sizer {
+  .md-actions, md-dialog-actions {
+    display: flex;
+    order: 2;
     box-sizing: border-box;
-    height: 1px;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 0;
+    @include rtl(padding-right, $baseline-grid, $baseline-grid * 2);
+    @include rtl(padding-left, $baseline-grid * 2, $baseline-grid);
+    min-height: $baseline-grid * 6.5;
+    overflow: hidden;
+
+    .md-button {
+      margin-bottom: $baseline-grid;
+      @include rtl(margin-left, $baseline-grid, 0);
+      @include rtl(margin-right, 0, $baseline-grid);
+      margin-top: $baseline-grid;
+    }
+  }
+  &.md-content-overflow {
+    .md-actions, md-dialog-actions {
+      border-top-width: 1px;
+      border-top-style: solid;
+    }
+  }
+
+}
+
+@media screen and (-ms-high-contrast: active) {
+  md-dialog {
+    border: 1px solid #fff;
+  }
+}
+
+@media (max-width: $layout-breakpoint-sm - 1) {
+  md-dialog.md-dialog-fullscreen {
+    min-height: 100%;
+    min-width: 100%;
+    border-radius: 0;
+  }
+}
+
+md-icon {
+  margin: auto;
+  background-repeat: no-repeat no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+  fill: currentColor;
+  height: $icon-size;
+  width: $icon-size;
+
+  // The icons should not shrink on smaller viewports.
+  min-height: $icon-size;
+  min-width: $icon-size;
+
+  svg {
+    pointer-events: none;
     display: block;
-    margin: 0;
-    padding: 0;
-    width: 1px;
   }
 
-  .md-virtual-repeat-offsetter {
-    box-sizing: border-box;
-    left: 0;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
+  &[md-font-icon] {
+    line-height: $icon-size;
+    width: auto;
   }
 }
 
-.md-virtual-repeat-container.md-orient-horizontal {
-  .md-virtual-repeat-scroller {
-    overflow-x: auto;
-    overflow-y: hidden;
-  }
-
-  .md-virtual-repeat-offsetter {
-    // Leave room for the scroll bar.
-    // TODO: Will probably need to perform measurements at runtime.
-    bottom: $virtual-repeat-scrollbar-width;
-    @include rtl-prop(right, left, auto, auto);
-    white-space: nowrap;
-  }
-}
+//
+//@font-face {
+//  font-family:"material";
+//  src:url("/dist/material-font/material.eot");
+//  font-weight:normal;
+//  font-style:normal;
+//}
+//
+//@font-face {
+//  font-family:"material";
+//  src:url("/dist/material-font/material.eot");
+//  src:url("/dist/material-font/material.eot?#iefix") format("embedded-opentype"),
+//    url("/dist/material-font/material.woff") format("woff"),
+//    url("/dist/material-font/material.ttf") format("truetype"),
+//    url("/dist/material-font/material.svg?#material") format("svg");
+//  font-weight:normal;
+//  font-style:normal;
+//}
+//
+///* Bootstrap Overrides */
+//[class^="icon-"]:before,
+//[class*=" icon-"]:before {
+//  font-family:"material";
+//  display:inline-block;
+//  vertical-align:middle;
+//  line-height:1;
+//  font-weight:normal;
+//  font-style:normal;
+//  speak:none;
+//  text-decoration:inherit;
+//  text-transform:none;
+//  text-rendering:optimizeLegibility;
+//  -webkit-font-smoothing:antialiased;
+//  -moz-osx-font-smoothing:grayscale;
+//}
 
 .md-whiteframe-1dp, .md-whiteframe-z1 {
   box-shadow: $whiteframe-shadow-1dp;
@@ -7275,6 +6987,294 @@ $virtual-repeat-scrollbar-width: 16px !default;
 @media print {
   md-whiteframe, [md-whiteframe] {
     background-color: #ffffff;
+  }
+}
+
+// The default item height is also specified in the JavaScript.
+$md-autocomplete-item-height: 48px !default;
+$md-autocomplete-clear-size: 30px !default;
+$md-autocomplete-input-offset: 20px !default;
+
+md-autocomplete {
+  border-radius: 2px;
+  display: block;
+  height: 40px;
+  position: relative;
+  overflow: visible;
+  min-width: 190px;
+  &[disabled] {
+    input {
+      cursor: default;
+    }
+  }
+  &[md-floating-label] {
+    border-radius: 0;
+    background: transparent;
+    height: auto;
+
+    md-input-container {
+      padding-bottom: 0;
+    }
+    md-autocomplete-wrap {
+      height: auto;
+    }
+
+    .md-show-clear-button {
+
+      button {
+        display: block;
+        position: absolute;
+        right: 0;
+        top: $md-autocomplete-input-offset;
+        width: $md-autocomplete-clear-size;
+        height: $md-autocomplete-clear-size;
+      }
+
+      input {
+        // Add padding to the end of the input to avoid overlapping with the clear button.
+        @include rtl-prop(padding-right, padding-left, $md-autocomplete-clear-size, 0);
+      }
+    }
+
+  }
+  md-autocomplete-wrap {
+
+    // Layout [layout='row']
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+
+    position: relative;
+    overflow: visible;
+    height: 40px;
+    &.md-menu-showing {
+      z-index: $z-index-backdrop + 1;
+    }
+
+    md-input-container, input {
+      // Layout [flex]
+      flex: 1 1 0%;
+      box-sizing: border-box;
+      min-width : 0;
+    }
+
+    md-progress-linear {
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      // When `md-inline` is present, we adjust the offset to go over the `ng-message` space
+      &.md-inline {
+        bottom: 40px;
+        right: 2px;
+        left: 2px;
+        width: auto;
+      }
+      .md-mode-indeterminate {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        transition: none;
+
+        .md-container {
+          transition: none;
+          height: 3px;
+        }
+        &.ng-enter {
+          transition: opacity 0.15s linear;
+          &.ng-enter-active {
+            opacity: 1;
+          }
+        }
+        &.ng-leave {
+          transition: opacity 0.15s linear;
+          &.ng-leave-active {
+            opacity: 0;
+          }
+        }
+      }
+    }
+  }
+  input:not(.md-input) {
+    @include md-flat-input();
+    width: 100%;
+    padding: 0 15px;
+    line-height: 40px;
+    height: 40px;
+  }
+  .md-show-clear-button button {
+    position: relative;
+    line-height: 20px;
+    text-align: center;
+    width: $md-autocomplete-clear-size;
+    height: $md-autocomplete-clear-size;
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    padding: 0;
+    font-size: 12px;
+    background: transparent;
+    margin: auto 5px;
+    &:after {
+      content: '';
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      bottom: -6px;
+      left: -6px;
+      border-radius: 50%;
+      transform: scale(0);
+      opacity: 0;
+      transition: $swift-ease-out;
+    }
+    &:focus {
+      outline: none;
+
+      &:after {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    md-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate3d(-50%, -50%, 0) scale(0.9);
+      path {
+        stroke-width: 0;
+      }
+    }
+    &.ng-enter {
+      transform: scale(0);
+      transition: transform 0.15s ease-out;
+      &.ng-enter-active {
+        transform: scale(1);
+      }
+    }
+    &.ng-leave {
+      transition: transform 0.15s ease-out;
+      &.ng-leave-active {
+        transform: scale(0);
+      }
+    }
+  }
+  // IE Only
+  @media screen and (-ms-high-contrast: active) {
+    $border-color: #fff;
+
+    input {
+      border: 1px solid $border-color;
+    }
+    li:focus {
+      color: #fff;
+    }
+  }
+}
+
+.md-virtual-repeat-container.md-autocomplete-suggestions-container {
+  position: absolute;
+  box-shadow: 0 2px 5px rgba(black, 0.25);
+  z-index: $z-index-tooltip;
+
+  // Expand the virtualRepeatContainer as much as the max-height from the JavaScript allows.
+  // This is necessary for the virtualRepeatContainer to be able to grow back.
+  height: 100%;
+}
+
+.md-virtual-repeat-container.md-not-found {
+  height: $md-autocomplete-item-height;
+}
+
+.md-autocomplete-suggestions {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+
+  li {
+    font-size: 14px;
+    overflow: hidden;
+    padding: 0 15px;
+    line-height: $md-autocomplete-item-height;
+    height: $md-autocomplete-item-height;
+    transition: background 0.15s linear;
+    margin: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:not(.md-not-found-wrapper) {
+      cursor: pointer;
+    }
+  }
+}
+
+// IE Only
+@media screen and (-ms-high-contrast: active) {
+  md-autocomplete,
+  .md-autocomplete-suggestions {
+    border: 1px solid #fff;
+  }
+}
+
+$virtual-repeat-scrollbar-width: 16px !default;
+
+.md-virtual-repeat-container {
+  box-sizing: border-box;
+  display: block;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+
+  .md-virtual-repeat-scroller {
+    bottom: 0;
+    box-sizing: border-box;
+    left: 0;
+    margin: 0;
+    overflow-x: hidden;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .md-virtual-repeat-sizer {
+    box-sizing: border-box;
+    height: 1px;
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 1px;
+  }
+
+  .md-virtual-repeat-offsetter {
+    box-sizing: border-box;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
+.md-virtual-repeat-container.md-orient-horizontal {
+  .md-virtual-repeat-scroller {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .md-virtual-repeat-offsetter {
+    // Leave room for the scroll bar.
+    // TODO: Will probably need to perform measurements at runtime.
+    bottom: $virtual-repeat-scrollbar-width;
+    @include rtl-prop(right, left, auto, auto);
+    white-space: nowrap;
   }
 }
 
