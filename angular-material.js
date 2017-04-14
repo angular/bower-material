@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-90b64fe
+ * v1.1.3-master-562b1c9
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -22323,9 +22323,10 @@ function getDirective(name) {
 
   /* @ngInject */
   function DirectiveFactory($parse) {
-      return { restrict: 'A', link: postLink };
-      function postLink(scope, element, attr) {
-        element.css('touch-action', 'none');
+      return {restrict: 'A', link: postLink};
+
+    function postLink(scope, element, attr) {
+        element.css('touch-action', attr['mdSwipeTouchAction'] || 'none');
 
         var fn = $parse(attr[directiveName]);
         element.on(eventName, function(ev) {
@@ -35835,7 +35836,7 @@ function MdTabs ($$mdSvgRegistry) {
                       '\'md-disabled\':  tab.scope.disabled ' +
                   '}" ' +
                   'ng-disabled="tab.scope.disabled" ' +
-                  'md-swipe-left="$mdTabsCtrl.nextPage()" ' +
+                  'md-swipe-left="$mdTabsCtrl.nextPage()" md-swipe-touch-action="pan-y" ' +
                   'md-swipe-right="$mdTabsCtrl.previousPage()" ' +
                   'md-tabs-template="::tab.label" ' +
                   'md-scope="::tab.parent"></md-tab-item> ' +
@@ -35865,6 +35866,7 @@ function MdTabs ($$mdSvgRegistry) {
               'aria-labelledby="tab-item-{{::tab.id}}" ' +
               'md-swipe-left="$mdTabsCtrl.swipeContent && $mdTabsCtrl.incrementIndex(1)" ' +
               'md-swipe-right="$mdTabsCtrl.swipeContent && $mdTabsCtrl.incrementIndex(-1)" ' +
+              'md-swipe-touch-action="pan-y" ' +
               'ng-if="tab.hasContent" ' +
               'ng-repeat="(index, tab) in $mdTabsCtrl.tabs" ' +
               'ng-class="{ ' +
@@ -36000,4 +36002,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.3-master-90b64fe"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.3-master-562b1c9"}};
