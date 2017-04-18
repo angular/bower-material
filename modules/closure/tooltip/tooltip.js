@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3-master-562b1c9
+ * v1.1.3-master-3d87453
  */
 goog.provide('ngmaterial.components.tooltip');
 goog.require('ngmaterial.components.panel');
@@ -116,7 +116,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $interpolate,
     function addAriaLabel(labelText) {
       // Only interpolate the text from the HTML element because otherwise the custom text could
       // be interpolated twice and cause XSS violations.
-      var interpolatedText = labelText || $interpolate(element.text().trim())(parent.scope);
+      var interpolatedText = labelText || $interpolate(element.text().trim())(scope.$parent);
 
       // Only add the `aria-label` to the parent if there isn't already one, if there isn't an
       // already present `aria-labelledby`, or if the previous `aria-label` was added by the
