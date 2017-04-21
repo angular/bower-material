@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.4-master-4e579dd
+ * v1.1.4-master-e1345ae
  */
 goog.provide('ngmaterial.components.virtualRepeat');
 goog.require('ngmaterial.components.showHide');
@@ -19,7 +19,8 @@ angular.module('material.components.virtualRepeat', [
   'material.components.showHide'
 ])
 .directive('mdVirtualRepeatContainer', VirtualRepeatContainerDirective)
-.directive('mdVirtualRepeat', VirtualRepeatDirective);
+.directive('mdVirtualRepeat', VirtualRepeatDirective)
+.directive('mdForceHeight', ForceHeightDirective);
 
 
 /**
@@ -1001,5 +1002,34 @@ VirtualRepeatModelArrayLike.prototype.$$includeIndexes = function(start, end) {
   }
   this.length = this.model.getLength();
 };
+
+/**
+ * @ngdoc directive
+ * @name mdForceHeight
+ * @module material.components.virtualRepeat
+ * @restrict A
+ * @description
+ *
+ * Force an element to have a certain px height. This is used in place of a style tag in order to
+ * conform to the Content Security Policy regarding unsafe-inline style tags.
+ *
+ * @usage
+ * <hljs lang="html">
+ *   <div md-force-height="'100px'"></div>
+ * </hljs>
+ */
+function ForceHeightDirective($mdUtil) {
+  return {
+    restrict: 'A',
+    link: function(scope, element, attrs) {
+      var height = scope.$eval(attrs.mdForceHeight) || null;
+
+      if (height && element) {
+        element[0].style.height = height;
+      }
+    }
+  }
+}
+ForceHeightDirective['$inject'] = ['$mdUtil'];
 
 ngmaterial.components.virtualRepeat = angular.module("material.components.virtualRepeat");

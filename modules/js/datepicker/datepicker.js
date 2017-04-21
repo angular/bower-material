@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.4-master-4e579dd
+ * v1.1.4-master-e1345ae
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -542,7 +542,7 @@ angular.module('material.components.datepicker', [
                 // The <tr> ensures that the <tbody> will always have the
                 // proper height, even if it's empty. If it's content is
                 // compiled, the <tr> will be overwritten.
-                '<tr aria-hidden="true" style="height:' + TBODY_HEIGHT + 'px;"></tr>' +
+                '<tr aria-hidden="true" md-force-height="\'' + TBODY_HEIGHT + 'px\'"></tr>' +
               '</tbody>' +
             '</table>' +
           '</md-virtual-repeat-container>' +
@@ -1145,7 +1145,7 @@ angular.module('material.components.datepicker', [
                   'md-item-size="' + TBODY_HEIGHT + '">' +
                 // The <tr> ensures that the <tbody> will have the proper
                 // height, even though it may be empty.
-                '<tr aria-hidden="true" style="height:' + TBODY_HEIGHT + 'px;"></tr>' +
+                '<tr aria-hidden="true" md-force-height="\'' + TBODY_HEIGHT + 'px\'"></tr>' +
               '</tbody>' +
             '</table>' +
           '</md-virtual-repeat-container>' +

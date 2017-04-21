@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.4-master-4e579dd
+ * v1.1.4-master-e1345ae
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -23896,7 +23896,8 @@ angular.module('material.components.virtualRepeat', [
   'material.components.showHide'
 ])
 .directive('mdVirtualRepeatContainer', VirtualRepeatContainerDirective)
-.directive('mdVirtualRepeat', VirtualRepeatDirective);
+.directive('mdVirtualRepeat', VirtualRepeatDirective)
+.directive('mdForceHeight', ForceHeightDirective);
 
 
 /**
@@ -24878,6 +24879,35 @@ VirtualRepeatModelArrayLike.prototype.$$includeIndexes = function(start, end) {
   }
   this.length = this.model.getLength();
 };
+
+/**
+ * @ngdoc directive
+ * @name mdForceHeight
+ * @module material.components.virtualRepeat
+ * @restrict A
+ * @description
+ *
+ * Force an element to have a certain px height. This is used in place of a style tag in order to
+ * conform to the Content Security Policy regarding unsafe-inline style tags.
+ *
+ * @usage
+ * <hljs lang="html">
+ *   <div md-force-height="'100px'"></div>
+ * </hljs>
+ */
+function ForceHeightDirective($mdUtil) {
+  return {
+    restrict: 'A',
+    link: function(scope, element, attrs) {
+      var height = scope.$eval(attrs.mdForceHeight) || null;
+
+      if (height && element) {
+        element[0].style.height = height;
+      }
+    }
+  }
+}
+ForceHeightDirective.$inject = ['$mdUtil'];
 
 })();
 (function(){
@@ -28992,7 +29022,7 @@ function MdContactChips($mdTheming, $mdUtil) {
                 // The <tr> ensures that the <tbody> will always have the
                 // proper height, even if it's empty. If it's content is
                 // compiled, the <tr> will be overwritten.
-                '<tr aria-hidden="true" style="height:' + TBODY_HEIGHT + 'px;"></tr>' +
+                '<tr aria-hidden="true" md-force-height="\'' + TBODY_HEIGHT + 'px\'"></tr>' +
               '</tbody>' +
             '</table>' +
           '</md-virtual-repeat-container>' +
@@ -29603,7 +29633,7 @@ function MdContactChips($mdTheming, $mdUtil) {
                   'md-item-size="' + TBODY_HEIGHT + '">' +
                 // The <tr> ensures that the <tbody> will have the proper
                 // height, even though it may be empty.
-                '<tr aria-hidden="true" style="height:' + TBODY_HEIGHT + 'px;"></tr>' +
+                '<tr aria-hidden="true" md-force-height="\'' + TBODY_HEIGHT + 'px\'"></tr>' +
               '</tbody>' +
             '</table>' +
           '</md-virtual-repeat-container>' +
@@ -36002,4 +36032,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.4-master-4e579dd"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.4-master-e1345ae"}};
