@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.4-master-5383f94
+ * v1.1.4-master-4e579dd
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -534,6 +534,7 @@ function VirtualRepeatController($scope, $element, $attrs, $browser, $document, 
   this.$attrs = $attrs;
   this.$browser = $browser;
   this.$document = $document;
+  this.$mdUtil = $mdUtil;
   this.$rootScope = $rootScope;
   this.$$rAF = $$rAF;
 
@@ -773,16 +774,6 @@ VirtualRepeatController.prototype.virtualRepeatUpdate_ = function(items, oldItem
     this.container.setScrollSize(itemsLength * this.itemSize);
   }
 
-  var cleanupFirstRender = false, firstRenderStartIndex;
-  if (this.isFirstRender) {
-    cleanupFirstRender = true;
-    this.isFirstRender = false;
-    firstRenderStartIndex = this.$attrs.mdStartIndex ?
-      this.$scope.$eval(this.$attrs.mdStartIndex) :
-      this.container.topIndex;
-    this.container.scrollToIndex(firstRenderStartIndex);
-  }
-
   // Detach and pool any blocks that are no longer in the viewport.
   Object.keys(this.blocks).forEach(function(blockIndex) {
     var index = parseInt(blockIndex, 10);
@@ -834,15 +825,24 @@ VirtualRepeatController.prototype.virtualRepeatUpdate_ = function(items, oldItem
         this.blocks[maxIndex] && this.blocks[maxIndex].element[0].nextSibling);
   }
 
-  // DOM manipulation may have altered scroll, so scroll again
-  if (cleanupFirstRender) {
-    this.container.scrollToIndex(firstRenderStartIndex);
-  }
   // Restore $$checkUrlChange.
   this.$browser.$$checkUrlChange = this.browserCheckUrlChange;
 
   this.startIndex = this.newStartIndex;
   this.endIndex = this.newEndIndex;
+
+  if (this.isFirstRender) {
+    this.isFirstRender = false;
+    var firstRenderStartIndex = this.$attrs.mdStartIndex ?
+      this.$scope.$eval(this.$attrs.mdStartIndex) :
+      this.container.topIndex;
+
+    // The first call to virtualRepeatUpdate_ may not be when the virtual repeater is ready.
+    // Introduce a slight delay so that the update happens when it is actually ready.
+    this.$mdUtil.nextTick(function() {
+      this.container.scrollToIndex(firstRenderStartIndex);
+    }.bind(this));
+  }
 
   this.isVirtualRepeatUpdating_ = false;
 };
