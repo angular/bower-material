@@ -1352,183 +1352,6 @@ md-backdrop {
 }
 
 
-$bottom-sheet-horizontal-padding: 2 * $baseline-grid !default;
-$bottom-sheet-vertical-padding: 1 * $baseline-grid !default;
-$bottom-sheet-icon-after-margin: 4 * $baseline-grid !default;
-$bottom-sheet-list-item-height: 6 * $baseline-grid !default;
-$bottom-sheet-hidden-bottom-padding: 80px !default;
-$bottom-sheet-header-height: 7 * $baseline-grid !default;
-$bottom-sheet-grid-font-weight: 400 !default;
-
-md-bottom-sheet {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: $bottom-sheet-vertical-padding $bottom-sheet-horizontal-padding $bottom-sheet-vertical-padding + $bottom-sheet-hidden-bottom-padding $bottom-sheet-horizontal-padding;
-  z-index: $z-index-bottom-sheet;
-
-  border-top-width: 1px;
-  border-top-style: solid;
-
-  transform: translate3d(0, $bottom-sheet-hidden-bottom-padding, 0);
-  transition: $swift-ease-out;
-  transition-property: transform;
-
-  &.md-has-header {
-    padding-top: 0;
-  }
-
-  &.ng-enter {
-    opacity: 0;
-    transform: translate3d(0, 100%, 0);
-  }
-
-  &.ng-enter-active {
-    opacity: 1;
-    display: block;
-    transform: translate3d(0, $bottom-sheet-hidden-bottom-padding, 0) !important;
-  }
-
-
-  &.ng-leave-active {
-    transform: translate3d(0, 100%, 0) !important;
-    transition: $swift-ease-in;
-  }
-
-  .md-subheader {
-    background-color: transparent;
-    font-family: $font-family;
-    line-height: $bottom-sheet-header-height;
-    padding: 0;
-    white-space: nowrap;
-  }
-
-  md-inline-icon {
-    display: inline-block;
-    height: 24px;
-    width: 24px;
-    fill: #444;
-  }
-
-  md-list-item {
-    display: flex;
-    outline: none;
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
-
-  &.md-list {
-    md-list-item {
-      padding: 0;
-      align-items: center;
-      height: $bottom-sheet-list-item-height;
-
-    }
-  }
-
-
-
-  &.md-grid {
-    padding-left: 3 * $baseline-grid;
-    padding-right: 3 * $baseline-grid;
-    padding-top: 0;
-
-    md-list {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      transition: all 0.5s;
-      align-items: center;
-    }
-
-    md-list-item {
-      flex-direction: column;
-      align-items: center;
-      transition: all 0.5s;
-
-      height: 12 * $baseline-grid;
-
-      margin-top: $baseline-grid;
-      margin-bottom: $baseline-grid;
-
-      /* Mixin for how many grid items to show per row */
-      @mixin grid-items-per-row($num, $alignEdges: false) {
-        $width: 100% / $num;
-        flex: 1 1 $width;
-        max-width: $width;
-
-        @if $alignEdges {
-          &:nth-of-type(#{$num}n + 1) {
-            align-items: flex-start;
-          }
-          &:nth-of-type(#{$num}n) {
-            align-items: flex-end;
-          }
-        }
-      }
-
-      @media (max-width: $layout-breakpoint-sm) {
-        @include grid-items-per-row(3, true);
-      }
-
-      @media (min-width: $layout-breakpoint-sm) and (max-width: $layout-breakpoint-md - 1) {
-        @include grid-items-per-row(4);
-      }
-
-      @media (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg - 1) {
-        @include grid-items-per-row(6);
-      }
-
-      @media (min-width: $layout-breakpoint-lg) {
-        @include grid-items-per-row(7);
-      }
-
-      // Override of the IE11 fix from @mixin ie11-min-height-flexbug, line 109 mixins.scss
-      &::before {
-        display: none;
-      }
-
-      .md-list-item-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 6 * $baseline-grid;
-        padding-bottom: 2 * $baseline-grid;
-      }
-
-      .md-grid-item-content {
-        border: 1px solid transparent;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 10 * $baseline-grid;
-      }
-
-      .md-grid-text {
-        font-weight: $bottom-sheet-grid-font-weight;
-        line-height: 2 * $baseline-grid;
-        font-size: 2 * $baseline-grid - 3;
-        margin: 0;
-        white-space: nowrap;
-        width: 8 * $baseline-grid;
-        text-align: center;
-        text-transform: none;
-        padding-top: 1 * $baseline-grid;
-      }
-    }
-  }
-}
-
-// IE only
-@media screen and (-ms-high-contrast: active) {
-  md-bottom-sheet {
-    border: 1px solid #fff;
-  }
-}
-
 // The default item height is also specified in the JavaScript.
 $md-autocomplete-item-height: 48px !default;
 $md-autocomplete-clear-size: 30px !default;
@@ -1755,6 +1578,183 @@ md-autocomplete {
 @media screen and (-ms-high-contrast: active) {
   md-autocomplete,
   .md-autocomplete-suggestions {
+    border: 1px solid #fff;
+  }
+}
+
+$bottom-sheet-horizontal-padding: 2 * $baseline-grid !default;
+$bottom-sheet-vertical-padding: 1 * $baseline-grid !default;
+$bottom-sheet-icon-after-margin: 4 * $baseline-grid !default;
+$bottom-sheet-list-item-height: 6 * $baseline-grid !default;
+$bottom-sheet-hidden-bottom-padding: 80px !default;
+$bottom-sheet-header-height: 7 * $baseline-grid !default;
+$bottom-sheet-grid-font-weight: 400 !default;
+
+md-bottom-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: $bottom-sheet-vertical-padding $bottom-sheet-horizontal-padding $bottom-sheet-vertical-padding + $bottom-sheet-hidden-bottom-padding $bottom-sheet-horizontal-padding;
+  z-index: $z-index-bottom-sheet;
+
+  border-top-width: 1px;
+  border-top-style: solid;
+
+  transform: translate3d(0, $bottom-sheet-hidden-bottom-padding, 0);
+  transition: $swift-ease-out;
+  transition-property: transform;
+
+  &.md-has-header {
+    padding-top: 0;
+  }
+
+  &.ng-enter {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  &.ng-enter-active {
+    opacity: 1;
+    display: block;
+    transform: translate3d(0, $bottom-sheet-hidden-bottom-padding, 0) !important;
+  }
+
+
+  &.ng-leave-active {
+    transform: translate3d(0, 100%, 0) !important;
+    transition: $swift-ease-in;
+  }
+
+  .md-subheader {
+    background-color: transparent;
+    font-family: $font-family;
+    line-height: $bottom-sheet-header-height;
+    padding: 0;
+    white-space: nowrap;
+  }
+
+  md-inline-icon {
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    fill: #444;
+  }
+
+  md-list-item {
+    display: flex;
+    outline: none;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &.md-list {
+    md-list-item {
+      padding: 0;
+      align-items: center;
+      height: $bottom-sheet-list-item-height;
+
+    }
+  }
+
+
+
+  &.md-grid {
+    padding-left: 3 * $baseline-grid;
+    padding-right: 3 * $baseline-grid;
+    padding-top: 0;
+
+    md-list {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      transition: all 0.5s;
+      align-items: center;
+    }
+
+    md-list-item {
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.5s;
+
+      height: 12 * $baseline-grid;
+
+      margin-top: $baseline-grid;
+      margin-bottom: $baseline-grid;
+
+      /* Mixin for how many grid items to show per row */
+      @mixin grid-items-per-row($num, $alignEdges: false) {
+        $width: 100% / $num;
+        flex: 1 1 $width;
+        max-width: $width;
+
+        @if $alignEdges {
+          &:nth-of-type(#{$num}n + 1) {
+            align-items: flex-start;
+          }
+          &:nth-of-type(#{$num}n) {
+            align-items: flex-end;
+          }
+        }
+      }
+
+      @media (max-width: $layout-breakpoint-sm) {
+        @include grid-items-per-row(3, true);
+      }
+
+      @media (min-width: $layout-breakpoint-sm) and (max-width: $layout-breakpoint-md - 1) {
+        @include grid-items-per-row(4);
+      }
+
+      @media (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg - 1) {
+        @include grid-items-per-row(6);
+      }
+
+      @media (min-width: $layout-breakpoint-lg) {
+        @include grid-items-per-row(7);
+      }
+
+      // Override of the IE11 fix from @mixin ie11-min-height-flexbug, line 109 mixins.scss
+      &::before {
+        display: none;
+      }
+
+      .md-list-item-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 6 * $baseline-grid;
+        padding-bottom: 2 * $baseline-grid;
+      }
+
+      .md-grid-item-content {
+        border: 1px solid transparent;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 10 * $baseline-grid;
+      }
+
+      .md-grid-text {
+        font-weight: $bottom-sheet-grid-font-weight;
+        line-height: 2 * $baseline-grid;
+        font-size: 2 * $baseline-grid - 3;
+        margin: 0;
+        white-space: nowrap;
+        width: 8 * $baseline-grid;
+        text-align: center;
+        text-transform: none;
+        padding-top: 1 * $baseline-grid;
+      }
+    }
+  }
+}
+
+// IE only
+@media screen and (-ms-high-contrast: active) {
+  md-bottom-sheet {
     border: 1px solid #fff;
   }
 }
@@ -2555,6 +2555,30 @@ md-content {
 
 
 
+md-divider {
+  display: block;
+  border-top-width: 1px;
+  border-top-style: solid;
+  margin: 0;
+
+  &[md-inset] {
+    @include rtl-prop(margin-left, margin-right, $baseline-grid * 10, auto);
+  }
+}
+
+.layout-row,
+.layout-xs-row, .layout-gt-xs-row,
+.layout-sm-row, .layout-gt-sm-row,
+.layout-md-row, .layout-gt-md-row,
+.layout-lg-row, .layout-gt-lg-row,
+.layout-xl-row {
+  & > md-divider {
+    border-top-width: 0;
+    border-right-width: 1px;
+    border-right-style: solid;
+  }
+}
+
 /** Styles for mdCalendar. */
 $md-calendar-cell-size: 44px !default;
 $md-calendar-header-height: 40px !default;
@@ -2993,30 +3017,6 @@ md-datepicker[disabled] {
   }
 }
 
-md-divider {
-  display: block;
-  border-top-width: 1px;
-  border-top-style: solid;
-  margin: 0;
-
-  &[md-inset] {
-    @include rtl-prop(margin-left, margin-right, $baseline-grid * 10, auto);
-  }
-}
-
-.layout-row,
-.layout-xs-row, .layout-gt-xs-row,
-.layout-sm-row, .layout-gt-sm-row,
-.layout-md-row, .layout-gt-md-row,
-.layout-lg-row, .layout-gt-lg-row,
-.layout-xl-row {
-  & > md-divider {
-    border-top-width: 0;
-    border-right-width: 1px;
-    border-right-style: solid;
-  }
-}
-
 md-fab-speed-dial {
   position: relative;
   display: flex;
@@ -3287,6 +3287,88 @@ md-fab-toolbar {
   }
 }
 
+md-grid-list {
+  box-sizing: border-box;
+  display: block;
+  position: relative;
+
+  md-grid-tile,
+  md-grid-tile > figure,
+  md-grid-tile-header,
+  md-grid-tile-footer {
+    box-sizing: border-box;
+  }
+
+  md-grid-tile {
+    display: block;
+    position: absolute;
+
+    figure {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      padding: 0;
+      margin: 0;
+    }
+
+    // Headers & footers
+    md-grid-tile-header,
+    md-grid-tile-footer {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: 48px;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.18);
+      overflow: hidden;
+
+      // Positioning
+      position: absolute;
+      left: 0;
+      right: 0;
+
+      h3,
+      h4 {
+        font-weight: 400;
+        margin: 0 0 0 16px;
+      }
+
+      h3 {
+        font-size: 14px;
+      }
+
+      h4 {
+        font-size: 12px;
+      }
+    }
+
+    md-grid-tile-header {
+      top: 0;
+    }
+
+    md-grid-tile-footer {
+      bottom: 0;
+    }
+  }
+
+}
+
+@media screen and (-ms-high-contrast: active) {
+  md-grid-tile {
+    border: 1px solid #fff;
+  }
+  md-grid-tile-footer {
+    border-top: 1px solid #fff;
+  }
+}
+
+
 $dialog-padding: $baseline-grid * 3 !default;
 
 .md-dialog-is-showing {
@@ -3410,88 +3492,6 @@ md-dialog {
     border-radius: 0;
   }
 }
-
-md-grid-list {
-  box-sizing: border-box;
-  display: block;
-  position: relative;
-
-  md-grid-tile,
-  md-grid-tile > figure,
-  md-grid-tile-header,
-  md-grid-tile-footer {
-    box-sizing: border-box;
-  }
-
-  md-grid-tile {
-    display: block;
-    position: absolute;
-
-    figure {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      padding: 0;
-      margin: 0;
-    }
-
-    // Headers & footers
-    md-grid-tile-header,
-    md-grid-tile-footer {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      height: 48px;
-      color: #fff;
-      background: rgba(0, 0, 0, 0.18);
-      overflow: hidden;
-
-      // Positioning
-      position: absolute;
-      left: 0;
-      right: 0;
-
-      h3,
-      h4 {
-        font-weight: 400;
-        margin: 0 0 0 16px;
-      }
-
-      h3 {
-        font-size: 14px;
-      }
-
-      h4 {
-        font-size: 12px;
-      }
-    }
-
-    md-grid-tile-header {
-      top: 0;
-    }
-
-    md-grid-tile-footer {
-      bottom: 0;
-    }
-  }
-
-}
-
-@media screen and (-ms-high-contrast: active) {
-  md-grid-tile {
-    border: 1px solid #fff;
-  }
-  md-grid-tile-footer {
-    border-top: 1px solid #fff;
-  }
-}
-
 
 md-icon {
   margin: auto;
@@ -3973,6 +3973,181 @@ md-list-item {
   }
 }
 
+md-toolbar {
+  &.md-menu-toolbar {
+    h2.md-toolbar-tools {
+      line-height: 1rem;
+      height: auto;
+      padding: 3.5 * $baseline-grid;
+      padding-bottom: 1.5 * $baseline-grid;
+    }
+  }
+
+  // Used to allow hovering from one menu to the
+  // next when inside of a toolbar.
+  &.md-has-open-menu {
+    position: relative;
+    z-index: $z-index-menu;
+  }
+}
+
+md-menu-bar {
+  padding: 0 2.5 * $baseline-grid;
+  display: block;
+  position: relative;
+  z-index: 2;
+  .md-menu {
+    display: inline-block;
+    padding: 0;
+    position: relative;
+  }
+  button {
+    font-size: rem(1.4);
+    padding: 0 1.25 * $baseline-grid;
+    margin: 0;
+    border: 0;
+    background-color: transparent;
+    height: 5 * $baseline-grid;
+  }
+
+  md-backdrop.md-menu-backdrop {
+    z-index: -2;
+  }
+}
+
+md-menu-content.md-menu-bar-menu.md-dense {
+  max-height: none;
+  padding: 2 * $baseline-grid 0;
+  md-menu-item.md-indent {
+    position: relative;
+    > md-icon {
+      position: absolute;
+      padding: 0;
+      width: 24px;
+      top: 0.75 * $baseline-grid;
+      @include rtl-prop(left, right, 3 * $baseline-grid, auto);
+    }
+    > .md-button, .md-menu > .md-button {
+      @include rtl(padding, 0 4 * $baseline-grid 0 8 * $baseline-grid, 0 8 * $baseline-grid 0 4 * $baseline-grid);
+    }
+  }
+  .md-button {
+    min-height: 0;
+    height: 4 * $baseline-grid;
+    span {
+      @include rtl(float, left, right);
+    }
+    span.md-alt-text {
+      @include rtl(float, right, left);
+      margin: 0 $baseline-grid;
+    }
+  }
+  md-menu-divider {
+    margin: $baseline-grid 0;
+  }
+
+  md-menu-item > .md-button, .md-menu > .md-button {
+    @include rtl(text-align, left, right);
+  }
+
+  .md-menu {
+    padding: 0;
+    > .md-button {
+      position: relative;
+      margin: 0;
+      width: 100%;
+      text-transform: none;
+      font-weight: normal;
+      border-radius: 0px;
+      @include rtl-prop(padding-left, padding-right, 2 * $baseline-grid, 0);
+      &:after {
+        display: block;
+        content: '\25BC';
+        position: absolute;
+        top: 0px;
+        speak: none;
+        @include rtl(transform, rotate(270deg) scaleY(0.45) scaleX(0.9), rotate(90deg) scaleY(0.45) scaleX(0.9));
+        @include rtl-prop(right, left, 3.5 * $baseline-grid, auto);
+      }
+    }
+  }
+}
+
+/** Matches "md-tabs md-tabs-wrapper" style. */
+$md-nav-bar-height: 48px;
+
+.md-nav-bar {
+  border-style: solid;
+  border-width: 0 0 1px;
+  height: $md-nav-bar-height;
+  position: relative;
+}
+
+._md-nav-bar-list {
+  outline: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  // Layout [layout='row']
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+}
+
+.md-nav-item:first-of-type {
+  margin-left: 8px;
+}
+
+// override button styles to look more like tabs
+.md-button._md-nav-button {
+  line-height: 24px;
+  margin: 0 4px;
+  padding: 12px 16px;
+  transition: background-color 0.35s $swift-ease-in-out-timing-function;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    background-color: inherit;
+  }
+}
+
+md-nav-ink-bar {
+  $duration: $swift-ease-in-out-duration * 0.5;
+  $multiplier: 0.5;
+  bottom: 0;
+  height: 2px;
+  left: auto;
+  position: absolute;
+  right: auto;
+  background-color: black;
+
+  &._md-left {
+    transition: left ($duration * $multiplier) $swift-ease-in-out-timing-function,
+        right $duration $swift-ease-in-out-timing-function;
+  }
+  &._md-right {
+    transition: left $duration $swift-ease-in-out-timing-function,
+        right ($duration * $multiplier) $swift-ease-in-out-timing-function;
+  }
+
+  // By default $ngAnimate looks for transition durations on the element, when using ng-hide, ng-if, ng-show.
+  // The ink bar has a transition duration applied, which means, that $ngAnimate delays the hide process.
+  // To avoid this, we need to reset the transition, when $ngAnimate looks for the duration.
+  &.ng-animate {
+    transition: none;
+  }
+
+}
+
+md-nav-extra-content {
+  min-height: 48px;
+  padding-right: 12px;
+}
+
 $input-container-padding: 2px !default;
 
 $input-label-default-offset: 24px !default;
@@ -4371,181 +4546,6 @@ md-input-container {
   }
 }
 
-md-toolbar {
-  &.md-menu-toolbar {
-    h2.md-toolbar-tools {
-      line-height: 1rem;
-      height: auto;
-      padding: 3.5 * $baseline-grid;
-      padding-bottom: 1.5 * $baseline-grid;
-    }
-  }
-
-  // Used to allow hovering from one menu to the
-  // next when inside of a toolbar.
-  &.md-has-open-menu {
-    position: relative;
-    z-index: $z-index-menu;
-  }
-}
-
-md-menu-bar {
-  padding: 0 2.5 * $baseline-grid;
-  display: block;
-  position: relative;
-  z-index: 2;
-  .md-menu {
-    display: inline-block;
-    padding: 0;
-    position: relative;
-  }
-  button {
-    font-size: rem(1.4);
-    padding: 0 1.25 * $baseline-grid;
-    margin: 0;
-    border: 0;
-    background-color: transparent;
-    height: 5 * $baseline-grid;
-  }
-
-  md-backdrop.md-menu-backdrop {
-    z-index: -2;
-  }
-}
-
-md-menu-content.md-menu-bar-menu.md-dense {
-  max-height: none;
-  padding: 2 * $baseline-grid 0;
-  md-menu-item.md-indent {
-    position: relative;
-    > md-icon {
-      position: absolute;
-      padding: 0;
-      width: 24px;
-      top: 0.75 * $baseline-grid;
-      @include rtl-prop(left, right, 3 * $baseline-grid, auto);
-    }
-    > .md-button, .md-menu > .md-button {
-      @include rtl(padding, 0 4 * $baseline-grid 0 8 * $baseline-grid, 0 8 * $baseline-grid 0 4 * $baseline-grid);
-    }
-  }
-  .md-button {
-    min-height: 0;
-    height: 4 * $baseline-grid;
-    span {
-      @include rtl(float, left, right);
-    }
-    span.md-alt-text {
-      @include rtl(float, right, left);
-      margin: 0 $baseline-grid;
-    }
-  }
-  md-menu-divider {
-    margin: $baseline-grid 0;
-  }
-
-  md-menu-item > .md-button, .md-menu > .md-button {
-    @include rtl(text-align, left, right);
-  }
-
-  .md-menu {
-    padding: 0;
-    > .md-button {
-      position: relative;
-      margin: 0;
-      width: 100%;
-      text-transform: none;
-      font-weight: normal;
-      border-radius: 0px;
-      @include rtl-prop(padding-left, padding-right, 2 * $baseline-grid, 0);
-      &:after {
-        display: block;
-        content: '\25BC';
-        position: absolute;
-        top: 0px;
-        speak: none;
-        @include rtl(transform, rotate(270deg) scaleY(0.45) scaleX(0.9), rotate(90deg) scaleY(0.45) scaleX(0.9));
-        @include rtl-prop(right, left, 3.5 * $baseline-grid, auto);
-      }
-    }
-  }
-}
-
-/** Matches "md-tabs md-tabs-wrapper" style. */
-$md-nav-bar-height: 48px;
-
-.md-nav-bar {
-  border-style: solid;
-  border-width: 0 0 1px;
-  height: $md-nav-bar-height;
-  position: relative;
-}
-
-._md-nav-bar-list {
-  outline: none;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-
-  // Layout [layout='row']
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-}
-
-.md-nav-item:first-of-type {
-  margin-left: 8px;
-}
-
-// override button styles to look more like tabs
-.md-button._md-nav-button {
-  line-height: 24px;
-  margin: 0 4px;
-  padding: 12px 16px;
-  transition: background-color 0.35s $swift-ease-in-out-timing-function;
-
-  &:focus {
-    outline: none;
-  }
-
-  &:hover {
-    background-color: inherit;
-  }
-}
-
-md-nav-ink-bar {
-  $duration: $swift-ease-in-out-duration * 0.5;
-  $multiplier: 0.5;
-  bottom: 0;
-  height: 2px;
-  left: auto;
-  position: absolute;
-  right: auto;
-  background-color: black;
-
-  &._md-left {
-    transition: left ($duration * $multiplier) $swift-ease-in-out-timing-function,
-        right $duration $swift-ease-in-out-timing-function;
-  }
-  &._md-right {
-    transition: left $duration $swift-ease-in-out-timing-function,
-        right ($duration * $multiplier) $swift-ease-in-out-timing-function;
-  }
-
-  // By default $ngAnimate looks for transition durations on the element, when using ng-hide, ng-if, ng-show.
-  // The ink bar has a transition duration applied, which means, that $ngAnimate delays the hide process.
-  // To avoid this, we need to reset the transition, when $ngAnimate looks for the duration.
-  &.ng-animate {
-    transition: none;
-  }
-
-}
-
-md-nav-extra-content {
-  min-height: 48px;
-  padding-right: 12px;
-}
-
 $menu-border-radius: 2px !default;
 $max-visible-items: 6 !default;
 $menu-item-height: 6 * $baseline-grid !default;
@@ -4917,34 +4917,6 @@ md-progress-linear {
 
 
 
-$progress-circular-indeterminate-duration: 1568.63ms !default;
-
-@keyframes indeterminate-rotate {
-    0%       { transform: rotate(0deg); }
-    100%     { transform: rotate(360deg); }
-}
-
-// Used to avoid unnecessary layout
-md-progress-circular {
-    position: relative;
-    display: block;
-
-    &._md-progress-circular-disabled {
-        visibility: hidden;
-    }
-
-    &.md-mode-indeterminate svg {
-        animation: indeterminate-rotate $progress-circular-indeterminate-duration linear infinite;
-    }
-
-    svg {
-        position: absolute;
-        overflow: visible;
-        top: 0;
-        left: 0;
-    }
-}
-
 $radio-width: 20px !default;
 $radio-height: $radio-width !default;
 $radio-text-margin: 10px !default;
@@ -5128,6 +5100,34 @@ md-radio-group {
   md-radio-button.md-default-theme .md-on {
     background-color: #fff;
   }
+}
+
+$progress-circular-indeterminate-duration: 1568.63ms !default;
+
+@keyframes indeterminate-rotate {
+    0%       { transform: rotate(0deg); }
+    100%     { transform: rotate(360deg); }
+}
+
+// Used to avoid unnecessary layout
+md-progress-circular {
+    position: relative;
+    display: block;
+
+    &._md-progress-circular-disabled {
+        visibility: hidden;
+    }
+
+    &.md-mode-indeterminate svg {
+        animation: indeterminate-rotate $progress-circular-indeterminate-duration linear infinite;
+    }
+
+    svg {
+        position: absolute;
+        overflow: visible;
+        top: 0;
+        left: 0;
+    }
 }
 
 $sidenav-mobile-width: 320px !default;
@@ -6761,92 +6761,6 @@ md-toolbar {
 }
 
 
-$tooltip-fontsize-lg: 10px !default;
-$tooltip-fontsize-sm: 14px !default;
-$tooltip-height-lg: 22px !default;
-$tooltip-height-sm: 32px !default;
-$tooltip-top-margin-lg: 14px !default;
-$tooltip-top-margin-sm: 24px !default;
-$tooltip-lr-padding-lg: 8px !default;
-$tooltip-lr-padding-sm: 16px !default;
-$tooltip-max-width: 32px !default;
-
-.md-tooltip {
-  pointer-events: none;
-  border-radius: 4px;
-  overflow: hidden;
-  opacity: 0;
-  font-weight: 500;
-  font-size: $tooltip-fontsize-sm;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  height: $tooltip-height-sm;
-  line-height: $tooltip-height-sm;
-  padding-right: $tooltip-lr-padding-sm;
-  padding-left: $tooltip-lr-padding-sm;
-  &.md-origin-top {
-    transform-origin: center bottom;
-    margin-top: -$tooltip-top-margin-sm;
-  }
-  &.md-origin-right {
-    transform-origin: left center;
-    margin-left: $tooltip-top-margin-sm;
-  }
-  &.md-origin-bottom {
-    transform-origin: center top;
-    margin-top: $tooltip-top-margin-sm;
-  }
-  &.md-origin-left {
-    transform-origin: right center;
-    margin-left: -$tooltip-top-margin-sm;
-  }
-
-  @media (min-width: $layout-breakpoint-sm) {
-    font-size: $tooltip-fontsize-lg;
-    height: $tooltip-height-lg;
-    line-height: $tooltip-height-lg;
-    padding-right: $tooltip-lr-padding-lg;
-    padding-left: $tooltip-lr-padding-lg;
-    &.md-origin-top { margin-top: -$tooltip-top-margin-lg; }
-    &.md-origin-right { margin-left: $tooltip-top-margin-lg; }
-    &.md-origin-bottom { margin-top: $tooltip-top-margin-lg; }
-    &.md-origin-left { margin-left: -$tooltip-top-margin-lg; }
-  }
-
-  &.md-show-add {
-    transform: scale(0);
-  }
-  &.md-show {
-    transition: $swift-ease-out;
-    transition-duration: 150ms;
-    transform: scale(1);
-    opacity: 0.9;
-  }
-  &.md-hide {
-    transition: $swift-ease-in;
-    transition-duration: 150ms;
-    transform: scale(0);
-    opacity: 0;
-  }
-}
-
-.md-truncate {
-  overflow: hidden;
-  white-space: nowrap;
-
-  // Default overflow is ellipsis
-  text-overflow: ellipsis;
-
-  // Allow override to use clipping
-  &.md-clip {
-    text-overflow: clip;
-  }
-
-  // This is a flex-specific hack that forces the element to only take up available space.
-  &.flex {
-    width: 0;
-  }
-}
 $tabs-paginator-width: $baseline-grid * 4 !default;
 $tabs-tab-width: $baseline-grid * 12 !default;
 $tabs-header-height: 48px !default;
@@ -7144,6 +7058,92 @@ md-toolbar + md-tabs, md-toolbar + md-dialog-content md-tabs {
   border-top-right-radius: 0;
 }
 
+$tooltip-fontsize-lg: 10px !default;
+$tooltip-fontsize-sm: 14px !default;
+$tooltip-height-lg: 22px !default;
+$tooltip-height-sm: 32px !default;
+$tooltip-top-margin-lg: 14px !default;
+$tooltip-top-margin-sm: 24px !default;
+$tooltip-lr-padding-lg: 8px !default;
+$tooltip-lr-padding-sm: 16px !default;
+$tooltip-max-width: 32px !default;
+
+.md-tooltip {
+  pointer-events: none;
+  border-radius: 4px;
+  overflow: hidden;
+  opacity: 0;
+  font-weight: 500;
+  font-size: $tooltip-fontsize-sm;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  height: $tooltip-height-sm;
+  line-height: $tooltip-height-sm;
+  padding-right: $tooltip-lr-padding-sm;
+  padding-left: $tooltip-lr-padding-sm;
+  &.md-origin-top {
+    transform-origin: center bottom;
+    margin-top: -$tooltip-top-margin-sm;
+  }
+  &.md-origin-right {
+    transform-origin: left center;
+    margin-left: $tooltip-top-margin-sm;
+  }
+  &.md-origin-bottom {
+    transform-origin: center top;
+    margin-top: $tooltip-top-margin-sm;
+  }
+  &.md-origin-left {
+    transform-origin: right center;
+    margin-left: -$tooltip-top-margin-sm;
+  }
+
+  @media (min-width: $layout-breakpoint-sm) {
+    font-size: $tooltip-fontsize-lg;
+    height: $tooltip-height-lg;
+    line-height: $tooltip-height-lg;
+    padding-right: $tooltip-lr-padding-lg;
+    padding-left: $tooltip-lr-padding-lg;
+    &.md-origin-top { margin-top: -$tooltip-top-margin-lg; }
+    &.md-origin-right { margin-left: $tooltip-top-margin-lg; }
+    &.md-origin-bottom { margin-top: $tooltip-top-margin-lg; }
+    &.md-origin-left { margin-left: -$tooltip-top-margin-lg; }
+  }
+
+  &.md-show-add {
+    transform: scale(0);
+  }
+  &.md-show {
+    transition: $swift-ease-out;
+    transition-duration: 150ms;
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  &.md-hide {
+    transition: $swift-ease-in;
+    transition-duration: 150ms;
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.md-truncate {
+  overflow: hidden;
+  white-space: nowrap;
+
+  // Default overflow is ellipsis
+  text-overflow: ellipsis;
+
+  // Allow override to use clipping
+  &.md-clip {
+    text-overflow: clip;
+  }
+
+  // This is a flex-specific hack that forces the element to only take up available space.
+  &.flex {
+    width: 0;
+  }
+}
 $virtual-repeat-scrollbar-width: 16px !default;
 
 .md-virtual-repeat-container {
