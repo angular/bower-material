@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.4-master-e1345ae
+ * v1.1.4-master-2fc8733
  */
 .md-open-menu-container {
   position: fixed;
@@ -10,7 +10,9 @@
   top: 0;
   z-index: 100;
   opacity: 0;
-  border-radius: 2px; }
+  border-radius: 2px;
+  max-height: calc(100vh - 10px);
+  overflow: auto; }
   .md-open-menu-container md-menu-divider {
     margin-top: 4px;
     margin-bottom: 4px;
