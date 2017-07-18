@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.4-master-d3d0c5d
+ * v1.1.4-master-17f09dc
  */
 goog.provide('ngmaterial.components.swipe');
 goog.require('ngmaterial.core');
@@ -91,11 +91,8 @@ function getDirective(name) {
 
   /* ngInject */
   function DirectiveFactory($parse) {
-      return {restrict: 'A', link: postLink};
-
-    function postLink(scope, element, attr) {
-        element.css('touch-action', attr['mdSwipeTouchAction'] || 'none');
-
+      return { restrict: 'A', link: postLink };
+      function postLink(scope, element, attr) {
         var fn = $parse(attr[directiveName]);
         element.on(eventName, function(ev) {
           scope.$applyAsync(function() { fn(scope, { $event: ev }); });
