@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.4-master-c1b715f
+ * v1.1.4-master-590b684
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1296,7 +1296,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
           scrollMask.off('wheel');
           scrollMask.off('touchmove');
 
-          if (!options.disableScrollMask) {
+          if (!options.disableScrollMask && scrollMask[0].parentNode ) {
             scrollMask[0].parentNode.removeChild(scrollMask[0]);
           }
         };
@@ -36219,4 +36219,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.4-master-c1b715f"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.4-master-590b684"}};
