@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.4-master-75237c6
+ * v1.1.4-master-0151b4b
  */
 html, body {
   height: 100%;
@@ -2464,9 +2464,6 @@ md-input-container {
     clear: left; }
     [dir=rtl] md-input-container .md-input-messages-animation {
       clear: right; }
-    md-input-container .md-input-messages-animation.ng-enter .md-input-message-animation {
-      opacity: 0;
-      margin-top: -100px; }
   md-input-container .md-input-message-animation, md-input-container .md-char-counter {
     font-size: 12px;
     line-height: 14px;
@@ -2486,10 +2483,10 @@ md-input-container {
   md-input-container:not(.md-input-invalid) .md-auto-hide .md-input-message-animation {
     opacity: 0;
     margin-top: -100px; }
-  md-input-container .md-input-message-animation:not(.ng-animate) {
+  md-input-container .md-input-message-animation.ng-enter-prepare {
     opacity: 0;
     margin-top: -100px; }
-  md-input-container .md-input-message-animation.ng-enter {
+  md-input-container .md-input-message-animation.ng-enter:not(.ng-enter-active) {
     opacity: 0;
     margin-top: -100px; }
   md-input-container.md-input-focused label:not(.md-no-float), md-input-container.md-input-has-placeholder label:not(.md-no-float), md-input-container.md-input-has-value label:not(.md-no-float) {
