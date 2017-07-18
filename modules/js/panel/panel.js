@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.4-master-590b684
+ * v1.1.4-master-d3d0c5d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3081,7 +3081,7 @@ MdPanelPosition.prototype._constrainToViewport = function(panelEl) {
  */
 MdPanelPosition.prototype._reverseXPosition = function(position) {
   if (position === MdPanelPosition.xPosition.CENTER) {
-    return;
+    return position;
   }
 
   var start = 'start';
