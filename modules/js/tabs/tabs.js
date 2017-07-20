@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.4-master-2247248
+ * v1.1.4-master-bf6e567
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1005,6 +1005,9 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
     for (newIndex = index + inc;
          ctrl.tabs[ newIndex ] && ctrl.tabs[ newIndex ].scope.disabled;
          newIndex += inc) {}
+
+    newIndex = (index + inc + ctrl.tabs.length) % ctrl.tabs.length;
+
     if (ctrl.tabs[ newIndex ]) {
       ctrl[ key ] = newIndex;
     }
