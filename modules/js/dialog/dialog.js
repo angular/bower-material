@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.4-master-bf6e567
+ * v1.1.4-master-b084f3d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1161,7 +1161,9 @@ function MdDialogProvider($$interimElementProvider) {
           for (var i = 0; i < children.length; i++) {
             // skip over child if it is an ascendant of the dialog
             // or a script or style tag
-            if (element !== children[i] && !isNodeOneOf(children[i], ['SCRIPT', 'STYLE'])) {
+            if (element !== children[i] &&
+             !isNodeOneOf(children[i], ['SCRIPT', 'STYLE']) &&
+             !children[i].hasAttribute('aria-live')) {
               children[i].setAttribute('aria-hidden', isHidden);
             }
           }
