@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.4-master-fa997b9
+ * v1.1.4-master-baa869a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2832,20 +2832,9 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
         maxDistance: maxClickDistance
       },
       onEnd: function(ev, pointer) {
-        if (pointer.distance < this.state.options.maxDistance) {
-          if (canFocus(ev.target)) {
-            this.dispatchEvent(ev, 'focus', pointer);
-            ev.target.focus();
-          }
-        }
-
-        function canFocus(element) {
-          var focusableElements = ['INPUT', 'SELECT', 'BUTTON', 'TEXTAREA', 'VIDEO', 'AUDIO'];
-
-          return (element.getAttribute('tabindex') != '-1') &&
-              !element.hasAttribute('DISABLED') &&
-              (element.hasAttribute('tabindex') || element.hasAttribute('href') || element.isContentEditable ||
-              (focusableElements.indexOf(element.nodeName) != -1));
+        if (pointer.distance < this.state.options.maxDistance && canFocus(ev.target)) {
+          this.dispatchEvent(ev, 'focus', pointer);
+          ev.target.focus();
         }
       }
     });
@@ -3278,8 +3267,14 @@ function attachToDocument( $mdGesture, $$MdGestureHandler ) {
 
   function mouseInputHijacker(ev) {
     var isKeyClick = !ev.clientX && !ev.clientY;
-    if (!isKeyClick && !ev.$material && !ev.isIonicTap
-      && !isInputEventFromLabelClick(ev)) {
+
+    if (
+      !isKeyClick &&
+      !ev.$material &&
+      !ev.isIonicTap &&
+      !isInputEventFromLabelClick(ev) &&
+      (ev.type !== 'mousedown' || (!canFocus(ev.target) && !canFocus(document.activeElement)))
+    ) {
       ev.preventDefault();
       ev.stopPropagation();
     }
@@ -3472,6 +3467,21 @@ function getEventPoint(ev) {
   return (ev.touches && ev.touches[0]) ||
     (ev.changedTouches && ev.changedTouches[0]) ||
     ev;
+}
+
+/** Checks whether an element can be focused. */
+function canFocus(element) {
+  return (
+    !!element &&
+    element.getAttribute('tabindex') != '-1' &&
+    !element.hasAttribute('disabled') &&
+    (
+      element.hasAttribute('tabindex') ||
+      element.hasAttribute('href') ||
+      element.isContentEditable ||
+      ['INPUT', 'SELECT', 'BUTTON', 'TEXTAREA', 'VIDEO', 'AUDIO'].indexOf(element.nodeName) != -1
+    )
+  );
 }
 
 })();
@@ -36391,4 +36401,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.4-master-fa997b9"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.4-master-baa869a"}};
