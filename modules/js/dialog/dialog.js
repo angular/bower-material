@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.4-master-72f930b
+ * v1.1.4-master-fa997b9
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -589,7 +589,7 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
 
 function MdDialogProvider($$interimElementProvider) {
   // Elements to capture and redirect focus when the user presses tab at the dialog boundary.
-  advancedDialogOptions['$inject'] = ["$mdDialog", "$mdConstant"];
+  MdDialogController['$inject'] = ["$mdDialog", "$mdConstant"];
   dialogDefaultOptions['$inject'] = ["$mdDialog", "$mdAria", "$mdUtil", "$mdConstant", "$animate", "$document", "$window", "$rootElement", "$log", "$injector", "$mdTheming", "$interpolate", "$mdInteraction"];
   var topFocusTrap, bottomFocusTrap;
 
@@ -616,7 +616,7 @@ function MdDialogProvider($$interimElementProvider) {
     });
 
   /* ngInject */
-  function advancedDialogOptions($mdDialog, $mdConstant) {
+  function advancedDialogOptions() {
     return {
       template: [
         '<md-dialog md-theme="{{ dialog.theme || dialog.defaultTheme }}" aria-label="{{ dialog.ariaLabel }}" ng-class="dialog.css">',
@@ -644,27 +644,37 @@ function MdDialogProvider($$interimElementProvider) {
         '  </md-dialog-actions>',
         '</md-dialog>'
       ].join('').replace(/\s\s+/g, ''),
-      controller: function mdDialogCtrl() {
-        var isPrompt = this.$type == 'prompt';
-
-        if (isPrompt && this.initialValue) {
-          this.result = this.initialValue;
-        }
-
-        this.hide = function() {
-          $mdDialog.hide(isPrompt ? this.result : true);
-        };
-        this.abort = function() {
-          $mdDialog.cancel();
-        };
-        this.keypress = function($event) {
-          if ($event.keyCode === $mdConstant.KEY_CODE.ENTER) {
-            $mdDialog.hide(this.result);
-          }
-        };
-      },
+      controller: MdDialogController,
       controllerAs: 'dialog',
       bindToController: true,
+    };
+  }
+
+  /**
+   * Controller for the md-dialog interim elements
+   * ngInject
+   */
+  function MdDialogController($mdDialog, $mdConstant) {
+    // For compatibility with AngularJS 1.6+, we should always use the $onInit hook in
+    // interimElements. The $mdCompiler simulates the $onInit hook for all versions.
+    this.$onInit = function() {
+      var isPrompt = this.$type == 'prompt';
+
+      if (isPrompt && this.initialValue) {
+        this.result = this.initialValue;
+      }
+
+      this.hide = function() {
+        $mdDialog.hide(isPrompt ? this.result : true);
+      };
+      this.abort = function() {
+        $mdDialog.cancel();
+      };
+      this.keypress = function($event) {
+        if ($event.keyCode === $mdConstant.KEY_CODE.ENTER) {
+          $mdDialog.hide(this.result);
+        }
+      };
     };
   }
 
