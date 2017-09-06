@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.4-master-a7e9711
+ * v1.1.4-master-ec1e81b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2355,14 +2355,11 @@ function MdCompilerProvider($compileProvider) {
   var provider = this;
 
   /**
-   * @ngdoc method
    * @name  $mdCompilerProvider#respectPreAssignBindingsEnabled
    *
    * @param {boolean=} respected update the respectPreAssignBindingsEnabled state if provided, otherwise just return
    * the current Material preAssignBindingsEnabled state
    * @returns {*} current value if used as getter or itself (chaining) if used as setter
-   *
-   * @kind function
    *
    * @description
    * Call this method to enable/disable whether Material-specific (dialogs/toasts) controllers respect the AngularJS
@@ -2404,14 +2401,6 @@ function MdCompilerProvider($compileProvider) {
   };
 
   /**
-   * @ngdoc function
-   * @name  getPreAssignBindingsEnabled
-   * @private
-   *
-   * @returns {*} current preAssignBindingsEnabled state
-   *
-   * @kind function
-   *
    * @description
    * This function returns `true` if Material-specific (dialogs/toasts) controllers have bindings pre-assigned in
    * controller constructors and `false` otherwise.
@@ -2419,6 +2408,8 @@ function MdCompilerProvider($compileProvider) {
    * Note that this doesn't affect directives/components created via regular AngularJS methods which constitute most
    * Material & user-created components; their behavior can be checked via `$compileProvider.preAssignBindingsEnabled()`
    * in AngularJS `>=1.5.10 <1.7.0`.
+   *
+   * @returns {*} current preAssignBindingsEnabled state
    */
   function getPreAssignBindingsEnabled() {
     if (!respectPreAssignBindingsEnabled) {
@@ -2522,7 +2513,6 @@ function MdCompilerProvider($compileProvider) {
    * Instead of compiling any template, the compiler just fetches an existing HTML element from the DOM and
    * provides a restore function to put the element back it old DOM position.
    * @param {!Object} options Options to be used for the compiler.
-   * @private
    */
   MdCompilerService.prototype._prepareContentElement = function(options) {
 
@@ -2543,7 +2533,6 @@ function MdCompilerProvider($compileProvider) {
    * Compiles a template by considering all options and waiting for all resolves to be ready.
    * @param {!Object} options Compile options
    * @returns {!Object} Compile data with link function.
-   * @private
    */
   MdCompilerService.prototype._compileTemplate = function(options) {
 
@@ -2593,7 +2582,6 @@ function MdCompilerProvider($compileProvider) {
    * @param {!JQLite} element Element to be compiled and linked
    * @param {!Object} options Options to be used for linking.
    * @returns {!Object} Compile data with link function.
-   * @private
    */
   MdCompilerService.prototype._compileElement = function(locals, element, options) {
     var self = this;
@@ -2641,7 +2629,6 @@ function MdCompilerProvider($compileProvider) {
    * @param {!Object} injectLocals Locals to to be provided in the controller DI.
    * @param {!Object} locals Locals to be injected to the controller.
    * @returns {!Object} Created controller instance.
-   * @private
    */
   MdCompilerService.prototype._createController = function(options, injectLocals, locals) {
     var invokeCtrl = this.$controller(options.controller, injectLocals, true, options.controllerAs);
@@ -2668,7 +2655,6 @@ function MdCompilerProvider($compileProvider) {
    * Elements which were fetched will be restored after use.
    * @param {!Object} options Options to be used for the compilation.
    * @returns {{element: !JQLite, restore: !Function}}
-   * @private
    */
   MdCompilerService.prototype._fetchContentElement = function(options) {
 
@@ -36401,4 +36387,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.4-master-a7e9711"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.4-master-ec1e81b"}};
