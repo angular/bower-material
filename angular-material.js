@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.5-master-5e907b3
+ * v1.1.5-master-3b59b20
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -19242,7 +19242,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
     }
 
     if (attr.name) {
-      var autofillClone = angular.element('<select class="md-visually-hidden">');
+      var autofillClone = angular.element('<select class="md-visually-hidden"></select>');
       autofillClone.attr({
         'name': attr.name,
         'aria-hidden': 'true',
@@ -36387,4 +36387,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.5-master-5e907b3"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.5-master-3b59b20"}};
