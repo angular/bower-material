@@ -1322,13 +1322,14 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
         // scrollElement will allow to restore the scrollTop position to proper target.
         var scrollElement = documentElement.scrollTop > 0 ? documentElement : body;
 
-        if (hasVerticalScrollbar) {
-          angular.element(body).css({
-            position: 'fixed',
-            width: '100%',
-            top: -viewportTop + 'px'
-          });
-        }
+        //POP-1903 no need to update body css
+        //if (hasVerticalScrollbar) {
+        //  angular.element(body).css({
+        //    position: 'fixed',
+        //    width: '100%',
+        //    top: -viewportTop + 'px'
+        //  });
+        //}
 
         if (body.clientWidth < clientWidth) {
           body.style.overflow = 'hidden';
@@ -1343,11 +1344,13 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
         return function restoreScroll() {
           // Reset the inline style CSS to the previous.
-          body.style.cssText = prevBodyStyle;
-          documentElement.style.cssText = prevDocumentStyle;
+
+            // POP-1903 Disabled going previous style
+          // body.style.cssText = prevBodyStyle;
+          // documentElement.style.cssText = prevDocumentStyle;
 
           // The scroll position while being fixed
-          scrollElement.scrollTop = viewportTop;
+          // scrollElement.scrollTop = viewportTop;
         };
       }
 
