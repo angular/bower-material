@@ -1319,7 +1319,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
         // Scroll may be set on <html> element (for example by overflow-y: scroll)
         // but Chrome is reporting the scrollTop position always on <body>.
-        // scrollElement will allow to restore the scrollTop position to proper target.
+        // scrollElement will allow to restore the scrollTop position to proper target..
         var scrollElement = documentElement.scrollTop > 0 ? documentElement : body;
 
         //POP-1903 no need to update body css
