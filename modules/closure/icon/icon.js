@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.5-master-f1e4fcb
+ * v1.1.5-master-d9eb909
  */
 goog.provide('ngmaterial.components.icon');
 goog.require('ngmaterial.core');
@@ -713,8 +713,8 @@ function ConfigurationItem(url, viewBoxSize) {
 function MdIconService(config, $templateRequest, $q, $log, $mdUtil, $sce) {
   var iconCache = {};
   var svgCache = {};
-  var urlRegex = /[-\w@:%\+.~#?&//=]{2,}\.[a-z]{2,4}\b(\/[-\w@:%\+.~#?&//=]*)?/i;
-  var dataUrlRegex = /^data:image\/svg\+xml[\s*;\w\-\=]*?(base64)?,(.*)$/i;
+  var urlRegex = /[-\w@:%+.~#?&//=]{2,}\.[a-z]{2,4}\b(\/[-\w@:%+.~#?&//=]*)?/i;
+  var dataUrlRegex = /^data:image\/svg\+xml[\s*;\w\-=]*?(base64)?,(.*)$/i;
 
   Icon.prototype = {clone: cloneSVG, prepare: prepareAndStyle};
   getIcon.fontSet = findRegisteredFontSet;

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.5-master-f1e4fcb
+ * v1.1.5-master-d9eb909
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1724,7 +1724,7 @@ angular.module('material.components.datepicker', [
 
         // Looks for three chunks of content (either numbers or text) separated
         // by delimiters.
-        var re = /^(([a-zA-Z]{3,}|[0-9]{1,4})([ \.,]+|[\/\-])){2}([a-zA-Z]{3,}|[0-9]{1,4})$/;
+        var re = /^(([a-zA-Z]{3,}|[0-9]{1,4})([ .,]+|[/-])){2}([a-zA-Z]{3,}|[0-9]{1,4})$/;
         return re.test(dateString);
       }
 

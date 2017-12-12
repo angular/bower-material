@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.5-master-f1e4fcb
+ * v1.1.5-master-d9eb909
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -319,7 +319,7 @@ function ColorUtilFactory() {
    */
   function rgbaToRgb (color) {
     return color
-      ? color.replace('rgba', 'rgb').replace(/,[^\),]+\)/, ')')
+      ? color.replace('rgba', 'rgb').replace(/,[^),]+\)/, ')')
       : 'rgb(0,0,0)';
   }
 
@@ -1412,7 +1412,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      * be property names, property chains, or array indices.
      */
     supplant: function(template, values, pattern) {
-      pattern = pattern || /\{([^\{\}]*)\}/g;
+      pattern = pattern || /\{([^{}]*)\}/g;
       return template.replace(pattern, function(a, b) {
         var p = b.split('.'),
           r = values;
@@ -1632,7 +1632,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
        * Breadth-First tree scan for element with matching `nodeName`
        */
       function scanTree(element) {
-        return scanLevel(element) || (!!scanDeep ? scanChildren(element) : null);
+        return scanLevel(element) || (scanDeep ? scanChildren(element) : null);
       }
 
       /**
@@ -4471,8 +4471,8 @@ function InterimElementProvider() {
    *  ```
    */
   function registerLayoutAPI(module){
-    var PREFIX_REGEXP = /^((?:x|data)[\:\-_])/i;
-    var SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
+    var PREFIX_REGEXP = /^((?:x|data)[:\-_])/i;
+    var SPECIAL_CHARS_REGEXP = /([:\-_]+(.))/g;
 
     // NOTE: these are also defined in constants::MEDIA_PRIORITY and constants::MEDIA
     var BREAKPOINTS     = [ "", "xs", "gt-xs", "sm", "gt-sm", "md", "gt-md", "lg", "gt-lg", "xl", "print" ];
@@ -4839,7 +4839,6 @@ function InterimElementProvider() {
         case 'layout-margin'  :
         case 'layout-fill'    :
         case 'layout-wrap'    :
-        case 'layout-nowrap'  :
         case 'layout-nowrap' :
           value = '';
           break;
@@ -6795,6 +6794,7 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
 
       self[colorType + 'Color'] = function() {
         var args = Array.prototype.slice.call(arguments);
+        // eslint-disable-next-line no-console
         console.warn('$mdThemingProviderTheme.' + colorType + 'Color() has been deprecated. ' +
                      'Use $mdThemingProviderTheme.' + colorType + 'Palette() instead.');
         return self[colorType + 'Palette'].apply(self, args);
@@ -7166,7 +7166,7 @@ function parseRules(theme, colorType, rules) {
 
   rules = rules.replace(/THEME_NAME/g, theme.name);
   var themeNameRegex = new RegExp('\\.md-' + theme.name + '-theme', 'g');
-  var simpleVariableRegex = /'?"?\{\{\s*([a-zA-Z]+)-(A?\d+|hue\-[0-3]|shadow|default)-?(\d\.?\d*)?(contrast)?\s*\}\}'?"?/g;
+  var simpleVariableRegex = /'?"?\{\{\s*([a-zA-Z]+)-(A?\d+|hue-[0-3]|shadow|default)-?(\d\.?\d*)?(contrast)?\s*\}\}'?"?/g;
 
   // find and replace simple variables where we use a specific hue, not an entire palette
   // eg. "{{primary-100}}"
@@ -7190,7 +7190,7 @@ function parseRules(theme, colorType, rules) {
   });
 
   // Matches '{{ primary-color }}', etc
-  var hueRegex = new RegExp('(\'|")?{{\\s*([a-zA-Z]+)-(color|contrast)-?(\\d\\.?\\d*)?\\s*}}(\"|\')?','g');
+  var hueRegex = new RegExp('(\'|")?{{\\s*([a-zA-Z]+)-(color|contrast)-?(\\d\\.?\\d*)?\\s*}}("|\')?','g');
   var generatedRules = [];
 
   // For each type, generate rules for each hue (ie. default, md-hue-1, md-hue-2, md-hue-3)
@@ -10445,7 +10445,7 @@ function MdDialogProvider($$interimElementProvider) {
 
       // For navigation $destroy events, do a quick, non-animated removal,
       // but for normal closes (from clicks, etc) animate the removal
-      return !!options.$destroy ? detachAndClean() : animateRemoval().then( detachAndClean );
+      return options.$destroy ? detachAndClean() : animateRemoval().then( detachAndClean );
 
       /**
        * For normal closes, animate the removal.
@@ -10680,7 +10680,7 @@ function MdDialogProvider($$interimElementProvider) {
        */
       options.hideBackdrop = function hideBackdrop($destroy) {
         if (options.backdrop) {
-          if ( !!$destroy ) options.backdrop.remove();
+          if ( $destroy ) options.backdrop.remove();
           else              $animate.leave(options.backdrop);
         }
 
@@ -12118,10 +12118,10 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
           var vGutterShare = (rowCount - 1) / rowCount;
 
           // Percent of the available vertical space that one row takes up.
-          var vShare = (1 / rowCount) * 100;
+          vShare = (1 / rowCount) * 100;
 
           // Base vertical size of a row.
-          var vUnit = UNIT({share: vShare, gutterShare: vGutterShare, gutter: gutter});
+          vUnit = UNIT({share: vShare, gutterShare: vGutterShare, gutter: gutter});
 
           style.top = POSITION({unit: vUnit, offset: position.row, gutter: gutter});
           style.height = DIMENSION({unit: vUnit, span: spans.row, gutter: gutter});
@@ -26925,12 +26925,12 @@ MdHighlightCtrl.prototype.createRegex = function(term, flags) {
   if (flags.indexOf('^') >= 0) startFlag = '^';
   if (flags.indexOf('$') >= 0) endFlag = '$';
 
-  return new RegExp(startFlag + regexTerm + endFlag, flags.replace(/[$\^]/g, ''));
+  return new RegExp(startFlag + regexTerm + endFlag, flags.replace(/[$^]/g, ''));
 };
 
 /** Sanitizes a regex by removing all common RegExp identifiers */
 MdHighlightCtrl.prototype.sanitizeRegex = function(term) {
-  return term && term.toString().replace(/[\\\^\$\*\+\?\.\(\)\|\{}\[\]]/g, '\\$&');
+  return term && term.toString().replace(/[\\^$*+?.()|{}[\]]/g, '\\$&');
 };
 
 })();
@@ -30527,7 +30527,7 @@ function MdContactChips($mdTheming, $mdUtil) {
 
         // Looks for three chunks of content (either numbers or text) separated
         // by delimiters.
-        var re = /^(([a-zA-Z]{3,}|[0-9]{1,4})([ \.,]+|[\/\-])){2}([a-zA-Z]{3,}|[0-9]{1,4})$/;
+        var re = /^(([a-zA-Z]{3,}|[0-9]{1,4})([ .,]+|[/-])){2}([a-zA-Z]{3,}|[0-9]{1,4})$/;
         return re.test(dateString);
       }
 
@@ -32572,8 +32572,8 @@ function ConfigurationItem(url, viewBoxSize) {
 function MdIconService(config, $templateRequest, $q, $log, $mdUtil, $sce) {
   var iconCache = {};
   var svgCache = {};
-  var urlRegex = /[-\w@:%\+.~#?&//=]{2,}\.[a-z]{2,4}\b(\/[-\w@:%\+.~#?&//=]*)?/i;
-  var dataUrlRegex = /^data:image\/svg\+xml[\s*;\w\-\=]*?(base64)?,(.*)$/i;
+  var urlRegex = /[-\w@:%+.~#?&//=]{2,}\.[a-z]{2,4}\b(\/[-\w@:%+.~#?&//=]*)?/i;
+  var dataUrlRegex = /^data:image\/svg\+xml[\s*;\w\-=]*?(base64)?,(.*)$/i;
 
   Icon.prototype = {clone: cloneSVG, prepare: prepareAndStyle};
   getIcon.fontSet = findRegisteredFontSet;
@@ -35815,7 +35815,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
         index = ctrl[ key ];
     for (newIndex = index + inc;
          ctrl.tabs[ newIndex ] && ctrl.tabs[ newIndex ].scope.disabled;
-         newIndex += inc) {}
+         newIndex += inc) { /* do nothing */ }
 
     newIndex = (index + inc + ctrl.tabs.length) % ctrl.tabs.length;
 
@@ -36387,4 +36387,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.5-master-f1e4fcb"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.5-master-d9eb909"}};

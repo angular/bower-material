@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.5-master-f1e4fcb
+ * v1.1.5-master-d9eb909
  */
 goog.provide('ngmaterial.components.autocomplete');
 goog.require('ngmaterial.components.icon');
@@ -1638,12 +1638,12 @@ MdHighlightCtrl.prototype.createRegex = function(term, flags) {
   if (flags.indexOf('^') >= 0) startFlag = '^';
   if (flags.indexOf('$') >= 0) endFlag = '$';
 
-  return new RegExp(startFlag + regexTerm + endFlag, flags.replace(/[$\^]/g, ''));
+  return new RegExp(startFlag + regexTerm + endFlag, flags.replace(/[$^]/g, ''));
 };
 
 /** Sanitizes a regex by removing all common RegExp identifiers */
 MdHighlightCtrl.prototype.sanitizeRegex = function(term) {
-  return term && term.toString().replace(/[\\\^\$\*\+\?\.\(\)\|\{}\[\]]/g, '\\$&');
+  return term && term.toString().replace(/[\\^$*+?.()|{}[\]]/g, '\\$&');
 };
 
 
