@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.5-master-bbb719d
+ * v1.1.5-master-a91c99a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -24175,9 +24175,7 @@ function MdTruncateDirective() {
   return {
     restrict: 'AE',
 
-    controller: MdTruncateController,
-    controllerAs: '$ctrl',
-    bindToController: true
+    controller: MdTruncateController
   }
 }
 
@@ -36393,4 +36391,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.5-master-bbb719d"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.5-master-a91c99a"}};
