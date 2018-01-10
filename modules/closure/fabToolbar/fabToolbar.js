@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.5-master-f3a54fc
+ * v1.1.5-master-6b44ffc
  */
 goog.provide('ngmaterial.components.fabToolbar');
 goog.require('ngmaterial.components.fabActions');
