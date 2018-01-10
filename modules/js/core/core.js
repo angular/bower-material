@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.5-master-d9eb909
+ * v1.1.5-master-43474a1
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2226,12 +2226,6 @@ angular
   .module('material.core')
   .provider('$mdCompiler', MdCompilerProvider);
 
-/**
- * @ngdoc provider
- * @name $mdCompilerProvider
- *
- * @description
- */
 /**
  * @ngdoc service
  * @name $mdCompiler

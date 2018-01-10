@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.5-master-d9eb909
+ * v1.1.5-master-43474a1
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2270,12 +2270,6 @@ angular
   .module('material.core')
   .provider('$mdCompiler', MdCompilerProvider);
 
-/**
- * @ngdoc provider
- * @name $mdCompilerProvider
- *
- * @description
- */
 /**
  * @ngdoc service
  * @name $mdCompiler
@@ -14339,7 +14333,7 @@ angular.module('material.components.navBar', ['material.core'])
  * body and no bar pagination.
  *
  * Because it deals with page navigation, certain routing concepts are built-in.
- * Route changes via via ng-href, ui-sref, or ng-click events are supported.
+ * Route changes via ng-href, ui-sref, or ng-click events are supported.
  * Alternatively, the user could simply watch currentNavItem for changes.
  *
  * Accessibility functionality is implemented as a site navigator with a
@@ -31951,7 +31945,7 @@ angular
  *
  * ### Localization
  *
- * Because an `md-icon` element's text content is not intended to translated, it is recommended to declare the text
+ * Because an `md-icon` element's text content is not intended to be translated, it is recommended to declare the text
  * content for an `md-icon` element in its start tag. Instead of using the HTML text content, consider using `ng-bind`
  * with a scope variable or literal string.
  *
@@ -36387,4 +36381,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.5-master-d9eb909"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.5-master-43474a1"}};
