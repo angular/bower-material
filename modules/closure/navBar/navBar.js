@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.6-master-cc73422
+ * v1.1.6-master-1553a2f
  */
 goog.provide('ngmaterial.components.navBar');
 goog.require('ngmaterial.core');
