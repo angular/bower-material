@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.6-master-f8289dc
+ * v1.1.6-master-27d0f7c
  */
 goog.provide('ngmaterial.components.panel');
 goog.require('ngmaterial.components.backdrop');
@@ -3112,8 +3112,8 @@ MdPanelPosition.prototype._bidi = function(position) {
 MdPanelPosition.prototype._calculatePanelPosition = function(panelEl, position) {
 
   var panelBounds = panelEl[0].getBoundingClientRect();
-  var panelWidth = panelBounds.width;
-  var panelHeight = panelBounds.height;
+  var panelWidth = Math.max(panelBounds.width, panelEl[0].clientWidth);
+  var panelHeight = Math.max(panelBounds.height, panelEl[0].clientHeight);
 
   var targetBounds = this._relativeToEl[0].getBoundingClientRect();
 
