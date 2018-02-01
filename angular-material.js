@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.6-master-15a8410
+ * v1.1.6-master-827990e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -22434,9 +22434,15 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil, $mdAria)
  * The md-swipe-left directive allows you to specify custom behavior when an element is swiped
  * left.
  *
+ * ### Notes
+ * - The `$event.currentTarget` of the swiped element will be `null`, but you can get a
+ * reference to the element that actually holds the `md-swipe-left` directive by using `$target.current`
+ *
+ * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer Tools console while swiping).
+ *
  * @usage
  * <hljs lang="html">
- * <div md-swipe-left="onSwipeLeft()">Swipe me left!</div>
+ * <div md-swipe-left="onSwipeLeft($event, $target)">Swipe me left!</div>
  * </hljs>
  */
 /**
@@ -22450,9 +22456,15 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil, $mdAria)
  * The md-swipe-right directive allows you to specify custom behavior when an element is swiped
  * right.
  *
+ * ### Notes
+ * - The `$event.currentTarget` of the swiped element will be `null`, but you can get a
+ * reference to the element that actually holds the `md-swipe-right` directive by using `$target.current`
+ *
+ * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer Tools console while swiping).
+ *
  * @usage
  * <hljs lang="html">
- * <div md-swipe-right="onSwipeRight()">Swipe me right!</div>
+ * <div md-swipe-right="onSwipeRight($event, $target)">Swipe me right!</div>
  * </hljs>
  */
 /**
@@ -22466,9 +22478,15 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil, $mdAria)
  * The md-swipe-up directive allows you to specify custom behavior when an element is swiped
  * up.
  *
+ * ### Notes
+ * - The `$event.currentTarget` of the swiped element will be `null`, but you can get a
+ * reference to the element that actually holds the `md-swipe-up` directive by using `$target.current`
+ *
+ * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer Tools console while swiping).
+ *
  * @usage
  * <hljs lang="html">
- * <div md-swipe-up="onSwipeUp()">Swipe me up!</div>
+ * <div md-swipe-up="onSwipeUp($event, $target)">Swipe me up!</div>
  * </hljs>
  */
 /**
@@ -22482,9 +22500,15 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil, $mdAria)
  * The md-swipe-down directive allows you to specify custom behavior when an element is swiped
  * down.
  *
+ * ### Notes
+ * - The `$event.currentTarget` of the swiped element will be `null`, but you can get a
+ * reference to the element that actually holds the `md-swipe-down` directive by using `$target.current`
+ *
+ * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer Tools console while swiping).
+ *
  * @usage
  * <hljs lang="html">
- * <div md-swipe-down="onSwipDown()">Swipe me down!</div>
+ * <div md-swipe-down="onSwipDown($event, $target)">Swipe me down!</div>
  * </hljs>
  */
 
@@ -22507,7 +22531,8 @@ function getDirective(name) {
       function postLink(scope, element, attr) {
         var fn = $parse(attr[directiveName]);
         element.on(eventName, function(ev) {
-          scope.$applyAsync(function() { fn(scope, { $event: ev }); });
+          var currentTarget = ev.currentTarget;
+          scope.$applyAsync(function() { fn(scope, { $event: ev, $target: { current: currentTarget } }); });
         });
       }
     }
@@ -31427,18 +31452,22 @@ function MdContactChips($mdTheming, $mdUtil) {
 
     // Responds to external changes to the model value.
     self.ngModelCtrl.$formatters.push(function(value) {
-      var parsedValue = angular.isDefined(value) ? Date.parse(value) : null;
+      var parsedValue = angular.isDefined(value) ? value : null;
 
-      // `parsedValue` is the time since epoch if valid or `NaN` if invalid.
-      if (!isNaN(parsedValue) && angular.isNumber(parsedValue)) {
-        value = new Date(parsedValue);
-      }
+      if (!(value instanceof Date)) {
+        parsedValue = Date.parse(value);
 
-      if (value && !(value instanceof Date)) {
-        throw Error(
-          'The ng-model for md-datepicker must be a Date instance or a value ' +
-          'that can be parsed into a date. Currently the model is of type: ' + typeof value
-        );
+        // `parsedValue` is the time since epoch if valid or `NaN` if invalid.
+        if (!isNaN(parsedValue) && angular.isNumber(parsedValue)) {
+          value = new Date(parsedValue);
+        }
+
+        if (value && !(value instanceof Date)) {
+          throw Error(
+            'The ng-model for md-datepicker must be a Date instance or a value ' +
+              'that can be parsed into a date. Currently the model is of type: ' + typeof value
+          );
+        }
       }
 
       self.onExternalChange(value);
@@ -36425,4 +36454,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.6-master-15a8410"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.6-master-827990e"}};
