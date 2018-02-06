@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.6-master-b4b9369
+ * v1.1.6-master-89bd69b
  */
 goog.provide('ngmaterial.components.tooltip');
 goog.require('ngmaterial.components.panel');
@@ -397,11 +397,14 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $interpolate,
           attachTo: attachTo,
           contentElement: element,
           propagateContainerEvents: true,
-          panelClass: 'md-tooltip ' + origin,
+          panelClass: 'md-tooltip',
           animation: panelAnimation,
           position: panelPosition,
           zIndex: scope.mdZIndex,
-          focusOnOpen: false
+          focusOnOpen: false,
+          onDomAdded: function() {
+            panelRef.panelEl.addClass(origin);
+          }
         };
 
         panelRef = $mdPanel.create(panelConfig);
