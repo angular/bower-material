@@ -16,7 +16,7 @@ Included in this repository are the:
 
 You can install this package locally either with `npm`, `jspm`, or `bower` (deprecated). 
 
-> Please note that AngularJS Material requires **AngularJS 1.3.x** to **AngularJS 1.6.x**. 
+> Please note that AngularJS Material requires **AngularJS 1.4.x** to **AngularJS 1.6.x**. 
 
 ### npm
 
@@ -36,8 +36,8 @@ npm install http://github.com/angular/bower-material#master --save
 #      "angular-material": "git+ssh://git@github.com/angular/bower-material.git#master"
 
 
-# To install a v1.1.0-rc2 version 
-npm install http://github.com/angular/bower-material/tarball/v1.1.0-rc2 --save
+# To install a v1.1.6 version 
+npm install http://github.com/angular/bower-material/tarball/v1.1.6 --save
 
 # To view all installed package 
 npm list;
@@ -77,8 +77,8 @@ bower update
 ## Using the AngularJS Material Library
 
 Now that you have installed the AngularJS libraries, simply include the scripts and 
-stylesheet in your main HTML file, in the order shown in the example below. Note that npm 
-will install the files under `/node_modules/angular-material/` and bower will install them 
+stylesheet in your main HTML file, in the order shown in the example below. Note that NPM 
+will install the files under `/node_modules/angular-material/` and Bower will install them 
 under `/bower_components/angular-material/`.
 
 ### npm
@@ -91,7 +91,6 @@ under `/bower_components/angular-material/`.
     <link rel="stylesheet" href="/node_modules/angular-material/angular-material.css">
 </head>
 	<body ng-app="YourApp">
-
 	<div ng-controller="YourController">
 
 	</div>
@@ -99,16 +98,13 @@ under `/bower_components/angular-material/`.
 	<script src="/node_modules/angular/angular.js"></script>
 	<script src="/node_modules/angular-aria/angular-aria.js"></script>
 	<script src="/node_modules/angular-animate/angular-animate.js"></script>
+	<script src="/node_modules/angular-messages/angular-messages.js"></script>
 	<script src="/node_modules/angular-material/angular-material.js"></script>
 	<script>
-
 		// Include app dependency on ngMaterial
-
-		angular.module( 'YourApp', [ 'ngMaterial' ] )
+		angular.module( 'YourApp', [ 'ngMaterial', 'ngMessages' ] )
 			.controller("YourController", YourController );
-
 	</script>
-
 </body>
 </html>
 ```
@@ -123,7 +119,6 @@ under `/bower_components/angular-material/`.
     <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
 </head>
 	<body ng-app="YourApp">
-
 	<div ng-controller="YourController">
 
 	</div>
@@ -131,50 +126,42 @@ under `/bower_components/angular-material/`.
 	<script src="/bower_components/angular/angular.js"></script>
 	<script src="/bower_components/angular-aria/angular-aria.js"></script>
 	<script src="/bower_components/angular-animate/angular-animate.js"></script>
+	<script src="/bower_components/angular-messages/angular-messages.js"></script>
 	<script src="/bower_components/angular-material/angular-material.js"></script>
 	<script>
-
 		// Include app dependency on ngMaterial
-
-		angular.module( 'YourApp', [ 'ngMaterial' ] )
+		angular.module( 'YourApp', [ 'ngMaterial', 'ngMessages' ] )
 			.controller("YourController", YourController );
-
 	</script>
-
 </body>
 </html>
 ```
 
 ## Using the CDN
 
-CDN versions of Angular Material are now available at 
-[Google Hosted Libraries](https://developers.google.com/speed/libraries/devguide#angularmaterial). 
-
 With the Google CDN, you will not need to download local copies of the distribution files.
 Instead simply reference the CDN urls to easily use those remote library files. 
-This is especially useful when using online tools such as CodePen, Plunkr, or jsFiddle.
+This is especially useful when using online tools such as CodePen, Plunker, or jsFiddle.
 
 ```html
-  <head>
+<head>
+    <!-- Angular Material CSS now available via Google CDN; version 1.1.6 used here -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.6/angular-material.min.css">
+</head>
+<body>
 
-    <!-- Angular Material CSS now available via Google CDN; version 0.9.4 used here -->
-    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
-
-  </head>
-  <body>
-  
     <!-- Angular Material Dependencies -->
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular-messages.min.js"></script>
     
-    <!-- Angular Material Javascript now available via Google CDN; version 0.9.4 used here -->
-    <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
-    
-  </body>
+    <!-- Angular Material Javascript now available via Google CDN; version 1.1.6 used here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.6/angular-material.min.js"></script>
+</body>
 ```
 
-> Note that the above sample references the 0.9.4 CDN release. Your version will change 
+> Note that the above sample references the 1.1.6 CDN release. Your version will change 
 based on the latest stable release version.
 
 ## Unit Testing with Angular Material
@@ -223,7 +210,5 @@ module.exports = function(config) {
     browsers: ['PhantomJS,Chrome']
 
   });
-
 };
 ```
-
