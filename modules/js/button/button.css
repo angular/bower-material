@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.7-master-0d276f3
+ * v1.1.7-master-0f15e39
  */
 button.md-button::-moz-focus-inner {
   border: 0; }
@@ -77,11 +77,6 @@ button.md-button::-moz-focus-inner {
     padding: 8px;
     width: 40px;
     border-radius: 50%; }
-    .md-button.md-icon-button .md-ripple-container {
-      border-radius: 50%;
-      background-clip: padding-box;
-      overflow: hidden;
-      -webkit-mask-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC"); }
   .md-button.md-fab {
     z-index: 20;
     line-height: 56px;
@@ -123,11 +118,6 @@ button.md-button::-moz-focus-inner {
       bottom: auto;
       left: 20px;
       position: absolute; }
-    .md-button.md-fab .md-ripple-container {
-      border-radius: 50%;
-      background-clip: padding-box;
-      overflow: hidden;
-      -webkit-mask-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC"); }
     .md-button.md-fab.md-mini {
       line-height: 40px;
       width: 40px;
@@ -140,10 +130,10 @@ button.md-button::-moz-focus-inner {
   .md-button:not([disabled]).md-raised:active, .md-button:not([disabled]).md-fab:active {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4); }
   .md-button .md-ripple-container {
-    border-radius: 2px;
+    border-radius: inherit;
     background-clip: padding-box;
     overflow: hidden;
-    -webkit-mask-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC"); }
+    -webkit-transform: translateZ(0); }
 
 .md-button.md-icon-button md-icon,
 button.md-button.md-fab md-icon {
