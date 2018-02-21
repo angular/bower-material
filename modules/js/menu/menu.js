@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.7-master-7e5b7f4
+ * v1.1.7-master-60e2393
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -447,8 +447,6 @@ function MenuDirective($mdUtil) {
     templateElement.addClass('md-menu');
 
     var triggerEl = templateElement.children()[0];
-    var contentEl = templateElement.children()[1];
-
     var prefixer = $mdUtil.prefixer();
 
     if (!prefixer.hasAttribute(triggerEl, 'ng-click')) {
@@ -466,8 +464,8 @@ function MenuDirective($mdUtil) {
       throw Error(INVALID_PREFIX + 'Expected the menu to have a trigger element.');
     }
 
-    if (!contentEl || contentEl.nodeName !== 'MD-MENU-CONTENT') {
-      throw Error(INVALID_PREFIX + 'Expected the menu to contain a `md-menu-content` element.');
+    if (templateElement.children().length !== 2) {
+      throw Error(INVALID_PREFIX + 'Expected two children elements. The second element must have a `md-menu-content` element.');
     }
 
     // Default element for ARIA attributes has the ngClick or ngMouseenter expression
