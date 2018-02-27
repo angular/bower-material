@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.7-master-60e2393
+ * v1.1.7-master-c5ec316
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -16,7 +16,7 @@ inputTextareaDirective['$inject'] = ["$mdUtil", "$window", "$mdAria", "$timeout"
 mdMaxlengthDirective['$inject'] = ["$animate", "$mdUtil"];
 placeholderDirective['$inject'] = ["$compile"];
 ngMessageDirective['$inject'] = ["$mdUtil"];
-mdSelectOnFocusDirective['$inject'] = ["$timeout"];
+mdSelectOnFocusDirective['$inject'] = ["$document", "$timeout"];
 mdInputInvalidMessagesAnimation['$inject'] = ["$$AnimateRunner", "$animateCss", "$mdUtil", "$log"];
 ngMessagesAnimation['$inject'] = ["$$AnimateRunner", "$animateCss", "$mdUtil", "$log"];
 ngMessageAnimation['$inject'] = ["$$AnimateRunner", "$animateCss", "$mdUtil", "$log"];
@@ -795,7 +795,7 @@ function placeholderDirective($compile) {
  *
  * </hljs>
  */
-function mdSelectOnFocusDirective($timeout) {
+function mdSelectOnFocusDirective($document, $timeout) {
 
   return {
     restrict: 'A',
@@ -821,9 +821,14 @@ function mdSelectOnFocusDirective($timeout) {
       preventMouseUp = true;
 
       $timeout(function() {
+
         // Use HTMLInputElement#select to fix firefox select issues.
         // The debounce is here for Edge's sake, otherwise the selection doesn't work.
-        element[0].select();
+        // Since focus may already have been lost on the input (and because `select()`
+        // will re-focus), make sure the element is still active before applying.
+        if($document[0].activeElement === element[0]) {
+          element[0].select();
+        }
 
         // This should be reset from inside the `focus`, because the event might
         // have originated from something different than a click, e.g. a keyboard event.
