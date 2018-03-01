@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.7-master-c5ec316
+ * v1.1.7-master-c638bd6
  */
 goog.provide('ngmaterial.components.virtualRepeat');
 goog.require('ngmaterial.components.showHide');
@@ -41,9 +41,8 @@ angular.module('material.components.virtualRepeat', [
  *
  * - When having one-time bindings inside of the view template, the VirtualRepeat will not properly
  *   update the bindings for new items, since the view will be recycled.
- *
  * - Directives inside of a VirtualRepeat will be only compiled (linked) once, because those
- *   are will be recycled items and used for other items.
+ *   items will be recycled and used for other items.
  *   The VirtualRepeat just updates the scope bindings.
  *
  *
@@ -67,7 +66,7 @@ angular.module('material.components.virtualRepeat', [
  * </hljs>
  *
  * @param {number=} md-top-index Binds the index of the item that is at the top of the scroll
- *     container to $scope. It can both read and set the scroll position.
+ *     container to `$scope`. It can both read and set the scroll position.
  * @param {boolean=} md-orient-horizontal Whether the container should scroll horizontally
  *     (defaults to orientation and scrolling vertically).
  * @param {boolean=} md-auto-shrink When present, the container will shrink to fit
