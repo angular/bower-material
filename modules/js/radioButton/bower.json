@@ -1,7 +1,7 @@
 {
   "name": "angular-material-radioButton",
-  "version": "1.1.7-master-ba0e9fe",
+  "version": "1.1.7-master-87b3c3b",
   "dependencies": {
-    "angular-material-core": "1.1.7-master-ba0e9fe"
+    "angular-material-core": "1.1.7-master-87b3c3b"
   }
 }
