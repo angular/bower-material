@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.7-master-6e46351
+ * v1.1.7-master-2ef87f4
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -16512,6 +16512,10 @@ MdPanelRef.prototype.destroy = function() {
   }
   this.config.scope.$destroy();
   this.config.locals = null;
+  this.config.onDomAdded = null;
+  this.config.onDomRemoved = null;
+  this.config.onRemoving = null;
+  this.config.onOpenComplete = null;
   this._interceptors = null;
 };
 
@@ -36488,4 +36492,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.7-master-6e46351"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.7-master-2ef87f4"}};
