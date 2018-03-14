@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.7-master-9ced357
+ * v1.1.7-master-1f6d1b2
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -573,7 +573,8 @@ MdChipsCtrl.prototype.init = function() {
 
   this.deRegister.push(
     this.$attrs.$observe('mdChipAppendDelay', function(newValue) {
-      ctrl.chipAppendDelay = parseInt(newValue) || DEFAULT_CHIP_APPEND_DELAY;
+      var numberValue = parseInt(newValue);
+      ctrl.chipAppendDelay = isNaN(numberValue) ? DEFAULT_CHIP_APPEND_DELAY : numberValue;
     })
   );
 };
