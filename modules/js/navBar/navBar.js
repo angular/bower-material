@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.7-master-1f6d1b2
+ * v1.1.7-master-cec409a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -288,7 +288,7 @@ MdNavBarController.prototype._getTabs = function() {
   var controllers = Array.prototype.slice.call(
     this._navBarEl.querySelectorAll('.md-nav-item'))
     .map(function(el) {
-      return angular.element(el).controller('mdNavItem')
+      return angular.element(el).controller('mdNavItem');
     });
   return controllers.indexOf(undefined) ? controllers : null;
 };

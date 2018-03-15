@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.7-master-1f6d1b2
+ * v1.1.7-master-cec409a
  */
 goog.provide('ngmaterial.components.autocomplete');
 goog.require('ngmaterial.components.icon');
@@ -1311,7 +1311,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
         if (!angular.isDefined(attrs.mdClearButton) && !scope.floatingLabel) {
           scope.clearButton = true;
         }
-      }
+      };
     },
     template:     function (element, attr) {
       var noItemsTemplate = getNoItemsTemplate(),

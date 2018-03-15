@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.7-master-1f6d1b2
+ * v1.1.7-master-cec409a
  */
 goog.provide('ngmaterial.components.virtualRepeat');
 goog.require('ngmaterial.components.showHide');
@@ -1027,7 +1027,7 @@ function ForceHeightDirective($mdUtil) {
         element[0].style.height = height;
       }
     }
-  }
+  };
 }
 ForceHeightDirective['$inject'] = ['$mdUtil'];
 

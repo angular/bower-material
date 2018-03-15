@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.7-master-1f6d1b2
+ * v1.1.7-master-cec409a
  */
 goog.provide('ngmaterial.components.truncate');
 goog.require('ngmaterial.core');
@@ -77,7 +77,7 @@ function MdTruncateDirective() {
     restrict: 'AE',
 
     controller: MdTruncateController
-  }
+  };
 }
 
 /**

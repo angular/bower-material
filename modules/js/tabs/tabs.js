@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.7-master-1f6d1b2
+ * v1.1.7-master-cec409a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -679,7 +679,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * Slides the tabs over approximately one page forward.
    */
   function nextPage () {
-    if (!ctrl.canPageForward()) { return }
+    if (!ctrl.canPageForward()) { return; }
 
     var newOffset = MdTabsPaginationService.increasePageOffset(getElements(), ctrl.offsetLeft);
 
@@ -690,7 +690,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * Slides the tabs over approximately one page backward.
    */
   function previousPage () {
-    if (!ctrl.canPageBack()) { return }
+    if (!ctrl.canPageBack()) { return; }
 
     var newOffset = MdTabsPaginationService.decreasePageOffset(getElements(), ctrl.offsetLeft);
 

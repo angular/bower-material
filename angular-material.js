@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.7-master-1f6d1b2
+ * v1.1.7-master-cec409a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1112,7 +1112,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
       // The newer versions of AngularJS introduced a `getOption function and made the option values no longer
       // visible on the $options object.
-      return $options.getOption ? $options.getOption(optionName) : $options[optionName]
+      return $options.getOption ? $options.getOption(optionName) : $options[optionName];
     },
 
     /**
@@ -1605,7 +1605,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
       var hasContains = (window.Node && window.Node.prototype && Node.prototype.contains);
       var findFn = hasContains ? angular.bind(node, node.contains) : angular.bind(node, function(arg) {
         // compares the positions of two nodes and returns a bitmask
-        return (node === child) || !!(this.compareDocumentPosition(arg) & 16)
+        return (node === child) || !!(this.compareDocumentPosition(arg) & 16);
       });
 
       return findFn(child);
@@ -2677,7 +2677,7 @@ function MdCompilerProvider($compileProvider) {
           if (contentEl.parentNode) {
             contentEl.parentNode.removeChild(contentEl);
           }
-        }
+        };
       }
     }
 
@@ -2701,7 +2701,7 @@ function MdCompilerProvider($compileProvider) {
           // before.
           parent.insertBefore(element, nextSibling);
         }
-      }
+      };
     }
   };
 }
@@ -11906,7 +11906,7 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
 
   function postLink(scope, element, attrs, ctrl) {
     element.addClass('_md');     // private md component indicator for styling
-    
+
     // Apply semantics
     element.attr('role', 'list');
 
@@ -11994,9 +11994,9 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
                   style: getTileStyle(ps.position, ps.spans,
                       props.colCount, rowCount,
                       props.gutter, props.rowMode, props.rowHeight)
-                }
+                };
               })
-            }
+            };
           })
           .reflow()
           .performance();
@@ -12351,7 +12351,7 @@ function GridLayoutFactory($mdUtil) {
     grid.element.css(grid.style);
     tiles.forEach(function(t) {
       t.element.css(t.style);
-    })
+    });
   }
 
   /**
@@ -12626,7 +12626,7 @@ if (window._mdMocksIncluded) {
         hide        : hideInputMessages,
         getElement  : getMessagesElement
       }
-    }
+    };
   })
 
   // Register a service for each animation so that we can easily inject them into unit tests
@@ -14593,7 +14593,7 @@ MdNavBarController.prototype._getTabs = function() {
   var controllers = Array.prototype.slice.call(
     this._navBarEl.querySelectorAll('.md-nav-item'))
     .map(function(el) {
-      return angular.element(el).controller('mdNavItem')
+      return angular.element(el).controller('mdNavItem');
     });
   return controllers.indexOf(undefined) ? controllers : null;
 };
@@ -15143,7 +15143,7 @@ angular
  *   - `locals` - `{Object=}`: An object containing key/value pairs. The keys
  *     will be used as names of values to inject into the controller. For
  *     example, `locals: {three: 3}` would inject `three` into the controller,
- *     with the value 3. 'mdPanelRef' is a reserved key, and will always 
+ *     with the value 3. 'mdPanelRef' is a reserved key, and will always
  *     be set to the created MdPanelRef instance.
  *   - `resolve` - `{Object=}`: Similar to locals, except it takes promises as
  *     values. The panel will not open until all of the promises resolve.
@@ -22931,7 +22931,7 @@ function MdToastDirective($mdToast) {
     restrict: 'E',
     link: function postLink(scope, element) {
       element.addClass('_md');     // private md component indicator for styling
-      
+
       // When navigation force destroys an interimElement, then
       // listen and $destroy() that interim instance...
       scope.$on('$destroy', function() {
@@ -23032,7 +23032,7 @@ function MdToastDirective($mdToast) {
 /**
  * @ngdoc method
  * @name $mdToast#showSimple
- * 
+ *
  * @param {string} message The message to display inside the toast
  * @description
  * Convenience method which builds and shows a simple toast.
@@ -23267,7 +23267,7 @@ function MdToastProvider($$interimElementProvider) {
         $scope.highlightClasses = [
           'md-highlight',
           self.highlightClass
-        ]
+        ];
       }
 
       $scope.$watch(function() { return activeToastContent; }, function() {
@@ -23277,7 +23277,7 @@ function MdToastProvider($$interimElementProvider) {
       this.resolve = function() {
         $mdToast.hide( ACTION_RESOLVE );
       };
-    }
+    };
   }
 
   /* @ngInject */
@@ -24229,7 +24229,7 @@ function MdTruncateDirective() {
     restrict: 'AE',
 
     controller: MdTruncateController
-  }
+  };
 }
 
 /**
@@ -25268,7 +25268,7 @@ function ForceHeightDirective($mdUtil) {
         element[0].style.height = height;
       }
     }
-  }
+  };
 }
 ForceHeightDirective.$inject = ['$mdUtil'];
 
@@ -26646,7 +26646,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
         if (!angular.isDefined(attrs.mdClearButton) && !scope.floatingLabel) {
           scope.clearButton = true;
         }
-      }
+      };
     },
     template:     function (element, attr) {
       var noItemsTemplate = getNoItemsTemplate(),
@@ -27269,6 +27269,7 @@ MdChip.$inject = ["$mdTheming", "$mdUtil", "$compile", "$timeout"];angular
 
 // This hint text is hidden within a chip but used by screen readers to
 // inform the user how they can interact with a chip.
+
 var DELETE_HINT_TEMPLATE = '\
     <span ng-if="!$mdChipsCtrl.readonly" class="md-visually-hidden">\
       {{$mdChipsCtrl.deleteHint}}\
@@ -28303,7 +28304,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    *
    * @description
    * `<md-chips>` is an input component for building lists of strings or objects. The list items are
-   * displayed as 'chips'. This component can make use of an `<input>` element or an 
+   * displayed as 'chips'. This component can make use of an `<input>` element or an
    * `<md-autocomplete>` element.
    *
    * ### Custom templates
@@ -28400,7 +28401,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    *    the input and delete buttons. If no `ng-model` is provided, the chips will automatically be
    *    marked as readonly.<br/><br/>
    *    When `md-removable` is not defined, the `md-remove` behavior will be overwritten and disabled.
-   * @param {string=} md-enable-chip-edit Set this to "true" to enable editing of chip contents. The user can 
+   * @param {string=} md-enable-chip-edit Set this to "true" to enable editing of chip contents. The user can
    *    go into edit mode with pressing "space", "enter", or double clicking on the chip. Chip edit is only
    *    supported for chips with basic template.
    * @param {boolean=} ng-required Whether ng-model is allowed to be empty or not.
@@ -33594,7 +33595,7 @@ function MenuProvider($$interimElementProvider) {
           element
         );
       }
-      
+
       // Register various listeners to move menu on resize/orientation change
       opts.cleanupResizing = startRepositioningOnResize();
       opts.hideBackdrop = showBackdrop(scope, element, opts);
@@ -33693,7 +33694,7 @@ function MenuProvider($$interimElementProvider) {
 
         return function() {
           opts.backdrop.off('click', onBackdropClick);
-        }
+        };
       }
 
       /**
@@ -35667,7 +35668,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * Slides the tabs over approximately one page forward.
    */
   function nextPage () {
-    if (!ctrl.canPageForward()) { return }
+    if (!ctrl.canPageForward()) { return; }
 
     var newOffset = MdTabsPaginationService.increasePageOffset(getElements(), ctrl.offsetLeft);
 
@@ -35678,7 +35679,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * Slides the tabs over approximately one page backward.
    */
   function previousPage () {
-    if (!ctrl.canPageBack()) { return }
+    if (!ctrl.canPageBack()) { return; }
 
     var newOffset = MdTabsPaginationService.decreasePageOffset(getElements(), ctrl.offsetLeft);
 
@@ -36564,4 +36565,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.7-master-1f6d1b2"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.7-master-cec409a"}};

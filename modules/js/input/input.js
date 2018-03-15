@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.7-master-1f6d1b2
+ * v1.1.7-master-cec409a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -48,7 +48,7 @@ if (window._mdMocksIncluded) {
         hide        : hideInputMessages,
         getElement  : getMessagesElement
       }
-    }
+    };
   })
 
   // Register a service for each animation so that we can easily inject them into unit tests
