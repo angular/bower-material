@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.7-master-e3c55f9
+ * v1.1.7-master-b4d36f3
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -14324,7 +14324,7 @@ angular.module('material.components.menuBar', [
 
 
 MdNavBarController.$inject = ["$element", "$scope", "$timeout", "$mdConstant"];
-MdNavItem.$inject = ["$mdAria", "$$rAF"];
+MdNavItem.$inject = ["$mdAria", "$$rAF", "$mdUtil", "$window"];
 MdNavItemController.$inject = ["$element"];
 MdNavBar.$inject = ["$mdAria", "$mdTheming"];
 angular.module('material.components.navBar', ['material.core'])
@@ -14711,7 +14711,7 @@ MdNavBarController.prototype.onKeydown = function(e) {
 /**
  * @ngInject
  */
-function MdNavItem($mdAria, $$rAF) {
+function MdNavItem($mdAria, $$rAF, $mdUtil, $window) {
   return {
     restrict: 'E',
     require: ['mdNavItem', '^mdNavBar'],
@@ -14752,6 +14752,7 @@ function MdNavItem($mdAria, $$rAF) {
           '<md-button class="_md-nav-button md-accent" ' +
             'ng-class="ctrl.getNgClassMap()" ' +
             'ng-blur="ctrl.setFocused(false)" ' +
+            'ng-disabled="ctrl.disabled"' +
             'tabindex="-1" ' +
             navigationOptions +
             navigationAttribute + '>' +
@@ -14777,11 +14778,11 @@ function MdNavItem($mdAria, $$rAF) {
       // When accessing the element's contents synchronously, they
       // may not be defined yet because of transclusion. There is a higher
       // chance that it will be accessible if we wait one frame.
+      var disconnect;
       $$rAF(function() {
         var mdNavItem = controllers[0];
         var mdNavBar = controllers[1];
         var navButton = angular.element(element[0].querySelector('._md-nav-button'));
-
         if (!mdNavItem.name) {
           mdNavItem.name = angular.element(element[0]
               .querySelector('._md-nav-button-text')).text().trim();
@@ -14792,8 +14793,30 @@ function MdNavItem($mdAria, $$rAF) {
           scope.$apply();
         });
 
+        if('MutationObserver' in $window) {
+          var config = {attributes: true, attributeFilter: ['disabled']};
+          var targetNode = element[0];
+          var mutationCallback = function(mutationList) {
+            $mdUtil.nextTick(function() {
+              mdNavItem.disabled = $mdUtil.parseAttributeBoolean(attrs[mutationList[0].attributeName], false);
+            });
+          };
+          var observer = new MutationObserver(mutationCallback);
+          observer.observe(targetNode, config);
+          disconnect = observer.disconnect.bind(observer);
+        } else {
+          attrs.$observe('disabled', function (value) {
+            mdNavItem.disabled = $mdUtil.parseAttributeBoolean(value, false);
+          });
+        }
+
+
         $mdAria.expectWithText(element, 'aria-label');
       });
+
+      scope.$on('destroy', function() {
+        disconnect();
+      })
     }
   };
 }
@@ -36570,4 +36593,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.7-master-e3c55f9"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.7-master-b4d36f3"}};
