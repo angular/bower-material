@@ -1,6 +1,6 @@
 {
   "name": "angular-material",
-  "version": "1.1.8",
+  "version": "1.1.8-master-8e5159e",
   "license": "MIT",
   "ignore": [],
   "dependencies": {
