@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.8-master-1ef9ec3
+ * v1.1.8-master-19da42d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -713,7 +713,7 @@ MdChipsCtrl.prototype.getCursorPosition = function(element) {
 MdChipsCtrl.prototype.updateChipContents = function(chipIndex, chipContents){
   if(chipIndex >= 0 && chipIndex < this.items.length) {
     this.items[chipIndex] = chipContents;
-    this.ngModelCtrl.$setDirty();
+    this.updateNgModel();
   }
 };
 
@@ -868,9 +868,7 @@ MdChipsCtrl.prototype.appendChip = function(newChip) {
   var length = this.items.push(newChip);
   var index = length - 1;
 
-  // Update model validation
-  this.ngModelCtrl.$setDirty();
-  this.validateModel();
+  this.updateNgModel();
 
   // If they provide the md-on-add attribute, notify them of the chip addition
   if (this.useOnAdd && this.onAdd) {
@@ -969,6 +967,13 @@ MdChipsCtrl.prototype.validateModel = function() {
   this.ngModelCtrl.$validate(); // rerun any registered validators
 };
 
+MdChipsCtrl.prototype.updateNgModel = function() {
+  this.ngModelCtrl.$setViewValue(this.items.slice());
+  // TODO add the md-max-chips validator to this.ngModelCtrl.validators so that
+  // the validation will be performed automatically on $viewValue change
+  this.validateModel();
+};
+
 /**
  * Removes the chip at the given index.
  * @param index
@@ -976,9 +981,7 @@ MdChipsCtrl.prototype.validateModel = function() {
 MdChipsCtrl.prototype.removeChip = function(index) {
   var removed = this.items.splice(index, 1);
 
-  // Update model validation
-  this.ngModelCtrl.$setDirty();
-  this.validateModel();
+  this.updateNgModel();
 
   if (removed && removed.length && this.useOnRemove && this.onRemove) {
     this.onRemove({ '$chip': removed[0], '$index': index });
@@ -1344,6 +1347,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    * Please refer to the documentation of this option (below) for more information.
    *
    * @param {string=|object=} ng-model A model to which the list of items will be bound.
+   * @param {expression=} ng-change AngularJS expression to be executed on chip addition/removal
    * @param {string=} placeholder Placeholder text that will be forwarded to the input.
    * @param {string=} secondary-placeholder Placeholder text that will be forwarded to the input,
    *    displayed when there is at least one item in the list
@@ -1742,6 +1746,7 @@ MdContactChips['$inject'] = ["$mdTheming", "$mdUtil"];angular
  * appearance of the matched text inside of the contacts' autocomplete popup.
  *
  * @param {string=|object=} ng-model A model to bind the list of items to
+ * @param {expression=} ng-change AngularJS expression to be executed on chip addition/removal
  * @param {string=} placeholder Placeholder text that will be forwarded to the input.
  * @param {string=} secondary-placeholder Placeholder text that will be forwarded to the input,
  *    displayed when there is at least on item in the list
@@ -1782,6 +1787,7 @@ MdContactChips['$inject'] = ["$mdTheming", "$mdUtil"];angular
 var MD_CONTACT_CHIPS_TEMPLATE = '\
       <md-chips class="md-contact-chips"\
           ng-model="$mdContactChipsCtrl.contacts"\
+          ng-change="$mdContactChipsCtrl.ngChange($mdContactChipsCtrl.contacts)"\
           md-require-match="$mdContactChipsCtrl.requireMatch"\
           md-chip-append-delay="{{$mdContactChipsCtrl.chipAppendDelay}}" \
           md-autocomplete-snap>\
@@ -1847,6 +1853,7 @@ function MdContactChips($mdTheming, $mdUtil) {
       contactImage: '@mdContactImage',
       contactEmail: '@mdContactEmail',
       contacts: '=ngModel',
+      ngChange: '&',
       requireMatch: '=?mdRequireMatch',
       minLength: '=?mdMinLength',
       highlightFlags: '@?mdHighlightFlags',
