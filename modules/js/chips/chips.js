@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.8-master-bd3aa1d
+ * v1.1.8-master-9086b54
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -753,7 +753,7 @@ MdChipsCtrl.prototype.chipKeydown = function (event) {
       event.preventDefault();
       // Cancel the delete action only after the event cancel. Otherwise the page will go back.
       if (!this.isRemovable()) return;
-      this.removeAndSelectAdjacentChip(this.selectedChip, event);
+      this.removeAndSelectAdjacentChip(this.selectedChip);
       break;
     case this.$mdConstant.KEY_CODE.LEFT_ARROW:
       event.preventDefault();
@@ -791,18 +791,17 @@ MdChipsCtrl.prototype.getPlaceholder = function() {
 
 /**
  * Removes chip at {@code index} and selects the adjacent chip.
- * @param {number} index
- * @param {Event=} event
+ * @param index
  */
-MdChipsCtrl.prototype.removeAndSelectAdjacentChip = function(index, event) {
+MdChipsCtrl.prototype.removeAndSelectAdjacentChip = function(index) {
   var self = this;
   var selIndex = self.getAdjacentChipIndex(index);
   var wrap = this.$element[0].querySelector('md-chips-wrap');
   var chip = this.$element[0].querySelector('md-chip[index="' + index + '"]');
 
-  self.removeChip(index, event);
+  self.removeChip(index);
 
-  // The double-timeout is currently necessary to ensure that the DOM has finalized and the select()
+  // The dobule-timeout is currently necessary to ensure that the DOM has finalized and the select()
   // will find the proper chip since the selection is index-based.
   //
   // TODO: Investigate calling from within chip $scope.$on('$destroy') to reduce/remove timeouts
@@ -977,21 +976,20 @@ MdChipsCtrl.prototype.updateNgModel = function() {
 
 /**
  * Removes the chip at the given index.
- * @param {number} index
- * @param {Event=} event
+ * @param index
  */
-MdChipsCtrl.prototype.removeChip = function(index, event) {
+MdChipsCtrl.prototype.removeChip = function(index) {
   var removed = this.items.splice(index, 1);
 
   this.updateNgModel();
 
   if (removed && removed.length && this.useOnRemove && this.onRemove) {
-    this.onRemove({ '$chip': removed[0], '$index': index, '$event': event });
+    this.onRemove({ '$chip': removed[0], '$index': index });
   }
 };
 
-MdChipsCtrl.prototype.removeChipAndFocusInput = function (index, $event) {
-  this.removeChip(index, $event);
+MdChipsCtrl.prototype.removeChipAndFocusInput = function (index) {
+  this.removeChip(index);
 
   if (this.autocompleteCtrl) {
     // Always hide the autocomplete dropdown before focusing the autocomplete input.
@@ -1348,7 +1346,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    *
    * Please refer to the documentation of this option (below) for more information.
    *
-   * @param {string|object=} ng-model A model to which the list of items will be bound.
+   * @param {string=|object=} ng-model A model to which the list of items will be bound.
    * @param {expression=} ng-change AngularJS expression to be executed on chip addition/removal
    * @param {string=} placeholder Placeholder text that will be forwarded to the input.
    * @param {string=} secondary-placeholder Placeholder text that will be forwarded to the input,
@@ -1374,9 +1372,9 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    *    - `undefined` to simply add the `$chip` input string, or
    *    - `null` to prevent the chip from being appended
    * @param {expression=} md-on-add An expression which will be called when a chip has been
-   *    added with `$chip` and `$index` available as parameters.
+   *    added.
    * @param {expression=} md-on-remove An expression which will be called when a chip has been
-   *    removed with `$chip`, `$index`, and `$event` available as parameters.
+   *    removed.
    * @param {expression=} md-on-select An expression which will be called when a chip is selected.
    * @param {boolean} md-require-match If true, and the chips template contains an autocomplete,
    *    only allow selection of pre-defined chips (i.e. you cannot add new ones).
@@ -1484,7 +1482,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
       <button\
           class="md-chip-remove"\
           ng-if="$mdChipsCtrl.isRemovable()"\
-          ng-click="$mdChipsCtrl.removeChipAndFocusInput($$replacedScope.$index, $event)"\
+          ng-click="$mdChipsCtrl.removeChipAndFocusInput($$replacedScope.$index)"\
           type="button"\
           tabindex="-1">\
         <md-icon md-svg-src="{{ $mdChipsCtrl.mdCloseIcon }}"></md-icon>\
