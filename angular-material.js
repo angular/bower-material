@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.8-master-28c152f
+ * v1.1.8-master-bd3aa1d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -8304,6 +8304,35 @@ function MdBottomSheetDirective($mdBottomSheet) {
  *
  * });
  * </hljs>
+ *
+ * ### Custom Presets
+ * Developers are also able to create their own preset, which can be easily used without repeating
+ * their options each time.
+ *
+ * <hljs lang="js">
+ *   $mdBottomSheetProvider.addPreset('testPreset', {
+ *     options: function() {
+ *       return {
+ *         template:
+ *           '<md-bottom-sheet>' +
+ *             'This is a custom preset' +
+ *           '</md-bottom-sheet>',
+ *         controllerAs: 'bottomSheet',
+ *         bindToController: true,
+ *         clickOutsideToClose: true,
+ *         escapeToClose: true
+ *       };
+ *     }
+ *   });
+ * </hljs>
+ *
+ * After you create your preset during the config phase, you can easily access it.
+ *
+ * <hljs lang="js">
+ *   $mdBottomSheet.show(
+ *     $mdBottomSheet.testPreset()
+ *   );
+ * </hljs>
  */
 
  /**
@@ -8321,7 +8350,8 @@ function MdBottomSheetDirective($mdBottomSheet) {
  * Newer versions of Angular will throw a `Possibly unhandled rejection` exception if you forget
  * this.</em>
  *
- * @param {object} options An options object, with the following properties:
+ * @param {object} optionsOrPreset Either provide an `$mdBottomSheetPreset` defined during the config phase or
+ * an options object, with the following properties:
  *
  *   - `templateUrl` - `{string=}`: The url of an html template file that will
  *   be used as the content of the bottom sheet. Restrictions: the template must
@@ -10165,7 +10195,7 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  *     `three` into the controller, with the value 3. If `bindToController` is true, they will be
  *     copied to the controller instead.
  *   - `bindToController` - `bool`: bind the locals to the controller, instead of passing them in.
- *   - `resolve` - `{function=}`: Similar to locals, except it takes as values functions that return promises, and the	
+ *   - `resolve` - `{function=}`: Similar to locals, except it takes as values functions that return promises, and the
  *      dialog will not open until all of the promises resolve.
  *   - `controllerAs` - `{string=}`: An alias to assign the controller to on the scope.
  *   - `parent` - `{element=}`: The element to append the dialog to. Defaults to appending
@@ -10776,7 +10806,7 @@ function MdDialogProvider($$interimElementProvider) {
       // get raw DOM node
       walkDOM(element[0]);
 
-      options.unlockScreenReader = function() {
+      options.unlockScreenReader = function () {
         isHidden = false;
         walkDOM(element[0]);
 
@@ -10784,27 +10814,38 @@ function MdDialogProvider($$interimElementProvider) {
       };
 
       /**
-       * Walk DOM to apply or remove aria-hidden on sibling nodes
-       * and parent sibling nodes
-       *
+       * Get all of an element's parent elements up the DOM tree
+       * @return {Array} The parent elements
        */
-      function walkDOM(element) {
+      function getParents(element) {
+        var parents = [];
         while (element.parentNode) {
           if (element === document.body) {
-            return;
+            return parents;
           }
           var children = element.parentNode.children;
           for (var i = 0; i < children.length; i++) {
             // skip over child if it is an ascendant of the dialog
-            // or a script or style tag
+            // a script or style tag, or a live region.
             if (element !== children[i] &&
-             !isNodeOneOf(children[i], ['SCRIPT', 'STYLE']) &&
-             !children[i].hasAttribute('aria-live')) {
-              children[i].setAttribute('aria-hidden', isHidden);
+                !isNodeOneOf(children[i], ['SCRIPT', 'STYLE']) &&
+                !children[i].hasAttribute('aria-live')) {
+              parents.push(children[i]);
             }
           }
+          element = element.parentNode;
+        }
+        return parents;
+      }
 
-          walkDOM(element = element.parentNode);
+      /**
+       * Walk DOM to apply or remove aria-hidden on sibling nodes
+       * and parent sibling nodes
+       */
+      function walkDOM(element) {
+        var elements = getParents(element);
+        for (var i = 0; i < elements.length; i++) {
+          elements[i].setAttribute('aria-hidden', isHidden);
         }
       }
     }
@@ -26512,6 +26553,12 @@ MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
  *     `md-input-container`.
  * @param {string=} md-input-name The name attribute given to the input element to be used with
  *     FormController.
+ * @param {string=} md-menu-class This will be applied to the dropdown menu for styling
+ * @param {string=} md-input-class This will be applied to the input for styling. This attribute is only valid when a `md-floating-label` is defined
+ * @param {string=} md-floating-label This will add a floating label to autocomplete and wrap it in
+ *     `md-input-container`
+ * @param {string=} md-input-name The name attribute given to the input element to be used with
+ *     FormController
  * @param {string=} md-select-on-focus When present the inputs text will be automatically selected
  *     on focus.
  * @param {string=} md-input-id An ID to be added to the input element.
@@ -26655,6 +26702,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
       floatingLabel:    '@?mdFloatingLabel',
       autoselect:       '=?mdAutoselect',
       menuClass:        '@?mdMenuClass',
+      inputClass:       '@?mdInputClass',
       inputId:          '@?mdInputId',
       escapeOptions:    '@?mdEscapeOptions',
       dropdownItems:    '=?mdDropdownItems',
@@ -26759,6 +26807,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
                   ' + (tabindex != null ? 'tabindex="' + tabindex + '"' : '') + '\
                   id="{{ inputId || \'fl-input-\' + $mdAutocompleteCtrl.id }}"\
                   name="{{inputName}}"\
+                  ng-class="::inputClass"\
                   autocomplete="off"\
                   ng-required="$mdAutocompleteCtrl.isRequired"\
                   ng-readonly="$mdAutocompleteCtrl.isReadonly"\
@@ -26785,6 +26834,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
                 ' + (tabindex != null ? 'tabindex="' + tabindex + '"' : '') + '\
                 id="{{ inputId || \'input-\' + $mdAutocompleteCtrl.id }}"\
                 name="{{inputName}}"\
+                ng-class="::inputClass"\
                 ng-if="!floatingLabel"\
                 autocomplete="off"\
                 ng-required="$mdAutocompleteCtrl.isRequired"\
@@ -27833,7 +27883,7 @@ MdChipsCtrl.prototype.chipKeydown = function (event) {
       event.preventDefault();
       // Cancel the delete action only after the event cancel. Otherwise the page will go back.
       if (!this.isRemovable()) return;
-      this.removeAndSelectAdjacentChip(this.selectedChip);
+      this.removeAndSelectAdjacentChip(this.selectedChip, event);
       break;
     case this.$mdConstant.KEY_CODE.LEFT_ARROW:
       event.preventDefault();
@@ -27871,17 +27921,18 @@ MdChipsCtrl.prototype.getPlaceholder = function() {
 
 /**
  * Removes chip at {@code index} and selects the adjacent chip.
- * @param index
+ * @param {number} index
+ * @param {Event=} event
  */
-MdChipsCtrl.prototype.removeAndSelectAdjacentChip = function(index) {
+MdChipsCtrl.prototype.removeAndSelectAdjacentChip = function(index, event) {
   var self = this;
   var selIndex = self.getAdjacentChipIndex(index);
   var wrap = this.$element[0].querySelector('md-chips-wrap');
   var chip = this.$element[0].querySelector('md-chip[index="' + index + '"]');
 
-  self.removeChip(index);
+  self.removeChip(index, event);
 
-  // The dobule-timeout is currently necessary to ensure that the DOM has finalized and the select()
+  // The double-timeout is currently necessary to ensure that the DOM has finalized and the select()
   // will find the proper chip since the selection is index-based.
   //
   // TODO: Investigate calling from within chip $scope.$on('$destroy') to reduce/remove timeouts
@@ -28056,20 +28107,21 @@ MdChipsCtrl.prototype.updateNgModel = function() {
 
 /**
  * Removes the chip at the given index.
- * @param index
+ * @param {number} index
+ * @param {Event=} event
  */
-MdChipsCtrl.prototype.removeChip = function(index) {
+MdChipsCtrl.prototype.removeChip = function(index, event) {
   var removed = this.items.splice(index, 1);
 
   this.updateNgModel();
 
   if (removed && removed.length && this.useOnRemove && this.onRemove) {
-    this.onRemove({ '$chip': removed[0], '$index': index });
+    this.onRemove({ '$chip': removed[0], '$index': index, '$event': event });
   }
 };
 
-MdChipsCtrl.prototype.removeChipAndFocusInput = function (index) {
-  this.removeChip(index);
+MdChipsCtrl.prototype.removeChipAndFocusInput = function (index, $event) {
+  this.removeChip(index, $event);
 
   if (this.autocompleteCtrl) {
     // Always hide the autocomplete dropdown before focusing the autocomplete input.
@@ -28430,7 +28482,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    *
    * Please refer to the documentation of this option (below) for more information.
    *
-   * @param {string=|object=} ng-model A model to which the list of items will be bound.
+   * @param {string|object=} ng-model A model to which the list of items will be bound.
    * @param {expression=} ng-change AngularJS expression to be executed on chip addition/removal
    * @param {string=} placeholder Placeholder text that will be forwarded to the input.
    * @param {string=} secondary-placeholder Placeholder text that will be forwarded to the input,
@@ -28456,9 +28508,9 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    *    - `undefined` to simply add the `$chip` input string, or
    *    - `null` to prevent the chip from being appended
    * @param {expression=} md-on-add An expression which will be called when a chip has been
-   *    added.
+   *    added with `$chip` and `$index` available as parameters.
    * @param {expression=} md-on-remove An expression which will be called when a chip has been
-   *    removed.
+   *    removed with `$chip`, `$index`, and `$event` available as parameters.
    * @param {expression=} md-on-select An expression which will be called when a chip is selected.
    * @param {boolean} md-require-match If true, and the chips template contains an autocomplete,
    *    only allow selection of pre-defined chips (i.e. you cannot add new ones).
@@ -28566,7 +28618,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
       <button\
           class="md-chip-remove"\
           ng-if="$mdChipsCtrl.isRemovable()"\
-          ng-click="$mdChipsCtrl.removeChipAndFocusInput($$replacedScope.$index)"\
+          ng-click="$mdChipsCtrl.removeChipAndFocusInput($$replacedScope.$index, $event)"\
           type="button"\
           tabindex="-1">\
         <md-icon md-svg-src="{{ $mdChipsCtrl.mdCloseIcon }}"></md-icon>\
@@ -33212,7 +33264,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
 
     // If attachment is a single item, duplicate it for our second value.
     // ie. 'target' -> 'target target'
-    if (attachment.length == 1) {
+    if (attachment.length === 1) {
       attachment.push(attachment[0]);
     }
 
@@ -33228,12 +33280,12 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
    */
   this.offsets = function offsets() {
     var position = ($attrs.mdOffset || '0 0').split(' ').map(parseFloat);
-    if (position.length == 2) {
+    if (position.length === 2) {
       return {
         left: position[0],
         top: position[1]
       };
-    } else if (position.length == 1) {
+    } else if (position.length === 1) {
       return {
         top: position[0],
         left: position[0]
@@ -33297,7 +33349,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  *
  * The width of the menu when it is open may be specified by specifying a `width`
  * attribute on the `md-menu-content` element.
- * See the [Material Design Spec](https://material.google.com/components/menus.html#menus-simple-menus)
+ * See the [Material Design Spec](https://material.io/guidelines/components/menus.html#menus-simple-menus)
  * for more information.
  *
  *
@@ -33305,7 +33357,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  *
  * When a menu opens, it is important that the content aligns with the trigger element.
  * Failure to align menus can result in jarring experiences for users as content
- * suddenly shifts. To help with this, `md-menu` provides serveral APIs to help
+ * suddenly shifts. To help with this, `md-menu` provides several APIs to help
  * with alignment.
  *
  * ### Target Mode
@@ -33340,36 +33392,55 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  * </md-menu>
  * </hljs>
  *
- * Sometimes we want to specify alignment on the right side of an element, for example
- * if we have a menu on the right side a toolbar, we want to right align our menu content.
+ * ### Position Mode
  *
- * We can specify the origin by using the `md-position-mode` attribute on both
- * the `x` and `y` axis. Right now only the `x-axis` has more than one option.
- * You may specify the default mode of `target target` or
- * `target-right target` to specify a right-oriented alignment target. See the
- * position section of the demos for more examples.
+ * We can specify the origin of the menu by using the `md-position-mode` attribute.
+ * This attribute allows specifying the positioning by the `x` and `y` axes.
+ *
+ * The default mode is `target target`. This mode uses the left and top edges of the origin element
+ * to position the menu in LTR layouts. The `x` axis modes will adjust when in RTL layouts.
+ *
+ * Sometimes you want to specify alignment from the right side of a origin element. For example,
+ * if we have a menu on the right side a toolbar, we may want to right align our menu content.
+ * We can use `target-right target` to specify a right-oriented alignment target.
+ * There is a working example of this in the Menu Position Modes demo.
+ *
+ * #### Horizontal Positioning Options
+ * - `target`
+ * - `target-left`
+ * - `target-right`
+ * - `cascade`
+ * - `right`
+ * - `left`
+ *
+ * #### Vertical Positioning Options
+ * - `target`
+ * - `cascade`
+ * - `bottom`
  *
  * ### Menu Offsets
  *
  * It is sometimes unavoidable to need to have a deeper level of control for
  * the positioning of a menu to ensure perfect alignment. `md-menu` provides
- * the `md-offset` attribute to allow pixel level specificty of adjusting the
- * exact positioning.
+ * the `md-offset` attribute to allow pixel-level specificity when adjusting
+ * menu positioning.
  *
  * This offset is provided in the format of `x y` or `n` where `n` will be used
  * in both the `x` and `y` axis.
- *
  * For example, to move a menu by `2px` down from the top, we can use:
+ *
  * <hljs lang="html">
  * <md-menu md-offset="0 2">
  *   <!-- menu-content -->
  * </md-menu>
  * </hljs>
  *
+ * Specifying `md-offset="2 2"` would shift the menu two pixels down and two pixels to the right.
+ *
  * ### Auto Focus
  * By default, when a menu opens, `md-menu` focuses the first button in the menu content.
  *
- * But sometimes you would like to focus another specific menu item instead of the first.<br/>
+ * Sometimes you would like to focus another menu item instead of the first.<br/>
  * This can be done by applying the `md-autofocus` directive on the given element.
  *
  * <hljs lang="html">
@@ -33387,7 +33458,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  * close. To do this, AngularJS Material exposes the `md-prevent-menu-close` attribute which
  * can be added to a button inside a menu to stop the menu from automatically closing.
  * You can then close the menu either by using `$mdMenu.close()` in the template,
- * or programatically by injecting `$mdMenu` and calling `$mdMenu.hide()`.
+ * or programmatically by injecting `$mdMenu` and calling `$mdMenu.hide()`.
  *
  * <hljs lang="html">
  * <md-menu-content ng-mouseleave="$mdMenu.close()">
@@ -33412,14 +33483,24 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  * </md-menu>
  * </hljs>
  *
- * @param {string} md-position-mode The position mode in the form of
- *           `x`, `y`. Default value is `target`,`target`. Right now the `x` axis
- *           also supports `target-right`.
- * @param {string} md-offset An offset to apply to the dropdown after positioning
- *           `x`, `y`. Default value is `0`,`0`.
- *
+ * @param {string=} md-position-mode Specify pre-defined position modes for the `x` and `y` axes.
+ *  The default modes are `target target`. This positions the origin of the menu using the left and top edges
+ *  of the origin element in LTR layouts.<br>
+ *  #### Valid modes for horizontal positioning
+ * - `target`
+ * - `target-left`
+ * - `target-right`
+ * - `cascade`
+ * - `right`
+ * - `left`<br>
+ *  #### Valid modes for vertical positioning
+ * - `target`
+ * - `cascade`
+ * - `bottom`
+ * @param {string=} md-offset An offset to apply to the dropdown on opening, after positioning.
+ *  Defined as `x` and `y` pixel offset values in the form of `x y`.<br>
+ *  The default value is `0 0`.
  */
-
 MenuDirective.$inject = ["$mdUtil"];
 angular
     .module('material.components.menu')
@@ -33975,7 +34056,7 @@ function MenuProvider($$interimElementProvider) {
       var alignTarget, alignTargetRect = { top:0, left : 0, right:0, bottom:0 }, existingOffsets  = { top:0, left : 0, right:0, bottom:0  };
       var positionMode = opts.mdMenuCtrl.positionMode();
 
-      if (positionMode.top == 'target' || positionMode.left == 'target' || positionMode.left == 'target-right') {
+      if (positionMode.top === 'target' || positionMode.left === 'target' || positionMode.left === 'target-right') {
         alignTarget = firstVisibleChild();
         if ( alignTarget ) {
           // TODO: Allow centering on an arbitrary node, for now center on first menu-item's child
@@ -34007,7 +34088,7 @@ function MenuProvider($$interimElementProvider) {
           throw new Error('Invalid target mode "' + positionMode.top + '" specified for md-menu on Y axis.');
       }
 
-      var rtl = ($mdUtil.bidi() == 'rtl');
+      var rtl = ($mdUtil.bidi() === 'rtl');
 
       switch (positionMode.left) {
         case 'target':
@@ -36608,4 +36689,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.8-master-28c152f"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.8-master-bd3aa1d"}};

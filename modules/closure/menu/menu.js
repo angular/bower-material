@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.8-master-28c152f
+ * v1.1.8-master-bd3aa1d
  */
 goog.provide('ngmaterial.components.menu');
 goog.require('ngmaterial.components.backdrop');
@@ -221,7 +221,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
 
     // If attachment is a single item, duplicate it for our second value.
     // ie. 'target' -> 'target target'
-    if (attachment.length == 1) {
+    if (attachment.length === 1) {
       attachment.push(attachment[0]);
     }
 
@@ -237,12 +237,12 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
    */
   this.offsets = function offsets() {
     var position = ($attrs.mdOffset || '0 0').split(' ').map(parseFloat);
-    if (position.length == 2) {
+    if (position.length === 2) {
       return {
         left: position[0],
         top: position[1]
       };
-    } else if (position.length == 1) {
+    } else if (position.length === 1) {
       return {
         top: position[0],
         left: position[0]
@@ -302,7 +302,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  *
  * The width of the menu when it is open may be specified by specifying a `width`
  * attribute on the `md-menu-content` element.
- * See the [Material Design Spec](https://material.google.com/components/menus.html#menus-simple-menus)
+ * See the [Material Design Spec](https://material.io/guidelines/components/menus.html#menus-simple-menus)
  * for more information.
  *
  *
@@ -310,7 +310,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  *
  * When a menu opens, it is important that the content aligns with the trigger element.
  * Failure to align menus can result in jarring experiences for users as content
- * suddenly shifts. To help with this, `md-menu` provides serveral APIs to help
+ * suddenly shifts. To help with this, `md-menu` provides several APIs to help
  * with alignment.
  *
  * ### Target Mode
@@ -345,36 +345,55 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  * </md-menu>
  * </hljs>
  *
- * Sometimes we want to specify alignment on the right side of an element, for example
- * if we have a menu on the right side a toolbar, we want to right align our menu content.
+ * ### Position Mode
  *
- * We can specify the origin by using the `md-position-mode` attribute on both
- * the `x` and `y` axis. Right now only the `x-axis` has more than one option.
- * You may specify the default mode of `target target` or
- * `target-right target` to specify a right-oriented alignment target. See the
- * position section of the demos for more examples.
+ * We can specify the origin of the menu by using the `md-position-mode` attribute.
+ * This attribute allows specifying the positioning by the `x` and `y` axes.
+ *
+ * The default mode is `target target`. This mode uses the left and top edges of the origin element
+ * to position the menu in LTR layouts. The `x` axis modes will adjust when in RTL layouts.
+ *
+ * Sometimes you want to specify alignment from the right side of a origin element. For example,
+ * if we have a menu on the right side a toolbar, we may want to right align our menu content.
+ * We can use `target-right target` to specify a right-oriented alignment target.
+ * There is a working example of this in the Menu Position Modes demo.
+ *
+ * #### Horizontal Positioning Options
+ * - `target`
+ * - `target-left`
+ * - `target-right`
+ * - `cascade`
+ * - `right`
+ * - `left`
+ *
+ * #### Vertical Positioning Options
+ * - `target`
+ * - `cascade`
+ * - `bottom`
  *
  * ### Menu Offsets
  *
  * It is sometimes unavoidable to need to have a deeper level of control for
  * the positioning of a menu to ensure perfect alignment. `md-menu` provides
- * the `md-offset` attribute to allow pixel level specificty of adjusting the
- * exact positioning.
+ * the `md-offset` attribute to allow pixel-level specificity when adjusting
+ * menu positioning.
  *
  * This offset is provided in the format of `x y` or `n` where `n` will be used
  * in both the `x` and `y` axis.
- *
  * For example, to move a menu by `2px` down from the top, we can use:
+ *
  * <hljs lang="html">
  * <md-menu md-offset="0 2">
  *   <!-- menu-content -->
  * </md-menu>
  * </hljs>
  *
+ * Specifying `md-offset="2 2"` would shift the menu two pixels down and two pixels to the right.
+ *
  * ### Auto Focus
  * By default, when a menu opens, `md-menu` focuses the first button in the menu content.
  *
- * But sometimes you would like to focus another specific menu item instead of the first.<br/>
+ * Sometimes you would like to focus another menu item instead of the first.<br/>
  * This can be done by applying the `md-autofocus` directive on the given element.
  *
  * <hljs lang="html">
@@ -392,7 +411,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  * close. To do this, AngularJS Material exposes the `md-prevent-menu-close` attribute which
  * can be added to a button inside a menu to stop the menu from automatically closing.
  * You can then close the menu either by using `$mdMenu.close()` in the template,
- * or programatically by injecting `$mdMenu` and calling `$mdMenu.hide()`.
+ * or programmatically by injecting `$mdMenu` and calling `$mdMenu.hide()`.
  *
  * <hljs lang="html">
  * <md-menu-content ng-mouseleave="$mdMenu.close()">
@@ -417,14 +436,24 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  * </md-menu>
  * </hljs>
  *
- * @param {string} md-position-mode The position mode in the form of
- *           `x`, `y`. Default value is `target`,`target`. Right now the `x` axis
- *           also supports `target-right`.
- * @param {string} md-offset An offset to apply to the dropdown after positioning
- *           `x`, `y`. Default value is `0`,`0`.
- *
+ * @param {string=} md-position-mode Specify pre-defined position modes for the `x` and `y` axes.
+ *  The default modes are `target target`. This positions the origin of the menu using the left and top edges
+ *  of the origin element in LTR layouts.<br>
+ *  #### Valid modes for horizontal positioning
+ * - `target`
+ * - `target-left`
+ * - `target-right`
+ * - `cascade`
+ * - `right`
+ * - `left`<br>
+ *  #### Valid modes for vertical positioning
+ * - `target`
+ * - `cascade`
+ * - `bottom`
+ * @param {string=} md-offset An offset to apply to the dropdown on opening, after positioning.
+ *  Defined as `x` and `y` pixel offset values in the form of `x y`.<br>
+ *  The default value is `0 0`.
  */
-
 MenuDirective['$inject'] = ["$mdUtil"];
 angular
     .module('material.components.menu')
@@ -976,7 +1005,7 @@ function MenuProvider($$interimElementProvider) {
       var alignTarget, alignTargetRect = { top:0, left : 0, right:0, bottom:0 }, existingOffsets  = { top:0, left : 0, right:0, bottom:0  };
       var positionMode = opts.mdMenuCtrl.positionMode();
 
-      if (positionMode.top == 'target' || positionMode.left == 'target' || positionMode.left == 'target-right') {
+      if (positionMode.top === 'target' || positionMode.left === 'target' || positionMode.left === 'target-right') {
         alignTarget = firstVisibleChild();
         if ( alignTarget ) {
           // TODO: Allow centering on an arbitrary node, for now center on first menu-item's child
@@ -1008,7 +1037,7 @@ function MenuProvider($$interimElementProvider) {
           throw new Error('Invalid target mode "' + positionMode.top + '" specified for md-menu on Y axis.');
       }
 
-      var rtl = ($mdUtil.bidi() == 'rtl');
+      var rtl = ($mdUtil.bidi() === 'rtl');
 
       switch (positionMode.left) {
         case 'target':

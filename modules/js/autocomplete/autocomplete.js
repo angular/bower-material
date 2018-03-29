@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.8-master-28c152f
+ * v1.1.8-master-bd3aa1d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1140,6 +1140,12 @@ MdAutocomplete['$inject'] = ["$$mdSvgRegistry"];angular
  *     `md-input-container`.
  * @param {string=} md-input-name The name attribute given to the input element to be used with
  *     FormController.
+ * @param {string=} md-menu-class This will be applied to the dropdown menu for styling
+ * @param {string=} md-input-class This will be applied to the input for styling. This attribute is only valid when a `md-floating-label` is defined
+ * @param {string=} md-floating-label This will add a floating label to autocomplete and wrap it in
+ *     `md-input-container`
+ * @param {string=} md-input-name The name attribute given to the input element to be used with
+ *     FormController
  * @param {string=} md-select-on-focus When present the inputs text will be automatically selected
  *     on focus.
  * @param {string=} md-input-id An ID to be added to the input element.
@@ -1283,6 +1289,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
       floatingLabel:    '@?mdFloatingLabel',
       autoselect:       '=?mdAutoselect',
       menuClass:        '@?mdMenuClass',
+      inputClass:       '@?mdInputClass',
       inputId:          '@?mdInputId',
       escapeOptions:    '@?mdEscapeOptions',
       dropdownItems:    '=?mdDropdownItems',
@@ -1387,6 +1394,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
                   ' + (tabindex != null ? 'tabindex="' + tabindex + '"' : '') + '\
                   id="{{ inputId || \'fl-input-\' + $mdAutocompleteCtrl.id }}"\
                   name="{{inputName}}"\
+                  ng-class="::inputClass"\
                   autocomplete="off"\
                   ng-required="$mdAutocompleteCtrl.isRequired"\
                   ng-readonly="$mdAutocompleteCtrl.isReadonly"\
@@ -1413,6 +1421,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
                 ' + (tabindex != null ? 'tabindex="' + tabindex + '"' : '') + '\
                 id="{{ inputId || \'input-\' + $mdAutocompleteCtrl.id }}"\
                 name="{{inputName}}"\
+                ng-class="::inputClass"\
                 ng-if="!floatingLabel"\
                 autocomplete="off"\
                 ng-required="$mdAutocompleteCtrl.isRequired"\
