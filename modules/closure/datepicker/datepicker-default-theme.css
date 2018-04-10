@@ -2,18 +2,18 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.8-master-50a1616
+ * v1.1.8-master-2360764
  */
 /** Theme styles for mdCalendar. */
 .md-calendar.md-THEME_NAME-theme {
-  background: '{{background-A100}}';
-  color: '{{background-A200-0.87}}'; }
+  background: '{{background-hue-1}}';
+  color: '{{foreground-1-0.87}}'; }
   .md-calendar.md-THEME_NAME-theme tr:last-child td {
-    border-bottom-color: '{{background-200}}'; }
+    border-bottom-color: '{{background-hue-2}}'; }
 
 .md-THEME_NAME-theme .md-calendar-day-header {
-  background: '{{background-300}}';
-  color: '{{background-A200-0.87}}'; }
+  background: '{{background-500-0.32}}';
+  color: '{{foreground-1-0.87}}'; }
 
 .md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator {
   border: 1px solid '{{primary-500}}'; }
@@ -22,7 +22,7 @@
   color: '{{primary-500-0.6}}'; }
 
 .md-calendar-date.md-focus .md-THEME_NAME-theme .md-calendar-date-selection-indicator, .md-THEME_NAME-theme .md-calendar-date-selection-indicator:hover {
-  background: '{{background-300}}'; }
+  background: '{{background-500-0.32}}'; }
 
 .md-THEME_NAME-theme .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator,
 .md-THEME_NAME-theme .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator {
@@ -32,7 +32,7 @@
 
 .md-THEME_NAME-theme .md-calendar-date-disabled,
 .md-THEME_NAME-theme .md-calendar-month-label-disabled {
-  color: '{{background-A200-0.435}}'; }
+  color: '{{foreground-3}}'; }
 
 /** Theme styles for mdDatepicker. */
 .md-THEME_NAME-theme .md-datepicker-input {
@@ -75,7 +75,7 @@
   color: '{{warn-A700}}'; }
 
 .md-THEME_NAME-theme .md-datepicker-calendar {
-  background: '{{background-A100}}'; }
+  background: '{{background-hue-1}}'; }
 
 .md-THEME_NAME-theme .md-datepicker-input-mask-opaque {
   box-shadow: 0 0 0 9999px "{{background-hue-1}}"; }
