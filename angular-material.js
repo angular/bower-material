@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.8-master-0563f24
+ * v1.1.8-master-cf71d90
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -26702,14 +26702,26 @@ MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
  *     different parts that make up our component.
  *
  * ### Clear button for the input
- * By default, for floating label autocomplete's the clear button is not showing up
- * ([See specs](https://material.google.com/components/text-fields.html#text-fields-auto-complete-text-field))
+ * By default, the clear button is displayed when there is input. This aligns with the spec's
+ * [Search Pattern](https://material.io/guidelines/patterns/search.html#search-in-app-search).
+ * In floating label mode, when `md-floating-label="My Label"` is applied, the clear button is not displayed
+ * by default (see the spec's
+ * [Autocomplete Text Field](https://material.io/guidelines/components/text-fields.html#text-fields-layout)).
  *
- * Nevertheless, developers are able to explicitly toggle the clear button for all types of autocomplete's.
+ * Nevertheless, developers are able to explicitly toggle the clear button for all autocomplete components
+ * with `md-clear-button`.
  *
  * <hljs lang="html">
  *   <md-autocomplete ... md-clear-button="true"></md-autocomplete>
  *   <md-autocomplete ... md-clear-button="false"></md-autocomplete>
+ * </hljs>
+ *
+ * In previous versions, the clear button was always hidden when the component was disabled.
+ * This changed in `1.1.5` to give the developer control of this behavior. This example
+ * will hide the clear button only when the component is disabled.
+ *
+ * <hljs lang="html">
+ *   <md-autocomplete ... ng-disabled="disabled" md-clear-button="!disabled"></md-autocomplete>
  * </hljs>
  *
  * ### Example with validation
@@ -26814,7 +26826,8 @@ function MdAutocomplete ($$mdSvgRegistry) {
         // be added to the element in the template function.
         ctrl.hasNotFound = !!element.attr('md-has-not-found');
 
-        // By default the inset autocomplete should show the clear button when not explicitly overwritten.
+        // By default the inset autocomplete should show the clear button when not explicitly overwritten
+        // or in floating label mode.
         if (!angular.isDefined(attrs.mdClearButton) && !scope.floatingLabel) {
           scope.clearButton = true;
         }
@@ -36787,4 +36800,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.8-master-0563f24"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.8-master-cf71d90"}};
