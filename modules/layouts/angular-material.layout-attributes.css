@@ -2,10 +2,9 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.8-master-cf71d90
+ * v1.1.8-master-e0078d7
  */
 /*
-*
 *  Responsive attributes
 *
 *  References:
@@ -14,7 +13,6 @@
 *  3) https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 *  4) https://github.com/philipwalton/flexbugs#3-min-height-on-a-flex-container-wont-apply-to-its-flex-items
 *  5) http://godban.com.ua/projects/flexgrid
-*
 */
 @-moz-document url-prefix() {
   [layout-fill] {

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.8-master-cf71d90
+ * v1.1.8-master-e0078d7
  */
 $font-family: Roboto, 'Helvetica Neue', sans-serif !default;
 $font-size:   10px !default;
@@ -479,7 +479,6 @@ $checkbox-border-width: 2px !default;
 }
 
 /*
-*
 *  Responsive attributes
 *
 *  References:
@@ -488,10 +487,7 @@ $checkbox-border-width: 2px !default;
 *  3) https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 *  4) https://github.com/philipwalton/flexbugs#3-min-height-on-a-flex-container-wont-apply-to-its-flex-items
 *  5) http://godban.com.ua/projects/flexgrid
-*
-*
 */
-
 @mixin flex-order-for-name($sizes:null) {
   @if $sizes == null {
     $sizes : '';
@@ -622,7 +618,7 @@ $checkbox-border-width: 2px !default;
       max-height: 100%;
       box-sizing: border-box;
 
-      // Bug workaround for http://crbug.com/546034 - flex issues on Chrome 48
+      // Required by Chrome M48+ due to http://crbug.com/546034
       @if $i == 0 {  min-width: 0;  }
     }
 
@@ -639,7 +635,7 @@ $checkbox-border-width: 2px !default;
       max-height: 100%;
       box-sizing: border-box;
 
-      // Bug workaround for http://crbug.com/546034 - flex issues on Chrome 48
+      // Required by Chrome M48+ due to http://crbug.com/546034
       @if $i == 0 {  min-width: 0;  }
     }
 
@@ -649,8 +645,30 @@ $checkbox-border-width: 2px !default;
       max-height: #{$value};
       box-sizing: border-box;
 
-      // Bug workaround for http://crbug.com/546034 - flex issues on Chrome 48
+      // Required by Chrome M48+ due to http://crbug.com/546034
       @if $i == 0 {  min-height: 0;  }
+    }
+
+    @if ($name != '') {
+      .layout#{$name}-row > .flex-#{$i * 5} {
+        flex: 1 1 100%;
+        max-width: #{$value};
+        max-height: 100%;
+        box-sizing: border-box;
+
+        // Required by Chrome M48+ due to http://crbug.com/546034
+        @if $i == 0 {  min-width: 0;  }
+      }
+
+      .layout#{$name}-column > .flex-#{$i * 5} {
+        flex: 1 1 100%;
+        max-width: 100%;
+        max-height: #{$value};
+        box-sizing: border-box;
+
+        // Required by Chrome M48+ due to http://crbug.com/546034
+        @if $i == 0 {  min-height: 0;  }
+      }
     }
   }
 
@@ -668,19 +686,35 @@ $checkbox-border-width: 2px !default;
     > .#{$flexName}-33 { flex: 1 1 100%;  max-width: 33.33%;  max-height: 100%; box-sizing: border-box; }
     > .#{$flexName}-66 { flex: 1 1 100%;  max-width: 66.66%;  max-height: 100%; box-sizing: border-box; }
 
-    // Bug workaround for http://crbug.com/546034 - flex issues on Chrome 48
+    // Required by Chrome M48+ due to http://crbug.com/546034
     > .flex { min-width: 0;  }
-
   }
 
   .layout#{$name}-column {
     > .#{$flexName}-33 { flex: 1 1 100%;  max-width: 100%;  max-height: 33.33%; box-sizing: border-box; }
     > .#{$flexName}-66 { flex: 1 1 100%;  max-width: 100%;  max-height: 66.66%; box-sizing: border-box; }
 
-    // Bug workaround for http://crbug.com/546034 - flex issues on Chrome 48
+    // Required by Chrome M48+ due to http://crbug.com/546034
     > .flex { min-height: 0; }
   }
 
+  @if ($name != '') {
+    .layout#{$name}-row {
+      > .flex-33 { flex: 1 1 100%;  max-width: 33.33%;  max-height: 100%; box-sizing: border-box; }
+      > .flex-66 { flex: 1 1 100%;  max-width: 66.66%;  max-height: 100%; box-sizing: border-box; }
+
+      // Required by Chrome M48+ due to http://crbug.com/546034
+      > .flex { min-width: 0;  }
+    }
+
+    .layout#{$name}-column {
+      > .flex-33 { flex: 1 1 100%;  max-width: 100%;  max-height: 33.33%; box-sizing: border-box; }
+      > .flex-66 { flex: 1 1 100%;  max-width: 100%;  max-height: 66.66%; box-sizing: border-box; }
+
+      // Required by Chrome M48+ due to http://crbug.com/546034
+      > .flex { min-height: 0; }
+    }
+  }
 }
 
 @mixin layout-align-for-name($suffix: null) {
@@ -918,14 +952,12 @@ $checkbox-border-width: 2px !default;
 
 /*
 * Since Layout API uses ng-cloak to hide the dom elements while layouts are adjusted
-*
 */
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
 
 /*
-*
 *  Responsive attributes
 *
 *  References:
@@ -934,10 +966,7 @@ $checkbox-border-width: 2px !default;
 *  3) https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 *  4) https://github.com/philipwalton/flexbugs#3-min-height-on-a-flex-container-wont-apply-to-its-flex-items
 *  5) http://godban.com.ua/projects/flexgrid
-*
-*
 */
-
 @-moz-document url-prefix() {
   .layout-fill {
     margin: 0;
@@ -947,17 +976,11 @@ $checkbox-border-width: 2px !default;
   }
 }
 
-
 /*
  *  Apply Mixins to create Layout/Flexbox styles
- *
  */
-
-
 @include layouts_for_breakpoint();
 @include layout-padding-margin();
-
-
 
 /**
  * `hide-gt-sm show-gt-lg` should hide from 600px to 1200px
@@ -971,10 +994,8 @@ $checkbox-border-width: 2px !default;
  *         $layout-breakpoint-md:     1280px !default;
  *         $layout-breakpoint-lg:     1920px !default;
  */
-
-
 @media (max-width: $layout-breakpoint-xs - 1) {
-  // Xtra-SMALL  SCREEN
+  // Xtra-SMALL SCREEN
   .hide-xs, .hide {
     &:not(.show-xs):not(.show) {
       display: none;
