@@ -2,17 +2,17 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.8-master-65d78e0
+ * v1.1.8-master-011315f
  */
 md-menu-content.md-THEME_NAME-theme {
-  background-color: '{{background-A100}}'; }
+  background-color: '{{background-hue-1}}'; }
   md-menu-content.md-THEME_NAME-theme md-menu-item {
-    color: '{{background-A200-0.87}}'; }
+    color: '{{foreground-1}}'; }
     md-menu-content.md-THEME_NAME-theme md-menu-item md-icon {
-      color: '{{background-A200-0.54}}'; }
+      color: '{{foreground-2}}'; }
     md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled] {
-      color: '{{background-A200-0.25}}'; }
+      color: '{{foreground-3}}'; }
       md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled] md-icon {
-        color: '{{background-A200-0.25}}'; }
+        color: '{{foreground-3}}'; }
   md-menu-content.md-THEME_NAME-theme md-menu-divider {
-    background-color: '{{background-A200-0.11}}'; }
+    background-color: '{{foreground-4}}'; }
