@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.8-master-55ad25c
+ * v1.1.8-master-e87582a
  */
 goog.provide('ngmaterial.components.colors');
 goog.require('ngmaterial.core');
