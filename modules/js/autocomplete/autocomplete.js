@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.9-master-e1b3407
+ * v1.1.9-master-db1a85d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1176,7 +1176,7 @@ MdAutocomplete['$inject'] = ["$$mdSvgRegistry"];angular
  *     When the dropdown doesn't fit into the viewport, the dropdown will shrink
  *     as much as possible.
  * @param {string=} md-dropdown-position Overrides the default dropdown position. Options: `top`, `bottom`.
- * @param {string=} ng-trim If set to false, the search text will be not trimmed automatically.
+ * @param {boolean=} ng-trim If set to false, the search text will be not trimmed automatically.
  *     Defaults to true.
  * @param {string=} ng-pattern Adds the pattern validator to the ngModel of the search text.
  *     See the [ngPattern Directive](https://docs.angularjs.org/api/ng/directive/ngPattern)
