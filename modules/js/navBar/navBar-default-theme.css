@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.9-master-db1a85d
+ * v1.1.9-master-d607e17
  */
 md-nav-bar.md-THEME_NAME-theme .md-nav-bar {
   background-color: transparent;
@@ -10,6 +10,9 @@ md-nav-bar.md-THEME_NAME-theme .md-nav-bar {
 
 md-nav-bar.md-THEME_NAME-theme .md-button._md-nav-button.md-unselected {
   color: '{{foreground-2}}'; }
+
+md-nav-bar.md-THEME_NAME-theme .md-button._md-nav-button[disabled] {
+  color: '{{foreground-3}}'; }
 
 md-nav-bar.md-THEME_NAME-theme md-nav-ink-bar {
   color: '{{accent-color}}';
