@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.9-master-d607e17
+ * v1.1.9-master-371bb5c
  */
 html, body {
   height: 100%;
@@ -184,7 +184,7 @@ bdo[dir=ltr] {
   unicode-bidi: bidi-override; }
 
 html, body {
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-touch-callout: none;
   min-height: 100%;
   -webkit-text-size-adjust: 100%;
@@ -3802,7 +3802,7 @@ md-input-container.md-input-has-value .md-select-value > span:not(.md-select-ico
   padding: 2px 2px 1px;
   border-bottom-width: 1px;
   border-bottom-style: solid;
-  background-color: transparent;
+  background-color: rgba(0, 0, 0, 0);
   position: relative;
   box-sizing: content-box;
   min-width: 64px;
