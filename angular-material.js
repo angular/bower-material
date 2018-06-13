@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.9-master-a85f038
+ * v1.1.9-master-74d2445
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -27779,7 +27779,7 @@ function MdChipTransclude ($compile) {
  *
  * @type {number}
  */
-MdChipsCtrl.$inject = ["$scope", "$attrs", "$mdConstant", "$log", "$element", "$timeout", "$mdUtil"];
+MdChipsCtrl.$inject = ["$scope", "$attrs", "$mdConstant", "$log", "$element", "$timeout", "$mdUtil", "$exceptionHandler"];
 var DEFAULT_CHIP_APPEND_DELAY = 300;
 
 angular
@@ -27798,9 +27798,11 @@ angular
  * @param $element
  * @param $timeout
  * @param $mdUtil
+ * @param $exceptionHandler
  * @constructor
  */
-function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $mdUtil) {
+function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $mdUtil,
+                      $exceptionHandler) {
   /** @type {$timeout} **/
   this.$timeout = $timeout;
 
@@ -27818,6 +27820,9 @@ function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $md
 
   /** @type {$log} */
   this.$log = $log;
+
+  /** @type {$exceptionHandler} */
+  this.$exceptionHandler = $exceptionHandler;
 
   /** @type {$element} */
   this.$element = $element;
@@ -27919,10 +27924,10 @@ function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $md
   this.contentIds = [];
 
   /**
-   * The index of the chip that should have it's tabindex property set to 0 so it is selectable
+   * The index of the chip that should have it's `tabindex` property set to `0` so it is selectable
    * via the keyboard.
    *
-   * @type {int}
+   * @type {number}
    */
   this.ariaTabIndex = null;
 
@@ -28103,9 +28108,9 @@ MdChipsCtrl.prototype.getCursorPosition = function(element) {
  * @param chipContents
  */
 MdChipsCtrl.prototype.updateChipContents = function(chipIndex, chipContents){
-  if(chipIndex >= 0 && chipIndex < this.items.length) {
+  if (chipIndex >= 0 && chipIndex < this.items.length) {
     this.items[chipIndex] = chipContents;
-    this.updateNgModel();
+    this.updateNgModel(true);
   }
 };
 
@@ -28231,8 +28236,7 @@ MdChipsCtrl.prototype.getAdjacentChipIndex = function(index) {
 /**
  * Append the contents of the buffer to the chip list. This method will first
  * call out to the md-transform-chip method, if provided.
- *
- * @param newChip
+ * @param {string} newChip chip buffer contents that will be used to create the new chip
  */
 MdChipsCtrl.prototype.appendChip = function(newChip) {
   this.shouldFocusLastChip = true;
@@ -28263,7 +28267,7 @@ MdChipsCtrl.prototype.appendChip = function(newChip) {
 
   this.updateNgModel();
 
-  // If they provide the md-on-add attribute, notify them of the chip addition
+  // If the md-on-add attribute is specified, send a chip addition event
   if (this.useOnAdd && this.onAdd) {
     this.onAdd({ '$chip': newChip, '$index': index });
   }
@@ -28326,7 +28330,8 @@ MdChipsCtrl.prototype.getChipBuffer = function() {
                      this.userInputNgModelCtrl ? this.userInputNgModelCtrl.$viewValue :
                      this.userInputElement[0].value;
 
-  // Ensure that the chip buffer is always a string. For example, the input element buffer might be falsy.
+  // Ensure that the chip buffer is always a string. For example, the input element buffer
+  // might be falsy.
   return angular.isString(chipBuffer) ? chipBuffer : '';
 };
 
@@ -28354,23 +28359,38 @@ MdChipsCtrl.prototype.hasMaxChipsReached = function() {
 
 /**
  * Updates the validity properties for the ngModel.
+ *
+ * TODO add the md-max-chips validator to this.ngModelCtrl.validators so that the validation will
+ * be performed automatically.
  */
 MdChipsCtrl.prototype.validateModel = function() {
   this.ngModelCtrl.$setValidity('md-max-chips', !this.hasMaxChipsReached());
   this.ngModelCtrl.$validate(); // rerun any registered validators
 };
 
-MdChipsCtrl.prototype.updateNgModel = function() {
-  this.ngModelCtrl.$setViewValue(this.items.slice());
-  // TODO add the md-max-chips validator to this.ngModelCtrl.validators so that
-  // the validation will be performed automatically on $viewValue change
-  this.validateModel();
+/**
+ * Function to handle updating the model, validation, and change notification when a chip
+ * is added, removed, or changed.
+ * @param {boolean=} skipValidation true to skip calling validateModel()
+ */
+MdChipsCtrl.prototype.updateNgModel = function(skipValidation) {
+  if (!skipValidation) {
+    this.validateModel();
+  }
+  // This will trigger ng-change to fire, even in cases where $setViewValue() would not.
+  angular.forEach(this.ngModelCtrl.$viewChangeListeners, function(listener) {
+    try {
+      listener();
+    } catch (e) {
+      this.$exceptionHandler(e);
+    }
+  });
 };
 
 /**
  * Removes the chip at the given index.
- * @param {number} index
- * @param {Event=} event
+ * @param {number} index of chip to remove
+ * @param {Event=} event optionally passed to the onRemove callback
  */
 MdChipsCtrl.prototype.removeChip = function(index, event) {
   var removed = this.items.splice(index, 1);
@@ -28482,7 +28502,7 @@ MdChipsCtrl.prototype.focusChip = function(index) {
 
 /**
  * Configures the required interactions with the ngModel Controller.
- * Specifically, set {@code this.items} to the {@code NgModelCtrl#$viewVale}.
+ * Specifically, set {@code this.items} to the {@code NgModelCtrl#$viewValue}.
  * @param ngModelCtrl
  */
 MdChipsCtrl.prototype.configureNgModel = function(ngModelCtrl) {
@@ -28724,7 +28744,8 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    * </hljs>
    *
    * In some cases, you have an autocomplete inside of the `md-chips`.<br/>
-   * When the maximum amount of chips has been reached, you can also disable the autocomplete selection.<br/>
+   * When the maximum amount of chips has been reached, you can also disable the autocomplete
+   * selection.<br/>
    * Here is an example markup.
    *
    * <hljs lang="html">
@@ -28747,10 +28768,11 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    *
    * Please refer to the documentation of this option (below) for more information.
    *
-   * @param {expression} ng-model Assignable angular expression to be data-bound to the list of chips.
-   *  The expression should evaluate to a `string` or `Object` Array. The type of this array should align
-   *  with the return value of `md-transform-chip`.
-   * @param {expression=} ng-change AngularJS expression to be executed on chip addition/removal.
+   * @param {expression} ng-model Assignable AngularJS expression to be data-bound to the list of
+   *    chips. The expression should evaluate to a `string` or `Object` Array. The type of this
+   *    array should align with the return value of `md-transform-chip`.
+   * @param {expression=} ng-change AngularJS expression to be executed on chip addition, removal,
+   *    or content change.
    * @param {string=} placeholder Placeholder text that will be forwarded to the input.
    * @param {string=} secondary-placeholder Placeholder text that will be forwarded to the input,
    *    displayed when there is at least one item in the list
@@ -28759,18 +28781,19 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    * @param {boolean=} readonly Disables list manipulation (deleting or adding list items), hiding
    *    the input and delete buttons. If no `ng-model` is provided, the chips will automatically be
    *    marked as readonly.<br/><br/>
-   *    When `md-removable` is not defined, the `md-remove` behavior will be overwritten and disabled.
-   * @param {string=} md-enable-chip-edit Set this to "true" to enable editing of chip contents. The user can
-   *    go into edit mode with pressing "space", "enter", or double clicking on the chip. Chip edit is only
-   *    supported for chips with basic template.
+   *    When `md-removable` is not defined, the `md-remove` behavior will be overwritten and
+   *    disabled.
+   * @param {string=} md-enable-chip-edit Set this to "true" to enable editing of chip contents.
+   *    The user can go into edit mode with pressing "space", "enter", or double clicking on the
+   *    chip. Chip edit is only supported for chips with basic template.
    * @param {boolean=} ng-required Whether ng-model is allowed to be empty or not.
    * @param {number=} md-max-chips The maximum number of chips allowed to add through user input.
    *    <br/><br/>The validation property `md-max-chips` can be used when the max chips
    *    amount is reached.
    * @param {boolean=} md-add-on-blur When set to true, remaining text inside of the input will
    *    be converted into a new chip on blur.
-   * @param {expression} md-transform-chip An expression of form `myFunction($chip)` that when called
-   *    expects one of the following return values:
+   * @param {expression} md-transform-chip An expression of form `myFunction($chip)` that when
+   *    called expects one of the following return values:
    *    - an object representing the `$chip` input string
    *    - `undefined` to simply add the `$chip` input string, or
    *    - `null` to prevent the chip from being appended
@@ -28933,7 +28956,8 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
         deleteButtonLabel: '@',
         separatorKeys: '=?mdSeparatorKeys',
         requireMatch: '=?mdRequireMatch',
-        chipAppendDelayString: '@?mdChipAppendDelay'
+        chipAppendDelayString: '@?mdChipAppendDelay',
+        ngChange: '&'
       }
     };
 
@@ -29008,7 +29032,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
 
         $mdTheming(element);
         var mdChipsCtrl = controllers[0];
-        if(chipTemplate) {
+        if (chipTemplate) {
           // Chip editing functionality assumes we are using the default chip template.
           mdChipsCtrl.enableChipEdit = false;
         }
@@ -29033,6 +29057,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
           // If an `md-on-append` attribute was set, tell the controller to use the expression
           // when appending chips.
           //
+          // TODO: Remove this now that 1.0 is long since released
           // DEPRECATED: Will remove in official 1.0 release
           if (attrs.mdOnAppend) mdChipsCtrl.useOnAppendExpression();
 
@@ -29109,8 +29134,6 @@ angular
     .module('material.components.chips')
     .controller('MdContactChipsCtrl', MdContactChipsCtrl);
 
-
-
 /**
  * Controller for the MdContactChips component
  * @constructor
@@ -29123,11 +29146,9 @@ function MdContactChipsCtrl () {
   this.searchText = '';
 }
 
-
 MdContactChipsCtrl.prototype.queryContact = function(searchText) {
   return this.contactQuery({'$query': searchText});
 };
-
 
 MdContactChipsCtrl.prototype.itemName = function(item) {
   return item[this.contactName];
@@ -29156,8 +29177,10 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];angular
  * You may also use the `md-highlight-text` directive along with its parameters to control the
  * appearance of the matched text inside of the contacts' autocomplete popup.
  *
- * @param {string=|object=} ng-model A model to bind the list of items to
- * @param {expression=} ng-change AngularJS expression to be executed on chip addition/removal
+ * @param {expression} ng-model Assignable AngularJS expression to be data-bound to the list of
+ *    contact chips. The expression should evaluate to an `Object` Array.
+ * @param {expression=} ng-change AngularJS expression to be executed on chip addition, removal,
+ *    or content change.
  * @param {string=} placeholder Placeholder text that will be forwarded to the input.
  * @param {string=} secondary-placeholder Placeholder text that will be forwarded to the input,
  *    displayed when there is at least on item in the list
@@ -29172,12 +29195,6 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];angular
  *    contact's image.
  * @param {number=} md-min-length Specifies the minimum length of text before autocomplete will
  *    make suggestions
- *
- * @param {expression=} filter-selected Whether to filter selected contacts from the list of
- *    suggestions shown in the autocomplete.
- *
- *    ***Note:** This attribute has been removed but may come back.*
- *
  *
  *
  * @usage
@@ -36991,4 +37008,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.9-master-a85f038"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.9-master-74d2445"}};
