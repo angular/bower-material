@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.9-master-9cc165f
+ * v1.1.9-master-f6534d6
  */
 .md-button.md-THEME_NAME-theme:not([disabled]):hover {
   background-color: '{{background-500-0.2}}'; }
