@@ -1,9 +1,9 @@
 {
   "name": "angular-material-menuBar",
-  "version": "1.1.9-master-ae17515",
+  "version": "1.1.9-master-9e6553d",
   "dependencies": {
-    "angular-material-core": "1.1.9-master-ae17515",
-    "angular-material-icon": "1.1.9-master-ae17515",
-    "angular-material-menu": "1.1.9-master-ae17515"
+    "angular-material-core": "1.1.9-master-9e6553d",
+    "angular-material-icon": "1.1.9-master-9e6553d",
+    "angular-material-menu": "1.1.9-master-9e6553d"
   }
 }

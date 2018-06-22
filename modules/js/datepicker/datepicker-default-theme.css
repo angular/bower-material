@@ -2,13 +2,13 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.9-master-ae17515
+ * v1.1.9-master-9e6553d
  */
 /** Theme styles for mdCalendar. */
-.md-calendar.md-THEME_NAME-theme {
+.md-THEME_NAME-theme .md-calendar {
   background: '{{background-hue-1}}';
   color: '{{foreground-1-0.87}}'; }
-  .md-calendar.md-THEME_NAME-theme tr:last-child td {
+  .md-THEME_NAME-theme .md-calendar tr:last-child td {
     border-bottom-color: '{{background-hue-2}}'; }
 
 .md-THEME_NAME-theme .md-calendar-day-header {
@@ -33,6 +33,9 @@
 .md-THEME_NAME-theme .md-calendar-date-disabled,
 .md-THEME_NAME-theme .md-calendar-month-label-disabled {
   color: '{{foreground-3}}'; }
+
+.md-THEME_NAME-theme .md-calendar-month-label md-icon {
+  color: '{{foreground-1}}'; }
 
 /** Theme styles for mdDatepicker. */
 .md-THEME_NAME-theme .md-datepicker-input {
