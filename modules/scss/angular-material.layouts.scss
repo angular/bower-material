@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.9-master-a6bca73
+ * v1.1.9-master-81eb46f
  */
 $font-family: Roboto, 'Helvetica Neue', sans-serif !default;
 $font-size:   10px !default;
@@ -525,7 +525,7 @@ $checkbox-border-width: 2px !default;
       @if $s != '' { $suffix : '#{$s}-#{$i * 5}'; }
       @else        { $suffix : '#{$i * 5}';       }
 
-      $offsets : '.offset-#{$suffix}, .flex-offset-#{$suffix}';
+      $offsets : '.offset-#{$suffix}, .flex-offset-#{$suffix}, .layout-margin .flex-offset-#{$suffix}, .layout-margin .offset-#{$suffix}';
     }
 
     #{$offsets} {
@@ -542,7 +542,7 @@ $checkbox-border-width: 2px !default;
       @if $s != '' {  $suffix : '#{$s}-#{$i}';   }
       @else        {  $suffix : '#{$i}';         }
 
-      $offsets : '.offset-#{$suffix}, .flex-offset-#{$suffix} ';
+      $offsets : '.offset-#{$suffix}, .flex-offset-#{$suffix}, .layout-margin .flex-offset-#{$suffix}, .layout-margin .offset-#{$suffix}';
     }
 
     #{$offsets} {
@@ -558,7 +558,7 @@ $checkbox-border-width: 2px !default;
       @if $s != '' {  $suffix : '#{$s}-#{$i}';   }
       @else        {  $suffix : '#{$i}';         }
 
-      $offsets : '.offset-#{$suffix}, .flex-offset-#{$suffix} ';
+      $offsets : '.offset-#{$suffix}, .flex-offset-#{$suffix}, .layout-margin .flex-offset-#{$suffix}, .layout-margin .offset-#{$suffix}';
     }
 
     #{$offsets} {
