@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.9-master-f6534d6
+ * v1.1.9-master-daf67a8
  */
 goog.provide('ngmaterial.components.select');
 goog.require('ngmaterial.components.backdrop');
@@ -751,10 +751,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
         optNodes = undefined;
       }, CLEAR_SEARCH_AFTER);
 
-      // Support 1-9 on numpad
-      var keyCode = e.keyCode - ($mdConstant.isNumPadKey(e) ? 48 : 0);
-
-      searchStr += String.fromCharCode(keyCode);
+      searchStr += e.key;
       var search = new RegExp('^' + searchStr, 'i');
       if (!optNodes) {
         optNodes = $element.find('md-option');
