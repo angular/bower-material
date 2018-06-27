@@ -30,6 +30,7 @@
     "type": "git",
     "url": "git://github.com/angular/material.git"
   },
+  "license": "MIT",
   "licenses": [
     {
       "type": "MIT",
