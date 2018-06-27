@@ -1,27 +1,29 @@
-This repository is used only for AngularJS Material v1.x library deployments and localized installs using 
-`npm` and `bower`. The actual component source-code for this library is in the
+This repository is used only for AngularJS Material v1.x library deployments and localized installs
+using `npm` and `bower`. The actual component source-code for this library is in the
 [main AngularJS Material repository](https://github.com/angular/material).
 
-> Please file issues and pull requests against that `angular/material` repository only. Do not file issues 
-here on the deployment repository.
+> Please file issues and pull requests against that `angular/material` repository only. Do not file
+issues here on the deployment repository.
 
 ## Layouts and SCSS
 
 Included in this repository are the:
 
-* **[SCSS files](https://github.com/angular/bower-material/tree/master/modules/scss)** which are used to
-build the *.css files
-* **[Layout files](https://github.com/angular/bower-material/tree/master/modules/layouts)** which are used
-with the AngularJS Material (Flexbox) Layout API. 
+* **[SCSS files](https://github.com/angular/bower-material/tree/master/modules/scss)** which are
+used to build the *.css files
+* **[Layout files](https://github.com/angular/bower-material/tree/master/modules/layouts)** which
+are used with the AngularJS Material (Flexbox) Layout API. 
 
-> Note these are already included in the `angular-material.css` files. These copies are for direct developer
-access and contain IE flexbox fixes; as needed.
+> Note these are already included in the `angular-material.css` files. These copies are for direct
+developer access and contain IE flexbox fixes; as needed.
 
 ## Installing AngularJS Material
 
 You can install this package locally either with `npm`, `jspm`, or `bower` (deprecated). 
 
-> Please note that AngularJS Material requires **AngularJS 1.4.x** to **AngularJS 1.7.0**. 
+**Please note**: AngularJS Material requires **AngularJS 1.4.x** to **AngularJS 1.7.x**.
+
+**Please note**: AngularJS Material does not support AngularJS 1.7.1. 
 
 ### npm
 
@@ -61,8 +63,8 @@ jspm install angular-material=github:angular/bower-material@master
 jspm inspect
 ```
 
-Now you can use `require('angular-material')` when installing with **npm** or **jspm**, or when using
-Browserify or Webpack.
+Now you can use `require('angular-material')` when installing with **npm** or **jspm**, or when
+using Browserify or Webpack.
 
 ### bower
 
@@ -93,24 +95,24 @@ under `/bower_components/angular-material/`.
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="/node_modules/angular-material/angular-material.css">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="/node_modules/angular-material/angular-material.css">
 </head>
-	<body ng-app="YourApp">
-	<div ng-controller="YourController">
+  <body ng-app="YourApp">
+  <div ng-controller="YourController">
 
-	</div>
+  </div>
 
-	<script src="/node_modules/angular/angular.js"></script>
-	<script src="/node_modules/angular-aria/angular-aria.js"></script>
-	<script src="/node_modules/angular-animate/angular-animate.js"></script>
-	<script src="/node_modules/angular-messages/angular-messages.js"></script>
-	<script src="/node_modules/angular-material/angular-material.js"></script>
-	<script>
-		// Include app dependency on ngMaterial
-		angular.module( 'YourApp', [ 'ngMaterial', 'ngMessages' ] )
-			.controller("YourController", YourController );
-	</script>
+  <script src="/node_modules/angular/angular.js"></script>
+  <script src="/node_modules/angular-aria/angular-aria.js"></script>
+  <script src="/node_modules/angular-animate/angular-animate.js"></script>
+  <script src="/node_modules/angular-messages/angular-messages.js"></script>
+  <script src="/node_modules/angular-material/angular-material.js"></script>
+  <script>
+    // Include app dependency on ngMaterial
+    angular.module('YourApp', ['ngMaterial', 'ngMessages'])
+      .controller("YourController", YourController);
+  </script>
 </body>
 </html>
 ```
@@ -121,24 +123,24 @@ under `/bower_components/angular-material/`.
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
 </head>
-	<body ng-app="YourApp">
-	<div ng-controller="YourController">
+  <body ng-app="YourApp">
+  <div ng-controller="YourController">
 
-	</div>
+  </div>
 
-	<script src="/bower_components/angular/angular.js"></script>
-	<script src="/bower_components/angular-aria/angular-aria.js"></script>
-	<script src="/bower_components/angular-animate/angular-animate.js"></script>
-	<script src="/bower_components/angular-messages/angular-messages.js"></script>
-	<script src="/bower_components/angular-material/angular-material.js"></script>
-	<script>
-		// Include app dependency on ngMaterial
-		angular.module( 'YourApp', [ 'ngMaterial', 'ngMessages' ] )
-			.controller("YourController", YourController );
-	</script>
+  <script src="/bower_components/angular/angular.js"></script>
+  <script src="/bower_components/angular-aria/angular-aria.js"></script>
+  <script src="/bower_components/angular-animate/angular-animate.js"></script>
+  <script src="/bower_components/angular-messages/angular-messages.js"></script>
+  <script src="/bower_components/angular-material/angular-material.js"></script>
+  <script>
+    // Include app dependency on ngMaterial
+    angular.module('YourApp', ['ngMaterial', 'ngMessages'])
+      .controller("YourController", YourController);
+  </script>
 </body>
 </html>
 ```
@@ -157,10 +159,10 @@ This is especially useful when using online tools such as CodePen, Plunker, or j
 <body>
 
     <!-- Angular Material Dependencies -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.0/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.0/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.0/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.0/angular-messages.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-messages.min.js"></script>
     
     <!-- Angular Material Javascript now available via Google CDN; version 1.1.9 used here -->
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.9/angular-material.min.js"></script>
@@ -173,8 +175,8 @@ based on the latest stable release version.
 ## Unit Testing with Angular Material
 
 <br/>
-If you are using Angular Material and will be using Jasmine to test your own custom application code, you will
-need to also load two (2) Angular mock files:
+If you are using Angular Material and will be using Jasmine to test your own custom application
+code, you will need to also load two (2) Angular mock files:
 
 *  Angular Mocks
     * **angular-mocks.js** from `/node_modules/angular-mocks/angular-mocks.js`
@@ -183,8 +185,8 @@ need to also load two (2) Angular mock files:
 
 <br/>
 
-Shown below is a karma-configuration file (`karma.conf.js`) sample that may be a useful template for your own
-testing purposes:<br/><br/>
+Shown below is a karma-configuration file (`karma.conf.js`) sample that may be a useful template for
+your own testing purposes:<br/><br/>
 
 ```js
 module.exports = function(config) {
@@ -198,6 +200,7 @@ module.exports = function(config) {
     'node_modules/angular/angular.js',
     'node_modules/angular-animate/angular-animate.js',
     'node_modules/angular-aria/angular-aria.js',
+    'node_modules/angular-messages/angular-messages.js',
     'node_modules/angular-material/angular-material.js',
     
     'node_modules/angular-mocks/angular-mocks.js',
@@ -205,7 +208,6 @@ module.exports = function(config) {
   ];
 
   config.set({
-
     basePath: __dirname + '/..',
     frameworks: ['jasmine'],
     
@@ -217,8 +219,7 @@ module.exports = function(config) {
 
     autoWatch: false,
     singleRun: true,
-    browsers: ['PhantomJS,Chrome']
-
+    browsers: ['Chrome']
   });
 };
 ```

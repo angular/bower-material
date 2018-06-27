@@ -5,17 +5,17 @@
   "format": "cjs",
   "registry": "github",
   "peerDependencies": {
-    "angular": ">=1.4 <=1.7.0",
-    "angular-animate": ">=1.4 <=1.7.0",
-    "angular-aria": ">=1.4 <=1.7.0",
-    "angular-messages": ">=1.4 <=1.7.0"
+    "angular": ">=1.4 <1.8",
+    "angular-animate": ">=1.4 <1.8",
+    "angular-aria": ">=1.4 <1.8",
+    "angular-messages": ">=1.4 <1.8"
   },
   "jspm": {
     "dependencies": {
-      "angular": "github:angular/bower-angular@^1.6.0",
-      "angular-animate": "github:angular/bower-angular-animate@^1.6.0",
-      "angular-aria": "github:angular/bower-angular-aria@^1.6.0",
-      "angular-messages": "github:angular/bower-angular-messages@^1.6.0",
+      "angular": "github:angular/bower-angular@^1.7.2",
+      "angular-animate": "github:angular/bower-angular-animate@^1.7.2",
+      "angular-aria": "github:angular/bower-angular-aria@^1.7.2",
+      "angular-messages": "github:angular/bower-angular-messages@^1.7.2",
       "css": "systemjs/plugin-css@^0.1.9"
     },
     "shim": {
@@ -38,9 +38,13 @@
   ],
   "keywords": [
     "angular",
+    "angularjs",
     "material",
     "browser",
-    "client-side"
+    "client-side",
+    "material design",
+    "component library",
+    "components"
   ],
   "bugs": {
     "url": "https://github.com/angular/material/issues"
