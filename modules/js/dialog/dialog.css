@@ -2,21 +2,15 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-3ef9a02
+ * v1.1.10-master-3660a32
  */
 .md-dialog-is-showing {
   max-height: 100%; }
 
 .md-dialog-container {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-          justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   top: 0;
   left: 0;
@@ -33,44 +27,27 @@ md-dialog {
   position: relative;
   overflow: auto;
   box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-          flex-direction: column; }
+  flex-direction: column; }
   md-dialog.md-transition-in {
     opacity: 1;
-    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     -webkit-transform: translate(0, 0) scale(1);
             transform: translate(0, 0) scale(1); }
   md-dialog.md-transition-out {
     opacity: 0;
-    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     -webkit-transform: translate(0, 100%) scale(0.2);
             transform: translate(0, 100%) scale(0.2); }
   md-dialog > form {
-    display: -webkit-box;
-    display: -webkit-flex;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
-            flex-direction: column;
+    flex-direction: column;
     overflow: auto; }
   md-dialog .md-dialog-content {
     padding: 24px; }
   md-dialog md-dialog-content {
-    -webkit-box-ordinal-group: 2;
-    -webkit-order: 1;
-            order: 1;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
-            flex-direction: column;
+    order: 1;
+    flex-direction: column;
     overflow: auto;
     -webkit-overflow-scrolling: touch; }
     md-dialog md-dialog-content:not([layout=row]) > *:first-child:not(.md-subheader) {
@@ -85,19 +62,11 @@ md-dialog {
       width: 100%;
       box-sizing: border-box; }
   md-dialog .md-actions, md-dialog md-dialog-actions {
-    display: -webkit-box;
-    display: -webkit-flex;
     display: flex;
-    -webkit-box-ordinal-group: 3;
-    -webkit-order: 2;
-            order: 2;
+    order: 2;
     box-sizing: border-box;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-            align-items: center;
-    -webkit-box-pack: end;
-    -webkit-justify-content: flex-end;
-            justify-content: flex-end;
+    align-items: center;
+    justify-content: flex-end;
     margin-bottom: 0;
     padding-right: 8px;
     padding-left: 16px;

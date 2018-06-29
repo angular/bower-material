@@ -2,10 +2,9 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-3ef9a02
+ * v1.1.10-master-3660a32
  */
 md-input-container:not([md-no-float]) .md-select-placeholder span:first-child {
-  -webkit-transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -37,30 +36,21 @@ md-input-container.md-input-focused:not([md-no-float]) .md-select-placeholder sp
     display: block;
     opacity: 1; }
     .md-select-menu-container.md-active md-select-menu {
-      -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      -webkit-transition-duration: 150ms;
-              transition-duration: 150ms; }
+      transition-duration: 150ms; }
       .md-select-menu-container.md-active md-select-menu > * {
         opacity: 1;
-        -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
         transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-        -webkit-transition-duration: 150ms;
-                transition-duration: 150ms;
-        -webkit-transition-delay: 100ms;
-                transition-delay: 100ms; }
+        transition-duration: 150ms;
+        transition-delay: 100ms; }
   .md-select-menu-container.md-leave {
     opacity: 0;
-    -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
     transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-    -webkit-transition-duration: 250ms;
-            transition-duration: 250ms; }
+    transition-duration: 250ms; }
 
 md-input-container > md-select {
   margin: 0;
-  -webkit-box-ordinal-group: 3;
-  -webkit-order: 2;
-          order: 2; }
+  order: 2; }
 
 md-input-container:not(.md-input-has-value) md-select[required]:not(.md-no-asterisk) .md-select-value span:first-child:after, md-input-container:not(.md-input-has-value) md-select.ng-required:not(.md-no-asterisk) .md-select-value span:first-child:after {
   content: ' *';
@@ -72,8 +62,6 @@ md-input-container.md-input-invalid md-select .md-select-value {
   padding-bottom: 1px; }
 
 md-select {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   margin: 20px 0 26px 0; }
   md-select[required].ng-invalid:not(.md-no-asterisk) .md-select-value span:first-child:after, md-select.ng-required.ng-invalid:not(.md-no-asterisk) .md-select-value span:first-child:after {
@@ -106,12 +94,8 @@ md-input-container.md-input-has-value .md-select-value > span:not(.md-select-ico
           transform: translate3d(0, 1px, 0); }
 
 .md-select-value {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   padding: 2px 2px 1px;
   border-bottom-width: 1px;
   border-bottom-style: solid;
@@ -120,14 +104,10 @@ md-input-container.md-input-has-value .md-select-value > span:not(.md-select-ico
   box-sizing: content-box;
   min-width: 64px;
   min-height: 26px;
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-          flex-grow: 1; }
+  flex-grow: 1; }
   .md-select-value > span:not(.md-select-icon) {
     max-width: 100%;
-    -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
-            flex: 1 1 auto;
+    flex: 1 1 auto;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden; }
@@ -135,9 +115,7 @@ md-input-container.md-input-has-value .md-select-value > span:not(.md-select-ico
       display: inline; }
   .md-select-value .md-select-icon {
     display: block;
-    -webkit-box-align: end;
-    -webkit-align-items: flex-end;
-            align-items: flex-end;
+    align-items: flex-end;
     text-align: end;
     width: 24px;
     margin: 0 4px;
@@ -154,25 +132,16 @@ md-input-container.md-input-has-value .md-select-value > span:not(.md-select-ico
     -webkit-transform: scaleY(0.5) scaleX(1);
             transform: scaleY(0.5) scaleX(1); }
   .md-select-value.md-select-placeholder {
-    display: -webkit-box;
-    display: -webkit-flex;
     display: flex;
-    -webkit-box-ordinal-group: 2;
-    -webkit-order: 1;
-            order: 1;
+    order: 1;
     pointer-events: none;
     -webkit-font-smoothing: antialiased;
     padding-left: 2px;
     z-index: 1; }
 
 md-select-menu {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
   max-height: 256px;
   min-height: 48px;
@@ -182,10 +151,7 @@ md-select-menu {
   -webkit-transform: scale(1);
           transform: scale(1); }
   md-select-menu.md-reverse {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: reverse;
-    -webkit-flex-direction: column-reverse;
-            flex-direction: column-reverse; }
+    flex-direction: column-reverse; }
   md-select-menu:not(.md-overflow) md-content {
     padding-top: 8px;
     padding-bottom: 8px; }
@@ -203,14 +169,9 @@ md-select-menu {
 md-option {
   cursor: pointer;
   position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   width: auto;
-  -webkit-transition: background 0.15s linear;
   transition: background 0.15s linear;
   padding: 0 16px 0 16px;
   height: 48px; }
@@ -281,7 +242,6 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
       top: 0;
       right: 0;
       bottom: 0;
-      -webkit-transition: all 0.5s;
       transition: all 0.5s;
       width: auto; }
     md-select-menu[multiple] md-option.md-checkbox-enabled .md-container:after {
@@ -303,7 +263,6 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
       bottom: -15px; }
   md-select-menu[multiple] md-option.md-checkbox-enabled .md-icon {
     box-sizing: border-box;
-    -webkit-transition: 240ms;
     transition: 240ms;
     position: absolute;
     top: 0;

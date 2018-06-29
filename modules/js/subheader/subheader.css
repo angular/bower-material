@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-3ef9a02
+ * v1.1.10-master-3660a32
  */
 @-webkit-keyframes subheaderStickyHoverIn {
   0% {
@@ -29,7 +29,6 @@
     box-shadow: 0 0 0 0 transparent; } }
 
 .md-subheader-wrapper:not(.md-sticky-no-effect) {
-  -webkit-transition: 0.2s ease-out margin;
   transition: 0.2s ease-out margin; }
   .md-subheader-wrapper:not(.md-sticky-no-effect) .md-subheader {
     margin: 0; }
