@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-2cc372d
+ * v1.1.10-master-0cb4af1
  */
 goog.provide('ngmaterial.components.input');
 goog.require('ngmaterial.core');
@@ -660,6 +660,10 @@ function mdMaxlengthDirective($animate, $mdUtil) {
     var ngTrim = angular.isDefined(attr.ngTrim) ? $mdUtil.parseAttributeBoolean(attr.ngTrim) : true;
     var isPasswordInput = attr.type === 'password';
 
+    scope.$watch(attr.mdMaxlength, function(value) {
+      maxlength = value;
+    });
+
     ngModelCtrl.$validators['md-maxlength'] = function(modelValue, viewValue) {
       if (!angular.isNumber(maxlength) || maxlength < 0) {
         return true;
@@ -703,7 +707,6 @@ function mdMaxlengthDirective($animate, $mdUtil) {
       });
  
       scope.$watch(attr.mdMaxlength, function(value) {
-        maxlength = value;
         if (angular.isNumber(value) && value > 0) {
           if (!charCountEl.parent().length) {
             $animate.enter(charCountEl, errorsSpacer);

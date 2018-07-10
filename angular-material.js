@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-2cc372d
+ * v1.1.10-master-0cb4af1
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13494,6 +13494,10 @@ function mdMaxlengthDirective($animate, $mdUtil) {
     var ngTrim = angular.isDefined(attr.ngTrim) ? $mdUtil.parseAttributeBoolean(attr.ngTrim) : true;
     var isPasswordInput = attr.type === 'password';
 
+    scope.$watch(attr.mdMaxlength, function(value) {
+      maxlength = value;
+    });
+
     ngModelCtrl.$validators['md-maxlength'] = function(modelValue, viewValue) {
       if (!angular.isNumber(maxlength) || maxlength < 0) {
         return true;
@@ -13537,7 +13541,6 @@ function mdMaxlengthDirective($animate, $mdUtil) {
       });
  
       scope.$watch(attr.mdMaxlength, function(value) {
-        maxlength = value;
         if (angular.isNumber(value) && value > 0) {
           if (!charCountEl.parent().length) {
             $animate.enter(charCountEl, errorsSpacer);
@@ -37108,4 +37111,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-2cc372d"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-0cb4af1"}};

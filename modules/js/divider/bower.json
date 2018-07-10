@@ -1,7 +1,7 @@
 {
   "name": "angular-material-divider",
-  "version": "1.1.10-master-2cc372d",
+  "version": "1.1.10-master-0cb4af1",
   "dependencies": {
-    "angular-material-core": "1.1.10-master-2cc372d"
+    "angular-material-core": "1.1.10-master-0cb4af1"
   }
 }
