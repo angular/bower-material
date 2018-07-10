@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-0cb4af1
+ * v1.1.10-master-607dd02
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -516,7 +516,7 @@ function MdNavItem($mdAria, $$rAF, $mdUtil, $window) {
 
       scope.$on('destroy', function() {
         disconnect();
-      })
+      });
     }
   };
 }

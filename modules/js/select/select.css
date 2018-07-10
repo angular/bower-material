@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-0cb4af1
+ * v1.1.10-master-607dd02
  */
 md-input-container:not([md-no-float]) .md-select-placeholder span:first-child {
   transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -64,7 +64,7 @@ md-input-container.md-input-invalid md-select .md-select-value {
 md-select {
   display: flex;
   margin: 20px 0 26px 0; }
-  md-select[required].ng-invalid:not(.md-no-asterisk) .md-select-value span:first-child:after, md-select.ng-required.ng-invalid:not(.md-no-asterisk) .md-select-value span:first-child:after {
+  md-select[required].ng-empty.ng-invalid:not(.md-no-asterisk) .md-select-value span:first-child:after, md-select.ng-required.ng-empty.ng-invalid:not(.md-no-asterisk) .md-select-value span:first-child:after {
     content: ' *';
     font-size: 13px;
     vertical-align: top; }
