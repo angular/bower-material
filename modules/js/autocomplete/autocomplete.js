@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-0dd688c
+ * v1.1.10-master-97455f5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1710,7 +1710,7 @@ MdHighlight['$inject'] = ["$interpolate", "$parse"];angular
  * <hljs lang="html">
  * <input placeholder="Enter a search term..." ng-model="searchTerm" type="text" />
  * <ul>
- *   <li ng-repeat="result in results" md-highlight-text="searchTerm">
+ *   <li ng-repeat="result in results" md-highlight-text="searchTerm" md-highlight-flags="i">
  *     {{result.text}}
  *   </li>
  * </ul>

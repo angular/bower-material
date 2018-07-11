@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-0dd688c
+ * v1.1.10-master-97455f5
  */
 goog.provide('ngmaterial.core');
 
@@ -1705,7 +1705,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
     /**
      * Processes a template and replaces the start/end symbols if the application has
-     * overriden them.
+     * overridden them.
      *
      * @param template The template to process whose start/end tags may be replaced.
      * @returns {*}
