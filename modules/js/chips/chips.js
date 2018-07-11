@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-6972119
+ * v1.1.10-master-eb10b56
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1788,6 +1788,18 @@ MdContactChipsCtrl.prototype.queryContact = function(searchText) {
   return this.contactQuery({'$query': searchText});
 };
 
+MdContactChipsCtrl.prototype.inputKeydown = function(event) {
+  if (!this.separatorKeys || this.separatorKeys.indexOf(event.keyCode) < 0) {
+    return;
+  }
+
+  event.stopPropagation();
+  event.preventDefault();
+
+  var autocompleteCtrl = angular.element(event.target).controller('mdAutocomplete');
+  autocompleteCtrl.select(autocompleteCtrl.index);
+};
+
 MdContactChipsCtrl.prototype.itemName = function(item) {
   return item[this.contactName];
 };
@@ -1852,7 +1864,8 @@ var MD_CONTACT_CHIPS_TEMPLATE = '\
           ng-model="$mdContactChipsCtrl.contacts"\
           ng-change="$mdContactChipsCtrl.ngChange($mdContactChipsCtrl.contacts)"\
           md-require-match="$mdContactChipsCtrl.requireMatch"\
-          md-chip-append-delay="{{$mdContactChipsCtrl.chipAppendDelay}}" \
+          md-chip-append-delay="{{$mdContactChipsCtrl.chipAppendDelay}}"\
+          md-separator-keys="$mdContactChipsCtrl.separatorKeys"\
           md-autocomplete-snap>\
           <md-autocomplete\
               md-menu-class="md-contact-chips-suggestions"\
@@ -1863,6 +1876,7 @@ var MD_CONTACT_CHIPS_TEMPLATE = '\
               md-no-cache="true"\
               md-min-length="$mdContactChipsCtrl.minLength"\
               md-autoselect\
+              ng-keydown="$mdContactChipsCtrl.inputKeydown($event)"\
               placeholder="{{$mdContactChipsCtrl.contacts.length == 0 ?\
                   $mdContactChipsCtrl.placeholder : $mdContactChipsCtrl.secondaryPlaceholder}}">\
             <div class="md-contact-suggestion">\
@@ -1920,7 +1934,8 @@ function MdContactChips($mdTheming, $mdUtil) {
       requireMatch: '=?mdRequireMatch',
       minLength: '=?mdMinLength',
       highlightFlags: '@?mdHighlightFlags',
-      chipAppendDelay: '@?mdChipAppendDelay'
+      chipAppendDelay: '@?mdChipAppendDelay',
+      separatorKeys: '=?mdSeparatorKeys',
     }
   };
 
