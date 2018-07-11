@@ -1,8 +1,8 @@
 {
   "name": "angular-material-panel",
-  "version": "1.1.10-master-eb10b56",
+  "version": "1.1.10-master-0dd688c",
   "dependencies": {
-    "angular-material-core": "1.1.10-master-eb10b56",
-    "angular-material-backdrop": "1.1.10-master-eb10b56"
+    "angular-material-core": "1.1.10-master-0dd688c",
+    "angular-material-backdrop": "1.1.10-master-0dd688c"
   }
 }
