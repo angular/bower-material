@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-607dd02
+ * v1.1.10-master-6972119
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -27421,7 +27421,7 @@ MdHighlight.$inject = ["$interpolate", "$parse"];angular
  * <hljs lang="html">
  * <input placeholder="Enter a search term..." ng-model="searchTerm" type="text" />
  * <ul>
- *   <li ng-repeat="result in results" md-highlight-text="searchTerm">
+ *   <li ng-repeat="result in results" md-highlight-text="searchTerm" md-highlight-flags="i">
  *     {{result.text}}
  *   </li>
  * </ul>
@@ -28453,6 +28453,7 @@ MdChipsCtrl.prototype.removeChip = function(index, event) {
   var removed = this.items.splice(index, 1);
 
   this.updateNgModel();
+  this.ngModelCtrl.$setDirty();
 
   if (removed && removed.length && this.useOnRemove && this.onRemove) {
     this.onRemove({ '$chip': removed[0], '$index': index, '$event': event });
@@ -29263,8 +29264,9 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];angular
  * returns  a list of possible contacts. The user can select one of these and add it to the list of
  * chips.
  *
- * You may also use the `md-highlight-text` directive along with its parameters to control the
- * appearance of the matched text inside of the contacts' autocomplete popup.
+ * You may also use the <a ng-href="api/directive/mdHighlightText">md-highlight-flags</a> attribute
+ * along with its parameters to control the appearance of the matched text inside of the contacts'
+ * autocomplete popup.
  *
  * @param {expression} ng-model Assignable AngularJS expression to be data-bound to the list of
  *    contact chips. The expression should evaluate to an `Object` Array.
@@ -37120,4 +37122,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-607dd02"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-6972119"}};
