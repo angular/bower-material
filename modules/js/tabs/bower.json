@@ -1,8 +1,8 @@
 {
   "name": "angular-material-tabs",
-  "version": "1.1.10-master-03e7c22",
+  "version": "1.1.10-master-e8f1113",
   "dependencies": {
-    "angular-material-core": "1.1.10-master-03e7c22",
-    "angular-material-icon": "1.1.10-master-03e7c22"
+    "angular-material-core": "1.1.10-master-e8f1113",
+    "angular-material-icon": "1.1.10-master-e8f1113"
   }
 }
