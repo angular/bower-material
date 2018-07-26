@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-d48c5b8
+ * v1.1.10-master-33652b4
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -35871,11 +35871,9 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   // define private properties
   var ctrl      = this,
       locked    = false,
-      elements  = getElements(),
       queue     = [],
       destroyed = false,
       loaded    = false;
-
 
   // Define public methods
   ctrl.$onInit            = $onInit;
@@ -35954,10 +35952,6 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
     bindEvents();
     $mdTheming($element);
     $mdUtil.nextTick(function () {
-      // Note that the element references need to be updated, because certain "browsers"
-      // (IE/Edge) lose them and start throwing "Invalid calling object" errors, when we
-      // compile the element contents down in `compileElement`.
-      elements = getElements();
       updateHeightFromContent();
       adjustOffset();
       updateInkBarStyles();
@@ -36329,7 +36323,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
 
   /**
    * Gathers references to all of the DOM elements used by this controller.
-   * @returns {{}}
+   * @returns {Object}
    */
   function getElements () {
     var elements = {};
@@ -36576,7 +36570,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
         extraOffset = 32;
 
     // If we are selecting the first tab (in LTR and RTL), always set the offset to 0
-    if (index == 0) {
+    if (index === 0) {
       ctrl.offsetLeft = 0;
       return;
     }
@@ -36786,7 +36780,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   }
 
   function isRtl() {
-    return ($mdUtil.bidi() == 'rtl');
+    return ($mdUtil.bidi() === 'rtl');
   }
 }
 
@@ -37131,4 +37125,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-d48c5b8"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-33652b4"}};
