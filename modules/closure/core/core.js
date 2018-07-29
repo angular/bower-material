@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-33652b4
+ * v1.1.10-master-b6b9a5c
  */
 goog.provide('ngmaterial.core');
 
@@ -1655,8 +1655,10 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      * nextTick() coalesces all calls within a single frame
      * to minimize $digest thrashing
      *
-     * @param callback
-     * @param digest
+     * @param {Function} callback function to be called after the tick
+     * @param {boolean} digest true to call $rootScope.$digest() after callback
+     * @param scope scope associated with callback. If the scope is destroyed, the callback will
+     *  be skipped.
      * @returns {*}
      */
     nextTick: function(callback, digest, scope) {
