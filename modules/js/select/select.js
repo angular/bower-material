@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-b6b9a5c
+ * v1.1.10-master-998199f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1250,6 +1250,7 @@ function SelectProvider($$interimElementProvider) {
           $$rAF(function() {
             element.addClass('md-active');
             info.dropDown.element.css(animator.toCss({transform: ''}));
+            autoFocus(opts.focusedNode);
 
             resolve();
           });

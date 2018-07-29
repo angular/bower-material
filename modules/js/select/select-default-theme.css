@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-b6b9a5c
+ * v1.1.10-master-998199f
  */
 md-input-container md-select.md-THEME_NAME-theme .md-select-value span:first-child:after {
   color: '{{warn-A700}}'; }
@@ -21,6 +21,16 @@ md-input-container.md-input-invalid md-select.md-THEME_NAME-theme .md-select-val
 
 md-input-container.md-input-invalid md-select.md-THEME_NAME-theme.md-no-underline .md-select-value {
   border-bottom-color: transparent !important; }
+
+md-input-container:not(.md-input-invalid).md-input-focused.md-accent .md-select-value {
+  border-color: '{{accent-color}}'; }
+  md-input-container:not(.md-input-invalid).md-input-focused.md-accent .md-select-value span {
+    color: '{{accent-color}}'; }
+
+md-input-container:not(.md-input-invalid).md-input-focused.md-warn .md-select-value {
+  border-color: '{{warn-A700}}'; }
+  md-input-container:not(.md-input-invalid).md-input-focused.md-warn .md-select-value span {
+    color: '{{warn-A700}}'; }
 
 md-select.md-THEME_NAME-theme[disabled] .md-select-value {
   border-bottom-color: transparent;
