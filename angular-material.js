@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-e3c1a5c
+ * v1.1.10-master-1d73d81
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -37003,6 +37003,7 @@ function MdTabs ($$mdSvgRegistry) {
             '<md-icon md-svg-src="'+ $$mdSvgRegistry.mdTabsArrow +'"></md-icon> ' +
           '</md-next-button> ' +
           '<md-tabs-canvas ' +
+              'tabindex="{{ $mdTabsCtrl.hasFocus ? -1 : 0 }}" ' +
               'ng-focus="$mdTabsCtrl.redirectFocus()" ' +
               'ng-class="{ ' +
                   '\'md-paginated\': $mdTabsCtrl.shouldPaginate, ' +
@@ -37041,6 +37042,8 @@ function MdTabs ($$mdSvgRegistry) {
               '<md-dummy-tab ' +
                   'class="md-tab" ' +
                   'tabindex="-1" ' +
+                  'ng-focus="$mdTabsCtrl.hasFocus = true" ' +
+                  'ng-blur="$mdTabsCtrl.hasFocus = false" ' +
                   'ng-repeat="tab in $mdTabsCtrl.tabs" ' +
                   'md-tabs-template="::tab.label" ' +
                   'md-scope="::tab.parent"></md-dummy-tab> ' +
@@ -37190,4 +37193,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-e3c1a5c"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-1d73d81"}};
