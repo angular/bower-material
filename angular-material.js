@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-4b1b729
+ * v1.1.10-master-2203eec
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13611,9 +13611,11 @@ function placeholderDirective($compile) {
     }
 
     // md-select handles placeholders on it's own
-    if (element[0].nodeName != 'MD-SELECT') {
+    if (element[0].nodeName !== 'MD-SELECT') {
       // Move the placeholder expression to the label
-      var newLabel = angular.element('<label ng-click="delegateClick()" tabindex="-1">' + attr.placeholder + '</label>');
+      var newLabel = angular.element(
+        '<label ng-click="delegateClick()" tabindex="-1" aria-hidden="true">' + attr.placeholder +
+        '</label>');
 
       // Note that we unset it via `attr`, in order to get AngularJS
       // to remove any observers that it might have set up. Otherwise
@@ -37214,4 +37216,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-4b1b729"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-2203eec"}};
