@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-e56424e
+ * v1.1.10-master-4b1b729
  */
 goog.provide('ngmaterial.components.fabActions');
 goog.require('ngmaterial.core');
