@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-a25a7df
+ * v1.1.10-master-c34996d
  */
 goog.provide('ngmaterial.components.autocomplete');
 goog.require('ngmaterial.components.icon');
@@ -119,6 +119,14 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       }
       if ($scope.ariaDescribedBy) {
         elements.input.setAttribute('aria-describedby', $scope.ariaDescribedBy);
+      }
+      if (!$scope.floatingLabel) {
+        if ($scope.ariaLabelledBy) {
+          elements.input.setAttribute('aria-labelledby', $scope.ariaLabelledBy);
+        } else {
+          // If no aria-labelledby references are defined, then just label using the placeholder.
+          elements.input.setAttribute('aria-label', $scope.placeholder);
+        }
       }
     });
   }
@@ -1080,7 +1088,8 @@ MdAutocomplete['$inject'] = ["$$mdSvgRegistry"];angular
  *     no matches were found.  You can do this by wrapping your template in `md-item-template` and
  *     adding a tag for `md-not-found`.  An example of this is shown below.
  *
- * To reset the displayed value you must clear both values for `md-search-text` and `md-selected-item`.
+ * To reset the displayed value you must clear both values for `md-search-text` and
+ * `md-selected-item`.
  *
  * ### Validation
  *
@@ -1157,11 +1166,14 @@ MdAutocomplete['$inject'] = ["$$mdSvgRegistry"];angular
  *     make suggestions.
  * @param {number=} md-delay Specifies the amount of time (in milliseconds) to wait before looking
  *     for results.
- * @param {boolean=} md-clear-button Whether the clear button for the autocomplete input should show up or not.
- * @param {boolean=} md-autofocus If true, the autocomplete will be automatically focused when a `$mdDialog`,
- *     `$mdBottomsheet` or `$mdSidenav`, which contains the autocomplete, is opening. <br/><br/>
+ * @param {boolean=} md-clear-button Whether the clear button for the autocomplete input should show
+ *     up or not.
+ * @param {boolean=} md-autofocus If true, the autocomplete will be automatically focused when a
+ *     `$mdDialog`, `$mdBottomsheet` or `$mdSidenav`, which contains the autocomplete, is opening.
+ *     <br/><br/>
  *     Also the autocomplete will immediately focus the input element.
- * @param {boolean=} md-no-asterisk When present, asterisk will not be appended to the floating label.
+ * @param {boolean=} md-no-asterisk When present, asterisk will not be appended to the floating
+ *     label.
  * @param {boolean=} md-autoselect If set to true, the first item will be automatically selected
  *     in the dropdown upon open.
  * @param {string=} md-input-name The name attribute given to the input element to be used with
@@ -1172,7 +1184,7 @@ MdAutocomplete['$inject'] = ["$$mdSvgRegistry"];angular
  * @param {string=} md-input-class This will be applied to the input for styling. This attribute
  *     is only valid when a `md-floating-label` is defined.
  * @param {string=} md-floating-label This will add a floating label to autocomplete and wrap it in
- *     `md-input-container`
+ *     `md-input-container`.
  * @param {string=} md-select-on-focus When present the inputs text will be automatically selected
  *     on focus.
  * @param {string=} md-input-id An ID to be added to the input element.
@@ -1199,6 +1211,10 @@ MdAutocomplete['$inject'] = ["$$mdSvgRegistry"];angular
  *    announce after a value is selected. Default is: "selected". If `Alaska` is selected in the
  *    options panel, it will read "Alaska selected". You will want to override this when your app
  *    is running in a non-English locale.
+ * @param {string=} aria-labelledby A space-separated list of element IDs. The ideal use case is
+ *     that this would contain the ID of a `<label>` element that is associated with this
+ *     autocomplete. This will only have affect when `md-floating-label` is not defined.<br><br>
+ *     For `<label id="state">US State</label>`, you would set this to `aria-labelledby="state"`.
  * @param {boolean=} ng-trim If set to false, the search text will be not trimmed automatically.
  *     Defaults to true.
  * @param {string=} ng-pattern Adds the pattern validator to the ngModel of the search text.
@@ -1239,12 +1255,12 @@ MdAutocomplete['$inject'] = ["$$mdSvgRegistry"];angular
  * ### Clear button for the input
  * By default, the clear button is displayed when there is input. This aligns with the spec's
  * [Search Pattern](https://material.io/guidelines/patterns/search.html#search-in-app-search).
- * In floating label mode, when `md-floating-label="My Label"` is applied, the clear button is not displayed
- * by default (see the spec's
+ * In floating label mode, when `md-floating-label="My Label"` is applied, the clear button is not
+ * displayed by default (see the spec's
  * [Autocomplete Text Field](https://material.io/guidelines/components/text-fields.html#text-fields-layout)).
  *
- * Nevertheless, developers are able to explicitly toggle the clear button for all autocomplete components
- * with `md-clear-button`.
+ * Nevertheless, developers are able to explicitly toggle the clear button for all autocomplete
+ * components with `md-clear-button`.
  *
  * <hljs lang="html">
  *   <md-autocomplete ... md-clear-button="true"></md-autocomplete>
@@ -1283,7 +1299,8 @@ MdAutocomplete['$inject'] = ["$$mdSvgRegistry"];angular
  *     input validation for the field.
  *
  * ### Asynchronous Results
- * The autocomplete items expression also supports promises, which will resolve with the query results.
+ * The autocomplete items expression also supports promises, which will resolve with the query
+ * results.
  *
  * <hljs lang="js">
  *   function AppController($scope, $http) {
@@ -1325,6 +1342,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
       itemText:           '&mdItemText',
       placeholder:        '@placeholder',
       ariaDescribedBy:    '@?ariaDescribedby',
+      ariaLabelledBy:     '@?ariaLabelledby',
       noCache:            '=?mdNoCache',
       requireMatch:       '=?mdRequireMatch',
       selectOnMatch:      '=?mdSelectOnMatch',
@@ -1363,8 +1381,8 @@ function MdAutocomplete ($$mdSvgRegistry) {
         // be added to the element in the template function.
         ctrl.hasNotFound = !!element.attr('md-has-not-found');
 
-        // By default the inset autocomplete should show the clear button when not explicitly overwritten
-        // or in floating label mode.
+        // By default the inset autocomplete should show the clear button when not explicitly
+        // overwritten or in floating label mode.
         if (!angular.isDefined(attrs.mdClearButton) && !scope.floatingLabel) {
           scope.clearButton = true;
         }
@@ -1424,7 +1442,8 @@ function MdAutocomplete ($$mdSvgRegistry) {
         var templateTag = element.find('md-item-template').detach(),
             html = templateTag.length ? templateTag.html() : element.html();
         if (!templateTag.length) element.empty();
-        return '<md-autocomplete-parent-scope md-autocomplete-replace>' + html + '</md-autocomplete-parent-scope>';
+        return '<md-autocomplete-parent-scope md-autocomplete-replace>' + html +
+               '</md-autocomplete-parent-scope>';
       }
 
       function getNoItemsTemplate() {
@@ -1487,7 +1506,6 @@ function MdAutocomplete ($$mdSvgRegistry) {
                 ng-focus="$mdAutocompleteCtrl.focus($event)"\
                 placeholder="{{placeholder}}"\
                 aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
-                aria-label="{{placeholder}}"\
                 aria-autocomplete="list"\
                 role="combobox"\
                 aria-haspopup="true"\
