@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-affe84b
+ * v1.1.10-master-aa30ada
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -35768,6 +35768,7 @@ function MdProgressCircularProvider() {
  * @param {string=} label Optional attribute to specify a simple string as the tab label
  * @param {boolean=} ng-disabled If present and expression evaluates to truthy, disabled tab
  *  selection.
+ * @param {string=} md-tab-class Optional attribute to specify a class that will be applied to the tab's button
  * @param {expression=} md-on-deselect Expression to be evaluated after the tab has been
  *  de-selected.
  * @param {expression=} md-on-select Expression to be evaluated after the tab has been selected.
@@ -35778,7 +35779,7 @@ function MdProgressCircularProvider() {
  * @usage
  *
  * <hljs lang="html">
- * <md-tab label="My Tab" ng-disabled md-on-select="onSelect()" md-on-deselect="onDeselect()">
+ * <md-tab label="My Tab" md-tab-class="my-content-tab" ng-disabled md-on-select="onSelect()" md-on-deselect="onDeselect()">
  *   <h3>My Tab content</h3>
  * </md-tab>
  *
@@ -35832,7 +35833,8 @@ function MdTab () {
       active:   '=?mdActive',
       disabled: '=?ngDisabled',
       select:   '&?mdOnSelect',
-      deselect: '&?mdOnDeselect'
+      deselect: '&?mdOnDeselect',
+      tabClass: '@mdTabClass'
     }
   };
 
@@ -37081,7 +37083,7 @@ function MdTabs ($$mdSvgRegistry) {
                 'aria-label="{{::$mdTabsCtrl.navigationHint}}">' +
               '<md-tab-item ' +
                   'tabindex="{{ tab.isActive() ? 0 : -1 }}" ' +
-                  'class="md-tab" ' +
+                  'class="md-tab {{::tab.scope.tabClass}}" ' +
                   'ng-repeat="tab in $mdTabsCtrl.tabs" ' +
                   'role="tab" ' +
                   'id="tab-item-{{::tab.id}}" ' +
@@ -37258,4 +37260,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-affe84b"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-aa30ada"}};
