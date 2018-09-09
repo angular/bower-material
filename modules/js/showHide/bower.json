@@ -1,7 +1,7 @@
 {
   "name": "angular-material-showHide",
-  "version": "1.1.10-master-ef97faf",
+  "version": "1.1.10-master-5aef450",
   "dependencies": {
-    "angular-material-core": "1.1.10-master-ef97faf"
+    "angular-material-core": "1.1.10-master-5aef450"
   }
 }
