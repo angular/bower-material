@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-dc3b028
+ * v1.1.10-master-edb9733
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -36843,7 +36843,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
 
   /**
    * Forces the pagination to move the focused tab into view.
-   * @param {number} index of tab to have its offset adjusted
+   * @param {number=} index of tab to have its offset adjusted
    */
   function adjustOffset (index) {
     var elements = getElements();
@@ -37438,4 +37438,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-dc3b028"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-edb9733"}};

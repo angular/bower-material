@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-dc3b028
+ * v1.1.10-master-edb9733
  */
 goog.provide('ngmaterial.components.tabs');
 goog.require('ngmaterial.components.icon');
@@ -1056,7 +1056,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
 
   /**
    * Forces the pagination to move the focused tab into view.
-   * @param {number} index of tab to have its offset adjusted
+   * @param {number=} index of tab to have its offset adjusted
    */
   function adjustOffset (index) {
     var elements = getElements();
