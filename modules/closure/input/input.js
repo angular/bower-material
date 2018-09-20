@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-1294a26
+ * v1.1.10-master-9852ff7
  */
 goog.provide('ngmaterial.components.input');
 goog.require('ngmaterial.core');
@@ -62,31 +62,28 @@ if (window._mdMocksIncluded) {
  * @restrict E
  *
  * @description
- * `<md-input-container>` is the parent of any input or textarea element. It can also optionally
- * wrap `<md-select>` elements so that they will be formatted for use in a form.
+ * `<md-input-container>` is the parent of any input or textarea element.
  *
- * Input and textarea elements will not behave properly unless the md-input-container parent is
- * provided.
+ * Input and textarea elements will not behave properly unless the md-input-container
+ * parent is provided.
  *
- * A single `<md-input-container>` should contain only one `<input>` or `<md-select>` element,
- * otherwise it will throw an error.
+ * A single `<md-input-container>` should contain only one `<input>` element, otherwise it will throw an error.
  *
- * <b>Exception:</b> Hidden inputs (`<input type="hidden" />`) are ignored and will not throw an
- * error, so you may combine these with other inputs.
+ * <b>Exception:</b> Hidden inputs (`<input type="hidden" />`) are ignored and will not throw an error, so
+ * you may combine these with other inputs.
  *
- * <b>Note:</b> When using `ngMessages` with your input element, make sure the message and container
- * elements are *block* elements, otherwise animations applied to the messages will not look as
- * intended. Either use a `div` and apply the `ng-message` and `ng-messages` classes respectively,
- * or use the `md-block` class on your element.
+ * <b>Note:</b> When using `ngMessages` with your input element, make sure the message and container elements
+ * are *block* elements, otherwise animations applied to the messages will not look as intended. Either use a `div` and
+ * apply the `ng-message` and `ng-messages` classes respectively, or use the `md-block` class on your element.
  *
- * @param {expression=} md-is-error When the given expression evaluates to `true`, the input
- *   container will go into the error state. Defaults to erroring if the input has been touched and
- *   is invalid.
- * @param {boolean=} md-no-float When present, `placeholder` attributes on the input will not be
- *   converted to floating labels.
+ * @param md-is-error {expression=} When the given expression evaluates to true, the input container
+ *   will go into error state. Defaults to erroring if the input has been touched and is invalid.
+ * @param md-no-float {boolean=} When present, `placeholder` attributes on the input will not be converted to floating
+ *   labels.
  *
  * @usage
  * <hljs lang="html">
+ *
  * <md-input-container>
  *   <label>Username</label>
  *   <input type="text" ng-model="user.name">
@@ -97,11 +94,6 @@ if (window._mdMocksIncluded) {
  *   <textarea ng-model="user.description"></textarea>
  * </md-input-container>
  *
- * <md-input-container>
- *   <md-select ng-model="user.state" placeholder="State of Residence">
- *     <md-option ng-value="state" ng-repeat="state in states">{{ state }}</md-option>
- *   </md-select>
- * </md-input-container>
  * </hljs>
  *
  * <h3>When disabling floating labels</h3>
@@ -110,6 +102,7 @@ if (window._mdMocksIncluded) {
  * <md-input-container md-no-float>
  *   <input type="text" placeholder="Non-Floating Label">
  * </md-input-container>
+ *
  * </hljs>
  */
 function mdInputContainerDirective($mdTheming, $parse) {
@@ -219,12 +212,11 @@ function labelDirective() {
  *   will be logged in the console if not present.
  * @param {string=} placeholder An alternative approach to using aria-label when the label is not
  *   PRESENT. The placeholder text is copied to the aria-label attribute.
- * @param {boolean=} md-no-autogrow When present, textareas will not grow automatically.
- * @param {boolean=} md-no-asterisk When present, an asterisk will not be appended to the inputs
- *   floating label.
- * @param {boolean=} md-no-resize Disables the textarea resize handle.
+ * @param md-no-autogrow {boolean=} When present, textareas will not grow automatically.
+ * @param md-no-asterisk {boolean=} When present, an asterisk will not be appended to the inputs floating label
+ * @param md-no-resize {boolean=} Disables the textarea resize handle.
  * @param {number=} max-rows The maximum amount of rows for a textarea.
- * @param {boolean=} md-detect-hidden When present, textareas will be sized properly when they are
+ * @param md-detect-hidden {boolean=} When present, textareas will be sized properly when they are
  *   revealed after being hidden. This is off by default for performance reasons because it
  *   guarantees a reflow every digest cycle.
  *
@@ -780,11 +772,9 @@ function placeholderDirective($compile) {
     }
 
     // md-select handles placeholders on it's own
-    if (element[0].nodeName !== 'MD-SELECT') {
+    if (element[0].nodeName != 'MD-SELECT') {
       // Move the placeholder expression to the label
-      var newLabel = angular.element(
-        '<label ng-click="delegateClick()" tabindex="-1" aria-hidden="true">' + attr.placeholder +
-        '</label>');
+      var newLabel = angular.element('<label ng-click="delegateClick()" tabindex="-1">' + attr.placeholder + '</label>');
 
       // Note that we unset it via `attr`, in order to get AngularJS
       // to remove any observers that it might have set up. Otherwise

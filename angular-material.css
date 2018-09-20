@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-1294a26
+ * v1.1.10-master-9852ff7
  */
 html, body {
   height: 100%;
@@ -2405,12 +2405,8 @@ md-list-item {
         margin: 0;
         padding: 0; }
       md-list-item._md-button-wrap > div.md-button:first-child .md-list-item-inner {
-        width: 100%; }
-        md-list-item._md-button-wrap > div.md-button:first-child .md-list-item-inner::before {
-          content: '';
-          min-height: inherit;
-          visibility: hidden;
-          display: inline-block; }
+        width: 100%;
+        min-height: inherit; }
   md-list-item.md-no-proxy,
   md-list-item .md-no-style {
     position: relative;
