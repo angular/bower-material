@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-6596cc7
+ * v1.1.10-master-dfba062
  */
 goog.provide('ngmaterial.components.select');
 goog.require('ngmaterial.components.backdrop');
@@ -1266,7 +1266,15 @@ function SelectProvider($$interimElementProvider) {
         element
           .removeClass('md-active')
           .attr('aria-hidden', 'true')
-          .css('display', 'none');
+          .css({
+            'display': 'none',
+            'top': '',
+            'right': '',
+            'bottom': '',
+            'left': '',
+            'font-size': '',
+            'min-width': ''
+          });
         element.parent().find('md-select-value').removeAttr('aria-hidden');
 
         announceClosed(opts);

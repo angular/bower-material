@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-6596cc7
+ * v1.1.10-master-dfba062
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -20648,7 +20648,15 @@ function SelectProvider($$interimElementProvider) {
         element
           .removeClass('md-active')
           .attr('aria-hidden', 'true')
-          .css('display', 'none');
+          .css({
+            'display': 'none',
+            'top': '',
+            'right': '',
+            'bottom': '',
+            'left': '',
+            'font-size': '',
+            'min-width': ''
+          });
         element.parent().find('md-select-value').removeAttr('aria-hidden');
 
         announceClosed(opts);
@@ -37441,4 +37449,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-6596cc7"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-dfba062"}};
