@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-dfba062
+ * v1.1.10-master-4493389
  */
 goog.provide('ngmaterial.components.input');
 goog.require('ngmaterial.core');
@@ -10,7 +10,7 @@ goog.require('ngmaterial.core');
  * @ngdoc module
  * @name material.components.input
  */
-mdInputContainerDirective['$inject'] = ["$mdTheming", "$parse"];
+mdInputContainerDirective['$inject'] = ["$mdTheming", "$parse", "$$rAF"];
 inputTextareaDirective['$inject'] = ["$mdUtil", "$window", "$mdAria", "$timeout", "$mdGesture"];
 mdMaxlengthDirective['$inject'] = ["$animate", "$mdUtil"];
 placeholderDirective['$inject'] = ["$compile"];
@@ -112,7 +112,7 @@ if (window._mdMocksIncluded) {
  * </md-input-container>
  * </hljs>
  */
-function mdInputContainerDirective($mdTheming, $parse) {
+function mdInputContainerDirective($mdTheming, $parse, $$rAF) {
 
   ContainerCtrl['$inject'] = ["$scope", "$element", "$attrs", "$animate"];
   var INPUT_TAGS = ['INPUT', 'TEXTAREA', 'SELECT', 'MD-SELECT'];
@@ -133,15 +133,33 @@ function mdInputContainerDirective($mdTheming, $parse) {
 
   function compile(tElement) {
     // Check for both a left & right icon
-    var leftIcon = tElement[0].querySelector(LEFT_SELECTORS);
-    var rightIcon = tElement[0].querySelector(RIGHT_SELECTORS);
-
-    if (leftIcon) { tElement.addClass('md-icon-left'); }
-    if (rightIcon) { tElement.addClass('md-icon-right'); }
+    var hasLeftIcon = tElement[0].querySelector(LEFT_SELECTORS);
+    var hasRightIcon = tElement[0].querySelector(RIGHT_SELECTORS);
 
     return function postLink(scope, element) {
       $mdTheming(element);
-    };
+
+      if (hasLeftIcon || hasRightIcon) {
+        // When accessing the element's contents synchronously, they may not be defined yet because
+        // of the use of ng-if. If we wait one frame, then the element should be there if the ng-if
+        // resolves to true.
+        $$rAF(function() {
+          // Handle the case where the md-icon element is initially hidden via ng-if from #9529.
+          // We don't want to preserve the space for the icon in the case of ng-if, like we do for
+          // ng-show.
+          // Note that we can't use the same selectors from above because the elements are no longer
+          // siblings for textareas at this point due to the insertion of the md-resize-wrapper.
+          var iconNotRemoved = element[0].querySelector('md-icon') ||
+            element[0].querySelector('.md-icon');
+          if (hasLeftIcon && iconNotRemoved) {
+            element.addClass('md-icon-left');
+          }
+          if (hasRightIcon && iconNotRemoved) {
+            element.addClass('md-icon-right');
+          }
+        });
+      }
+    }
   }
 
   function ContainerCtrl($scope, $element, $attrs, $animate) {
