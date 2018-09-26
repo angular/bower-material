@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-d5e086f
+ * v1.1.10-master-bc8d29f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -805,7 +805,7 @@ mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];angular.module
  *
  *  See Material Design's <a href="https://material.google.com/layout/responsive-ui.html">Layout - Adaptive UI</a> for more details.
  *
- *  <a href="https://www.google.com/design/spec/layout/adaptive-ui.html">
+ *  <a href="https://material.io/archive/guidelines/layout/responsive-ui.html#">
  *  <img src="https://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0B8olV15J7abPSGFxemFiQVRtb1k/layout_adaptive_breakpoints_01.png" width="100%" height="100%"></img>
  *  </a>
  *
@@ -6577,7 +6577,7 @@ var GENERATED = { };
 var PALETTES;
 
 // Text Colors on light and dark backgrounds
-// @see https://www.google.com/design/spec/style/color.html#color-text-background-colors
+// @see https://material.io/archive/guidelines/style/color.html#color-usability
 var DARK_FOREGROUND = {
   name: 'dark',
   '1': 'rgba(0,0,0,0.87)',
@@ -9163,7 +9163,7 @@ angular
  * @description
  * The checkbox directive is used like the normal [angular checkbox](https://docs.angularjs.org/api/ng/input/input%5Bcheckbox%5D).
  *
- * As per the [material design spec](http://www.google.com/design/spec/style/color.html#color-color-schemes)
+ * As per the [Material Design spec](https://material.io/archive/guidelines/style/color.html#color-color-palette)
  * the checkbox is in the accent color by default. The primary color palette may be used with
  * the `md-primary` class.
  *
@@ -21971,7 +21971,7 @@ function SliderContainerDirective() {
  * @description
  * The `<md-slider>` component allows the user to choose from a range of values.
  *
- * As per the [material design spec](https://material.io/guidelines/style/color.html#color-color-system)
+ * As per the [Material Design spec](https://material.io/archive/guidelines/style/color.html#color-color-system)
  * the slider is in the accent color by default. The primary color palette may be used with
  * the `md-primary` class.
  *
@@ -22859,7 +22859,7 @@ function MdSticky($mdConstant, $$rAF, $mdUtil, $compile) {
  *
  *  Upon scrolling, subheaders remain pinned to the top of the screen and remain
  *  pinned until pushed on or off screen by the next subheader. @see [Material
- *  Design Specifications](https://www.google.com/design/spec/components/subheaders.html)
+ *  Design Specifications](https://material.io/archive/guidelines/components/subheaders.html)
  *
  *  > To improve the visual grouping of content, use the system color for your subheaders.
  *
@@ -23118,7 +23118,7 @@ angular.module('material.components.switch', [
  *
  * The switch directive is used very much like the normal [angular checkbox](https://docs.angularjs.org/api/ng/input/input%5Bcheckbox%5D).
  *
- * As per the [material design spec](http://www.google.com/design/spec/style/color.html#color-ui-color-application)
+ * As per the [Material Design spec](https://material.io/archive/guidelines/style/color.html#color-color-system)
  * the switch is in the accent color by default. The primary color palette may be used with
  * the `md-primary` class.
  *
@@ -27185,10 +27185,10 @@ MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
  *
  * ### Clear button for the input
  * By default, the clear button is displayed when there is input. This aligns with the spec's
- * [Search Pattern](https://material.io/guidelines/patterns/search.html#search-in-app-search).
+ * [Search Pattern](https://material.io/archive/guidelines/patterns/search.html#search-in-app-search).
  * In floating label mode, when `md-floating-label="My Label"` is applied, the clear button is not displayed
  * by default (see the spec's
- * [Autocomplete Text Field](https://material.io/guidelines/components/text-fields.html#text-fields-layout)).
+ * [Autocomplete Text Field](https://material.io/archive/guidelines/components/text-fields.html#text-fields-layout)).
  *
  * Nevertheless, developers are able to explicitly toggle the clear button for all autocomplete components
  * with `md-clear-button`.
@@ -32932,7 +32932,7 @@ angular
  * determine its textual name and character reference code. Click on any icon to see the slide-up information
  * panel with details regarding a SVG download or information on the font-icon usage.
  *
- * <a href="https://www.google.com/design/icons/#ic_accessibility" target="_blank" style="border-bottom:none;">
+ * <a href="https://material.io/tools/icons/?icon=accessibility&style=baseline" target="_blank" style="border-bottom:none;">
  * <img src="https://cloud.githubusercontent.com/assets/210413/7902490/fe8dd14c-0780-11e5-98fb-c821cc6475e6.png"
  *      aria-label="Material Design Icon-Selector" style="max-width:75%;padding-left:10%">
  * </a>
@@ -34052,7 +34052,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  *
  * The width of the menu when it is open may be specified by specifying a `width`
  * attribute on the `md-menu-content` element.
- * See the [Material Design Spec](https://material.io/guidelines/components/menus.html#menus-simple-menus)
+ * See the [Material Design Spec](https://material.io/archive/guidelines/components/menus.html#menus-simple-menus)
  * for more information.
  *
  *
@@ -36801,7 +36801,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
     var elements = getElements(),
       containerWidth = elements.canvas.clientWidth,
 
-      // See https://material.io/design/components/tabs.html#spec which has been updated to 360px.
+      // See https://material.io/archive/guidelines/components/tabs.html#tabs-specs
       specMax = 264;
 
     // Do the spec maximum, or the canvas width; whichever is *smaller* (tabs larger than the canvas
@@ -36819,7 +36819,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
       containerWidth = elements.canvas.clientWidth,
       xsBreakpoint = 600,
 
-      // See https://material.io/design/components/tabs.html#spec which has been updated to 90px.
+      // See https://material.io/archive/guidelines/components/tabs.html#tabs-specs
       specMin = containerWidth > xsBreakpoint ? 160 : 72;
 
     // Do the spec minimum, or the canvas width; whichever is *smaller* (tabs larger than the canvas
@@ -37467,4 +37467,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-d5e086f"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-bc8d29f"}};

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-d5e086f
+ * v1.1.10-master-bc8d29f
  */
 goog.provide('ngmaterial.components.slider');
 goog.require('ngmaterial.core');
@@ -114,7 +114,7 @@ function SliderContainerDirective() {
  * @description
  * The `<md-slider>` component allows the user to choose from a range of values.
  *
- * As per the [material design spec](https://material.io/guidelines/style/color.html#color-color-system)
+ * As per the [Material Design spec](https://material.io/archive/guidelines/style/color.html#color-color-system)
  * the slider is in the accent color by default. The primary color palette may be used with
  * the `md-primary` class.
  *

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-d5e086f
+ * v1.1.10-master-bc8d29f
  */
 goog.provide('ngmaterial.components.subheader');
 goog.require('ngmaterial.components.sticky');
@@ -20,7 +20,7 @@ goog.require('ngmaterial.core');
  *
  *  Upon scrolling, subheaders remain pinned to the top of the screen and remain
  *  pinned until pushed on or off screen by the next subheader. @see [Material
- *  Design Specifications](https://www.google.com/design/spec/components/subheaders.html)
+ *  Design Specifications](https://material.io/archive/guidelines/components/subheaders.html)
  *
  *  > To improve the visual grouping of content, use the system color for your subheaders.
  *

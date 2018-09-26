@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-d5e086f
+ * v1.1.10-master-bc8d29f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -777,7 +777,7 @@ mdMediaFactory['$inject'] = ["$mdConstant", "$rootScope", "$window"];angular.mod
  *
  *  See Material Design's <a href="https://material.google.com/layout/responsive-ui.html">Layout - Adaptive UI</a> for more details.
  *
- *  <a href="https://www.google.com/design/spec/layout/adaptive-ui.html">
+ *  <a href="https://material.io/archive/guidelines/layout/responsive-ui.html#">
  *  <img src="https://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0B8olV15J7abPSGFxemFiQVRtb1k/layout_adaptive_breakpoints_01.png" width="100%" height="100%"></img>
  *  </a>
  *
@@ -6477,7 +6477,7 @@ var GENERATED = { };
 var PALETTES;
 
 // Text Colors on light and dark backgrounds
-// @see https://www.google.com/design/spec/style/color.html#color-text-background-colors
+// @see https://material.io/archive/guidelines/style/color.html#color-usability
 var DARK_FOREGROUND = {
   name: 'dark',
   '1': 'rgba(0,0,0,0.87)',
