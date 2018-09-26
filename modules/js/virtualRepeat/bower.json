@@ -1,8 +1,8 @@
 {
   "name": "angular-material-virtualRepeat",
-  "version": "1.1.10-master-4493389",
+  "version": "1.1.10-master-d5e086f",
   "dependencies": {
-    "angular-material-core": "1.1.10-master-4493389",
-    "angular-material-showHide": "1.1.10-master-4493389"
+    "angular-material-core": "1.1.10-master-d5e086f",
+    "angular-material-showHide": "1.1.10-master-d5e086f"
   }
 }
