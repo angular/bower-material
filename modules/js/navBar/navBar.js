@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-e876eec
+ * v1.1.10-master-6b29548
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -44,10 +44,10 @@ angular.module('material.components.navBar', ['material.core'])
  * Alternatively, the user could simply watch the value of `md-selected-nav-item`
  * (`currentNavItem` in the below example) for changes.
  *
- * Accessibility functionality is implemented as a site navigator with a
- * listbox, according to the
- * <a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20160317/#Site_Navigator_Tabbed_Style">
- *   WAI-ARIA Authoring Practices 1.1 Working Draft from March 2016</a>.
+ * Accessibility functionality is implemented as a
+ * <a href="https://www.w3.org/TR/wai-aria-1.0/complete#tablist">
+ *   tablist</a> with
+ * <a href="https://www.w3.org/TR/wai-aria-1.0/complete#tab">tabs</a>.
  * We've kept the `role="navigation"` on the `<nav>`, for backwards compatibility, even though
  *  it is not required in the
  * <a href="https://www.w3.org/TR/wai-aria-practices/#aria_lh_navigation">
@@ -56,7 +56,7 @@ angular.module('material.components.navBar', ['material.core'])
  * @param {string=} md-selected-nav-item The name of the current tab; this must
  *     match the `name` attribute of `<md-nav-item>`.
  * @param {boolean=} md-no-ink-bar If set to true, the ink bar will be hidden.
- * @param {string=} nav-bar-aria-label An `aria-label` applied to the `md-nav-bar`'s listbox
+ * @param {string=} nav-bar-aria-label An `aria-label` applied to the `md-nav-bar`'s tablist
  * for accessibility.
  *
  * @usage
@@ -103,7 +103,10 @@ angular.module('material.components.navBar', ['material.core'])
  * Exactly one of the `md-nav-click`, `md-nav-href`, or `md-nav-sref` attributes are required
  * to be specified.
  *
- * @param {string=} aria-label Adds alternative text for accessibility.
+ * @param {string=} nav-item-aria-label Allows setting or overriding the label that is announced by
+ *     a screen reader for the nav item's button. If this is not set, the nav item's transcluded
+ *     content will be announced. Make sure to set this if the nav item's transcluded content does
+ *     not include descriptive text, for example only an icon.
  * @param {expression=} md-nav-click Expression which will be evaluated when the
  *     link is clicked to change the page. Renders as an `ng-click`.
  * @param {string=} md-nav-href url to transition to when this link is clicked.
@@ -140,7 +143,7 @@ function MdNavBar($mdAria, $mdTheming) {
     template:
       '<div class="md-nav-bar">' +
         '<nav role="navigation">' +
-          '<ul class="_md-nav-bar-list" ng-transclude role="listbox" ' +
+          '<ul class="_md-nav-bar-list" ng-transclude role="tablist" ' +
             'tabindex="0" ' +
             'ng-focus="ctrl.onFocus()" ' +
             'ng-keydown="ctrl.onKeydown($event)" ' +
@@ -457,6 +460,9 @@ function MdNavItem($mdAria, $$rAF, $mdUtil, $window) {
             'ng-blur="ctrl.setFocused(false)" ' +
             'ng-disabled="ctrl.disabled" ' +
             'tabindex="-1" ' +
+            'role="tab" ' +
+            'ng-attr-aria-label="{{ctrl.navItemAriaLabel ? ctrl.navItemAriaLabel : undefined}}" ' +
+            'aria-selected="{{ctrl.isSelected()}}" ' +
             navigationOptions +
             navigationAttribute + '>' +
             '<span ng-transclude class="_md-nav-button-text"></span>' +
@@ -465,8 +471,7 @@ function MdNavItem($mdAria, $$rAF, $mdUtil, $window) {
 
       return '' +
         '<li class="md-nav-item" ' +
-          'role="option" ' +
-          'aria-selected="{{ctrl.isSelected()}}">' +
+          'role="presentation">' +
           (buttonTemplate || '') +
         '</li>';
     },
@@ -476,6 +481,7 @@ function MdNavItem($mdAria, $$rAF, $mdUtil, $window) {
       'mdNavSref': '@?',
       'srefOpts': '=?',
       'name': '@',
+      'navItemAriaLabel': '@?',
     },
     link: function(scope, element, attrs, controllers) {
       var disconnect;
@@ -517,7 +523,9 @@ function MdNavItem($mdAria, $$rAF, $mdUtil, $window) {
           });
         }
 
-        $mdAria.expectWithText(element, 'aria-label');
+        if (!mdNavItem.navItemAriaLabel) {
+          $mdAria.expectWithText(navButton, 'aria-label');
+        }
       });
 
       scope.$on('destroy', function() {
@@ -553,6 +561,9 @@ function MdNavItemController($element) {
   this.srefOpts;
   /** @const {?string} */
   this.name;
+
+  /** @type {string} */
+  this.navItemAriaLabel;
 
   // State variables
   /** @private {boolean} */
