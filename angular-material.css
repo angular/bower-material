@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-4e8bef8
+ * v1.1.10-master-71e0411
  */
 html, body {
   height: 100%;
@@ -4266,13 +4266,11 @@ md-switch {
   md-switch:not([disabled]).md-dragging .md-container {
     cursor: -webkit-grabbing;
     cursor: grabbing; }
-  md-switch.md-focused:not([disabled]) .md-thumb:before {
+  md-switch.md-focused .md-thumb:before {
     left: -8px;
     top: -8px;
     right: -8px;
     bottom: -8px; }
-  md-switch.md-focused:not([disabled]):not(.md-checked) .md-thumb:before {
-    background-color: rgba(0, 0, 0, 0.12); }
   md-switch .md-label {
     border-color: transparent;
     border-width: 0;
