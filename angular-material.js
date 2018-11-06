@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-71e0411
+ * v1.1.10-master-ca10bd0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -19847,15 +19847,6 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
       findSelectContainer();
       $mdTheming(element);
 
-      if (formCtrl && angular.isDefined(attr.multiple)) {
-        $mdUtil.nextTick(function() {
-          var hasModelValue = ngModelCtrl.$modelValue || ngModelCtrl.$viewValue;
-          if (hasModelValue) {
-            formCtrl.$setPristine();
-          }
-        });
-      }
-
       var originalRender = ngModelCtrl.$render;
       ngModelCtrl.$render = function() {
         originalRender();
@@ -20230,13 +20221,26 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
       if (deregisterCollectionWatch) deregisterCollectionWatch();
 
       if (self.isMultiple) {
+        // We want to delay the render method so that the directive has a chance to load before
+        // rendering, this prevents the control being marked as dirty onload.
+        var loaded = false;
+        var delayedRender = function(val) {
+          if (!loaded) {
+            $mdUtil.nextTick(function () {
+              renderMultiple(val);
+              loaded = true;
+            });
+          } else {
+            renderMultiple(val);
+          }
+        };
         ngModel.$validators['md-multiple'] = validateArray;
-        ngModel.$render = renderMultiple;
+        ngModel.$render = delayedRender;
 
         // watchCollection on the model because by default ngModel only watches the model's
-        // reference. This allowed the developer to also push and pop from their array.
+        // reference. This allows the developer to also push and pop from their array.
         $scope.$watchCollection(self.modelBinding, function(value) {
-          if (validateArray(value)) renderMultiple(value);
+          if (validateArray(value)) delayedRender(value);
         });
 
         ngModel.$isEmpty = function(value) {
@@ -26661,7 +26665,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   function keydown (event) {
     switch (event.keyCode) {
       case $mdConstant.KEY_CODE.DOWN_ARROW:
-        if (ctrl.loading) return;
+        if (ctrl.loading || hasSelection()) return;
         event.stopPropagation();
         event.preventDefault();
         ctrl.index   = Math.min(ctrl.index + 1, ctrl.matches.length - 1);
@@ -26669,7 +26673,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
         reportMessages(false, ReportType.Selected);
         break;
       case $mdConstant.KEY_CODE.UP_ARROW:
-        if (ctrl.loading) return;
+        if (ctrl.loading || hasSelection()) return;
         event.stopPropagation();
         event.preventDefault();
         ctrl.index   = ctrl.index < 0 ? ctrl.matches.length - 1 : Math.max(0, ctrl.index - 1);
@@ -26816,16 +26820,16 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   }
 
   /**
-   * Determines if the escape keydown should be processed
-   * @returns {boolean}
+   * @returns {boolean} if the escape keydown should be processed, return true.
+   *  Otherwise return false.
    */
   function shouldProcessEscape() {
     return hasEscapeOption('blur') || !ctrl.hidden || ctrl.loading || hasEscapeOption('clear') && $scope.searchText;
   }
 
   /**
-   * Determines if an escape option is set
-   * @returns {boolean}
+   * @param {string} option check if this option is set
+   * @returns {boolean} if the specified escape option is set, return true. Return false otherwise.
    */
   function hasEscapeOption(option) {
     return !$scope.escapeOptions || $scope.escapeOptions.toLowerCase().indexOf(option) !== -1;
@@ -27503,10 +27507,16 @@ function MdAutocomplete ($$mdSvgRegistry) {
               role="presentation">\
             <ul class="md-autocomplete-suggestions"\
                 ng-class="::menuClass"\
-                id="ul-{{$mdAutocompleteCtrl.id}}">\
+                id="ul-{{$mdAutocompleteCtrl.id}}"\
+                role="listbox">\
               <li md-virtual-repeat="item in $mdAutocompleteCtrl.matches"\
                   ng-class="{ selected: $index === $mdAutocompleteCtrl.index }"\
+                  ng-attr-id="{{$index === $mdAutocompleteCtrl.index ? \'selected_option\' : undefined}}"\
                   ng-click="$mdAutocompleteCtrl.select($index)"\
+                  role="option"\
+                  aria-setsize="{{$mdAutocompleteCtrl.matches.length}}"\
+                  aria-posinset="{{$index+1}}"\
+                  aria-selected="{{$index === $mdAutocompleteCtrl.index ? true : false}}" \
                   md-extra-name="$mdAutocompleteCtrl.itemName">\
                   ' + itemTemplate + '\
                   </li>' + noItemsTemplate + '\
@@ -27537,56 +27547,56 @@ function MdAutocomplete ($$mdSvgRegistry) {
             <md-input-container ng-if="floatingLabel">\
               <label>{{floatingLabel}}</label>\
               <input type="search"\
-                  ' + (tabindex != null ? 'tabindex="' + tabindex + '"' : '') + '\
-                  id="{{ inputId || \'fl-input-\' + $mdAutocompleteCtrl.id }}"\
-                  name="{{inputName}}"\
-                  ng-class="::inputClass"\
-                  autocomplete="off"\
-                  ng-required="$mdAutocompleteCtrl.isRequired"\
-                  ng-readonly="$mdAutocompleteCtrl.isReadonly"\
-                  ng-minlength="inputMinlength"\
-                  ng-maxlength="inputMaxlength"\
-                  ng-disabled="$mdAutocompleteCtrl.isDisabled"\
-                  ng-model="$mdAutocompleteCtrl.scope.searchText"\
-                  ng-model-options="{ allowInvalid: true }"\
-                  ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
-                  ng-blur="$mdAutocompleteCtrl.blur($event)"\
-                  ng-focus="$mdAutocompleteCtrl.focus($event)"\
-                  aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
-                  aria-label="{{floatingLabel}}"\
-                  aria-autocomplete="list"\
-                  role="combobox"\
-                  aria-haspopup="true"\
-                  aria-activedescendant=""\
-                  aria-expanded="{{!$mdAutocompleteCtrl.hidden}}"/>\
+                ' + (tabindex != null ? 'tabindex="' + tabindex + '"' : '') + '\
+                id="{{ inputId || \'fl-input-\' + $mdAutocompleteCtrl.id }}"\
+                name="{{inputName}}"\
+                ng-class="::inputClass"\
+                autocomplete="off"\
+                ng-required="$mdAutocompleteCtrl.isRequired"\
+                ng-readonly="$mdAutocompleteCtrl.isReadonly"\
+                ng-minlength="inputMinlength"\
+                ng-maxlength="inputMaxlength"\
+                ng-disabled="$mdAutocompleteCtrl.isDisabled"\
+                ng-model="$mdAutocompleteCtrl.scope.searchText"\
+                ng-model-options="{ allowInvalid: true }"\
+                ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
+                ng-blur="$mdAutocompleteCtrl.blur($event)"\
+                ng-focus="$mdAutocompleteCtrl.focus($event)"\
+                aria-label="{{floatingLabel}}"\
+                aria-autocomplete="list"\
+                role="combobox"\
+                aria-haspopup="true"\
+                aria-expanded="{{!$mdAutocompleteCtrl.hidden}}"\
+                aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
+                ng-attr-aria-activedescendant="{{$mdAutocompleteCtrl.index >= 0 ? \'selected_option\' : undefined}}">\
               <div md-autocomplete-parent-scope md-autocomplete-replace>' + leftover + '</div>\
             </md-input-container>';
         } else {
           return '\
             <input type="search"\
-                ' + (tabindex != null ? 'tabindex="' + tabindex + '"' : '') + '\
-                id="{{ inputId || \'input-\' + $mdAutocompleteCtrl.id }}"\
-                name="{{inputName}}"\
-                ng-class="::inputClass"\
-                ng-if="!floatingLabel"\
-                autocomplete="off"\
-                ng-required="$mdAutocompleteCtrl.isRequired"\
-                ng-disabled="$mdAutocompleteCtrl.isDisabled"\
-                ng-readonly="$mdAutocompleteCtrl.isReadonly"\
-                ng-minlength="inputMinlength"\
-                ng-maxlength="inputMaxlength"\
-                ng-model="$mdAutocompleteCtrl.scope.searchText"\
-                ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
-                ng-blur="$mdAutocompleteCtrl.blur($event)"\
-                ng-focus="$mdAutocompleteCtrl.focus($event)"\
-                placeholder="{{placeholder}}"\
-                aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
-                aria-label="{{placeholder}}"\
-                aria-autocomplete="list"\
-                role="combobox"\
-                aria-haspopup="true"\
-                aria-activedescendant=""\
-                aria-expanded="{{!$mdAutocompleteCtrl.hidden}}"/>';
+              ' + (tabindex != null ? 'tabindex="' + tabindex + '"' : '') + '\
+              id="{{ inputId || \'input-\' + $mdAutocompleteCtrl.id }}"\
+              name="{{inputName}}"\
+              ng-class="::inputClass"\
+              ng-if="!floatingLabel"\
+              autocomplete="off"\
+              ng-required="$mdAutocompleteCtrl.isRequired"\
+              ng-disabled="$mdAutocompleteCtrl.isDisabled"\
+              ng-readonly="$mdAutocompleteCtrl.isReadonly"\
+              ng-minlength="inputMinlength"\
+              ng-maxlength="inputMaxlength"\
+              ng-model="$mdAutocompleteCtrl.scope.searchText"\
+              ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
+              ng-blur="$mdAutocompleteCtrl.blur($event)"\
+              ng-focus="$mdAutocompleteCtrl.focus($event)"\
+              placeholder="{{placeholder}}"\
+              aria-label="{{placeholder}}"\
+              aria-autocomplete="list"\
+              role="combobox"\
+              aria-haspopup="true"\
+              aria-expanded="{{!$mdAutocompleteCtrl.hidden}}"\
+              aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
+              ng-attr-aria-activedescendant="{{$mdAutocompleteCtrl.index >= 0 ? \'selected_option\' : undefined}}">';
         }
       }
 
@@ -37652,4 +37662,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-71e0411"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-ca10bd0"}};
