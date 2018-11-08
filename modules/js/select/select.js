@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-97e2d00
+ * v1.1.10-master-d343363
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -303,6 +303,15 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
 
       findSelectContainer();
       $mdTheming(element);
+
+      if (formCtrl && angular.isDefined(attr.multiple)) {
+        $mdUtil.nextTick(function() {
+          var hasModelValue = ngModelCtrl.$modelValue || ngModelCtrl.$viewValue;
+          if (hasModelValue) {
+            formCtrl.$setPristine();
+          }
+        });
+      }
 
       var originalRender = ngModelCtrl.$render;
       ngModelCtrl.$render = function() {
@@ -678,26 +687,13 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
       if (deregisterCollectionWatch) deregisterCollectionWatch();
 
       if (self.isMultiple) {
-        // We want to delay the render method so that the directive has a chance to load before
-        // rendering, this prevents the control being marked as dirty onload.
-        var loaded = false;
-        var delayedRender = function(val) {
-          if (!loaded) {
-            $mdUtil.nextTick(function () {
-              renderMultiple(val);
-              loaded = true;
-            });
-          } else {
-            renderMultiple(val);
-          }
-        };
         ngModel.$validators['md-multiple'] = validateArray;
-        ngModel.$render = delayedRender;
+        ngModel.$render = renderMultiple;
 
         // watchCollection on the model because by default ngModel only watches the model's
-        // reference. This allows the developer to also push and pop from their array.
+        // reference. This allowed the developer to also push and pop from their array.
         $scope.$watchCollection(self.modelBinding, function(value) {
-          if (validateArray(value)) delayedRender(value);
+          if (validateArray(value)) renderMultiple(value);
         });
 
         ngModel.$isEmpty = function(value) {

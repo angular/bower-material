@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-97e2d00
+ * v1.1.10-master-d343363
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13,16 +13,20 @@
  */
 
 
-MdNavBar['$inject'] = ["$mdAria", "$mdTheming"];
 MdNavBarController['$inject'] = ["$element", "$scope", "$timeout", "$mdConstant"];
 MdNavItem['$inject'] = ["$mdAria", "$$rAF", "$mdUtil", "$window"];
 MdNavItemController['$inject'] = ["$element"];
+MdNavBar['$inject'] = ["$mdAria", "$mdTheming"];
 angular.module('material.components.navBar', ['material.core'])
     .controller('MdNavBarController', MdNavBarController)
     .directive('mdNavBar', MdNavBar)
     .controller('MdNavItemController', MdNavItemController)
     .directive('mdNavItem', MdNavItem);
 
+
+/*****************************************************************************
+ *                            PUBLIC DOCUMENTATION                           *
+ *****************************************************************************/
 /**
  * @ngdoc directive
  * @name mdNavBar
@@ -48,13 +52,6 @@ angular.module('material.components.navBar', ['material.core'])
  *  it is not required in the
  * <a href="https://www.w3.org/TR/wai-aria-practices/#aria_lh_navigation">
  *   latest Working Group Note from December 2017</a>.
- *
- * <h3>Keyboard Navigation</h3>
- * - `Tab`/`Shift+Tab` moves the focus to the next/previous interactive element on the page
- * - `Enter`/`Space` selects the focused nav item and navigates to display the item's contents
- * - `Right`/`Down` moves focus to the next nav item, wrapping at the end
- * - `Left`/`Up` moves focus to the previous nav item, wrapping at the end
- * - `Home`/`End` moves the focus to the first/last nav item
  *
  * @param {string=} md-selected-nav-item The name of the current tab; this must
  *     match the `name` attribute of `<md-nav-item>`.
@@ -88,12 +85,49 @@ angular.module('material.components.navBar', ['material.core'])
  * });
  * </hljs>
  */
+
+/*****************************************************************************
+ *                            mdNavItem
+ *****************************************************************************/
 /**
- * @param $mdAria
- * @param $mdTheming
- * @constructor
- * ngInject
+ * @ngdoc directive
+ * @name mdNavItem
+ * @module material.components.navBar
+ *
+ * @restrict E
+ *
+ * @description
+ * `<md-nav-item>` describes a page navigation link within the `<md-nav-bar>` component.
+ * It renders an `<md-button>` as the actual link.
+ *
+ * Exactly one of the `md-nav-click`, `md-nav-href`, or `md-nav-sref` attributes are required
+ * to be specified.
+ *
+ * @param {string=} nav-item-aria-label Allows setting or overriding the label that is announced by
+ *     a screen reader for the nav item's button. If this is not set, the nav item's transcluded
+ *     content will be announced. Make sure to set this if the nav item's transcluded content does
+ *     not include descriptive text, for example only an icon.
+ * @param {expression=} md-nav-click Expression which will be evaluated when the
+ *     link is clicked to change the page. Renders as an `ng-click`.
+ * @param {string=} md-nav-href url to transition to when this link is clicked.
+ *     Renders as an `ng-href`.
+ * @param {string=} md-nav-sref UI-Router state to transition to when this link is
+ *     clicked. Renders as a `ui-sref`.
+ * @param {string=} name The name of this link. Used by the nav bar to know
+ *     which link is currently selected.
+ * @param {!object=} sref-opts UI-Router options that are passed to the
+ *     `$state.go()` function. See the [UI-Router documentation for details]
+ *     (https://ui-router.github.io/docs/latest/interfaces/transition.transitionoptions.html).
+ *
+ * @usage
+ * See `<md-nav-bar>` for usage.
  */
+
+
+/*****************************************************************************
+ *                                IMPLEMENTATION                             *
+ *****************************************************************************/
+
 function MdNavBar($mdAria, $mdTheming) {
   return {
     restrict: 'E',
@@ -110,7 +144,9 @@ function MdNavBar($mdAria, $mdTheming) {
       '<div class="md-nav-bar">' +
         '<nav role="navigation">' +
           '<ul class="_md-nav-bar-list" ng-transclude role="tablist" ' +
-            'ng-focus="ctrl.onFocus()" ' + // Deprecated but kept for now in order to not break tests
+            'tabindex="0" ' +
+            'ng-focus="ctrl.onFocus()" ' +
+            'ng-keydown="ctrl.onKeydown($event)" ' +
             'aria-label="{{ctrl.navBarAriaLabel}}">' +
           '</ul>' +
         '</nav>' +
@@ -128,10 +164,9 @@ function MdNavBar($mdAria, $mdTheming) {
 /**
  * Controller for the nav-bar component.
  *
- * TODO update this with a link to tablist when that implementation gets merged.
- * Accessibility functionality is implemented as a site navigator with a listbox, according to
- * https://www.w3.org/TR/wai-aria-practices/#Site_Navigator_Tabbed_Style.
- *
+ * Accessibility functionality is implemented as a site navigator with a
+ * listbox, according to
+ * https://www.w3.org/TR/wai-aria-practices/#Site_Navigator_Tabbed_Style
  * @param {!angular.JQLite} $element
  * @param {!angular.Scope} $scope
  * @param {!angular.Timeout} $timeout
@@ -179,6 +214,8 @@ function MdNavBarController($element, $scope, $timeout, $mdConstant) {
   });
 }
 
+
+
 /**
  * Initializes the tab components once they exist.
  * @private
@@ -211,7 +248,8 @@ MdNavBarController.prototype._updateTabs = function(newValue, oldValue) {
   var tabs = this._getTabs();
 
   // this._getTabs can return null if nav-bar has not yet been initialized
-  if (!tabs) return;
+  if(!tabs)
+    return;
 
   var oldIndex = -1;
   var newIndex = -1;
@@ -299,42 +337,19 @@ MdNavBarController.prototype.getFocusedTab = function() {
 };
 
 /**
- * Find a tab that matches the specified function, starting from the first tab.
+ * Find a tab that matches the specified function.
  * @param {Function} fn
- * @param {number=} startIndex index to start at. Defaults to 0.
  * @returns {MdNavItemController}
  * @private
  */
-MdNavBarController.prototype._findTab = function(fn, startIndex) {
+MdNavBarController.prototype._findTab = function(fn) {
   var tabs = this._getTabs();
-  if (startIndex === undefined || startIndex === null) {
-    startIndex = 0;
-  }
-  for (var i = startIndex; i < tabs.length; i++) {
+  for (var i = 0; i < tabs.length; i++) {
     if (fn(tabs[i])) {
       return tabs[i];
     }
   }
-  return null;
-};
 
-/**
- * Find a tab that matches the specified function, going backwards from the end of the list.
- * @param {Function} fn
- * @param {number=} startIndex index to start at. Defaults to tabs.length - 1.
- * @returns {MdNavItemController}
- * @private
- */
-MdNavBarController.prototype._findTabReverse = function(fn, startIndex) {
-  var tabs = this._getTabs();
-  if (startIndex === undefined || startIndex === null) {
-    startIndex = tabs.length - 1;
-  }
-  for (var i = startIndex; i >= 0 ; i--) {
-    if (fn(tabs[i])) {
-      return tabs[i];
-    }
-  }
   return null;
 };
 
@@ -360,81 +375,14 @@ MdNavBarController.prototype._moveFocus = function(oldTab, newTab) {
 };
 
 /**
- * Focus the first tab.
- * @private
- */
-MdNavBarController.prototype._focusFirstTab = function() {
-  var tabs = this._getTabs();
-  if (!tabs) return;
-  var tabToFocus = this._findTab(function(tab) {
-    return tab._isEnabled();
-  });
-  if (tabToFocus) {
-    this._moveFocus(this.getFocusedTab(), tabToFocus);
-  }
-};
-
-/**
- * Focus the last tab.
- * @private
- */
-MdNavBarController.prototype._focusLastTab = function() {
-  var tabs = this._getTabs();
-  if (!tabs) return;
-  var tabToFocus = this._findTabReverse(function(tab) {
-    return tab._isEnabled();
-  });
-  if (tabToFocus) {
-    this._moveFocus(this.getFocusedTab(), tabToFocus);
-  }
-};
-
-/**
- * Focus the next non-disabled tab.
- * @param {number} focusedTabIndex the index of the currently focused tab
- * @private
- */
-MdNavBarController.prototype._focusNextTab = function(focusedTabIndex) {
-  var tabs = this._getTabs();
-  if (!tabs) return;
-  var tabToFocus = this._findTab(function(tab) {
-    return tab._isEnabled();
-  }, focusedTabIndex + 1);
-  if (tabToFocus) {
-    this._moveFocus(this.getFocusedTab(), tabToFocus);
-  } else {
-    this._focusFirstTab();
-  }
-};
-
-/**
- * Focus the previous non-disabled tab.
- * @param {number} focusedTabIndex the index of the currently focused tab
- * @private
- */
-MdNavBarController.prototype._focusPreviousTab = function(focusedTabIndex) {
-  var tabs = this._getTabs();
-  if (!tabs) return;
-  var tabToFocus = this._findTabReverse(function(tab) {
-    return tab._isEnabled();
-  }, focusedTabIndex - 1);
-  if (tabToFocus) {
-    this._moveFocus(this.getFocusedTab(), tabToFocus);
-  } else {
-    this._focusLastTab();
-  }
-};
-
-/**
- * Responds to keydown events.
- * Calls to preventDefault() stop the page from scrolling when changing focus in the nav-bar.
- * @param {!KeyboardEvent} e
+ * Responds to keypress events.
+ * @param {!Event} e
  */
 MdNavBarController.prototype.onKeydown = function(e) {
   var keyCodes = this._$mdConstant.KEY_CODE;
   var tabs = this._getTabs();
   var focusedTab = this.getFocusedTab();
-  if (!focusedTab || !tabs) return;
+  if (!focusedTab) return;
 
   var focusedTabIndex = tabs.indexOf(focusedTab);
 
@@ -442,13 +390,15 @@ MdNavBarController.prototype.onKeydown = function(e) {
   switch (e.keyCode) {
     case keyCodes.UP_ARROW:
     case keyCodes.LEFT_ARROW:
-      e.preventDefault();
-      this._focusPreviousTab(focusedTabIndex);
+      if (focusedTabIndex > 0) {
+        this._moveFocus(focusedTab, tabs[focusedTabIndex - 1]);
+      }
       break;
     case keyCodes.DOWN_ARROW:
     case keyCodes.RIGHT_ARROW:
-      e.preventDefault();
-      this._focusNextTab(focusedTabIndex);
+      if (focusedTabIndex < tabs.length - 1) {
+        this._moveFocus(focusedTab, tabs[focusedTabIndex + 1]);
+      }
       break;
     case keyCodes.SPACE:
     case keyCodes.ENTER:
@@ -457,56 +407,10 @@ MdNavBarController.prototype.onKeydown = function(e) {
         focusedTab.getButtonEl().click();
       });
       break;
-    case keyCodes.HOME:
-      e.preventDefault();
-      this._focusFirstTab();
-      break;
-    case keyCodes.END:
-      e.preventDefault();
-      this._focusLastTab();
-      break;
   }
 };
 
 /**
- * @ngdoc directive
- * @name mdNavItem
- * @module material.components.navBar
- *
- * @restrict E
- *
- * @description
- * `<md-nav-item>` describes a page navigation link within the `<md-nav-bar>` component.
- * It renders an `<md-button>` as the actual link.
- *
- * Exactly one of the `md-nav-click`, `md-nav-href`, or `md-nav-sref` attributes are required
- * to be specified.
- *
- * @param {string=} nav-item-aria-label Allows setting or overriding the label that is announced by
- *     a screen reader for the nav item's button. If this is not set, the nav item's transcluded
- *     content will be announced. Make sure to set this if the nav item's transcluded content does
- *     not include descriptive text, for example only an icon.
- * @param {expression=} md-nav-click Expression which will be evaluated when the
- *     link is clicked to change the page. Renders as an `ng-click`.
- * @param {string=} md-nav-href url to transition to when this link is clicked.
- *     Renders as an `ng-href`.
- * @param {string=} md-nav-sref UI-Router state to transition to when this link is
- *     clicked. Renders as a `ui-sref`.
- * @param {string} name The name of this link. Used by the nav bar to know
- *     which link is currently selected.
- * @param {!object=} sref-opts UI-Router options that are passed to the `$state.go()` function. See
- *     the <a ng-href="https://ui-router.github.io/docs/latest/interfaces/transition.transitionoptions.html"
- *     target="_blank">UI-Router documentation for details</a>.
- *
- * @usage
- * See <a ng-href="api/directive/mdNavBar">md-nav-bar</a> for usage.
- */
-/**
- * @param $mdAria
- * @param $$rAF
- * @param $mdUtil
- * @param $window
- * @constructor
  * ngInject
  */
 function MdNavItem($mdAria, $$rAF, $mdUtil, $window) {
@@ -581,32 +485,19 @@ function MdNavItem($mdAria, $$rAF, $mdUtil, $window) {
     },
     link: function(scope, element, attrs, controllers) {
       var disconnect;
-      var mdNavItem;
-      var mdNavBar;
-      var navButton;
 
       // When accessing the element's contents synchronously, they
       // may not be defined yet because of transclusion. There is a higher
       // chance that it will be accessible if we wait one frame.
       $$rAF(function() {
-        mdNavItem = controllers[0];
-        mdNavBar = controllers[1];
-        navButton = angular.element(element[0].querySelector('._md-nav-button'));
+        var mdNavItem = controllers[0];
+        var mdNavBar = controllers[1];
+        var navButton = angular.element(element[0].querySelector('._md-nav-button'));
 
         if (!mdNavItem.name) {
           mdNavItem.name = angular.element(element[0]
               .querySelector('._md-nav-button-text')).text().trim();
         }
-
-        navButton.on('keydown', function($event) {
-          mdNavBar.onKeydown($event);
-        });
-
-        navButton.on('focus', function() {
-          if (!mdNavBar.getFocusedTab()) {
-            mdNavBar.onFocus();
-          }
-        });
 
         navButton.on('click', function() {
           mdNavBar.mdSelectedNavItem = mdNavItem.name;
@@ -638,9 +529,6 @@ function MdNavItem($mdAria, $$rAF, $mdUtil, $window) {
       });
 
       scope.$on('destroy', function() {
-        navButton.off('keydown');
-        navButton.off('focus');
-        navButton.off('click');
         disconnect();
       });
     }
@@ -715,20 +603,11 @@ MdNavItemController.prototype.getButtonEl = function() {
 };
 
 /**
- * Set the selected state of the tab and update the tabindex.
- * This function is called for the oldTab and newTab when selection changes.
- * @param {boolean} isSelected true to select the tab, false to deselect the tab
+ * Set the selected state of the tab.
+ * @param {boolean} isSelected
  */
 MdNavItemController.prototype.setSelected = function(isSelected) {
   this._selected = isSelected;
-  if (isSelected) {
-    // https://www.w3.org/TR/wai-aria-practices/examples/tabs/tabs-2/tabs.html suggests that we call
-    // removeAttribute('tabindex') here, but that causes our unit tests to fail due to
-    // document.activeElement staying set to the body instead of the focused nav button.
-    this.getButtonEl().setAttribute('tabindex', '0');
-  } else {
-    this.getButtonEl().setAttribute('tabindex', '-1');
-  }
 };
 
 /**
@@ -751,18 +630,10 @@ MdNavItemController.prototype.setFocused = function(isFocused) {
 };
 
 /**
- * @return {boolean} true if the tab has focus, false if not.
+ * @return {boolean}
  */
 MdNavItemController.prototype.hasFocus = function() {
   return this._focused;
-};
-
-/**
- * @return {boolean} true if the tab is enabled, false if disabled.
- * @private
- */
-MdNavItemController.prototype._isEnabled = function() {
-  return !this._$element.attr('disabled');
 };
 
 })(window, window.angular);
