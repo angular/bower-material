@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-8fd6daf
+ * v1.1.10-master-2b2f441
  */
 goog.provide('ngmaterial.components.autocomplete');
 goog.require('ngmaterial.components.icon');
@@ -117,8 +117,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       if ($scope.autofocus) {
         $element.on('focus', focusInputElement);
       }
-      if ($scope.ariaDescribedBy) {
-        elements.input.setAttribute('aria-describedby', $scope.ariaDescribedBy);
+      if ($scope.inputAriaDescribedBy) {
+        elements.input.setAttribute('aria-describedby', $scope.inputAriaDescribedBy);
       }
     });
   }
@@ -515,7 +515,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
           ctrl.matches = [];
 
           setLoading(false);
-          reportMessages(false, ReportType.Count);
+          reportMessages(true, ReportType.Count);
 
         } else {
           handleQuery();
@@ -1191,10 +1191,11 @@ MdAutocomplete['$inject'] = ["$$mdSvgRegistry"];angular
  *     as much as possible.
  * @param {string=} md-dropdown-position Overrides the default dropdown position. Options: `top`,
  *    `bottom`.
- * @param {string=} aria-describedby A space-separated list of element IDs. This should contain the
- *     IDs of any elements that describe this autocomplete. Screen readers will read the content of
- *     these elements at the end of announcing that the autocomplete has been selected and
- *     describing its current state. The descriptive elements do not need to be visible on the page.
+ * @param {string=} input-aria-describedby A space-separated list of element IDs. This should
+ *     contain the IDs of any elements that describe this autocomplete. Screen readers will read the
+ *     content of these elements at the end of announcing that the autocomplete has been selected
+ *     and describing its current state. The descriptive elements do not need to be visible on the
+ *     page.
  * @param {string=} md-selected-message Attribute to specify the text that the screen reader will
  *    announce after a value is selected. Default is: "selected". If `Alaska` is selected in the
  *    options panel, it will read "Alaska selected". You will want to override this when your app
@@ -1324,7 +1325,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
       itemsExpr:          '@mdItems',
       itemText:           '&mdItemText',
       placeholder:        '@placeholder',
-      ariaDescribedBy:    '@?ariaDescribedby',
+      inputAriaDescribedBy: '@?inputAriaDescribedby',
       noCache:            '=?mdNoCache',
       requireMatch:       '=?mdRequireMatch',
       selectOnMatch:      '=?mdSelectOnMatch',

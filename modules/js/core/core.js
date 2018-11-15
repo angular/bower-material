@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-8fd6daf
+ * v1.1.10-master-2b2f441
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -4078,7 +4078,7 @@ function InterimElementProvider() {
         }
 
         // Hide the latest showing interim element.
-        return closeElement(showingInterims.pop());
+        return closeElement(showingInterims[showingInterims.length - 1]);
 
         function closeElement(interim) {
 
@@ -4093,6 +4093,7 @@ function InterimElementProvider() {
               hidePromises.splice(hidePromises.indexOf(hideAction), 1);
             });
 
+          showingInterims.splice(showingInterims.indexOf(interim), 1);
           hidePromises.push(hideAction);
 
           return interim.deferred.promise;

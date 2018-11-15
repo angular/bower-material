@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-8fd6daf
+ * v1.1.10-master-2b2f441
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -4134,7 +4134,7 @@ function InterimElementProvider() {
         }
 
         // Hide the latest showing interim element.
-        return closeElement(showingInterims.pop());
+        return closeElement(showingInterims[showingInterims.length - 1]);
 
         function closeElement(interim) {
 
@@ -4149,6 +4149,7 @@ function InterimElementProvider() {
               hidePromises.splice(hidePromises.indexOf(hideAction), 1);
             });
 
+          showingInterims.splice(showingInterims.indexOf(interim), 1);
           hidePromises.push(hideAction);
 
           return interim.deferred.promise;
@@ -26220,8 +26221,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       if ($scope.autofocus) {
         $element.on('focus', focusInputElement);
       }
-      if ($scope.ariaDescribedBy) {
-        elements.input.setAttribute('aria-describedby', $scope.ariaDescribedBy);
+      if ($scope.inputAriaDescribedBy) {
+        elements.input.setAttribute('aria-describedby', $scope.inputAriaDescribedBy);
       }
     });
   }
@@ -26618,7 +26619,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
           ctrl.matches = [];
 
           setLoading(false);
-          reportMessages(false, ReportType.Count);
+          reportMessages(true, ReportType.Count);
 
         } else {
           handleQuery();
@@ -27298,10 +27299,11 @@ MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
  *     as much as possible.
  * @param {string=} md-dropdown-position Overrides the default dropdown position. Options: `top`,
  *    `bottom`.
- * @param {string=} aria-describedby A space-separated list of element IDs. This should contain the
- *     IDs of any elements that describe this autocomplete. Screen readers will read the content of
- *     these elements at the end of announcing that the autocomplete has been selected and
- *     describing its current state. The descriptive elements do not need to be visible on the page.
+ * @param {string=} input-aria-describedby A space-separated list of element IDs. This should
+ *     contain the IDs of any elements that describe this autocomplete. Screen readers will read the
+ *     content of these elements at the end of announcing that the autocomplete has been selected
+ *     and describing its current state. The descriptive elements do not need to be visible on the
+ *     page.
  * @param {string=} md-selected-message Attribute to specify the text that the screen reader will
  *    announce after a value is selected. Default is: "selected". If `Alaska` is selected in the
  *    options panel, it will read "Alaska selected". You will want to override this when your app
@@ -27431,7 +27433,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
       itemsExpr:          '@mdItems',
       itemText:           '&mdItemText',
       placeholder:        '@placeholder',
-      ariaDescribedBy:    '@?ariaDescribedby',
+      inputAriaDescribedBy: '@?inputAriaDescribedby',
       noCache:            '=?mdNoCache',
       requireMatch:       '=?mdRequireMatch',
       selectOnMatch:      '=?mdSelectOnMatch',
@@ -28266,7 +28268,7 @@ function MdChipTransclude ($compile) {
  *
  * @type {number}
  */
-MdChipsCtrl.$inject = ["$scope", "$attrs", "$mdConstant", "$log", "$element", "$timeout", "$mdUtil", "$exceptionHandler"];
+MdChipsCtrl.$inject = ["$scope", "$attrs", "$mdConstant", "$log", "$element", "$timeout", "$mdUtil", "$mdLiveAnnouncer", "$exceptionHandler"];
 var DEFAULT_CHIP_APPEND_DELAY = 300;
 
 angular
@@ -28285,12 +28287,13 @@ angular
  * @param $element
  * @param $timeout
  * @param $mdUtil
+ * @param $mdLiveAnnouncer
  * @param $exceptionHandler
  * @constructor
  */
 function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $mdUtil,
-                      $exceptionHandler) {
-  /** @type {$timeout} **/
+                      $mdLiveAnnouncer, $exceptionHandler) {
+  /** @type {Function} **/
   this.$timeout = $timeout;
 
   /** @type {Object} */
@@ -28307,6 +28310,9 @@ function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $md
 
   /** @type {$log} */
   this.$log = $log;
+
+  /** @type {$mdLiveAnnouncer} */
+  this.$mdLiveAnnouncer = $mdLiveAnnouncer;
 
   /** @type {$exceptionHandler} */
   this.$exceptionHandler = $exceptionHandler;
@@ -28348,12 +28354,20 @@ function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $md
   this.inputAriaLabel = 'Chips input.';
 
   /**
-   * Hidden hint text to describe the chips container. Used to give context to screen readers when
-   * the chips are readonly and the input cannot be selected.
-   *
+   * Label text to describe the chips container. Used to give context and instructions to screen
+   * reader users when the chips container is selected.
    * @type {string}
    */
   this.containerHint = 'Chips container. Use arrow keys to select chips.';
+
+  /**
+   * Label text to describe the chips container when it is empty. Used to give context and
+   * instructions to screen reader users when the chips container is selected and it contains
+   * no chips.
+   * @type {string}
+   */
+  this.containerEmptyHint =
+    'Chips container. Enter the text area, then type text, and press enter to add a chip.';
 
   /**
    * Hidden hint text for how to delete a chip. Used to give context to screen readers.
@@ -28414,7 +28428,7 @@ function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $md
    * The index of the chip that should have it's `tabindex` property set to `0` so it is selectable
    * via the keyboard.
    *
-   * @type {number}
+   * @type {number|null}
    */
   this.ariaTabIndex = null;
 
@@ -28436,6 +28450,19 @@ function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $md
    */
   this.deRegister = [];
 
+  /**
+   * The screen reader will announce the chip content followed by this message when a chip is added.
+   * @type {string}
+   */
+  this.addedMessage = 'added';
+
+  /**
+   * The screen reader will announce the chip content followed by this message when a chip is
+   * removed.
+   * @type {string}
+   */
+  this.removedMessage = 'removed';
+
   this.init();
 }
 
@@ -28448,7 +28475,13 @@ MdChipsCtrl.prototype.init = function() {
   // Set the wrapper ID
   this.wrapperId = '_md-chips-wrapper-' + this.$mdUtil.nextUid();
 
-  // Setup a watcher which manages the role and aria-owns attributes
+  // If we're using static chips, then we need to initialize a few things.
+  if (!this.$element.attr('ng-model')) {
+    this.setupStaticChips();
+  }
+
+  // Setup a watcher which manages the role and aria-owns attributes.
+  // This is never called for static chips since items is not defined.
   this.deRegister.push(
     this.$scope.$watchCollection('$mdChipsCtrl.items', function() {
       // Make sure our input and wrapper have the correct ARIA attributes
@@ -28487,6 +28520,15 @@ MdChipsCtrl.prototype.setupInputAria = function() {
 
   input.attr('role', 'textbox');
   input.attr('aria-multiline', true);
+  if (this.inputAriaDescribedBy) {
+    input.attr('aria-describedby', this.inputAriaDescribedBy);
+  }
+  if (this.inputAriaLabelledBy) {
+    input.attr('aria-labelledby', this.inputAriaLabelledBy);
+    input.removeAttr('aria-label');
+  } else {
+    input.attr('aria-label', this.inputAriaLabel);
+  }
 };
 
 /**
@@ -28508,11 +28550,39 @@ MdChipsCtrl.prototype.setupWrapperAria = function() {
 
     // Use the contentIDs above to generate the aria-owns attribute
     wrapper.attr('aria-owns', this.contentIds.join(' '));
+    wrapper.attr('aria-label', this.containerHint);
   } else {
     // If we have no items, then the role and aria-owns attributes MUST be removed
     wrapper.removeAttr('role');
     wrapper.removeAttr('aria-owns');
+    wrapper.attr('aria-label', this.containerEmptyHint);
   }
+};
+
+/**
+ * Apply specific roles and aria attributes for static chips
+ */
+MdChipsCtrl.prototype.setupStaticChips = function() {
+  var ctrl = this, i, staticChips;
+  var wrapper = this.$element.find('md-chips-wrap');
+
+  this.$timeout(function() {
+    wrapper.attr('role', 'list');
+    staticChips = wrapper[0].children;
+    for (i = 0; i < staticChips.length; i++) {
+      staticChips[i].setAttribute('role', 'listitem');
+      staticChips[i].setAttribute('aria-setsize', staticChips.length);
+    }
+    if (ctrl.inputAriaDescribedBy) {
+      wrapper.attr('aria-describedby', ctrl.inputAriaDescribedBy);
+    }
+    if (ctrl.inputAriaLabelledBy) {
+      wrapper.attr('aria-labelledby', ctrl.inputAriaLabelledBy);
+      wrapper.removeAttr('aria-label');
+    } else {
+      wrapper.attr('aria-label', ctrl.inputAriaLabel);
+    }
+  }, 10);
 };
 
 /**
@@ -28718,7 +28788,7 @@ MdChipsCtrl.prototype.resetSelectedChip = function() {
 MdChipsCtrl.prototype.getAdjacentChipIndex = function(index) {
   var len = this.items.length - 1;
   return (len === 0) ? -1 :
-      (index === len) ? index -1 : index;
+      (index === len) ? index - 1 : index;
 };
 
 /**
@@ -28754,6 +28824,10 @@ MdChipsCtrl.prototype.appendChip = function(newChip) {
   var index = length - 1;
 
   this.updateNgModel();
+
+  // Tell screen reader users that the chip was successfully added.
+  var chipContent = typeof newChip === 'object' ? JSON.stringify(newChip) : newChip;
+  this.$mdLiveAnnouncer.announce(chipContent + ' ' + this.addedMessage, 'assertive');
 
   // If the md-on-add attribute is specified, send a chip addition event
   if (this.useOnAdd && this.onAdd) {
@@ -28888,6 +28962,10 @@ MdChipsCtrl.prototype.removeChip = function(index, event) {
 
   this.updateNgModel();
   this.ngModelCtrl.$setDirty();
+
+  // Tell screen reader users that the chip was successfully removed.
+  var chipContent = typeof removed[0] === 'object' ? JSON.stringify(removed[0]) : removed[0];
+  this.$mdLiveAnnouncer.announce(chipContent + ' ' + this.removedMessage, 'assertive');
 
   if (removed && removed.length && this.useOnRemove && this.onRemove) {
     this.onRemove({ '$chip': removed[0], '$index': index, '$event': event });
@@ -29125,6 +29203,13 @@ MdChipsCtrl.prototype.configureUserInput = function(inputElement) {
 MdChipsCtrl.prototype.configureAutocomplete = function(ctrl) {
   if (ctrl) {
     this.autocompleteCtrl = ctrl;
+    // Update the default container empty hint when we're inside of an autocomplete.
+    if (!this.$element.attr('container-empty-hint')) {
+      this.containerEmptyHint = 'Chips container with autocompletion. Enter the text area, ' +
+        'type text to search, and then use the up and down arrow keys to select an option. ' +
+        'Press enter to add the selected option as a chip.';
+      this.setupWrapperAria();
+    }
 
     ctrl.registerSelectedItemWatcher(angular.bind(this, function (item) {
       if (item) {
@@ -29323,13 +29408,36 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    * @param {expression=} md-on-select An expression which will be called when a chip is selected.
    * @param {boolean=} md-require-match If true, and the chips template contains an autocomplete,
    *    only allow selection of pre-defined chips (i.e. you cannot add new ones).
+   * @param {string=} input-aria-describedby A space-separated list of element IDs. This should
+   *     contain the IDs of any elements that describe this autocomplete. Screen readers will read
+   *     the content of these elements at the end of announcing that the chips input has been
+   *     selected and describing its current state. The descriptive elements do not need to be
+   *     visible on the page.
+   * @param {string=} input-aria-labelledby A space-separated list of element IDs. The ideal use
+   *    case is that this would contain the ID of a `<label>` element that is associated with these
+   *    chips.<br><br>
+   *    For `<label id="state">US State</label>`, you would set this to
+   *    `input-aria-labelledby="state"`.
    * @param {string=} input-aria-label A string read by screen readers to identify the input.
+   *    For static chips, this will be applied to the chips container.
    * @param {string=} container-hint A string read by screen readers informing users of how to
-   *    navigate the chips. Used in readonly mode.
+   *    navigate the chips when there are chips. Only applies when `ng-model` is defined.
+   * @param {string=} container-empty-hint A string read by screen readers informing users of how to
+   *    add chips when there are no chips. You will want to use this to override the default when
+   *    in a non-English locale. Only applies when `ng-model` is defined.
    * @param {string=} delete-hint A string read by screen readers instructing users that pressing
-   *    the delete key will remove the chip.
-   * @param {string=} delete-button-label A label for the delete button. Also hidden and read by
-   *    screen readers.
+   *    the delete key will remove the chip. You will want to use this to override the default when
+   *    in a non-English locale.
+   * @param {string=} delete-button-label <strong>Deprecated</strong> A label for the delete button.
+   *    Used to be read by screen readers.
+   * @param {string=} md-removed-message Screen readers will announce this message following the
+   *    chips contents. The default is `"removed"`. If a chip with the content of "Apple" was
+   *    removed, the screen reader would read "Apple removed". You will want to use this to override
+   *    the default when in a non-English locale.
+   * @param {string=} md-added-message Screen readers will announce this message following the
+   *    chips contents. The default is `"added"`. If a chip with the content of "Apple" was
+   *    created, the screen reader would read "Apple added". You will want to use this to override
+   *    the default when in a non-English locale.
    * @param {expression=} md-separator-keys An array of key codes used to separate chips.
    * @param {string=} md-chip-append-delay The number of milliseconds that the component will select
    *    a newly appended chip before allowing a user to type into the input. This is **necessary**
@@ -29382,21 +29490,19 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
           ng-class="{ \'md-focused\': $mdChipsCtrl.hasFocus(), \
                       \'md-readonly\': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly,\
                       \'md-removable\': $mdChipsCtrl.isRemovable() }"\
-          aria-setsize="{{$mdChipsCtrl.items.length}}"\
           class="md-chips">\
-        <span ng-if="$mdChipsCtrl.readonly" class="md-visually-hidden">\
-          {{$mdChipsCtrl.containerHint}}\
-        </span>\
         <md-chip ng-repeat="$chip in $mdChipsCtrl.items"\
-            index="{{$index}}" aria-label="{{$mdChipsCtrl.deleteHint}}"\
+            index="{{$index}}" \
             ng-class="{\'md-focused\': $mdChipsCtrl.selectedChip == $index, \'md-readonly\': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}">\
           <div class="md-chip-content"\
-              tabindex="{{$mdChipsCtrl.ariaTabIndex == $index ? 0 : -1}}"\
+              tabindex="{{$mdChipsCtrl.ariaTabIndex === $index ? 0 : -1}}"\
               id="{{$mdChipsCtrl.contentIdFor($index)}}"\
               role="option"\
               aria-selected="{{$mdChipsCtrl.selectedChip === $index}}"\
-              aria-posinset="{{$index}}"\
+              aria-setsize="{{$mdChipsCtrl.items.length}}"\
+              aria-posinset="{{$index+1}}"\
               ng-click="!$mdChipsCtrl.readonly && $mdChipsCtrl.focusChip($index)"\
+              aria-label="{{$chip}}.{{$mdChipsCtrl.isRemovable() ? \' \' + $mdChipsCtrl.deleteHint : \'\'}}" \
               ng-focus="!$mdChipsCtrl.readonly && $mdChipsCtrl.selectChip($index)"\
               md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"></div>\
           <div ng-if="$mdChipsCtrl.isRemovable()"\
@@ -29413,7 +29519,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
         <input\
             class="md-input"\
             tabindex="0"\
-            aria-label="{{$mdChipsCtrl.inputAriaLabel}}" \
+            aria-label="{{$mdChipsCtrl.inputAriaLabel}}"\
             placeholder="{{$mdChipsCtrl.getPlaceholder()}}"\
             ng-model="$mdChipsCtrl.chipBuffer"\
             ng-focus="$mdChipsCtrl.onInputFocus()"\
@@ -29429,11 +29535,9 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
           ng-if="$mdChipsCtrl.isRemovable()"\
           ng-click="$mdChipsCtrl.removeChipAndFocusInput($$replacedScope.$index, $event)"\
           type="button"\
-          tabindex="-1">\
-        <md-icon md-svg-src="{{ $mdChipsCtrl.mdCloseIcon }}"></md-icon>\
-        <span class="md-visually-hidden">\
-          {{$mdChipsCtrl.deleteButtonLabel}}\
-        </span>\
+          tabindex="-1"\
+          aria-label="{{$mdChipsCtrl.deleteButtonLabel}} {{$chip}}">\
+        <md-icon md-svg-src="{{$mdChipsCtrl.mdCloseIcon}}" aria-hidden="true"></md-icon>\
       </button>';
 
   /**
@@ -29468,9 +29572,14 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
         onAppend: '&?mdOnAppend',
         onAdd: '&?mdOnAdd',
         onRemove: '&?mdOnRemove',
+        addedMessage: '@?mdAddedMessage',
+        removedMessage: '@?mdRemovedMessage',
         onSelect: '&?mdOnSelect',
+        inputAriaDescribedBy: '@?inputAriaDescribedby',
+        inputAriaLabelledBy: '@?inputAriaLabelledby',
         inputAriaLabel: '@?',
         containerHint: '@?',
+        containerEmptyHint: '@?',
         deleteHint: '@?',
         deleteButtonLabel: '@?',
         separatorKeys: '=?mdSeparatorKeys',
@@ -29600,7 +29709,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
           // The md-autocomplete and input elements won't be compiled until after this directive
           // is complete (due to their nested nature). Wait a tick before looking for them to
           // configure the controller.
-          if (chipInputTemplate != templates.input) {
+          if (chipInputTemplate !== templates.input) {
             // The autocomplete will not appear until the readonly attribute is not true (i.e.
             // false or undefined), so we have to watch the readonly and then on the next tick
             // after the chip transclusion has run, we can configure the autocomplete and user
@@ -29654,7 +29763,8 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
 (function(){
 "use strict";
 
-angular
+
+MdContactChipsCtrl.$inject = ["$attrs", "$element", "$timeout"];angular
     .module('material.components.chips')
     .controller('MdContactChipsCtrl', MdContactChipsCtrl);
 
@@ -29662,13 +29772,85 @@ angular
  * Controller for the MdContactChips component
  * @constructor
  */
-function MdContactChipsCtrl () {
+function MdContactChipsCtrl ($attrs, $element, $timeout) {
+  /** @type {$element} */
+  this.$element = $element;
+
+  /** @type {$attrs} */
+  this.$attrs = $attrs;
+
+  /** @type {Function} */
+  this.$timeout = $timeout;
+
   /** @type {Object} */
   this.selectedItem = null;
 
   /** @type {string} */
   this.searchText = '';
+
+  /**
+   * Collection of functions to call to un-register watchers
+   * @type {Array}
+   */
+  this.deRegister = [];
+
+  this.init();
 }
+
+MdContactChipsCtrl.prototype.init = function() {
+  var ctrl = this;
+  var deRegister = this.deRegister;
+  var element = this.$element;
+
+  // Setup a watcher which manages chips a11y messages and autocomplete aria.
+  // Timeout required to allow the child elements to be compiled.
+  this.$timeout(function() {
+    deRegister.push(
+      element.find('md-chips').scope().$watchCollection('$mdChipsCtrl.items', function() {
+        // Make sure our input and wrapper have the correct ARIA attributes
+        ctrl.setupChipsAria();
+        ctrl.setupAutocompleteAria();
+      })
+    );
+  });
+};
+
+MdContactChipsCtrl.prototype.setupChipsAria = function() {
+  var chips = this.$element.find('md-chips');
+  var chipsCtrl = chips.controller('mdChips');
+
+  // Configure MdChipsCtrl
+  if (this.removedMessage) {
+    chipsCtrl.removedMessage = this.removedMessage;
+  }
+  if (this.containerHint) {
+    chipsCtrl.containerHint = this.containerHint;
+  }
+  if (this.containerEmptyHint) {
+    // Apply attribute to avoid the hint being overridden by MdChipsCtrl.configureAutocomplete()
+    chips.attr('container-empty-hint', this.containerEmptyHint);
+    chipsCtrl.containerEmptyHint = this.containerEmptyHint;
+  }
+  if (this.deleteHint) {
+    chipsCtrl.deleteHint = this.deleteHint;
+  }
+  if (this.inputAriaLabel) {
+    chipsCtrl.inputAriaLabel = this.inputAriaLabel;
+  }
+};
+
+MdContactChipsCtrl.prototype.setupAutocompleteAria = function() {
+  var autocompleteInput = this.$element.find('md-chips-wrap').find('md-autocomplete').find('input');
+
+  // Set attributes on the input of the md-autocomplete
+  if (this.inputAriaDescribedBy) {
+    autocompleteInput.attr('aria-describedby', this.inputAriaDescribedBy);
+  }
+  if (this.inputAriaLabelledBy) {
+    autocompleteInput.removeAttr('aria-label');
+    autocompleteInput.attr('aria-labelledby', this.inputAriaLabelledBy);
+  }
+};
 
 MdContactChipsCtrl.prototype.queryContact = function(searchText) {
   return this.contactQuery({'$query': searchText});
@@ -29688,6 +29870,16 @@ MdContactChipsCtrl.prototype.inputKeydown = function(event) {
 
 MdContactChipsCtrl.prototype.itemName = function(item) {
   return item[this.contactName];
+};
+
+/**
+ * Destructor for cleanup
+ */
+MdContactChipsCtrl.prototype.$onDestroy = function $onDestroy() {
+  var $destroyFn;
+  while (($destroyFn = this.deRegister.pop())) {
+    $destroyFn.call(this);
+  }
 };
 
 })();
@@ -29732,6 +29924,30 @@ MdContactChips.$inject = ["$mdTheming", "$mdUtil"];angular
  *    contact's image.
  * @param {number=} md-min-length Specifies the minimum length of text before autocomplete will
  *    make suggestions
+ * @param {string=} input-aria-describedby A space-separated list of element IDs. This should
+ *     contain the IDs of any elements that describe this autocomplete. Screen readers will read
+ *     the content of these elements at the end of announcing that the chips input has been
+ *     selected and describing its current state. The descriptive elements do not need to be
+ *     visible on the page.
+ * @param {string=} input-aria-labelledby A space-separated list of element IDs. The ideal use
+ *    case is that this would contain the ID of a `<label>` element that is associated with these
+ *    chips.<br><br>
+ *    For `<label id="state">US State</label>`, you would set this to
+ *    `input-aria-labelledby="state"`.
+ * @param {string=} input-aria-label A string read by screen readers to identify the input.
+ *    For static chips, this will be applied to the chips container.
+ * @param {string=} container-hint A string read by screen readers informing users of how to
+ *    navigate the chips when there are chips.
+ * @param {string=} container-empty-hint A string read by screen readers informing users of how to
+ *    add chips when there are no chips. You will want to use this to override the default when
+ *    in a non-English locale.
+ * @param {string=} delete-hint A string read by screen readers instructing users that pressing
+ *    the delete key will remove the chip. You will want to use this to override the default when
+ *    in a non-English locale.
+ * @param {string=} md-removed-message Screen readers will announce this message following the
+ *    chips contents. The default is `"removed"`. If a chip with the content of "Apple" was
+ *    removed, the screen reader would read "Apple removed". You will want to use this to override
+ *    the default when in a non-English locale.
  *
  *
  * @usage
@@ -29767,7 +29983,7 @@ var MD_CONTACT_CHIPS_TEMPLATE = '\
               md-min-length="$mdContactChipsCtrl.minLength"\
               md-autoselect\
               ng-keydown="$mdContactChipsCtrl.inputKeydown($event)"\
-              placeholder="{{$mdContactChipsCtrl.contacts.length == 0 ?\
+              placeholder="{{$mdContactChipsCtrl.contacts.length === 0 ?\
                   $mdContactChipsCtrl.placeholder : $mdContactChipsCtrl.secondaryPlaceholder}}">\
             <div class="md-contact-suggestion">\
               <img \
@@ -29799,6 +30015,7 @@ var MD_CONTACT_CHIPS_TEMPLATE = '\
  * MDContactChips Directive Definition
  *
  * @param $mdTheming
+ * @param $mdUtil
  * @returns {*}
  * @ngInject
  */
@@ -29814,18 +30031,25 @@ function MdContactChips($mdTheming, $mdUtil) {
     compile: compile,
     scope: {
       contactQuery: '&mdContacts',
-      placeholder: '@',
-      secondaryPlaceholder: '@',
+      placeholder: '@?',
+      secondaryPlaceholder: '@?',
       contactName: '@mdContactName',
       contactImage: '@mdContactImage',
       contactEmail: '@mdContactEmail',
       contacts: '=ngModel',
-      ngChange: '&',
+      ngChange: '&?',
       requireMatch: '=?mdRequireMatch',
       minLength: '=?mdMinLength',
       highlightFlags: '@?mdHighlightFlags',
       chipAppendDelay: '@?mdChipAppendDelay',
       separatorKeys: '=?mdSeparatorKeys',
+      removedMessage: '@?mdRemovedMessage',
+      inputAriaDescribedBy: '@?inputAriaDescribedby',
+      inputAriaLabelledBy: '@?inputAriaLabelledby',
+      inputAriaLabel: '@?',
+      containerHint: '@?',
+      containerEmptyHint: '@?',
+      deleteHint: '@?'
     }
   };
 
@@ -36586,7 +36810,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
     // Fix double-negative which can happen with RTL support
     newValue = newValue.replace('--', '');
 
-    angular.element(elements.paging).css($mdConstant.CSS.TRANSFORM, 'translate3d(' + newValue + ', 0, 0)');
+    angular.element(elements.paging).css($mdConstant.CSS.TRANSFORM, 'translate(' + newValue + ', 0)');
     $scope.$broadcast('$mdTabsPaginationChanged');
   }
 
@@ -36971,14 +37195,6 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   }
 
   /**
-   * Calculates the width of the pagination wrapper by summing the widths of the dummy tabs.
-   * @returns {number} the width of the pagination wrapper in pixels
-   */
-  function calcPagingWidth () {
-    return calcTabsWidth(getElements().tabs);
-  }
-
-  /**
    * @param {Array<HTMLElement>} tabs tab item elements for use in computing total width
    * @returns {number} the width of the tabs in the specified array in pixels
    */
@@ -36997,9 +37213,8 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   }
 
   /**
-   * @returns {number} either the max width as constrained by the container or the max width from an
-   * old version of the Material Design spec.
-   * TODO update max tab width to equal the spec in 1.2.
+   * @returns {number} either the max width as constrained by the container or the max width from
+   * the 2017 version of the Material Design spec.
    */
   function getMaxTabWidth() {
     var elements = getElements(),
@@ -37011,24 +37226,6 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
     // Do the spec maximum, or the canvas width; whichever is *smaller* (tabs larger than the canvas
     // width can break the pagination) but not less than 0
     return Math.max(0, Math.min(containerWidth - 1, specMax));
-  }
-
-  /**
-   * @returns {number} the min width from an old version of the Material Design spec. This returns
-   * a larger min width if the container width is larger than 600px.
-   * TODO update min tab width to equal the spec in 1.2.
-   */
-  function getMinTabWidth() {
-    var elements = getElements(),
-      containerWidth = elements.canvas.clientWidth,
-      xsBreakpoint = 600,
-
-      // See https://material.io/archive/guidelines/components/tabs.html#tabs-specs
-      specMin = containerWidth > xsBreakpoint ? 160 : 72;
-
-    // Do the spec minimum, or the canvas width; whichever is *smaller* (tabs larger than the canvas
-    // width can break the pagination) but not less than 0
-    return Math.max(0, Math.min(containerWidth - 1, specMin));
   }
 
   /**
@@ -37671,4 +37868,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-8fd6daf"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-2b2f441"}};
