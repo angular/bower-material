@@ -1,7 +1,7 @@
 {
   "name": "angular-material-button",
-  "version": "1.1.10-master-4d29450",
+  "version": "1.1.10-master-6815faf",
   "dependencies": {
-    "angular-material-core": "1.1.10-master-4d29450"
+    "angular-material-core": "1.1.10-master-6815faf"
   }
 }
