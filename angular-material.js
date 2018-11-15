@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-2268c24
+ * v1.1.10-master-534beea
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -26224,6 +26224,17 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       if ($scope.inputAriaDescribedBy) {
         elements.input.setAttribute('aria-describedby', $scope.inputAriaDescribedBy);
       }
+      if (!$scope.floatingLabel) {
+        if ($scope.inputAriaLabel) {
+          elements.input.setAttribute('aria-label', $scope.inputAriaLabel);
+        } else if ($scope.inputAriaLabelledBy) {
+          elements.input.setAttribute('aria-labelledby', $scope.inputAriaLabelledBy);
+        } else if ($scope.placeholder) {
+          // If no aria-label or aria-labelledby references are defined, then just label using the
+          // placeholder.
+          elements.input.setAttribute('aria-label', $scope.placeholder);
+        }
+      }
     });
   }
 
@@ -27188,7 +27199,8 @@ MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
  *     no matches were found.  You can do this by wrapping your template in `md-item-template` and
  *     adding a tag for `md-not-found`.  An example of this is shown below.
  *
- * To reset the displayed value you must clear both values for `md-search-text` and `md-selected-item`.
+ * To reset the displayed value you must clear both values for `md-search-text` and
+ * `md-selected-item`.
  *
  * ### Validation
  *
@@ -27265,11 +27277,14 @@ MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
  *     make suggestions.
  * @param {number=} md-delay Specifies the amount of time (in milliseconds) to wait before looking
  *     for results.
- * @param {boolean=} md-clear-button Whether the clear button for the autocomplete input should show up or not.
- * @param {boolean=} md-autofocus If true, the autocomplete will be automatically focused when a `$mdDialog`,
- *     `$mdBottomsheet` or `$mdSidenav`, which contains the autocomplete, is opening. <br/><br/>
+ * @param {boolean=} md-clear-button Whether the clear button for the autocomplete input should show
+ *     up or not.
+ * @param {boolean=} md-autofocus If true, the autocomplete will be automatically focused when a
+ *     `$mdDialog`, `$mdBottomsheet` or `$mdSidenav`, which contains the autocomplete, is opening.
+ *     <br/><br/>
  *     Also the autocomplete will immediately focus the input element.
- * @param {boolean=} md-no-asterisk When present, asterisk will not be appended to the floating label.
+ * @param {boolean=} md-no-asterisk When present, asterisk will not be appended to the floating
+ *     label.
  * @param {boolean=} md-autoselect If set to true, the first item will be automatically selected
  *     in the dropdown upon open.
  * @param {string=} md-input-name The name attribute given to the input element to be used with
@@ -27280,7 +27295,7 @@ MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
  * @param {string=} md-input-class This will be applied to the input for styling. This attribute
  *     is only valid when a `md-floating-label` is defined.
  * @param {string=} md-floating-label This will add a floating label to autocomplete and wrap it in
- *     `md-input-container`
+ *     `md-input-container`.
  * @param {string=} md-select-on-focus When present the inputs text will be automatically selected
  *     on focus.
  * @param {string=} md-input-id An ID to be added to the input element.
@@ -27304,6 +27319,15 @@ MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
  *     content of these elements at the end of announcing that the autocomplete has been selected
  *     and describing its current state. The descriptive elements do not need to be visible on the
  *     page.
+ * @param {string=} input-aria-labelledby A space-separated list of element IDs. The ideal use case
+ *     is that this would contain the ID of a `<label>` element that is associated with this
+ *     autocomplete. This will only have affect when `md-floating-label` is not defined.<br><br>
+ *     For `<label id="state">US State</label>`, you would set this to
+ *     `input-aria-labelledby="state"`.
+ * @param {string=} input-aria-label A label that will be applied to the autocomplete's input.
+ *    This will be announced by screen readers before the placeholder.
+ *    This will only have affect when `md-floating-label` is not defined. If you define both
+ *    `input-aria-label` and `input-aria-labelledby`, then `input-aria-label` will take precedence.
  * @param {string=} md-selected-message Attribute to specify the text that the screen reader will
  *    announce after a value is selected. Default is: "selected". If `Alaska` is selected in the
  *    options panel, it will read "Alaska selected". You will want to override this when your app
@@ -27348,12 +27372,12 @@ MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
  * ### Clear button for the input
  * By default, the clear button is displayed when there is input. This aligns with the spec's
  * [Search Pattern](https://material.io/archive/guidelines/patterns/search.html#search-in-app-search).
- * In floating label mode, when `md-floating-label="My Label"` is applied, the clear button is not displayed
- * by default (see the spec's
+ * In floating label mode, when `md-floating-label="My Label"` is applied, the clear button is not
+ * displayed by default (see the spec's
  * [Autocomplete Text Field](https://material.io/archive/guidelines/components/text-fields.html#text-fields-layout)).
  *
- * Nevertheless, developers are able to explicitly toggle the clear button for all autocomplete components
- * with `md-clear-button`.
+ * Nevertheless, developers are able to explicitly toggle the clear button for all autocomplete
+ * components with `md-clear-button`.
  *
  * <hljs lang="html">
  *   <md-autocomplete ... md-clear-button="true"></md-autocomplete>
@@ -27392,7 +27416,8 @@ MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
  *     input validation for the field.
  *
  * ### Asynchronous Results
- * The autocomplete items expression also supports promises, which will resolve with the query results.
+ * The autocomplete items expression also supports promises, which will resolve with the query
+ * results.
  *
  * <hljs lang="js">
  *   function AppController($scope, $http) {
@@ -27434,6 +27459,8 @@ function MdAutocomplete ($$mdSvgRegistry) {
       itemText:           '&mdItemText',
       placeholder:        '@placeholder',
       inputAriaDescribedBy: '@?inputAriaDescribedby',
+      inputAriaLabelledBy: '@?inputAriaLabelledby',
+      inputAriaLabel:     '@?inputAriaLabel',
       noCache:            '=?mdNoCache',
       requireMatch:       '=?mdRequireMatch',
       selectOnMatch:      '=?mdSelectOnMatch',
@@ -27472,8 +27499,8 @@ function MdAutocomplete ($$mdSvgRegistry) {
         // be added to the element in the template function.
         ctrl.hasNotFound = !!element.attr('md-has-not-found');
 
-        // By default the inset autocomplete should show the clear button when not explicitly overwritten
-        // or in floating label mode.
+        // By default the inset autocomplete should show the clear button when not explicitly
+        // overwritten or in floating label mode.
         if (!angular.isDefined(attrs.mdClearButton) && !scope.floatingLabel) {
           scope.clearButton = true;
         }
@@ -27539,7 +27566,8 @@ function MdAutocomplete ($$mdSvgRegistry) {
         var templateTag = element.find('md-item-template').detach(),
             html = templateTag.length ? templateTag.html() : element.html();
         if (!templateTag.length) element.empty();
-        return '<md-autocomplete-parent-scope md-autocomplete-replace>' + html + '</md-autocomplete-parent-scope>';
+        return '<md-autocomplete-parent-scope md-autocomplete-replace>' + html +
+               '</md-autocomplete-parent-scope>';
       }
 
       function getNoItemsTemplate() {
@@ -36810,7 +36838,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
     // Fix double-negative which can happen with RTL support
     newValue = newValue.replace('--', '');
 
-    angular.element(elements.paging).css($mdConstant.CSS.TRANSFORM, 'translate3d(' + newValue + ', 0, 0)');
+    angular.element(elements.paging).css($mdConstant.CSS.TRANSFORM, 'translate(' + newValue + ', 0)');
     $scope.$broadcast('$mdTabsPaginationChanged');
   }
 
@@ -37195,14 +37223,6 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   }
 
   /**
-   * Calculates the width of the pagination wrapper by summing the widths of the dummy tabs.
-   * @returns {number} the width of the pagination wrapper in pixels
-   */
-  function calcPagingWidth () {
-    return calcTabsWidth(getElements().tabs);
-  }
-
-  /**
    * @param {Array<HTMLElement>} tabs tab item elements for use in computing total width
    * @returns {number} the width of the tabs in the specified array in pixels
    */
@@ -37221,9 +37241,8 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   }
 
   /**
-   * @returns {number} either the max width as constrained by the container or the max width from an
-   * old version of the Material Design spec.
-   * TODO update max tab width to equal the spec in 1.2.
+   * @returns {number} either the max width as constrained by the container or the max width from
+   * the 2017 version of the Material Design spec.
    */
   function getMaxTabWidth() {
     var elements = getElements(),
@@ -37235,24 +37254,6 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
     // Do the spec maximum, or the canvas width; whichever is *smaller* (tabs larger than the canvas
     // width can break the pagination) but not less than 0
     return Math.max(0, Math.min(containerWidth - 1, specMax));
-  }
-
-  /**
-   * @returns {number} the min width from an old version of the Material Design spec. This returns
-   * a larger min width if the container width is larger than 600px.
-   * TODO update min tab width to equal the spec in 1.2.
-   */
-  function getMinTabWidth() {
-    var elements = getElements(),
-      containerWidth = elements.canvas.clientWidth,
-      xsBreakpoint = 600,
-
-      // See https://material.io/archive/guidelines/components/tabs.html#tabs-specs
-      specMin = containerWidth > xsBreakpoint ? 160 : 72;
-
-    // Do the spec minimum, or the canvas width; whichever is *smaller* (tabs larger than the canvas
-    // width can break the pagination) but not less than 0
-    return Math.max(0, Math.min(containerWidth - 1, specMin));
   }
 
   /**
@@ -37895,4 +37896,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-2268c24"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-534beea"}};

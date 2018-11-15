@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-2268c24
+ * v1.1.10-master-534beea
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -566,7 +566,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
     // Fix double-negative which can happen with RTL support
     newValue = newValue.replace('--', '');
 
-    angular.element(elements.paging).css($mdConstant.CSS.TRANSFORM, 'translate3d(' + newValue + ', 0, 0)');
+    angular.element(elements.paging).css($mdConstant.CSS.TRANSFORM, 'translate(' + newValue + ', 0)');
     $scope.$broadcast('$mdTabsPaginationChanged');
   }
 
@@ -951,14 +951,6 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   }
 
   /**
-   * Calculates the width of the pagination wrapper by summing the widths of the dummy tabs.
-   * @returns {number} the width of the pagination wrapper in pixels
-   */
-  function calcPagingWidth () {
-    return calcTabsWidth(getElements().tabs);
-  }
-
-  /**
    * @param {Array<HTMLElement>} tabs tab item elements for use in computing total width
    * @returns {number} the width of the tabs in the specified array in pixels
    */
@@ -977,9 +969,8 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   }
 
   /**
-   * @returns {number} either the max width as constrained by the container or the max width from an
-   * old version of the Material Design spec.
-   * TODO update max tab width to equal the spec in 1.2.
+   * @returns {number} either the max width as constrained by the container or the max width from
+   * the 2017 version of the Material Design spec.
    */
   function getMaxTabWidth() {
     var elements = getElements(),
@@ -991,24 +982,6 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
     // Do the spec maximum, or the canvas width; whichever is *smaller* (tabs larger than the canvas
     // width can break the pagination) but not less than 0
     return Math.max(0, Math.min(containerWidth - 1, specMax));
-  }
-
-  /**
-   * @returns {number} the min width from an old version of the Material Design spec. This returns
-   * a larger min width if the container width is larger than 600px.
-   * TODO update min tab width to equal the spec in 1.2.
-   */
-  function getMinTabWidth() {
-    var elements = getElements(),
-      containerWidth = elements.canvas.clientWidth,
-      xsBreakpoint = 600,
-
-      // See https://material.io/archive/guidelines/components/tabs.html#tabs-specs
-      specMin = containerWidth > xsBreakpoint ? 160 : 72;
-
-    // Do the spec minimum, or the canvas width; whichever is *smaller* (tabs larger than the canvas
-    // width can break the pagination) but not less than 0
-    return Math.max(0, Math.min(containerWidth - 1, specMin));
   }
 
   /**
