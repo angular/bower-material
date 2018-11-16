@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-8ab5b0a
+ * v1.1.10-master-c1c4523
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -25230,7 +25230,7 @@ VirtualRepeatContainerController.prototype.updateSize = function() {
       : this.$element[0].clientHeight;
 
   if (size) {
-    this.setSize_(size);
+    this.size = size;
   }
 
   // Recheck the scroll position after updating the size. This resolves
@@ -37896,4 +37896,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-8ab5b0a"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-c1c4523"}};

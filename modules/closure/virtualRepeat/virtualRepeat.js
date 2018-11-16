@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-8ab5b0a
+ * v1.1.10-master-c1c4523
  */
 goog.provide('ngmaterial.components.virtualRepeat');
 goog.require('ngmaterial.components.showHide');
@@ -240,7 +240,7 @@ VirtualRepeatContainerController.prototype.updateSize = function() {
       : this.$element[0].clientHeight;
 
   if (size) {
-    this.setSize_(size);
+    this.size = size;
   }
 
   // Recheck the scroll position after updating the size. This resolves
