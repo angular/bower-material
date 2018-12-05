@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-f90715c
+ * v1.1.10-master-b89beee
  */
 goog.provide('ngmaterial.components.chips');
 goog.require('ngmaterial.components.autocomplete');
@@ -304,16 +304,31 @@ MdChipRemove['$inject'] = ["$timeout"];angular
  * @module material.components.chips
  *
  * @description
- * Designates an element to be used as the delete button for a chip. <br/>
- * This element is passed as a child of the `md-chips` element.
+ * Indicates that the associated element should be used as the delete button template for all chips.
+ * The associated element must be a child of `md-chips`.
  *
- * The designated button will be just appended to the chip and removes the given chip on click.<br/>
- * By default the button is not being styled by the `md-chips` component.
+ * The provided button template will be appended to each chip and will remove the associated chip
+ * on click.
+ *
+ * The button is not styled or themed based on the theme set on the `md-chips` component. A theme
+ * class and custom icon can be specified in your template.
+ *
+ * You can also specify the `type` of the button in your template.
  *
  * @usage
+ * ### With Standard Chips
  * <hljs lang="html">
- *   <md-chips>
- *     <button md-chip-remove="">
+ *   <md-chips ...>
+ *     <button md-chip-remove class="md-primary" type="button" aria-label="Remove {{$chip}}">
+ *       <md-icon md-svg-icon="md-close"></md-icon>
+ *     </button>
+ *   </md-chips>
+ * </hljs>
+ *
+ * ### With Object Chips
+ * <hljs lang="html">
+ *   <md-chips ...>
+ *     <button md-chip-remove class="md-primary" type="button" aria-label="Remove {{$chip.name}}">
  *       <md-icon md-svg-icon="md-close"></md-icon>
  *     </button>
  *   </md-chips>
@@ -346,7 +361,7 @@ function MdChipRemove ($timeout) {
     // Child elements aren't available until after a $timeout tick as they are hidden by an
     // `ng-if`. see http://goo.gl/zIWfuw
     $timeout(function() {
-      element.attr({ tabindex: -1, 'aria-hidden': true });
+      element.attr({ 'tabindex': '-1', 'aria-hidden': 'true' });
       element.find('button').attr('tabindex', '-1');
     });
   }
@@ -795,7 +810,18 @@ MdChipsCtrl.prototype.isEditingChip = function() {
   return !!this.$element[0].querySelector('._md-chip-editing');
 };
 
+/**
+ * @param {string|Object} chip contents of a single chip
+ * @returns {boolean} true if the chip is an Object, false otherwise.
+ * @private
+ */
+MdChipsCtrl.prototype._isChipObject = function(chip) {
+  return angular.isObject(chip);
+};
 
+/**
+ * @returns {boolean} true if chips can be removed, false otherwise.
+ */
 MdChipsCtrl.prototype.isRemovable = function() {
   // Return false if we have static chips
   if (!this.ngModelCtrl) {
@@ -925,8 +951,8 @@ MdChipsCtrl.prototype.appendChip = function(newChip) {
   }
 
   // If items contains an identical object to newChip, do not append
-  if (angular.isObject(newChip)){
-    var identical = this.items.some(function(item){
+  if (angular.isObject(newChip)) {
+    var identical = this.items.some(function(item) {
       return angular.equals(newChip, item);
     });
     if (identical) return;
@@ -942,7 +968,8 @@ MdChipsCtrl.prototype.appendChip = function(newChip) {
   this.updateNgModel();
 
   // Tell screen reader users that the chip was successfully added.
-  var chipContent = typeof newChip === 'object' ? JSON.stringify(newChip) : newChip;
+  // TODO add a way for developers to specify which field of the object should be announced here.
+  var chipContent = angular.isObject(newChip) ? '' : newChip;
   this.$mdLiveAnnouncer.announce(chipContent + ' ' + this.addedMessage, 'assertive');
 
   // If the md-on-add attribute is specified, send a chip addition event
@@ -1080,7 +1107,8 @@ MdChipsCtrl.prototype.removeChip = function(index, event) {
   this.ngModelCtrl.$setDirty();
 
   // Tell screen reader users that the chip was successfully removed.
-  var chipContent = typeof removed[0] === 'object' ? JSON.stringify(removed[0]) : removed[0];
+  // TODO add a way for developers to specify which field of the object should be announced here.
+  var chipContent = angular.isObject(removed[0]) ? '' : removed[0];
   this.$mdLiveAnnouncer.announce(chipContent + ' ' + this.removedMessage, 'assertive');
 
   if (removed && removed.length && this.useOnRemove && this.onRemove) {
@@ -1594,6 +1622,8 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    *
    */
 
+  // TODO add a way for developers to specify which field of the object should used in the
+  // aria-label.
   var MD_CHIPS_TEMPLATE = '\
       <md-chips-wrap\
           id="{{$mdChipsCtrl.wrapperId}}"\
@@ -1614,7 +1644,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
               aria-setsize="{{$mdChipsCtrl.items.length}}"\
               aria-posinset="{{$index+1}}"\
               ng-click="!$mdChipsCtrl.readonly && $mdChipsCtrl.focusChip($index)"\
-              aria-label="{{$chip}}.{{$mdChipsCtrl.isRemovable() ? \' \' + $mdChipsCtrl.deleteHint : \'\'}}" \
+              aria-label="{{$mdChipsCtrl._isChipObject($chip) ? \'\' : $chip + \'. \'}}{{$mdChipsCtrl.isRemovable() ? \'\' + $mdChipsCtrl.deleteHint : \'\'}}" \
               ng-focus="!$mdChipsCtrl.readonly && $mdChipsCtrl.selectChip($index)"\
               md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"></div>\
           <div ng-if="$mdChipsCtrl.isRemovable()"\
@@ -1648,7 +1678,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
           ng-click="$mdChipsCtrl.removeChipAndFocusInput($$replacedScope.$index, $event)"\
           type="button"\
           tabindex="-1"\
-          aria-label="{{$mdChipsCtrl.deleteButtonLabel}} {{$chip}}">\
+          aria-label="{{$mdChipsCtrl.deleteButtonLabel}}{{$mdChipsCtrl._isChipObject($chip) ? \'\' : \' \' + $chip}}">\
         <md-icon md-svg-src="{{$mdChipsCtrl.mdCloseIcon}}" aria-hidden="true"></md-icon>\
       </button>';
 
