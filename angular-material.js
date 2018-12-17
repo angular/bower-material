@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-1512aa1
+ * v1.1.10-master-29f1db9
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13022,7 +13022,7 @@ function mdInputContainerDirective($mdTheming, $parse, $$rAF) {
           }
         });
       }
-    }
+    };
   }
 
   function ContainerCtrl($scope, $element, $attrs, $animate) {
@@ -37926,4 +37926,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-1512aa1"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.10-master-29f1db9"}};

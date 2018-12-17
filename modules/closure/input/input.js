@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.10-master-1512aa1
+ * v1.1.10-master-29f1db9
  */
 goog.provide('ngmaterial.components.input');
 goog.require('ngmaterial.core');
@@ -159,7 +159,7 @@ function mdInputContainerDirective($mdTheming, $parse, $$rAF) {
           }
         });
       }
-    }
+    };
   }
 
   function ContainerCtrl($scope, $element, $attrs, $animate) {
