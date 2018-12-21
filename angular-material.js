@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.11
+ * v1.1.11-master-54e3413
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -10,7 +10,7 @@
 (function(){
 "use strict";
 
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.interaction","material.core.layout","material.core.meta","material.core.theming.palette","material.core.theming","material.core.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.colors","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabToolbar","material.components.fabShared","material.components.fabSpeedDial","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.navBar","material.components.panel","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.showHide","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.truncate","material.components.virtualRepeat","material.components.whiteframe"]);
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.interaction","material.core.layout","material.core.meta","material.core.theming.palette","material.core.theming","material.core.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.colors","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.navBar","material.components.panel","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.showHide","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.virtualRepeat","material.components.truncate","material.components.whiteframe"]);
 })();
 (function(){
 "use strict";
@@ -11319,208 +11319,6 @@ function MdDividerDirective($mdTheming) {
 (function() {
   'use strict';
 
-  /**
-   * @ngdoc module
-   * @name material.components.fabToolbar
-   */
-  angular
-    // Declare our module
-    .module('material.components.fabToolbar', [
-      'material.core',
-      'material.components.fabShared',
-      'material.components.fabActions'
-    ])
-
-    // Register our directive
-    .directive('mdFabToolbar', MdFabToolbarDirective)
-
-    // Register our custom animations
-    .animation('.md-fab-toolbar', MdFabToolbarAnimation)
-
-    // Register a service for the animation so that we can easily inject it into unit tests
-    .service('mdFabToolbarAnimation', MdFabToolbarAnimation);
-
-  /**
-   * @ngdoc directive
-   * @name mdFabToolbar
-   * @module material.components.fabToolbar
-   *
-   * @restrict E
-   *
-   * @description
-   *
-   * The `<md-fab-toolbar>` directive is used to present a toolbar of elements (usually `<md-button>`s)
-   * for quick access to common actions when a floating action button is activated (via click or
-   * keyboard navigation).
-   *
-   * You may also easily position the trigger by applying one one of the following classes to the
-   * `<md-fab-toolbar>` element:
-   *  - `md-fab-top-left`
-   *  - `md-fab-top-right`
-   *  - `md-fab-bottom-left`
-   *  - `md-fab-bottom-right`
-   *
-   * These CSS classes use `position: absolute`, so you need to ensure that the container element
-   * also uses `position: absolute` or `position: relative` in order for them to work.
-   *
-   * @usage
-   *
-   * <hljs lang="html">
-   * <md-fab-toolbar md-direction='left'>
-   *   <md-fab-trigger>
-   *     <md-button aria-label="Add..."><md-icon md-svg-src="/img/icons/plus.svg"></md-icon></md-button>
-   *   </md-fab-trigger>
-   *
-   *   <md-toolbar>
-   *    <md-fab-actions>
-   *      <md-button aria-label="Add User">
-   *        <md-icon md-svg-src="/img/icons/user.svg"></md-icon>
-   *      </md-button>
-   *
-   *      <md-button aria-label="Add Group">
-   *        <md-icon md-svg-src="/img/icons/group.svg"></md-icon>
-   *      </md-button>
-   *    </md-fab-actions>
-   *   </md-toolbar>
-   * </md-fab-toolbar>
-   * </hljs>
-   *
-   * @param {string} md-direction From which direction you would like the toolbar items to appear
-   * relative to the trigger element. Supports `left` and `right` directions.
-   * @param {expression=} md-open Programmatically control whether or not the toolbar is visible.
-   */
-  function MdFabToolbarDirective() {
-    return {
-      restrict: 'E',
-      transclude: true,
-      template: '<div class="md-fab-toolbar-wrapper">' +
-      '  <div class="md-fab-toolbar-content" ng-transclude></div>' +
-      '</div>',
-
-      scope: {
-        direction: '@?mdDirection',
-        isOpen: '=?mdOpen'
-      },
-
-      bindToController: true,
-      controller: 'MdFabController',
-      controllerAs: 'vm',
-
-      link: link
-    };
-
-    function link(scope, element, attributes) {
-      // Add the base class for animations
-      element.addClass('md-fab-toolbar');
-
-      // Prepend the background element to the trigger's button
-      element.find('md-fab-trigger').find('button')
-        .prepend('<div class="md-fab-toolbar-background"></div>');
-    }
-  }
-
-  function MdFabToolbarAnimation() {
-
-    function runAnimation(element, className, done) {
-      // If no className was specified, don't do anything
-      if (!className) {
-        return;
-      }
-
-      var el = element[0];
-      var ctrl = element.controller('mdFabToolbar');
-
-      // Grab the relevant child elements
-      var backgroundElement = el.querySelector('.md-fab-toolbar-background');
-      var triggerElement = el.querySelector('md-fab-trigger button');
-      var toolbarElement = el.querySelector('md-toolbar');
-      var iconElement = el.querySelector('md-fab-trigger button md-icon');
-      var actions = element.find('md-fab-actions').children();
-
-      // If we have both elements, use them to position the new background
-      if (triggerElement && backgroundElement) {
-        // Get our variables
-        var color = window.getComputedStyle(triggerElement).getPropertyValue('background-color');
-        var width = el.offsetWidth;
-        var height = el.offsetHeight;
-
-        // Make it twice as big as it should be since we scale from the center
-        var scale = 2 * (width / triggerElement.offsetWidth);
-
-        // Set some basic styles no matter what animation we're doing
-        backgroundElement.style.backgroundColor = color;
-        backgroundElement.style.borderRadius = width + 'px';
-
-        // If we're open
-        if (ctrl.isOpen) {
-          // Turn on toolbar pointer events when closed
-          toolbarElement.style.pointerEvents = 'inherit';
-
-          backgroundElement.style.width = triggerElement.offsetWidth + 'px';
-          backgroundElement.style.height = triggerElement.offsetHeight + 'px';
-          backgroundElement.style.transform = 'scale(' + scale + ')';
-
-          // Set the next close animation to have the proper delays
-          backgroundElement.style.transitionDelay = '0ms';
-          iconElement && (iconElement.style.transitionDelay = '.3s');
-
-          // Apply a transition delay to actions
-          angular.forEach(actions, function(action, index) {
-            action.style.transitionDelay = (actions.length - index) * 25 + 'ms';
-          });
-        } else {
-          // Turn off toolbar pointer events when closed
-          toolbarElement.style.pointerEvents = 'none';
-
-          // Scale it back down to the trigger's size
-          backgroundElement.style.transform = 'scale(1)';
-
-          // Reset the position
-          backgroundElement.style.top = '0';
-
-          if (element.hasClass('md-right')) {
-            backgroundElement.style.left = '0';
-            backgroundElement.style.right = null;
-          }
-
-          if (element.hasClass('md-left')) {
-            backgroundElement.style.right = '0';
-            backgroundElement.style.left = null;
-          }
-
-          // Set the next open animation to have the proper delays
-          backgroundElement.style.transitionDelay = '200ms';
-          iconElement && (iconElement.style.transitionDelay = '0ms');
-
-          // Apply a transition delay to actions
-          angular.forEach(actions, function(action, index) {
-            action.style.transitionDelay = 200 + (index * 25) + 'ms';
-          });
-        }
-      }
-    }
-
-    return {
-      addClass: function(element, className, done) {
-        runAnimation(element, className, done);
-        done();
-      },
-
-      removeClass: function(element, className, done) {
-        runAnimation(element, className, done);
-        done();
-      }
-    };
-  }
-})();
-
-})();
-(function(){
-"use strict";
-
-(function() {
-  'use strict';
-
   MdFabController.$inject = ["$scope", "$element", "$animate", "$mdUtil", "$mdConstant", "$timeout"];
   angular.module('material.components.fabShared', ['material.core'])
     .controller('MdFabController', MdFabController);
@@ -12083,6 +11881,208 @@ function MdDividerDirective($mdTheming) {
       removeClass: function(element, className, done) {
         runAnimation(element);
         delayDone(done);
+      }
+    };
+  }
+})();
+
+})();
+(function(){
+"use strict";
+
+(function() {
+  'use strict';
+
+  /**
+   * @ngdoc module
+   * @name material.components.fabToolbar
+   */
+  angular
+    // Declare our module
+    .module('material.components.fabToolbar', [
+      'material.core',
+      'material.components.fabShared',
+      'material.components.fabActions'
+    ])
+
+    // Register our directive
+    .directive('mdFabToolbar', MdFabToolbarDirective)
+
+    // Register our custom animations
+    .animation('.md-fab-toolbar', MdFabToolbarAnimation)
+
+    // Register a service for the animation so that we can easily inject it into unit tests
+    .service('mdFabToolbarAnimation', MdFabToolbarAnimation);
+
+  /**
+   * @ngdoc directive
+   * @name mdFabToolbar
+   * @module material.components.fabToolbar
+   *
+   * @restrict E
+   *
+   * @description
+   *
+   * The `<md-fab-toolbar>` directive is used to present a toolbar of elements (usually `<md-button>`s)
+   * for quick access to common actions when a floating action button is activated (via click or
+   * keyboard navigation).
+   *
+   * You may also easily position the trigger by applying one one of the following classes to the
+   * `<md-fab-toolbar>` element:
+   *  - `md-fab-top-left`
+   *  - `md-fab-top-right`
+   *  - `md-fab-bottom-left`
+   *  - `md-fab-bottom-right`
+   *
+   * These CSS classes use `position: absolute`, so you need to ensure that the container element
+   * also uses `position: absolute` or `position: relative` in order for them to work.
+   *
+   * @usage
+   *
+   * <hljs lang="html">
+   * <md-fab-toolbar md-direction='left'>
+   *   <md-fab-trigger>
+   *     <md-button aria-label="Add..."><md-icon md-svg-src="/img/icons/plus.svg"></md-icon></md-button>
+   *   </md-fab-trigger>
+   *
+   *   <md-toolbar>
+   *    <md-fab-actions>
+   *      <md-button aria-label="Add User">
+   *        <md-icon md-svg-src="/img/icons/user.svg"></md-icon>
+   *      </md-button>
+   *
+   *      <md-button aria-label="Add Group">
+   *        <md-icon md-svg-src="/img/icons/group.svg"></md-icon>
+   *      </md-button>
+   *    </md-fab-actions>
+   *   </md-toolbar>
+   * </md-fab-toolbar>
+   * </hljs>
+   *
+   * @param {string} md-direction From which direction you would like the toolbar items to appear
+   * relative to the trigger element. Supports `left` and `right` directions.
+   * @param {expression=} md-open Programmatically control whether or not the toolbar is visible.
+   */
+  function MdFabToolbarDirective() {
+    return {
+      restrict: 'E',
+      transclude: true,
+      template: '<div class="md-fab-toolbar-wrapper">' +
+      '  <div class="md-fab-toolbar-content" ng-transclude></div>' +
+      '</div>',
+
+      scope: {
+        direction: '@?mdDirection',
+        isOpen: '=?mdOpen'
+      },
+
+      bindToController: true,
+      controller: 'MdFabController',
+      controllerAs: 'vm',
+
+      link: link
+    };
+
+    function link(scope, element, attributes) {
+      // Add the base class for animations
+      element.addClass('md-fab-toolbar');
+
+      // Prepend the background element to the trigger's button
+      element.find('md-fab-trigger').find('button')
+        .prepend('<div class="md-fab-toolbar-background"></div>');
+    }
+  }
+
+  function MdFabToolbarAnimation() {
+
+    function runAnimation(element, className, done) {
+      // If no className was specified, don't do anything
+      if (!className) {
+        return;
+      }
+
+      var el = element[0];
+      var ctrl = element.controller('mdFabToolbar');
+
+      // Grab the relevant child elements
+      var backgroundElement = el.querySelector('.md-fab-toolbar-background');
+      var triggerElement = el.querySelector('md-fab-trigger button');
+      var toolbarElement = el.querySelector('md-toolbar');
+      var iconElement = el.querySelector('md-fab-trigger button md-icon');
+      var actions = element.find('md-fab-actions').children();
+
+      // If we have both elements, use them to position the new background
+      if (triggerElement && backgroundElement) {
+        // Get our variables
+        var color = window.getComputedStyle(triggerElement).getPropertyValue('background-color');
+        var width = el.offsetWidth;
+        var height = el.offsetHeight;
+
+        // Make it twice as big as it should be since we scale from the center
+        var scale = 2 * (width / triggerElement.offsetWidth);
+
+        // Set some basic styles no matter what animation we're doing
+        backgroundElement.style.backgroundColor = color;
+        backgroundElement.style.borderRadius = width + 'px';
+
+        // If we're open
+        if (ctrl.isOpen) {
+          // Turn on toolbar pointer events when closed
+          toolbarElement.style.pointerEvents = 'inherit';
+
+          backgroundElement.style.width = triggerElement.offsetWidth + 'px';
+          backgroundElement.style.height = triggerElement.offsetHeight + 'px';
+          backgroundElement.style.transform = 'scale(' + scale + ')';
+
+          // Set the next close animation to have the proper delays
+          backgroundElement.style.transitionDelay = '0ms';
+          iconElement && (iconElement.style.transitionDelay = '.3s');
+
+          // Apply a transition delay to actions
+          angular.forEach(actions, function(action, index) {
+            action.style.transitionDelay = (actions.length - index) * 25 + 'ms';
+          });
+        } else {
+          // Turn off toolbar pointer events when closed
+          toolbarElement.style.pointerEvents = 'none';
+
+          // Scale it back down to the trigger's size
+          backgroundElement.style.transform = 'scale(1)';
+
+          // Reset the position
+          backgroundElement.style.top = '0';
+
+          if (element.hasClass('md-right')) {
+            backgroundElement.style.left = '0';
+            backgroundElement.style.right = null;
+          }
+
+          if (element.hasClass('md-left')) {
+            backgroundElement.style.right = '0';
+            backgroundElement.style.left = null;
+          }
+
+          // Set the next open animation to have the proper delays
+          backgroundElement.style.transitionDelay = '200ms';
+          iconElement && (iconElement.style.transitionDelay = '0ms');
+
+          // Apply a transition delay to actions
+          angular.forEach(actions, function(action, index) {
+            action.style.transitionDelay = 200 + (index * 25) + 'ms';
+          });
+        }
+      }
+    }
+
+    return {
+      addClass: function(element, className, done) {
+        runAnimation(element, className, done);
+        done();
+      },
+
+      removeClass: function(element, className, done) {
+        runAnimation(element, className, done);
+        done();
       }
     };
   }
@@ -24975,96 +24975,6 @@ function MdTooltipRegistry() {
 
 /**
  * @ngdoc module
- * @name material.components.truncate
- */
-MdTruncateController.$inject = ["$element"];
-angular.module('material.components.truncate', ['material.core'])
-  .directive('mdTruncate', MdTruncateDirective);
-
-/**
- * @ngdoc directive
- * @name mdTruncate
- * @module material.components.truncate
- * @restrict AE
- * @description
- *
- * The `md-truncate` component displays a label that will automatically clip text which is wider
- * than the component. By default, it displays an ellipsis, but you may apply the `md-clip` CSS
- * class to override this default and use a standard "clipping" approach.
- *
- * <i><b>Note:</b> The `md-truncate` component does not automatically adjust it's width. You must
- * provide the `flex` attribute, or some other CSS-based width management. See the
- * <a ng-href="./demo/truncate">demos</a> for examples.</i>
- *
- * @usage
- *
- * ### As an Element
- *
- * <hljs lang="html">
- *   <div layout="row">
- *     <md-button>Back</md-button>
- *
- *     <md-truncate flex>Chapter 1 - The Way of the Old West</md-truncate>
- *
- *     <md-button>Forward</md-button>
- *   </div>
- * </hljs>
- *
- * ### As an Attribute
- *
- * <hljs lang="html">
- *   <h2 md-truncate style="max-width: 100px;">Some Title With a Lot of Text</h2>
- * </hljs>
- *
- * ## CSS & Styles
- *
- * `<md-truncate>` provides two CSS classes that you may use to control the type of clipping.
- *
- * <i><b>Note:</b> The `md-truncate` also applies a setting of `width: 0;` when used with the `flex`
- * attribute to fix an issue with the flex element not shrinking properly.</i>
- *
- * <div>
- * <docs-css-api-table>
- *
- *   <docs-css-selector code=".md-ellipsis">
- *     Assigns the "ellipsis" behavior (default) which will cut off mid-word and append an ellipsis
- *     (&hellip;) to the end of the text.
- *   </docs-css-selector>
- *
- *   <docs-css-selector code=".md-clip">
- *     Assigns the "clipping" behavior which will simply chop off the text. This may happen
- *     mid-word or even mid-character.
- *   </docs-css-selector>
- *
- * </docs-css-api-table>
- * </div>
- */
-function MdTruncateDirective() {
-  return {
-    restrict: 'AE',
-
-    controller: MdTruncateController
-  };
-}
-
-/**
- * Controller for the <md-truncate> component.
- *
- * @param $element The md-truncate element.
- *
- * @constructor
- * @ngInject
- */
-function MdTruncateController($element) {
-  $element.addClass('md-truncate');
-}
-
-})();
-(function(){
-"use strict";
-
-/**
- * @ngdoc module
  * @name material.components.virtualRepeat
  */
 VirtualRepeatContainerController.$inject = ["$$rAF", "$mdUtil", "$mdConstant", "$parse", "$rootScope", "$window", "$scope", "$element", "$attrs"];
@@ -26110,6 +26020,96 @@ function ForceHeightDirective($mdUtil) {
   };
 }
 ForceHeightDirective.$inject = ['$mdUtil'];
+
+})();
+(function(){
+"use strict";
+
+/**
+ * @ngdoc module
+ * @name material.components.truncate
+ */
+MdTruncateController.$inject = ["$element"];
+angular.module('material.components.truncate', ['material.core'])
+  .directive('mdTruncate', MdTruncateDirective);
+
+/**
+ * @ngdoc directive
+ * @name mdTruncate
+ * @module material.components.truncate
+ * @restrict AE
+ * @description
+ *
+ * The `md-truncate` component displays a label that will automatically clip text which is wider
+ * than the component. By default, it displays an ellipsis, but you may apply the `md-clip` CSS
+ * class to override this default and use a standard "clipping" approach.
+ *
+ * <i><b>Note:</b> The `md-truncate` component does not automatically adjust it's width. You must
+ * provide the `flex` attribute, or some other CSS-based width management. See the
+ * <a ng-href="./demo/truncate">demos</a> for examples.</i>
+ *
+ * @usage
+ *
+ * ### As an Element
+ *
+ * <hljs lang="html">
+ *   <div layout="row">
+ *     <md-button>Back</md-button>
+ *
+ *     <md-truncate flex>Chapter 1 - The Way of the Old West</md-truncate>
+ *
+ *     <md-button>Forward</md-button>
+ *   </div>
+ * </hljs>
+ *
+ * ### As an Attribute
+ *
+ * <hljs lang="html">
+ *   <h2 md-truncate style="max-width: 100px;">Some Title With a Lot of Text</h2>
+ * </hljs>
+ *
+ * ## CSS & Styles
+ *
+ * `<md-truncate>` provides two CSS classes that you may use to control the type of clipping.
+ *
+ * <i><b>Note:</b> The `md-truncate` also applies a setting of `width: 0;` when used with the `flex`
+ * attribute to fix an issue with the flex element not shrinking properly.</i>
+ *
+ * <div>
+ * <docs-css-api-table>
+ *
+ *   <docs-css-selector code=".md-ellipsis">
+ *     Assigns the "ellipsis" behavior (default) which will cut off mid-word and append an ellipsis
+ *     (&hellip;) to the end of the text.
+ *   </docs-css-selector>
+ *
+ *   <docs-css-selector code=".md-clip">
+ *     Assigns the "clipping" behavior which will simply chop off the text. This may happen
+ *     mid-word or even mid-character.
+ *   </docs-css-selector>
+ *
+ * </docs-css-api-table>
+ * </div>
+ */
+function MdTruncateDirective() {
+  return {
+    restrict: 'AE',
+
+    controller: MdTruncateController
+  };
+}
+
+/**
+ * Controller for the <md-truncate> component.
+ *
+ * @param $element The md-truncate element.
+ *
+ * @constructor
+ * @ngInject
+ */
+function MdTruncateController($element) {
+  $element.addClass('md-truncate');
+}
 
 })();
 (function(){
@@ -38013,4 +38013,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.11"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.11-master-54e3413"}};
