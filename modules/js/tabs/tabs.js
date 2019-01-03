@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.11-master-54e3413
+ * v1.1.11-master-a49043d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -549,7 +549,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
 
   /**
    * Add/remove the `md-no-tab-content` class depending on `ctrl.hasContent`
-   * @param hasContent
+   * @param {boolean} hasContent
    */
   function handleHasContent (hasContent) {
     $element[ hasContent ? 'removeClass' : 'addClass' ]('md-no-tab-content');
@@ -557,7 +557,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
 
   /**
    * Apply ctrl.offsetLeft to the paging element when it changes
-   * @param left
+   * @param {string|number} left
    */
   function handleOffsetChange (left) {
     var elements = getElements();
@@ -572,8 +572,8 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
 
   /**
    * Update the UI whenever `ctrl.focusIndex` is updated
-   * @param newIndex
-   * @param oldIndex
+   * @param {number} newIndex
+   * @param {number} oldIndex
    */
   function handleFocusIndexChange (newIndex, oldIndex) {
     if (newIndex === oldIndex) return;
@@ -882,7 +882,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
 
   /**
    * Determines if the tabs should appear centered.
-   * @returns {string|boolean}
+   * @returns {boolean}
    */
   function shouldCenterTabs () {
     return ctrl.centerTabs && !ctrl.shouldPaginate;
@@ -890,9 +890,10 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
 
   /**
    * Determines if pagination is necessary to display the tabs within the available space.
-   * @returns {boolean}
+   * @returns {boolean} true if pagination is necessary, false otherwise
    */
   function shouldPaginate () {
+    var shouldPaginate;
     if (ctrl.noPagination || !loaded) return false;
     var canvasWidth = $element.prop('clientWidth');
 
@@ -900,7 +901,14 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
       canvasWidth -= tab.offsetWidth;
     });
 
-    return canvasWidth < 0;
+    shouldPaginate = canvasWidth < 0;
+    // Work around width calculation issues on IE11 when pagination is enabled
+    if (shouldPaginate) {
+      getElements().paging.style.width = '999999px';
+    } else {
+      getElements().paging.style.width = undefined;
+    }
+    return shouldPaginate;
   }
 
   /**
@@ -1353,7 +1361,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
  *  contents of the selected tab.
  * @param {boolean=} md-border-bottom If present, shows a solid `1px` border between the tabs and
  *  their content.
- * @param {boolean=} md-center-tabs When enabled, tabs will be centered provided there is no need
+ * @param {boolean=} md-center-tabs If defined, tabs will be centered provided there is no need
  *  for pagination.
  * @param {boolean=} md-no-pagination When enabled, pagination will remain off.
  * @param {boolean=} md-swipe-content When enabled, swipe gestures will be enabled for the content
