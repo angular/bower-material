@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.11-master-a49043d
+ * v1.1.11-master-a4507d6
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -20084,7 +20084,10 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
       function inputCheckValue() {
         // The select counts as having a value if one or more options are selected,
         // or if the input's validity state says it has bad input (eg string in a number input)
-        containerCtrl && containerCtrl.setHasValue(selectMenuCtrl.selectedLabels().length > 0 || (element[0].validity || {}).badInput);
+        // we must do this on nextTick as the $render is sometimes invoked on nextTick.
+        $mdUtil.nextTick(function () {
+          containerCtrl && containerCtrl.setHasValue(selectMenuCtrl.selectedLabels().length > 0 || (element[0].validity || {}).badInput);
+        });
       }
 
       function findSelectContainer() {
@@ -38021,4 +38024,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.11-master-a49043d"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.11-master-a4507d6"}};
