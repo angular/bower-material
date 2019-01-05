@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-57c81c8
+ * v1.1.12-master-320511c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -163,7 +163,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
     // Automatically determine dropdown placement based on available space in viewport.
     if (!position) {
-      position = (top > bot && root.height - top - MENU_PADDING < dropdownHeight) ? 'top' : 'bottom';
+      position = (vrect.top + MENU_PADDING > dropdownHeight) ? 'top' : 'bottom';
     }
     // Adjust the width to account for the padding provided by `md-input-container`
     if ($attrs.mdFloatingLabel) {
@@ -1439,7 +1439,6 @@ function MdAutocomplete ($$mdSvgRegistry) {
                 id="ul-{{$mdAutocompleteCtrl.id}}"\
                 role="listbox">\
               <li md-virtual-repeat="item in $mdAutocompleteCtrl.matches"\
-                  ng-class="{ selected: $index === $mdAutocompleteCtrl.index }"\
                   ng-attr-id="{{$index === $mdAutocompleteCtrl.index ? \'selected_option\' : undefined}}"\
                   ng-click="$mdAutocompleteCtrl.select($index)"\
                   role="option"\
