@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-320511c
+ * v1.1.12-master-bf5bbfc
  */
 md-input-container:not([md-no-float]) .md-select-placeholder span:first-child {
   transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -116,12 +116,16 @@ md-input-container.md-input-has-value .md-select-value > span:not(.md-select-ico
   .md-select-value .md-select-icon {
     display: block;
     align-items: flex-end;
-    text-align: end;
+    text-align: right;
     width: 24px;
     margin: 0 4px;
     -webkit-transform: translate3d(0, -2px, 0);
             transform: translate3d(0, -2px, 0);
     font-size: 1.2rem; }
+    [dir=rtl] .md-select-value .md-select-icon {
+      align-items: flex-start; }
+    [dir=rtl] .md-select-value .md-select-icon {
+      text-align: left; }
   .md-select-value .md-select-icon:after {
     display: block;
     content: '\25BC';
