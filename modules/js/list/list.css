@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-bf5bbfc
+ * v1.1.12-master-9c079aa
  */
 md-list {
   display: block;
@@ -250,6 +250,7 @@ md-list-item {
     md-list-item .md-list-item-inner .md-secondary-container {
       display: flex;
       align-items: center;
+      position: relative;
       flex-shrink: 0;
       margin: auto;
       margin-right: 0;

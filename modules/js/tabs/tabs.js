@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-bf5bbfc
+ * v1.1.12-master-9c079aa
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1032,7 +1032,9 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    */
   function redirectFocus () {
     ctrl.styleTabItemFocus = ($mdInteraction.getLastInteractionType() === 'keyboard');
-    getElements().tabs[ ctrl.focusIndex ].focus();
+    if (ctrl.focusIndex > 0) {
+      getElements().tabs[ctrl.focusIndex].focus();
+    }
   }
 
   /**
