@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-c68e7f0
+ * v1.1.12-master-ecf1705
  */
 goog.provide('ngmaterial.core');
 
@@ -505,7 +505,7 @@ function MdConstantFactory() {
     }
 
     reloop = !!reloop;
-    var _items = items || [ ];
+    var _items = items || [];
 
     // Published API
     return {
@@ -1466,7 +1466,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      */
     valueOnUse : function (scope, key, getter) {
       var value = null, args = Array.prototype.slice.call(arguments);
-      var params = (args.length > 3) ? args.slice(3) : [ ];
+      var params = (args.length > 3) ? args.slice(3) : [];
 
       Object.defineProperty(scope, key, {
         get: function () {
@@ -2123,7 +2123,7 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
       }
       /* Perform role blacklist check */
       if (parentNode.hasAttribute('role')) {
-        switch(parentNode.getAttribute('role').toLowerCase()) {
+        switch (parentNode.getAttribute('role').toLowerCase()) {
           case 'command':
           case 'definition':
           case 'directory':
@@ -2144,7 +2144,7 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
         }
       }
       /* Perform tagName blacklist check */
-      switch(parentNode.tagName.toLowerCase()) {
+      switch (parentNode.tagName.toLowerCase()) {
         case 'abbr':
         case 'acronym':
         case 'address':
@@ -2813,7 +2813,7 @@ var isInitialized = false;
  * AngularJS Material Gesture handling for touch devices. This module replaced the usage of the hammerjs library.
  */
 angular
-  .module('material.core.gestures', [ ])
+  .module('material.core.gestures', [])
   .provider('$mdGesture', MdGestureProvider)
   .factory('$$MdGestureHandler', MdGestureHandler)
   .run(attachToDocument);
@@ -3420,7 +3420,7 @@ function attachToDocument($mdGesture, $$MdGestureHandler) {
     var handler;
     for (var name in HANDLERS) {
       handler = HANDLERS[name];
-      if(handler instanceof $$MdGestureHandler) {
+      if (handler instanceof $$MdGestureHandler) {
 
         if (handlerEvent === 'start') {
           // Run cancel to reset any handlers' state
@@ -4501,10 +4501,10 @@ function InterimElementProvider() {
   var SUFFIXES = /(-gt)?-(sm|md|lg|print)/g;
   var WHITESPACE = /\s+/g;
 
-  var FLEX_OPTIONS = ['grow', 'initial', 'auto', 'none', 'noshrink', 'nogrow' ];
+  var FLEX_OPTIONS = ['grow', 'initial', 'auto', 'none', 'noshrink', 'nogrow'];
   var LAYOUT_OPTIONS = ['row', 'column'];
-  var ALIGNMENT_MAIN_AXIS= [ "", "start", "center", "end", "stretch", "space-around", "space-between" ];
-  var ALIGNMENT_CROSS_AXIS= [ "", "start", "center", "end", "stretch" ];
+  var ALIGNMENT_MAIN_AXIS= ["", "start", "center", "end", "stretch", "space-around", "space-between"];
+  var ALIGNMENT_CROSS_AXIS= ["", "start", "center", "end", "stretch"];
 
   var config = {
     /**
@@ -4572,9 +4572,9 @@ function InterimElementProvider() {
     var SPECIAL_CHARS_REGEXP = /([:\-_]+(.))/g;
 
     // NOTE: these are also defined in constants::MEDIA_PRIORITY and constants::MEDIA
-    var BREAKPOINTS     = [ "", "xs", "gt-xs", "sm", "gt-sm", "md", "gt-md", "lg", "gt-lg", "xl", "print" ];
-    var API_WITH_VALUES = [ "layout", "flex", "flex-order", "flex-offset", "layout-align" ];
-    var API_NO_VALUES   = [ "show", "hide", "layout-padding", "layout-margin" ];
+    var BREAKPOINTS     = ["", "xs", "gt-xs", "sm", "gt-sm", "md", "gt-md", "lg", "gt-lg", "xl", "print"];
+    var API_WITH_VALUES = ["layout", "flex", "flex-order", "flex-offset", "layout-align"];
+    var API_NO_VALUES   = ["show", "hide", "layout-padding", "layout-margin"];
 
 
     // Build directive registration functions for the standard Layout API... for all breakpoints.
@@ -4708,7 +4708,7 @@ function InterimElementProvider() {
    * finish processing. Eliminates flicker with Material.Layouts
    */
   function buildCloakInterceptor(className) {
-    return [ '$timeout', function($timeout){
+    return ['$timeout', function($timeout){
       return {
         restrict : 'A',
         priority : -10,   // run after normal ng-cloak
@@ -4880,7 +4880,7 @@ function InterimElementProvider() {
     var message, usage, url;
     var nodeName = element[0].nodeName.toLowerCase();
 
-    switch(className.replace(SUFFIXES,"")) {
+    switch (className.replace(SUFFIXES,"")) {
       case "flex":
         if ((nodeName == "md-button") || (nodeName == "fieldset")){
           // @see https://github.com/philipwalton/flexbugs#9-some-html-elements-cant-be-flex-containers
@@ -5005,7 +5005,7 @@ function InterimElementProvider() {
     values = attrValue.toLowerCase().trim().replace(WHITESPACE, "-").split("-");
     if (values.length && (values[0] === "space")) {
       // for main-axis values of "space-around" or "space-between"
-      values = [ values[0]+"-"+values[1],values[2] ];
+      values = [values[0]+"-"+values[1],values[2]];
     }
 
     if (values.length > 0) axis.main  = values[0] || axis.main;
@@ -5252,7 +5252,7 @@ angular.module('material.core.meta', [])
   function ComponentRegistry($log, $q) {
 
     var self;
-    var instances = [ ];
+    var instances = [];
     var pendings = { };
 
     return self = {
@@ -5277,9 +5277,9 @@ angular.module('material.core.meta', [])
         if (!isValidID(handle)) return null;
 
         var i, j, instance;
-        for(i = 0, j = instances.length; i < j; i++) {
+        for (i = 0, j = instances.length; i < j; i++) {
           instance = instances[i];
-          if(instance.$$mdHandle === handle) {
+          if (instance.$$mdHandle === handle) {
             return instance;
           }
         }

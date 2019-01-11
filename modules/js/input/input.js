@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-c68e7f0
+ * v1.1.12-master-ecf1705
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -887,7 +887,7 @@ function mdSelectOnFocusDirective($document, $timeout) {
         // The debounce is here for Edge's sake, otherwise the selection doesn't work.
         // Since focus may already have been lost on the input (and because `select()`
         // will re-focus), make sure the element is still active before applying.
-        if($document[0].activeElement === element[0]) {
+        if ($document[0].activeElement === element[0]) {
           element[0].select();
         }
 

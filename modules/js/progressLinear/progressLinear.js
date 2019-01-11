@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-c68e7f0
+ * v1.1.12-master-ecf1705
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -137,7 +137,7 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
       attr.$observe('mdMode', function(mode) {
         if (lastMode) container.removeClass(lastMode);
 
-        switch(mode) {
+        switch (mode) {
           case MODE_QUERY:
           case MODE_BUFFER:
           case MODE_DETERMINATE:
@@ -170,7 +170,7 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
     function mode() {
       var value = (attr.mdMode || "").trim();
       if (value) {
-        switch(value) {
+        switch (value) {
           case MODE_DETERMINATE:
           case MODE_INDETERMINATE:
           case MODE_BUFFER:
@@ -191,7 +191,7 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
     function animateIndicator(target, value) {
       if (isDisabled || !mode()) return;
 
-      var to = $mdUtil.supplant("translateX({0}%) scale({1},1)", [ (value-100)/2, value/100 ]);
+      var to = $mdUtil.supplant("translateX({0}%) scale({1},1)", [(value-100)/2, value/100]);
       var styles = toVendorCSS({ transform : to });
       angular.element(target).css(styles);
     }

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-c68e7f0
+ * v1.1.12-master-ecf1705
  */
 goog.provide('ngmaterial.components.progressCircular');
 goog.require('ngmaterial.core');
@@ -129,7 +129,7 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
 
     // If the mode is indeterminate, it doesn't need to
     // wait for the next digest. It can start right away.
-    if(scope.mdMode === MODE_INDETERMINATE){
+    if (scope.mdMode === MODE_INDETERMINATE){
       startIndeterminateAnimation();
     }
 

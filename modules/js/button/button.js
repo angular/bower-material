@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-c68e7f0
+ * v1.1.12-master-ecf1705
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -17,7 +17,7 @@
 MdButtonDirective['$inject'] = ["$mdButtonInkRipple", "$mdTheming", "$mdAria", "$mdInteraction"];
 MdAnchorDirective['$inject'] = ["$mdTheming"];
 angular
-    .module('material.components.button', [ 'material.core' ])
+    .module('material.components.button', ['material.core'])
     .directive('mdButton', MdButtonDirective)
     .directive('a', MdAnchorDirective);
 

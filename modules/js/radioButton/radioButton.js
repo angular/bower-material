@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-c68e7f0
+ * v1.1.12-master-ecf1705
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -89,7 +89,7 @@ function mdRadioGroupDirective($mdUtil, $mdConstant, $mdTheming, $timeout) {
         }, 100);
       })
       .on('focus', function() {
-        if(scope.mouseActive === false) {
+        if (scope.mouseActive === false) {
           rgCtrl.$element.addClass('md-focused');
         }
       })

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-c68e7f0
+ * v1.1.12-master-ecf1705
  */
 goog.provide('ngmaterial.components.datepicker');
 goog.require('ngmaterial.components.icon');
@@ -2382,7 +2382,7 @@ angular.module('material.components.datepicker', [
 
           if (!mdInputContainer.label) {
             $mdAria.expect(element, 'aria-label', attr.mdPlaceholder);
-          } else if(!mdNoAsterisk) {
+          } else if (!mdNoAsterisk) {
             attr.$observe('required', function(value) {
               mdInputContainer.label.toggleClass('md-required', !!value);
             });

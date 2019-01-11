@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-c68e7f0
+ * v1.1.12-master-ecf1705
  */
 goog.provide('ngmaterial.components.menu');
 goog.require('ngmaterial.components.backdrop');
@@ -804,7 +804,7 @@ function MenuProvider($$interimElementProvider) {
 
         if (!focusTarget) {
           var childrenLen = opts.menuContentEl[0].children.length;
-          for(var childIndex = 0; childIndex < childrenLen; childIndex++) {
+          for (var childIndex = 0; childIndex < childrenLen; childIndex++) {
             var child = opts.menuContentEl[0].children[childIndex];
             focusTarget = child.querySelector('.md-button:not([disabled])');
             if (focusTarget) {

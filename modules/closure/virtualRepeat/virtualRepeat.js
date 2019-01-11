@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-c68e7f0
+ * v1.1.12-master-ecf1705
  */
 goog.provide('ngmaterial.components.virtualRepeat');
 goog.require('ngmaterial.components.showHide');
@@ -385,7 +385,7 @@ VirtualRepeatContainerController.prototype.scrollTo = function(position) {
 VirtualRepeatContainerController.prototype.scrollToIndex = function(index) {
   var itemSize = this.repeater.getItemSize();
   var itemsLength = this.repeater.itemsLength;
-  if(index > itemsLength) {
+  if (index > itemsLength) {
     index = itemsLength - 1;
   }
   this.scrollTo(itemSize * index);
@@ -398,7 +398,7 @@ VirtualRepeatContainerController.prototype.resetScroll = function() {
 
 VirtualRepeatContainerController.prototype.handleScroll_ = function() {
   var ltr = document.dir !== 'rtl' && document.body.dir !== 'rtl';
-  if(!ltr && !this.maxSize) {
+  if (!ltr && !this.maxSize) {
     this.scroller.scrollLeft = this.scrollSize;
     this.maxSize = this.scroller.scrollLeft;
   }
@@ -693,7 +693,7 @@ VirtualRepeatController.prototype.containerUpdated = function() {
   // If itemSize is unknown, attempt to measure it.
   if (!this.itemSize) {
     // Make sure to clean up watchers if we can (see #8178)
-    if(this.unwatchItemSize_ && this.unwatchItemSize_ !== angular.noop){
+    if (this.unwatchItemSize_ && this.unwatchItemSize_ !== angular.noop){
       this.unwatchItemSize_();
     }
     this.unwatchItemSize_ = this.$scope.$watchCollection(

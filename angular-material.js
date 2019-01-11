@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-c68e7f0
+ * v1.1.12-master-ecf1705
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -525,7 +525,7 @@ function MdConstantFactory() {
     }
 
     reloop = !!reloop;
-    var _items = items || [ ];
+    var _items = items || [];
 
     // Published API
     return {
@@ -1498,7 +1498,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      */
     valueOnUse : function (scope, key, getter) {
       var value = null, args = Array.prototype.slice.call(arguments);
-      var params = (args.length > 3) ? args.slice(3) : [ ];
+      var params = (args.length > 3) ? args.slice(3) : [];
 
       Object.defineProperty(scope, key, {
         get: function () {
@@ -2159,7 +2159,7 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
       }
       /* Perform role blacklist check */
       if (parentNode.hasAttribute('role')) {
-        switch(parentNode.getAttribute('role').toLowerCase()) {
+        switch (parentNode.getAttribute('role').toLowerCase()) {
           case 'command':
           case 'definition':
           case 'directory':
@@ -2180,7 +2180,7 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
         }
       }
       /* Perform tagName blacklist check */
-      switch(parentNode.tagName.toLowerCase()) {
+      switch (parentNode.tagName.toLowerCase()) {
         case 'abbr':
         case 'acronym':
         case 'address':
@@ -2857,7 +2857,7 @@ var isInitialized = false;
  * AngularJS Material Gesture handling for touch devices. This module replaced the usage of the hammerjs library.
  */
 angular
-  .module('material.core.gestures', [ ])
+  .module('material.core.gestures', [])
   .provider('$mdGesture', MdGestureProvider)
   .factory('$$MdGestureHandler', MdGestureHandler)
   .run(attachToDocument);
@@ -3464,7 +3464,7 @@ function attachToDocument($mdGesture, $$MdGestureHandler) {
     var handler;
     for (var name in HANDLERS) {
       handler = HANDLERS[name];
-      if(handler instanceof $$MdGestureHandler) {
+      if (handler instanceof $$MdGestureHandler) {
 
         if (handlerEvent === 'start') {
           // Run cancel to reset any handlers' state
@@ -4557,10 +4557,10 @@ function InterimElementProvider() {
   var SUFFIXES = /(-gt)?-(sm|md|lg|print)/g;
   var WHITESPACE = /\s+/g;
 
-  var FLEX_OPTIONS = ['grow', 'initial', 'auto', 'none', 'noshrink', 'nogrow' ];
+  var FLEX_OPTIONS = ['grow', 'initial', 'auto', 'none', 'noshrink', 'nogrow'];
   var LAYOUT_OPTIONS = ['row', 'column'];
-  var ALIGNMENT_MAIN_AXIS= [ "", "start", "center", "end", "stretch", "space-around", "space-between" ];
-  var ALIGNMENT_CROSS_AXIS= [ "", "start", "center", "end", "stretch" ];
+  var ALIGNMENT_MAIN_AXIS= ["", "start", "center", "end", "stretch", "space-around", "space-between"];
+  var ALIGNMENT_CROSS_AXIS= ["", "start", "center", "end", "stretch"];
 
   var config = {
     /**
@@ -4628,9 +4628,9 @@ function InterimElementProvider() {
     var SPECIAL_CHARS_REGEXP = /([:\-_]+(.))/g;
 
     // NOTE: these are also defined in constants::MEDIA_PRIORITY and constants::MEDIA
-    var BREAKPOINTS     = [ "", "xs", "gt-xs", "sm", "gt-sm", "md", "gt-md", "lg", "gt-lg", "xl", "print" ];
-    var API_WITH_VALUES = [ "layout", "flex", "flex-order", "flex-offset", "layout-align" ];
-    var API_NO_VALUES   = [ "show", "hide", "layout-padding", "layout-margin" ];
+    var BREAKPOINTS     = ["", "xs", "gt-xs", "sm", "gt-sm", "md", "gt-md", "lg", "gt-lg", "xl", "print"];
+    var API_WITH_VALUES = ["layout", "flex", "flex-order", "flex-offset", "layout-align"];
+    var API_NO_VALUES   = ["show", "hide", "layout-padding", "layout-margin"];
 
 
     // Build directive registration functions for the standard Layout API... for all breakpoints.
@@ -4764,7 +4764,7 @@ function InterimElementProvider() {
    * finish processing. Eliminates flicker with Material.Layouts
    */
   function buildCloakInterceptor(className) {
-    return [ '$timeout', function($timeout){
+    return ['$timeout', function($timeout){
       return {
         restrict : 'A',
         priority : -10,   // run after normal ng-cloak
@@ -4936,7 +4936,7 @@ function InterimElementProvider() {
     var message, usage, url;
     var nodeName = element[0].nodeName.toLowerCase();
 
-    switch(className.replace(SUFFIXES,"")) {
+    switch (className.replace(SUFFIXES,"")) {
       case "flex":
         if ((nodeName == "md-button") || (nodeName == "fieldset")){
           // @see https://github.com/philipwalton/flexbugs#9-some-html-elements-cant-be-flex-containers
@@ -5061,7 +5061,7 @@ function InterimElementProvider() {
     values = attrValue.toLowerCase().trim().replace(WHITESPACE, "-").split("-");
     if (values.length && (values[0] === "space")) {
       // for main-axis values of "space-around" or "space-between"
-      values = [ values[0]+"-"+values[1],values[2] ];
+      values = [values[0]+"-"+values[1],values[2]];
     }
 
     if (values.length > 0) axis.main  = values[0] || axis.main;
@@ -5320,7 +5320,7 @@ angular.module('material.core.meta', [])
   function ComponentRegistry($log, $q) {
 
     var self;
-    var instances = [ ];
+    var instances = [];
     var pendings = { };
 
     return self = {
@@ -5345,9 +5345,9 @@ angular.module('material.core.meta', [])
         if (!isValidID(handle)) return null;
 
         var i, j, instance;
-        for(i = 0, j = instances.length; i < j; i++) {
+        for (i = 0, j = instances.length; i < j; i++) {
           instance = instances[i];
-          if(instance.$$mdHandle === handle) {
+          if (instance.$$mdHandle === handle) {
             return instance;
           }
         }
@@ -8838,7 +8838,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
 MdButtonDirective.$inject = ["$mdButtonInkRipple", "$mdTheming", "$mdAria", "$mdInteraction"];
 MdAnchorDirective.$inject = ["$mdTheming"];
 angular
-    .module('material.components.button', [ 'material.core' ])
+    .module('material.components.button', ['material.core'])
     .directive('mdButton', MdButtonDirective)
     .directive('a', MdAnchorDirective);
 
@@ -12430,7 +12430,7 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
     function getGridStyle(colCount, rowCount, gutter, rowMode, rowHeight) {
       var style = {};
 
-      switch(rowMode) {
+      switch (rowMode) {
         case 'fixed':
           style.height = DIMENSION({ unit: rowHeight, span: rowCount, gutter: gutter });
           style.paddingBottom = '';
@@ -13762,7 +13762,7 @@ function mdSelectOnFocusDirective($document, $timeout) {
         // The debounce is here for Edge's sake, otherwise the selection doesn't work.
         // Since focus may already have been lost on the input (and because `select()`
         // will re-focus), make sure the element is still active before applying.
-        if($document[0].activeElement === element[0]) {
+        if ($document[0].activeElement === element[0]) {
           element[0].select();
         }
 
@@ -17856,7 +17856,7 @@ MdPanelRef.prototype._callInterceptors = function(type) {
       if (!response) {
         try {
           response = interceptor(self);
-        } catch(e) {
+        } catch (e) {
           response = $q.reject(e);
         }
       }
@@ -19134,7 +19134,7 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
       attr.$observe('mdMode', function(mode) {
         if (lastMode) container.removeClass(lastMode);
 
-        switch(mode) {
+        switch (mode) {
           case MODE_QUERY:
           case MODE_BUFFER:
           case MODE_DETERMINATE:
@@ -19167,7 +19167,7 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
     function mode() {
       var value = (attr.mdMode || "").trim();
       if (value) {
-        switch(value) {
+        switch (value) {
           case MODE_DETERMINATE:
           case MODE_INDETERMINATE:
           case MODE_BUFFER:
@@ -19188,7 +19188,7 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
     function animateIndicator(target, value) {
       if (isDisabled || !mode()) return;
 
-      var to = $mdUtil.supplant("translateX({0}%) scale({1},1)", [ (value-100)/2, value/100 ]);
+      var to = $mdUtil.supplant("translateX({0}%) scale({1},1)", [(value-100)/2, value/100]);
       var styles = toVendorCSS({ transform : to });
       angular.element(target).css(styles);
     }
@@ -19291,7 +19291,7 @@ function mdRadioGroupDirective($mdUtil, $mdConstant, $mdTheming, $timeout) {
         }, 100);
       })
       .on('focus', function() {
-        if(scope.mouseActive === false) {
+        if (scope.mouseActive === false) {
           rgCtrl.$element.addClass('md-focused');
         }
       })
@@ -19811,7 +19811,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
     element.empty().append(valueEl);
     element.append(selectTemplate);
 
-    if(!attr.tabindex){
+    if (!attr.tabindex){
       attr.$set('tabindex', 0);
     }
 
@@ -23989,7 +23989,7 @@ function MdToastProvider($$interimElementProvider) {
     .addPreset('simple', {
       argOption: 'textContent',
       methods: ['textContent', 'content', 'action', 'actionKey', 'actionHint', 'highlightAction',
-                'highlightClass', 'theme', 'parent', 'dismissHint' ],
+                'highlightClass', 'theme', 'parent', 'dismissHint'],
       options: /* @ngInject */ ["$mdToast", "$mdTheming", function($mdToast, $mdTheming) {
         return {
           template:
@@ -25442,7 +25442,7 @@ VirtualRepeatContainerController.prototype.scrollTo = function(position) {
 VirtualRepeatContainerController.prototype.scrollToIndex = function(index) {
   var itemSize = this.repeater.getItemSize();
   var itemsLength = this.repeater.itemsLength;
-  if(index > itemsLength) {
+  if (index > itemsLength) {
     index = itemsLength - 1;
   }
   this.scrollTo(itemSize * index);
@@ -25455,7 +25455,7 @@ VirtualRepeatContainerController.prototype.resetScroll = function() {
 
 VirtualRepeatContainerController.prototype.handleScroll_ = function() {
   var ltr = document.dir !== 'rtl' && document.body.dir !== 'rtl';
-  if(!ltr && !this.maxSize) {
+  if (!ltr && !this.maxSize) {
     this.scroller.scrollLeft = this.scrollSize;
     this.maxSize = this.scroller.scrollLeft;
   }
@@ -25750,7 +25750,7 @@ VirtualRepeatController.prototype.containerUpdated = function() {
   // If itemSize is unknown, attempt to measure it.
   if (!this.itemSize) {
     // Make sure to clean up watchers if we can (see #8178)
-    if(this.unwatchItemSize_ && this.unwatchItemSize_ !== angular.noop){
+    if (this.unwatchItemSize_ && this.unwatchItemSize_ !== angular.noop){
       this.unwatchItemSize_();
     }
     this.unwatchItemSize_ = this.$scope.$watchCollection(
@@ -32587,7 +32587,7 @@ function MdContactChips($mdTheming, $mdUtil) {
 
           if (!mdInputContainer.label) {
             $mdAria.expect(element, 'aria-label', attr.mdPlaceholder);
-          } else if(!mdNoAsterisk) {
+          } else if (!mdNoAsterisk) {
             attr.$observe('required', function(value) {
               mdInputContainer.label.toggleClass('md-required', !!value);
             });
@@ -35154,7 +35154,7 @@ function MenuProvider($$interimElementProvider) {
 
         if (!focusTarget) {
           var childrenLen = opts.menuContentEl[0].children.length;
-          for(var childIndex = 0; childIndex < childrenLen; childIndex++) {
+          for (var childIndex = 0; childIndex < childrenLen; childIndex++) {
             var child = opts.menuContentEl[0].children[childIndex];
             focusTarget = child.querySelector('.md-button:not([disabled])');
             if (focusTarget) {
@@ -36209,7 +36209,7 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
 
     // If the mode is indeterminate, it doesn't need to
     // wait for the next digest. It can start right away.
-    if(scope.mdMode === MODE_INDETERMINATE){
+    if (scope.mdMode === MODE_INDETERMINATE){
       startIndeterminateAnimation();
     }
 
@@ -37967,7 +37967,7 @@ function MdTabsDummyWrapper ($mdUtil, $window) {
         ctrl.updateInkBarStyles();
       };
 
-      if('MutationObserver' in $window) {
+      if ('MutationObserver' in $window) {
         var config = {
           childList: true,
           subtree: true,
@@ -38046,4 +38046,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.12-master-c68e7f0"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.12-master-ecf1705"}};
