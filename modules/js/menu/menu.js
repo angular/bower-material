@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-7878d23
+ * v1.1.12-master-c68e7f0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -544,7 +544,7 @@ MenuProvider['$inject'] = ["$$interimElementProvider"];angular
   .module('material.components.menu')
   .provider('$mdMenu', MenuProvider);
 
-/*
+/**
  * Interim element provider for the menu.
  * Handles behavior for a menu while it is open, including:
  *    - handling animating the menu opening/closing
@@ -723,7 +723,7 @@ function MenuProvider($$interimElementProvider) {
         angular.extend(opts, {
           alreadyOpen: false,
           isRemoved: false,
-          target: angular.element(opts.target), //make sure it's not a naked dom node
+          target: angular.element(opts.target), // make sure it's not a naked DOM node
           parent: angular.element(opts.parent),
           menuContentEl: angular.element(element[0].querySelector('md-menu-content'))
         });

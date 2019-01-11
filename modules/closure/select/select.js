@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-7878d23
+ * v1.1.12-master-c68e7f0
  */
 goog.provide('ngmaterial.components.select');
 goog.require('ngmaterial.components.backdrop');
@@ -1422,7 +1422,7 @@ function SelectProvider($$interimElementProvider) {
 
         angular.extend(options, {
           isRemoved: false,
-          target: angular.element(options.target), //make sure it's not a naked dom node
+          target: angular.element(options.target), // make sure it's not a naked DOM node
           parent: angular.element(options.parent),
           selectEl: selectEl,
           contentEl: element.find('md-content'),

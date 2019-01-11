@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-7878d23
+ * v1.1.12-master-c68e7f0
  */
 goog.provide('ngmaterial.components.sticky');
 goog.require('ngmaterial.components.content');
@@ -129,7 +129,7 @@ function MdSticky($mdConstant, $$rAF, $mdUtil, $compile) {
     var self;
     return self = {
       prev: null,
-      current: null, //the currently stickied item
+      current: null, // the currently stickied item
       next: null,
       items: [],
       add: add,
@@ -204,8 +204,9 @@ function MdSticky($mdConstant, $$rAF, $mdUtil, $compile) {
       while (current && current !== contentEl[0]) {
         item.top += current.offsetTop;
         item.left += current.offsetLeft;
-        if (current.offsetParent){
-          item.right += current.offsetParent.offsetWidth - current.offsetWidth - current.offsetLeft; //Compute offsetRight
+        if (current.offsetParent) {
+          // Compute offsetRight
+          item.right += current.offsetParent.offsetWidth - current.offsetWidth - current.offsetLeft;
         }
         current = current.offsetParent;
       }

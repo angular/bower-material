@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-7878d23
+ * v1.1.12-master-c68e7f0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -483,7 +483,7 @@ function MdToastProvider($$interimElementProvider) {
       options.element = element;
 
       options.onSwipe = function(ev, gesture) {
-        //Add the relevant swipe class to the element so it can animate correctly
+        // Add the relevant swipe class to the element so it can animate correctly
         var swipe = ev.type.replace('$md.','');
         var direction = swipe.replace('swipe', '');
 

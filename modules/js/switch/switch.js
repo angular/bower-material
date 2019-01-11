@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-7878d23
+ * v1.1.12-master-c68e7f0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -143,7 +143,7 @@ function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdG
 
         var percent = ev.pointer.distanceX / drag.width;
 
-        //if checked, start from right. else, start from left
+        // if checked, start from right. else, start from left
         var translate = ngModel.$viewValue ?  1 + percent : percent;
         // Make sure the switch stays inside its bounds, 0-1%
         translate = Math.max(0, Math.min(1, translate));

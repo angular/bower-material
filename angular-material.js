@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-7878d23
+ * v1.1.12-master-c68e7f0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1687,22 +1687,22 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      * @returns {*}
      */
     nextTick: function(callback, digest, scope) {
-      //-- grab function reference for storing state details
+      // grab function reference for storing state details
       var nextTick = $mdUtil.nextTick;
       var timeout = nextTick.timeout;
       var queue = nextTick.queue || [];
 
-      //-- add callback to the queue
+      // add callback to the queue
       queue.push({scope: scope, callback: callback});
 
-      //-- set default value for digest
+      // set default value for digest
       if (digest == null) digest = true;
 
-      //-- store updated digest/queue values
+      // store updated digest/queue values
       nextTick.digest = nextTick.digest || digest;
       nextTick.queue = queue;
 
-      //-- either return existing timeout or create a new one
+      // either return existing timeout or create a new one
       return timeout || (nextTick.timeout = $timeout(processQueue, 0, false));
 
       /**
@@ -3071,7 +3071,7 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
         this.state.pos = {x: pointer.x, y: pointer.y};
         this.state.timeout = $timeout(angular.bind(this, function holdDelayFn() {
           this.dispatchEvent(ev, '$md.hold');
-          this.cancel(); //we're done!
+          this.cancel(); // we're done!
         }), this.state.options.delay, false);
       },
       onMove: function (ev, pointer) {
@@ -7414,7 +7414,7 @@ function parseRules(theme, colorType, rules) {
 
   // find and replace simple variables where we use a specific hue, not an entire palette
   // eg. "{{primary-100}}"
-  //\(' + THEME_COLOR_TYPES.join('\|') + '\)'
+  // \(' + THEME_COLOR_TYPES.join('\|') + '\)'
   rules = rules.replace(simpleVariableRegex, function(match, colorType, hue, opacity, contrast) {
     if (colorType === 'foreground') {
       if (hue == 'shadow') {
@@ -8292,7 +8292,7 @@ if (angular.version.minor >= 4) {
       var rafWaitQueue = [];
       function waitUntilQuiet(callback) {
         if (cancelLastRAFRequest) {
-          cancelLastRAFRequest(); //cancels the request
+          cancelLastRAFRequest(); // cancels the request
         }
         rafWaitQueue.push(callback);
         cancelLastRAFRequest = $$rAF(function() {
@@ -8965,7 +8965,7 @@ function MdButtonDirective($mdButtonInkRipple, $mdTheming, $mdAria, $mdInteracti
     if (isAnchor(attr)) {
       return '<a class="md-button" ng-transclude></a>';
     } else {
-      //If buttons don't have type="button", they will submit forms automatically.
+      // If buttons don't have type="button", they will submit forms automatically.
       var btnType = (typeof attr.type === 'undefined') ? 'button' : attr.type;
       return '<button class="md-button" type="' + btnType + '" ng-transclude></button>';
     }
@@ -9968,7 +9968,7 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
         if (content) {
           images = content.getElementsByTagName('img');
           addOverflowClass();
-          //-- delayed image loading may impact scroll height, check after images are loaded
+          // delayed image loading may impact scroll height, check after images are loaded
           angular.element(images).on('load', addOverflowClass);
         }
 
@@ -11499,7 +11499,7 @@ function MdDividerDirective($mdTheming) {
 
       // TODO: On desktop, we should be able to reset the indexes so you cannot tab through, but
       // this breaks accessibility, especially on mobile, since you have no arrow keys to press
-      //resetActionTabIndexes();
+      // resetActionTabIndexes();
     }
 
     function disableKeyboard() {
@@ -19156,9 +19156,6 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
         var hasValue = angular.isDefined(attr.value);
         var mode = hasValue ? MODE_DETERMINATE : MODE_INDETERMINATE;
         var info = "Auto-adding the missing md-mode='{0}' to the ProgressLinear element";
-
-        //$log.debug( $mdUtil.supplant(info, [mode]) );
-
         element.attr("md-mode", mode);
         attr.mdMode = mode;
       }
@@ -20979,7 +20976,7 @@ function SelectProvider($$interimElementProvider) {
 
         angular.extend(options, {
           isRemoved: false,
-          target: angular.element(options.target), //make sure it's not a naked dom node
+          target: angular.element(options.target), // make sure it's not a naked DOM node
           parent: angular.element(options.parent),
           selectEl: selectEl,
           contentEl: element.find('md-content'),
@@ -22827,7 +22824,7 @@ function MdSticky($mdConstant, $$rAF, $mdUtil, $compile) {
     var self;
     return self = {
       prev: null,
-      current: null, //the currently stickied item
+      current: null, // the currently stickied item
       next: null,
       items: [],
       add: add,
@@ -22902,8 +22899,9 @@ function MdSticky($mdConstant, $$rAF, $mdUtil, $compile) {
       while (current && current !== contentEl[0]) {
         item.top += current.offsetTop;
         item.left += current.offsetLeft;
-        if (current.offsetParent){
-          item.right += current.offsetParent.offsetWidth - current.offsetWidth - current.offsetLeft; //Compute offsetRight
+        if (current.offsetParent) {
+          // Compute offsetRight
+          item.right += current.offsetParent.offsetWidth - current.offsetWidth - current.offsetLeft;
         }
         current = current.offsetParent;
       }
@@ -23451,7 +23449,7 @@ function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdG
 
         var percent = ev.pointer.distanceX / drag.width;
 
-        //if checked, start from right. else, start from left
+        // if checked, start from right. else, start from left
         var translate = ngModel.$viewValue ?  1 + percent : percent;
         // Make sure the switch stays inside its bounds, 0-1%
         translate = Math.max(0, Math.min(1, translate));
@@ -24124,7 +24122,7 @@ function MdToastProvider($$interimElementProvider) {
       options.element = element;
 
       options.onSwipe = function(ev, gesture) {
-        //Add the relevant swipe class to the element so it can animate correctly
+        // Add the relevant swipe class to the element so it can animate correctly
         var swipe = ev.type.replace('$md.','');
         var direction = swipe.replace('swipe', '');
 
@@ -26266,7 +26264,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
   return init();
 
-  //-- initialization methods
+  // initialization methods
 
   /**
    * Initialize the controller, setup watchers, gather elements
@@ -26522,7 +26520,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     return obj;
   }
 
-  //-- event/change handlers
+  // event/change handlers
 
   /**
    * Handles changes to the `hidden` property.
@@ -26807,7 +26805,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     }
   }
 
-  //-- getters
+  // getters
 
   /**
    * Returns the minimum length needed to display the dropdown.
@@ -26977,7 +26975,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     return ($scope.searchText || '').length >= getMinLength();
   }
 
-  //-- actions
+  // actions
 
   /**
    * Defines a public property with a handler and a default value.
@@ -27001,7 +26999,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * @param {number} index to select
    */
   function select (index) {
-    //-- force form to update state for validation
+    // force form to update state for validation
     $mdUtil.nextTick(function () {
       getDisplayValue(ctrl.matches[ index ]).then(function (val) {
         var ngModel = elements.$.input.controller('ngModel');
@@ -30844,7 +30842,7 @@ function MdContactChips($mdTheming, $mdUtil) {
     };
   }
 
-  /*** Initialization ***/
+  /** Initialization **/
 
   /**
    * Initialize the controller by saving a reference to the calendar and
@@ -34896,7 +34894,7 @@ MenuProvider.$inject = ["$$interimElementProvider"];angular
   .module('material.components.menu')
   .provider('$mdMenu', MenuProvider);
 
-/*
+/**
  * Interim element provider for the menu.
  * Handles behavior for a menu while it is open, including:
  *    - handling animating the menu opening/closing
@@ -35075,7 +35073,7 @@ function MenuProvider($$interimElementProvider) {
         angular.extend(opts, {
           alreadyOpen: false,
           isRemoved: false,
-          target: angular.element(opts.target), //make sure it's not a naked dom node
+          target: angular.element(opts.target), // make sure it's not a naked DOM node
           parent: angular.element(opts.parent),
           menuContentEl: angular.element(element[0].querySelector('md-menu-content'))
         });
@@ -37380,10 +37378,10 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
     var width = 0;
 
     angular.forEach(tabs, function (tab) {
-      //-- Uses the larger value between `getBoundingClientRect().width` and `offsetWidth`.  This
-      //   prevents `offsetWidth` value from being rounded down and causing wrapping issues, but
-      //   also handles scenarios where `getBoundingClientRect()` is inaccurate (ie. tabs inside
-      //   of a dialog)
+      // Uses the larger value between `getBoundingClientRect().width` and `offsetWidth`.  This
+      // prevents `offsetWidth` value from being rounded down and causing wrapping issues, but
+      // also handles scenarios where `getBoundingClientRect()` is inaccurate (ie. tabs inside
+      // of a dialog).
       width += Math.max(tab.offsetWidth, tab.getBoundingClientRect().width);
     });
 
@@ -38048,4 +38046,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.12-master-7878d23"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.12-master-c68e7f0"}};

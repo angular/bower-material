@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-7878d23
+ * v1.1.12-master-c68e7f0
  */
 goog.provide('ngmaterial.components.dialog');
 goog.require('ngmaterial.components.backdrop');
@@ -72,7 +72,7 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
         if (content) {
           images = content.getElementsByTagName('img');
           addOverflowClass();
-          //-- delayed image loading may impact scroll height, check after images are loaded
+          // delayed image loading may impact scroll height, check after images are loaded
           angular.element(images).on('load', addOverflowClass);
         }
 

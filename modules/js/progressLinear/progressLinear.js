@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-7878d23
+ * v1.1.12-master-c68e7f0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -159,9 +159,6 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
         var hasValue = angular.isDefined(attr.value);
         var mode = hasValue ? MODE_DETERMINATE : MODE_INDETERMINATE;
         var info = "Auto-adding the missing md-mode='{0}' to the ProgressLinear element";
-
-        //$log.debug( $mdUtil.supplant(info, [mode]) );
-
         element.attr("md-mode", mode);
         attr.mdMode = mode;
       }

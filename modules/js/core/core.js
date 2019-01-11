@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-7878d23
+ * v1.1.12-master-c68e7f0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1651,22 +1651,22 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      * @returns {*}
      */
     nextTick: function(callback, digest, scope) {
-      //-- grab function reference for storing state details
+      // grab function reference for storing state details
       var nextTick = $mdUtil.nextTick;
       var timeout = nextTick.timeout;
       var queue = nextTick.queue || [];
 
-      //-- add callback to the queue
+      // add callback to the queue
       queue.push({scope: scope, callback: callback});
 
-      //-- set default value for digest
+      // set default value for digest
       if (digest == null) digest = true;
 
-      //-- store updated digest/queue values
+      // store updated digest/queue values
       nextTick.digest = nextTick.digest || digest;
       nextTick.queue = queue;
 
-      //-- either return existing timeout or create a new one
+      // either return existing timeout or create a new one
       return timeout || (nextTick.timeout = $timeout(processQueue, 0, false));
 
       /**
@@ -3023,7 +3023,7 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
         this.state.pos = {x: pointer.x, y: pointer.y};
         this.state.timeout = $timeout(angular.bind(this, function holdDelayFn() {
           this.dispatchEvent(ev, '$md.hold');
-          this.cancel(); //we're done!
+          this.cancel(); // we're done!
         }), this.state.options.delay, false);
       },
       onMove: function (ev, pointer) {
@@ -7314,7 +7314,7 @@ function parseRules(theme, colorType, rules) {
 
   // find and replace simple variables where we use a specific hue, not an entire palette
   // eg. "{{primary-100}}"
-  //\(' + THEME_COLOR_TYPES.join('\|') + '\)'
+  // \(' + THEME_COLOR_TYPES.join('\|') + '\)'
   rules = rules.replace(simpleVariableRegex, function(match, colorType, hue, opacity, contrast) {
     if (colorType === 'foreground') {
       if (hue == 'shadow') {
@@ -8184,7 +8184,7 @@ if (angular.version.minor >= 4) {
       var rafWaitQueue = [];
       function waitUntilQuiet(callback) {
         if (cancelLastRAFRequest) {
-          cancelLastRAFRequest(); //cancels the request
+          cancelLastRAFRequest(); // cancels the request
         }
         rafWaitQueue.push(callback);
         cancelLastRAFRequest = $$rAF(function() {

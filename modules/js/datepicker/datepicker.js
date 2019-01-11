@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-7878d23
+ * v1.1.12-master-c68e7f0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -660,7 +660,7 @@ angular.module('material.components.datepicker', [
     };
   }
 
-  /*** Initialization ***/
+  /** Initialization **/
 
   /**
    * Initialize the controller by saving a reference to the calendar and
