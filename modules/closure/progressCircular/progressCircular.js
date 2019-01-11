@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-9c079aa
+ * v1.1.12-master-7878d23
  */
 goog.provide('ngmaterial.components.progressCircular');
 goog.require('ngmaterial.core');
@@ -336,7 +336,7 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
    * @returns {number} Stroke length for progres circle
    */
   function getDashLength(diameter, strokeWidth, value, limit) {
-    return (diameter - strokeWidth) * $window.Math.PI * ( (3 * (limit || 100) / 100) - (value/100) );
+    return (diameter - strokeWidth) * $window.Math.PI * ((3 * (limit || 100) / 100) - (value/100));
   }
 
   /**

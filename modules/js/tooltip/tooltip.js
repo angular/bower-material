@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-9c079aa
+ * v1.1.12-master-7878d23
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -281,7 +281,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $interpolate,
         var attributeObserver = new MutationObserver(function(mutations) {
           mutations.forEach(function(mutation) {
             if (mutation.attributeName === 'md-visible' &&
-                !scope.visibleWatcher ) {
+                !scope.visibleWatcher) {
               scope.visibleWatcher = scope.$watch('mdVisible',
                   onVisibleChanged);
             }

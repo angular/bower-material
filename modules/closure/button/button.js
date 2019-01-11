@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-9c079aa
+ * v1.1.12-master-7878d23
  */
 goog.provide('ngmaterial.components.button');
 goog.require('ngmaterial.core');
@@ -158,7 +158,7 @@ function MdButtonDirective($mdButtonInkRipple, $mdTheming, $mdAria, $mdInteracti
 
     // For anchor elements, we have to set tabindex manually when the
     // element is disabled
-    if (isAnchor(attr) && angular.isDefined(attr.ngDisabled) ) {
+    if (isAnchor(attr) && angular.isDefined(attr.ngDisabled)) {
       scope.$watch(attr.ngDisabled, function(isDisabled) {
         element.attr('tabindex', isDisabled ? -1 : 0);
       });

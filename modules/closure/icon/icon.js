@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-9c079aa
+ * v1.1.12-master-7878d23
  */
 goog.provide('ngmaterial.components.icon');
 goog.require('ngmaterial.core');
@@ -243,7 +243,7 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $sce) {
     }
 
     /* Don't process ARIA if already valid */
-    if ( attr.role === "img" && !attr.ariaHidden && !$mdAria.hasAriaLabel(element) ) {
+    if (attr.role === "img" && !attr.ariaHidden && !$mdAria.hasAriaLabel(element)) {
       var iconName;
       if (attr.alt) {
         /* Use alt text by default if available */

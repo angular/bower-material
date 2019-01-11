@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-9c079aa
+ * v1.1.12-master-7878d23
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1562,7 +1562,7 @@ function MdTabsDummyWrapper ($mdUtil, $window) {
         disconnect = observer.disconnect.bind(observer);
       } else {
         var debounced = $mdUtil.debounce(mutationCallback, 15, null, false);
-        
+
         element.on('DOMSubtreeModified', debounced);
         disconnect = element.off.bind(element, 'DOMSubtreeModified', debounced);
       }

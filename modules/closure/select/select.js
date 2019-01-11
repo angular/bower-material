@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-9c079aa
+ * v1.1.12-master-7878d23
  */
 goog.provide('ngmaterial.components.select');
 goog.require('ngmaterial.components.backdrop');
@@ -1588,8 +1588,8 @@ function SelectProvider($$interimElementProvider) {
         }
 
         function checkCloseMenu(ev) {
-          if (ev && ( ev.type == 'click') && (ev.currentTarget != dropDown[0])) return;
-          if ( mouseOnScrollbar() ) return;
+          if (ev && (ev.type == 'click') && (ev.currentTarget != dropDown[0])) return;
+          if (mouseOnScrollbar()) return;
 
           var option = $mdUtil.getClosest(ev.target, 'md-option');
           if (option && option.hasAttribute && !option.hasAttribute('disabled')) {

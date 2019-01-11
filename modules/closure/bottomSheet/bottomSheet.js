@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-9c079aa
+ * v1.1.12-master-7878d23
  */
 goog.provide('ngmaterial.components.bottomSheet');
 goog.require('ngmaterial.components.backdrop');
@@ -242,7 +242,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
       // This is a very common problem, so we have to notify the developer about this.
       if (element.hasClass('ng-cloak')) {
         var message = '$mdBottomSheet: using `<md-bottom-sheet ng-cloak>` will affect the bottom-sheet opening animations.';
-        $log.warn( message, element[0] );
+        $log.warn(message, element[0]);
       }
 
       if (options.isLockedOpen) {

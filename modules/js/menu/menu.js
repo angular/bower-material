@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-9c079aa
+ * v1.1.12-master-7878d23
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -197,7 +197,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
 
   // Use the $mdMenu interim element service to close the menu contents
   this.close = function closeMenu(skipFocus, closeOpts) {
-    if ( !self.isOpen ) return;
+    if (!self.isOpen) return;
     self.isOpen = false;
     $mdUtil.nextTick(function(){ self.onIsOpenChanged(self.isOpen);});
 
@@ -518,7 +518,7 @@ function MenuDirective($mdUtil) {
     var mdMenuCtrl = ctrls[0];
     var isInMenuBar = !!ctrls[1];
     // Move everything into a md-menu-container and pass it to the controller
-    var menuContainer = angular.element( '<div class="_md md-open-menu-container md-whiteframe-z2"></div>');
+    var menuContainer = angular.element('<div class="_md md-open-menu-container md-whiteframe-z2"></div>');
     var menuContents = element.children()[1];
 
     element.addClass('_md');     // private md component indicator for styling
@@ -630,7 +630,7 @@ function MenuProvider($$interimElementProvider) {
       // For navigation $destroy events, do a quick, non-animated removal,
       // but for normal closes (from clicks, etc) animate the removal
 
-      return (opts.$destroy === true) ? detachAndClean() : animateRemoval().then( detachAndClean );
+      return (opts.$destroy === true) ? detachAndClean() : animateRemoval().then(detachAndClean);
 
       /**
        * For normal closes, animate the removal.
@@ -802,7 +802,7 @@ function MenuProvider($$interimElementProvider) {
         var focusTarget = opts.menuContentEl[0]
           .querySelector(prefixer.buildSelector(['md-menu-focus-target', 'md-autofocus']));
 
-        if ( !focusTarget ) {
+        if (!focusTarget) {
           var childrenLen = opts.menuContentEl[0].children.length;
           for(var childIndex = 0; childIndex < childrenLen; childIndex++) {
             var child = opts.menuContentEl[0].children[childIndex];
@@ -1007,7 +1007,7 @@ function MenuProvider($$interimElementProvider) {
 
       if (positionMode.top === 'target' || positionMode.left === 'target' || positionMode.left === 'target-right') {
         alignTarget = firstVisibleChild();
-        if ( alignTarget ) {
+        if (alignTarget) {
           // TODO: Allow centering on an arbitrary node, for now center on first menu-item's child
           alignTarget = alignTarget.firstElementChild || alignTarget;
           alignTarget = alignTarget.querySelector(prefixer.buildSelector('md-menu-align-target')) || alignTarget;

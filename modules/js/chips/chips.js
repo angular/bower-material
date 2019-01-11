@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-9c079aa
+ * v1.1.12-master-7878d23
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -338,7 +338,7 @@ MdChipRemove['$inject'] = ["$timeout"];angular
 
 /**
  * MdChipRemove Directive Definition.
- * 
+ *
  * @param $timeout
  * @returns {{restrict: string, require: string[], link: Function, scope: boolean}}
  * @constructor
@@ -1366,8 +1366,8 @@ MdChipsCtrl.prototype.configureAutocomplete = function(ctrl) {
     }));
 
     this.$element.find('input')
-        .on('focus',angular.bind(this, this.onInputFocus) )
-        .on('blur', angular.bind(this, this.onInputBlur) );
+        .on('focus',angular.bind(this, this.onInputFocus))
+        .on('blur', angular.bind(this, this.onInputBlur));
   }
 };
 

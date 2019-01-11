@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-9c079aa
+ * v1.1.12-master-7878d23
  */
 goog.provide('ngmaterial.components.autocomplete');
 goog.require('ngmaterial.components.icon');
@@ -269,7 +269,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
     angular.element($window).off('resize', debouncedOnResize);
 
-    if ( elements ){
+    if (elements){
       var items = ['ul', 'scroller', 'scrollContainer', 'input'];
       angular.forEach(items, function(key){
         elements.$[key].remove();
@@ -900,7 +900,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     else if (isPromise) handleAsyncResults(items);
 
     function handleAsyncResults(items) {
-      if ( !items ) return;
+      if (!items) return;
 
       items = $q.when(items);
       fetchesInProgress++;

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-9c079aa
+ * v1.1.12-master-7878d23
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -348,15 +348,15 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     var tickCanvas, tickCtx;
     function redrawTicks() {
       if (!discrete || isDisabled()) return;
-      if ( angular.isUndefined(step) )         return;
+      if (angular.isUndefined(step))         return;
 
-      if ( step <= 0 ) {
+      if (step <= 0) {
         var msg = 'Slider step value must be greater than zero when in discrete mode';
         $log.error(msg);
         throw new Error(msg);
       }
 
-      var numSteps = Math.floor( (max - min) / step );
+      var numSteps = Math.floor((max - min) / step);
       if (!tickCanvas) {
         tickCanvas = angular.element('<canvas>').css('position', 'absolute');
         tickContainer.append(tickCanvas);
@@ -495,7 +495,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
      * ngModel setters and validators
      */
     function setModelValue(value) {
-      ngModelCtrl.$setViewValue( minMaxValidator(stepValidator(value)) );
+      ngModelCtrl.$setViewValue(minMaxValidator(stepValidator(value)));
     }
     function ngModelRender() {
       if (isNaN(ngModelCtrl.$viewValue)) {
@@ -508,7 +508,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       scope.modelValue = ngModelCtrl.$viewValue;
       element.attr('aria-valuenow', ngModelCtrl.$viewValue);
       setSliderPercent(percent);
-      thumbText.text( ngModelCtrl.$viewValue );
+      thumbText.text(ngModelCtrl.$viewValue);
     }
 
     function minMaxValidator(value, minValue, maxValue) {
@@ -552,7 +552,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
         $mdUtil.bidiProperty(thumbContainer, 'left', 'right', thumbPosition);
       }
 
-      
+
       activeTrack.css(vertical ? 'height' : 'width', activeTrackPercent);
 
       element.toggleClass((invert ? 'md-max' : 'md-min'), percent === 0);
@@ -571,11 +571,11 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       element[0].focus();
       refreshSliderDimensions();
 
-      var exactVal = percentToValue( positionToPercent( vertical ? ev.pointer.y : ev.pointer.x ));
-      var closestVal = minMaxValidator( stepValidator(exactVal) );
+      var exactVal = percentToValue(positionToPercent(vertical ? ev.pointer.y : ev.pointer.x));
+      var closestVal = minMaxValidator(stepValidator(exactVal));
       scope.$apply(function() {
-        setModelValue( closestVal );
-        setSliderPercent( valueToPercent(closestVal));
+        setModelValue(closestVal);
+        setSliderPercent(valueToPercent(closestVal));
       });
     }
     function onPressUp(ev) {
@@ -583,8 +583,8 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
 
       element.removeClass('md-dragging');
 
-      var exactVal = percentToValue( positionToPercent( vertical ? ev.pointer.y : ev.pointer.x ));
-      var closestVal = minMaxValidator( stepValidator(exactVal) );
+      var exactVal = percentToValue(positionToPercent(vertical ? ev.pointer.y : ev.pointer.x));
+      var closestVal = minMaxValidator(stepValidator(exactVal));
       scope.$apply(function() {
         setModelValue(closestVal);
         ngModelRender();
@@ -613,17 +613,17 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     function setSliderFromEvent(ev) {
       // While panning discrete, update only the
       // visual positioning but not the model value.
-      if ( discrete ) adjustThumbPosition( vertical ? ev.pointer.y : ev.pointer.x );
-      else            doSlide( vertical ? ev.pointer.y : ev.pointer.x );
+      if (discrete) adjustThumbPosition(vertical ? ev.pointer.y : ev.pointer.x);
+      else            doSlide(vertical ? ev.pointer.y : ev.pointer.x);
     }
 
     /**
      * Slide the UI by changing the model value
      * @param x
      */
-    function doSlide( x ) {
-      scope.$evalAsync( function() {
-        setModelValue( percentToValue( positionToPercent(x) ));
+    function doSlide(x) {
+      scope.$evalAsync(function() {
+        setModelValue(percentToValue(positionToPercent(x)));
       });
     }
 
@@ -631,11 +631,11 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
      * Slide the UI without changing the model (while dragging/panning)
      * @param x
      */
-    function adjustThumbPosition( x ) {
-      var exactVal = percentToValue( positionToPercent( x ));
-      var closestVal = minMaxValidator( stepValidator(exactVal) );
-      setSliderPercent( positionToPercent(x) );
-      thumbText.text( closestVal );
+    function adjustThumbPosition(x) {
+      var exactVal = percentToValue(positionToPercent(x));
+      var closestVal = minMaxValidator(stepValidator(exactVal));
+      setSliderPercent(positionToPercent(x));
+      thumbText.text(closestVal);
     }
 
     /**
@@ -652,7 +652,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
      * @param position
      * @returns {number}
      */
-    function positionToPercent( position ) {
+    function positionToPercent(position) {
       var offset = vertical ? sliderDimensions.top : sliderDimensions.left;
       var size = vertical ? sliderDimensions.height : sliderDimensions.width;
       var calc = (position - offset) / size;
@@ -669,12 +669,12 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
      * @param percent
      * @returns {*}
      */
-    function percentToValue( percent ) {
+    function percentToValue(percent) {
       var adjustedPercent = invert ? (1 - percent) : percent;
       return (min + adjustedPercent * (max - min));
     }
 
-    function valueToPercent( val ) {
+    function valueToPercent(val) {
       var percent = (val - min) / (max - min);
       return invert ? (1 - percent) : percent;
     }

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-9c079aa
+ * v1.1.12-master-7878d23
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -42,7 +42,7 @@ angular
  * @ngInject
  */
 function DetectNgTouch($log, $injector) {
-  if ( $injector.has('$swipe') ) {
+  if ($injector.has('$swipe')) {
     var msg = "" +
       "You are using the ngTouch module. \n" +
       "AngularJS Material already has mobile click, tap, and swipe support... \n" +
@@ -498,7 +498,7 @@ function MdConstantFactory() {
 
   angular
     .module('material.core')
-    .config( ["$provide", function($provide){
+    .config(["$provide", function($provide){
        $provide.decorator('$mdUtil', ['$delegate', function ($delegate){
            /**
             * Inject the iterator facade to easily support iteration and accessors
@@ -574,7 +574,7 @@ function MdConstantFactory() {
      * @returns {Array.length|*|number|boolean}
      */
     function inRange(index) {
-      return _items.length && ( index > -1 ) && (index < _items.length );
+      return _items.length && (index > -1) && (index < _items.length);
     }
 
     /**
@@ -630,7 +630,7 @@ function MdConstantFactory() {
      * @returns {*}
      */
     function add(item, index) {
-      if ( !item ) return -1;
+      if (!item) return -1;
 
       if (!angular.isNumber(index)) {
         index = _items.length;
@@ -646,7 +646,7 @@ function MdConstantFactory() {
      * @param item
      */
     function remove(item) {
-      if ( contains(item) ){
+      if (contains(item)){
         _items.splice(indexOf(item), 1);
       }
     }
@@ -859,7 +859,7 @@ function mdMediaFactory($mdConstant, $rootScope, $window) {
 
   function add(query) {
     var result = mqls[query];
-    if ( !result ) {
+    if (!result) {
       result = mqls[query] = $window.matchMedia(query);
     }
 
@@ -930,7 +930,7 @@ function mdMediaFactory($mdConstant, $rootScope, $window) {
 
 angular
   .module('material.core')
-  .config( ["$provide", function($provide) {
+  .config(["$provide", function($provide) {
     $provide.decorator('$mdUtil', ['$delegate', function ($delegate) {
 
       // Inject the prefixer into our original $mdUtil service.
@@ -1067,7 +1067,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
   var hasComputedStyle = function (target, key, expectedVal) {
     var hasValue = false;
 
-    if ( target && target.length  ) {
+    if (target && target.length) {
       var computedStyles = $window.getComputedStyle(target[0]);
       hasValue = angular.isDefined(computedStyles[key]) && (expectedVal ? computedStyles[key] == expectedVal : true);
     }
@@ -1123,16 +1123,16 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
       var ltr = !($document[0].dir == 'rtl' || $document[0].body.dir == 'rtl');
 
       // If accessor
-      if ( arguments.length == 0 ) return ltr ? 'ltr' : 'rtl';
+      if (arguments.length == 0) return ltr ? 'ltr' : 'rtl';
 
       // If mutator
       var elem = angular.element(element);
 
-      if ( ltr && angular.isDefined(lValue)) {
+      if (ltr && angular.isDefined(lValue)) {
         elem.css(property, validateCssValue(lValue));
       }
-      else if ( !ltr && angular.isDefined(rValue)) {
-        elem.css(property, validateCssValue(rValue) );
+      else if (!ltr && angular.isDefined(rValue)) {
+        elem.css(property, validateCssValue(rValue));
       }
     },
 
@@ -1141,12 +1141,12 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
       var elem = angular.element(element);
 
-      if ( ltr && angular.isDefined(lProperty)) {
+      if (ltr && angular.isDefined(lProperty)) {
         elem.css(lProperty, validateCssValue(value));
         elem.css(rProperty, '');
       }
-      else if ( !ltr && angular.isDefined(rProperty)) {
-        elem.css(rProperty, validateCssValue(value) );
+      else if (!ltr && angular.isDefined(rProperty)) {
+        elem.css(rProperty, validateCssValue(value));
         elem.css(lProperty, '');
       }
     },
@@ -1205,11 +1205,11 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
       elToFocus = scanForFocusable(containerEl, attributeVal || AUTO_FOCUS);
 
-      if ( !elToFocus && attributeVal != AUTO_FOCUS) {
+      if (!elToFocus && attributeVal != AUTO_FOCUS) {
         // Scan for deprecated attribute
         elToFocus = scanForFocusable(containerEl, this.prefixer('md-auto-focus', true));
 
-        if ( !elToFocus ) {
+        if (!elToFocus) {
           // Scan for fallback to 'universal' API
           elToFocus = scanForFocusable(containerEl, AUTO_FOCUS);
         }
@@ -1225,7 +1225,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
         var elFound, items = target[0].querySelectorAll(selector);
 
         // Find the last child element with the focus attribute
-        if ( items && items.length ){
+        if (items && items.length){
           items.length && angular.forEach(items, function(it) {
             it = angular.element(it);
 
@@ -1296,7 +1296,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
           scrollMask.off('wheel');
           scrollMask.off('touchmove');
 
-          if (!options.disableScrollMask && scrollMask[0].parentNode ) {
+          if (!options.disableScrollMask && scrollMask[0].parentNode) {
             scrollMask[0].parentNode.removeChild(scrollMask[0]);
           }
         };
@@ -1411,7 +1411,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
           r = values;
         try {
           for (var s in p) {
-            if (p.hasOwnProperty(s) ) {
+            if (p.hasOwnProperty(s)) {
               r = r[p[s]];
             }
           }
@@ -1571,7 +1571,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      * @param onlyParent Only start checking from the parent element, not `el`.
      */
     getClosest: function getClosest(el, validateWith, onlyParent) {
-      if ( angular.isString(validateWith) ) {
+      if (angular.isString(validateWith)) {
         var tagName = validateWith.toUpperCase();
         validateWith = function(el) {
           return el.nodeName.toUpperCase() === tagName;
@@ -1616,7 +1616,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     extractElementByName: function(element, nodeName, scanDeep, warnNotFound) {
       var found = scanTree(element);
       if (!found && !!warnNotFound) {
-        $log.warn( $mdUtil.supplant("Unable to find node '{0}' in element '{1}'.",[nodeName, element[0].outerHTML]) );
+        $log.warn($mdUtil.supplant("Unable to find node '{0}' in element '{1}'.",[nodeName, element[0].outerHTML]));
       }
 
       return angular.element(found || element);
@@ -1632,7 +1632,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
        * Case-insensitive scan of current elements only (do not descend).
        */
       function scanLevel(element) {
-        if ( element ) {
+        if (element) {
           for (var i = 0, len = element.length; i < len; i++) {
             if (element[i].nodeName.toLowerCase() === nodeName) {
               return element[i];
@@ -1647,10 +1647,10 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
        */
       function scanChildren(element) {
         var found;
-        if ( element ) {
+        if (element) {
           for (var i = 0, len = element.length; i < len; i++) {
             var target = element[i];
-            if ( !found ) {
+            if (!found) {
               for (var j = 0, numChild = target.childNodes.length; j < numChild; j++) {
                 found = found || scanTree([target.childNodes[j]]);
               }
@@ -3351,7 +3351,7 @@ function MdGestureHandler() {
     eventPointer = eventPointer || pointer;
     var eventObj;
 
-    if (eventType === 'click' || eventType === 'mouseup' || eventType === 'mousedown' ) {
+    if (eventType === 'click' || eventType === 'mouseup' || eventType === 'mousedown') {
       eventObj = document.createEvent('MouseEvents');
       eventObj.initMouseEvent(
         eventType, true, true, window, srcEvent.detail,
@@ -3376,7 +3376,7 @@ function MdGestureHandler() {
  * Attach Gestures: hook document and check shouldHijack clicks
  * @ngInject
  */
-function attachToDocument( $mdGesture, $$MdGestureHandler ) {
+function attachToDocument($mdGesture, $$MdGestureHandler) {
   if (disableAllGestures) {
     return;
   }
@@ -3387,7 +3387,7 @@ function attachToDocument( $mdGesture, $$MdGestureHandler ) {
     return document.body.contains(node);
   });
 
-  if (!isInitialized && $mdGesture.isHijackingClicks ) {
+  if (!isInitialized && $mdGesture.isHijackingClicks) {
     /*
      * If hijack clicks is true, we preventDefault any click that wasn't
      * sent by AngularJS Material. This is because on older Android & iOS, a false, or 'ghost',
@@ -3464,7 +3464,7 @@ function attachToDocument( $mdGesture, $$MdGestureHandler ) {
     var handler;
     for (var name in HANDLERS) {
       handler = HANDLERS[name];
-      if( handler instanceof $$MdGestureHandler ) {
+      if(handler instanceof $$MdGestureHandler) {
 
         if (handlerEvent === 'start') {
           // Run cancel to reset any handlers' state
@@ -4282,8 +4282,8 @@ function InterimElementProvider() {
             options.onCompiling && options.onCompiling(options);
 
             compileElement(options)
-              .then(function( compiledData ) {
-                element = linkElement( compiledData, options );
+              .then(function(compiledData) {
+                element = linkElement(compiledData, options);
 
                 // Expose the cleanup function from the compiler.
                 options.cleanupElement = compiledData.cleanup;
@@ -4311,13 +4311,13 @@ function InterimElementProvider() {
         function transitionOutAndRemove(response, isCancelled, opts) {
 
           // abort if the show() and compile failed
-          if ( !element ) return $q.when(false);
+          if (!element) return $q.when(false);
 
           options = angular.extend(options || {}, opts || {});
           options.cancelAutoHide && options.cancelAutoHide();
           options.element.triggerHandler('$mdInterimElementRemove');
 
-          if ( options.$destroy === true ) {
+          if (options.$destroy === true) {
 
             return hideElement(options.element, options).then(function(){
               (isCancelled && rejectAll(response)) || resolveAll(response);
@@ -4356,7 +4356,7 @@ function InterimElementProvider() {
          */
         function configureScopeAndTransitions(options) {
           options = options || { };
-          if ( options.template ) {
+          if (options.template) {
             options.template = $mdUtil.processTemplate(options.template);
           }
 
@@ -4380,7 +4380,7 @@ function InterimElementProvider() {
               // the old one finishes compiling.
               return element && $animate.leave(element) || $q.when();
             }
-          }, options );
+          }, options);
 
         }
 
@@ -4509,7 +4509,7 @@ function InterimElementProvider() {
           return $q(function (resolve, reject) {
             try {
               // Start transitionIn
-              var action = $q.when( options.onRemove(options.scope, element, options) || true );
+              var action = $q.when(options.onRemove(options.scope, element, options) || true);
 
               // Trigger callback *before* the remove operation starts
               announceRemoving(element, action);
@@ -4518,14 +4518,14 @@ function InterimElementProvider() {
                 // For $destroy, onRemove should be synchronous
                 resolve(element);
 
-                if (!options.preserveScope && options.scope ) {
+                if (!options.preserveScope && options.scope) {
                   // scope destroy should still be be done after the current digest is done
-                  action.then( function() { options.scope.$destroy(); });
+                  action.then(function() { options.scope.$destroy(); });
                 }
               } else {
                 // Wait until transition-out is done
                 action.then(function () {
-                  if (!options.preserveScope && options.scope ) {
+                  if (!options.preserveScope && options.scope) {
                     options.scope.$destroy();
                   }
 
@@ -4581,7 +4581,7 @@ function InterimElementProvider() {
     breakpoints: []
   };
 
-  registerLayoutAPI( angular.module('material.core.layout', ['ng']) );
+  registerLayoutAPI(angular.module('material.core.layout', ['ng']));
 
   /**
    *   registerLayoutAPI()
@@ -4637,15 +4637,15 @@ function InterimElementProvider() {
     angular.forEach(BREAKPOINTS, function(mqb) {
 
       // Attribute directives with expected, observable value(s)
-      angular.forEach( API_WITH_VALUES, function(name){
+      angular.forEach(API_WITH_VALUES, function(name){
         var fullName = mqb ? name + "-" + mqb : name;
-        module.directive( directiveNormalize(fullName), attributeWithObserve(fullName));
+        module.directive(directiveNormalize(fullName), attributeWithObserve(fullName));
       });
 
       // Attribute directives with no expected value(s)
-      angular.forEach( API_NO_VALUES, function(name){
+      angular.forEach(API_NO_VALUES, function(name){
         var fullName = mqb ? name + "-" + mqb : name;
-        module.directive( directiveNormalize(fullName), attributeWithoutValue(fullName));
+        module.directive(directiveNormalize(fullName), attributeWithoutValue(fullName));
       });
 
     });
@@ -4669,7 +4669,7 @@ function InterimElementProvider() {
         };
       })
 
-      .directive('mdLayoutCss'        , disableLayoutDirective )
+      .directive('mdLayoutCss'        , disableLayoutDirective)
       .directive('ngCloak'            , buildCloakInterceptor('ng-cloak'))
 
       .directive('layoutWrap'   , attributeWithoutValue('layout-wrap'))
@@ -4697,7 +4697,7 @@ function InterimElementProvider() {
       .directive('showLtLg'       , warnAttrNotSupported('show-lt-lg'))
 
       // Determine if
-      .config( detectDisabledLayouts );
+      .config(detectDisabledLayouts);
 
     /**
      * Converts snake_case to camelCase.
@@ -4768,17 +4768,17 @@ function InterimElementProvider() {
       return {
         restrict : 'A',
         priority : -10,   // run after normal ng-cloak
-        compile  : function( element ) {
+        compile  : function(element) {
           if (!config.enabled) return angular.noop;
 
           // Re-add the cloak
           element.addClass(className);
 
-          return function( scope, element ) {
+          return function(scope, element) {
             // Wait while layout injectors configure, then uncloak
             // NOTE: $rAF does not delay enough... and this is a 1x-only event,
             //       $timeout is acceptable.
-            $timeout( function(){
+            $timeout(function(){
               element.removeClass(className);
             }, 10, false);
           };
@@ -4818,7 +4818,7 @@ function InterimElementProvider() {
 
             validateAttributeUsage(className, attr, element, $log);
 
-            validateAttributeValue( className,
+            validateAttributeValue(className,
               getNormalizedAttrValue(className, attr, ""),
               buildUpdateFn(element, className, attr)
             );
@@ -4863,7 +4863,7 @@ function InterimElementProvider() {
           if (config.enabled) {
             // immediately replace static (non-interpolated) invalid values...
 
-            validateAttributeValue( className,
+            validateAttributeValue(className,
               getNormalizedAttrValue(className, attr, ""),
               buildUpdateFn(element, className, attr)
             );
@@ -4909,7 +4909,7 @@ function InterimElementProvider() {
 
     return function updateClassFn(newValue) {
       var value = validateAttributeValue(className, newValue || "");
-      if ( angular.isDefined(value) ) {
+      if (angular.isDefined(value)) {
         if (lastClass) element.removeClass(lastClass);
         lastClass = !value ? className : className + "-" + value.trim().replace(WHITESPACE, "-");
         element.addClass(lastClass);
@@ -4946,7 +4946,7 @@ function InterimElementProvider() {
           url = "https://github.com/philipwalton/flexbugs#9-some-html-elements-cant-be-flex-containers";
           message = "Markup '{0}' may not work as expected in IE Browsers. Consult '{1}' for details.";
 
-          $log.warn( $mdUtil.supplant(message, [usage, url]) );
+          $log.warn($mdUtil.supplant(message, [usage, url]));
         }
     }
 
@@ -4963,7 +4963,7 @@ function InterimElementProvider() {
     if (!needsInterpolation(value)) {
       switch (className.replace(SUFFIXES,"")) {
         case 'layout'        :
-          if ( !findIn(value, LAYOUT_OPTIONS) ) {
+          if (!findIn(value, LAYOUT_OPTIONS)) {
             value = LAYOUT_OPTIONS[0];    // 'row';
           }
           break;
@@ -5053,22 +5053,22 @@ function InterimElementProvider() {
 
     attrValue = (attrValue || "");
 
-    if ( attrValue.indexOf("-") === 0 || attrValue.indexOf(" ") === 0) {
+    if (attrValue.indexOf("-") === 0 || attrValue.indexOf(" ") === 0) {
       // For missing main-axis values
       attrValue = "none" + attrValue;
     }
 
     values = attrValue.toLowerCase().trim().replace(WHITESPACE, "-").split("-");
-    if ( values.length && (values[0] === "space") ) {
+    if (values.length && (values[0] === "space")) {
       // for main-axis values of "space-around" or "space-between"
       values = [ values[0]+"-"+values[1],values[2] ];
     }
 
-    if ( values.length > 0 ) axis.main  = values[0] || axis.main;
-    if ( values.length > 1 ) axis.cross = values[1] || axis.cross;
+    if (values.length > 0) axis.main  = values[0] || axis.main;
+    if (values.length > 1) axis.cross = values[1] || axis.cross;
 
-    if ( ALIGNMENT_MAIN_AXIS.indexOf(axis.main) < 0 )   axis.main = "start";
-    if ( ALIGNMENT_CROSS_AXIS.indexOf(axis.cross) < 0 ) axis.cross = "stretch";
+    if (ALIGNMENT_MAIN_AXIS.indexOf(axis.main) < 0)   axis.main = "start";
+    if (ALIGNMENT_CROSS_AXIS.indexOf(axis.cross) < 0) axis.cross = "stretch";
 
     return axis;
   }
@@ -5328,7 +5328,7 @@ angular.module('material.core.meta', [])
        * Used to print an error when an instance for a handle isn't found.
        */
       notFoundError: function(handle, msgContext) {
-        $log.error( (msgContext || "") + 'No instance found for handle', handle);
+        $log.error((msgContext || "") + 'No instance found for handle', handle);
       },
       /**
        * Return all registered instances as an array.
@@ -5342,7 +5342,7 @@ angular.module('material.core.meta', [])
        * @param handle the String handle to look up for a registered instance.
        */
       get: function(handle) {
-        if ( !isValidID(handle) ) return null;
+        if (!isValidID(handle)) return null;
 
         var i, j, instance;
         for(i = 0, j = instances.length; i < j; i++) {
@@ -5360,7 +5360,7 @@ angular.module('material.core.meta', [])
        * @param handle the handle to identify the instance under.
        */
       register: function(instance, handle) {
-        if ( !handle ) return angular.noop;
+        if (!handle) return angular.noop;
 
         instance.$$mdHandle = handle;
         instances.push(instance);
@@ -5383,7 +5383,7 @@ angular.module('material.core.meta', [])
          */
         function resolveWhen() {
           var dfd = pendings[handle];
-          if ( dfd ) {
+          if (dfd) {
             dfd.forEach(function (promise) {
               promise.resolve(instance);
             });
@@ -5398,12 +5398,12 @@ angular.module('material.core.meta', [])
        * all listeners when the instance is registered.
        */
       when : function(handle) {
-        if ( isValidID(handle) ) {
+        if (isValidID(handle)) {
           var deferred = $q.defer();
           var instance = self.get(handle);
 
-          if ( instance )  {
-            deferred.resolve( instance );
+          if (instance)  {
+            deferred.resolve(instance);
           } else {
             if (pendings[handle] === undefined) {
               pendings[handle] = [];
@@ -5737,9 +5737,9 @@ function InkRippleCtrl ($scope, $element, rippleOptions, $window, $timeout, $mdU
  */
 function autoCleanup (self, cleanupFn) {
 
-  if ( self.mousedown || self.lastRipple ) {
+  if (self.mousedown || self.lastRipple) {
     self.mousedown = false;
-    self.$mdUtil.nextTick( angular.bind(self, cleanupFn), false);
+    self.$mdUtil.nextTick(angular.bind(self, cleanupFn), false);
   }
 
 }
@@ -5758,7 +5758,7 @@ InkRippleCtrl.prototype.color = function (value) {
   }
 
   // If color lookup, use assigned, defined, or inherited
-  return self._color || self._parseColor( self.inkRipple() ) || self._parseColor( getElementColor() );
+  return self._color || self._parseColor(self.inkRipple()) || self._parseColor(getElementColor());
 
   /**
    * Finds the color element and returns its text color for use as default ripple color
@@ -5814,7 +5814,7 @@ InkRippleCtrl.prototype.bindEvents = function () {
  * @param event {MouseEvent}
  */
 InkRippleCtrl.prototype.handleMousedown = function (event) {
-  if ( this.mousedown ) return;
+  if (this.mousedown) return;
 
   // When jQuery is loaded, we have to get the original event
   if (event.hasOwnProperty('originalEvent')) event = event.originalEvent;
@@ -6447,9 +6447,9 @@ generateAllThemes.$inject = ["$injector", "$mdTheming"];
 angular.module('material.core.theming', ['material.core.theming.palette', 'material.core.meta'])
   .directive('mdTheme', ThemingDirective)
   .directive('mdThemable', ThemableDirective)
-  .directive('mdThemesDisabled', disableThemesDirective )
+  .directive('mdThemesDisabled', disableThemesDirective)
   .provider('$mdTheming', ThemingProvider)
-  .config( detectDisabledThemes )
+  .config(detectDisabledThemes)
   .run(generateAllThemes);
 
 /**
@@ -6734,7 +6734,7 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
      * return a read-only clone of the current theme configuration
      */
     configuration : function() {
-      return angular.extend( { }, themeConfig, {
+      return angular.extend({ }, themeConfig, {
         defaultTheme : defaultTheme,
         alwaysWatchTheme : alwaysWatchTheme,
         registeredStyles : [].concat(themeConfig.registeredStyles)
@@ -6873,7 +6873,7 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
    *    with variables from `map` overwritten.
    */
   function extendPalette(name, map) {
-    return checkPaletteValid(name,  angular.extend({}, PALETTES[name] || {}, map) );
+    return checkPaletteValid(name,  angular.extend({}, PALETTES[name] || {}, map));
   }
 
   // Make sure that palette has all required hues
@@ -7350,7 +7350,7 @@ function ThemingDirective($mdTheming, $interpolate, $parse, $mdUtil, $q, $log) {
             return ctrl.$setTheme(theme);
           }
 
-          $q.when( angular.isFunction(theme) ?  theme() : theme )
+          $q.when(angular.isFunction(theme) ?  theme() : theme)
             .then(function(name) {
               ctrl.$setTheme(name);
             });
@@ -7430,7 +7430,7 @@ function parseRules(theme, colorType, rules) {
       hue = theme.colors[colorType].hues[hue];
     }
 
-    return rgba( (PALETTES[ theme.colors[colorType].name ][hue] || '')[contrast ? 'contrast' : 'value'], opacity );
+    return rgba((PALETTES[ theme.colors[colorType].name ][hue] || '')[contrast ? 'contrast' : 'value'], opacity);
   });
 
   // Matches '{{ primary-color }}', etc
@@ -7476,7 +7476,7 @@ function generateAllThemes($injector, $mdTheming) {
   // Append our custom registered styles to the theme stylesheet.
   themeCss += themeConfig.registeredStyles.join('');
 
-  if ( !firstChild ) return;
+  if (!firstChild) return;
   if (themeCss.length === 0) return; // no rules, so no point in running this expensive task
 
   // Expose contrast colors for palettes to ensure that text is always readable
@@ -7652,7 +7652,7 @@ function colorToRgbaArray(clr) {
 }
 
 function rgba(rgbArray, opacity) {
-  if ( !rgbArray ) return "rgb('0,0,0')";
+  if (!rgbArray) return "rgb('0,0,0')";
 
   if (rgbArray.length == 4) {
     rgbArray = angular.copy(rgbArray);
@@ -7679,7 +7679,7 @@ angular
      // to subsequently inject $mdUtil as an argument to the AnimateDomUtils
 
      return function($mdUtil) {
-       return AnimateDomUtils( $mdUtil, $q, $timeout, $mdConstant, $animateCss);
+       return AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss);
      };
    }]);
 
@@ -7692,7 +7692,7 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
     /**
      *
      */
-    translate3d : function( target, from, to, options ) {
+    translate3d : function(target, from, to, options) {
       return $animateCss(target, {
         from: from,
         to: to,
@@ -7745,9 +7745,9 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
          * NOTE: Make sure this transitionEnd didn't bubble up from a child
          */
         function finished(ev) {
-          if ( ev && ev.target !== element[0]) return;
+          if (ev && ev.target !== element[0]) return;
 
-          if ( ev  ) $timeout.cancel(timer);
+          if (ev) $timeout.cancel(timer);
           element.off($mdConstant.CSS.TRANSITIONEND, finished);
 
           // Never reject since ngAnimate may cause timeouts due missed transitionEnd events
@@ -7833,14 +7833,14 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
     /**
      * Enhance raw values to represent valid css stylings...
      */
-    toCss : function( raw ) {
+    toCss : function(raw) {
       var css = { };
       var lookups = 'left top right bottom width height x y min-width min-height max-width max-height';
 
       angular.forEach(raw, function(value,key) {
-        if ( angular.isUndefined(value) ) return;
+        if (angular.isUndefined(value)) return;
 
-        if ( lookups.indexOf(key) >= 0 ) {
+        if (lookups.indexOf(key) >= 0) {
           css[key] = value + 'px';
         } else {
           switch (key) {
@@ -8705,7 +8705,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
       // This is a very common problem, so we have to notify the developer about this.
       if (element.hasClass('ng-cloak')) {
         var message = '$mdBottomSheet: using `<md-bottom-sheet ng-cloak>` will affect the bottom-sheet opening animations.';
-        $log.warn( message, element[0] );
+        $log.warn(message, element[0]);
       }
 
       if (options.isLockedOpen) {
@@ -8980,7 +8980,7 @@ function MdButtonDirective($mdButtonInkRipple, $mdTheming, $mdAria, $mdInteracti
 
     // For anchor elements, we have to set tabindex manually when the
     // element is disabled
-    if (isAnchor(attr) && angular.isDefined(attr.ngDisabled) ) {
+    if (isAnchor(attr) && angular.isDefined(attr.ngDisabled)) {
       scope.$watch(attr.ngDisabled, function(isDisabled) {
         element.attr('tabindex', isDisabled ? -1 : 0);
       });
@@ -10663,7 +10663,7 @@ function MdDialogProvider($$interimElementProvider) {
       // This is a very common problem, so we have to notify the developer about this.
       if (dialogElement.hasClass('ng-cloak')) {
         var message = '$mdDialog: using `<md-dialog ng-cloak>` will affect the dialog opening animations.';
-        $log.warn( message, element[0] );
+        $log.warn(message, element[0]);
       }
 
       captureParentAndFromToElements(options);
@@ -10728,7 +10728,7 @@ function MdDialogProvider($$interimElementProvider) {
 
       // For navigation $destroy events, do a quick, non-animated removal,
       // but for normal closes (from clicks, etc) animate the removal
-      return options.$destroy ? detachAndClean() : animateRemoval().then( detachAndClean );
+      return options.$destroy ? detachAndClean() : animateRemoval().then(detachAndClean);
 
       /**
        * For normal closes, animate the removal.
@@ -10808,7 +10808,7 @@ function MdDialogProvider($$interimElementProvider) {
           options.closeTo  = getBoundingClientRect(getDomElement(options.closeTo));
           options.openFrom = getBoundingClientRect(getDomElement(options.openFrom));
 
-          if ( options.targetEvent ) {
+          if (options.targetEvent) {
             options.origin = getBoundingClientRect(options.targetEvent.target, options.origin);
             options.originInteraction = $mdInteraction.getLastInteractionType();
           }
@@ -10865,7 +10865,7 @@ function MdDialogProvider($$interimElementProvider) {
       var smartClose = function() {
         // Only 'confirm' dialogs have a cancel button... escape/clickOutside will
         // cancel or fallback to hide.
-        var closeFn = ( options.$type == 'alert' ) ? $mdDialog.hide : $mdDialog.cancel;
+        var closeFn = (options.$type == 'alert') ? $mdDialog.hide : $mdDialog.cancel;
         $mdUtil.nextTick(closeFn, true);
       };
 
@@ -10965,7 +10965,7 @@ function MdDialogProvider($$interimElementProvider) {
        */
       options.hideBackdrop = function hideBackdrop($destroy) {
         if (options.backdrop) {
-          if ( $destroy ) options.backdrop.remove();
+          if ($destroy) options.backdrop.remove();
           else              $animate.leave(options.backdrop);
         }
 
@@ -19132,17 +19132,17 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
       });
 
       attr.$observe('mdMode', function(mode) {
-        if (lastMode) container.removeClass( lastMode );
+        if (lastMode) container.removeClass(lastMode);
 
-        switch( mode ) {
+        switch(mode) {
           case MODE_QUERY:
           case MODE_BUFFER:
           case MODE_DETERMINATE:
           case MODE_INDETERMINATE:
-            container.addClass( lastMode = "md-mode-" + mode );
+            container.addClass(lastMode = "md-mode-" + mode);
             break;
           default:
-            container.addClass( lastMode = "md-mode-" + MODE_INDETERMINATE );
+            container.addClass(lastMode = "md-mode-" + MODE_INDETERMINATE);
             break;
         }
       });
@@ -19152,7 +19152,7 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
      * Auto-defaults the mode to either `determinate` or `indeterminate` mode; if not specified
      */
     function validateMode() {
-      if ( angular.isUndefined(attr.mdMode) ) {
+      if (angular.isUndefined(attr.mdMode)) {
         var hasValue = angular.isDefined(attr.value);
         var mode = hasValue ? MODE_DETERMINATE : MODE_INDETERMINATE;
         var info = "Auto-adding the missing md-mode='{0}' to the ProgressLinear element";
@@ -19169,7 +19169,7 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
      */
     function mode() {
       var value = (attr.mdMode || "").trim();
-      if ( value ) {
+      if (value) {
         switch(value) {
           case MODE_DETERMINATE:
           case MODE_INDETERMINATE:
@@ -19189,11 +19189,11 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
      * percentage value (0-100).
      */
     function animateIndicator(target, value) {
-      if ( isDisabled || !mode() ) return;
+      if (isDisabled || !mode()) return;
 
       var to = $mdUtil.supplant("translateX({0}%) scale({1},1)", [ (value-100)/2, value/100 ]);
       var styles = toVendorCSS({ transform : to });
-      angular.element(target).css( styles );
+      angular.element(target).css(styles);
     }
   }
 
@@ -21145,8 +21145,8 @@ function SelectProvider($$interimElementProvider) {
         }
 
         function checkCloseMenu(ev) {
-          if (ev && ( ev.type == 'click') && (ev.currentTarget != dropDown[0])) return;
-          if ( mouseOnScrollbar() ) return;
+          if (ev && (ev.type == 'click') && (ev.currentTarget != dropDown[0])) return;
+          if (mouseOnScrollbar()) return;
 
           var option = $mdUtil.getClosest(ev.target, 'md-option');
           if (option && option.hasAttribute && !option.hasAttribute('disabled')) {
@@ -21465,7 +21465,7 @@ angular
     'material.core',
     'material.components.backdrop'
   ])
-  .factory('$mdSidenav', SidenavService )
+  .factory('$mdSidenav', SidenavService)
   .directive('mdSidenav', SidenavDirective)
   .directive('mdSidenavFocus', SidenavFocusDirective)
   .controller('$mdSidenavController', SidenavController);
@@ -21768,7 +21768,7 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInterac
     if (!attr.hasOwnProperty('mdDisableBackdrop')) {
       backdrop = $mdUtil.createBackdrop(scope, "md-sidenav-backdrop md-opaque ng-enter");
     }
-    
+
     // If md-disable-close-events is set on the sidenav we will disable
     // backdrop click and Escape key events
     if (attr.hasOwnProperty('mdDisableCloseEvents')) {
@@ -21780,7 +21780,7 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInterac
 
     // The backdrop should inherit the sidenavs theme,
     // because the backdrop will take its parent theme by default.
-    if ( backdrop ) $mdTheming.inherit(backdrop, element);
+    if (backdrop) $mdTheming.inherit(backdrop, element);
 
     element.on('$destroy', function() {
       backdrop && backdrop.remove();
@@ -21911,7 +21911,7 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInterac
      * Prevent parent scrolling (when the SideNav is open)
      */
     function disableParentScroll(disabled) {
-      if ( disabled && !lastParentOverFlow ) {
+      if (disabled && !lastParentOverFlow) {
         lastParentOverFlow = disableScrollTarget.css('overflow');
         disableScrollTarget.css('overflow', 'hidden');
       } else if (angular.isDefined(lastParentOverFlow)) {
@@ -21940,7 +21940,7 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInterac
             // When the current `updateIsOpen()` animation finishes
             promise.then(function(result) {
 
-              if ( !scope.isOpen && triggeringElement && triggeringInteractionType === 'keyboard') {
+              if (!scope.isOpen && triggeringElement && triggeringInteractionType === 'keyboard') {
                 // reset focus to originating element (if available) upon close
                 triggeringElement.focus();
                 triggeringElement = null;
@@ -21998,9 +21998,9 @@ function SidenavController($scope, $attrs, $mdComponentRegistry, $q, $interpolat
   };
 
   // Async actions
-  self.open   = function() { return self.$toggleOpen( true );  };
-  self.close  = function() { return self.$toggleOpen( false ); };
-  self.toggle = function() { return self.$toggleOpen( !$scope.isOpen );  };
+  self.open   = function() { return self.$toggleOpen(true);  };
+  self.close  = function() { return self.$toggleOpen(false); };
+  self.toggle = function() { return self.$toggleOpen(!$scope.isOpen);  };
   self.$toggleOpen = function(value) { return $q.when($scope.isOpen = value); };
 
   // Evaluate the component id.
@@ -22368,15 +22368,15 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     var tickCanvas, tickCtx;
     function redrawTicks() {
       if (!discrete || isDisabled()) return;
-      if ( angular.isUndefined(step) )         return;
+      if (angular.isUndefined(step))         return;
 
-      if ( step <= 0 ) {
+      if (step <= 0) {
         var msg = 'Slider step value must be greater than zero when in discrete mode';
         $log.error(msg);
         throw new Error(msg);
       }
 
-      var numSteps = Math.floor( (max - min) / step );
+      var numSteps = Math.floor((max - min) / step);
       if (!tickCanvas) {
         tickCanvas = angular.element('<canvas>').css('position', 'absolute');
         tickContainer.append(tickCanvas);
@@ -22515,7 +22515,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
      * ngModel setters and validators
      */
     function setModelValue(value) {
-      ngModelCtrl.$setViewValue( minMaxValidator(stepValidator(value)) );
+      ngModelCtrl.$setViewValue(minMaxValidator(stepValidator(value)));
     }
     function ngModelRender() {
       if (isNaN(ngModelCtrl.$viewValue)) {
@@ -22528,7 +22528,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       scope.modelValue = ngModelCtrl.$viewValue;
       element.attr('aria-valuenow', ngModelCtrl.$viewValue);
       setSliderPercent(percent);
-      thumbText.text( ngModelCtrl.$viewValue );
+      thumbText.text(ngModelCtrl.$viewValue);
     }
 
     function minMaxValidator(value, minValue, maxValue) {
@@ -22572,7 +22572,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
         $mdUtil.bidiProperty(thumbContainer, 'left', 'right', thumbPosition);
       }
 
-      
+
       activeTrack.css(vertical ? 'height' : 'width', activeTrackPercent);
 
       element.toggleClass((invert ? 'md-max' : 'md-min'), percent === 0);
@@ -22591,11 +22591,11 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       element[0].focus();
       refreshSliderDimensions();
 
-      var exactVal = percentToValue( positionToPercent( vertical ? ev.pointer.y : ev.pointer.x ));
-      var closestVal = minMaxValidator( stepValidator(exactVal) );
+      var exactVal = percentToValue(positionToPercent(vertical ? ev.pointer.y : ev.pointer.x));
+      var closestVal = minMaxValidator(stepValidator(exactVal));
       scope.$apply(function() {
-        setModelValue( closestVal );
-        setSliderPercent( valueToPercent(closestVal));
+        setModelValue(closestVal);
+        setSliderPercent(valueToPercent(closestVal));
       });
     }
     function onPressUp(ev) {
@@ -22603,8 +22603,8 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
 
       element.removeClass('md-dragging');
 
-      var exactVal = percentToValue( positionToPercent( vertical ? ev.pointer.y : ev.pointer.x ));
-      var closestVal = minMaxValidator( stepValidator(exactVal) );
+      var exactVal = percentToValue(positionToPercent(vertical ? ev.pointer.y : ev.pointer.x));
+      var closestVal = minMaxValidator(stepValidator(exactVal));
       scope.$apply(function() {
         setModelValue(closestVal);
         ngModelRender();
@@ -22633,17 +22633,17 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     function setSliderFromEvent(ev) {
       // While panning discrete, update only the
       // visual positioning but not the model value.
-      if ( discrete ) adjustThumbPosition( vertical ? ev.pointer.y : ev.pointer.x );
-      else            doSlide( vertical ? ev.pointer.y : ev.pointer.x );
+      if (discrete) adjustThumbPosition(vertical ? ev.pointer.y : ev.pointer.x);
+      else            doSlide(vertical ? ev.pointer.y : ev.pointer.x);
     }
 
     /**
      * Slide the UI by changing the model value
      * @param x
      */
-    function doSlide( x ) {
-      scope.$evalAsync( function() {
-        setModelValue( percentToValue( positionToPercent(x) ));
+    function doSlide(x) {
+      scope.$evalAsync(function() {
+        setModelValue(percentToValue(positionToPercent(x)));
       });
     }
 
@@ -22651,11 +22651,11 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
      * Slide the UI without changing the model (while dragging/panning)
      * @param x
      */
-    function adjustThumbPosition( x ) {
-      var exactVal = percentToValue( positionToPercent( x ));
-      var closestVal = minMaxValidator( stepValidator(exactVal) );
-      setSliderPercent( positionToPercent(x) );
-      thumbText.text( closestVal );
+    function adjustThumbPosition(x) {
+      var exactVal = percentToValue(positionToPercent(x));
+      var closestVal = minMaxValidator(stepValidator(exactVal));
+      setSliderPercent(positionToPercent(x));
+      thumbText.text(closestVal);
     }
 
     /**
@@ -22672,7 +22672,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
      * @param position
      * @returns {number}
      */
-    function positionToPercent( position ) {
+    function positionToPercent(position) {
       var offset = vertical ? sliderDimensions.top : sliderDimensions.left;
       var size = vertical ? sliderDimensions.height : sliderDimensions.width;
       var calc = (position - offset) / size;
@@ -22689,12 +22689,12 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
      * @param percent
      * @returns {*}
      */
-    function percentToValue( percent ) {
+    function percentToValue(percent) {
       var adjustedPercent = invert ? (1 - percent) : percent;
       return (min + adjustedPercent * (max - min));
     }
 
-    function valueToPercent( val ) {
+    function valueToPercent(val) {
       var percent = (val - min) / (max - min);
       return invert ? (1 - percent) : percent;
     }
@@ -22873,7 +22873,7 @@ function MdSticky($mdConstant, $$rAF, $mdUtil, $compile) {
         return a.top < b.top ? -1 : 1;
       });
 
-      // Find which item in the list should be active, 
+      // Find which item in the list should be active,
       // based upon the content's current scroll position
       var item;
       var currentScrollTop = contentEl.prop('scrollTop');
@@ -22893,7 +22893,7 @@ function MdSticky($mdConstant, $$rAF, $mdUtil, $compile) {
     // Find the `top` of an item relative to the content element,
     // and also the height.
     function refreshPosition(item) {
-      // Find the top of an item by adding to the offsetHeight until we reach the 
+      // Find the top of an item by adding to the offsetHeight until we reach the
       // content element.
       var current = item.element[0];
       item.top = 0;
@@ -22902,7 +22902,7 @@ function MdSticky($mdConstant, $$rAF, $mdUtil, $compile) {
       while (current && current !== contentEl[0]) {
         item.top += current.offsetTop;
         item.left += current.offsetLeft;
-        if ( current.offsetParent ){
+        if (current.offsetParent){
           item.right += current.offsetParent.offsetWidth - current.offsetWidth - current.offsetLeft; //Compute offsetRight
         }
         current = current.offsetParent;
@@ -23018,7 +23018,7 @@ function MdSticky($mdConstant, $$rAF, $mdUtil, $compile) {
       } else {
         item.translateY = amount;
 
-        $mdUtil.bidi( item.clone, $mdConstant.CSS.TRANSFORM,
+        $mdUtil.bidi(item.clone, $mdConstant.CSS.TRANSFORM,
           'translate3d(' + item.left + 'px,' + amount + 'px,0)',
           'translateY(' + amount + 'px)'
         );
@@ -23029,7 +23029,7 @@ function MdSticky($mdConstant, $$rAF, $mdUtil, $compile) {
 
   // Android 4.4 don't accurately give scroll events.
   // To fix this problem, we setup a fake scroll event. We say:
-  // > If a scroll or touchmove event has happened in the last DELAY milliseconds, 
+  // > If a scroll or touchmove event has happened in the last DELAY milliseconds,
   //   then send a `$scroll` event every animationFrame.
   // Additionally, we add $scrollstart and $scrollend events.
   function setupAugmentedScrollEvents(element) {
@@ -24761,7 +24761,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $interpolate,
         var attributeObserver = new MutationObserver(function(mutations) {
           mutations.forEach(function(mutation) {
             if (mutation.attributeName === 'md-visible' &&
-                !scope.visibleWatcher ) {
+                !scope.visibleWatcher) {
               scope.visibleWatcher = scope.$watch('mdVisible',
                   onVisibleChanged);
             }
@@ -26442,7 +26442,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
     angular.element($window).off('resize', debouncedOnResize);
 
-    if ( elements ){
+    if (elements){
       var items = ['ul', 'scroller', 'scrollContainer', 'input'];
       angular.forEach(items, function(key){
         elements.$[key].remove();
@@ -27073,7 +27073,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     else if (isPromise) handleAsyncResults(items);
 
     function handleAsyncResults(items) {
-      if ( !items ) return;
+      if (!items) return;
 
       items = $q.when(items);
       fetchesInProgress++;
@@ -28310,7 +28310,7 @@ MdChipRemove.$inject = ["$timeout"];angular
 
 /**
  * MdChipRemove Directive Definition.
- * 
+ *
  * @param $timeout
  * @returns {{restrict: string, require: string[], link: Function, scope: boolean}}
  * @constructor
@@ -29346,8 +29346,8 @@ MdChipsCtrl.prototype.configureAutocomplete = function(ctrl) {
     }));
 
     this.$element.find('input')
-        .on('focus',angular.bind(this, this.onInputFocus) )
-        .on('blur', angular.bind(this, this.onInputBlur) );
+        .on('focus',angular.bind(this, this.onInputFocus))
+        .on('blur', angular.bind(this, this.onInputBlur));
   }
 };
 
@@ -33602,7 +33602,7 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $sce) {
     }
 
     /* Don't process ARIA if already valid */
-    if ( attr.role === "img" && !attr.ariaHidden && !$mdAria.hasAriaLabel(element) ) {
+    if (attr.role === "img" && !attr.ariaHidden && !$mdAria.hasAriaLabel(element)) {
       var iconName;
       if (attr.alt) {
         /* Use alt text by default if available */
@@ -34541,7 +34541,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
 
   // Use the $mdMenu interim element service to close the menu contents
   this.close = function closeMenu(skipFocus, closeOpts) {
-    if ( !self.isOpen ) return;
+    if (!self.isOpen) return;
     self.isOpen = false;
     $mdUtil.nextTick(function(){ self.onIsOpenChanged(self.isOpen);});
 
@@ -34866,7 +34866,7 @@ function MenuDirective($mdUtil) {
     var mdMenuCtrl = ctrls[0];
     var isInMenuBar = !!ctrls[1];
     // Move everything into a md-menu-container and pass it to the controller
-    var menuContainer = angular.element( '<div class="_md md-open-menu-container md-whiteframe-z2"></div>');
+    var menuContainer = angular.element('<div class="_md md-open-menu-container md-whiteframe-z2"></div>');
     var menuContents = element.children()[1];
 
     element.addClass('_md');     // private md component indicator for styling
@@ -34982,7 +34982,7 @@ function MenuProvider($$interimElementProvider) {
       // For navigation $destroy events, do a quick, non-animated removal,
       // but for normal closes (from clicks, etc) animate the removal
 
-      return (opts.$destroy === true) ? detachAndClean() : animateRemoval().then( detachAndClean );
+      return (opts.$destroy === true) ? detachAndClean() : animateRemoval().then(detachAndClean);
 
       /**
        * For normal closes, animate the removal.
@@ -35154,7 +35154,7 @@ function MenuProvider($$interimElementProvider) {
         var focusTarget = opts.menuContentEl[0]
           .querySelector(prefixer.buildSelector(['md-menu-focus-target', 'md-autofocus']));
 
-        if ( !focusTarget ) {
+        if (!focusTarget) {
           var childrenLen = opts.menuContentEl[0].children.length;
           for(var childIndex = 0; childIndex < childrenLen; childIndex++) {
             var child = opts.menuContentEl[0].children[childIndex];
@@ -35359,7 +35359,7 @@ function MenuProvider($$interimElementProvider) {
 
       if (positionMode.top === 'target' || positionMode.left === 'target' || positionMode.left === 'target-right') {
         alignTarget = firstVisibleChild();
-        if ( alignTarget ) {
+        if (alignTarget) {
           // TODO: Allow centering on an arbitrary node, for now center on first menu-item's child
           alignTarget = alignTarget.firstElementChild || alignTarget;
           alignTarget = alignTarget.querySelector(prefixer.buildSelector('md-menu-align-target')) || alignTarget;
@@ -36418,7 +36418,7 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
    * @returns {number} Stroke length for progres circle
    */
   function getDashLength(diameter, strokeWidth, value, limit) {
-    return (diameter - strokeWidth) * $window.Math.PI * ( (3 * (limit || 100) / 100) - (value/100) );
+    return (diameter - strokeWidth) * $window.Math.PI * ((3 * (limit || 100) / 100) - (value/100));
   }
 
   /**
@@ -37984,7 +37984,7 @@ function MdTabsDummyWrapper ($mdUtil, $window) {
         disconnect = observer.disconnect.bind(observer);
       } else {
         var debounced = $mdUtil.debounce(mutationCallback, 15, null, false);
-        
+
         element.on('DOMSubtreeModified', debounced);
         disconnect = element.off.bind(element, 'DOMSubtreeModified', debounced);
       }
@@ -38048,4 +38048,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.12-master-9c079aa"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.12-master-7878d23"}};
