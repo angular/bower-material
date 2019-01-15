@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-ecf1705
+ * v1.1.12-master-139ffd7
  */
 goog.provide('ngmaterial.components.autocomplete');
 goog.require('ngmaterial.components.icon');
@@ -29,7 +29,9 @@ MdAutocompleteCtrl['$inject'] = ["$scope", "$element", "$mdUtil", "$mdConstant",
 var ITEM_HEIGHT   = 48,
     MAX_ITEMS     = 5,
     MENU_PADDING  = 8,
-    INPUT_PADDING = 2; // Padding provided by `md-input-container`
+    INPUT_PADDING = 2, // Padding provided by `md-input-container`
+    MODE_STANDARD = 'standard',
+    MODE_VIRTUAL = 'virtual';
 
 function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming, $window,
                              $animate, $rootElement, $attrs, $q, $log, $mdLiveAnnouncer) {
@@ -46,7 +48,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       fetchesInProgress    = 0,
       enableWrapScroll     = null,
       inputModelCtrl       = null,
-      debouncedOnResize    = $mdUtil.debounce(onWindowResize);
+      debouncedOnResize    = $mdUtil.debounce(onWindowResize),
+      mode                 = MODE_VIRTUAL; // default
 
   // Public Exported Variables with handlers
   defineProperty('hidden', handleHiddenChange, true);
@@ -103,7 +106,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     $mdUtil.initOptionalProperties($scope, $attrs, {
       searchText: '',
       selectedItem: null,
-      clearButton: false
+      clearButton: false,
+      disableVirtualRepeat: false,
     });
 
     $mdTheming($element);
@@ -150,7 +154,6 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     }
 
     var dropdownHeight = ($scope.dropdownItems || MAX_ITEMS) * ITEM_HEIGHT;
-
     var hrect  = elements.wrap.getBoundingClientRect(),
         vrect  = elements.snap.getBoundingClientRect(),
         root   = elements.root.getBoundingClientRect(),
@@ -295,18 +298,18 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
     elements = {
       main:  $element[0],
-      scrollContainer: $element[0].querySelector('.md-virtual-repeat-container'),
-      scroller: $element[0].querySelector('.md-virtual-repeat-scroller'),
+      scrollContainer: $element[0].querySelector('.md-virtual-repeat-container, .md-standard-list-container'),
+      scroller: $element[0].querySelector('.md-virtual-repeat-scroller, .md-standard-list-scroller'),
       ul:    $element.find('ul')[0],
       input: $element.find('input')[0],
       wrap:  snapWrap.wrap,
       snap:  snapWrap.snap,
-      root:  document.body
+      root:  document.body,
     };
 
     elements.li   = elements.ul.getElementsByTagName('li');
     elements.$    = getAngularElements(elements);
-
+    mode = elements.scrollContainer.classList.contains('md-standard-list-container') ? MODE_STANDARD : MODE_VIRTUAL;
     inputModelCtrl = elements.$.input.controller('ngModel');
   }
 
@@ -972,15 +975,40 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    */
   function updateScroll () {
     if (!elements.li[0]) return;
-    var height = elements.li[0].offsetHeight,
-        top = height * ctrl.index,
-        bot = top + height,
-        hgt = elements.scroller.clientHeight,
+    if (mode === MODE_STANDARD) {
+      updateStandardScroll();
+    } else {
+      updateVirtualScroll();
+    }
+  }
+
+  function updateVirtualScroll() {
+    // elements in virtual scroll have consistent heights
+    var optionHeight = elements.li[0].offsetHeight,
+        top = optionHeight * ctrl.index,
+        bottom = top + optionHeight,
+        containerHeight = elements.scroller.clientHeight,
         scrollTop = elements.scroller.scrollTop;
+
     if (top < scrollTop) {
       scrollTo(top);
-    } else if (bot > scrollTop + hgt) {
-      scrollTo(bot - hgt);
+    } else if (bottom > scrollTop + containerHeight) {
+      scrollTo(bottom - containerHeight);
+    }
+  }
+
+  function updateStandardScroll() {
+    // elements in standard scroll have variable heights
+    var selected =  elements.li[ctrl.index] || elements.li[0];
+    var containerHeight = elements.scrollContainer.offsetHeight,
+        top = selected && selected.offsetTop || 0,
+        bottom = top + selected.clientHeight,
+        scrollTop = elements.scrollContainer.scrollTop;
+
+    if (top < scrollTop) {
+      scrollTo(top);
+    } else if (bottom > scrollTop + containerHeight) {
+      scrollTo(bottom - containerHeight);
     }
   }
 
@@ -989,7 +1017,11 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   }
 
   function scrollTo (offset) {
-    elements.$.scrollContainer.controller('mdVirtualRepeatContainer').scrollTo(offset);
+    if (mode === MODE_STANDARD) {
+      elements.scrollContainer.scrollTop = offset;
+    } else {
+      elements.$.scrollContainer.controller('mdVirtualRepeatContainer').scrollTo(offset);
+    }
   }
 
   function notFoundVisible () {
@@ -1229,6 +1261,9 @@ MdAutocomplete['$inject'] = ["$$mdSvgRegistry"];angular
  * @param {string=} ng-pattern Adds the pattern validator to the ngModel of the search text.
  *     See the [ngPattern Directive](https://docs.angularjs.org/api/ng/directive/ngPattern)
  *     for more details.
+ * @param {string=} md-mode Specify the repeat mode for suggestion lists. Acceptable values include
+ *     `virtual` (md-virtual-repeat) and `standard` (ng-repeat). See the
+ *     `Specifying Repeat Mode` example for mode details. Default is `virtual`.
  *
  * @usage
  * ### Basic Example
@@ -1335,8 +1370,40 @@ MdAutocomplete['$inject'] = ["$$mdSvgRegistry"];angular
  * </md-autocomplete>
  * </hljs>
  *
+ * ### Specifying Repeat Mode
+ * You can use `md-mode` to specify whether to use standard or virtual lists for
+ * rendering autocomplete options.
+ * The `md-mode` accepts two values:
+ * - `virtual` (default) Uses `md-virtual-repeat` to render list items. Virtual
+ *    mode requires you to have consistent heights for all suggestions.
+ * - `standard` uses `ng-repeat` to render list items. This allows you to have
+ *    options of varying heights.
+ *
+ * Note that using 'standard' mode will require you to address any list
+ * performance issues (e.g. pagination) separately within your application.
+ *
+ * <hljs lang="html">
+ *   <md-autocomplete
+ *       md-selected-item="selectedItem"
+ *       md-search-text="searchText"
+ *       md-items="item in getMatches(searchText)"
+ *       md-item-text="item.display"
+ *       md-mode="standard">
+ *     <span md-highlight-text="searchText">{{item.display}}</span>
+ *   </md-autocomplete>
+ * </hljs>
  */
 function MdAutocomplete ($$mdSvgRegistry) {
+  var REPEAT_STANDARD = 'standard';
+  var REPEAT_VIRTUAL = 'virtual';
+  var REPEAT_MODES = [REPEAT_STANDARD, REPEAT_VIRTUAL];
+
+  /** get a valid repeat mode from an md-mode attribute string. */
+  function getRepeatMode(modeStr) {
+    if (!modeStr) { return REPEAT_VIRTUAL; }
+    modeStr = modeStr.toLowerCase();
+    return  REPEAT_MODES.indexOf(modeStr) > -1 ? modeStr : REPEAT_VIRTUAL;
+  }
 
   return {
     controller:   'MdAutocompleteCtrl',
@@ -1372,7 +1439,8 @@ function MdAutocomplete ($$mdSvgRegistry) {
       dropdownItems:      '=?mdDropdownItems',
       dropdownPosition:   '@?mdDropdownPosition',
       clearButton:        '=?mdClearButton',
-      selectedMessage:    '@?mdSelectedMessage'
+      selectedMessage:    '@?mdSelectedMessage',
+      mdMode: '=?mdMode'
     },
     compile: function(tElement, tAttrs) {
       var attributes = ['md-select-on-focus', 'md-no-asterisk', 'ng-trim', 'ng-pattern'];
@@ -1396,6 +1464,8 @@ function MdAutocomplete ($$mdSvgRegistry) {
         if (!angular.isDefined(attrs.mdClearButton) && !scope.floatingLabel) {
           scope.clearButton = true;
         }
+
+        scope.mdMode = getRepeatMode(attrs.mdMode);
       };
     },
     template:     function (element, attr) {
@@ -1403,7 +1473,6 @@ function MdAutocomplete ($$mdSvgRegistry) {
           itemTemplate    = getItemTemplate(),
           leftover        = element.html(),
           tabindex        = attr.tabindex;
-      var menuContainerClass = attr.mdMenuContainerClass ? ' ' + attr.mdMenuContainerClass : '';
 
       // Set our attribute for the link function above which runs later.
       // We will set an attribute, because otherwise the stored variables will be trashed when
@@ -1425,21 +1494,16 @@ function MdAutocomplete ($$mdSvgRegistry) {
               class="' + (attr.mdFloatingLabel ? 'md-inline' : '') + '"\
               ng-if="$mdAutocompleteCtrl.loadingIsVisible()"\
               md-mode="indeterminate"></md-progress-linear>\
-          <md-virtual-repeat-container\
-              md-auto-shrink\
-              md-auto-shrink-min="1"\
-              ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
-              ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
-              ng-mouseup="$mdAutocompleteCtrl.mouseUp()"\
-              ng-hide="$mdAutocompleteCtrl.hidden"\
-              class="md-autocomplete-suggestions-container md-whiteframe-z1' + menuContainerClass + '"\
-              ng-class="{ \'md-not-found\': $mdAutocompleteCtrl.notFoundVisible() }"\
-              role="presentation">\
+          ' + getContainer(attr.mdMenuContainerClass, attr.mdMode) + '\
             <ul class="md-autocomplete-suggestions"\
                 ng-class="::menuClass"\
                 id="ul-{{$mdAutocompleteCtrl.id}}"\
+                ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
+                ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
+                ng-mouseup="$mdAutocompleteCtrl.mouseUp()"\
                 role="listbox">\
-              <li md-virtual-repeat="item in $mdAutocompleteCtrl.matches"\
+              <li ' + getRepeatType(attr.mdMode) + ' ="item in $mdAutocompleteCtrl.matches"\
+                  ng-class="{ selected: $index === $mdAutocompleteCtrl.index }"\
                   ng-attr-id="{{$index === $mdAutocompleteCtrl.index ? \'selected_option\' : undefined}}"\
                   ng-click="$mdAutocompleteCtrl.select($index)"\
                   role="option"\
@@ -1450,7 +1514,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
                   ' + itemTemplate + '\
                   </li>' + noItemsTemplate + '\
             </ul>\
-          </md-virtual-repeat-container>\
+          '  + getContainerClosingTags(attr.mdMode) + '\
         </md-autocomplete-wrap>';
 
       function getItemTemplate() {
@@ -1468,7 +1532,48 @@ function MdAutocomplete ($$mdSvgRegistry) {
             ? '<li ng-if="$mdAutocompleteCtrl.notFoundVisible()"\
                          md-autocomplete-parent-scope>' + template + '</li>'
             : '';
+      }
 
+      function getContainer(menuContainerClass, repeatMode) {
+        // prepend a space if needed
+        menuContainerClass = menuContainerClass ? ' ' + menuContainerClass : '';
+
+        if (isVirtualRepeatDisabled(repeatMode)) {
+          return '\
+            <div \
+                ng-hide="$mdAutocompleteCtrl.hidden"\
+                class="md-standard-list-container md-autocomplete-suggestions-container md-whiteframe-z1' + menuContainerClass + '"\
+                ng-class="{ \'md-not-found\': $mdAutocompleteCtrl.notFoundVisible() }"\
+                role="presentation">\
+              <div class="md-standard-list-scroller" role="presentation">';
+        }
+
+        return '\
+          <md-virtual-repeat-container\
+              md-auto-shrink\
+              md-auto-shrink-min="1"\
+              ng-hide="$mdAutocompleteCtrl.hidden"\
+              class="md-virtual-repeat-container md-autocomplete-suggestions-container md-whiteframe-z1' + menuContainerClass + '"\
+              ng-class="{ \'md-not-found\': $mdAutocompleteCtrl.notFoundVisible() }"\
+              role="presentation">';
+      }
+
+      function getContainerClosingTags(repeatMode) {
+        return isVirtualRepeatDisabled(repeatMode) ?
+            '   </div>\
+              </div>\
+            </div>' : '</md-virtual-repeat-container>';
+      }
+
+      function getRepeatType(repeatMode) {
+        return isVirtualRepeatDisabled(repeatMode)  ?
+          'ng-repeat' : 'md-virtual-repeat';
+      }
+
+      function isVirtualRepeatDisabled(repeatMode) {
+        // ensure we have a valid repeat mode
+        var correctedRepeatMode = getRepeatMode(repeatMode);
+        return correctedRepeatMode !== REPEAT_VIRTUAL;
       }
 
       function getInputElement () {
