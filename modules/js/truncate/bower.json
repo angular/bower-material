@@ -1,7 +1,7 @@
 {
   "name": "angular-material-truncate",
-  "version": "1.1.12-master-c9198e2",
+  "version": "1.1.12-master-82563c1",
   "dependencies": {
-    "angular-material-core": "1.1.12-master-c9198e2"
+    "angular-material-core": "1.1.12-master-82563c1"
   }
 }
