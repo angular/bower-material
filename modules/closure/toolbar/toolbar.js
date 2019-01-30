@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-3317180
+ * v1.1.12-master-b3b8d21
  */
 goog.provide('ngmaterial.components.toolbar');
 goog.require('ngmaterial.components.content');
