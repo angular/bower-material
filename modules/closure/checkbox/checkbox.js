@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-46e08e5
+ * v1.1.12-master-9f458f6
  */
 goog.provide('ngmaterial.components.checkbox');
 goog.require('ngmaterial.core');
@@ -181,7 +181,7 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
       function keypressHandler(ev) {
         var keyCode = ev.which || ev.keyCode;
         ev.preventDefault();
-        switch(keyCode) {
+        switch (keyCode) {
           case $mdConstant.KEY_CODE.SPACE:
             element.addClass('md-focused');
             listener(ev);
