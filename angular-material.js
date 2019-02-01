@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-a191a8e
+ * v1.1.12-master-e64875d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -10,7 +10,7 @@
 (function(){
 "use strict";
 
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.interaction","material.core.layout","material.core.meta","material.core.theming.palette","material.core.theming","material.core.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.colors","material.components.chips","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.navBar","material.components.panel","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.showHide","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.truncate","material.components.virtualRepeat","material.components.whiteframe"]);
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.interaction","material.core.layout","material.core.meta","material.core.theming.palette","material.core.theming","material.core.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.colors","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.navBar","material.components.panel","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.showHide","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.truncate","material.components.virtualRepeat","material.components.whiteframe"]);
 })();
 (function(){
 "use strict";
@@ -9381,6 +9381,22 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
 (function(){
 "use strict";
 
+/**
+ * @ngdoc module
+ * @name material.components.chips
+ */
+/*
+ * @see js folder for chips implementation
+ */
+angular.module('material.components.chips', [
+  'material.core',
+  'material.components.autocomplete'
+]);
+
+})();
+(function(){
+"use strict";
+
 (function () {
   "use strict";
 
@@ -9781,22 +9797,6 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
 
 
 })();
-
-})();
-(function(){
-"use strict";
-
-/**
- * @ngdoc module
- * @name material.components.chips
- */
-/*
- * @see js folder for chips implementation
- */
-angular.module('material.components.chips', [
-  'material.core',
-  'material.components.autocomplete'
-]);
 
 })();
 (function(){
@@ -14797,10 +14797,9 @@ function MdNavBar($mdAria, $mdTheming) {
 
 /**
  * Controller for the nav-bar component.
- *
- * TODO update this with a link to tablist when that implementation gets merged.
- * Accessibility functionality is implemented as a site navigator with a listbox, according to
- * https://www.w3.org/TR/wai-aria-practices/#Site_Navigator_Tabbed_Style.
+ * Accessibility functionality is implemented as a tablist
+ * (https://www.w3.org/TR/wai-aria-1.0/complete#tablist) and
+ * tabs (https://www.w3.org/TR/wai-aria-1.0/complete#tab).
  *
  * @param {!angular.JQLite} $element
  * @param {!angular.Scope} $scope
@@ -14879,6 +14878,7 @@ MdNavBarController.prototype._initTabs = function() {
 MdNavBarController.prototype._updateTabs = function(newValue, oldValue) {
   var self = this;
   var tabs = this._getTabs();
+  var sameTab = newValue === oldValue;
 
   // this._getTabs can return null if nav-bar has not yet been initialized
   if (!tabs) return;
@@ -14900,6 +14900,11 @@ MdNavBarController.prototype._updateTabs = function(newValue, oldValue) {
 
   this._$timeout(function() {
     self._updateInkBarStyles(newTab, newIndex, oldIndex);
+    // Don't change focus when there is no newTab, the new and old tabs are the same, or when
+    // called from MdNavBarController._initTabs() which would have no oldTab defined.
+    if (newTab && oldTab && !sameTab) {
+      self._moveFocus(oldTab, newTab);
+    }
   });
 };
 
@@ -15279,6 +15284,9 @@ function MdNavItem($mdAria, $$rAF, $mdUtil, $window) {
         });
 
         navButton.on('click', function() {
+          // This triggers a watcher on mdNavBar.mdSelectedNavItem which calls
+          // MdNavBarController._updateTabs() after a $timeout. That function calls
+          // MdNavItemController.setSelected() for the old tab with false and the new tab with true.
           mdNavBar.mdSelectedNavItem = mdNavItem.name;
           scope.$apply();
         });
@@ -38163,4 +38171,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.12-master-a191a8e"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.12-master-e64875d"}};

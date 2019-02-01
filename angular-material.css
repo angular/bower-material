@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-a191a8e
+ * v1.1.12-master-e64875d
  */
 html, body {
   height: 100%;
@@ -2918,8 +2918,6 @@ md-menu-content.md-menu-bar-menu.md-dense {
   transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1); }
   .md-button._md-nav-button:focus {
     outline: none; }
-  .md-button._md-nav-button:hover {
-    background-color: inherit; }
 
 md-nav-ink-bar {
   bottom: 0;
