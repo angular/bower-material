@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-b3b8d21
+ * v1.1.12-master-6515e6c
  */
 /*
 *  Responsive attributes
@@ -688,36 +688,10 @@ input {
   max-height: 0%;
   box-sizing: border-box; }
 
-.layout-row > .flex-0 {
-  flex: 1 1 100%;
-  max-width: 0%;
-  max-height: 100%;
-  box-sizing: border-box;
-  min-width: 0; }
-
-.layout-column > .flex-0 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 0%;
-  box-sizing: border-box;
-  min-height: 0; }
-
 .flex-5 {
   flex: 1 1 100%;
   max-width: 5%;
   max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-row > .flex-5 {
-  flex: 1 1 100%;
-  max-width: 5%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-5 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 5%;
   box-sizing: border-box; }
 
 .layout-row > .flex-5 {
@@ -750,34 +724,10 @@ input {
   max-height: 10%;
   box-sizing: border-box; }
 
-.layout-row > .flex-10 {
-  flex: 1 1 100%;
-  max-width: 10%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-10 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 10%;
-  box-sizing: border-box; }
-
 .flex-15 {
   flex: 1 1 100%;
   max-width: 15%;
   max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-row > .flex-15 {
-  flex: 1 1 100%;
-  max-width: 15%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-15 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 15%;
   box-sizing: border-box; }
 
 .layout-row > .flex-15 {
@@ -810,34 +760,10 @@ input {
   max-height: 20%;
   box-sizing: border-box; }
 
-.layout-row > .flex-20 {
-  flex: 1 1 100%;
-  max-width: 20%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-20 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 20%;
-  box-sizing: border-box; }
-
 .flex-25 {
   flex: 1 1 100%;
   max-width: 25%;
   max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-row > .flex-25 {
-  flex: 1 1 100%;
-  max-width: 25%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-25 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 25%;
   box-sizing: border-box; }
 
 .layout-row > .flex-25 {
@@ -870,34 +796,10 @@ input {
   max-height: 30%;
   box-sizing: border-box; }
 
-.layout-row > .flex-30 {
-  flex: 1 1 100%;
-  max-width: 30%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-30 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 30%;
-  box-sizing: border-box; }
-
 .flex-35 {
   flex: 1 1 100%;
   max-width: 35%;
   max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-row > .flex-35 {
-  flex: 1 1 100%;
-  max-width: 35%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-35 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 35%;
   box-sizing: border-box; }
 
 .layout-row > .flex-35 {
@@ -930,34 +832,10 @@ input {
   max-height: 40%;
   box-sizing: border-box; }
 
-.layout-row > .flex-40 {
-  flex: 1 1 100%;
-  max-width: 40%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-40 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 40%;
-  box-sizing: border-box; }
-
 .flex-45 {
   flex: 1 1 100%;
   max-width: 45%;
   max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-row > .flex-45 {
-  flex: 1 1 100%;
-  max-width: 45%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-45 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 45%;
   box-sizing: border-box; }
 
 .layout-row > .flex-45 {
@@ -990,34 +868,10 @@ input {
   max-height: 50%;
   box-sizing: border-box; }
 
-.layout-row > .flex-50 {
-  flex: 1 1 100%;
-  max-width: 50%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-50 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 50%;
-  box-sizing: border-box; }
-
 .flex-55 {
   flex: 1 1 100%;
   max-width: 55%;
   max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-row > .flex-55 {
-  flex: 1 1 100%;
-  max-width: 55%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-55 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 55%;
   box-sizing: border-box; }
 
 .layout-row > .flex-55 {
@@ -1050,34 +904,10 @@ input {
   max-height: 60%;
   box-sizing: border-box; }
 
-.layout-row > .flex-60 {
-  flex: 1 1 100%;
-  max-width: 60%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-60 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 60%;
-  box-sizing: border-box; }
-
 .flex-65 {
   flex: 1 1 100%;
   max-width: 65%;
   max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-row > .flex-65 {
-  flex: 1 1 100%;
-  max-width: 65%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-65 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 65%;
   box-sizing: border-box; }
 
 .layout-row > .flex-65 {
@@ -1110,34 +940,10 @@ input {
   max-height: 70%;
   box-sizing: border-box; }
 
-.layout-row > .flex-70 {
-  flex: 1 1 100%;
-  max-width: 70%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-70 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 70%;
-  box-sizing: border-box; }
-
 .flex-75 {
   flex: 1 1 100%;
   max-width: 75%;
   max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-row > .flex-75 {
-  flex: 1 1 100%;
-  max-width: 75%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-75 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 75%;
   box-sizing: border-box; }
 
 .layout-row > .flex-75 {
@@ -1170,34 +976,10 @@ input {
   max-height: 80%;
   box-sizing: border-box; }
 
-.layout-row > .flex-80 {
-  flex: 1 1 100%;
-  max-width: 80%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-80 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 80%;
-  box-sizing: border-box; }
-
 .flex-85 {
   flex: 1 1 100%;
   max-width: 85%;
   max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-row > .flex-85 {
-  flex: 1 1 100%;
-  max-width: 85%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-85 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 85%;
   box-sizing: border-box; }
 
 .layout-row > .flex-85 {
@@ -1230,18 +1012,6 @@ input {
   max-height: 90%;
   box-sizing: border-box; }
 
-.layout-row > .flex-90 {
-  flex: 1 1 100%;
-  max-width: 90%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-90 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 90%;
-  box-sizing: border-box; }
-
 .flex-95 {
   flex: 1 1 100%;
   max-width: 95%;
@@ -1260,31 +1030,7 @@ input {
   max-height: 95%;
   box-sizing: border-box; }
 
-.layout-row > .flex-95 {
-  flex: 1 1 100%;
-  max-width: 95%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-95 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 95%;
-  box-sizing: border-box; }
-
 .flex-100 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-row > .flex-100 {
-  flex: 1 1 100%;
-  max-width: 100%;
-  max-height: 100%;
-  box-sizing: border-box; }
-
-.layout-column > .flex-100 {
   flex: 1 1 100%;
   max-width: 100%;
   max-height: 100%;
