@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-704e259
+ * v1.1.12-master-d370eb2
  */
 .md-open-menu-container {
   position: fixed;
@@ -48,7 +48,7 @@ md-menu-content {
     max-height: 208px; }
     md-menu-content.md-dense md-menu-item {
       height: 32px;
-      min-height: 0px; }
+      min-height: 32px; }
 
 md-menu-item {
   display: flex;
