@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-9f458f6
+ * v1.1.12-master-704e259
  */
 goog.provide('ngmaterial.components.tabs');
 goog.require('ngmaterial.components.icon');
@@ -1032,8 +1032,9 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    */
   function redirectFocus () {
     ctrl.styleTabItemFocus = ($mdInteraction.getLastInteractionType() === 'keyboard');
-    if (ctrl.focusIndex > 0) {
-      getElements().tabs[ctrl.focusIndex].focus();
+    var tabToFocus = getElements().tabs[ctrl.focusIndex];
+    if (tabToFocus) {
+      tabToFocus.focus();
     }
   }
 
