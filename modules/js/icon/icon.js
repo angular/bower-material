@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.12-master-22d7739
+ * v1.1.12-master-7cde443
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -813,7 +813,7 @@ function MdIconService(config, $templateRequest, $q, $log, $mdUtil, $sce) {
     });
     // innerHTML of SVG elements is not supported by IE11
     if (clone.innerHTML === undefined) {
-      svgElement = $mdUtil.getInnerHTML(clone);
+      svgElement = $mdUtil.getOuterHTML(clone);
       svgElement = svgElement.replace(/(.*url\(#)(\w*)(\).*)/g, addCacheSuffixToId);
       svgElement = svgElement.replace(/(.*xlink:href="#)(\w*)(".*)/g, addCacheSuffixToId);
       clone = angular.element(svgElement)[0];
