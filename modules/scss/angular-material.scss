@@ -1771,6 +1771,233 @@ md-bottom-sheet {
   }
 }
 
+$card-padding: 16px !default;
+$card-box-shadow: $whiteframe-shadow-1dp !default;
+
+md-card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  margin: $baseline-grid;
+
+  box-shadow: $card-box-shadow;
+
+  md-card-header {
+    padding: $card-padding;
+    display: flex;
+    flex-direction: row;
+
+    &:first-child {
+      md-card-avatar {
+       @include rtl-prop(margin-right, margin-left, 12px, auto);
+      }
+    }
+
+    &:last-child {
+      md-card-avatar {
+        @include rtl-prop(margin-left, margin-right, 12px, auto);
+      }
+    }
+
+    md-card-avatar {
+      width: 40px;
+      height: 40px;
+
+      .md-user-avatar,
+      md-icon{
+        border-radius: 50%;
+      }
+
+      md-icon {
+        padding: 8px;
+        > svg {
+          // Safari workaround for any SVG with padded parent
+          height: inherit;
+          width: inherit;
+        }
+      }
+
+      & + md-card-header-text {
+        max-height: 40px;
+
+        .md-title {
+          font-size: 14px;
+        }
+      }
+    }
+
+    md-card-header-text {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+
+      .md-subhead {
+        font-size: 14px;
+      }
+    }
+  }
+
+  > img,
+  > md-card-header img,
+  md-card-title-media img {
+    box-sizing: border-box;
+    display: flex;
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+  }
+
+  md-card-title {
+    padding: 3 * $card-padding / 2 $card-padding $card-padding;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+
+    & + md-card-content {
+      padding-top: 0;
+    }
+
+    md-card-title-text {
+      flex: 1;
+      flex-direction: column;
+      display: flex;
+
+      .md-subhead {
+        padding-top: 0;
+        font-size: 14px;
+      }
+
+      &:only-child {
+        .md-subhead {
+          padding-top: 3 * $card-padding / 4;
+        }
+      }
+    }
+
+    md-card-title-media {
+      margin-top: - $card-padding / 2;
+
+      .md-media-sm {
+        height: 80px;
+        width: 80px;
+      }
+      .md-media-md {
+        height: 112px;
+        width: 112px;
+      }
+      .md-media-lg {
+        height: 152px;
+        width: 152px;
+      }
+    }
+  }
+
+  md-card-content {
+    display: block;
+    padding: $card-padding;
+
+    & > p {
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .md-media-xl {
+      height: 240px;
+      width: 240px;
+    }
+  }
+
+  .md-actions, md-card-actions {
+    margin: $baseline-grid;
+
+    &.layout-column {
+      .md-button {
+        &:not(.md-icon-button) {
+          margin: $baseline-grid / 4 0;
+
+          &:first-of-type {
+            margin-top: 0;
+          }
+
+          &:last-of-type {
+            margin-bottom: 0;
+          }
+        }
+
+        &.md-icon-button {
+          margin-top: 3 * $baseline-grid / 4;
+          margin-bottom: 3 * $baseline-grid / 4;
+        }
+      }
+    }
+
+    md-card-icon-actions {
+      flex: 1;
+      justify-content: flex-start;
+      display: flex;
+      flex-direction: row;
+    }
+
+    &:not(.layout-column) .md-button {
+      &:not(.md-icon-button) {
+        margin: 0 $baseline-grid * .5;
+
+        &:first-of-type {
+          @include rtl-prop(margin-left, margin-right, 0, auto);
+        }
+
+        &:last-of-type {
+          @include rtl-prop(margin-right, margin-left, 0, auto);
+        }
+      }
+
+      &.md-icon-button {
+        margin-left: 3 * $baseline-grid / 4;
+        margin-right: 3 * $baseline-grid / 4;
+
+        &:first-of-type {
+          @include rtl-prop(margin-left, margin-right, 3 * $baseline-grid / 2, auto);
+        }
+
+        &:last-of-type {
+          @include rtl-prop(margin-right, margin-left, 3 * $baseline-grid / 2, auto);
+        }
+      }
+
+      & + md-card-icon-actions {
+        flex: 1;
+        justify-content: flex-end;
+        display: flex;
+        flex-direction: row;
+      }
+    }
+  }
+
+  md-card-footer {
+    margin-top: auto;
+    padding: $card-padding;
+  }
+}
+
+@media screen and (-ms-high-contrast: active) {
+  md-card {
+    border: 1px solid #fff;
+  }
+}
+
+.md-image-no-fill {
+  > img {
+    width: auto;
+    height: auto;
+  }
+}
+
+
 // Material Design Button
 // https://material.google.com/components/buttons.html
 
@@ -2020,233 +2247,6 @@ button.md-button.md-fab {
     border: 1px solid #fff;
   }
 }
-
-$card-padding: 16px !default;
-$card-box-shadow: $whiteframe-shadow-1dp !default;
-
-md-card {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  margin: $baseline-grid;
-
-  box-shadow: $card-box-shadow;
-
-  md-card-header {
-    padding: $card-padding;
-    display: flex;
-    flex-direction: row;
-
-    &:first-child {
-      md-card-avatar {
-       @include rtl-prop(margin-right, margin-left, 12px, auto);
-      }
-    }
-
-    &:last-child {
-      md-card-avatar {
-        @include rtl-prop(margin-left, margin-right, 12px, auto);
-      }
-    }
-
-    md-card-avatar {
-      width: 40px;
-      height: 40px;
-
-      .md-user-avatar,
-      md-icon{
-        border-radius: 50%;
-      }
-
-      md-icon {
-        padding: 8px;
-        > svg {
-          // Safari workaround for any SVG with padded parent
-          height: inherit;
-          width: inherit;
-        }
-      }
-
-      & + md-card-header-text {
-        max-height: 40px;
-
-        .md-title {
-          font-size: 14px;
-        }
-      }
-    }
-
-    md-card-header-text {
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-
-      .md-subhead {
-        font-size: 14px;
-      }
-    }
-  }
-
-  > img,
-  > md-card-header img,
-  md-card-title-media img {
-    box-sizing: border-box;
-    display: flex;
-    flex: 0 0 auto;
-    width: 100%;
-    height: auto;
-  }
-
-  md-card-title {
-    padding: 3 * $card-padding / 2 $card-padding $card-padding;
-    display: flex;
-    flex: 1 1 auto;
-    flex-direction: row;
-
-    & + md-card-content {
-      padding-top: 0;
-    }
-
-    md-card-title-text {
-      flex: 1;
-      flex-direction: column;
-      display: flex;
-
-      .md-subhead {
-        padding-top: 0;
-        font-size: 14px;
-      }
-
-      &:only-child {
-        .md-subhead {
-          padding-top: 3 * $card-padding / 4;
-        }
-      }
-    }
-
-    md-card-title-media {
-      margin-top: - $card-padding / 2;
-
-      .md-media-sm {
-        height: 80px;
-        width: 80px;
-      }
-      .md-media-md {
-        height: 112px;
-        width: 112px;
-      }
-      .md-media-lg {
-        height: 152px;
-        width: 152px;
-      }
-    }
-  }
-
-  md-card-content {
-    display: block;
-    padding: $card-padding;
-
-    & > p {
-      &:first-child {
-        margin-top: 0;
-      }
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-
-    .md-media-xl {
-      height: 240px;
-      width: 240px;
-    }
-  }
-
-  .md-actions, md-card-actions {
-    margin: $baseline-grid;
-
-    &.layout-column {
-      .md-button {
-        &:not(.md-icon-button) {
-          margin: $baseline-grid / 4 0;
-
-          &:first-of-type {
-            margin-top: 0;
-          }
-
-          &:last-of-type {
-            margin-bottom: 0;
-          }
-        }
-
-        &.md-icon-button {
-          margin-top: 3 * $baseline-grid / 4;
-          margin-bottom: 3 * $baseline-grid / 4;
-        }
-      }
-    }
-
-    md-card-icon-actions {
-      flex: 1;
-      justify-content: flex-start;
-      display: flex;
-      flex-direction: row;
-    }
-
-    &:not(.layout-column) .md-button {
-      &:not(.md-icon-button) {
-        margin: 0 $baseline-grid * .5;
-
-        &:first-of-type {
-          @include rtl-prop(margin-left, margin-right, 0, auto);
-        }
-
-        &:last-of-type {
-          @include rtl-prop(margin-right, margin-left, 0, auto);
-        }
-      }
-
-      &.md-icon-button {
-        margin-left: 3 * $baseline-grid / 4;
-        margin-right: 3 * $baseline-grid / 4;
-
-        &:first-of-type {
-          @include rtl-prop(margin-left, margin-right, 3 * $baseline-grid / 2, auto);
-        }
-
-        &:last-of-type {
-          @include rtl-prop(margin-right, margin-left, 3 * $baseline-grid / 2, auto);
-        }
-      }
-
-      & + md-card-icon-actions {
-        flex: 1;
-        justify-content: flex-end;
-        display: flex;
-        flex-direction: row;
-      }
-    }
-  }
-
-  md-card-footer {
-    margin-top: auto;
-    padding: $card-padding;
-  }
-}
-
-@media screen and (-ms-high-contrast: active) {
-  md-card {
-    border: 1px solid #fff;
-  }
-}
-
-.md-image-no-fill {
-  > img {
-    width: auto;
-    height: auto;
-  }
-}
-
 
 //$checkbox-width: 20px !default;
 //$checkbox-height: $checkbox-width !default;
@@ -2993,30 +2993,6 @@ md-datepicker[disabled] {
   }
 }
 
-md-divider {
-  display: block;
-  border-top-width: 1px;
-  border-top-style: solid;
-  margin: 0;
-
-  &[md-inset] {
-    @include rtl-prop(margin-left, margin-right, $baseline-grid * 10, auto);
-  }
-}
-
-.layout-row,
-.layout-xs-row, .layout-gt-xs-row,
-.layout-sm-row, .layout-gt-sm-row,
-.layout-md-row, .layout-gt-md-row,
-.layout-lg-row, .layout-gt-lg-row,
-.layout-xl-row {
-  & > md-divider {
-    border-top-width: 0;
-    border-right-width: 1px;
-    border-right-style: solid;
-  }
-}
-
 $dialog-padding: $baseline-grid * 3 !default;
 
 .md-dialog-is-showing {
@@ -3138,6 +3114,30 @@ md-dialog {
     min-height: 100%;
     min-width: 100%;
     border-radius: 0;
+  }
+}
+
+md-divider {
+  display: block;
+  border-top-width: 1px;
+  border-top-style: solid;
+  margin: 0;
+
+  &[md-inset] {
+    @include rtl-prop(margin-left, margin-right, $baseline-grid * 10, auto);
+  }
+}
+
+.layout-row,
+.layout-xs-row, .layout-gt-xs-row,
+.layout-sm-row, .layout-gt-sm-row,
+.layout-md-row, .layout-gt-md-row,
+.layout-lg-row, .layout-gt-lg-row,
+.layout-xl-row {
+  & > md-divider {
+    border-top-width: 0;
+    border-right-width: 1px;
+    border-right-style: solid;
   }
 }
 
@@ -4530,77 +4530,6 @@ md-toolbar {
 }
 
 
-/** Matches "md-tabs md-tabs-wrapper" style. */
-$md-nav-bar-height: 48px;
-
-.md-nav-bar {
-  border-style: solid;
-  border-width: 0 0 1px;
-  height: $md-nav-bar-height;
-  position: relative;
-}
-
-._md-nav-bar-list {
-  outline: none;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-
-  // Layout [layout='row']
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-}
-
-.md-nav-item:first-of-type {
-  margin-left: 8px;
-}
-
-// override button styles to look more like tabs
-.md-button._md-nav-button {
-  line-height: 24px;
-  margin: 0 4px;
-  padding: 12px 16px;
-  transition: background-color 0.35s $swift-ease-in-out-timing-function;
-
-  &:focus {
-    outline: none;
-  }
-}
-
-md-nav-ink-bar {
-  $duration: $swift-ease-in-out-duration * 0.5;
-  $multiplier: 0.5;
-  bottom: 0;
-  height: 2px;
-  left: auto;
-  position: absolute;
-  right: auto;
-  background-color: black;
-
-  &._md-left {
-    transition: left ($duration * $multiplier) $swift-ease-in-out-timing-function,
-        right $duration $swift-ease-in-out-timing-function;
-  }
-  &._md-right {
-    transition: left $duration $swift-ease-in-out-timing-function,
-        right ($duration * $multiplier) $swift-ease-in-out-timing-function;
-  }
-
-  // By default $ngAnimate looks for transition durations on the element, when using ng-hide, ng-if, ng-show.
-  // The ink bar has a transition duration applied, which means, that $ngAnimate delays the hide process.
-  // To avoid this, we need to reset the transition, when $ngAnimate looks for the duration.
-  &.ng-animate {
-    transition: none;
-  }
-
-}
-
-md-nav-extra-content {
-  min-height: 48px;
-  padding-right: 12px;
-}
-
 md-toolbar {
   &.md-menu-toolbar {
     h2.md-toolbar-tools {
@@ -4699,6 +4628,77 @@ md-menu-content.md-menu-bar-menu.md-dense {
       }
     }
   }
+}
+
+/** Matches "md-tabs md-tabs-wrapper" style. */
+$md-nav-bar-height: 48px;
+
+.md-nav-bar {
+  border-style: solid;
+  border-width: 0 0 1px;
+  height: $md-nav-bar-height;
+  position: relative;
+}
+
+._md-nav-bar-list {
+  outline: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  // Layout [layout='row']
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+}
+
+.md-nav-item:first-of-type {
+  margin-left: 8px;
+}
+
+// override button styles to look more like tabs
+.md-button._md-nav-button {
+  line-height: 24px;
+  margin: 0 4px;
+  padding: 12px 16px;
+  transition: background-color 0.35s $swift-ease-in-out-timing-function;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+md-nav-ink-bar {
+  $duration: $swift-ease-in-out-duration * 0.5;
+  $multiplier: 0.5;
+  bottom: 0;
+  height: 2px;
+  left: auto;
+  position: absolute;
+  right: auto;
+  background-color: black;
+
+  &._md-left {
+    transition: left ($duration * $multiplier) $swift-ease-in-out-timing-function,
+        right $duration $swift-ease-in-out-timing-function;
+  }
+  &._md-right {
+    transition: left $duration $swift-ease-in-out-timing-function,
+        right ($duration * $multiplier) $swift-ease-in-out-timing-function;
+  }
+
+  // By default $ngAnimate looks for transition durations on the element, when using ng-hide, ng-if, ng-show.
+  // The ink bar has a transition duration applied, which means, that $ngAnimate delays the hide process.
+  // To avoid this, we need to reset the transition, when $ngAnimate looks for the duration.
+  &.ng-animate {
+    transition: none;
+  }
+
+}
+
+md-nav-extra-content {
+  min-height: 48px;
+  padding-right: 12px;
 }
 
 $progress-circular-indeterminate-duration: 1568.63ms !default;
@@ -6349,303 +6349,6 @@ md-switch {
   }
 }
 
-$tabs-paginator-width: $baseline-grid * 4 !default;
-$tabs-tab-width: $baseline-grid * 12 !default;
-$tabs-header-height: 48px !default;
-
-@keyframes md-tab-content-hide {
-  0% { opacity: 1; }
-  50% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-md-tab-data {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
-  opacity: 0;
-}
-
-md-tabs {
-  display: block;
-  margin: 0;
-  border-radius: 2px;
-  overflow: hidden;
-  position: relative;
-  flex-shrink: 0;
-  &:not(.md-no-tab-content):not(.md-dynamic-height) {
-    min-height: 200 + $tabs-header-height;
-  }
-  &[md-align-tabs="bottom"] {
-    padding-bottom: $tabs-header-height;
-    md-tabs-wrapper {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: $tabs-header-height;
-      z-index: 2;
-    }
-    md-tabs-content-wrapper {
-      top: 0;
-      bottom: $tabs-header-height;
-    }
-  }
-  &.md-dynamic-height {
-    md-tabs-content-wrapper {
-      min-height: 0;
-      position: relative;
-      top: auto;
-      left: auto;
-      right: auto;
-      bottom: auto;
-      overflow: visible;
-    }
-    md-tab-content {
-      &.md-active {
-        position: relative;
-      }
-    }
-  }
-  &[md-border-bottom] {
-    md-tabs-wrapper {
-      border-width: 0 0 1px;
-      border-style: solid;
-    }
-    &:not(.md-dynamic-height) {
-      md-tabs-content-wrapper {
-        top: $tabs-header-height + 1;
-      }
-    }
-  }
-}
-
-md-tabs-wrapper {
-  display: block;
-  position: relative;
-  // transform is needed for iOS Safari to prevent content from disappearing on scroll
-  transform: translate(0, 0);
-  md-prev-button, md-next-button {
-    height: 100%;
-    width: $tabs-paginator-width;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    line-height: 1em;
-    z-index: 2;
-    cursor: pointer;
-    font-size: 16px;
-    background: transparent no-repeat center center;
-    transition: $swift-ease-in-out;
-    &:focus {
-      outline: none;
-    }
-    &.md-disabled {
-      opacity: 0.25;
-      cursor: default;
-    }
-    &.ng-leave {
-      transition: none;
-    }
-    md-icon {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    // For RTL tabs, rotate the buttons
-    [dir="rtl"] & {
-      transform: rotateY(180deg) translateY(-50%);
-    }
-  }
-  md-prev-button {
-    @include rtl-prop(left, right, 0, auto);
-    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE3LjEuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPiA8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPiA8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSIyNHB4IiBoZWlnaHQ9IjI0cHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjQgMjQiIHhtbDpzcGFjZT0icHJlc2VydmUiPiA8ZyBpZD0iSGVhZGVyIj4gPGc+IDxyZWN0IHg9Ii02MTgiIHk9Ii0xMjA4IiBmaWxsPSJub25lIiB3aWR0aD0iMTQwMCIgaGVpZ2h0PSIzNjAwIi8+IDwvZz4gPC9nPiA8ZyBpZD0iTGFiZWwiPiA8L2c+IDxnIGlkPSJJY29uIj4gPGc+IDxwb2x5Z29uIHBvaW50cz0iMTUuNCw3LjQgMTQsNiA4LDEyIDE0LDE4IDE1LjQsMTYuNiAxMC44LDEyIAkJIiBzdHlsZT0iZmlsbDp3aGl0ZTsiLz4gPHJlY3QgZmlsbD0ibm9uZSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ii8+IDwvZz4gPC9nPiA8ZyBpZD0iR3JpZCIgZGlzcGxheT0ibm9uZSI+IDxnIGRpc3BsYXk9ImlubGluZSI+IDwvZz4gPC9nPiA8L3N2Zz4NCg==');
-  }
-  md-next-button {
-    @include rtl-prop(right, left, 0, auto);
-    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE3LjEuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPiA8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPiA8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSIyNHB4IiBoZWlnaHQ9IjI0cHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjQgMjQiIHhtbDpzcGFjZT0icHJlc2VydmUiPiA8ZyBpZD0iSGVhZGVyIj4gPGc+IDxyZWN0IHg9Ii02MTgiIHk9Ii0xMzM2IiBmaWxsPSJub25lIiB3aWR0aD0iMTQwMCIgaGVpZ2h0PSIzNjAwIi8+IDwvZz4gPC9nPiA8ZyBpZD0iTGFiZWwiPiA8L2c+IDxnIGlkPSJJY29uIj4gPGc+IDxwb2x5Z29uIHBvaW50cz0iMTAsNiA4LjYsNy40IDEzLjIsMTIgOC42LDE2LjYgMTAsMTggMTYsMTIgCQkiIHN0eWxlPSJmaWxsOndoaXRlOyIvPiA8cmVjdCBmaWxsPSJub25lIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiLz4gPC9nPiA8L2c+IDxnIGlkPSJHcmlkIiBkaXNwbGF5PSJub25lIj4gPGcgZGlzcGxheT0iaW5saW5lIj4gPC9nPiA8L2c+IDwvc3ZnPg0K');
-
-    // In regular mode, we need to flip the chevron icon to point the other way
-    md-icon {
-      transform: translate(-50%, -50%) rotate(180deg);
-    }
-  }
-  &.md-stretch-tabs {
-    md-pagination-wrapper {
-      width: 100%;
-      flex-direction: row;
-      md-tab-item {
-        flex-grow: 1;
-      }
-    }
-  }
-}
-
-md-tabs-canvas {
-  @include pie-clearfix;
-  position: relative;
-  overflow: hidden;
-  display: block;
-  height: $tabs-header-height;
-  .md-dummy-wrapper {
-    position: absolute;
-    top: 0;
-    @include rtl-prop(left, right, 0, auto);
-  }
-  &.md-paginated {
-    margin: 0 $tabs-paginator-width;
-  }
-  &.md-center-tabs {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    .md-tab {
-      float: none;
-      display: inline-block;
-    }
-  }
-}
-
-md-pagination-wrapper {
-  @include pie-clearfix;
-  height: $tabs-header-height;
-  display: flex;
-  transition: transform $swift-ease-in-out-duration $swift-ease-in-out-timing-function;
-  position: absolute;
-  @include rtl-prop(left, right, 0, auto);
-  transform: translate(0, 0);
-  &.md-center-tabs {
-    position: relative;
-    justify-content: center;
-  }
-}
-
-md-tabs-content-wrapper {
-  display: block;
-  position: absolute;
-  top: $tabs-header-height;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-}
-
-md-tab-content {
-  display: flex;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  transition: transform $swift-ease-in-out-duration $swift-ease-in-out-timing-function;
-  overflow: auto;
-  // transform is needed for iOS Safari to prevent content from disappearing on scroll
-  transform: translate(0, 0);
-  &.md-no-scroll {
-    bottom: auto;
-    overflow: hidden;
-  }
-  &.ng-leave, &.md-no-transition {
-    transition: none;
-  }
-  &.md-left:not(.md-active) {
-    @include rtl(transform, translateX(-100%), translateX(+100%));
-    animation: 2 * $swift-ease-in-out-duration md-tab-content-hide;
-    visibility: hidden;
-    * {
-      transition: visibility 0s linear;
-      transition-delay: $swift-ease-in-out-duration;
-      visibility: hidden;
-    }
-  }
-  &.md-right:not(.md-active) {
-    @include rtl(transform, translateX(100%), translateX(-100%));
-    animation: 2 * $swift-ease-in-out-duration md-tab-content-hide;
-    visibility: hidden;
-    * {
-      transition: visibility 0s linear;
-      transition-delay: $swift-ease-in-out-duration;
-      visibility: hidden;
-    }
-  }
-  > div {
-    flex: 1 0 100%;
-    min-width: 0;
-    &.ng-leave {
-      animation: 2 * $swift-ease-in-out-duration md-tab-content-hide;
-    }
-  }
-}
-
-md-ink-bar {
-  $duration: $swift-ease-in-out-duration * 0.5;
-  $multiplier: 0.5;
-  position: absolute;
-  left: auto;
-  right: auto;
-  bottom: 0;
-  height: 2px;
-  &.md-left {
-    transition: left ($duration * $multiplier) $swift-ease-in-out-timing-function,
-        right $duration $swift-ease-in-out-timing-function;
-  }
-  &.md-right {
-    transition: left $duration $swift-ease-in-out-timing-function,
-        right ($duration * $multiplier) $swift-ease-in-out-timing-function;
-  }
-}
-
-md-tab {
-  position: absolute;
-  z-index: -1;
-  left: -9999px;
-}
-
-.md-tab {
-  font-size: 14px;
-  text-align: center;
-  line-height: $tabs-header-height - 24;
-  padding: 12px 24px;
-  transition: background-color 0.35s $swift-ease-in-out-timing-function;
-  cursor: pointer;
-  white-space: nowrap;
-  position: relative;
-  text-transform: uppercase;
-  @include rtl(float, left, right);
-  font-weight: 500;
-  box-sizing: border-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  &.md-focused, &:focus {
-    box-shadow: none;
-    outline: none;
-  }
-  &.md-active {
-    cursor: default;
-  }
-  &.md-disabled {
-    pointer-events: none;
-    touch-action: pan-y;
-    user-select: none;
-    -webkit-user-drag: none;
-    opacity: 0.5;
-    cursor: default;
-  }
-  &.ng-leave {
-    transition: none;
-  }
-}
-
-md-toolbar + md-tabs, md-toolbar + md-dialog-content md-tabs {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-
 // See height set globally, depended on by buttons
 
 $md-toast-content-padding: 3 * $baseline-grid - $button-left-right-padding !default;
@@ -7061,6 +6764,303 @@ md-toolbar {
   }
 }
 
+
+$tabs-paginator-width: $baseline-grid * 4 !default;
+$tabs-tab-width: $baseline-grid * 12 !default;
+$tabs-header-height: 48px !default;
+
+@keyframes md-tab-content-hide {
+  0% { opacity: 1; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+md-tab-data {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  opacity: 0;
+}
+
+md-tabs {
+  display: block;
+  margin: 0;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  &:not(.md-no-tab-content):not(.md-dynamic-height) {
+    min-height: 200 + $tabs-header-height;
+  }
+  &[md-align-tabs="bottom"] {
+    padding-bottom: $tabs-header-height;
+    md-tabs-wrapper {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: $tabs-header-height;
+      z-index: 2;
+    }
+    md-tabs-content-wrapper {
+      top: 0;
+      bottom: $tabs-header-height;
+    }
+  }
+  &.md-dynamic-height {
+    md-tabs-content-wrapper {
+      min-height: 0;
+      position: relative;
+      top: auto;
+      left: auto;
+      right: auto;
+      bottom: auto;
+      overflow: visible;
+    }
+    md-tab-content {
+      &.md-active {
+        position: relative;
+      }
+    }
+  }
+  &[md-border-bottom] {
+    md-tabs-wrapper {
+      border-width: 0 0 1px;
+      border-style: solid;
+    }
+    &:not(.md-dynamic-height) {
+      md-tabs-content-wrapper {
+        top: $tabs-header-height + 1;
+      }
+    }
+  }
+}
+
+md-tabs-wrapper {
+  display: block;
+  position: relative;
+  // transform is needed for iOS Safari to prevent content from disappearing on scroll
+  transform: translate(0, 0);
+  md-prev-button, md-next-button {
+    height: 100%;
+    width: $tabs-paginator-width;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    line-height: 1em;
+    z-index: 2;
+    cursor: pointer;
+    font-size: 16px;
+    background: transparent no-repeat center center;
+    transition: $swift-ease-in-out;
+    &:focus {
+      outline: none;
+    }
+    &.md-disabled {
+      opacity: 0.25;
+      cursor: default;
+    }
+    &.ng-leave {
+      transition: none;
+    }
+    md-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    // For RTL tabs, rotate the buttons
+    [dir="rtl"] & {
+      transform: rotateY(180deg) translateY(-50%);
+    }
+  }
+  md-prev-button {
+    @include rtl-prop(left, right, 0, auto);
+    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE3LjEuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPiA8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPiA8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSIyNHB4IiBoZWlnaHQ9IjI0cHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjQgMjQiIHhtbDpzcGFjZT0icHJlc2VydmUiPiA8ZyBpZD0iSGVhZGVyIj4gPGc+IDxyZWN0IHg9Ii02MTgiIHk9Ii0xMjA4IiBmaWxsPSJub25lIiB3aWR0aD0iMTQwMCIgaGVpZ2h0PSIzNjAwIi8+IDwvZz4gPC9nPiA8ZyBpZD0iTGFiZWwiPiA8L2c+IDxnIGlkPSJJY29uIj4gPGc+IDxwb2x5Z29uIHBvaW50cz0iMTUuNCw3LjQgMTQsNiA4LDEyIDE0LDE4IDE1LjQsMTYuNiAxMC44LDEyIAkJIiBzdHlsZT0iZmlsbDp3aGl0ZTsiLz4gPHJlY3QgZmlsbD0ibm9uZSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ii8+IDwvZz4gPC9nPiA8ZyBpZD0iR3JpZCIgZGlzcGxheT0ibm9uZSI+IDxnIGRpc3BsYXk9ImlubGluZSI+IDwvZz4gPC9nPiA8L3N2Zz4NCg==');
+  }
+  md-next-button {
+    @include rtl-prop(right, left, 0, auto);
+    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE3LjEuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPiA8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPiA8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSIyNHB4IiBoZWlnaHQ9IjI0cHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjQgMjQiIHhtbDpzcGFjZT0icHJlc2VydmUiPiA8ZyBpZD0iSGVhZGVyIj4gPGc+IDxyZWN0IHg9Ii02MTgiIHk9Ii0xMzM2IiBmaWxsPSJub25lIiB3aWR0aD0iMTQwMCIgaGVpZ2h0PSIzNjAwIi8+IDwvZz4gPC9nPiA8ZyBpZD0iTGFiZWwiPiA8L2c+IDxnIGlkPSJJY29uIj4gPGc+IDxwb2x5Z29uIHBvaW50cz0iMTAsNiA4LjYsNy40IDEzLjIsMTIgOC42LDE2LjYgMTAsMTggMTYsMTIgCQkiIHN0eWxlPSJmaWxsOndoaXRlOyIvPiA8cmVjdCBmaWxsPSJub25lIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiLz4gPC9nPiA8L2c+IDxnIGlkPSJHcmlkIiBkaXNwbGF5PSJub25lIj4gPGcgZGlzcGxheT0iaW5saW5lIj4gPC9nPiA8L2c+IDwvc3ZnPg0K');
+
+    // In regular mode, we need to flip the chevron icon to point the other way
+    md-icon {
+      transform: translate(-50%, -50%) rotate(180deg);
+    }
+  }
+  &.md-stretch-tabs {
+    md-pagination-wrapper {
+      width: 100%;
+      flex-direction: row;
+      md-tab-item {
+        flex-grow: 1;
+      }
+    }
+  }
+}
+
+md-tabs-canvas {
+  @include pie-clearfix;
+  position: relative;
+  overflow: hidden;
+  display: block;
+  height: $tabs-header-height;
+  .md-dummy-wrapper {
+    position: absolute;
+    top: 0;
+    @include rtl-prop(left, right, 0, auto);
+  }
+  &.md-paginated {
+    margin: 0 $tabs-paginator-width;
+  }
+  &.md-center-tabs {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    .md-tab {
+      float: none;
+      display: inline-block;
+    }
+  }
+}
+
+md-pagination-wrapper {
+  @include pie-clearfix;
+  height: $tabs-header-height;
+  display: flex;
+  transition: transform $swift-ease-in-out-duration $swift-ease-in-out-timing-function;
+  position: absolute;
+  @include rtl-prop(left, right, 0, auto);
+  transform: translate(0, 0);
+  &.md-center-tabs {
+    position: relative;
+    justify-content: center;
+  }
+}
+
+md-tabs-content-wrapper {
+  display: block;
+  position: absolute;
+  top: $tabs-header-height;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+md-tab-content {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: transform $swift-ease-in-out-duration $swift-ease-in-out-timing-function;
+  overflow: auto;
+  // transform is needed for iOS Safari to prevent content from disappearing on scroll
+  transform: translate(0, 0);
+  &.md-no-scroll {
+    bottom: auto;
+    overflow: hidden;
+  }
+  &.ng-leave, &.md-no-transition {
+    transition: none;
+  }
+  &.md-left:not(.md-active) {
+    @include rtl(transform, translateX(-100%), translateX(+100%));
+    animation: 2 * $swift-ease-in-out-duration md-tab-content-hide;
+    visibility: hidden;
+    * {
+      transition: visibility 0s linear;
+      transition-delay: $swift-ease-in-out-duration;
+      visibility: hidden;
+    }
+  }
+  &.md-right:not(.md-active) {
+    @include rtl(transform, translateX(100%), translateX(-100%));
+    animation: 2 * $swift-ease-in-out-duration md-tab-content-hide;
+    visibility: hidden;
+    * {
+      transition: visibility 0s linear;
+      transition-delay: $swift-ease-in-out-duration;
+      visibility: hidden;
+    }
+  }
+  > div {
+    flex: 1 0 100%;
+    min-width: 0;
+    &.ng-leave {
+      animation: 2 * $swift-ease-in-out-duration md-tab-content-hide;
+    }
+  }
+}
+
+md-ink-bar {
+  $duration: $swift-ease-in-out-duration * 0.5;
+  $multiplier: 0.5;
+  position: absolute;
+  left: auto;
+  right: auto;
+  bottom: 0;
+  height: 2px;
+  &.md-left {
+    transition: left ($duration * $multiplier) $swift-ease-in-out-timing-function,
+        right $duration $swift-ease-in-out-timing-function;
+  }
+  &.md-right {
+    transition: left $duration $swift-ease-in-out-timing-function,
+        right ($duration * $multiplier) $swift-ease-in-out-timing-function;
+  }
+}
+
+md-tab {
+  position: absolute;
+  z-index: -1;
+  left: -9999px;
+}
+
+.md-tab {
+  font-size: 14px;
+  text-align: center;
+  line-height: $tabs-header-height - 24;
+  padding: 12px 24px;
+  transition: background-color 0.35s $swift-ease-in-out-timing-function;
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  text-transform: uppercase;
+  @include rtl(float, left, right);
+  font-weight: 500;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  &.md-focused, &:focus {
+    box-shadow: none;
+    outline: none;
+  }
+  &.md-active {
+    cursor: default;
+  }
+  &.md-disabled {
+    pointer-events: none;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-drag: none;
+    opacity: 0.5;
+    cursor: default;
+  }
+  &.ng-leave {
+    transition: none;
+  }
+}
+
+md-toolbar + md-tabs, md-toolbar + md-dialog-content md-tabs {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
 
 $tooltip-fontsize-lg: 10px !default;
 $tooltip-fontsize-sm: 14px !default;
