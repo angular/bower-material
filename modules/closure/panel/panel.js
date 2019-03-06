@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.13-master-371d5a0
+ * v1.1.13-master-3cf4d74
  */
 goog.provide('ngmaterial.components.panel');
 goog.require('ngmaterial.components.backdrop');
@@ -1177,7 +1177,7 @@ MdPanelService.prototype.create = function(preset, config) {
 
   // Create the panelRef and add it to the `_trackedPanels` object.
   var panelRef = new MdPanelRef(this._config, this._$injector);
-  this._trackedPanels[config.id] = panelRef;
+  this._trackedPanels[this._config.id] = panelRef;
 
   // Add the panel to each of its requested groups.
   if (this._config.groupName) {
