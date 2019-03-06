@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.13-master-163b762
+ * v1.1.13-master-371d5a0
  */
 goog.provide('ngmaterial.components.dialog');
 goog.require('ngmaterial.components.backdrop');
@@ -977,7 +977,7 @@ function MdDialogProvider($$interimElementProvider) {
         var parentTarget = options.parent;
         var keyHandlerFn = function(ev) {
           if (ev.keyCode === $mdConstant.KEY_CODE.ESCAPE) {
-            ev.stopPropagation();
+            ev.stopImmediatePropagation();
             ev.preventDefault();
 
             smartClose();

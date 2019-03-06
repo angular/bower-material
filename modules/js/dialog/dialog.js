@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.13-master-163b762
+ * v1.1.13-master-371d5a0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -977,7 +977,7 @@ function MdDialogProvider($$interimElementProvider) {
         var parentTarget = options.parent;
         var keyHandlerFn = function(ev) {
           if (ev.keyCode === $mdConstant.KEY_CODE.ESCAPE) {
-            ev.stopPropagation();
+            ev.stopImmediatePropagation();
             ev.preventDefault();
 
             smartClose();
