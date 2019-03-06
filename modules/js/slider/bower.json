@@ -1,7 +1,7 @@
 {
   "name": "angular-material-slider",
-  "version": "1.1.13-master-649116b",
+  "version": "1.1.13-master-686b365",
   "dependencies": {
-    "angular-material-core": "1.1.13-master-649116b"
+    "angular-material-core": "1.1.13-master-686b365"
   }
 }
