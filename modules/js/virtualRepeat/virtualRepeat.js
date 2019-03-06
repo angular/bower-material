@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.13-master-3cf4d74
+ * v1.1.13-master-649116b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -405,11 +405,7 @@ VirtualRepeatContainerController.prototype.handleScroll_ = function() {
   var offset = this.isHorizontal() ?
       (ltr?this.scroller.scrollLeft : this.maxSize - this.scroller.scrollLeft)
       : this.scroller.scrollTop;
-  if (this.scrollSize < this.size) return;
-  if (offset > this.scrollSize - this.size) {
-    offset = this.scrollSize - this.size;
-  }
-  if (offset === this.scrollOffset) return;
+  if (offset === this.scrollOffset || offset > this.scrollSize - this.size) return;
 
   var itemSize = this.repeater.getItemSize();
   if (!itemSize) return;
