@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.13-master-ddcbb2e
+ * v1.1.13-master-d56d0e7
  */
 $font-family: Roboto, 'Helvetica Neue', sans-serif !default;
 $font-size:   10px !default;
@@ -94,7 +94,7 @@ $checkbox-border-width: 2px !default;
 // Typography
 // ------------------------------
 
-//-- Must be defined before $font-size.
+//-- Must be defined after $font-size and before variables that depend on the function.
 @function rem($multiplier) {
   @return $multiplier * $font-size;
 }
