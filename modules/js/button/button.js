@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.13-master-d56d0e7
+ * v1.1.13-master-ec9aa25
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -157,9 +157,10 @@ function MdButtonDirective($mdButtonInkRipple, $mdTheming, $mdAria, $mdInteracti
     // Use async expect to support possible bindings in the button label
     $mdAria.expectWithoutText(element, 'aria-label');
 
-    // For anchor elements, we have to set tabindex manually when the
-    // element is disabled
-    if (isAnchor(attr) && angular.isDefined(attr.ngDisabled)) {
+    // For anchor elements, we have to set tabindex manually when the element is disabled.
+    // We don't do this for md-nav-bar anchors as the component manages its own tabindex values.
+    if (isAnchor(attr) && angular.isDefined(attr.ngDisabled) &&
+        !element.hasClass('_md-nav-button')) {
       scope.$watch(attr.ngDisabled, function(isDisabled) {
         element.attr('tabindex', isDisabled ? -1 : 0);
       });
