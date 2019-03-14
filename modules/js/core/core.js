@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.13-master-ec9aa25
+ * v1.1.13-master-e9e9ece
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3605,7 +3605,7 @@ function canFocus(element) {
  * @description
  * User interaction detection to provide proper accessibility.
  */
-MdInteractionService['$inject'] = ["$timeout", "$mdUtil"];
+MdInteractionService['$inject'] = ["$timeout", "$mdUtil", "$rootScope"];
 angular
   .module('material.core.interaction', [])
   .service('$mdInteraction', MdInteractionService);
@@ -3635,15 +3635,20 @@ angular
  * </hljs>
  *
  */
-function MdInteractionService($timeout, $mdUtil) {
+function MdInteractionService($timeout, $mdUtil, $rootScope) {
   this.$timeout = $timeout;
   this.$mdUtil = $mdUtil;
+  this.$rootScope = $rootScope;
 
+  // IE browsers can also trigger pointer events, which also leads to an interaction.
+  this.pointerEvent = 'MSPointerEvent' in window ? 'MSPointerDown' : 'PointerEvent' in window ? 'pointerdown' : null;
   this.bodyElement = angular.element(document.body);
   this.isBuffering = false;
   this.bufferTimeout = null;
   this.lastInteractionType = null;
   this.lastInteractionTime = null;
+  this.inputHandler = this.onInputEvent.bind(this);
+  this.bufferedInputHandler = this.onBufferInputEvent.bind(this);
 
   // Type Mappings for the different events
   // There will be three three interaction types
@@ -3667,24 +3672,41 @@ function MdInteractionService($timeout, $mdUtil) {
   };
 
   this.initializeEvents();
+  this.$rootScope.$on('$destroy', this.deregister.bind(this));
 }
+
+/**
+ * Removes all event listeners created by $mdInteration on the
+ * body element.
+ */
+MdInteractionService.prototype.deregister = function() {
+
+    this.bodyElement.off('keydown mousedown', this.inputHandler);
+
+    if ('ontouchstart' in document.documentElement) {
+      this.bodyElement.off('touchstart', this.bufferedInputHandler);
+    }
+
+    if (this.pointerEvent) {
+      this.bodyElement.off(this.pointerEvent, this.inputHandler);
+    }
+
+};
 
 /**
  * Initializes the interaction service, by registering all interaction events to the
  * body element.
  */
 MdInteractionService.prototype.initializeEvents = function() {
-  // IE browsers can also trigger pointer events, which also leads to an interaction.
-  var pointerEvent = 'MSPointerEvent' in window ? 'MSPointerDown' : 'PointerEvent' in window ? 'pointerdown' : null;
 
-  this.bodyElement.on('keydown mousedown', this.onInputEvent.bind(this));
+  this.bodyElement.on('keydown mousedown', this.inputHandler);
 
   if ('ontouchstart' in document.documentElement) {
-    this.bodyElement.on('touchstart', this.onBufferInputEvent.bind(this));
+    this.bodyElement.on('touchstart', this.bufferedInputHandler);
   }
 
-  if (pointerEvent) {
-    this.bodyElement.on(pointerEvent, this.onInputEvent.bind(this));
+  if (this.pointerEvent) {
+    this.bodyElement.on(this.pointerEvent, this.inputHandler);
   }
 
 };
