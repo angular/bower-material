@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.13-master-e9e9ece
+ * v1.1.13-master-b9b63f9
  */
 goog.provide('ngmaterial.components.colors');
 goog.require('ngmaterial.core');
@@ -36,9 +36,10 @@ goog.require('ngmaterial.core');
    * @module material.components.colors
    *
    * @description
-   * With only defining themes, one couldn't get non AngularJS Material elements colored with Material colors,
-   * `$mdColors` service is used by the md-color directive to convert the 1..n color expressions to RGBA values and will apply
-   * those values to element as CSS property values.
+   * With only defining themes, one couldn't get non AngularJS Material elements colored with
+   * Material colors, `$mdColors` service is used by the md-color directive to convert the
+   * 1..n color expressions to RGBA values and will apply those values to element as CSS property
+   * values.
    *
    *  @usage
    *  <hljs lang="js">
@@ -71,9 +72,9 @@ goog.require('ngmaterial.core');
      * Gets a color json object, keys are css properties and values are string of the wanted color
      * Then calculate the rgba() values based on the theme color parts
      *
-     * @param {DOMElement} element the element to apply the styles on.
-     * @param {object} colorExpression json object, keys are css properties and values are string of the wanted color,
-     * for example: `{color: 'red-A200-0.3'}`.
+     * @param {angular.element} element the element to apply the styles on.
+     * @param {Object} colorExpression json object, keys are css properties and values are string of
+     * the wanted color, for example: `{color: 'red-A200-0.3'}`.
      *
      * @usage
      * <hljs lang="js">
@@ -96,7 +97,6 @@ goog.require('ngmaterial.core');
       } catch (e) {
         $log.error(e.message);
       }
-
     }
 
     /**
@@ -126,9 +126,10 @@ goog.require('ngmaterial.core');
 
     /**
      * Return the parsed color
-     * @param color hashmap of color definitions
-     * @param contrast whether use contrast color for foreground
-     * @returns rgba color string
+     * @param {{hue: *, theme: any, palette: *, opacity: (*|string|number)}} color hash map of color
+     *  definitions
+     * @param {boolean=} contrast whether use contrast color for foreground. Defaults to false.
+     * @returns {string} rgba color string
      */
     function parseColor(color, contrast) {
       contrast = contrast || false;
@@ -144,10 +145,9 @@ goog.require('ngmaterial.core');
     /**
      * Convert the color expression into an object with scope-interpolated values
      * Then calculate the rgba() values based on the theme color parts
-     *
-     * @results Hashmap of CSS properties with associated `rgba( )` string vales
-     *
-     *
+     * @param {Object} themeColors json object, keys are css properties and values are string of
+     * the wanted color, for example: `{color: 'red-A200-0.3'}`.
+     * @return {Object} Hashmap of CSS properties with associated `rgba()` string values
      */
     function interpolateColors(themeColors) {
       var rgbColors = {};
@@ -169,9 +169,12 @@ goog.require('ngmaterial.core');
 
     /**
      * Check if expression has defined theme
-     * e.g.
-     * 'myTheme-primary' => true
-     * 'red-800' => false
+     * For instance:
+     *   'myTheme-primary' => true
+     *   'red-800' => false
+     * @param {string} expression color expression like 'red-800', 'red-A200-0.3',
+     *   'myTheme-primary', or 'myTheme-primary-400'
+     * @return {boolean} true if the expression has a theme part, false otherwise.
      */
     function hasTheme(expression) {
       return angular.isDefined($mdTheming.THEMES[expression.split('-')[0]]);
@@ -179,6 +182,9 @@ goog.require('ngmaterial.core');
 
     /**
      * For the evaluated expression, extract the color parts into a hash map
+     * @param {string} expression color expression like 'red-800', 'red-A200-0.3',
+     *   'myTheme-primary', or 'myTheme-primary-400'
+     * @returns {{hue: *, theme: any, palette: *, opacity: (*|string|number)}}
      */
     function extractColorOptions(expression) {
       var parts = expression.split('-');
@@ -195,6 +201,9 @@ goog.require('ngmaterial.core');
 
     /**
      * Calculate the theme palette name
+     * @param {Array} parts
+     * @param {string} theme name
+     * @return {string}
      */
     function extractPalette(parts, theme) {
       // If the next section is one of the palettes we assume it's a two word palette
@@ -209,7 +218,9 @@ goog.require('ngmaterial.core');
         // If the palette is not in the palette list it's one of primary/accent/warn/background
         var scheme = $mdTheming.THEMES[theme].colors[palette];
         if (!scheme) {
-          throw new Error($mdUtil.supplant('mdColors: couldn\'t find \'{palette}\' in the palettes.', {palette: palette}));
+          throw new Error($mdUtil.supplant(
+            'mdColors: couldn\'t find \'{palette}\' in the palettes.',
+            {palette: palette}));
         }
         palette = scheme.name;
       }
@@ -217,6 +228,11 @@ goog.require('ngmaterial.core');
       return palette;
     }
 
+    /**
+     * @param {Array} parts
+     * @param {string} theme name
+     * @return {*}
+     */
     function extractHue(parts, theme) {
       var themeColors = $mdTheming.THEMES[theme].colors;
 
@@ -224,12 +240,16 @@ goog.require('ngmaterial.core');
         var hueNumber = parseInt(parts.splice(2, 1)[0], 10);
 
         if (hueNumber < 1 || hueNumber > 3) {
-          throw new Error($mdUtil.supplant('mdColors: \'hue-{hueNumber}\' is not a valid hue, can be only \'hue-1\', \'hue-2\' and \'hue-3\'', {hueNumber: hueNumber}));
+          throw new Error($mdUtil.supplant(
+            'mdColors: \'hue-{hueNumber}\' is not a valid hue, can be only \'hue-1\', \'hue-2\' and \'hue-3\'',
+            {hueNumber: hueNumber}));
         }
         parts[1] = 'hue-' + hueNumber;
 
         if (!(parts[0] in themeColors)) {
-          throw new Error($mdUtil.supplant('mdColors: \'hue-x\' can only be used with [{availableThemes}], but was used with \'{usedTheme}\'', {
+          throw new Error($mdUtil.supplant(
+            'mdColors: \'hue-x\' can only be used with [{availableThemes}], but was used with \'{usedTheme}\'',
+            {
             availableThemes: Object.keys(themeColors).join(', '),
             usedTheme: parts[0]
           }));
@@ -271,14 +291,14 @@ goog.require('ngmaterial.core');
    *   </div>
    * </hljs>
    *
-   * `mdColors` directive will automatically watch for changes in the expression if it recognizes an interpolation
-   * expression or a function. For performance options, you can use `::` prefix to the `md-colors` expression
-   * to indicate a one-time data binding.
+   * `mdColors` directive will automatically watch for changes in the expression if it recognizes
+   * an interpolation expression or a function. For performance options, you can use `::` prefix to
+   * the `md-colors` expression to indicate a one-time data binding.
+   *
    * <hljs lang="html">
    *   <md-card md-colors="::{background: '{{theme}}-primary-700'}">
    *   </md-card>
    * </hljs>
-   *
    */
   function MdColorsDirective($mdColors, $mdUtil, $log, $parse) {
     return {
@@ -292,6 +312,10 @@ goog.require('ngmaterial.core');
 
           var lastColors = {};
 
+          /**
+           * @param {string=} theme
+           * @return {Object} colors found in the specified theme
+           */
           var parseColors = function (theme) {
             if (typeof theme !== 'string') {
               theme = '';
@@ -308,10 +332,10 @@ goog.require('ngmaterial.core');
             var colors = $parse(attrs.mdColors)(scope);
 
             /**
-             * If mdTheme is defined up the DOM tree
-             * we add mdTheme theme to colors who doesn't specified a theme
+             * If mdTheme is defined higher up the DOM tree,
+             * we add mdTheme's theme to the colors which don't specify a theme.
              *
-             * # example
+             * @example
              * <hljs lang="html">
              *   <div md-theme="myTheme">
              *     <div md-colors="{background: 'primary-600'}">
@@ -320,8 +344,8 @@ goog.require('ngmaterial.core');
              *   </div>
              * </hljs>
              *
-             * 'primary-600' will be 'myTheme-primary-600',
-             * but 'mySecondTheme-accent-200' will stay the same cause it has a theme prefix
+             * 'primary-600' will be changed to 'myTheme-primary-600',
+             * but 'mySecondTheme-accent-200' will not be changed since it has a theme defined.
              */
             if (mdThemeController) {
               Object.keys(colors).forEach(function (prop) {
@@ -337,6 +361,9 @@ goog.require('ngmaterial.core');
             return colors;
           };
 
+          /**
+           * @param {Object} colors
+           */
           var cleanElement = function (colors) {
             if (!angular.equals(colors, lastColors)) {
               var keys = Object.keys(lastColors);
@@ -354,7 +381,8 @@ goog.require('ngmaterial.core');
           };
 
           /**
-           * Registering for mgTheme changes and asking mdTheme controller run our callback whenever a theme changes
+           * Registering for mgTheme changes and asking mdTheme controller run our callback whenever
+           * a theme changes.
            */
           var unregisterChanges = angular.noop;
 
@@ -385,6 +413,9 @@ goog.require('ngmaterial.core');
 
         };
 
+        /**
+         * @return {boolean}
+         */
         function shouldColorsWatch() {
           // Simulate 1x binding and mark mdColorsWatch == false
           var rawColorExpression = tAttrs.mdColors;
@@ -401,10 +432,7 @@ goog.require('ngmaterial.core');
         }
       }
     };
-
   }
-
-
 })();
 
 ngmaterial.components.colors = angular.module("material.components.colors");

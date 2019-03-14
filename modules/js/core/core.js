@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.13-master-e9e9ece
+ * v1.1.13-master-b9b63f9
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -273,7 +273,7 @@ function ColorUtilFactory() {
 
   /**
    * Converts rgba value to hex string
-   * @param color {string}
+   * @param {string} color
    * @returns {string}
    */
   function rgbaToHex(color) {
@@ -289,7 +289,7 @@ function ColorUtilFactory() {
 
   /**
    * Converts an RGB color to RGBA
-   * @param color {string}
+   * @param {string} color
    * @returns {string}
    */
   function rgbToRgba (color) {
@@ -298,7 +298,7 @@ function ColorUtilFactory() {
 
   /**
    * Converts an RGBA color to RGB
-   * @param color {string}
+   * @param {string} color
    * @returns {string}
    */
   function rgbaToRgb (color) {
