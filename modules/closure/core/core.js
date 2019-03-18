@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.13-master-b9b63f9
+ * v1.1.13-master-08d90e9
  */
 goog.provide('ngmaterial.core');
 
@@ -4090,10 +4090,14 @@ function InterimElementProvider() {
 
           return interimElement
             .show()
-            .catch(function(reason) { return reason; })
+            .then(function () {
+              showingInterims.push(interimElement);
+            })
+            .catch(function (reason) {
+              return reason;
+            })
             .finally(function() {
               showPromises.splice(showPromises.indexOf(showAction), 1);
-              showingInterims.push(interimElement);
             });
 
         });
