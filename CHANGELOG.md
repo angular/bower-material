@@ -1,5 +1,41 @@
+<a name="1.1.14"></a>
+## [1.1.14](https://github.com/angular/material/compare/v1.1.13...v1.1.14) (2019-03-18)
+
+
+### Bug Fixes
+
+* **$mdInteraction:** clean up events on $rootScope destroy ([#11641](https://github.com/angular/material/issues/11641)) ([e9e9ece](https://github.com/angular/material/commit/e9e9ece)), closes [#11493](https://github.com/angular/material/issues/11493) [#11493](https://github.com/angular/material/issues/11493)
+* **icon:** large SVG files can cause icon caching to hang ([#11653](https://github.com/angular/material/issues/11653)) ([6a68c96](https://github.com/angular/material/commit/6a68c96))
+* **input:** placeholder hidden when there is also a label on IE11 ([#11674](https://github.com/angular/material/issues/11674)) ([ddcbb2e](https://github.com/angular/material/commit/ddcbb2e)), closes [#11668](https://github.com/angular/material/issues/11668)
+* **interimElement**: don't track elements that fail compilation ([#11471](https://github.com/angular/material/pull/11471)) [08d90e9](https://github.com/angular/material/commit/08d90e96afd70129db3c57d345b53c59915205fe), closes [#11460](https://github.com/angular/material/issues/11460)
+* **nav-bar:** non-selected tabs with anchors have invalid tabindex value ([#11675](https://github.com/angular/material/issues/11675)) ([ec9aa25](https://github.com/angular/material/commit/ec9aa25)), closes [#11637](https://github.com/angular/material/issues/11637)
+* **panel:** caching of panels by id is not working ([#11638](https://github.com/angular/material/issues/11638)) ([649116b](https://github.com/angular/material/commit/649116b))
+* **progress-circular:** show correct circle arc when changing from indeterminate to determinate mode ([#11580](https://github.com/angular/material/issues/11580)) ([686b365](https://github.com/angular/material/commit/686b365))
+* **virtual-repeat-container:** support horizontal scrollbar in vertical orientation ([#11462](https://github.com/angular/material/issues/11462)) ([3cf4d74](https://github.com/angular/material/commit/3cf4d74))
+
+### Documentation
+
+* **docs:** properly format anchor names and hrefs ([#11648](https://github.com/angular/material/pull/11648))
+* **radio-button:** correct two misspellings on demo ([#11667](https://github.com/angular/material/pull/11667))
+* **colors:** clean up Closure / JSDoc comments and types ([#11676](https://github.com/angular/material/pull/11676))
+
+### Infrastrucutre
+
+* **build:** make the build output deterministic and reproducible ([#11570](https://github.com/angular/material/pull/11570))
+* **ci:** we moved over to CircleCI from TravisCI in the previous 1.1.13 release ([#11592](https://github.com/angular/material/issues/11592))
+
+#### Contributors
+
+Thank you to the contributors who helped with the v1.1.14 release:
+
+[<img alt="Splaktar" src="https://avatars1.githubusercontent.com/u/3506071?v=4&s=117" width="117">](https://github.com/Splaktar) |[<img alt="codymikol" src="https://avatars1.githubusercontent.com/u/13606342?v=4&s=117" width="117">](https://github.com/codymikol) |[<img alt="marosoft" src="https://avatars0.githubusercontent.com/u/3945455?v=4&s=117" width="117">](https://github.com/marosoft) |[<img alt="JSitjaNCR" src="https://avatars0.githubusercontent.com/u/43601493?v=4&s=117" width="117">](https://github.com/JSitjaNCR) |[<img alt="RQF7" src="https://avatars0.githubusercontent.com/u/11713881?v=4&s=117" width="117">](https://github.com/RQF7) |
+:---: |:---: |:---: |:---: |:---: |
+[Splaktar](https://github.com/Splaktar) |[codymikol](https://github.com/codymikol) |[marosoft](https://github.com/marosoft) |[JSitjaNCR](https://github.com/JSitjaNCR) |[RQF7](https://github.com/RQF7) |
+
+
+
 <a name="1.1.13"></a>
-## [1.1.13](https://github.com/angular/material/compare/v1.1.12...v1.1.13) (2019-02-13)
+## [1.1.13](https://github.com/angular/material/compare/v1.1.12...v1.1.13) (2019-02-20)
 
 
 ### Bug Fixes
@@ -7,8 +43,8 @@
 * **autocomplete:** show dropdown on top only when there is room ([#11629](https://github.com/angular/material/issues/11629)) ([38fb991](https://github.com/angular/material/commit/38fb991)), closes [#10859](https://github.com/angular/material/issues/10859)
 * **autocomplete:** suggestions can be highlighted incorrectly ([#11529](https://github.com/angular/material/issues/11529)) ([320511c](https://github.com/angular/material/commit/320511c)), closes [#10573](https://github.com/angular/material/issues/10573)
 * **autocomplete:** two chips added on enter w/ IE11 ([#11528](https://github.com/angular/material/issues/11528)) ([705c54e](https://github.com/angular/material/commit/705c54e)), closes [#10640](https://github.com/angular/material/issues/10640) [#10667](https://github.com/angular/material/issues/10667)
-* **checkbox:** submit on enter rather than toggle ([#11584](https://github.com/angular/material/issues/11584)) ([a191a8e](https://github.com/angular/material/commit/a191a8e)), closes [#11583](https://github.com/angular/material/issues/11583)
-* **datepicker:** does not open on focus in Firefox ([#11521](https://github.com/angular/material/issues/11521)) ([45e92ea](https://github.com/angular/material/commit/45e92ea)), closes [#10619](https://github.com/angular/material/issues/10619)
+* **checkbox:** submit on enter rather than toggle ([#11584](https://github.com/angular/material/issues/11584)) ([a191a8e](https://github.com/angular/material/commit/a191a8e)) ([#11640](https://github.com/angular/material/pull/11640)) ([251cfed8](https://github.com/angular/material/commit/251cfed8)), closes [#11583](https://github.com/angular/material/issues/11583) [#11639](https://github.com/angular/material/issues/11639)
+* **datepicker:** does not open on focus in Firefox ([#11521](https://github.com/angular/material/issues/11521)) ([45e92ea](https://github.com/angular/material/commit/251cfed82837270c29e1099b34f5e85874a7bcad)), closes [#10619](https://github.com/angular/material/issues/10619)
 * **datepicker:** validation error when adding text after date ([#11110](https://github.com/angular/material/issues/11110)) ([57c81c8](https://github.com/angular/material/commit/57c81c8)), closes [#9994](https://github.com/angular/material/issues/9994) [#10520](https://github.com/angular/material/issues/10520) [#10015](https://github.com/angular/material/issues/10015)
 * **icon:** SVG elements are not loaded from the cache properly on IE11 ([#11635](https://github.com/angular/material/issues/11635)) ([7cde443](https://github.com/angular/material/commit/7cde443)), closes [#11603](https://github.com/angular/material/issues/11603) [#11545](https://github.com/angular/material/issues/11545) [#11604](https://github.com/angular/material/issues/11604)
 * **layout:** remove some duplicate layout > flex styles ([#11613](https://github.com/angular/material/issues/11613)) ([6515e6c](https://github.com/angular/material/commit/6515e6c)), closes [#11609](https://github.com/angular/material/issues/11609)
