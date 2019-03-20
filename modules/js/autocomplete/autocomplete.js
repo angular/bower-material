@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.14-master-b588fd6
+ * v1.1.14-master-7674959
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -162,11 +162,21 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
         width  = hrect.width,
         offset = getVerticalOffset(),
         position = $scope.dropdownPosition,
-        styles;
+        styles, enoughBottomSpace, enoughTopSpace;
+    var bottomSpace = root.bottom - vrect.bottom - MENU_PADDING + $mdUtil.getViewportTop();
+    var topSpace = vrect.top - MENU_PADDING;
 
     // Automatically determine dropdown placement based on available space in viewport.
     if (!position) {
-      position = (vrect.top + MENU_PADDING > dropdownHeight) ? 'top' : 'bottom';
+      enoughTopSpace = topSpace > dropdownHeight;
+      enoughBottomSpace = bottomSpace > dropdownHeight;
+      if (enoughBottomSpace) {
+        position = 'bottom';
+      } else if (enoughTopSpace) {
+        position = 'top';
+      } else {
+        position = topSpace > bottomSpace ? 'top' : 'bottom';
+      }
     }
     // Adjust the width to account for the padding provided by `md-input-container`
     if ($attrs.mdFloatingLabel) {
@@ -182,9 +192,9 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     if (position === 'top') {
       styles.top       = 'auto';
       styles.bottom    = bot + 'px';
-      styles.maxHeight = Math.min(dropdownHeight, hrect.top - root.top - MENU_PADDING) + 'px';
+      styles.maxHeight = Math.min(dropdownHeight, topSpace) + 'px';
     } else {
-      var bottomSpace = root.bottom - hrect.bottom - MENU_PADDING + $mdUtil.getViewportTop();
+      bottomSpace = root.bottom - hrect.bottom - MENU_PADDING + $mdUtil.getViewportTop();
 
       styles.top       = (top - offset) + 'px';
       styles.bottom    = 'auto';
@@ -192,7 +202,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     }
 
     elements.$.scrollContainer.css(styles);
-    $mdUtil.nextTick(correctHorizontalAlignment, false);
+    $mdUtil.nextTick(correctHorizontalAlignment, false, $scope);
 
     /**
      * Calculates the vertical offset for floating label examples to account for ngMessages
@@ -218,7 +228,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     function correctHorizontalAlignment () {
       var dropdown = elements.scrollContainer.getBoundingClientRect(),
           styles   = {};
-      if (dropdown.right > root.right - MENU_PADDING) {
+      if (dropdown.right > root.right) {
         styles.left = (hrect.right - dropdown.width) + 'px';
       }
       elements.$.scrollContainer.css(styles);
