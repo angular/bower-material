@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.14-master-459c03c
+ * v1.1.14-master-7f249f9
  */
 goog.provide('ngmaterial.components.tabs');
 goog.require('ngmaterial.components.icon');
@@ -319,7 +319,7 @@ function MdTabScroll ($parse) {
     compile: function ($element, attr) {
       var fn = $parse(attr.mdTabScroll, null, true);
       return function ngEventHandler (scope, element) {
-        element.on('mousewheel', function (event) {
+        element.on('wheel', function (event) {
           scope.$apply(function () { fn(scope, { $event: event }); });
         });
       };
@@ -678,12 +678,16 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
 
   /**
    * When pagination is on, this makes sure the selected index is in view.
-   * @param event
+   * @param {WheelEvent} event
    */
   function scroll (event) {
     if (!ctrl.shouldPaginate) return;
     event.preventDefault();
-    ctrl.offsetLeft = fixOffset(ctrl.offsetLeft - event.wheelDelta);
+    if (event.deltaY) {
+      ctrl.offsetLeft = fixOffset(ctrl.offsetLeft + event.deltaY);
+    } else if (event.deltaX) {
+      ctrl.offsetLeft = fixOffset(ctrl.offsetLeft + event.deltaX);
+    }
   }
 
   /**
@@ -1237,8 +1241,8 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
 
   /**
    * Takes an offset value and makes sure that it is within the min/max allowed values.
-   * @param value
-   * @returns {*}
+   * @param {number} value
+   * @returns {number}
    */
   function fixOffset (value) {
     var elements = getElements();

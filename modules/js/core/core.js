@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.14-master-459c03c
+ * v1.1.14-master-7f249f9
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1806,7 +1806,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     /**
      * Animate the requested element's scrollTop to the requested scrollPosition with basic easing.
      *
-     * @param {!HTMLElement} element The element to scroll.
+     * @param {!Element} element The element to scroll.
      * @param {number} scrollEnd The new/final scroll position.
      * @param {number=} duration Duration of the scroll. Default is 1000ms.
      */
