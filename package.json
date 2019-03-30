@@ -1,6 +1,6 @@
 {
   "name": "angular-material",
-  "version": "1.1.16",
+  "version": "1.1.16-master-db3cdf7",
   "main": "index",
   "format": "cjs",
   "registry": "github",
