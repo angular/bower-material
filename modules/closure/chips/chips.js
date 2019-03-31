@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.17-master-9731526
+ * v1.1.17
  */
 goog.provide('ngmaterial.components.chips');
 goog.require('ngmaterial.components.autocomplete');
@@ -1410,7 +1410,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
   return this.contentIds[index];
 };
 
-  
+
   MdChips['$inject'] = ["$mdTheming", "$mdUtil", "$compile", "$log", "$timeout", "$$mdSvgRegistry"];angular
       .module('material.components.chips')
       .directive('mdChips', MdChips);
