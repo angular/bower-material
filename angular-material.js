@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.17
+ * v1.1.17-master-43035fd
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -9657,7 +9657,7 @@ MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
  *     is only valid when a `md-floating-label` is defined.
  * @param {string=} md-floating-label This will add a floating label to autocomplete and wrap it in
  *     `md-input-container`.
- * @param {string=} md-select-on-focus When present the inputs text will be automatically selected
+ * @param {string=} md-select-on-focus When present the input's text will be automatically selected
  *     on focus.
  * @param {string=} md-input-id An ID to be added to the input element.
  * @param {number=} md-input-minlength The minimum length for the input's value for validation.
@@ -38367,4 +38367,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.17"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.17-master-43035fd"}};
