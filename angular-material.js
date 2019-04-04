@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.17-master-f44b271
+ * v1.1.17-master-1b37e82
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -21167,7 +21167,7 @@ function MdIconService(config, $templateRequest, $q, $log, $mdUtil, $sce) {
     return function updateCache(icon) {
       iconCache[id] = isIcon(icon) ? icon : new Icon(icon, config[id]);
 
-      return iconCache[id].clone();
+      return transformClone(iconCache[id]);
     };
   }
 
@@ -38367,4 +38367,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.17-master-f44b271"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.17-master-1b37e82"}};
