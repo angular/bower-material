@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.18
+ * v1.1.18-master-5162b74
  */
 goog.provide('ngmaterial.core');
 
@@ -2814,179 +2814,6 @@ function MdCompilerProvider($compileProvider) {
 }
 
 
-/**
- * @ngdoc module
- * @name material.core.interaction
- * @description
- * User interaction detection to provide proper accessibility.
- */
-MdInteractionService['$inject'] = ["$timeout", "$mdUtil", "$rootScope"];
-angular
-  .module('material.core.interaction', [])
-  .service('$mdInteraction', MdInteractionService);
-
-
-/**
- * @ngdoc service
- * @name $mdInteraction
- * @module material.core.interaction
- *
- * @description
- *
- * Service which keeps track of the last interaction type and validates them for several browsers.
- * The service hooks into the document's body and listens for touch, mouse and keyboard events.
- *
- * The most recent interaction type can be retrieved by calling the `getLastInteractionType` method.
- *
- * Here is an example markup for using the interaction service.
- *
- * <hljs lang="js">
- *   var lastType = $mdInteraction.getLastInteractionType();
- *
- *   if (lastType === 'keyboard') {
- *     // We only restore the focus for keyboard users.
- *     restoreFocus();
- *   }
- * </hljs>
- *
- */
-function MdInteractionService($timeout, $mdUtil, $rootScope) {
-  this.$timeout = $timeout;
-  this.$mdUtil = $mdUtil;
-  this.$rootScope = $rootScope;
-
-  // IE browsers can also trigger pointer events, which also leads to an interaction.
-  this.pointerEvent = 'MSPointerEvent' in window ? 'MSPointerDown' : 'PointerEvent' in window ? 'pointerdown' : null;
-  this.bodyElement = angular.element(document.body);
-  this.isBuffering = false;
-  this.bufferTimeout = null;
-  this.lastInteractionType = null;
-  this.lastInteractionTime = null;
-  this.inputHandler = this.onInputEvent.bind(this);
-  this.bufferedInputHandler = this.onBufferInputEvent.bind(this);
-
-  // Type Mappings for the different events
-  // There will be three three interaction types
-  // `keyboard`, `mouse` and `touch`
-  // type `pointer` will be evaluated in `pointerMap` for IE Browser events
-  this.inputEventMap = {
-    'keydown': 'keyboard',
-    'mousedown': 'mouse',
-    'mouseenter': 'mouse',
-    'touchstart': 'touch',
-    'pointerdown': 'pointer',
-    'MSPointerDown': 'pointer'
-  };
-
-  // IE PointerDown events will be validated in `touch` or `mouse`
-  // Index numbers referenced here: https://msdn.microsoft.com/library/windows/apps/hh466130.aspx
-  this.iePointerMap = {
-    2: 'touch',
-    3: 'touch',
-    4: 'mouse'
-  };
-
-  this.initializeEvents();
-  this.$rootScope.$on('$destroy', this.deregister.bind(this));
-}
-
-/**
- * Removes all event listeners created by $mdInteration on the
- * body element.
- */
-MdInteractionService.prototype.deregister = function() {
-
-    this.bodyElement.off('keydown mousedown', this.inputHandler);
-
-    if ('ontouchstart' in document.documentElement) {
-      this.bodyElement.off('touchstart', this.bufferedInputHandler);
-    }
-
-    if (this.pointerEvent) {
-      this.bodyElement.off(this.pointerEvent, this.inputHandler);
-    }
-
-};
-
-/**
- * Initializes the interaction service, by registering all interaction events to the
- * body element.
- */
-MdInteractionService.prototype.initializeEvents = function() {
-
-  this.bodyElement.on('keydown mousedown', this.inputHandler);
-
-  if ('ontouchstart' in document.documentElement) {
-    this.bodyElement.on('touchstart', this.bufferedInputHandler);
-  }
-
-  if (this.pointerEvent) {
-    this.bodyElement.on(this.pointerEvent, this.inputHandler);
-  }
-
-};
-
-/**
- * Event listener for normal interaction events, which should be tracked.
- * @param event {MouseEvent|KeyboardEvent|PointerEvent|TouchEvent}
- */
-MdInteractionService.prototype.onInputEvent = function(event) {
-  if (this.isBuffering) {
-    return;
-  }
-
-  var type = this.inputEventMap[event.type];
-
-  if (type === 'pointer') {
-    type = this.iePointerMap[event.pointerType] || event.pointerType;
-  }
-
-  this.lastInteractionType = type;
-  this.lastInteractionTime = this.$mdUtil.now();
-};
-
-/**
- * Event listener for interaction events which should be buffered (touch events).
- * @param event {TouchEvent}
- */
-MdInteractionService.prototype.onBufferInputEvent = function(event) {
-  this.$timeout.cancel(this.bufferTimeout);
-
-  this.onInputEvent(event);
-  this.isBuffering = true;
-
-  // The timeout of 650ms is needed to delay the touchstart, because otherwise the touch will call
-  // the `onInput` function multiple times.
-  this.bufferTimeout = this.$timeout(function() {
-    this.isBuffering = false;
-  }.bind(this), 650, false);
-
-};
-
-/**
- * @ngdoc method
- * @name $mdInteraction#getLastInteractionType
- * @description Retrieves the last interaction type triggered in body.
- * @returns {string|null} Last interaction type.
- */
-MdInteractionService.prototype.getLastInteractionType = function() {
-  return this.lastInteractionType;
-};
-
-/**
- * @ngdoc method
- * @name $mdInteraction#isUserInvoked
- * @description Method to detect whether any interaction happened recently or not.
- * @param {number=} checkDelay Time to check for any interaction to have been triggered.
- * @returns {boolean} Whether there was any interaction or not.
- */
-MdInteractionService.prototype.isUserInvoked = function(checkDelay) {
-  var delay = angular.isNumber(checkDelay) ? checkDelay : 15;
-
-  // Check for any interaction to be within the specified check time.
-  return this.lastInteractionTime >= this.$mdUtil.now() - delay;
-};
-
 
 MdGesture['$inject'] = ["$$MdGestureHandler", "$$rAF", "$timeout"];
 attachToDocument['$inject'] = ["$mdGesture", "$$MdGestureHandler"];var HANDLERS = {};
@@ -3786,214 +3613,177 @@ function canFocus(element) {
 
 /**
  * @ngdoc module
- * @name material.core.liveannouncer
+ * @name material.core.interaction
  * @description
- * AngularJS Material Live Announcer to provide accessibility for Voice Readers.
+ * User interaction detection to provide proper accessibility.
  */
-MdLiveAnnouncer['$inject'] = ["$timeout"];
+MdInteractionService['$inject'] = ["$timeout", "$mdUtil", "$rootScope"];
 angular
-  .module('material.core')
-  .service('$mdLiveAnnouncer', MdLiveAnnouncer);
+  .module('material.core.interaction', [])
+  .service('$mdInteraction', MdInteractionService);
+
 
 /**
  * @ngdoc service
- * @name $mdLiveAnnouncer
- * @module material.core.liveannouncer
+ * @name $mdInteraction
+ * @module material.core.interaction
  *
  * @description
  *
- * Service to announce messages to supported screenreaders.
+ * Service which keeps track of the last interaction type and validates them for several browsers.
+ * The service hooks into the document's body and listens for touch, mouse and keyboard events.
  *
- * > The `$mdLiveAnnouncer` service is internally used for components to provide proper accessibility.
+ * The most recent interaction type can be retrieved by calling the `getLastInteractionType` method.
+ *
+ * Here is an example markup for using the interaction service.
  *
  * <hljs lang="js">
- *   module.controller('AppCtrl', function($mdLiveAnnouncer) {
- *     // Basic announcement (Polite Mode)
- *     $mdLiveAnnouncer.announce('Hey Google');
+ *   var lastType = $mdInteraction.getLastInteractionType();
  *
- *     // Custom announcement (Assertive Mode)
- *     $mdLiveAnnouncer.announce('Hey Google', 'assertive');
- *   });
+ *   if (lastType === 'keyboard') {
+ *     // We only restore the focus for keyboard users.
+ *     restoreFocus();
+ *   }
  * </hljs>
  *
  */
-function MdLiveAnnouncer($timeout) {
-  /** @private @const @type {!angular.$timeout} */
-  this._$timeout = $timeout;
+function MdInteractionService($timeout, $mdUtil, $rootScope) {
+  this.$timeout = $timeout;
+  this.$mdUtil = $mdUtil;
+  this.$rootScope = $rootScope;
 
-  /** @private @const @type {!HTMLElement} */
-  this._liveElement = this._createLiveElement();
+  // IE browsers can also trigger pointer events, which also leads to an interaction.
+  this.pointerEvent = 'MSPointerEvent' in window ? 'MSPointerDown' : 'PointerEvent' in window ? 'pointerdown' : null;
+  this.bodyElement = angular.element(document.body);
+  this.isBuffering = false;
+  this.bufferTimeout = null;
+  this.lastInteractionType = null;
+  this.lastInteractionTime = null;
+  this.inputHandler = this.onInputEvent.bind(this);
+  this.bufferedInputHandler = this.onBufferInputEvent.bind(this);
 
-  /** @private @const @type {!number} */
-  this._announceTimeout = 100;
+  // Type Mappings for the different events
+  // There will be three three interaction types
+  // `keyboard`, `mouse` and `touch`
+  // type `pointer` will be evaluated in `pointerMap` for IE Browser events
+  this.inputEventMap = {
+    'keydown': 'keyboard',
+    'mousedown': 'mouse',
+    'mouseenter': 'mouse',
+    'touchstart': 'touch',
+    'pointerdown': 'pointer',
+    'MSPointerDown': 'pointer'
+  };
+
+  // IE PointerDown events will be validated in `touch` or `mouse`
+  // Index numbers referenced here: https://msdn.microsoft.com/library/windows/apps/hh466130.aspx
+  this.iePointerMap = {
+    2: 'touch',
+    3: 'touch',
+    4: 'mouse'
+  };
+
+  this.initializeEvents();
+  this.$rootScope.$on('$destroy', this.deregister.bind(this));
 }
 
 /**
- * @ngdoc method
- * @name $mdLiveAnnouncer#announce
- * @description Announces messages to supported screenreaders.
- * @param {string} message Message to be announced to the screenreader
- * @param {'off'|'polite'|'assertive'} politeness The politeness of the announcer element.
+ * Removes all event listeners created by $mdInteration on the
+ * body element.
  */
-MdLiveAnnouncer.prototype.announce = function(message, politeness) {
-  if (!politeness) {
-    politeness = 'polite';
+MdInteractionService.prototype.deregister = function() {
+
+    this.bodyElement.off('keydown mousedown', this.inputHandler);
+
+    if ('ontouchstart' in document.documentElement) {
+      this.bodyElement.off('touchstart', this.bufferedInputHandler);
+    }
+
+    if (this.pointerEvent) {
+      this.bodyElement.off(this.pointerEvent, this.inputHandler);
+    }
+
+};
+
+/**
+ * Initializes the interaction service, by registering all interaction events to the
+ * body element.
+ */
+MdInteractionService.prototype.initializeEvents = function() {
+
+  this.bodyElement.on('keydown mousedown', this.inputHandler);
+
+  if ('ontouchstart' in document.documentElement) {
+    this.bodyElement.on('touchstart', this.bufferedInputHandler);
   }
 
-  var self = this;
+  if (this.pointerEvent) {
+    this.bodyElement.on(this.pointerEvent, this.inputHandler);
+  }
 
-  self._liveElement.textContent = '';
-  self._liveElement.setAttribute('aria-live', politeness);
-
-  // This 100ms timeout is necessary for some browser + screen-reader combinations:
-  // - Both JAWS and NVDA over IE11 will not announce anything without a non-zero timeout.
-  // - With Chrome and IE11 with NVDA or JAWS, a repeated (identical) message won't be read a
-  //   second time without clearing and then using a non-zero delay.
-  // (using JAWS 17 at time of this writing).
-  self._$timeout(function() {
-    self._liveElement.textContent = message;
-  }, self._announceTimeout, false);
 };
 
 /**
- * Creates a live announcer element, which listens for DOM changes and announces them
- * to the screenreaders.
- * @returns {!HTMLElement}
- * @private
+ * Event listener for normal interaction events, which should be tracked.
+ * @param event {MouseEvent|KeyboardEvent|PointerEvent|TouchEvent}
  */
-MdLiveAnnouncer.prototype._createLiveElement = function() {
-  var liveEl = document.createElement('div');
+MdInteractionService.prototype.onInputEvent = function(event) {
+  if (this.isBuffering) {
+    return;
+  }
 
-  liveEl.classList.add('md-visually-hidden');
-  liveEl.setAttribute('role', 'status');
-  liveEl.setAttribute('aria-atomic', 'true');
-  liveEl.setAttribute('aria-live', 'polite');
+  var type = this.inputEventMap[event.type];
 
-  document.body.appendChild(liveEl);
+  if (type === 'pointer') {
+    type = this.iePointerMap[event.pointerType] || event.pointerType;
+  }
 
-  return liveEl;
+  this.lastInteractionType = type;
+  this.lastInteractionTime = this.$mdUtil.now();
 };
 
 /**
- * @ngdoc service
- * @name $$mdMeta
- * @module material.core.meta
- *
- * @description
- *
- * A provider and a service that simplifies meta tags access
- *
- * Note: This is intended only for use with dynamic meta tags such as browser color and title.
- * Tags that are only processed when the page is rendered (such as `charset`, and `http-equiv`)
- * will not work since `$$mdMeta` adds the tags after the page has already been loaded.
- *
- * ```js
- * app.config(function($$mdMetaProvider) {
- *   var removeMeta = $$mdMetaProvider.setMeta('meta-name', 'content');
- *   var metaValue  = $$mdMetaProvider.getMeta('meta-name'); // -> 'content'
- *
- *   removeMeta();
- * });
- *
- * app.controller('myController', function($$mdMeta) {
- *   var removeMeta = $$mdMeta.setMeta('meta-name', 'content');
- *   var metaValue  = $$mdMeta.getMeta('meta-name'); // -> 'content'
- *
- *   removeMeta();
- * });
- * ```
- *
- * @returns {$$mdMeta.$service}
- *
+ * Event listener for interaction events which should be buffered (touch events).
+ * @param event {TouchEvent}
  */
-angular.module('material.core.meta', [])
-  .provider('$$mdMeta', function () {
-    var head = angular.element(document.head);
-    var metaElements = {};
+MdInteractionService.prototype.onBufferInputEvent = function(event) {
+  this.$timeout.cancel(this.bufferTimeout);
 
-    /**
-     * Checks if the requested element was written manually and maps it
-     *
-     * @param {string} name meta tag 'name' attribute value
-     * @returns {boolean} returns true if there is an element with the requested name
-     */
-    function mapExistingElement(name) {
-      if (metaElements[name]) {
-        return true;
-      }
+  this.onInputEvent(event);
+  this.isBuffering = true;
 
-      var element = document.getElementsByName(name)[0];
+  // The timeout of 650ms is needed to delay the touchstart, because otherwise the touch will call
+  // the `onInput` function multiple times.
+  this.bufferTimeout = this.$timeout(function() {
+    this.isBuffering = false;
+  }.bind(this), 650, false);
 
-      if (!element) {
-        return false;
-      }
+};
 
-      metaElements[name] = angular.element(element);
+/**
+ * @ngdoc method
+ * @name $mdInteraction#getLastInteractionType
+ * @description Retrieves the last interaction type triggered in body.
+ * @returns {string|null} Last interaction type.
+ */
+MdInteractionService.prototype.getLastInteractionType = function() {
+  return this.lastInteractionType;
+};
 
-      return true;
-    }
+/**
+ * @ngdoc method
+ * @name $mdInteraction#isUserInvoked
+ * @description Method to detect whether any interaction happened recently or not.
+ * @param {number=} checkDelay Time to check for any interaction to have been triggered.
+ * @returns {boolean} Whether there was any interaction or not.
+ */
+MdInteractionService.prototype.isUserInvoked = function(checkDelay) {
+  var delay = angular.isNumber(checkDelay) ? checkDelay : 15;
 
-    /**
-     * @ngdoc method
-     * @name $$mdMeta#setMeta
-     *
-     * @description
-     * Creates meta element with the 'name' and 'content' attributes,
-     * if the meta tag is already created than we replace the 'content' value
-     *
-     * @param {string} name meta tag 'name' attribute value
-     * @param {string} content meta tag 'content' attribute value
-     * @returns {function} remove function
-     *
-     */
-    function setMeta(name, content) {
-      mapExistingElement(name);
+  // Check for any interaction to be within the specified check time.
+  return this.lastInteractionTime >= this.$mdUtil.now() - delay;
+};
 
-      if (!metaElements[name]) {
-        var newMeta = angular.element('<meta name="' + name + '" content="' + content + '"/>');
-        head.append(newMeta);
-        metaElements[name] = newMeta;
-      }
-      else {
-        metaElements[name].attr('content', content);
-      }
-
-      return function () {
-        metaElements[name].attr('content', '');
-        metaElements[name].remove();
-        delete metaElements[name];
-      };
-    }
-
-    /**
-     * @ngdoc method
-     * @name $$mdMeta#getMeta
-     *
-     * @description
-     * Gets the 'content' attribute value of the wanted meta element
-     *
-     * @param {string} name meta tag 'name' attribute value
-     * @returns {string} content attribute value
-     */
-    function getMeta(name) {
-      if (!mapExistingElement(name)) {
-        throw Error('$$mdMeta: could not find a meta tag with the name \'' + name + '\'');
-      }
-
-      return metaElements[name].attr('content');
-    }
-
-    var module = {
-      setMeta: setMeta,
-      getMeta: getMeta
-    };
-
-    return angular.extend({}, module, {
-      $get: function () {
-        return module;
-      }
-    });
-  });
 angular.module('material.core')
   .provider('$$interimElement', InterimElementProvider);
 
@@ -4758,132 +4548,6 @@ function InterimElementProvider() {
 
 }
 
-  /**
-   * @ngdoc module
-   * @name material.core.componentRegistry
-   *
-   * @description
-   * A component instance registration service.
-   * Note: currently this as a private service in the SideNav component.
-   */
-  ComponentRegistry['$inject'] = ["$log", "$q"];
-  angular.module('material.core')
-    .factory('$mdComponentRegistry', ComponentRegistry);
-
-  /*
-   * @private
-   * @ngdoc factory
-   * @name ComponentRegistry
-   * @module material.core.componentRegistry
-   *
-   */
-  function ComponentRegistry($log, $q) {
-
-    var self;
-    var instances = [];
-    var pendings = { };
-
-    return self = {
-      /**
-       * Used to print an error when an instance for a handle isn't found.
-       */
-      notFoundError: function(handle, msgContext) {
-        $log.error((msgContext || "") + 'No instance found for handle', handle);
-      },
-      /**
-       * Return all registered instances as an array.
-       */
-      getInstances: function() {
-        return instances;
-      },
-
-      /**
-       * Get a registered instance.
-       * @param handle the String handle to look up for a registered instance.
-       */
-      get: function(handle) {
-        if (!isValidID(handle)) return null;
-
-        var i, j, instance;
-        for (i = 0, j = instances.length; i < j; i++) {
-          instance = instances[i];
-          if (instance.$$mdHandle === handle) {
-            return instance;
-          }
-        }
-        return null;
-      },
-
-      /**
-       * Register an instance.
-       * @param instance the instance to register
-       * @param handle the handle to identify the instance under.
-       */
-      register: function(instance, handle) {
-        if (!handle) return angular.noop;
-
-        instance.$$mdHandle = handle;
-        instances.push(instance);
-        resolveWhen();
-
-        return deregister;
-
-        /**
-         * Remove registration for an instance
-         */
-        function deregister() {
-          var index = instances.indexOf(instance);
-          if (index !== -1) {
-            instances.splice(index, 1);
-          }
-        }
-
-        /**
-         * Resolve any pending promises for this instance
-         */
-        function resolveWhen() {
-          var dfd = pendings[handle];
-          if (dfd) {
-            dfd.forEach(function (promise) {
-              promise.resolve(instance);
-            });
-            delete pendings[handle];
-          }
-        }
-      },
-
-      /**
-       * Async accessor to registered component instance
-       * If not available then a promise is created to notify
-       * all listeners when the instance is registered.
-       */
-      when : function(handle) {
-        if (isValidID(handle)) {
-          var deferred = $q.defer();
-          var instance = self.get(handle);
-
-          if (instance)  {
-            deferred.resolve(instance);
-          } else {
-            if (pendings[handle] === undefined) {
-              pendings[handle] = [];
-            }
-            pendings[handle].push(deferred);
-          }
-
-          return deferred.promise;
-        }
-        return $q.reject("Invalid `md-component-id` value.");
-      }
-
-    };
-
-    function isValidID(handle){
-      return handle && (handle !== "");
-    }
-
-  }
-
 (function() {
   'use strict';
 
@@ -5410,6 +5074,342 @@ function InterimElementProvider() {
 
 
 })();
+
+/**
+ * @ngdoc module
+ * @name material.core.liveannouncer
+ * @description
+ * AngularJS Material Live Announcer to provide accessibility for Voice Readers.
+ */
+MdLiveAnnouncer['$inject'] = ["$timeout"];
+angular
+  .module('material.core')
+  .service('$mdLiveAnnouncer', MdLiveAnnouncer);
+
+/**
+ * @ngdoc service
+ * @name $mdLiveAnnouncer
+ * @module material.core.liveannouncer
+ *
+ * @description
+ *
+ * Service to announce messages to supported screenreaders.
+ *
+ * > The `$mdLiveAnnouncer` service is internally used for components to provide proper accessibility.
+ *
+ * <hljs lang="js">
+ *   module.controller('AppCtrl', function($mdLiveAnnouncer) {
+ *     // Basic announcement (Polite Mode)
+ *     $mdLiveAnnouncer.announce('Hey Google');
+ *
+ *     // Custom announcement (Assertive Mode)
+ *     $mdLiveAnnouncer.announce('Hey Google', 'assertive');
+ *   });
+ * </hljs>
+ *
+ */
+function MdLiveAnnouncer($timeout) {
+  /** @private @const @type {!angular.$timeout} */
+  this._$timeout = $timeout;
+
+  /** @private @const @type {!HTMLElement} */
+  this._liveElement = this._createLiveElement();
+
+  /** @private @const @type {!number} */
+  this._announceTimeout = 100;
+}
+
+/**
+ * @ngdoc method
+ * @name $mdLiveAnnouncer#announce
+ * @description Announces messages to supported screenreaders.
+ * @param {string} message Message to be announced to the screenreader
+ * @param {'off'|'polite'|'assertive'} politeness The politeness of the announcer element.
+ */
+MdLiveAnnouncer.prototype.announce = function(message, politeness) {
+  if (!politeness) {
+    politeness = 'polite';
+  }
+
+  var self = this;
+
+  self._liveElement.textContent = '';
+  self._liveElement.setAttribute('aria-live', politeness);
+
+  // This 100ms timeout is necessary for some browser + screen-reader combinations:
+  // - Both JAWS and NVDA over IE11 will not announce anything without a non-zero timeout.
+  // - With Chrome and IE11 with NVDA or JAWS, a repeated (identical) message won't be read a
+  //   second time without clearing and then using a non-zero delay.
+  // (using JAWS 17 at time of this writing).
+  self._$timeout(function() {
+    self._liveElement.textContent = message;
+  }, self._announceTimeout, false);
+};
+
+/**
+ * Creates a live announcer element, which listens for DOM changes and announces them
+ * to the screenreaders.
+ * @returns {!HTMLElement}
+ * @private
+ */
+MdLiveAnnouncer.prototype._createLiveElement = function() {
+  var liveEl = document.createElement('div');
+
+  liveEl.classList.add('md-visually-hidden');
+  liveEl.setAttribute('role', 'status');
+  liveEl.setAttribute('aria-atomic', 'true');
+  liveEl.setAttribute('aria-live', 'polite');
+
+  document.body.appendChild(liveEl);
+
+  return liveEl;
+};
+
+/**
+ * @ngdoc service
+ * @name $$mdMeta
+ * @module material.core.meta
+ *
+ * @description
+ *
+ * A provider and a service that simplifies meta tags access
+ *
+ * Note: This is intended only for use with dynamic meta tags such as browser color and title.
+ * Tags that are only processed when the page is rendered (such as `charset`, and `http-equiv`)
+ * will not work since `$$mdMeta` adds the tags after the page has already been loaded.
+ *
+ * ```js
+ * app.config(function($$mdMetaProvider) {
+ *   var removeMeta = $$mdMetaProvider.setMeta('meta-name', 'content');
+ *   var metaValue  = $$mdMetaProvider.getMeta('meta-name'); // -> 'content'
+ *
+ *   removeMeta();
+ * });
+ *
+ * app.controller('myController', function($$mdMeta) {
+ *   var removeMeta = $$mdMeta.setMeta('meta-name', 'content');
+ *   var metaValue  = $$mdMeta.getMeta('meta-name'); // -> 'content'
+ *
+ *   removeMeta();
+ * });
+ * ```
+ *
+ * @returns {$$mdMeta.$service}
+ *
+ */
+angular.module('material.core.meta', [])
+  .provider('$$mdMeta', function () {
+    var head = angular.element(document.head);
+    var metaElements = {};
+
+    /**
+     * Checks if the requested element was written manually and maps it
+     *
+     * @param {string} name meta tag 'name' attribute value
+     * @returns {boolean} returns true if there is an element with the requested name
+     */
+    function mapExistingElement(name) {
+      if (metaElements[name]) {
+        return true;
+      }
+
+      var element = document.getElementsByName(name)[0];
+
+      if (!element) {
+        return false;
+      }
+
+      metaElements[name] = angular.element(element);
+
+      return true;
+    }
+
+    /**
+     * @ngdoc method
+     * @name $$mdMeta#setMeta
+     *
+     * @description
+     * Creates meta element with the 'name' and 'content' attributes,
+     * if the meta tag is already created than we replace the 'content' value
+     *
+     * @param {string} name meta tag 'name' attribute value
+     * @param {string} content meta tag 'content' attribute value
+     * @returns {function} remove function
+     *
+     */
+    function setMeta(name, content) {
+      mapExistingElement(name);
+
+      if (!metaElements[name]) {
+        var newMeta = angular.element('<meta name="' + name + '" content="' + content + '"/>');
+        head.append(newMeta);
+        metaElements[name] = newMeta;
+      }
+      else {
+        metaElements[name].attr('content', content);
+      }
+
+      return function () {
+        metaElements[name].attr('content', '');
+        metaElements[name].remove();
+        delete metaElements[name];
+      };
+    }
+
+    /**
+     * @ngdoc method
+     * @name $$mdMeta#getMeta
+     *
+     * @description
+     * Gets the 'content' attribute value of the wanted meta element
+     *
+     * @param {string} name meta tag 'name' attribute value
+     * @returns {string} content attribute value
+     */
+    function getMeta(name) {
+      if (!mapExistingElement(name)) {
+        throw Error('$$mdMeta: could not find a meta tag with the name \'' + name + '\'');
+      }
+
+      return metaElements[name].attr('content');
+    }
+
+    var module = {
+      setMeta: setMeta,
+      getMeta: getMeta
+    };
+
+    return angular.extend({}, module, {
+      $get: function () {
+        return module;
+      }
+    });
+  });
+  /**
+   * @ngdoc module
+   * @name material.core.componentRegistry
+   *
+   * @description
+   * A component instance registration service.
+   * Note: currently this as a private service in the SideNav component.
+   */
+  ComponentRegistry['$inject'] = ["$log", "$q"];
+  angular.module('material.core')
+    .factory('$mdComponentRegistry', ComponentRegistry);
+
+  /*
+   * @private
+   * @ngdoc factory
+   * @name ComponentRegistry
+   * @module material.core.componentRegistry
+   *
+   */
+  function ComponentRegistry($log, $q) {
+
+    var self;
+    var instances = [];
+    var pendings = { };
+
+    return self = {
+      /**
+       * Used to print an error when an instance for a handle isn't found.
+       */
+      notFoundError: function(handle, msgContext) {
+        $log.error((msgContext || "") + 'No instance found for handle', handle);
+      },
+      /**
+       * Return all registered instances as an array.
+       */
+      getInstances: function() {
+        return instances;
+      },
+
+      /**
+       * Get a registered instance.
+       * @param handle the String handle to look up for a registered instance.
+       */
+      get: function(handle) {
+        if (!isValidID(handle)) return null;
+
+        var i, j, instance;
+        for (i = 0, j = instances.length; i < j; i++) {
+          instance = instances[i];
+          if (instance.$$mdHandle === handle) {
+            return instance;
+          }
+        }
+        return null;
+      },
+
+      /**
+       * Register an instance.
+       * @param instance the instance to register
+       * @param handle the handle to identify the instance under.
+       */
+      register: function(instance, handle) {
+        if (!handle) return angular.noop;
+
+        instance.$$mdHandle = handle;
+        instances.push(instance);
+        resolveWhen();
+
+        return deregister;
+
+        /**
+         * Remove registration for an instance
+         */
+        function deregister() {
+          var index = instances.indexOf(instance);
+          if (index !== -1) {
+            instances.splice(index, 1);
+          }
+        }
+
+        /**
+         * Resolve any pending promises for this instance
+         */
+        function resolveWhen() {
+          var dfd = pendings[handle];
+          if (dfd) {
+            dfd.forEach(function (promise) {
+              promise.resolve(instance);
+            });
+            delete pendings[handle];
+          }
+        }
+      },
+
+      /**
+       * Async accessor to registered component instance
+       * If not available then a promise is created to notify
+       * all listeners when the instance is registered.
+       */
+      when : function(handle) {
+        if (isValidID(handle)) {
+          var deferred = $q.defer();
+          var instance = self.get(handle);
+
+          if (instance)  {
+            deferred.resolve(instance);
+          } else {
+            if (pendings[handle] === undefined) {
+              pendings[handle] = [];
+            }
+            pendings[handle].push(deferred);
+          }
+
+          return deferred.promise;
+        }
+        return $q.reject("Invalid `md-component-id` value.");
+      }
+
+    };
+
+    function isValidID(handle){
+      return handle && (handle !== "");
+    }
+
+  }
 
 (function() {
   'use strict';
