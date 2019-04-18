@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.18-master-a62d160
+ * v1.1.18-master-16cea88
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -6375,7 +6375,7 @@ function InkRippleDirective ($mdButtonInkRipple, $mdCheckboxInkRipple) {
  * @module material.core.ripple
  *
  * @description
- * `$mdInkRipple` is a service for adding ripples to any element
+ * `$mdInkRipple` is a service for adding ripples to any element.
  *
  * @usage
  * <hljs lang="js">
@@ -7887,6 +7887,7 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
    *
    * @param {string} name Theme name to define
    * @param {object} options Theme definition options
+   *
    * Options are:<br/>
    * - `primary` - `{string}`: The name of the primary palette to use in the theme.<br/>
    * - `primaryHues` - `{object=}`: Override hues for primary palette.<br/>
@@ -13622,19 +13623,32 @@ function MdContactChips($mdTheming, $mdUtil) {
    * @module material.components.colors
    *
    * @description
-   * With only defining themes, one couldn't get non AngularJS Material elements colored with
-   * Material colors, `$mdColors` service is used by the md-color directive to convert the
-   * 1..n color expressions to RGBA values and will apply those values to element as CSS property
-   * values.
+   * By default, defining a theme does not make its colors available for applying to non AngularJS
+   * Material elements. The `$mdColors` service is used by the `md-color` directive to convert a
+   * set of color expressions to RGBA values and then apply those values to the element as CSS
+   * property values.
    *
-   *  @usage
+   * @usage
+   * Getting a color based on a theme
+   *
    *  <hljs lang="js">
    *    angular.controller('myCtrl', function ($mdColors) {
-   *      var color = $mdColors.getThemeColor('myTheme-red-200-0.5');
+   *      var color = $mdColors.getThemeColor('myTheme-primary-900-0.5');
    *      ...
    *    });
    *  </hljs>
    *
+   * Applying a color from a palette to an element
+   * <hljs lang="js">
+   *   app.directive('myDirective', function($mdColors) {
+   *     return {
+   *       ...
+   *       link: function (scope, elem) {
+   *         $mdColors.applyThemeColors(elem, {color: 'red-A200-0.2'});
+   *       }
+   *    }
+   *   });
+   * </hljs>
    */
   function MdColorsService($mdTheming, $mdUtil, $log) {
     colorPalettes = colorPalettes || Object.keys($mdTheming.PALETTES);
@@ -13655,24 +13669,14 @@ function MdContactChips($mdTheming, $mdUtil) {
      * @name $mdColors#applyThemeColors
      *
      * @description
-     * Gets a color json object, keys are css properties and values are string of the wanted color
-     * Then calculate the rgba() values based on the theme color parts
+     * Lookup a set of colors by hue, theme, and palette, then apply those colors
+     * with the provided opacity (via `rgba()`) to the specified CSS property.
      *
-     * @param {angular.element} element the element to apply the styles on.
-     * @param {Object} colorExpression json object, keys are css properties and values are string of
-     * the wanted color, for example: `{color: 'red-A200-0.3'}`.
-     *
-     * @usage
-     * <hljs lang="js">
-     *   app.directive('myDirective', function($mdColors) {
-     *     return {
-     *       ...
-     *       link: function (scope, elem) {
-     *         $mdColors.applyThemeColors(elem, {color: 'red'});
-     *       }
-     *    }
-     *   });
-     * </hljs>
+     * @param {angular.element} element the element to apply the styles to
+     * @param {Object} colorExpression Keys are CSS properties and values are strings representing
+     * the `theme-palette-hue-opacity` of the desired color. For example:
+     * `{'color': 'red-A200-0.3', 'background-color': 'myTheme-primary-700-0.8'}`. Theme, hue, and
+     * opacity are optional.
      */
     function applyThemeColors(element, colorExpression) {
       try {
@@ -13690,19 +13694,12 @@ function MdContactChips($mdTheming, $mdUtil) {
      * @name $mdColors#getThemeColor
      *
      * @description
-     * Get parsed color from expression
+     * Get a parsed RGBA color using a string representing the `theme-palette-hue-opacity` of the
+     * desired color.
      *
-     * @param {string} expression string of a color expression (for instance `'red-700-0.8'`)
-     *
-     * @returns {string} a css color expression (for instance `rgba(211, 47, 47, 0.8)`)
-     *
-     * @usage
-     *  <hljs lang="js">
-     *    angular.controller('myCtrl', function ($mdColors) {
-     *      var color = $mdColors.getThemeColor('myTheme-red-200-0.5');
-     *      ...
-     *    });
-     *  </hljs>
+     * @param {string} expression color expression like `'red-A200-0.3'` or
+     *  `'myTheme-primary-700-0.8'`. Theme, hue, and opacity are optional.
+     * @returns {string} a CSS color value like `rgba(211, 47, 47, 0.8)`
      */
     function getThemeColor(expression) {
       var color = extractColorOptions(expression);
@@ -13858,13 +13855,14 @@ function MdContactChips($mdTheming, $mdUtil) {
    * @description
    * `mdColors` directive will apply the theme-based color expression as RGBA CSS style values.
    *
-   *   The format will be similar to our color defining in the scss files:
+   *   The format will be similar to the colors defined in the Sass files:
    *
    *   ## `[?theme]-[palette]-[?hue]-[?opacity]`
    *   - [theme]    - default value is the default theme
    *   - [palette]  - can be either palette name or primary/accent/warn/background
    *   - [hue]      - default is 500 (hue-x can be used with primary/accent/warn/background)
    *   - [opacity]  - default is 1
+   *
    *
    *   > `?` indicates optional parameter
    *
@@ -13877,7 +13875,7 @@ function MdContactChips($mdTheming, $mdUtil) {
    *   </div>
    * </hljs>
    *
-   * `mdColors` directive will automatically watch for changes in the expression if it recognizes
+   * The `mdColors` directive will automatically watch for changes in the expression if it recognizes
    * an interpolation expression or a function. For performance options, you can use `::` prefix to
    * the `md-colors` expression to indicate a one-time data binding.
    *
@@ -33869,9 +33867,11 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil, $mdAria)
  *
  * ### Notes
  * - The `$event.currentTarget` of the swiped element will be `null`, but you can get a
- * reference to the element that actually holds the `md-swipe-left` directive by using `$target.current`
+ * reference to the element that actually holds the `md-swipe-left` directive by using
+ * `$target.current`
  *
- * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer Tools console while swiping).
+ * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer
+ * Tools console while swiping).
  *
  * @usage
  * <hljs lang="html">
@@ -33891,9 +33891,11 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil, $mdAria)
  *
  * ### Notes
  * - The `$event.currentTarget` of the swiped element will be `null`, but you can get a
- * reference to the element that actually holds the `md-swipe-right` directive by using `$target.current`
+ * reference to the element that actually holds the `md-swipe-right` directive by using
+ * `$target.current`
  *
- * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer Tools console while swiping).
+ * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer
+ * Tools console while swiping).
  *
  * @usage
  * <hljs lang="html">
@@ -33913,9 +33915,11 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil, $mdAria)
  *
  * ### Notes
  * - The `$event.currentTarget` of the swiped element will be `null`, but you can get a
- * reference to the element that actually holds the `md-swipe-up` directive by using `$target.current`
+ * reference to the element that actually holds the `md-swipe-up` directive by using
+ * `$target.current`
  *
- * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer Tools console while swiping).
+ * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer
+ * Tools console while swiping).
  *
  * @usage
  * <hljs lang="html">
@@ -33935,13 +33939,15 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil, $mdAria)
  *
  * ### Notes
  * - The `$event.currentTarget` of the swiped element will be `null`, but you can get a
- * reference to the element that actually holds the `md-swipe-down` directive by using `$target.current`
+ * reference to the element that actually holds the `md-swipe-down` directive by using
+ * `$target.current`
  *
- * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer Tools console while swiping).
+ * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer
+ * Tools console while swiping).
  *
  * @usage
  * <hljs lang="html">
- * <div md-swipe-down="onSwipDown($event, $target)">Swipe me down!</div>
+ * <div md-swipe-down="onSwipeDown($event, $target)">Swipe me down!</div>
  * </hljs>
  */
 
@@ -38367,4 +38373,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.18-master-a62d160"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.18-master-16cea88"}};

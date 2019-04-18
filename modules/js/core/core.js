@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.18-master-a62d160
+ * v1.1.18-master-16cea88
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -5592,7 +5592,7 @@ function InkRippleDirective ($mdButtonInkRipple, $mdCheckboxInkRipple) {
  * @module material.core.ripple
  *
  * @description
- * `$mdInkRipple` is a service for adding ripples to any element
+ * `$mdInkRipple` is a service for adding ripples to any element.
  *
  * @usage
  * <hljs lang="js">
@@ -7092,6 +7092,7 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
    *
    * @param {string} name Theme name to define
    * @param {object} options Theme definition options
+   *
    * Options are:<br/>
    * - `primary` - `{string}`: The name of the primary palette to use in the theme.<br/>
    * - `primaryHues` - `{object=}`: Override hues for primary palette.<br/>
