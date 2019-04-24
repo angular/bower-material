@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.18-master-84ac558
+ * v1.1.18-master-08bc72e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -38388,4 +38388,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.18-master-84ac558"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.18-master-08bc72e"}};
