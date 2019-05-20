@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.18-master-952a035
+ * v1.1.18-master-d577afd
  */
 goog.provide('ngmaterial.components.menuBar');
 goog.require('ngmaterial.components.icon');
@@ -284,7 +284,7 @@ MenuBarController.prototype.handleParentClick = function(event) {
  * @restrict E
  * @description
  *
- * Menu bars are containers that hold multiple menus. They change the behavior and appearence
+ * Menu bars are containers that hold multiple menus. They change the behavior and appearance
  * of the `md-menu` directive to behave similar to an operating system provided menu.
  *
  * @usage
@@ -321,12 +321,17 @@ MenuBarController.prototype.handleParentClick = function(event) {
  *
  * ## Menu Bar Controls
  *
- * You may place `md-menu-items` that function as controls within menu bars.
+ * You may place `md-menu-item`s that function as controls within menu bars.
  * There are two modes that are exposed via the `type` attribute of the `md-menu-item`.
  * `type="checkbox"` will function as a boolean control for the `ng-model` attribute of the
  * `md-menu-item`. `type="radio"` will function like a radio button, setting the `ngModel`
  * to the `string` value of the `value` attribute. If you need non-string values, you can use
- * `ng-value` to provide an expression (this is similar to how angular's native `input[type=radio]` works.
+ * `ng-value` to provide an expression (this is similar to how angular's native `input[type=radio]`
+ * works.
+ *
+ * If you want either to disable closing the opened menu when clicked, you can add the
+ * `md-prevent-menu-close` attribute to the `md-menu-item`. The attribute will be forwarded to the
+ * `button` element that is generated.
  *
  * <hljs lang="html">
  * <md-menu-bar>
@@ -335,11 +340,13 @@ MenuBarController.prototype.handleParentClick = function(event) {
  *      Sample Menu
  *    </button>
  *    <md-menu-content>
- *      <md-menu-item type="checkbox" ng-model="settings.allowChanges">Allow changes</md-menu-item>
+ *      <md-menu-item type="checkbox" ng-model="settings.allowChanges" md-prevent-menu-close>
+ *        Allow changes
+ *      </md-menu-item>
  *      <md-menu-divider></md-menu-divider>
  *      <md-menu-item type="radio" ng-model="settings.mode" ng-value="1">Mode 1</md-menu-item>
- *      <md-menu-item type="radio" ng-model="settings.mode" ng-value="1">Mode 2</md-menu-item>
- *      <md-menu-item type="radio" ng-model="settings.mode" ng-value="1">Mode 3</md-menu-item>
+ *      <md-menu-item type="radio" ng-model="settings.mode" ng-value="2">Mode 2</md-menu-item>
+ *      <md-menu-item type="radio" ng-model="settings.mode" ng-value="3">Mode 3</md-menu-item>
  *    </md-menu-content>
  *  </md-menu>
  * </md-menu-bar>
@@ -561,7 +568,7 @@ function MenuItemDirective($mdUtil, $mdConstant, $$mdSvgRegistry) {
 
       // Note: This allows us to show the `check` icon for the md-menu-bar items.
       // The `md-in-menu-bar` class is set by the mdMenuBar directive.
-      if ((type == 'checkbox' || type == 'radio') && templateEl.hasClass(inMenuBarClass)) {
+      if ((type === 'checkbox' || type === 'radio') && templateEl.hasClass(inMenuBarClass)) {
         var text = templateEl[0].textContent;
         var buttonEl = angular.element('<md-button type="button"></md-button>');
         var iconTemplate = '<md-icon md-svg-src="' + $$mdSvgRegistry.mdChecked + '"></md-icon>';
@@ -569,12 +576,16 @@ function MenuItemDirective($mdUtil, $mdConstant, $$mdSvgRegistry) {
         buttonEl.html(text);
         buttonEl.attr('tabindex', '0');
 
+        if (angular.isDefined(templateAttrs.mdPreventMenuClose)) {
+          buttonEl.attr('md-prevent-menu-close', templateAttrs.mdPreventMenuClose);
+        }
+
         templateEl.html('');
         templateEl.append(angular.element(iconTemplate));
         templateEl.append(buttonEl);
         templateEl.addClass('md-indent').removeClass(inMenuBarClass);
 
-        setDefault('role', type == 'checkbox' ? 'menuitemcheckbox' : 'menuitemradio', buttonEl);
+        setDefault('role', type === 'checkbox' ? 'menuitemcheckbox' : 'menuitemradio', buttonEl);
         moveAttrToButton('ng-disabled');
 
       } else {
