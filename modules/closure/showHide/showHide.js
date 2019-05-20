@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.18-master-74563b6
+ * v1.1.18-master-73c424d
  */
 goog.provide('ngmaterial.components.showHide');
 goog.require('ngmaterial.core');
