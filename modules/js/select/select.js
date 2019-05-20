@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.18-master-a5c11df
+ * v1.1.18-master-952a035
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -853,7 +853,8 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
         // the current option, which will be added, then we can be sure, that the validation
         // of the option has occurred before the option was added properly.
         // This means, that we have to manually trigger a new validation of the current option.
-        if (angular.isDefined(self.ngModel.$modelValue) && self.hashGetter(self.ngModel.$modelValue) === hashKey) {
+        if (angular.isDefined(self.ngModel.$$rawModelValue) &&
+            self.hashGetter(self.ngModel.$$rawModelValue) === hashKey) {
           self.ngModel.$validate();
         }
 
