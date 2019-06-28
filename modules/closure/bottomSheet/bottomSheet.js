@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.19-master-ffe9349
+ * v1.1.19-master-f81349a
  */
 goog.provide('ngmaterial.components.bottomSheet');
 goog.require('ngmaterial.components.backdrop');
@@ -256,14 +256,14 @@ function MdBottomSheetProvider($$interimElementProvider) {
         // Add a backdrop that will close on click
         backdrop = $mdUtil.createBackdrop(scope, "md-bottom-sheet-backdrop md-opaque");
 
-        // Prevent mouse focus on backdrop; ONLY programatic focus allowed.
-        // This allows clicks on backdrop to propogate to the $rootElement and
+        // Prevent mouse focus on backdrop; ONLY programmatic focus allowed.
+        // This allows clicks on backdrop to propagate to the $rootElement and
         // ESC key events to be detected properly.
         backdrop[0].tabIndex = -1;
 
         if (options.clickOutsideToClose) {
           backdrop.on('click', function() {
-            $mdUtil.nextTick($mdBottomSheet.cancel,true);
+            $mdUtil.nextTick($mdBottomSheet.cancel, true);
           });
         }
 
@@ -289,7 +289,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
           if (options.escapeToClose) {
             options.rootElementKeyupCallback = function(e) {
               if (e.keyCode === $mdConstant.KEY_CODE.ESCAPE) {
-                $mdUtil.nextTick($mdBottomSheet.cancel,true);
+                $mdUtil.nextTick($mdBottomSheet.cancel, true);
               }
             };
 
@@ -349,7 +349,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
           var distanceRemaining = element.prop('offsetHeight') - ev.pointer.distanceY;
           var transitionDuration = Math.min(distanceRemaining / ev.pointer.velocityY * 0.75, 500);
           element.css($mdConstant.CSS.TRANSITION_DURATION, transitionDuration + 'ms');
-          $mdUtil.nextTick($mdBottomSheet.cancel,true);
+          $mdUtil.nextTick($mdBottomSheet.cancel, true);
         } else {
           element.css($mdConstant.CSS.TRANSITION_DURATION, '');
           element.css($mdConstant.CSS.TRANSFORM, '');

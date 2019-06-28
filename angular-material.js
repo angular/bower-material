@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.19-master-ffe9349
+ * v1.1.19-master-f81349a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1247,10 +1247,10 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
     /**
      * Disables scroll around the passed parent element.
-     * @param element Unused
+     * @param {!Element|!angular.JQLite} element Origin Element (not used)
      * @param {!Element|!angular.JQLite} parent Element to disable scrolling within.
      *   Defaults to body if none supplied.
-     * @param options Object of options to modify functionality
+     * @param {Object=} options Object of options to modify functionality
      *   - disableScrollMask Boolean of whether or not to create a scroll mask element or
      *     use the passed parent element.
      */
@@ -1266,7 +1266,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
       var body = $document[0].body;
       var restoreBody = disableBodyScroll();
-      var restoreElement = disableElementScroll(parent);
+      var restoreElement = disableElementScroll(parent, options);
 
       return $mdUtil.disableScrollAround._restoreScroll = function() {
         if (--$mdUtil.disableScrollAround._count <= 0) {
@@ -1279,21 +1279,29 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
       /**
        * Creates a virtual scrolling mask to prevent touchmove, keyboard, scrollbar clicking,
-       * and wheel events
+       * and wheel events.
+       * @param {!Element|!angular.JQLite} elementToDisable
+       * @param {Object=} scrollMaskOptions Object of options to modify functionality
+       *   - disableScrollMask Boolean of whether or not to create a scroll mask element or
+       *     use the passed parent element.
+       * @returns {Function}
        */
-      function disableElementScroll(element) {
-        element = angular.element(element || body);
-
+      function disableElementScroll(elementToDisable, scrollMaskOptions) {
         var scrollMask;
+        var wrappedElementToDisable = angular.element(elementToDisable || body);
 
-        if (options.disableScrollMask) {
-          scrollMask = element;
+        if (scrollMaskOptions.disableScrollMask) {
+          scrollMask = wrappedElementToDisable;
         } else {
           scrollMask = angular.element(
             '<div class="md-scroll-mask">' +
             '  <div class="md-scroll-mask-bar"></div>' +
             '</div>');
-          element.append(scrollMask);
+          wrappedElementToDisable.append(scrollMask);
+        }
+
+        function preventDefault(e) {
+          e.preventDefault();
         }
 
         scrollMask.on('wheel', preventDefault);
@@ -1303,14 +1311,10 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
           scrollMask.off('wheel');
           scrollMask.off('touchmove');
 
-          if (!options.disableScrollMask && scrollMask[0].parentNode) {
+          if (!scrollMaskOptions.disableScrollMask && scrollMask[0].parentNode) {
             scrollMask[0].parentNode.removeChild(scrollMask[0]);
           }
         };
-
-        function preventDefault(e) {
-          e.preventDefault();
-        }
       }
 
       // Converts the body to a position fixed block and translate it to the proper scroll position
@@ -8522,6 +8526,15 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       debouncedOnResize    = $mdUtil.debounce(onWindowResize),
       mode                 = MODE_VIRTUAL; // default
 
+  /**
+   * The root document element. This is used for attaching a top-level click handler to
+   * close the options panel when a click outside said panel occurs. We use `documentElement`
+   * instead of body because, when scrolling is disabled, some browsers consider the body element
+   * to be completely off the screen and propagate events directly to the html element.
+   * @type {!angular.JQLite}
+   */
+  ctrl.documentElement = angular.element(document.documentElement);
+
   // Public Exported Variables with handlers
   defineProperty('hidden', handleHiddenChange, true);
 
@@ -8851,8 +8864,10 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       if (elements) {
         $mdUtil.disableScrollAround(elements.ul);
         enableWrapScroll = disableElementScrollEvents(angular.element(elements.wrap));
+        ctrl.documentElement.on('click', handleClickOutside);
       }
     } else if (hidden && !oldHidden) {
+      ctrl.documentElement.off('click', handleClickOutside);
       $mdUtil.enableScrolling();
 
       if (enableWrapScroll) {
@@ -8860,6 +8875,15 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
         enableWrapScroll = null;
       }
     }
+  }
+
+  /**
+   * Handling click events that bubble up to the document is required for closing the dropdown
+   * panel on click outside of the panel on iOS.
+   * @param {Event} $event
+   */
+  function handleClickOutside($event) {
+    ctrl.hidden = true;
   }
 
   /**
@@ -9034,7 +9058,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
   /**
    * Force blur on input element
-   * @param forceBlur
+   * @param {boolean} forceBlur
    */
   function doBlur(forceBlur) {
     if (forceBlur) {
@@ -9328,8 +9352,12 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
   /**
    * Clears the searchText value and selected item.
+   * @param {Event} $event
    */
-  function clearValue () {
+  function clearValue ($event) {
+    if ($event) {
+      $event.stopPropagation();
+    }
     clearSelectedItem();
     clearSearchText();
   }
@@ -10733,14 +10761,14 @@ function MdBottomSheetProvider($$interimElementProvider) {
         // Add a backdrop that will close on click
         backdrop = $mdUtil.createBackdrop(scope, "md-bottom-sheet-backdrop md-opaque");
 
-        // Prevent mouse focus on backdrop; ONLY programatic focus allowed.
-        // This allows clicks on backdrop to propogate to the $rootElement and
+        // Prevent mouse focus on backdrop; ONLY programmatic focus allowed.
+        // This allows clicks on backdrop to propagate to the $rootElement and
         // ESC key events to be detected properly.
         backdrop[0].tabIndex = -1;
 
         if (options.clickOutsideToClose) {
           backdrop.on('click', function() {
-            $mdUtil.nextTick($mdBottomSheet.cancel,true);
+            $mdUtil.nextTick($mdBottomSheet.cancel, true);
           });
         }
 
@@ -10766,7 +10794,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
           if (options.escapeToClose) {
             options.rootElementKeyupCallback = function(e) {
               if (e.keyCode === $mdConstant.KEY_CODE.ESCAPE) {
-                $mdUtil.nextTick($mdBottomSheet.cancel,true);
+                $mdUtil.nextTick($mdBottomSheet.cancel, true);
               }
             };
 
@@ -10826,7 +10854,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
           var distanceRemaining = element.prop('offsetHeight') - ev.pointer.distanceY;
           var transitionDuration = Math.min(distanceRemaining / ev.pointer.velocityY * 0.75, 500);
           element.css($mdConstant.CSS.TRANSITION_DURATION, transitionDuration + 'ms');
-          $mdUtil.nextTick($mdBottomSheet.cancel,true);
+          $mdUtil.nextTick($mdBottomSheet.cancel, true);
         } else {
           element.css($mdConstant.CSS.TRANSITION_DURATION, '');
           element.css($mdConstant.CSS.TRANSFORM, '');
@@ -38448,4 +38476,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.19-master-ffe9349"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.19-master-f81349a"}};
