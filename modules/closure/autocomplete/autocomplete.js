@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.19-master-9cf331f
+ * v1.1.19-master-8f14afd
  */
 goog.provide('ngmaterial.components.autocomplete');
 goog.require('ngmaterial.components.icon');
@@ -56,7 +56,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * close the options panel when a click outside said panel occurs. We use `documentElement`
    * instead of body because, when scrolling is disabled, some browsers consider the body element
    * to be completely off the screen and propagate events directly to the html element.
-   * @type {!angular.JQLite}
+   * @type {!Object} angular.JQLite
    */
   ctrl.documentElement = angular.element(document.documentElement);
 
@@ -375,8 +375,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
   /**
    * Handles changes to the `hidden` property.
-   * @param hidden
-   * @param oldHidden
+   * @param {boolean} hidden
+   * @param {boolean} oldHidden
    */
   function handleHiddenChange (hidden, oldHidden) {
     if (!hidden && oldHidden) {
@@ -1631,6 +1631,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
                 ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
                 ng-blur="$mdAutocompleteCtrl.blur($event)"\
                 ng-focus="$mdAutocompleteCtrl.focus($event)"\
+                ng-click="$event.stopPropagation()"\
                 aria-label="{{floatingLabel}}"\
                 aria-autocomplete="list"\
                 role="combobox"\
@@ -1658,6 +1659,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
               ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
               ng-blur="$mdAutocompleteCtrl.blur($event)"\
               ng-focus="$mdAutocompleteCtrl.focus($event)"\
+              ng-click="$event.stopPropagation()"\
               placeholder="{{placeholder}}"\
               aria-label="{{placeholder}}"\
               aria-autocomplete="list"\

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.19-master-9cf331f
+ * v1.1.19-master-8f14afd
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1247,8 +1247,8 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
     /**
      * Disables scroll around the passed parent element.
-     * @param {!Element|!angular.JQLite} element Origin Element (not used)
-     * @param {!Element|!angular.JQLite} parent Element to disable scrolling within.
+     * @param {Element|angular.JQLite=} element Origin Element (not used)
+     * @param {Element|angular.JQLite=} parent Element to disable scrolling within.
      *   Defaults to body if none supplied.
      * @param {Object=} options Object of options to modify functionality
      *   - disableScrollMask Boolean of whether or not to create a scroll mask element or
@@ -8531,7 +8531,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * close the options panel when a click outside said panel occurs. We use `documentElement`
    * instead of body because, when scrolling is disabled, some browsers consider the body element
    * to be completely off the screen and propagate events directly to the html element.
-   * @type {!angular.JQLite}
+   * @type {!Object} angular.JQLite
    */
   ctrl.documentElement = angular.element(document.documentElement);
 
@@ -8850,8 +8850,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
   /**
    * Handles changes to the `hidden` property.
-   * @param hidden
-   * @param oldHidden
+   * @param {boolean} hidden
+   * @param {boolean} oldHidden
    */
   function handleHiddenChange (hidden, oldHidden) {
     if (!hidden && oldHidden) {
@@ -10110,6 +10110,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
                 ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
                 ng-blur="$mdAutocompleteCtrl.blur($event)"\
                 ng-focus="$mdAutocompleteCtrl.focus($event)"\
+                ng-click="$event.stopPropagation()"\
                 aria-label="{{floatingLabel}}"\
                 aria-autocomplete="list"\
                 role="combobox"\
@@ -10137,6 +10138,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
               ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
               ng-blur="$mdAutocompleteCtrl.blur($event)"\
               ng-focus="$mdAutocompleteCtrl.focus($event)"\
+              ng-click="$event.stopPropagation()"\
               placeholder="{{placeholder}}"\
               aria-label="{{placeholder}}"\
               aria-autocomplete="list"\
@@ -38476,4 +38478,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.19-master-9cf331f"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.19-master-8f14afd"}};
