@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.19-master-8f14afd
+ * v1.1.19-master-313e5e6
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -9979,9 +9979,15 @@ function MdAutocomplete ($$mdSvgRegistry) {
         }
 
         scope.mdMode = getRepeatMode(attrs.mdMode);
+
+        // Stop click events from bubbling up to the document and triggering a flicker of the
+        // options panel while still supporting ng-click to be placed on md-autocomplete.
+        element.on('click', function(event) {
+          event.stopPropagation();
+        });
       };
     },
-    template:     function (element, attr) {
+    template: function (element, attr) {
       var noItemsTemplate = getNoItemsTemplate(),
           itemTemplate    = getItemTemplate(),
           leftover        = element.html(),
@@ -10110,7 +10116,6 @@ function MdAutocomplete ($$mdSvgRegistry) {
                 ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
                 ng-blur="$mdAutocompleteCtrl.blur($event)"\
                 ng-focus="$mdAutocompleteCtrl.focus($event)"\
-                ng-click="$event.stopPropagation()"\
                 aria-label="{{floatingLabel}}"\
                 aria-autocomplete="list"\
                 role="combobox"\
@@ -10138,7 +10143,6 @@ function MdAutocomplete ($$mdSvgRegistry) {
               ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
               ng-blur="$mdAutocompleteCtrl.blur($event)"\
               ng-focus="$mdAutocompleteCtrl.focus($event)"\
-              ng-click="$event.stopPropagation()"\
               placeholder="{{placeholder}}"\
               aria-label="{{placeholder}}"\
               aria-autocomplete="list"\
@@ -38478,4 +38482,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.19-master-8f14afd"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.19-master-313e5e6"}};
