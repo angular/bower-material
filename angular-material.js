@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.19-master-313e5e6
+ * v1.1.19-master-f5535f8
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1051,11 +1051,17 @@ angular
 /**
  * @ngInject
  */
-function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $interpolate, $log, $rootElement, $window, $$rAF) {
+function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $interpolate, $log,
+                     $rootElement, $window, $$rAF) {
   // Setup some core variables for the processTemplate method
   var startSymbol = $interpolate.startSymbol(),
     endSymbol = $interpolate.endSymbol(),
     usesStandardSymbols = ((startSymbol === '{{') && (endSymbol === '}}'));
+
+  // Polyfill document.contains for IE11.
+  document.contains || (document.contains = function (node) {
+    return document.body.contains(node);
+  });
 
   /**
    * Checks if the target element has the requested style by key
@@ -1069,14 +1075,15 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
     if (target && target.length) {
       var computedStyles = $window.getComputedStyle(target[0]);
-      hasValue = angular.isDefined(computedStyles[key]) && (expectedVal ? computedStyles[key] == expectedVal : true);
+      hasValue = angular.isDefined(computedStyles[key]) &&
+        (expectedVal ? computedStyles[key] == expectedVal : true);
     }
 
     return hasValue;
   };
 
   function validateCssValue(value) {
-    return !value       ? '0'   :
+    return !value ? '0' :
       hasPx(value) || hasPercent(value) ? value : value + 'px';
   }
 
@@ -1086,7 +1093,6 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
   function hasPercent(value) {
     return String(value).indexOf('%') > -1;
-
   }
 
   var $mdUtil = {
@@ -3511,7 +3517,6 @@ function MdCompilerProvider($compileProvider) {
    * @returns {{element: !JQLite, restore: !function}}
    */
   MdCompilerService.prototype._fetchContentElement = function(options) {
-
     var contentEl = options.contentElement;
     var restoreFn = null;
 
@@ -4144,12 +4149,6 @@ function attachToDocument($mdGesture, $$MdGestureHandler) {
   if (disableAllGestures) {
     return;
   }
-
-  // Polyfill document.contains for IE11.
-  // TODO: move to util
-  document.contains || (document.contains = function (node) {
-    return document.body.contains(node);
-  });
 
   if (!isInitialized && $mdGesture.isHijackingClicks) {
     /*
@@ -38482,4 +38481,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.19-master-313e5e6"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.19-master-f5535f8"}};

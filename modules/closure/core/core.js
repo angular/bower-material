@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.19-master-313e5e6
+ * v1.1.19-master-f5535f8
  */
 goog.provide('ngmaterial.core');
 
@@ -1019,11 +1019,17 @@ angular
 /**
  * ngInject
  */
-function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $interpolate, $log, $rootElement, $window, $$rAF) {
+function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $interpolate, $log,
+                     $rootElement, $window, $$rAF) {
   // Setup some core variables for the processTemplate method
   var startSymbol = $interpolate.startSymbol(),
     endSymbol = $interpolate.endSymbol(),
     usesStandardSymbols = ((startSymbol === '{{') && (endSymbol === '}}'));
+
+  // Polyfill document.contains for IE11.
+  document.contains || (document.contains = function (node) {
+    return document.body.contains(node);
+  });
 
   /**
    * Checks if the target element has the requested style by key
@@ -1037,14 +1043,15 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
     if (target && target.length) {
       var computedStyles = $window.getComputedStyle(target[0]);
-      hasValue = angular.isDefined(computedStyles[key]) && (expectedVal ? computedStyles[key] == expectedVal : true);
+      hasValue = angular.isDefined(computedStyles[key]) &&
+        (expectedVal ? computedStyles[key] == expectedVal : true);
     }
 
     return hasValue;
   };
 
   function validateCssValue(value) {
-    return !value       ? '0'   :
+    return !value ? '0' :
       hasPx(value) || hasPercent(value) ? value : value + 'px';
   }
 
@@ -1054,7 +1061,6 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
   function hasPercent(value) {
     return String(value).indexOf('%') > -1;
-
   }
 
   var $mdUtil = {
@@ -1946,563 +1952,6 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
 
 /**
  * @ngdoc module
- * @name material.core.compiler
- * @description
- * AngularJS Material template and element compiler.
- */
-angular
-  .module('material.core')
-  .provider('$mdCompiler', MdCompilerProvider);
-
-/**
- * @ngdoc service
- * @name $mdCompilerProvider
- * @module material.core.compiler
- * @description
- * The `$mdCompiler` is able to respect the AngularJS `$compileProvider.preAssignBindingsEnabled`
- * state when using AngularJS versions greater than or equal to 1.5.10 and less than 1.7.0.
- * See the [AngularJS documentation for `$compileProvider.preAssignBindingsEnabled`
- * ](https://code.angularjs.org/1.6.10/docs/api/ng/provider/$compileProvider#preAssignBindingsEnabled)
- * for more information.
- *
- * To enable/disable whether the controllers of dynamic AngularJS Material components
- * (i.e. dialog, panel, toast, bottomsheet) respect the AngularJS
- * `$compileProvider.preAssignBindingsEnabled` flag, call the AngularJS Material method:
- * `$mdCompilerProvider.respectPreAssignBindingsEnabled(boolean)`.
- *
- * This AngularJS Material *flag* doesn't affect directives/components created via regular
- * AngularJS methods. These constitute the majority of AngularJS Material and user-created
- * components. Only dynamic construction of elements such as Dialogs, Panels, Toasts, BottomSheets,
- * etc. may be affected. Invoking `$mdCompilerProvider.respectPreAssignBindingsEnabled(true)`
- * will effect **bindings** in controllers created by AngularJS Material's services like
- * `$mdDialog`, `$mdPanel`, `$mdToast`, or `$mdBottomSheet`.
- *
- * See [$mdCompilerProvider.respectPreAssignBindingsEnabled](#mdcompilerprovider-respectpreassignbindingsenabled-respected)
- * for the details of how the different versions and settings of AngularJS affect this behavior.
- *
- * @usage
- *
- * Respect the AngularJS Compiler Setting
- *
- * <hljs lang="js">
- *   app.config(function($mdCompilerProvider) {
- *     $mdCompilerProvider.respectPreAssignBindingsEnabled(true);
- *   });
- * </hljs>
- *
- * @example
- * Using the default (backwards compatible) values for AngularJS 1.6
- * - AngularJS' `$compileProvider.preAssignBindingsEnabled(false)`
- * - AngularJS Material's `$mdCompilerProvider.respectPreAssignBindingsEnabled(false)`
- * <br><br>
- *
- * <hljs lang="js">
- * $mdDialog.show({
- *   locals: {
- *     myVar: true
- *   },
- *   controller: MyController,
- *   bindToController: true
- * }
- *
- * function MyController() {
- *   // Locals from Angular Material are available. e.g myVar is true.
- * }
- *
- * MyController.prototype.$onInit = function() {
- *   // Bindings are also available in the $onInit lifecycle hook.
- * }
- * </hljs>
- *
- * Recommended Settings for AngularJS 1.6
- * - AngularJS' `$compileProvider.preAssignBindingsEnabled(false)`
- * - AngularJS Material's `$mdCompilerProvider.respectPreAssignBindingsEnabled(true)`
- * <br><br>
- *
- * <hljs lang="js">
- * $mdDialog.show({
- *   locals: {
- *     myVar: true
- *   },
- *   controller: MyController,
- *   bindToController: true
- * }
- *
- * function MyController() {
- *   // No locals from Angular Material are available. e.g myVar is undefined.
- * }
- *
- * MyController.prototype.$onInit = function() {
- *   // Bindings are now available in the $onInit lifecycle hook.
- * }
- * </hljs>
- *
- */
-MdCompilerProvider['$inject'] = ['$compileProvider'];
-function MdCompilerProvider($compileProvider) {
-
-  var provider = this;
-
-  /**
-   * @ngdoc method
-   * @name $mdCompilerProvider#respectPreAssignBindingsEnabled
-   *
-   * @param {boolean=} respected update the `respectPreAssignBindingsEnabled` state if provided,
-   *  otherwise just return the current Material `respectPreAssignBindingsEnabled` state.
-   * @returns {boolean|MdCompilerProvider} current value, if used as a getter, or itself (chaining)
-   *  if used as a setter.
-   *
-   * @description
-   * Call this method to enable/disable whether Material-specific (dialog/panel/toast/bottomsheet)
-   * controllers respect the AngularJS `$compileProvider.preAssignBindingsEnabled` flag. Note that
-   * this doesn't affect directives/components created via regular AngularJS methods which
-   * constitute most Material and user-created components.
-   *
-   * If disabled (`false`), the compiler assigns the value of each of the bindings to the
-   * properties of the controller object before the constructor of this object is called.
-   * The ability to disable this settings is **deprecated** and will be removed in
-   * AngularJS Material 1.2.0.
-   *
-   * If enabled (`true`) the behavior depends on the AngularJS version used:
-   *
-   * - `<1.5.10`
-   *  - Bindings are pre-assigned.
-   * - `>=1.5.10 <1.7`
-   *  - Respects whatever `$compileProvider.preAssignBindingsEnabled()` reports. If the
-   *    `preAssignBindingsEnabled` flag wasn't set manually, it defaults to pre-assigning bindings
-   *    with AngularJS `1.5` and to calling the constructor first with AngularJS `1.6`.
-   * - `>=1.7`
-   *  - The compiler calls the constructor first before assigning bindings and
-   *    `$compileProvider.preAssignBindingsEnabled()` no longer exists.
-   *
-   * Defaults
-   * - The default value is `false` in AngularJS 1.6 and earlier.
-   *  - It is planned to fix this value to `true` and not allow the `false` value in
-   *    AngularJS Material 1.2.0.
-   *
-   * It is recommended to set this flag to `true` when using AngularJS Material 1.1.x with
-   * AngularJS versions >= 1.5.10. The only reason it's not set that way by default is backwards
-   * compatibility.
-   *
-   * By not setting the flag to `true` when AngularJS' `$compileProvider.preAssignBindingsEnabled()`
-   * is set to `false` (i.e. default behavior in AngularJS 1.6 or newer), unit testing of
-   * Material Dialog/Panel/Toast/BottomSheet controllers using the `$controller` helper
-   * is problematic as it always follows AngularJS' `$compileProvider.preAssignBindingsEnabled()`
-   * value.
-   */
-  var respectPreAssignBindingsEnabled = false;
-  this.respectPreAssignBindingsEnabled = function(respected) {
-    if (angular.isDefined(respected)) {
-      respectPreAssignBindingsEnabled = respected;
-      return this;
-    }
-
-    return respectPreAssignBindingsEnabled;
-  };
-
-  /**
-   * @private
-   * @description
-   * This function returns `true` if AngularJS Material-specific (dialog/panel/toast/bottomsheet)
-   * controllers have bindings pre-assigned in controller constructors and `false` otherwise.
-   *
-   * Note that this doesn't affect directives/components created via regular AngularJS methods
-   * which constitute most Material and user-created components; their behavior can be checked via
-   * `$compileProvider.preAssignBindingsEnabled()` in AngularJS `>=1.5.10 <1.7.0`.
-   *
-   * @returns {*} current preAssignBindingsEnabled state
-   */
-  function getPreAssignBindingsEnabled() {
-    if (!respectPreAssignBindingsEnabled) {
-      // respectPreAssignBindingsEnabled === false
-      // We're ignoring the AngularJS `$compileProvider.preAssignBindingsEnabled()` value in this case.
-      return true;
-    }
-
-    // respectPreAssignBindingsEnabled === true
-
-    // This check is needed because $compileProvider.preAssignBindingsEnabled does not exist prior
-    // to AngularJS 1.5.10, is deprecated in AngularJS 1.6.x, and removed in AngularJS 1.7.x.
-    if (typeof $compileProvider.preAssignBindingsEnabled === 'function') {
-      return $compileProvider.preAssignBindingsEnabled();
-    }
-
-    // Flag respected but not present => apply logic based on AngularJS version used.
-    if (angular.version.major === 1 && angular.version.minor < 6) {
-      // AngularJS <1.5.10
-      return true;
-    }
-
-    // AngularJS >=1.7.0
-    return false;
-  }
-
-  this.$get = ["$q", "$templateRequest", "$injector", "$compile", "$controller",
-    function($q, $templateRequest, $injector, $compile, $controller) {
-      return new MdCompilerService($q, $templateRequest, $injector, $compile, $controller);
-    }];
-
-  /**
-   * @ngdoc service
-   * @name $mdCompiler
-   * @module material.core.compiler
-   * @description
-   * The $mdCompiler service is an abstraction of AngularJS's compiler, that allows developers
-   * to easily compile an element with options like in a Directive Definition Object.
-   *
-   * > The compiler powers a lot of components inside of AngularJS Material.
-   * > Like the `$mdPanel` or `$mdDialog`.
-   *
-   * @usage
-   *
-   * Basic Usage with a template
-   *
-   * <hljs lang="js">
-   *   $mdCompiler.compile({
-   *     templateUrl: 'modal.html',
-   *     controller: 'ModalCtrl',
-   *     locals: {
-   *       modal: myModalInstance;
-   *     }
-   *   }).then(function (compileData) {
-   *     compileData.element; // Compiled DOM element
-   *     compileData.link(myScope); // Instantiate controller and link element to scope.
-   *   });
-   * </hljs>
-   *
-   * Example with a content element
-   *
-   * <hljs lang="js">
-   *
-   *   // Create a virtual element and link it manually.
-   *   // The compiler doesn't need to recompile the element each time.
-   *   var myElement = $compile('<span>Test</span>')(myScope);
-   *
-   *   $mdCompiler.compile({
-   *     contentElement: myElement
-   *   }).then(function (compileData) {
-   *     compileData.element // Content Element (same as above)
-   *     compileData.link // This does nothing when using a contentElement.
-   *   });
-   * </hljs>
-   *
-   * > Content Element is a significant performance improvement when the developer already knows that the
-   * > compiled element will be always the same and the scope will not change either.
-   *
-   * The `contentElement` option also supports DOM elements which will be temporary removed and restored
-   * at its old position.
-   *
-   * <hljs lang="js">
-   *   var domElement = document.querySelector('#myElement');
-   *
-   *   $mdCompiler.compile({
-   *     contentElement: myElement
-   *   }).then(function (compileData) {
-   *     compileData.element // Content Element (same as above)
-   *     compileData.link // This does nothing when using a contentElement.
-   *   });
-   * </hljs>
-   *
-   * The `$mdCompiler` can also query for the element in the DOM itself.
-   *
-   * <hljs lang="js">
-   *   $mdCompiler.compile({
-   *     contentElement: '#myElement'
-   *   }).then(function (compileData) {
-   *     compileData.element // Content Element (same as above)
-   *     compileData.link // This does nothing when using a contentElement.
-   *   });
-   * </hljs>
-   *
-   */
-  function MdCompilerService($q, $templateRequest, $injector, $compile, $controller) {
-
-    /** @private @const {!angular.$q} */
-    this.$q = $q;
-
-    /** @private @const {!angular.$templateRequest} */
-    this.$templateRequest = $templateRequest;
-
-    /** @private @const {!angular.$injector} */
-    this.$injector = $injector;
-
-    /** @private @const {!angular.$compile} */
-    this.$compile = $compile;
-
-    /** @private @const {!angular.$controller} */
-    this.$controller = $controller;
-  }
-
-  /**
-   * @ngdoc method
-   * @name $mdCompiler#compile
-   * @description
-   *
-   * A method to compile a HTML template with the AngularJS compiler.
-   * The `$mdCompiler` is wrapper around the AngularJS compiler and provides extra functionality
-   * like controller instantiation or async resolves.
-   *
-   * @param {!Object} options An options object, with the following properties:
-   *
-   *    - `controller` - `{string|function}` Controller fn that should be associated with
-   *         newly created scope or the name of a registered controller if passed as a string.
-   *    - `controllerAs` - `{string=}` A controller alias name. If present the controller will be
-   *         published to scope under the `controllerAs` name.
-   *    - `contentElement` - `{string|Element}`: Instead of using a template, which will be
-   *         compiled each time, you can also use a DOM element.<br/>
-   *    - `template` - `{string=}` An html template as a string.
-   *    - `templateUrl` - `{string=}` A path to an html template.
-   *    - `transformTemplate` - `{function(template)=}` A function which transforms the template after
-   *        it is loaded. It will be given the template string as a parameter, and should
-   *        return a a new string representing the transformed template.
-   *    - `resolve` - `{Object.<string, function>=}` - An optional map of dependencies which should
-   *        be injected into the controller. If any of these dependencies are promises, the compiler
-   *        will wait for them all to be resolved, or if one is rejected before the controller is
-   *        instantiated `compile()` will fail..
-   *      * `key` - `{string}`: a name of a dependency to be injected into the controller.
-   *      * `factory` - `{string|function}`: If `string` then it is an alias for a service.
-   *        Otherwise if function, then it is injected and the return value is treated as the
-   *        dependency. If the result is a promise, it is resolved before its value is
-   *        injected into the controller.
-   *
-   * @returns {Object} promise A promise, which will be resolved with a `compileData` object.
-   * `compileData` has the following properties:
-   *
-   *   - `element` - `{Element}`: an uncompiled element matching the provided template.
-   *   - `link` - `{function(scope)}`: A link function, which, when called, will compile
-   *     the element and instantiate the provided controller (if given).
-   *   - `locals` - `{Object}`: The locals which will be passed into the controller once `link` is
-   *     called. If `bindToController` is true, they will be copied to the ctrl instead
-   */
-  MdCompilerService.prototype.compile = function(options) {
-
-    if (options.contentElement) {
-      return this._prepareContentElement(options);
-    } else {
-      return this._compileTemplate(options);
-    }
-
-  };
-
-  /**
-   * Instead of compiling any template, the compiler just fetches an existing HTML element from the DOM and
-   * provides a restore function to put the element back it old DOM position.
-   * @param {!Object} options Options to be used for the compiler.
-   */
-  MdCompilerService.prototype._prepareContentElement = function(options) {
-
-    var contentElement = this._fetchContentElement(options);
-
-    return this.$q.resolve({
-      element: contentElement.element,
-      cleanup: contentElement.restore,
-      locals: {},
-      link: function() {
-        return contentElement.element;
-      }
-    });
-
-  };
-
-  /**
-   * Compiles a template by considering all options and waiting for all resolves to be ready.
-   * @param {!Object} options Compile options
-   * @returns {!Object} Compile data with link function.
-   */
-  MdCompilerService.prototype._compileTemplate = function(options) {
-
-    var self = this;
-    var templateUrl = options.templateUrl;
-    var template = options.template || '';
-    var resolve = angular.extend({}, options.resolve);
-    var locals = angular.extend({}, options.locals);
-    var transformTemplate = options.transformTemplate || angular.identity;
-
-    // Take resolve values and invoke them.
-    // Resolves can either be a string (value: 'MyRegisteredAngularConst'),
-    // or an invokable 'factory' of sorts: (value: function ValueGetter($dependency) {})
-    angular.forEach(resolve, function(value, key) {
-      if (angular.isString(value)) {
-        resolve[key] = self.$injector.get(value);
-      } else {
-        resolve[key] = self.$injector.invoke(value);
-      }
-    });
-
-    // Add the locals, which are just straight values to inject
-    // eg locals: { three: 3 }, will inject three into the controller
-    angular.extend(resolve, locals);
-
-    if (templateUrl) {
-      resolve.$$ngTemplate = this.$templateRequest(templateUrl);
-    } else {
-      resolve.$$ngTemplate = this.$q.when(template);
-    }
-
-
-    // Wait for all the resolves to finish if they are promises
-    return this.$q.all(resolve).then(function(locals) {
-
-      var template = transformTemplate(locals.$$ngTemplate, options);
-      var element = options.element || angular.element('<div>').html(template.trim()).contents();
-
-      return self._compileElement(locals, element, options);
-    });
-
-  };
-
-  /**
-   * Method to compile an element with the given options.
-   * @param {!Object} locals Locals to be injected to the controller if present
-   * @param {!JQLite} element Element to be compiled and linked
-   * @param {!Object} options Options to be used for linking.
-   * @returns {!Object} Compile data with link function.
-   */
-  MdCompilerService.prototype._compileElement = function(locals, element, options) {
-    var self = this;
-    var ngLinkFn = this.$compile(element);
-
-    var compileData = {
-      element: element,
-      cleanup: element.remove.bind(element),
-      locals: locals,
-      link: linkFn
-    };
-
-    function linkFn(scope) {
-      locals.$scope = scope;
-
-      // Instantiate controller if the developer provided one.
-      if (options.controller) {
-
-        var injectLocals = angular.extend({}, locals, {
-          $element: element
-        });
-
-        // Create the specified controller instance.
-        var ctrl = self._createController(options, injectLocals, locals);
-
-        // Unique identifier for AngularJS Route ngView controllers.
-        element.data('$ngControllerController', ctrl);
-        element.children().data('$ngControllerController', ctrl);
-
-        // Expose the instantiated controller to the compile data
-        compileData.controller = ctrl;
-      }
-
-      // Invoke the AngularJS $compile link function.
-      return ngLinkFn(scope);
-    }
-
-    return compileData;
-
-  };
-
-  /**
-   * Creates and instantiates a new controller with the specified options.
-   * @param {!Object} options Options that include the controller function or string.
-   * @param {!Object} injectLocals Locals to to be provided in the controller DI.
-   * @param {!Object} locals Locals to be injected to the controller.
-   * @returns {!Object} Created controller instance.
-   */
-  MdCompilerService.prototype._createController = function(options, injectLocals, locals) {
-    var ctrl;
-    var preAssignBindingsEnabled = getPreAssignBindingsEnabled();
-    // The third argument to $controller is considered private and undocumented:
-    // https://github.com/angular/angular.js/blob/v1.6.10/src/ng/controller.js#L102-L109.
-    // TODO remove the use of this third argument in AngularJS Material 1.2.0.
-    // Passing `true` as the third argument causes `$controller` to return a function that
-    // gets the controller instance instead of returning the instance directly. When the
-    // controller is defined as a function, `invokeCtrl.instance` is the *same instance* as
-    // `invokeCtrl()`. However, when the controller is an ES6 class, `invokeCtrl.instance` is a
-    // *different instance* from `invokeCtrl()`.
-    if (preAssignBindingsEnabled) {
-      var invokeCtrl = this.$controller(options.controller, injectLocals, true);
-
-      if (options.bindToController) {
-        angular.extend(invokeCtrl.instance, locals);
-      }
-
-      // Use the private API callback to instantiate and initialize the specified controller.
-      ctrl = invokeCtrl();
-    } else {
-      // If we don't need to pre-assign bindings, avoid using the private API third argument and
-      // related callback.
-      ctrl = this.$controller(options.controller, injectLocals);
-
-      if (options.bindToController) {
-        angular.extend(ctrl, locals);
-      }
-    }
-
-    if (options.controllerAs) {
-      injectLocals.$scope[options.controllerAs] = ctrl;
-    }
-
-    // Call the $onInit hook if it's present on the controller.
-    angular.isFunction(ctrl.$onInit) && ctrl.$onInit();
-
-    return ctrl;
-  };
-
-  /**
-   * Fetches an element removing it from the DOM and using it temporary for the compiler.
-   * Elements which were fetched will be restored after use.
-   * @param {!Object} options Options to be used for the compilation.
-   * @returns {{element: !JQLite, restore: !function}}
-   */
-  MdCompilerService.prototype._fetchContentElement = function(options) {
-
-    var contentEl = options.contentElement;
-    var restoreFn = null;
-
-    if (angular.isString(contentEl)) {
-      contentEl = document.querySelector(contentEl);
-      restoreFn = createRestoreFn(contentEl);
-    } else {
-      contentEl = contentEl[0] || contentEl;
-
-      // When the element is visible in the DOM, then we restore it at close of the dialog.
-      // Otherwise it will be removed from the DOM after close.
-      if (document.contains(contentEl)) {
-        restoreFn = createRestoreFn(contentEl);
-      } else {
-        restoreFn = function() {
-          if (contentEl.parentNode) {
-            contentEl.parentNode.removeChild(contentEl);
-          }
-        };
-      }
-    }
-
-    return {
-      element: angular.element(contentEl),
-      restore: restoreFn
-    };
-
-    function createRestoreFn(element) {
-      var parent = element.parentNode;
-      var nextSibling = element.nextElementSibling;
-
-      return function() {
-        if (!nextSibling) {
-          // When the element didn't had any sibling, then it can be simply appended to the
-          // parent, because it plays no role, which index it had before.
-          parent.appendChild(element);
-        } else {
-          // When the element had a sibling, which marks the previous position of the element
-          // in the DOM, we insert it correctly before the sibling, to have the same index as
-          // before.
-          parent.insertBefore(element, nextSibling);
-        }
-      };
-    }
-  };
-}
-
-
-/**
- * @ngdoc module
  * @name material.core.aria
  * @description
  * Aria Expectations for AngularJS Material components.
@@ -2824,179 +2273,6 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
     }
   }
 }
-
-/**
- * @ngdoc module
- * @name material.core.interaction
- * @description
- * User interaction detection to provide proper accessibility.
- */
-MdInteractionService['$inject'] = ["$timeout", "$mdUtil", "$rootScope"];
-angular
-  .module('material.core.interaction', [])
-  .service('$mdInteraction', MdInteractionService);
-
-
-/**
- * @ngdoc service
- * @name $mdInteraction
- * @module material.core.interaction
- *
- * @description
- *
- * Service which keeps track of the last interaction type and validates them for several browsers.
- * The service hooks into the document's body and listens for touch, mouse and keyboard events.
- *
- * The most recent interaction type can be retrieved by calling the `getLastInteractionType` method.
- *
- * Here is an example markup for using the interaction service.
- *
- * <hljs lang="js">
- *   var lastType = $mdInteraction.getLastInteractionType();
- *
- *   if (lastType === 'keyboard') {
- *     // We only restore the focus for keyboard users.
- *     restoreFocus();
- *   }
- * </hljs>
- *
- */
-function MdInteractionService($timeout, $mdUtil, $rootScope) {
-  this.$timeout = $timeout;
-  this.$mdUtil = $mdUtil;
-  this.$rootScope = $rootScope;
-
-  // IE browsers can also trigger pointer events, which also leads to an interaction.
-  this.pointerEvent = 'MSPointerEvent' in window ? 'MSPointerDown' : 'PointerEvent' in window ? 'pointerdown' : null;
-  this.bodyElement = angular.element(document.body);
-  this.isBuffering = false;
-  this.bufferTimeout = null;
-  this.lastInteractionType = null;
-  this.lastInteractionTime = null;
-  this.inputHandler = this.onInputEvent.bind(this);
-  this.bufferedInputHandler = this.onBufferInputEvent.bind(this);
-
-  // Type Mappings for the different events
-  // There will be three three interaction types
-  // `keyboard`, `mouse` and `touch`
-  // type `pointer` will be evaluated in `pointerMap` for IE Browser events
-  this.inputEventMap = {
-    'keydown': 'keyboard',
-    'mousedown': 'mouse',
-    'mouseenter': 'mouse',
-    'touchstart': 'touch',
-    'pointerdown': 'pointer',
-    'MSPointerDown': 'pointer'
-  };
-
-  // IE PointerDown events will be validated in `touch` or `mouse`
-  // Index numbers referenced here: https://msdn.microsoft.com/library/windows/apps/hh466130.aspx
-  this.iePointerMap = {
-    2: 'touch',
-    3: 'touch',
-    4: 'mouse'
-  };
-
-  this.initializeEvents();
-  this.$rootScope.$on('$destroy', this.deregister.bind(this));
-}
-
-/**
- * Removes all event listeners created by $mdInteration on the
- * body element.
- */
-MdInteractionService.prototype.deregister = function() {
-
-    this.bodyElement.off('keydown mousedown', this.inputHandler);
-
-    if ('ontouchstart' in document.documentElement) {
-      this.bodyElement.off('touchstart', this.bufferedInputHandler);
-    }
-
-    if (this.pointerEvent) {
-      this.bodyElement.off(this.pointerEvent, this.inputHandler);
-    }
-
-};
-
-/**
- * Initializes the interaction service, by registering all interaction events to the
- * body element.
- */
-MdInteractionService.prototype.initializeEvents = function() {
-
-  this.bodyElement.on('keydown mousedown', this.inputHandler);
-
-  if ('ontouchstart' in document.documentElement) {
-    this.bodyElement.on('touchstart', this.bufferedInputHandler);
-  }
-
-  if (this.pointerEvent) {
-    this.bodyElement.on(this.pointerEvent, this.inputHandler);
-  }
-
-};
-
-/**
- * Event listener for normal interaction events, which should be tracked.
- * @param event {MouseEvent|KeyboardEvent|PointerEvent|TouchEvent}
- */
-MdInteractionService.prototype.onInputEvent = function(event) {
-  if (this.isBuffering) {
-    return;
-  }
-
-  var type = this.inputEventMap[event.type];
-
-  if (type === 'pointer') {
-    type = this.iePointerMap[event.pointerType] || event.pointerType;
-  }
-
-  this.lastInteractionType = type;
-  this.lastInteractionTime = this.$mdUtil.now();
-};
-
-/**
- * Event listener for interaction events which should be buffered (touch events).
- * @param event {TouchEvent}
- */
-MdInteractionService.prototype.onBufferInputEvent = function(event) {
-  this.$timeout.cancel(this.bufferTimeout);
-
-  this.onInputEvent(event);
-  this.isBuffering = true;
-
-  // The timeout of 650ms is needed to delay the touchstart, because otherwise the touch will call
-  // the `onInput` function multiple times.
-  this.bufferTimeout = this.$timeout(function() {
-    this.isBuffering = false;
-  }.bind(this), 650, false);
-
-};
-
-/**
- * @ngdoc method
- * @name $mdInteraction#getLastInteractionType
- * @description Retrieves the last interaction type triggered in body.
- * @returns {string|null} Last interaction type.
- */
-MdInteractionService.prototype.getLastInteractionType = function() {
-  return this.lastInteractionType;
-};
-
-/**
- * @ngdoc method
- * @name $mdInteraction#isUserInvoked
- * @description Method to detect whether any interaction happened recently or not.
- * @param {number=} checkDelay Time to check for any interaction to have been triggered.
- * @returns {boolean} Whether there was any interaction or not.
- */
-MdInteractionService.prototype.isUserInvoked = function(checkDelay) {
-  var delay = angular.isNumber(checkDelay) ? checkDelay : 15;
-
-  // Check for any interaction to be within the specified check time.
-  return this.lastInteractionTime >= this.$mdUtil.now() - delay;
-};
 
 
 MdGesture['$inject'] = ["$$MdGestureHandler", "$$rAF", "$timeout"];
@@ -3579,12 +2855,6 @@ function attachToDocument($mdGesture, $$MdGestureHandler) {
     return;
   }
 
-  // Polyfill document.contains for IE11.
-  // TODO: move to util
-  document.contains || (document.contains = function (node) {
-    return document.body.contains(node);
-  });
-
   if (!isInitialized && $mdGesture.isHijackingClicks) {
     /*
      * If hijack clicks is true, we preventDefault any click that wasn't
@@ -3834,6 +3104,735 @@ function canFocus(element) {
     )
   );
 }
+
+/**
+ * @ngdoc module
+ * @name material.core.compiler
+ * @description
+ * AngularJS Material template and element compiler.
+ */
+angular
+  .module('material.core')
+  .provider('$mdCompiler', MdCompilerProvider);
+
+/**
+ * @ngdoc service
+ * @name $mdCompilerProvider
+ * @module material.core.compiler
+ * @description
+ * The `$mdCompiler` is able to respect the AngularJS `$compileProvider.preAssignBindingsEnabled`
+ * state when using AngularJS versions greater than or equal to 1.5.10 and less than 1.7.0.
+ * See the [AngularJS documentation for `$compileProvider.preAssignBindingsEnabled`
+ * ](https://code.angularjs.org/1.6.10/docs/api/ng/provider/$compileProvider#preAssignBindingsEnabled)
+ * for more information.
+ *
+ * To enable/disable whether the controllers of dynamic AngularJS Material components
+ * (i.e. dialog, panel, toast, bottomsheet) respect the AngularJS
+ * `$compileProvider.preAssignBindingsEnabled` flag, call the AngularJS Material method:
+ * `$mdCompilerProvider.respectPreAssignBindingsEnabled(boolean)`.
+ *
+ * This AngularJS Material *flag* doesn't affect directives/components created via regular
+ * AngularJS methods. These constitute the majority of AngularJS Material and user-created
+ * components. Only dynamic construction of elements such as Dialogs, Panels, Toasts, BottomSheets,
+ * etc. may be affected. Invoking `$mdCompilerProvider.respectPreAssignBindingsEnabled(true)`
+ * will effect **bindings** in controllers created by AngularJS Material's services like
+ * `$mdDialog`, `$mdPanel`, `$mdToast`, or `$mdBottomSheet`.
+ *
+ * See [$mdCompilerProvider.respectPreAssignBindingsEnabled](#mdcompilerprovider-respectpreassignbindingsenabled-respected)
+ * for the details of how the different versions and settings of AngularJS affect this behavior.
+ *
+ * @usage
+ *
+ * Respect the AngularJS Compiler Setting
+ *
+ * <hljs lang="js">
+ *   app.config(function($mdCompilerProvider) {
+ *     $mdCompilerProvider.respectPreAssignBindingsEnabled(true);
+ *   });
+ * </hljs>
+ *
+ * @example
+ * Using the default (backwards compatible) values for AngularJS 1.6
+ * - AngularJS' `$compileProvider.preAssignBindingsEnabled(false)`
+ * - AngularJS Material's `$mdCompilerProvider.respectPreAssignBindingsEnabled(false)`
+ * <br><br>
+ *
+ * <hljs lang="js">
+ * $mdDialog.show({
+ *   locals: {
+ *     myVar: true
+ *   },
+ *   controller: MyController,
+ *   bindToController: true
+ * }
+ *
+ * function MyController() {
+ *   // Locals from Angular Material are available. e.g myVar is true.
+ * }
+ *
+ * MyController.prototype.$onInit = function() {
+ *   // Bindings are also available in the $onInit lifecycle hook.
+ * }
+ * </hljs>
+ *
+ * Recommended Settings for AngularJS 1.6
+ * - AngularJS' `$compileProvider.preAssignBindingsEnabled(false)`
+ * - AngularJS Material's `$mdCompilerProvider.respectPreAssignBindingsEnabled(true)`
+ * <br><br>
+ *
+ * <hljs lang="js">
+ * $mdDialog.show({
+ *   locals: {
+ *     myVar: true
+ *   },
+ *   controller: MyController,
+ *   bindToController: true
+ * }
+ *
+ * function MyController() {
+ *   // No locals from Angular Material are available. e.g myVar is undefined.
+ * }
+ *
+ * MyController.prototype.$onInit = function() {
+ *   // Bindings are now available in the $onInit lifecycle hook.
+ * }
+ * </hljs>
+ *
+ */
+MdCompilerProvider['$inject'] = ['$compileProvider'];
+function MdCompilerProvider($compileProvider) {
+
+  var provider = this;
+
+  /**
+   * @ngdoc method
+   * @name $mdCompilerProvider#respectPreAssignBindingsEnabled
+   *
+   * @param {boolean=} respected update the `respectPreAssignBindingsEnabled` state if provided,
+   *  otherwise just return the current Material `respectPreAssignBindingsEnabled` state.
+   * @returns {boolean|MdCompilerProvider} current value, if used as a getter, or itself (chaining)
+   *  if used as a setter.
+   *
+   * @description
+   * Call this method to enable/disable whether Material-specific (dialog/panel/toast/bottomsheet)
+   * controllers respect the AngularJS `$compileProvider.preAssignBindingsEnabled` flag. Note that
+   * this doesn't affect directives/components created via regular AngularJS methods which
+   * constitute most Material and user-created components.
+   *
+   * If disabled (`false`), the compiler assigns the value of each of the bindings to the
+   * properties of the controller object before the constructor of this object is called.
+   * The ability to disable this settings is **deprecated** and will be removed in
+   * AngularJS Material 1.2.0.
+   *
+   * If enabled (`true`) the behavior depends on the AngularJS version used:
+   *
+   * - `<1.5.10`
+   *  - Bindings are pre-assigned.
+   * - `>=1.5.10 <1.7`
+   *  - Respects whatever `$compileProvider.preAssignBindingsEnabled()` reports. If the
+   *    `preAssignBindingsEnabled` flag wasn't set manually, it defaults to pre-assigning bindings
+   *    with AngularJS `1.5` and to calling the constructor first with AngularJS `1.6`.
+   * - `>=1.7`
+   *  - The compiler calls the constructor first before assigning bindings and
+   *    `$compileProvider.preAssignBindingsEnabled()` no longer exists.
+   *
+   * Defaults
+   * - The default value is `false` in AngularJS 1.6 and earlier.
+   *  - It is planned to fix this value to `true` and not allow the `false` value in
+   *    AngularJS Material 1.2.0.
+   *
+   * It is recommended to set this flag to `true` when using AngularJS Material 1.1.x with
+   * AngularJS versions >= 1.5.10. The only reason it's not set that way by default is backwards
+   * compatibility.
+   *
+   * By not setting the flag to `true` when AngularJS' `$compileProvider.preAssignBindingsEnabled()`
+   * is set to `false` (i.e. default behavior in AngularJS 1.6 or newer), unit testing of
+   * Material Dialog/Panel/Toast/BottomSheet controllers using the `$controller` helper
+   * is problematic as it always follows AngularJS' `$compileProvider.preAssignBindingsEnabled()`
+   * value.
+   */
+  var respectPreAssignBindingsEnabled = false;
+  this.respectPreAssignBindingsEnabled = function(respected) {
+    if (angular.isDefined(respected)) {
+      respectPreAssignBindingsEnabled = respected;
+      return this;
+    }
+
+    return respectPreAssignBindingsEnabled;
+  };
+
+  /**
+   * @private
+   * @description
+   * This function returns `true` if AngularJS Material-specific (dialog/panel/toast/bottomsheet)
+   * controllers have bindings pre-assigned in controller constructors and `false` otherwise.
+   *
+   * Note that this doesn't affect directives/components created via regular AngularJS methods
+   * which constitute most Material and user-created components; their behavior can be checked via
+   * `$compileProvider.preAssignBindingsEnabled()` in AngularJS `>=1.5.10 <1.7.0`.
+   *
+   * @returns {*} current preAssignBindingsEnabled state
+   */
+  function getPreAssignBindingsEnabled() {
+    if (!respectPreAssignBindingsEnabled) {
+      // respectPreAssignBindingsEnabled === false
+      // We're ignoring the AngularJS `$compileProvider.preAssignBindingsEnabled()` value in this case.
+      return true;
+    }
+
+    // respectPreAssignBindingsEnabled === true
+
+    // This check is needed because $compileProvider.preAssignBindingsEnabled does not exist prior
+    // to AngularJS 1.5.10, is deprecated in AngularJS 1.6.x, and removed in AngularJS 1.7.x.
+    if (typeof $compileProvider.preAssignBindingsEnabled === 'function') {
+      return $compileProvider.preAssignBindingsEnabled();
+    }
+
+    // Flag respected but not present => apply logic based on AngularJS version used.
+    if (angular.version.major === 1 && angular.version.minor < 6) {
+      // AngularJS <1.5.10
+      return true;
+    }
+
+    // AngularJS >=1.7.0
+    return false;
+  }
+
+  this.$get = ["$q", "$templateRequest", "$injector", "$compile", "$controller",
+    function($q, $templateRequest, $injector, $compile, $controller) {
+      return new MdCompilerService($q, $templateRequest, $injector, $compile, $controller);
+    }];
+
+  /**
+   * @ngdoc service
+   * @name $mdCompiler
+   * @module material.core.compiler
+   * @description
+   * The $mdCompiler service is an abstraction of AngularJS's compiler, that allows developers
+   * to easily compile an element with options like in a Directive Definition Object.
+   *
+   * > The compiler powers a lot of components inside of AngularJS Material.
+   * > Like the `$mdPanel` or `$mdDialog`.
+   *
+   * @usage
+   *
+   * Basic Usage with a template
+   *
+   * <hljs lang="js">
+   *   $mdCompiler.compile({
+   *     templateUrl: 'modal.html',
+   *     controller: 'ModalCtrl',
+   *     locals: {
+   *       modal: myModalInstance;
+   *     }
+   *   }).then(function (compileData) {
+   *     compileData.element; // Compiled DOM element
+   *     compileData.link(myScope); // Instantiate controller and link element to scope.
+   *   });
+   * </hljs>
+   *
+   * Example with a content element
+   *
+   * <hljs lang="js">
+   *
+   *   // Create a virtual element and link it manually.
+   *   // The compiler doesn't need to recompile the element each time.
+   *   var myElement = $compile('<span>Test</span>')(myScope);
+   *
+   *   $mdCompiler.compile({
+   *     contentElement: myElement
+   *   }).then(function (compileData) {
+   *     compileData.element // Content Element (same as above)
+   *     compileData.link // This does nothing when using a contentElement.
+   *   });
+   * </hljs>
+   *
+   * > Content Element is a significant performance improvement when the developer already knows that the
+   * > compiled element will be always the same and the scope will not change either.
+   *
+   * The `contentElement` option also supports DOM elements which will be temporary removed and restored
+   * at its old position.
+   *
+   * <hljs lang="js">
+   *   var domElement = document.querySelector('#myElement');
+   *
+   *   $mdCompiler.compile({
+   *     contentElement: myElement
+   *   }).then(function (compileData) {
+   *     compileData.element // Content Element (same as above)
+   *     compileData.link // This does nothing when using a contentElement.
+   *   });
+   * </hljs>
+   *
+   * The `$mdCompiler` can also query for the element in the DOM itself.
+   *
+   * <hljs lang="js">
+   *   $mdCompiler.compile({
+   *     contentElement: '#myElement'
+   *   }).then(function (compileData) {
+   *     compileData.element // Content Element (same as above)
+   *     compileData.link // This does nothing when using a contentElement.
+   *   });
+   * </hljs>
+   *
+   */
+  function MdCompilerService($q, $templateRequest, $injector, $compile, $controller) {
+
+    /** @private @const {!angular.$q} */
+    this.$q = $q;
+
+    /** @private @const {!angular.$templateRequest} */
+    this.$templateRequest = $templateRequest;
+
+    /** @private @const {!angular.$injector} */
+    this.$injector = $injector;
+
+    /** @private @const {!angular.$compile} */
+    this.$compile = $compile;
+
+    /** @private @const {!angular.$controller} */
+    this.$controller = $controller;
+  }
+
+  /**
+   * @ngdoc method
+   * @name $mdCompiler#compile
+   * @description
+   *
+   * A method to compile a HTML template with the AngularJS compiler.
+   * The `$mdCompiler` is wrapper around the AngularJS compiler and provides extra functionality
+   * like controller instantiation or async resolves.
+   *
+   * @param {!Object} options An options object, with the following properties:
+   *
+   *    - `controller` - `{string|function}` Controller fn that should be associated with
+   *         newly created scope or the name of a registered controller if passed as a string.
+   *    - `controllerAs` - `{string=}` A controller alias name. If present the controller will be
+   *         published to scope under the `controllerAs` name.
+   *    - `contentElement` - `{string|Element}`: Instead of using a template, which will be
+   *         compiled each time, you can also use a DOM element.<br/>
+   *    - `template` - `{string=}` An html template as a string.
+   *    - `templateUrl` - `{string=}` A path to an html template.
+   *    - `transformTemplate` - `{function(template)=}` A function which transforms the template after
+   *        it is loaded. It will be given the template string as a parameter, and should
+   *        return a a new string representing the transformed template.
+   *    - `resolve` - `{Object.<string, function>=}` - An optional map of dependencies which should
+   *        be injected into the controller. If any of these dependencies are promises, the compiler
+   *        will wait for them all to be resolved, or if one is rejected before the controller is
+   *        instantiated `compile()` will fail..
+   *      * `key` - `{string}`: a name of a dependency to be injected into the controller.
+   *      * `factory` - `{string|function}`: If `string` then it is an alias for a service.
+   *        Otherwise if function, then it is injected and the return value is treated as the
+   *        dependency. If the result is a promise, it is resolved before its value is
+   *        injected into the controller.
+   *
+   * @returns {Object} promise A promise, which will be resolved with a `compileData` object.
+   * `compileData` has the following properties:
+   *
+   *   - `element` - `{Element}`: an uncompiled element matching the provided template.
+   *   - `link` - `{function(scope)}`: A link function, which, when called, will compile
+   *     the element and instantiate the provided controller (if given).
+   *   - `locals` - `{Object}`: The locals which will be passed into the controller once `link` is
+   *     called. If `bindToController` is true, they will be copied to the ctrl instead
+   */
+  MdCompilerService.prototype.compile = function(options) {
+
+    if (options.contentElement) {
+      return this._prepareContentElement(options);
+    } else {
+      return this._compileTemplate(options);
+    }
+
+  };
+
+  /**
+   * Instead of compiling any template, the compiler just fetches an existing HTML element from the DOM and
+   * provides a restore function to put the element back it old DOM position.
+   * @param {!Object} options Options to be used for the compiler.
+   */
+  MdCompilerService.prototype._prepareContentElement = function(options) {
+
+    var contentElement = this._fetchContentElement(options);
+
+    return this.$q.resolve({
+      element: contentElement.element,
+      cleanup: contentElement.restore,
+      locals: {},
+      link: function() {
+        return contentElement.element;
+      }
+    });
+
+  };
+
+  /**
+   * Compiles a template by considering all options and waiting for all resolves to be ready.
+   * @param {!Object} options Compile options
+   * @returns {!Object} Compile data with link function.
+   */
+  MdCompilerService.prototype._compileTemplate = function(options) {
+
+    var self = this;
+    var templateUrl = options.templateUrl;
+    var template = options.template || '';
+    var resolve = angular.extend({}, options.resolve);
+    var locals = angular.extend({}, options.locals);
+    var transformTemplate = options.transformTemplate || angular.identity;
+
+    // Take resolve values and invoke them.
+    // Resolves can either be a string (value: 'MyRegisteredAngularConst'),
+    // or an invokable 'factory' of sorts: (value: function ValueGetter($dependency) {})
+    angular.forEach(resolve, function(value, key) {
+      if (angular.isString(value)) {
+        resolve[key] = self.$injector.get(value);
+      } else {
+        resolve[key] = self.$injector.invoke(value);
+      }
+    });
+
+    // Add the locals, which are just straight values to inject
+    // eg locals: { three: 3 }, will inject three into the controller
+    angular.extend(resolve, locals);
+
+    if (templateUrl) {
+      resolve.$$ngTemplate = this.$templateRequest(templateUrl);
+    } else {
+      resolve.$$ngTemplate = this.$q.when(template);
+    }
+
+
+    // Wait for all the resolves to finish if they are promises
+    return this.$q.all(resolve).then(function(locals) {
+
+      var template = transformTemplate(locals.$$ngTemplate, options);
+      var element = options.element || angular.element('<div>').html(template.trim()).contents();
+
+      return self._compileElement(locals, element, options);
+    });
+
+  };
+
+  /**
+   * Method to compile an element with the given options.
+   * @param {!Object} locals Locals to be injected to the controller if present
+   * @param {!JQLite} element Element to be compiled and linked
+   * @param {!Object} options Options to be used for linking.
+   * @returns {!Object} Compile data with link function.
+   */
+  MdCompilerService.prototype._compileElement = function(locals, element, options) {
+    var self = this;
+    var ngLinkFn = this.$compile(element);
+
+    var compileData = {
+      element: element,
+      cleanup: element.remove.bind(element),
+      locals: locals,
+      link: linkFn
+    };
+
+    function linkFn(scope) {
+      locals.$scope = scope;
+
+      // Instantiate controller if the developer provided one.
+      if (options.controller) {
+
+        var injectLocals = angular.extend({}, locals, {
+          $element: element
+        });
+
+        // Create the specified controller instance.
+        var ctrl = self._createController(options, injectLocals, locals);
+
+        // Unique identifier for AngularJS Route ngView controllers.
+        element.data('$ngControllerController', ctrl);
+        element.children().data('$ngControllerController', ctrl);
+
+        // Expose the instantiated controller to the compile data
+        compileData.controller = ctrl;
+      }
+
+      // Invoke the AngularJS $compile link function.
+      return ngLinkFn(scope);
+    }
+
+    return compileData;
+
+  };
+
+  /**
+   * Creates and instantiates a new controller with the specified options.
+   * @param {!Object} options Options that include the controller function or string.
+   * @param {!Object} injectLocals Locals to to be provided in the controller DI.
+   * @param {!Object} locals Locals to be injected to the controller.
+   * @returns {!Object} Created controller instance.
+   */
+  MdCompilerService.prototype._createController = function(options, injectLocals, locals) {
+    var ctrl;
+    var preAssignBindingsEnabled = getPreAssignBindingsEnabled();
+    // The third argument to $controller is considered private and undocumented:
+    // https://github.com/angular/angular.js/blob/v1.6.10/src/ng/controller.js#L102-L109.
+    // TODO remove the use of this third argument in AngularJS Material 1.2.0.
+    // Passing `true` as the third argument causes `$controller` to return a function that
+    // gets the controller instance instead of returning the instance directly. When the
+    // controller is defined as a function, `invokeCtrl.instance` is the *same instance* as
+    // `invokeCtrl()`. However, when the controller is an ES6 class, `invokeCtrl.instance` is a
+    // *different instance* from `invokeCtrl()`.
+    if (preAssignBindingsEnabled) {
+      var invokeCtrl = this.$controller(options.controller, injectLocals, true);
+
+      if (options.bindToController) {
+        angular.extend(invokeCtrl.instance, locals);
+      }
+
+      // Use the private API callback to instantiate and initialize the specified controller.
+      ctrl = invokeCtrl();
+    } else {
+      // If we don't need to pre-assign bindings, avoid using the private API third argument and
+      // related callback.
+      ctrl = this.$controller(options.controller, injectLocals);
+
+      if (options.bindToController) {
+        angular.extend(ctrl, locals);
+      }
+    }
+
+    if (options.controllerAs) {
+      injectLocals.$scope[options.controllerAs] = ctrl;
+    }
+
+    // Call the $onInit hook if it's present on the controller.
+    angular.isFunction(ctrl.$onInit) && ctrl.$onInit();
+
+    return ctrl;
+  };
+
+  /**
+   * Fetches an element removing it from the DOM and using it temporary for the compiler.
+   * Elements which were fetched will be restored after use.
+   * @param {!Object} options Options to be used for the compilation.
+   * @returns {{element: !JQLite, restore: !function}}
+   */
+  MdCompilerService.prototype._fetchContentElement = function(options) {
+    var contentEl = options.contentElement;
+    var restoreFn = null;
+
+    if (angular.isString(contentEl)) {
+      contentEl = document.querySelector(contentEl);
+      restoreFn = createRestoreFn(contentEl);
+    } else {
+      contentEl = contentEl[0] || contentEl;
+
+      // When the element is visible in the DOM, then we restore it at close of the dialog.
+      // Otherwise it will be removed from the DOM after close.
+      if (document.contains(contentEl)) {
+        restoreFn = createRestoreFn(contentEl);
+      } else {
+        restoreFn = function() {
+          if (contentEl.parentNode) {
+            contentEl.parentNode.removeChild(contentEl);
+          }
+        };
+      }
+    }
+
+    return {
+      element: angular.element(contentEl),
+      restore: restoreFn
+    };
+
+    function createRestoreFn(element) {
+      var parent = element.parentNode;
+      var nextSibling = element.nextElementSibling;
+
+      return function() {
+        if (!nextSibling) {
+          // When the element didn't had any sibling, then it can be simply appended to the
+          // parent, because it plays no role, which index it had before.
+          parent.appendChild(element);
+        } else {
+          // When the element had a sibling, which marks the previous position of the element
+          // in the DOM, we insert it correctly before the sibling, to have the same index as
+          // before.
+          parent.insertBefore(element, nextSibling);
+        }
+      };
+    }
+  };
+}
+
+
+/**
+ * @ngdoc module
+ * @name material.core.interaction
+ * @description
+ * User interaction detection to provide proper accessibility.
+ */
+MdInteractionService['$inject'] = ["$timeout", "$mdUtil", "$rootScope"];
+angular
+  .module('material.core.interaction', [])
+  .service('$mdInteraction', MdInteractionService);
+
+
+/**
+ * @ngdoc service
+ * @name $mdInteraction
+ * @module material.core.interaction
+ *
+ * @description
+ *
+ * Service which keeps track of the last interaction type and validates them for several browsers.
+ * The service hooks into the document's body and listens for touch, mouse and keyboard events.
+ *
+ * The most recent interaction type can be retrieved by calling the `getLastInteractionType` method.
+ *
+ * Here is an example markup for using the interaction service.
+ *
+ * <hljs lang="js">
+ *   var lastType = $mdInteraction.getLastInteractionType();
+ *
+ *   if (lastType === 'keyboard') {
+ *     // We only restore the focus for keyboard users.
+ *     restoreFocus();
+ *   }
+ * </hljs>
+ *
+ */
+function MdInteractionService($timeout, $mdUtil, $rootScope) {
+  this.$timeout = $timeout;
+  this.$mdUtil = $mdUtil;
+  this.$rootScope = $rootScope;
+
+  // IE browsers can also trigger pointer events, which also leads to an interaction.
+  this.pointerEvent = 'MSPointerEvent' in window ? 'MSPointerDown' : 'PointerEvent' in window ? 'pointerdown' : null;
+  this.bodyElement = angular.element(document.body);
+  this.isBuffering = false;
+  this.bufferTimeout = null;
+  this.lastInteractionType = null;
+  this.lastInteractionTime = null;
+  this.inputHandler = this.onInputEvent.bind(this);
+  this.bufferedInputHandler = this.onBufferInputEvent.bind(this);
+
+  // Type Mappings for the different events
+  // There will be three three interaction types
+  // `keyboard`, `mouse` and `touch`
+  // type `pointer` will be evaluated in `pointerMap` for IE Browser events
+  this.inputEventMap = {
+    'keydown': 'keyboard',
+    'mousedown': 'mouse',
+    'mouseenter': 'mouse',
+    'touchstart': 'touch',
+    'pointerdown': 'pointer',
+    'MSPointerDown': 'pointer'
+  };
+
+  // IE PointerDown events will be validated in `touch` or `mouse`
+  // Index numbers referenced here: https://msdn.microsoft.com/library/windows/apps/hh466130.aspx
+  this.iePointerMap = {
+    2: 'touch',
+    3: 'touch',
+    4: 'mouse'
+  };
+
+  this.initializeEvents();
+  this.$rootScope.$on('$destroy', this.deregister.bind(this));
+}
+
+/**
+ * Removes all event listeners created by $mdInteration on the
+ * body element.
+ */
+MdInteractionService.prototype.deregister = function() {
+
+    this.bodyElement.off('keydown mousedown', this.inputHandler);
+
+    if ('ontouchstart' in document.documentElement) {
+      this.bodyElement.off('touchstart', this.bufferedInputHandler);
+    }
+
+    if (this.pointerEvent) {
+      this.bodyElement.off(this.pointerEvent, this.inputHandler);
+    }
+
+};
+
+/**
+ * Initializes the interaction service, by registering all interaction events to the
+ * body element.
+ */
+MdInteractionService.prototype.initializeEvents = function() {
+
+  this.bodyElement.on('keydown mousedown', this.inputHandler);
+
+  if ('ontouchstart' in document.documentElement) {
+    this.bodyElement.on('touchstart', this.bufferedInputHandler);
+  }
+
+  if (this.pointerEvent) {
+    this.bodyElement.on(this.pointerEvent, this.inputHandler);
+  }
+
+};
+
+/**
+ * Event listener for normal interaction events, which should be tracked.
+ * @param event {MouseEvent|KeyboardEvent|PointerEvent|TouchEvent}
+ */
+MdInteractionService.prototype.onInputEvent = function(event) {
+  if (this.isBuffering) {
+    return;
+  }
+
+  var type = this.inputEventMap[event.type];
+
+  if (type === 'pointer') {
+    type = this.iePointerMap[event.pointerType] || event.pointerType;
+  }
+
+  this.lastInteractionType = type;
+  this.lastInteractionTime = this.$mdUtil.now();
+};
+
+/**
+ * Event listener for interaction events which should be buffered (touch events).
+ * @param event {TouchEvent}
+ */
+MdInteractionService.prototype.onBufferInputEvent = function(event) {
+  this.$timeout.cancel(this.bufferTimeout);
+
+  this.onInputEvent(event);
+  this.isBuffering = true;
+
+  // The timeout of 650ms is needed to delay the touchstart, because otherwise the touch will call
+  // the `onInput` function multiple times.
+  this.bufferTimeout = this.$timeout(function() {
+    this.isBuffering = false;
+  }.bind(this), 650, false);
+
+};
+
+/**
+ * @ngdoc method
+ * @name $mdInteraction#getLastInteractionType
+ * @description Retrieves the last interaction type triggered in body.
+ * @returns {string|null} Last interaction type.
+ */
+MdInteractionService.prototype.getLastInteractionType = function() {
+  return this.lastInteractionType;
+};
+
+/**
+ * @ngdoc method
+ * @name $mdInteraction#isUserInvoked
+ * @description Method to detect whether any interaction happened recently or not.
+ * @param {number=} checkDelay Time to check for any interaction to have been triggered.
+ * @returns {boolean} Whether there was any interaction or not.
+ */
+MdInteractionService.prototype.isUserInvoked = function(checkDelay) {
+  var delay = angular.isNumber(checkDelay) ? checkDelay : 15;
+
+  // Check for any interaction to be within the specified check time.
+  return this.lastInteractionTime >= this.$mdUtil.now() - delay;
+};
 
 angular.module('material.core')
   .provider('$$interimElement', InterimElementProvider);
@@ -5462,632 +5461,6 @@ angular.module('material.core.meta', [])
 
   }
 
-(function() {
-  'use strict';
-
-  /**
-   * @ngdoc service
-   * @name $mdButtonInkRipple
-   * @module material.core
-   *
-   * @description
-   * Provides ripple effects for md-button.  See $mdInkRipple service for all possible configuration options.
-   *
-   * @param {object=} scope Scope within the current context
-   * @param {object=} element The element the ripple effect should be applied to
-   * @param {object=} options (Optional) Configuration options to override the default ripple configuration
-   */
-
-  MdButtonInkRipple['$inject'] = ["$mdInkRipple"];
-  angular.module('material.core')
-    .factory('$mdButtonInkRipple', MdButtonInkRipple);
-
-  function MdButtonInkRipple($mdInkRipple) {
-    return {
-      attach: function attachRipple(scope, element, options) {
-        options = angular.extend(optionsForElement(element), options);
-
-        return $mdInkRipple.attach(scope, element, options);
-      }
-    };
-
-    function optionsForElement(element) {
-      if (element.hasClass('md-icon-button')) {
-        return {
-          isMenuItem: element.hasClass('md-menu-item'),
-          fitRipple: true,
-          center: true
-        };
-      } else {
-        return {
-          isMenuItem: element.hasClass('md-menu-item'),
-          dimBackground: true
-        };
-      }
-    }
-  }
-})();
-
-(function() {
-  'use strict';
-
-    /**
-   * @ngdoc service
-   * @name $mdCheckboxInkRipple
-   * @module material.core
-   *
-   * @description
-   * Provides ripple effects for md-checkbox.  See $mdInkRipple service for all possible configuration options.
-   *
-   * @param {object=} scope Scope within the current context
-   * @param {object=} element The element the ripple effect should be applied to
-   * @param {object=} options (Optional) Configuration options to override the defaultripple configuration
-   */
-
-  MdCheckboxInkRipple['$inject'] = ["$mdInkRipple"];
-  angular.module('material.core')
-    .factory('$mdCheckboxInkRipple', MdCheckboxInkRipple);
-
-  function MdCheckboxInkRipple($mdInkRipple) {
-    return {
-      attach: attach
-    };
-
-    function attach(scope, element, options) {
-      return $mdInkRipple.attach(scope, element, angular.extend({
-        center: true,
-        dimBackground: false,
-        fitRipple: true
-      }, options));
-    }
-  }
-})();
-
-(function() {
-  'use strict';
-
-  /**
-   * @ngdoc service
-   * @name $mdListInkRipple
-   * @module material.core
-   *
-   * @description
-   * Provides ripple effects for md-list.  See $mdInkRipple service for all possible configuration options.
-   *
-   * @param {object=} scope Scope within the current context
-   * @param {object=} element The element the ripple effect should be applied to
-   * @param {object=} options (Optional) Configuration options to override the defaultripple configuration
-   */
-
-  MdListInkRipple['$inject'] = ["$mdInkRipple"];
-  angular.module('material.core')
-    .factory('$mdListInkRipple', MdListInkRipple);
-
-  function MdListInkRipple($mdInkRipple) {
-    return {
-      attach: attach
-    };
-
-    function attach(scope, element, options) {
-      return $mdInkRipple.attach(scope, element, angular.extend({
-        center: false,
-        dimBackground: true,
-        outline: false,
-        rippleSize: 'full'
-      }, options));
-    }
-  }
-})();
-
-/**
- * @ngdoc module
- * @name material.core.ripple
- * @description
- * Ripple
- */
-InkRippleCtrl['$inject'] = ["$scope", "$element", "rippleOptions", "$window", "$timeout", "$mdUtil", "$mdColorUtil"];
-InkRippleDirective['$inject'] = ["$mdButtonInkRipple", "$mdCheckboxInkRipple"];
-angular.module('material.core')
-    .provider('$mdInkRipple', InkRippleProvider)
-    .directive('mdInkRipple', InkRippleDirective)
-    .directive('mdNoInk', attrNoDirective)
-    .directive('mdNoBar', attrNoDirective)
-    .directive('mdNoStretch', attrNoDirective);
-
-var DURATION = 450;
-
-/**
- * @ngdoc directive
- * @name mdInkRipple
- * @module material.core.ripple
- *
- * @description
- * The `md-ink-ripple` directive allows you to specify the ripple color or if a ripple is allowed.
- *
- * @param {string|boolean} md-ink-ripple A color string `#FF0000` or boolean (`false` or `0`) for
- *  preventing ripple
- *
- * @usage
- * ### String values
- * <hljs lang="html">
- *   <ANY md-ink-ripple="#FF0000">
- *     Ripples in red
- *   </ANY>
- *
- *   <ANY md-ink-ripple="false">
- *     Not rippling
- *   </ANY>
- * </hljs>
- *
- * ### Interpolated values
- * <hljs lang="html">
- *   <ANY md-ink-ripple="{{ randomColor() }}">
- *     Ripples with the return value of 'randomColor' function
- *   </ANY>
- *
- *   <ANY md-ink-ripple="{{ canRipple() }}">
- *     Ripples if 'canRipple' function return value is not 'false' or '0'
- *   </ANY>
- * </hljs>
- */
-function InkRippleDirective ($mdButtonInkRipple, $mdCheckboxInkRipple) {
-  return {
-    controller: angular.noop,
-    link:       function (scope, element, attr) {
-      attr.hasOwnProperty('mdInkRippleCheckbox')
-          ? $mdCheckboxInkRipple.attach(scope, element)
-          : $mdButtonInkRipple.attach(scope, element);
-    }
-  };
-}
-
-/**
- * @ngdoc service
- * @name $mdInkRipple
- * @module material.core.ripple
- *
- * @description
- * `$mdInkRipple` is a service for adding ripples to any element.
- *
- * @usage
- * <hljs lang="js">
- * app.factory('$myElementInkRipple', function($mdInkRipple) {
- *   return {
- *     attach: function (scope, element, options) {
- *       return $mdInkRipple.attach(scope, element, angular.extend({
- *         center: false,
- *         dimBackground: true
- *       }, options));
- *     }
- *   };
- * });
- *
- * app.controller('myController', function ($scope, $element, $myElementInkRipple) {
- *   $scope.onClick = function (ev) {
- *     $myElementInkRipple.attach($scope, angular.element(ev.target), { center: true });
- *   }
- * });
- * </hljs>
- */
-
-/**
- * @ngdoc service
- * @name $mdInkRippleProvider
- * @module material.core.ripple
- *
- * @description
-  * If you want to disable ink ripples globally, for all components, you can call the
- * `disableInkRipple` method in your app's config.
- *
- *
- * @usage
- * <hljs lang="js">
- * app.config(function ($mdInkRippleProvider) {
- *   $mdInkRippleProvider.disableInkRipple();
- * });
- * </hljs>
- */
-
-function InkRippleProvider () {
-  var isDisabledGlobally = false;
-
-  return {
-    disableInkRipple: disableInkRipple,
-    $get: ["$injector", function($injector) {
-      return { attach: attach };
-
-      /**
-       * @ngdoc method
-       * @name $mdInkRipple#attach
-       *
-       * @description
-       * Attaching given scope, element and options to inkRipple controller
-       *
-       * @param {object=} scope Scope within the current context
-       * @param {object=} element The element the ripple effect should be applied to
-       * @param {object=} options (Optional) Configuration options to override the defaultRipple configuration
-       * * `center` -  Whether the ripple should start from the center of the container element
-       * * `dimBackground` - Whether the background should be dimmed with the ripple color
-       * * `colorElement` - The element the ripple should take its color from, defined by css property `color`
-       * * `fitRipple` - Whether the ripple should fill the element
-       */
-      function attach (scope, element, options) {
-        if (isDisabledGlobally || element.controller('mdNoInk')) return angular.noop;
-        return $injector.instantiate(InkRippleCtrl, {
-          $scope:        scope,
-          $element:      element,
-          rippleOptions: options
-        });
-      }
-    }]
-  };
-
-  /**
-   * @ngdoc method
-   * @name $mdInkRippleProvider#disableInkRipple
-   *
-   * @description
-   * A config-time method that, when called, disables ripples globally.
-   */
-  function disableInkRipple () {
-    isDisabledGlobally = true;
-  }
-}
-
-/**
- * Controller used by the ripple service in order to apply ripples
- * ngInject
- */
-function InkRippleCtrl ($scope, $element, rippleOptions, $window, $timeout, $mdUtil, $mdColorUtil) {
-  this.$window    = $window;
-  this.$timeout   = $timeout;
-  this.$mdUtil    = $mdUtil;
-  this.$mdColorUtil    = $mdColorUtil;
-  this.$scope     = $scope;
-  this.$element   = $element;
-  this.options    = rippleOptions;
-  this.mousedown  = false;
-  this.ripples    = [];
-  this.timeout    = null; // Stores a reference to the most-recent ripple timeout
-  this.lastRipple = null;
-
-  $mdUtil.valueOnUse(this, 'container', this.createContainer);
-
-  this.$element.addClass('md-ink-ripple');
-
-  // attach method for unit tests
-  ($element.controller('mdInkRipple') || {}).createRipple = angular.bind(this, this.createRipple);
-  ($element.controller('mdInkRipple') || {}).setColor = angular.bind(this, this.color);
-
-  this.bindEvents();
-}
-
-
-/**
- * Either remove or unlock any remaining ripples when the user mouses off of the element (either by
- * mouseup or mouseleave event)
- */
-function autoCleanup (self, cleanupFn) {
-  if (self.mousedown || self.lastRipple) {
-    self.mousedown = false;
-    self.$mdUtil.nextTick(angular.bind(self, cleanupFn), false);
-  }
-}
-
-
-/**
- * Returns the color that the ripple should be (either based on CSS or hard-coded)
- * @returns {string}
- */
-InkRippleCtrl.prototype.color = function (value) {
-  var self = this;
-
-  // If assigning a color value, apply it to background and the ripple color
-  if (angular.isDefined(value)) {
-    self._color = self._parseColor(value);
-  }
-
-  // If color lookup, use assigned, defined, or inherited
-  return self._color || self._parseColor(self.inkRipple()) || self._parseColor(getElementColor());
-
-  /**
-   * Finds the color element and returns its text color for use as default ripple color
-   * @returns {string}
-   */
-  function getElementColor () {
-    var items = self.options && self.options.colorElement ? self.options.colorElement : [];
-    var elem =  items.length ? items[ 0 ] : self.$element[ 0 ];
-
-    return elem ? self.$window.getComputedStyle(elem).color : 'rgb(0,0,0)';
-  }
-};
-
-/**
- * Updating the ripple colors based on the current inkRipple value
- * or the element's computed style color
- */
-InkRippleCtrl.prototype.calculateColor = function () {
-  return this.color();
-};
-
-
-/**
- * Takes a string color and converts it to RGBA format
- * @param {string} color
- * @param {number} multiplier
- * @returns {string}
- */
-InkRippleCtrl.prototype._parseColor = function parseColor (color, multiplier) {
-  multiplier = multiplier || 1;
-  var colorUtil = this.$mdColorUtil;
-
-  if (!color) return;
-  if (color.indexOf('rgba') === 0) return color.replace(/\d?\.?\d*\s*\)\s*$/, (0.1 * multiplier).toString() + ')');
-  if (color.indexOf('rgb') === 0) return colorUtil.rgbToRgba(color);
-  if (color.indexOf('#') === 0) return colorUtil.hexToRgba(color);
-
-};
-
-/**
- * Binds events to the root element for
- */
-InkRippleCtrl.prototype.bindEvents = function () {
-  this.$element.on('mousedown', angular.bind(this, this.handleMousedown));
-  this.$element.on('mouseup touchend', angular.bind(this, this.handleMouseup));
-  this.$element.on('mouseleave', angular.bind(this, this.handleMouseup));
-  this.$element.on('touchmove', angular.bind(this, this.handleTouchmove));
-};
-
-/**
- * Create a new ripple on every mousedown event from the root element
- * @param event {MouseEvent}
- */
-InkRippleCtrl.prototype.handleMousedown = function (event) {
-  if (this.mousedown) return;
-
-  // When jQuery is loaded, we have to get the original event
-  if (event.hasOwnProperty('originalEvent')) event = event.originalEvent;
-  this.mousedown = true;
-  if (this.options.center) {
-    this.createRipple(this.container.prop('clientWidth') / 2, this.container.prop('clientWidth') / 2);
-  } else {
-
-    // We need to calculate the relative coordinates if the target is a sublayer of the ripple element
-    if (event.srcElement !== this.$element[0]) {
-      var layerRect = this.$element[0].getBoundingClientRect();
-      var layerX = event.clientX - layerRect.left;
-      var layerY = event.clientY - layerRect.top;
-
-      this.createRipple(layerX, layerY);
-    } else {
-      this.createRipple(event.offsetX, event.offsetY);
-    }
-  }
-};
-
-/**
- * Either remove or unlock any remaining ripples when the user mouses off of the element (either by
- * mouseup, touchend or mouseleave event)
- */
-InkRippleCtrl.prototype.handleMouseup = function () {
-  this.$timeout(function () {
-    autoCleanup(this, this.clearRipples);
-  }.bind(this));
-};
-
-/**
- * Either remove or unlock any remaining ripples when the user mouses off of the element (by
- * touchmove)
- */
-InkRippleCtrl.prototype.handleTouchmove = function () {
-  autoCleanup(this, this.deleteRipples);
-};
-
-/**
- * Cycles through all ripples and attempts to remove them.
- */
-InkRippleCtrl.prototype.deleteRipples = function () {
-  for (var i = 0; i < this.ripples.length; i++) {
-    this.ripples[ i ].remove();
-  }
-};
-
-/**
- * Cycles through all ripples and attempts to remove them with fade.
- * Depending on logic within `fadeInComplete`, some removals will be postponed.
- */
-InkRippleCtrl.prototype.clearRipples = function () {
-  for (var i = 0; i < this.ripples.length; i++) {
-    this.fadeInComplete(this.ripples[ i ]);
-  }
-};
-
-/**
- * Creates the ripple container element
- * @returns {*}
- */
-InkRippleCtrl.prototype.createContainer = function () {
-  var container = angular.element('<div class="md-ripple-container"></div>');
-  this.$element.append(container);
-  return container;
-};
-
-InkRippleCtrl.prototype.clearTimeout = function () {
-  if (this.timeout) {
-    this.$timeout.cancel(this.timeout);
-    this.timeout = null;
-  }
-};
-
-InkRippleCtrl.prototype.isRippleAllowed = function () {
-  var element = this.$element[0];
-  do {
-    if (!element.tagName || element.tagName === 'BODY') break;
-
-    if (element && angular.isFunction(element.hasAttribute)) {
-      if (element.hasAttribute('disabled')) return false;
-      if (this.inkRipple() === 'false' || this.inkRipple() === '0') return false;
-    }
-
-  } while (element = element.parentNode);
-  return true;
-};
-
-/**
- * The attribute `md-ink-ripple` may be a static or interpolated
- * color value OR a boolean indicator (used to disable ripples)
- */
-InkRippleCtrl.prototype.inkRipple = function () {
-  return this.$element.attr('md-ink-ripple');
-};
-
-/**
- * Creates a new ripple and adds it to the container.  Also tracks ripple in `this.ripples`.
- * @param left
- * @param top
- */
-InkRippleCtrl.prototype.createRipple = function (left, top) {
-  if (!this.isRippleAllowed()) return;
-
-  var ctrl        = this;
-  var colorUtil   = ctrl.$mdColorUtil;
-  var ripple      = angular.element('<div class="md-ripple"></div>');
-  var width       = this.$element.prop('clientWidth');
-  var height      = this.$element.prop('clientHeight');
-  var x           = Math.max(Math.abs(width - left), left) * 2;
-  var y           = Math.max(Math.abs(height - top), top) * 2;
-  var size        = getSize(this.options.fitRipple, x, y);
-  var color       = this.calculateColor();
-
-  ripple.css({
-    left:            left + 'px',
-    top:             top + 'px',
-    background:      'black',
-    width:           size + 'px',
-    height:          size + 'px',
-    backgroundColor: colorUtil.rgbaToRgb(color),
-    borderColor:     colorUtil.rgbaToRgb(color)
-  });
-  this.lastRipple = ripple;
-
-  // we only want one timeout to be running at a time
-  this.clearTimeout();
-  this.timeout    = this.$timeout(function () {
-    ctrl.clearTimeout();
-    if (!ctrl.mousedown) ctrl.fadeInComplete(ripple);
-  }, DURATION * 0.35, false);
-
-  if (this.options.dimBackground) this.container.css({ backgroundColor: color });
-  this.container.append(ripple);
-  this.ripples.push(ripple);
-  ripple.addClass('md-ripple-placed');
-
-  this.$mdUtil.nextTick(function () {
-
-    ripple.addClass('md-ripple-scaled md-ripple-active');
-    ctrl.$timeout(function () {
-      ctrl.clearRipples();
-    }, DURATION, false);
-
-  }, false);
-
-  function getSize (fit, x, y) {
-    return fit
-        ? Math.max(x, y)
-        : Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-  }
-};
-
-
-
-/**
- * After fadeIn finishes, either kicks off the fade-out animation or queues the element for removal on mouseup
- * @param ripple
- */
-InkRippleCtrl.prototype.fadeInComplete = function (ripple) {
-  if (this.lastRipple === ripple) {
-    if (!this.timeout && !this.mousedown) {
-      this.removeRipple(ripple);
-    }
-  } else {
-    this.removeRipple(ripple);
-  }
-};
-
-/**
- * Kicks off the animation for removing a ripple
- * @param ripple {Element}
- */
-InkRippleCtrl.prototype.removeRipple = function (ripple) {
-  var ctrl  = this;
-  var index = this.ripples.indexOf(ripple);
-  if (index < 0) return;
-  this.ripples.splice(this.ripples.indexOf(ripple), 1);
-  ripple.removeClass('md-ripple-active');
-  ripple.addClass('md-ripple-remove');
-  if (this.ripples.length === 0) this.container.css({ backgroundColor: '' });
-  // use a 2-second timeout in order to allow for the animation to finish
-  // we don't actually care how long the animation takes
-  this.$timeout(function () {
-    ctrl.fadeOutComplete(ripple);
-  }, DURATION, false);
-};
-
-/**
- * Removes the provided ripple from the DOM
- * @param ripple
- */
-InkRippleCtrl.prototype.fadeOutComplete = function (ripple) {
-  ripple.remove();
-  this.lastRipple = null;
-};
-
-/**
- * Used to create an empty directive.  This is used to track flag-directives whose children may have
- * functionality based on them.
- *
- * Example: `md-no-ink` will potentially be used by all child directives.
- */
-function attrNoDirective () {
-  return { controller: angular.noop };
-}
-
-(function() {
-  'use strict';
-
-    /**
-   * @ngdoc service
-   * @name $mdTabInkRipple
-   * @module material.core
-   *
-   * @description
-   * Provides ripple effects for md-tabs.  See $mdInkRipple service for all possible configuration options.
-   *
-   * @param {object=} scope Scope within the current context
-   * @param {object=} element The element the ripple effect should be applied to
-   * @param {object=} options (Optional) Configuration options to override the defaultripple configuration
-   */
-
-  MdTabInkRipple['$inject'] = ["$mdInkRipple"];
-  angular.module('material.core')
-    .factory('$mdTabInkRipple', MdTabInkRipple);
-
-  function MdTabInkRipple($mdInkRipple) {
-    return {
-      attach: attach
-    };
-
-    function attach(scope, element, options) {
-      return $mdInkRipple.attach(scope, element, angular.extend({
-        center: false,
-        dimBackground: true,
-        outline: false,
-        rippleSize: 'full'
-      }, options));
-    }
-  }
-})();
-
 angular.module('material.core.theming.palette', [])
 .constant('$mdColorPalette', {
   'red': {
@@ -7683,6 +7056,632 @@ function rgba(rgbArray, opacity) {
 
 
 })(window.angular);
+
+(function() {
+  'use strict';
+
+  /**
+   * @ngdoc service
+   * @name $mdButtonInkRipple
+   * @module material.core
+   *
+   * @description
+   * Provides ripple effects for md-button.  See $mdInkRipple service for all possible configuration options.
+   *
+   * @param {object=} scope Scope within the current context
+   * @param {object=} element The element the ripple effect should be applied to
+   * @param {object=} options (Optional) Configuration options to override the default ripple configuration
+   */
+
+  MdButtonInkRipple['$inject'] = ["$mdInkRipple"];
+  angular.module('material.core')
+    .factory('$mdButtonInkRipple', MdButtonInkRipple);
+
+  function MdButtonInkRipple($mdInkRipple) {
+    return {
+      attach: function attachRipple(scope, element, options) {
+        options = angular.extend(optionsForElement(element), options);
+
+        return $mdInkRipple.attach(scope, element, options);
+      }
+    };
+
+    function optionsForElement(element) {
+      if (element.hasClass('md-icon-button')) {
+        return {
+          isMenuItem: element.hasClass('md-menu-item'),
+          fitRipple: true,
+          center: true
+        };
+      } else {
+        return {
+          isMenuItem: element.hasClass('md-menu-item'),
+          dimBackground: true
+        };
+      }
+    }
+  }
+})();
+
+(function() {
+  'use strict';
+
+    /**
+   * @ngdoc service
+   * @name $mdCheckboxInkRipple
+   * @module material.core
+   *
+   * @description
+   * Provides ripple effects for md-checkbox.  See $mdInkRipple service for all possible configuration options.
+   *
+   * @param {object=} scope Scope within the current context
+   * @param {object=} element The element the ripple effect should be applied to
+   * @param {object=} options (Optional) Configuration options to override the defaultripple configuration
+   */
+
+  MdCheckboxInkRipple['$inject'] = ["$mdInkRipple"];
+  angular.module('material.core')
+    .factory('$mdCheckboxInkRipple', MdCheckboxInkRipple);
+
+  function MdCheckboxInkRipple($mdInkRipple) {
+    return {
+      attach: attach
+    };
+
+    function attach(scope, element, options) {
+      return $mdInkRipple.attach(scope, element, angular.extend({
+        center: true,
+        dimBackground: false,
+        fitRipple: true
+      }, options));
+    }
+  }
+})();
+
+(function() {
+  'use strict';
+
+  /**
+   * @ngdoc service
+   * @name $mdListInkRipple
+   * @module material.core
+   *
+   * @description
+   * Provides ripple effects for md-list.  See $mdInkRipple service for all possible configuration options.
+   *
+   * @param {object=} scope Scope within the current context
+   * @param {object=} element The element the ripple effect should be applied to
+   * @param {object=} options (Optional) Configuration options to override the defaultripple configuration
+   */
+
+  MdListInkRipple['$inject'] = ["$mdInkRipple"];
+  angular.module('material.core')
+    .factory('$mdListInkRipple', MdListInkRipple);
+
+  function MdListInkRipple($mdInkRipple) {
+    return {
+      attach: attach
+    };
+
+    function attach(scope, element, options) {
+      return $mdInkRipple.attach(scope, element, angular.extend({
+        center: false,
+        dimBackground: true,
+        outline: false,
+        rippleSize: 'full'
+      }, options));
+    }
+  }
+})();
+
+/**
+ * @ngdoc module
+ * @name material.core.ripple
+ * @description
+ * Ripple
+ */
+InkRippleCtrl['$inject'] = ["$scope", "$element", "rippleOptions", "$window", "$timeout", "$mdUtil", "$mdColorUtil"];
+InkRippleDirective['$inject'] = ["$mdButtonInkRipple", "$mdCheckboxInkRipple"];
+angular.module('material.core')
+    .provider('$mdInkRipple', InkRippleProvider)
+    .directive('mdInkRipple', InkRippleDirective)
+    .directive('mdNoInk', attrNoDirective)
+    .directive('mdNoBar', attrNoDirective)
+    .directive('mdNoStretch', attrNoDirective);
+
+var DURATION = 450;
+
+/**
+ * @ngdoc directive
+ * @name mdInkRipple
+ * @module material.core.ripple
+ *
+ * @description
+ * The `md-ink-ripple` directive allows you to specify the ripple color or if a ripple is allowed.
+ *
+ * @param {string|boolean} md-ink-ripple A color string `#FF0000` or boolean (`false` or `0`) for
+ *  preventing ripple
+ *
+ * @usage
+ * ### String values
+ * <hljs lang="html">
+ *   <ANY md-ink-ripple="#FF0000">
+ *     Ripples in red
+ *   </ANY>
+ *
+ *   <ANY md-ink-ripple="false">
+ *     Not rippling
+ *   </ANY>
+ * </hljs>
+ *
+ * ### Interpolated values
+ * <hljs lang="html">
+ *   <ANY md-ink-ripple="{{ randomColor() }}">
+ *     Ripples with the return value of 'randomColor' function
+ *   </ANY>
+ *
+ *   <ANY md-ink-ripple="{{ canRipple() }}">
+ *     Ripples if 'canRipple' function return value is not 'false' or '0'
+ *   </ANY>
+ * </hljs>
+ */
+function InkRippleDirective ($mdButtonInkRipple, $mdCheckboxInkRipple) {
+  return {
+    controller: angular.noop,
+    link:       function (scope, element, attr) {
+      attr.hasOwnProperty('mdInkRippleCheckbox')
+          ? $mdCheckboxInkRipple.attach(scope, element)
+          : $mdButtonInkRipple.attach(scope, element);
+    }
+  };
+}
+
+/**
+ * @ngdoc service
+ * @name $mdInkRipple
+ * @module material.core.ripple
+ *
+ * @description
+ * `$mdInkRipple` is a service for adding ripples to any element.
+ *
+ * @usage
+ * <hljs lang="js">
+ * app.factory('$myElementInkRipple', function($mdInkRipple) {
+ *   return {
+ *     attach: function (scope, element, options) {
+ *       return $mdInkRipple.attach(scope, element, angular.extend({
+ *         center: false,
+ *         dimBackground: true
+ *       }, options));
+ *     }
+ *   };
+ * });
+ *
+ * app.controller('myController', function ($scope, $element, $myElementInkRipple) {
+ *   $scope.onClick = function (ev) {
+ *     $myElementInkRipple.attach($scope, angular.element(ev.target), { center: true });
+ *   }
+ * });
+ * </hljs>
+ */
+
+/**
+ * @ngdoc service
+ * @name $mdInkRippleProvider
+ * @module material.core.ripple
+ *
+ * @description
+  * If you want to disable ink ripples globally, for all components, you can call the
+ * `disableInkRipple` method in your app's config.
+ *
+ *
+ * @usage
+ * <hljs lang="js">
+ * app.config(function ($mdInkRippleProvider) {
+ *   $mdInkRippleProvider.disableInkRipple();
+ * });
+ * </hljs>
+ */
+
+function InkRippleProvider () {
+  var isDisabledGlobally = false;
+
+  return {
+    disableInkRipple: disableInkRipple,
+    $get: ["$injector", function($injector) {
+      return { attach: attach };
+
+      /**
+       * @ngdoc method
+       * @name $mdInkRipple#attach
+       *
+       * @description
+       * Attaching given scope, element and options to inkRipple controller
+       *
+       * @param {object=} scope Scope within the current context
+       * @param {object=} element The element the ripple effect should be applied to
+       * @param {object=} options (Optional) Configuration options to override the defaultRipple configuration
+       * * `center` -  Whether the ripple should start from the center of the container element
+       * * `dimBackground` - Whether the background should be dimmed with the ripple color
+       * * `colorElement` - The element the ripple should take its color from, defined by css property `color`
+       * * `fitRipple` - Whether the ripple should fill the element
+       */
+      function attach (scope, element, options) {
+        if (isDisabledGlobally || element.controller('mdNoInk')) return angular.noop;
+        return $injector.instantiate(InkRippleCtrl, {
+          $scope:        scope,
+          $element:      element,
+          rippleOptions: options
+        });
+      }
+    }]
+  };
+
+  /**
+   * @ngdoc method
+   * @name $mdInkRippleProvider#disableInkRipple
+   *
+   * @description
+   * A config-time method that, when called, disables ripples globally.
+   */
+  function disableInkRipple () {
+    isDisabledGlobally = true;
+  }
+}
+
+/**
+ * Controller used by the ripple service in order to apply ripples
+ * ngInject
+ */
+function InkRippleCtrl ($scope, $element, rippleOptions, $window, $timeout, $mdUtil, $mdColorUtil) {
+  this.$window    = $window;
+  this.$timeout   = $timeout;
+  this.$mdUtil    = $mdUtil;
+  this.$mdColorUtil    = $mdColorUtil;
+  this.$scope     = $scope;
+  this.$element   = $element;
+  this.options    = rippleOptions;
+  this.mousedown  = false;
+  this.ripples    = [];
+  this.timeout    = null; // Stores a reference to the most-recent ripple timeout
+  this.lastRipple = null;
+
+  $mdUtil.valueOnUse(this, 'container', this.createContainer);
+
+  this.$element.addClass('md-ink-ripple');
+
+  // attach method for unit tests
+  ($element.controller('mdInkRipple') || {}).createRipple = angular.bind(this, this.createRipple);
+  ($element.controller('mdInkRipple') || {}).setColor = angular.bind(this, this.color);
+
+  this.bindEvents();
+}
+
+
+/**
+ * Either remove or unlock any remaining ripples when the user mouses off of the element (either by
+ * mouseup or mouseleave event)
+ */
+function autoCleanup (self, cleanupFn) {
+  if (self.mousedown || self.lastRipple) {
+    self.mousedown = false;
+    self.$mdUtil.nextTick(angular.bind(self, cleanupFn), false);
+  }
+}
+
+
+/**
+ * Returns the color that the ripple should be (either based on CSS or hard-coded)
+ * @returns {string}
+ */
+InkRippleCtrl.prototype.color = function (value) {
+  var self = this;
+
+  // If assigning a color value, apply it to background and the ripple color
+  if (angular.isDefined(value)) {
+    self._color = self._parseColor(value);
+  }
+
+  // If color lookup, use assigned, defined, or inherited
+  return self._color || self._parseColor(self.inkRipple()) || self._parseColor(getElementColor());
+
+  /**
+   * Finds the color element and returns its text color for use as default ripple color
+   * @returns {string}
+   */
+  function getElementColor () {
+    var items = self.options && self.options.colorElement ? self.options.colorElement : [];
+    var elem =  items.length ? items[ 0 ] : self.$element[ 0 ];
+
+    return elem ? self.$window.getComputedStyle(elem).color : 'rgb(0,0,0)';
+  }
+};
+
+/**
+ * Updating the ripple colors based on the current inkRipple value
+ * or the element's computed style color
+ */
+InkRippleCtrl.prototype.calculateColor = function () {
+  return this.color();
+};
+
+
+/**
+ * Takes a string color and converts it to RGBA format
+ * @param {string} color
+ * @param {number} multiplier
+ * @returns {string}
+ */
+InkRippleCtrl.prototype._parseColor = function parseColor (color, multiplier) {
+  multiplier = multiplier || 1;
+  var colorUtil = this.$mdColorUtil;
+
+  if (!color) return;
+  if (color.indexOf('rgba') === 0) return color.replace(/\d?\.?\d*\s*\)\s*$/, (0.1 * multiplier).toString() + ')');
+  if (color.indexOf('rgb') === 0) return colorUtil.rgbToRgba(color);
+  if (color.indexOf('#') === 0) return colorUtil.hexToRgba(color);
+
+};
+
+/**
+ * Binds events to the root element for
+ */
+InkRippleCtrl.prototype.bindEvents = function () {
+  this.$element.on('mousedown', angular.bind(this, this.handleMousedown));
+  this.$element.on('mouseup touchend', angular.bind(this, this.handleMouseup));
+  this.$element.on('mouseleave', angular.bind(this, this.handleMouseup));
+  this.$element.on('touchmove', angular.bind(this, this.handleTouchmove));
+};
+
+/**
+ * Create a new ripple on every mousedown event from the root element
+ * @param event {MouseEvent}
+ */
+InkRippleCtrl.prototype.handleMousedown = function (event) {
+  if (this.mousedown) return;
+
+  // When jQuery is loaded, we have to get the original event
+  if (event.hasOwnProperty('originalEvent')) event = event.originalEvent;
+  this.mousedown = true;
+  if (this.options.center) {
+    this.createRipple(this.container.prop('clientWidth') / 2, this.container.prop('clientWidth') / 2);
+  } else {
+
+    // We need to calculate the relative coordinates if the target is a sublayer of the ripple element
+    if (event.srcElement !== this.$element[0]) {
+      var layerRect = this.$element[0].getBoundingClientRect();
+      var layerX = event.clientX - layerRect.left;
+      var layerY = event.clientY - layerRect.top;
+
+      this.createRipple(layerX, layerY);
+    } else {
+      this.createRipple(event.offsetX, event.offsetY);
+    }
+  }
+};
+
+/**
+ * Either remove or unlock any remaining ripples when the user mouses off of the element (either by
+ * mouseup, touchend or mouseleave event)
+ */
+InkRippleCtrl.prototype.handleMouseup = function () {
+  this.$timeout(function () {
+    autoCleanup(this, this.clearRipples);
+  }.bind(this));
+};
+
+/**
+ * Either remove or unlock any remaining ripples when the user mouses off of the element (by
+ * touchmove)
+ */
+InkRippleCtrl.prototype.handleTouchmove = function () {
+  autoCleanup(this, this.deleteRipples);
+};
+
+/**
+ * Cycles through all ripples and attempts to remove them.
+ */
+InkRippleCtrl.prototype.deleteRipples = function () {
+  for (var i = 0; i < this.ripples.length; i++) {
+    this.ripples[ i ].remove();
+  }
+};
+
+/**
+ * Cycles through all ripples and attempts to remove them with fade.
+ * Depending on logic within `fadeInComplete`, some removals will be postponed.
+ */
+InkRippleCtrl.prototype.clearRipples = function () {
+  for (var i = 0; i < this.ripples.length; i++) {
+    this.fadeInComplete(this.ripples[ i ]);
+  }
+};
+
+/**
+ * Creates the ripple container element
+ * @returns {*}
+ */
+InkRippleCtrl.prototype.createContainer = function () {
+  var container = angular.element('<div class="md-ripple-container"></div>');
+  this.$element.append(container);
+  return container;
+};
+
+InkRippleCtrl.prototype.clearTimeout = function () {
+  if (this.timeout) {
+    this.$timeout.cancel(this.timeout);
+    this.timeout = null;
+  }
+};
+
+InkRippleCtrl.prototype.isRippleAllowed = function () {
+  var element = this.$element[0];
+  do {
+    if (!element.tagName || element.tagName === 'BODY') break;
+
+    if (element && angular.isFunction(element.hasAttribute)) {
+      if (element.hasAttribute('disabled')) return false;
+      if (this.inkRipple() === 'false' || this.inkRipple() === '0') return false;
+    }
+
+  } while (element = element.parentNode);
+  return true;
+};
+
+/**
+ * The attribute `md-ink-ripple` may be a static or interpolated
+ * color value OR a boolean indicator (used to disable ripples)
+ */
+InkRippleCtrl.prototype.inkRipple = function () {
+  return this.$element.attr('md-ink-ripple');
+};
+
+/**
+ * Creates a new ripple and adds it to the container.  Also tracks ripple in `this.ripples`.
+ * @param left
+ * @param top
+ */
+InkRippleCtrl.prototype.createRipple = function (left, top) {
+  if (!this.isRippleAllowed()) return;
+
+  var ctrl        = this;
+  var colorUtil   = ctrl.$mdColorUtil;
+  var ripple      = angular.element('<div class="md-ripple"></div>');
+  var width       = this.$element.prop('clientWidth');
+  var height      = this.$element.prop('clientHeight');
+  var x           = Math.max(Math.abs(width - left), left) * 2;
+  var y           = Math.max(Math.abs(height - top), top) * 2;
+  var size        = getSize(this.options.fitRipple, x, y);
+  var color       = this.calculateColor();
+
+  ripple.css({
+    left:            left + 'px',
+    top:             top + 'px',
+    background:      'black',
+    width:           size + 'px',
+    height:          size + 'px',
+    backgroundColor: colorUtil.rgbaToRgb(color),
+    borderColor:     colorUtil.rgbaToRgb(color)
+  });
+  this.lastRipple = ripple;
+
+  // we only want one timeout to be running at a time
+  this.clearTimeout();
+  this.timeout    = this.$timeout(function () {
+    ctrl.clearTimeout();
+    if (!ctrl.mousedown) ctrl.fadeInComplete(ripple);
+  }, DURATION * 0.35, false);
+
+  if (this.options.dimBackground) this.container.css({ backgroundColor: color });
+  this.container.append(ripple);
+  this.ripples.push(ripple);
+  ripple.addClass('md-ripple-placed');
+
+  this.$mdUtil.nextTick(function () {
+
+    ripple.addClass('md-ripple-scaled md-ripple-active');
+    ctrl.$timeout(function () {
+      ctrl.clearRipples();
+    }, DURATION, false);
+
+  }, false);
+
+  function getSize (fit, x, y) {
+    return fit
+        ? Math.max(x, y)
+        : Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+  }
+};
+
+
+
+/**
+ * After fadeIn finishes, either kicks off the fade-out animation or queues the element for removal on mouseup
+ * @param ripple
+ */
+InkRippleCtrl.prototype.fadeInComplete = function (ripple) {
+  if (this.lastRipple === ripple) {
+    if (!this.timeout && !this.mousedown) {
+      this.removeRipple(ripple);
+    }
+  } else {
+    this.removeRipple(ripple);
+  }
+};
+
+/**
+ * Kicks off the animation for removing a ripple
+ * @param ripple {Element}
+ */
+InkRippleCtrl.prototype.removeRipple = function (ripple) {
+  var ctrl  = this;
+  var index = this.ripples.indexOf(ripple);
+  if (index < 0) return;
+  this.ripples.splice(this.ripples.indexOf(ripple), 1);
+  ripple.removeClass('md-ripple-active');
+  ripple.addClass('md-ripple-remove');
+  if (this.ripples.length === 0) this.container.css({ backgroundColor: '' });
+  // use a 2-second timeout in order to allow for the animation to finish
+  // we don't actually care how long the animation takes
+  this.$timeout(function () {
+    ctrl.fadeOutComplete(ripple);
+  }, DURATION, false);
+};
+
+/**
+ * Removes the provided ripple from the DOM
+ * @param ripple
+ */
+InkRippleCtrl.prototype.fadeOutComplete = function (ripple) {
+  ripple.remove();
+  this.lastRipple = null;
+};
+
+/**
+ * Used to create an empty directive.  This is used to track flag-directives whose children may have
+ * functionality based on them.
+ *
+ * Example: `md-no-ink` will potentially be used by all child directives.
+ */
+function attrNoDirective () {
+  return { controller: angular.noop };
+}
+
+(function() {
+  'use strict';
+
+    /**
+   * @ngdoc service
+   * @name $mdTabInkRipple
+   * @module material.core
+   *
+   * @description
+   * Provides ripple effects for md-tabs.  See $mdInkRipple service for all possible configuration options.
+   *
+   * @param {object=} scope Scope within the current context
+   * @param {object=} element The element the ripple effect should be applied to
+   * @param {object=} options (Optional) Configuration options to override the defaultripple configuration
+   */
+
+  MdTabInkRipple['$inject'] = ["$mdInkRipple"];
+  angular.module('material.core')
+    .factory('$mdTabInkRipple', MdTabInkRipple);
+
+  function MdTabInkRipple($mdInkRipple) {
+    return {
+      attach: attach
+    };
+
+    function attach(scope, element, options) {
+      return $mdInkRipple.attach(scope, element, angular.extend({
+        center: false,
+        dimBackground: true,
+        outline: false,
+        rippleSize: 'full'
+      }, options));
+    }
+  }
+})();
 
 // Polyfill angular < 1.4 (provide $animateCss)
 angular
