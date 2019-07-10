@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.19-master-f5535f8
+ * v1.1.19-master-0077d3e
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3590,9 +3590,12 @@ var lastLabelClickPos = null;
 // Used to attach event listeners once when multiple ng-apps are running.
 var isInitialized = false;
 
-var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-var isIos = userAgent.match(/ipad|iphone|ipod/i);
-var isAndroid = userAgent.match(/android/i);
+// Support material-tools builds.
+if (window.navigator) {
+  var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
+  var isIos = userAgent.match(/ipad|iphone|ipod/i);
+  var isAndroid = userAgent.match(/android/i);
+}
 
 /**
  * @ngdoc module
@@ -38481,4 +38484,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.19-master-f5535f8"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.19-master-0077d3e"}};
