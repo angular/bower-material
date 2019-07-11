@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.19-master-0077d3e
+ * v1.1.19-master-bc7833b
  */
 goog.provide('ngmaterial.components.tabs');
 goog.require('ngmaterial.components.icon');
@@ -1294,7 +1294,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   }
 
   function isRtl() {
-    return ($mdUtil.bidi() === 'rtl');
+    return $mdUtil.isRtl($attrs);
   }
 }
 

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.19-master-0077d3e
+ * v1.1.19-master-bc7833b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -137,6 +137,8 @@ function VirtualRepeatContainerController($$rAF, $mdUtil, $mdConstant, $parse, $
   this.oldElementSize = null;
   /** @type {!number} Maximum amount of pixels allowed for a single DOM element */
   this.maxElementPixels = $mdConstant.ELEMENT_MAX_PIXELS;
+  /** @type {string}  Direction of the text */
+  this.ltr = !$mdUtil.isRtl(this.$attrs);
 
   if (this.$attrs.mdTopIndex) {
     /** @type {function(angular.Scope): number} Binds to topIndex on AngularJS scope */
@@ -397,13 +399,12 @@ VirtualRepeatContainerController.prototype.resetScroll = function() {
 
 
 VirtualRepeatContainerController.prototype.handleScroll_ = function() {
-  var ltr = document.dir !== 'rtl' && document.body.dir !== 'rtl';
-  if (!ltr && !this.maxSize) {
+  if (!this.ltr && !this.maxSize) {
     this.scroller.scrollLeft = this.scrollSize;
     this.maxSize = this.scroller.scrollLeft;
   }
   var offset = this.isHorizontal() ?
-      (ltr?this.scroller.scrollLeft : this.maxSize - this.scroller.scrollLeft)
+      (this.ltr ? this.scroller.scrollLeft : this.maxSize - this.scroller.scrollLeft)
       : this.scroller.scrollTop;
   if (this.scrollSize < this.size) return;
   if (offset > this.scrollSize - this.size) {
@@ -417,7 +418,7 @@ VirtualRepeatContainerController.prototype.handleScroll_ = function() {
   var numItems = Math.max(0, Math.floor(offset / itemSize) - NUM_EXTRA);
 
   var transform = (this.isHorizontal() ? 'translateX(' : 'translateY(') +
-      (!this.isHorizontal() || ltr ? (numItems * itemSize) : - (numItems * itemSize))  + 'px)';
+      (!this.isHorizontal() || this.ltr ? (numItems * itemSize) : - (numItems * itemSize))  + 'px)';
 
   this.scrollOffset = offset;
   this.offsetter.style.webkitTransform = transform;

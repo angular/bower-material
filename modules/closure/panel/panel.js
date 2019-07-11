@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.19-master-0077d3e
+ * v1.1.19-master-bc7833b
  */
 goog.provide('ngmaterial.components.panel');
 goog.require('ngmaterial.components.backdrop');
@@ -2551,7 +2551,7 @@ function MdPanelPosition($injector) {
   this._$window = $injector.get('$window');
 
   /** @private {boolean} */
-  this._isRTL = $injector.get('$mdUtil').bidi() === 'rtl';
+  this._isRTL = $injector.get('$mdUtil').isRtl();
 
   /** @private @const {!angular.$mdConstant} */
   this._$mdConstant = $injector.get('$mdConstant');

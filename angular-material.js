@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.19-master-0077d3e
+ * v1.1.19-master-bc7833b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1122,11 +1122,35 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     },
 
     /**
+     * Determines the current 'dir'ectional value based on the value of 'dir'
+     * attribute of the element. If that is not defined, it will try to use
+     * a 'dir' attribute of the body or html tag.
+     *
+     * @param {Object=} attrs a hash object with key-value pairs of normalized
+     *     attribute names and their corresponding attribute values.
+     * @returns {boolean} true if the element's passed in attributes,
+     *     the document, or the body indicates RTL mode, false otherwise.
+     */
+    isRtl: function(attrs) {
+      var dir = angular.isDefined(attrs) && attrs.hasOwnProperty('dir') && attrs.dir;
+
+      switch (dir) {
+        case 'ltr':
+          return false;
+
+        case 'rtl':
+          return true;
+      }
+
+      return ($document[0].dir === 'rtl' || $document[0].body.dir === 'rtl');
+    },
+
+    /**
      * Bi-directional accessor/mutator used to easily update an element's
      * property based on the current 'dir'ectional value.
      */
-    bidi : function(element, property, lValue, rValue) {
-      var ltr = !($document[0].dir == 'rtl' || $document[0].body.dir == 'rtl');
+    bidi: function(element, property, lValue, rValue) {
+      var ltr = !this.isRtl();
 
       // If accessor
       if (arguments.length == 0) return ltr ? 'ltr' : 'rtl';
@@ -1143,7 +1167,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     },
 
     bidiProperty: function (element, lProperty, rProperty, value) {
-      var ltr = !($document[0].dir == 'rtl' || $document[0].body.dir == 'rtl');
+      var ltr = !this.isRtl();
 
       var elem = angular.element(element);
 
@@ -19596,7 +19620,7 @@ function MdDividerDirective($mdTheming) {
  */
 GridListController.$inject = ["$mdUtil"];
 GridLayoutFactory.$inject = ["$mdUtil"];
-GridListDirective.$inject = ["$interpolate", "$mdConstant", "$mdGridLayout", "$mdMedia"];
+GridListDirective.$inject = ["$interpolate", "$mdConstant", "$mdGridLayout", "$mdMedia", "$mdUtil"];
 GridTileDirective.$inject = ["$mdMedia"];
 angular.module('material.components.gridList', ['material.core'])
        .directive('mdGridList', GridListDirective)
@@ -19689,7 +19713,7 @@ angular.module('material.components.gridList', ['material.core'])
  * </md-grid-list>
  * </hljs>
  */
-function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
+function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia, $mdUtil) {
   return {
     restrict: 'E',
     controller: GridListController,
@@ -19866,8 +19890,7 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
 
       // The width and horizontal position of each tile is always calculated the same way, but the
       // height and vertical position depends on the rowMode.
-      var ltr = document.dir != 'rtl' && document.body.dir != 'rtl';
-      var style = ltr ? {
+      var style = (!$mdUtil.isRtl(attrs)) ? {
           left: POSITION({ unit: hUnit, offset: position.col, gutter: gutter }),
           width: DIMENSION({ unit: hUnit, span: spans.col, gutter: gutter }),
           // resets
@@ -24222,7 +24245,7 @@ function MenuProvider($$interimElementProvider) {
           throw new Error('Invalid target mode "' + positionMode.top + '" specified for md-menu on Y axis.');
       }
 
-      var rtl = ($mdUtil.bidi() === 'rtl');
+      var rtl = $mdUtil.isRtl(el);
 
       switch (positionMode.left) {
         case 'target':
@@ -28269,7 +28292,7 @@ function MdPanelPosition($injector) {
   this._$window = $injector.get('$window');
 
   /** @private {boolean} */
-  this._isRTL = $injector.get('$mdUtil').bidi() === 'rtl';
+  this._isRTL = $injector.get('$mdUtil').isRtl();
 
   /** @private @const {!angular.$mdConstant} */
   this._$mdConstant = $injector.get('$mdConstant');
@@ -33439,7 +33462,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       var size = vertical ? sliderDimensions.height : sliderDimensions.width;
       var calc = (position - offset) / size;
 
-      if (!vertical && $mdUtil.bidi() === 'rtl') {
+      if (!vertical && $mdUtil.isRtl(attr)) {
         calc = 1 - calc;
       }
 
@@ -35581,7 +35604,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   }
 
   function isRtl() {
-    return ($mdUtil.bidi() === 'rtl');
+    return $mdUtil.isRtl($attrs);
   }
 }
 
@@ -37480,6 +37503,8 @@ function VirtualRepeatContainerController($$rAF, $mdUtil, $mdConstant, $parse, $
   this.oldElementSize = null;
   /** @type {!number} Maximum amount of pixels allowed for a single DOM element */
   this.maxElementPixels = $mdConstant.ELEMENT_MAX_PIXELS;
+  /** @type {string}  Direction of the text */
+  this.ltr = !$mdUtil.isRtl(this.$attrs);
 
   if (this.$attrs.mdTopIndex) {
     /** @type {function(angular.Scope): number} Binds to topIndex on AngularJS scope */
@@ -37740,13 +37765,12 @@ VirtualRepeatContainerController.prototype.resetScroll = function() {
 
 
 VirtualRepeatContainerController.prototype.handleScroll_ = function() {
-  var ltr = document.dir !== 'rtl' && document.body.dir !== 'rtl';
-  if (!ltr && !this.maxSize) {
+  if (!this.ltr && !this.maxSize) {
     this.scroller.scrollLeft = this.scrollSize;
     this.maxSize = this.scroller.scrollLeft;
   }
   var offset = this.isHorizontal() ?
-      (ltr?this.scroller.scrollLeft : this.maxSize - this.scroller.scrollLeft)
+      (this.ltr ? this.scroller.scrollLeft : this.maxSize - this.scroller.scrollLeft)
       : this.scroller.scrollTop;
   if (this.scrollSize < this.size) return;
   if (offset > this.scrollSize - this.size) {
@@ -37760,7 +37784,7 @@ VirtualRepeatContainerController.prototype.handleScroll_ = function() {
   var numItems = Math.max(0, Math.floor(offset / itemSize) - NUM_EXTRA);
 
   var transform = (this.isHorizontal() ? 'translateX(' : 'translateY(') +
-      (!this.isHorizontal() || ltr ? (numItems * itemSize) : - (numItems * itemSize))  + 'px)';
+      (!this.isHorizontal() || this.ltr ? (numItems * itemSize) : - (numItems * itemSize))  + 'px)';
 
   this.scrollOffset = offset;
   this.offsetter.style.webkitTransform = transform;
@@ -38484,4 +38508,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.19-master-0077d3e"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.19-master-bc7833b"}};
