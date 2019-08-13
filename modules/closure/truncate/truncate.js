@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.19-master-0284b13
+ * v1.1.19-master-4acef53
  */
 goog.provide('ngmaterial.components.truncate');
 goog.require('ngmaterial.core');
