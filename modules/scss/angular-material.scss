@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.20-master-e9e4647
+ * v1.1.20-master-8c159aa
  */
 // Typography
 // ------------------------------
@@ -1483,7 +1483,7 @@ md-autocomplete {
     input {
       border: 1px solid $border-color;
     }
-    li:focus {
+    .md-autocomplete-suggestion:focus {
       color: #fff;
     }
   }
@@ -1523,7 +1523,7 @@ md-autocomplete {
   list-style: none;
   padding: 0;
 
-  li {
+  .md-autocomplete-suggestion {
     font-size: 14px;
     overflow: hidden;
     padding: 0 15px;

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.20-master-e9e4647
+ * v1.1.20-master-8c159aa
  */
 html, body {
   height: 100%;
@@ -467,7 +467,7 @@ md-autocomplete {
   @media screen and (-ms-high-contrast: active) {
     md-autocomplete input {
       border: 1px solid #fff; }
-    md-autocomplete li:focus {
+    md-autocomplete .md-autocomplete-suggestion:focus {
       color: #fff; } }
 
 .md-virtual-repeat-container.md-autocomplete-suggestions-container,
@@ -496,7 +496,7 @@ md-autocomplete {
   margin: 0;
   list-style: none;
   padding: 0; }
-  .md-autocomplete-suggestions li {
+  .md-autocomplete-suggestions .md-autocomplete-suggestion {
     font-size: 14px;
     overflow: hidden;
     padding: 0 15px;
@@ -506,9 +506,9 @@ md-autocomplete {
     margin: 0;
     white-space: nowrap;
     text-overflow: ellipsis; }
-    .md-autocomplete-suggestions li:focus {
+    .md-autocomplete-suggestions .md-autocomplete-suggestion:focus {
       outline: none; }
-    .md-autocomplete-suggestions li:not(.md-not-found-wrapper) {
+    .md-autocomplete-suggestions .md-autocomplete-suggestion:not(.md-not-found-wrapper) {
       cursor: pointer; }
 
 @media screen and (-ms-high-contrast: active) {
