@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.20-master-838ae34
+ * v1.1.20-master-20c4d3f
  */
 html, body {
   height: 100%;
@@ -365,8 +365,9 @@ md-autocomplete {
     height: 40px; }
     md-autocomplete md-autocomplete-wrap.md-menu-showing {
       z-index: 51; }
-    md-autocomplete md-autocomplete-wrap md-input-container, md-autocomplete md-autocomplete-wrap input {
-      flex: 1 1 0%;
+    md-autocomplete md-autocomplete-wrap md-input-container,
+    md-autocomplete md-autocomplete-wrap input {
+      flex: 1 1 0;
       box-sizing: border-box;
       min-width: 0; }
     md-autocomplete md-autocomplete-wrap md-progress-linear {

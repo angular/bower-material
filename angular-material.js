@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.20-master-838ae34
+ * v1.1.20-master-20c4d3f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1036,7 +1036,14 @@ function MdPrefixer(initialAttributes, buildSelector) {
  * will not be unique.
  */
 UtilFactory.$inject = ["$document", "$timeout", "$compile", "$rootScope", "$$mdAnimate", "$interpolate", "$log", "$rootElement", "$window", "$$rAF"];
-var nextUniqueId = 0;
+var nextUniqueId = 0, isIos, isAndroid;
+
+// Support material-tools builds.
+if (window.navigator) {
+  var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
+  isIos = userAgent.match(/ipad|iphone|ipod/i);
+  isAndroid = userAgent.match(/android/i);
+}
 
 /**
  * @ngdoc module
@@ -1097,6 +1104,8 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
   var $mdUtil = {
     dom: {},
+    isIos: isIos,
+    isAndroid: isAndroid,
     now: window.performance && window.performance.now ?
       angular.bind(window.performance, window.performance.now) : Date.now || function() {
       return new Date().getTime();
@@ -1330,16 +1339,17 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
           wrappedElementToDisable.append(scrollMask);
         }
 
-        function preventDefault(e) {
-          e.preventDefault();
+        /**
+         * @param {Event} $event
+         */
+        function preventDefault($event) {
+          $event.preventDefault();
         }
 
-        scrollMask.on('wheel', preventDefault);
-        scrollMask.on('touchmove', preventDefault);
+        scrollMask.on('wheel touchmove', preventDefault);
 
         return function restoreElementScroll() {
-          scrollMask.off('wheel');
-          scrollMask.off('touchmove');
+          scrollMask.off('wheel touchmove', preventDefault);
 
           if (!scrollMaskOptions.disableScrollMask && scrollMask[0].parentNode) {
             scrollMask[0].parentNode.removeChild(scrollMask[0]);
@@ -1411,7 +1421,10 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
       return this.floatingScrollbars.cached;
     },
 
-    // Mobile safari only allows you to set focus in click event listeners...
+    /**
+     * Mobile safari only allows you to set focus in click event listeners.
+     * @param {Element|angular.JQLite} element to focus
+     */
     forceFocus: function(element) {
       var node = element[0] || element;
 
@@ -1485,17 +1498,21 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
       };
     },
 
-    // Returns a function, that, as long as it continues to be invoked, will not
-    // be triggered. The function will be called after it stops being called for
-    // N milliseconds.
-    // @param wait Integer value of msecs to delay (since last debounce reset); default value 10 msecs
-    // @param invokeApply should the $timeout trigger $digest() dirty checking
+    /**
+     * @param {Function} func original function to be debounced
+     * @param {number} wait number of milliseconds to delay (since last debounce reset).
+     *  Default value 10 msecs.
+     * @param {Object} scope in which to apply the function after debouncing ends
+     * @param {boolean} invokeApply should the $timeout trigger $digest() dirty checking
+     * @return {Function} A function, that, as long as it continues to be invoked, will not be
+     *  triggered. The function will be called after it stops being called for N milliseconds.
+     */
     debounce: function(func, wait, scope, invokeApply) {
       var timer;
 
       return function debounced() {
         var context = scope,
-          args = Array.prototype.slice.call(arguments);
+            args = Array.prototype.slice.call(arguments);
 
         $timeout.cancel(timer);
         timer = $timeout(function() {
@@ -1507,9 +1524,13 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
       };
     },
 
-    // Returns a function that can only be triggered every `delay` milliseconds.
-    // In other words, the function will not be called unless it has been more
-    // than `delay` milliseconds since the last call.
+    /**
+     * The function will not be called unless it has been more than `delay` milliseconds since the
+     * last call.
+     * @param {Function} func original function to throttle
+     * @param {number} delay number of milliseconds to delay
+     * @return {Function} a function that can only be triggered every `delay` milliseconds.
+     */
     throttle: function throttle(func, delay) {
       var recent;
       return function throttled() {
@@ -1559,8 +1580,11 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
       return '' + nextUniqueId++;
     },
 
-    // Stop watchers and events from firing on a scope without destroying it,
-    // by disconnecting it from its parent and its siblings' linked lists.
+    /**
+     * Stop watchers and events from firing on a scope without destroying it,
+     * by disconnecting it from its parent and its siblings' linked lists.
+     * @param {Object} scope to disconnect
+     */
     disconnectScope: function disconnectScope(scope) {
       if (!scope) return;
 
@@ -1581,7 +1605,10 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
     },
 
-    // Undo the effects of disconnectScope above.
+    /**
+     * Undo the effects of disconnectScope().
+     * @param {Object} scope to reconnect
+     */
     reconnectScope: function reconnectScope(scope) {
       if (!scope) return;
 
@@ -1861,9 +1888,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
     /**
      * Returns true if the parent form of the element has been submitted.
-     *
      * @param element An AngularJS or HTML5 element.
-     *
      * @returns {boolean}
      */
     isParentFormSubmitted: function(element) {
@@ -1875,7 +1900,6 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
     /**
      * Animate the requested element's scrollTop to the requested scrollPosition with basic easing.
-     *
      * @param {!Element} element The element to scroll.
      * @param {number} scrollEnd The new/final scroll position.
      * @param {number=} duration Duration of the scroll. Default is 1000ms.
@@ -1927,7 +1951,6 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      *    $mdUtil.uniq(myArray) => [1, 2, 3, 4]
      *
      * @param {array} array The array whose unique values should be returned.
-     *
      * @returns {array} A copy of the array containing only unique values.
      */
     uniq: function(array) {
@@ -1988,7 +2011,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
   }
 }
 
-/*
+/**
  * Since removing jQuery from the demos, some code that uses `element.focus()` is broken.
  * We need to add `element.focus()`, because it's testable unlike `element[0].focus`.
  */
@@ -3594,8 +3617,8 @@ function MdCompilerProvider($compileProvider) {
 "use strict";
 
 
-MdGesture.$inject = ["$$MdGestureHandler", "$$rAF", "$timeout"];
-attachToDocument.$inject = ["$mdGesture", "$$MdGestureHandler"];var HANDLERS = {};
+MdGesture.$inject = ["$$MdGestureHandler", "$$rAF", "$timeout", "$mdUtil"];
+attachToDocument.$inject = ["$mdGesture", "$$MdGestureHandler", "$mdUtil"];var HANDLERS = {};
 
 /**
  * The state of the current 'pointer'. The pointer represents the state of the current touch.
@@ -3611,21 +3634,18 @@ var forceSkipClickHijack = false, disableAllGestures = false;
  */
 var lastLabelClickPos = null;
 
-// Used to attach event listeners once when multiple ng-apps are running.
+/**
+ * Used to attach event listeners once when multiple ng-apps are running.
+ * @type {boolean}
+ */
 var isInitialized = false;
-
-// Support material-tools builds.
-if (window.navigator) {
-  var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
-  var isIos = userAgent.match(/ipad|iphone|ipod/i);
-  var isAndroid = userAgent.match(/android/i);
-}
 
 /**
  * @ngdoc module
  * @name material.core.gestures
  * @description
- * AngularJS Material Gesture handling for touch devices. This module replaced the usage of the hammerjs library.
+ * AngularJS Material Gesture handling for touch devices.
+ * This module replaced the usage of the HammerJS library.
  */
 angular
   .module('material.core.gestures', [])
@@ -3640,10 +3660,11 @@ angular
  *
  * @description
  * In some scenarios on mobile devices (without jQuery), the click events should NOT be hijacked.
- * `$mdGestureProvider` is used to configure the Gesture module to ignore or skip click hijacking on mobile
- * devices.
+ * `$mdGestureProvider` is used to configure the Gesture module to ignore or skip click hijacking
+ * on mobile devices.
  *
- * You can also change the max click distance, `6px` by default, if you have issues on some touch screens.
+ * You can also change the max click distance, `6px` by default, if you have issues on some touch
+ * screens.
  *
  * <hljs lang="js">
  *   app.config(function($mdGestureProvider) {
@@ -3702,8 +3723,8 @@ MdGestureProvider.prototype = {
    * $get is used to build an instance of $mdGesture
    * @ngInject
    */
-  $get : ["$$MdGestureHandler", "$$rAF", "$timeout", function($$MdGestureHandler, $$rAF, $timeout) {
-       return new MdGesture($$MdGestureHandler, $$rAF, $timeout);
+  $get : ["$$MdGestureHandler", "$$rAF", "$timeout", "$mdUtil", function($$MdGestureHandler, $$rAF, $timeout, $mdUtil) {
+       return new MdGesture($$MdGestureHandler, $$rAF, $timeout, $mdUtil);
   }]
 };
 
@@ -3713,17 +3734,17 @@ MdGestureProvider.prototype = {
  * MdGesture factory construction function
  * @ngInject
  */
-function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
+function MdGesture($$MdGestureHandler, $$rAF, $timeout, $mdUtil) {
   var touchActionProperty = getTouchAction();
-  var hasJQuery =  (typeof window.jQuery !== 'undefined') && (angular.element === window.jQuery);
+  var hasJQuery = (typeof window.jQuery !== 'undefined') && (angular.element === window.jQuery);
 
   var self = {
     handler: addHandler,
     register: register,
-    isAndroid: isAndroid,
-    isIos: isIos,
+    isAndroid: $mdUtil.isAndroid,
+    isIos: $mdUtil.isIos,
     // On mobile w/out jQuery, we normally intercept clicks. Should we skip that?
-    isHijackingClicks: (isIos || isAndroid) && !hasJQuery && !forceSkipClickHijack
+    isHijackingClicks: ($mdUtil.isIos || $mdUtil.isAndroid) && !hasJQuery && !forceSkipClickHijack
   };
 
   if (self.isHijackingClicks) {
@@ -4172,7 +4193,7 @@ function MdGestureHandler() {
  * Attach Gestures: hook document and check shouldHijack clicks
  * @ngInject
  */
-function attachToDocument($mdGesture, $$MdGestureHandler) {
+function attachToDocument($mdGesture, $$MdGestureHandler, $mdUtil) {
   if (disableAllGestures) {
     return;
   }
@@ -4220,7 +4241,7 @@ function attachToDocument($mdGesture, $$MdGestureHandler) {
    */
   function clickHijacker(ev) {
     var isKeyClick;
-    if (isIos) {
+    if ($mdUtil.isIos) {
       isKeyClick = angular.isDefined(ev.webkitForce) && ev.webkitForce === 0;
     } else {
       isKeyClick = ev.clientX === 0 && ev.clientY === 0;
@@ -8588,7 +8609,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   ctrl.select = select;
   ctrl.listEnter = onListEnter;
   ctrl.listLeave = onListLeave;
-  ctrl.mouseUp = onMouseup;
+  ctrl.focusInput = focusInputElement;
   ctrl.getCurrentDisplayValue = getCurrentDisplayValue;
   ctrl.registerSelectedItemWatcher = registerSelectedItemWatcher;
   ctrl.unregisterSelectedItemWatcher = unregisterSelectedItemWatcher;
@@ -8627,6 +8648,10 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
       gatherElements();
       moveDropdown();
+
+      // Touch devices often do not send a click event on tap. We still want to focus the input
+      // and open the options pop-up in these cases.
+      $element.on('touchstart', focusInputElement);
 
       // Forward all focus events to the input element when autofocus is enabled
       if ($scope.autofocus) {
@@ -8892,11 +8917,30 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   // event/change handlers
 
   /**
+   * @param {Event} $event
+   */
+  function preventDefault($event) {
+    $event.preventDefault();
+  }
+
+  /**
+   * @param {Event} $event
+   */
+  function stopPropagation($event) {
+    $event.stopPropagation();
+  }
+
+  /**
    * Handles changes to the `hidden` property.
-   * @param {boolean} hidden
-   * @param {boolean} oldHidden
+   * @param {boolean} hidden true to hide the options pop-up, false to show it.
+   * @param {boolean} oldHidden the previous value of hidden
    */
   function handleHiddenChange (hidden, oldHidden) {
+    var scrollContainerElement;
+
+    if (elements) {
+      scrollContainerElement = angular.element(elements.scrollContainer);
+    }
     if (!hidden && oldHidden) {
       positionDropdown();
 
@@ -8905,13 +8949,23 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       reportMessages(true, ReportType.Count | ReportType.Selected);
 
       if (elements) {
-        $mdUtil.disableScrollAround(elements.ul);
-        enableWrapScroll = disableElementScrollEvents(angular.element(elements.wrap));
-        ctrl.documentElement.on('click', handleClickOutside);
+        $mdUtil.disableScrollAround(elements.scrollContainer);
+        enableWrapScroll = disableElementScrollEvents(elements.wrap);
+        if ($mdUtil.isIos) {
+          ctrl.documentElement.on('touchend', handleTouchOutsidePanel);
+          if (scrollContainerElement) {
+            scrollContainerElement.on('touchstart touchmove touchend', stopPropagation);
+          }
+        }
         $mdUtil.nextTick(updateActiveOption);
       }
     } else if (hidden && !oldHidden) {
-      ctrl.documentElement.off('click', handleClickOutside);
+      if ($mdUtil.isIos) {
+        ctrl.documentElement.off('touchend', handleTouchOutsidePanel);
+        if (scrollContainerElement) {
+          scrollContainerElement.off('touchstart touchmove touchend', stopPropagation);
+        }
+      }
       $mdUtil.enableScrolling();
 
       if (enableWrapScroll) {
@@ -8922,29 +8976,27 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   }
 
   /**
-   * Handling click events that bubble up to the document is required for closing the dropdown
-   * panel on click outside of the panel on iOS.
+   * Handling touch events that bubble up to the document is required for closing the dropdown
+   * panel on touch outside of the options pop-up panel on iOS.
    * @param {Event} $event
    */
-  function handleClickOutside($event) {
+  function handleTouchOutsidePanel($event) {
     ctrl.hidden = true;
+    // iOS does not blur the pop-up for touches on the scroll mask, so we have to do it.
+    doBlur(true);
   }
 
   /**
-   * Disables scrolling for a specific element
+   * Disables scrolling for a specific element.
+   * @param {!string|!DOMElement} element to disable scrolling
+   * @return {Function} function to call to re-enable scrolling for the element
    */
   function disableElementScrollEvents(element) {
-
-    function preventDefault(e) {
-      e.preventDefault();
-    }
-
-    element.on('wheel', preventDefault);
-    element.on('touchmove', preventDefault);
+    var elementToDisable = angular.element(element);
+    elementToDisable.on('wheel touchmove', preventDefault);
 
     return function() {
-      element.off('wheel', preventDefault);
-      element.off('touchmove', preventDefault);
+      elementToDisable.off('wheel touchmove', preventDefault);
     };
   }
 
@@ -8962,13 +9014,6 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     if (!hasFocus && !ctrl.hidden) elements.input.focus();
     noBlur = false;
     ctrl.hidden = shouldHide();
-  }
-
-  /**
-   * When the mouse button is released, send focus back to the input field.
-   */
-  function onMouseup () {
-    elements.input.focus();
   }
 
   /**
@@ -9198,7 +9243,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
   /**
    * Returns the display value for an item.
-   * @param item
+   * @param {*} item
    * @returns {*}
    */
   function getDisplayValue (item) {
@@ -9214,7 +9259,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     /**
      * Getter function to invoke user-defined expression (in the directive)
      * to convert your object to a single string.
-     * @param item
+     * @param {*} item
      * @returns {string|null}
      */
     function getItemText (item) {
@@ -9224,7 +9269,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
   /**
    * Returns the locals object for compiling item templates.
-   * @param item
+   * @param {*} item
    * @returns {Object|undefined}
    */
   function getItemAsNameVal (item) {
@@ -9362,14 +9407,14 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * Defines a public property with a handler and a default value.
    * @param {string} key
    * @param {Function} handler function
-   * @param {*} value default value
+   * @param {*} defaultValue default value
    */
-  function defineProperty (key, handler, value) {
+  function defineProperty (key, handler, defaultValue) {
     Object.defineProperty(ctrl, key, {
-      get: function () { return value; },
+      get: function () { return defaultValue; },
       set: function (newValue) {
-        var oldValue = value;
-        value        = newValue;
+        var oldValue = defaultValue;
+        defaultValue        = newValue;
         handler(newValue, oldValue);
       }
     });
@@ -9539,7 +9584,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   function updateVirtualScroll() {
     // elements in virtual scroll have consistent heights
     var optionHeight = elements.li[0].offsetHeight,
-        top = optionHeight * ctrl.index,
+        top = optionHeight * Math.max(0, ctrl.index),
         bottom = top + optionHeight,
         containerHeight = elements.scroller.clientHeight,
         scrollTop = elements.scroller.scrollTop;
@@ -9553,7 +9598,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
   function updateStandardScroll() {
     // elements in standard scroll have variable heights
-    var selected =  elements.li[ctrl.index] || elements.li[0];
+    var selected =  elements.li[Math.max(0, ctrl.index)];
     var containerHeight = elements.scrollContainer.offsetHeight,
         top = selected && selected.offsetTop || 0,
         bottom = top + selected.clientHeight,
@@ -9760,7 +9805,7 @@ MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
  * @param {number=} md-delay Specifies the amount of time (in milliseconds) to wait before looking
  *     for results.
  * @param {boolean=} md-clear-button Whether the clear button for the autocomplete input should show
- *     up or not.
+ *     up or not. When `md-floating-label` is set, defaults to false, defaults to true otherwise.
  * @param {boolean=} md-autofocus If true, the autocomplete will be automatically focused when a
  *     `$mdDialog`, `$mdBottomsheet` or `$mdSidenav`, which contains the autocomplete, is opening.
  *     <br/><br/>
@@ -10027,7 +10072,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
 
         // Stop click events from bubbling up to the document and triggering a flicker of the
         // options panel while still supporting ng-click to be placed on md-autocomplete.
-        element.on('click', function(event) {
+        element.on('click touchstart touchend', function(event) {
           event.stopPropagation();
         });
       };
@@ -10064,7 +10109,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
                 id="ul-{{$mdAutocompleteCtrl.id}}"\
                 ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
                 ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
-                ng-mouseup="$mdAutocompleteCtrl.mouseUp()"\
+                ng-mouseup="$mdAutocompleteCtrl.focusInput()"\
                 role="listbox">\
               <li class="md-autocomplete-suggestion" ' + getRepeatType(attr.mdMode) + ' ="item in $mdAutocompleteCtrl.matches"\
                   ng-class="{ selected: $index === $mdAutocompleteCtrl.index }"\
@@ -10158,6 +10203,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
                 ng-disabled="$mdAutocompleteCtrl.isDisabled"\
                 ng-model="$mdAutocompleteCtrl.scope.searchText"\
                 ng-model-options="{ allowInvalid: true }"\
+                ng-mousedown="$mdAutocompleteCtrl.focusInput()"\
                 ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
                 ng-blur="$mdAutocompleteCtrl.blur($event)"\
                 ng-focus="$mdAutocompleteCtrl.focus($event)"\
@@ -10185,6 +10231,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
               ng-minlength="inputMinlength"\
               ng-maxlength="inputMaxlength"\
               ng-model="$mdAutocompleteCtrl.scope.searchText"\
+              ng-mousedown="$mdAutocompleteCtrl.focusInput()"\
               ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
               ng-blur="$mdAutocompleteCtrl.blur($event)"\
               ng-focus="$mdAutocompleteCtrl.focus($event)"\
@@ -30406,8 +30453,8 @@ angular.module('material.components.select', [
  * @module material.components.select
  *
  * @description Displays a select box, bound to an `ng-model`. Selectable options are defined using
- * the <a ng-href="/api/directive/mdOption">md-option</a> element directive. Options can be grouped
- * using the <a ng-href="/api/directive/mdOptgroup">md-optgroup</a> element directive.
+ * the <a ng-href="api/directive/mdOption">md-option</a> element directive. Options can be grouped
+ * using the <a ng-href="api/directive/mdOptgroup">md-optgroup</a> element directive.
  *
  * When the select is required and uses a floating label, then the label will automatically contain
  * an asterisk (`*`). This behavior can be disabled by using the `md-no-asterisk` attribute.
@@ -31284,9 +31331,9 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
  * @restrict E
  * @module material.components.select
  *
- * @description Displays an option in a <a ng-href="/api/directive/mdSelect">md-select</a> box's
+ * @description Displays an option in a <a ng-href="api/directive/mdSelect">md-select</a> box's
  * dropdown menu. Options can be grouped using
- * <a ng-href="/api/directive/mdOptgroup">md-optgroup</a> element directives.
+ * <a ng-href="api/directive/mdOptgroup">md-optgroup</a> element directives.
  *
  * ### Option Params
  *
@@ -31324,7 +31371,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
  * `ng-model` like `$scope.selectedValue = 1`. Use `ng-value="1"` in this case and other cases where
  * you have values that are not strings.
  *
- * **Note:** Please see our <a ng-href="/api/directive/mdSelect#selects-and-object-equality">docs on
+ * **Note:** Please see our <a ng-href="api/directive/mdSelect#selects-and-object-equality">docs on
  * using objects with `md-select`</a> for additional guidance on using the `trackBy` option with
  * `ng-model-options`.
  *
@@ -31493,11 +31540,11 @@ function OptionDirective($mdButtonInkRipple, $mdUtil, $mdTheming) {
  * @module material.components.select
  *
  * @description Displays a label separating groups of
- * <a ng-href="/api/directive/mdOption">md-option</a> element directives in a
- * <a ng-href="/api/directive/mdSelect">md-select</a> box's dropdown menu.
+ * <a ng-href="api/directive/mdOption">md-option</a> element directives in a
+ * <a ng-href="api/directive/mdSelect">md-select</a> box's dropdown menu.
  *
  * **Note:** When using `md-select-header` element directives within a `md-select`, the labels that
- * would normally be added to the <a ng-href="/api/directive/mdOptgroup">md-optgroup</a> directives
+ * would normally be added to the <a ng-href="api/directive/mdOptgroup">md-optgroup</a> directives
  * are omitted, allowing the `md-select-header` to represent the option group label
  * (and possibly more).
  *
@@ -38525,4 +38572,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.20-master-838ae34"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.20-master-20c4d3f"}};

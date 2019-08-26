@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.20-master-838ae34
+ * v1.1.20-master-20c4d3f
  */
 // Typography
 // ------------------------------
@@ -1337,7 +1337,6 @@ md-autocomplete {
     }
 
     .md-show-clear-button {
-
       button {
         display: block;
         position: absolute;
@@ -1352,10 +1351,8 @@ md-autocomplete {
         @include rtl-prop(padding-right, padding-left, $md-autocomplete-clear-size, 0);
       }
     }
-
   }
   md-autocomplete-wrap {
-
     // Layout [layout='row']
     display: flex;
     flex-direction: row;
@@ -1368,9 +1365,10 @@ md-autocomplete {
       z-index: $z-index-backdrop + 1;
     }
 
-    md-input-container, input {
+    md-input-container,
+    input {
       // Layout [flex]
-      flex: 1 1 0%;
+      flex: 1 1 0;
       box-sizing: border-box;
       min-width : 0;
     }

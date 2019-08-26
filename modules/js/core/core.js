@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.20-master-838ae34
+ * v1.1.20-master-20c4d3f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1000,7 +1000,14 @@ function MdPrefixer(initialAttributes, buildSelector) {
  * will not be unique.
  */
 UtilFactory['$inject'] = ["$document", "$timeout", "$compile", "$rootScope", "$$mdAnimate", "$interpolate", "$log", "$rootElement", "$window", "$$rAF"];
-var nextUniqueId = 0;
+var nextUniqueId = 0, isIos, isAndroid;
+
+// Support material-tools builds.
+if (window.navigator) {
+  var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
+  isIos = userAgent.match(/ipad|iphone|ipod/i);
+  isAndroid = userAgent.match(/android/i);
+}
 
 /**
  * @ngdoc module
@@ -1061,6 +1068,8 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
   var $mdUtil = {
     dom: {},
+    isIos: isIos,
+    isAndroid: isAndroid,
     now: window.performance && window.performance.now ?
       angular.bind(window.performance, window.performance.now) : Date.now || function() {
       return new Date().getTime();
@@ -1294,16 +1303,17 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
           wrappedElementToDisable.append(scrollMask);
         }
 
-        function preventDefault(e) {
-          e.preventDefault();
+        /**
+         * @param {Event} $event
+         */
+        function preventDefault($event) {
+          $event.preventDefault();
         }
 
-        scrollMask.on('wheel', preventDefault);
-        scrollMask.on('touchmove', preventDefault);
+        scrollMask.on('wheel touchmove', preventDefault);
 
         return function restoreElementScroll() {
-          scrollMask.off('wheel');
-          scrollMask.off('touchmove');
+          scrollMask.off('wheel touchmove', preventDefault);
 
           if (!scrollMaskOptions.disableScrollMask && scrollMask[0].parentNode) {
             scrollMask[0].parentNode.removeChild(scrollMask[0]);
@@ -1375,7 +1385,10 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
       return this.floatingScrollbars.cached;
     },
 
-    // Mobile safari only allows you to set focus in click event listeners...
+    /**
+     * Mobile safari only allows you to set focus in click event listeners.
+     * @param {Element|angular.JQLite} element to focus
+     */
     forceFocus: function(element) {
       var node = element[0] || element;
 
@@ -1449,17 +1462,21 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
       };
     },
 
-    // Returns a function, that, as long as it continues to be invoked, will not
-    // be triggered. The function will be called after it stops being called for
-    // N milliseconds.
-    // @param wait Integer value of msecs to delay (since last debounce reset); default value 10 msecs
-    // @param invokeApply should the $timeout trigger $digest() dirty checking
+    /**
+     * @param {Function} func original function to be debounced
+     * @param {number} wait number of milliseconds to delay (since last debounce reset).
+     *  Default value 10 msecs.
+     * @param {Object} scope in which to apply the function after debouncing ends
+     * @param {boolean} invokeApply should the $timeout trigger $digest() dirty checking
+     * @return {Function} A function, that, as long as it continues to be invoked, will not be
+     *  triggered. The function will be called after it stops being called for N milliseconds.
+     */
     debounce: function(func, wait, scope, invokeApply) {
       var timer;
 
       return function debounced() {
         var context = scope,
-          args = Array.prototype.slice.call(arguments);
+            args = Array.prototype.slice.call(arguments);
 
         $timeout.cancel(timer);
         timer = $timeout(function() {
@@ -1471,9 +1488,13 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
       };
     },
 
-    // Returns a function that can only be triggered every `delay` milliseconds.
-    // In other words, the function will not be called unless it has been more
-    // than `delay` milliseconds since the last call.
+    /**
+     * The function will not be called unless it has been more than `delay` milliseconds since the
+     * last call.
+     * @param {Function} func original function to throttle
+     * @param {number} delay number of milliseconds to delay
+     * @return {Function} a function that can only be triggered every `delay` milliseconds.
+     */
     throttle: function throttle(func, delay) {
       var recent;
       return function throttled() {
@@ -1523,8 +1544,11 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
       return '' + nextUniqueId++;
     },
 
-    // Stop watchers and events from firing on a scope without destroying it,
-    // by disconnecting it from its parent and its siblings' linked lists.
+    /**
+     * Stop watchers and events from firing on a scope without destroying it,
+     * by disconnecting it from its parent and its siblings' linked lists.
+     * @param {Object} scope to disconnect
+     */
     disconnectScope: function disconnectScope(scope) {
       if (!scope) return;
 
@@ -1545,7 +1569,10 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
     },
 
-    // Undo the effects of disconnectScope above.
+    /**
+     * Undo the effects of disconnectScope().
+     * @param {Object} scope to reconnect
+     */
     reconnectScope: function reconnectScope(scope) {
       if (!scope) return;
 
@@ -1825,9 +1852,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
     /**
      * Returns true if the parent form of the element has been submitted.
-     *
      * @param element An AngularJS or HTML5 element.
-     *
      * @returns {boolean}
      */
     isParentFormSubmitted: function(element) {
@@ -1839,7 +1864,6 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
     /**
      * Animate the requested element's scrollTop to the requested scrollPosition with basic easing.
-     *
      * @param {!Element} element The element to scroll.
      * @param {number} scrollEnd The new/final scroll position.
      * @param {number=} duration Duration of the scroll. Default is 1000ms.
@@ -1891,7 +1915,6 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      *    $mdUtil.uniq(myArray) => [1, 2, 3, 4]
      *
      * @param {array} array The array whose unique values should be returned.
-     *
      * @returns {array} A copy of the array containing only unique values.
      */
     uniq: function(array) {
@@ -1952,7 +1975,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
   }
 }
 
-/*
+/**
  * Since removing jQuery from the demos, some code that uses `element.focus()` is broken.
  * We need to add `element.focus()`, because it's testable unlike `element[0].focus`.
  */
@@ -2851,8 +2874,8 @@ function MdCompilerProvider($compileProvider) {
 
 
 
-MdGesture['$inject'] = ["$$MdGestureHandler", "$$rAF", "$timeout"];
-attachToDocument['$inject'] = ["$mdGesture", "$$MdGestureHandler"];var HANDLERS = {};
+MdGesture['$inject'] = ["$$MdGestureHandler", "$$rAF", "$timeout", "$mdUtil"];
+attachToDocument['$inject'] = ["$mdGesture", "$$MdGestureHandler", "$mdUtil"];var HANDLERS = {};
 
 /**
  * The state of the current 'pointer'. The pointer represents the state of the current touch.
@@ -2868,21 +2891,18 @@ var forceSkipClickHijack = false, disableAllGestures = false;
  */
 var lastLabelClickPos = null;
 
-// Used to attach event listeners once when multiple ng-apps are running.
+/**
+ * Used to attach event listeners once when multiple ng-apps are running.
+ * @type {boolean}
+ */
 var isInitialized = false;
-
-// Support material-tools builds.
-if (window.navigator) {
-  var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
-  var isIos = userAgent.match(/ipad|iphone|ipod/i);
-  var isAndroid = userAgent.match(/android/i);
-}
 
 /**
  * @ngdoc module
  * @name material.core.gestures
  * @description
- * AngularJS Material Gesture handling for touch devices. This module replaced the usage of the hammerjs library.
+ * AngularJS Material Gesture handling for touch devices.
+ * This module replaced the usage of the HammerJS library.
  */
 angular
   .module('material.core.gestures', [])
@@ -2897,10 +2917,11 @@ angular
  *
  * @description
  * In some scenarios on mobile devices (without jQuery), the click events should NOT be hijacked.
- * `$mdGestureProvider` is used to configure the Gesture module to ignore or skip click hijacking on mobile
- * devices.
+ * `$mdGestureProvider` is used to configure the Gesture module to ignore or skip click hijacking
+ * on mobile devices.
  *
- * You can also change the max click distance, `6px` by default, if you have issues on some touch screens.
+ * You can also change the max click distance, `6px` by default, if you have issues on some touch
+ * screens.
  *
  * <hljs lang="js">
  *   app.config(function($mdGestureProvider) {
@@ -2959,8 +2980,8 @@ MdGestureProvider.prototype = {
    * $get is used to build an instance of $mdGesture
    * ngInject
    */
-  $get : ["$$MdGestureHandler", "$$rAF", "$timeout", function($$MdGestureHandler, $$rAF, $timeout) {
-       return new MdGesture($$MdGestureHandler, $$rAF, $timeout);
+  $get : ["$$MdGestureHandler", "$$rAF", "$timeout", "$mdUtil", function($$MdGestureHandler, $$rAF, $timeout, $mdUtil) {
+       return new MdGesture($$MdGestureHandler, $$rAF, $timeout, $mdUtil);
   }]
 };
 
@@ -2970,17 +2991,17 @@ MdGestureProvider.prototype = {
  * MdGesture factory construction function
  * ngInject
  */
-function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
+function MdGesture($$MdGestureHandler, $$rAF, $timeout, $mdUtil) {
   var touchActionProperty = getTouchAction();
-  var hasJQuery =  (typeof window.jQuery !== 'undefined') && (angular.element === window.jQuery);
+  var hasJQuery = (typeof window.jQuery !== 'undefined') && (angular.element === window.jQuery);
 
   var self = {
     handler: addHandler,
     register: register,
-    isAndroid: isAndroid,
-    isIos: isIos,
+    isAndroid: $mdUtil.isAndroid,
+    isIos: $mdUtil.isIos,
     // On mobile w/out jQuery, we normally intercept clicks. Should we skip that?
-    isHijackingClicks: (isIos || isAndroid) && !hasJQuery && !forceSkipClickHijack
+    isHijackingClicks: ($mdUtil.isIos || $mdUtil.isAndroid) && !hasJQuery && !forceSkipClickHijack
   };
 
   if (self.isHijackingClicks) {
@@ -3429,7 +3450,7 @@ function MdGestureHandler() {
  * Attach Gestures: hook document and check shouldHijack clicks
  * ngInject
  */
-function attachToDocument($mdGesture, $$MdGestureHandler) {
+function attachToDocument($mdGesture, $$MdGestureHandler, $mdUtil) {
   if (disableAllGestures) {
     return;
   }
@@ -3477,7 +3498,7 @@ function attachToDocument($mdGesture, $$MdGestureHandler) {
    */
   function clickHijacker(ev) {
     var isKeyClick;
-    if (isIos) {
+    if ($mdUtil.isIos) {
       isKeyClick = angular.isDefined(ev.webkitForce) && ev.webkitForce === 0;
     } else {
       isKeyClick = ev.clientX === 0 && ev.clientY === 0;
