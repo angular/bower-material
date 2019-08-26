@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.20-master-7eb418b
+ * v1.1.20-master-838ae34
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -30406,8 +30406,8 @@ angular.module('material.components.select', [
  * @module material.components.select
  *
  * @description Displays a select box, bound to an `ng-model`. Selectable options are defined using
- * the <a ng-href="api/directive/mdOption">md-option</a> element directive. Options can be grouped
- * using the <a ng-href="api/directive/mdOptgroup">md-optgroup</a> element directive.
+ * the <a ng-href="/api/directive/mdOption">md-option</a> element directive. Options can be grouped
+ * using the <a ng-href="/api/directive/mdOptgroup">md-optgroup</a> element directive.
  *
  * When the select is required and uses a floating label, then the label will automatically contain
  * an asterisk (`*`). This behavior can be disabled by using the `md-no-asterisk` attribute.
@@ -31284,9 +31284,9 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
  * @restrict E
  * @module material.components.select
  *
- * @description Displays an option in a <a ng-href="api/directive/mdSelect">md-select</a> box's
+ * @description Displays an option in a <a ng-href="/api/directive/mdSelect">md-select</a> box's
  * dropdown menu. Options can be grouped using
- * <a ng-href="api/directive/mdOptgroup">md-optgroup</a> element directives.
+ * <a ng-href="/api/directive/mdOptgroup">md-optgroup</a> element directives.
  *
  * ### Option Params
  *
@@ -31324,7 +31324,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
  * `ng-model` like `$scope.selectedValue = 1`. Use `ng-value="1"` in this case and other cases where
  * you have values that are not strings.
  *
- * **Note:** Please see our <a ng-href="api/directive/mdSelect#selects-and-object-equality">docs on
+ * **Note:** Please see our <a ng-href="/api/directive/mdSelect#selects-and-object-equality">docs on
  * using objects with `md-select`</a> for additional guidance on using the `trackBy` option with
  * `ng-model-options`.
  *
@@ -31493,11 +31493,11 @@ function OptionDirective($mdButtonInkRipple, $mdUtil, $mdTheming) {
  * @module material.components.select
  *
  * @description Displays a label separating groups of
- * <a ng-href="api/directive/mdOption">md-option</a> element directives in a
- * <a ng-href="api/directive/mdSelect">md-select</a> box's dropdown menu.
+ * <a ng-href="/api/directive/mdOption">md-option</a> element directives in a
+ * <a ng-href="/api/directive/mdSelect">md-select</a> box's dropdown menu.
  *
  * **Note:** When using `md-select-header` element directives within a `md-select`, the labels that
- * would normally be added to the <a ng-href="api/directive/mdOptgroup">md-optgroup</a> directives
+ * would normally be added to the <a ng-href="/api/directive/mdOptgroup">md-optgroup</a> directives
  * are omitted, allowing the `md-select-header` to represent the option group label
  * (and possibly more).
  *
@@ -38525,4 +38525,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.20-master-7eb418b"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.20-master-838ae34"}};
