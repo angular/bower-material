@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-2549e23
+ * v1.1.21-master-0b83a2c
  */
 md-input-container md-select.md-THEME_NAME-theme .md-select-value span:first-child:after {
   color: '{{warn-A700}}'; }
@@ -34,6 +34,7 @@ md-input-container:not(.md-input-invalid).md-input-focused.md-warn .md-select-va
 
 md-select.md-THEME_NAME-theme[disabled] .md-select-value {
   border-bottom-color: transparent;
+  background-image: -webkit-gradient(linear, left top, right top, from("{{foreground-3}}"), color-stop(33%, "{{foreground-3}}"), color-stop(0%, transparent));
   background-image: linear-gradient(to right, "{{foreground-3}}" 0%, "{{foreground-3}}" 33%, transparent 0%);
   background-image: -ms-linear-gradient(left, transparent 0%, "{{foreground-3}}" 100%); }
 

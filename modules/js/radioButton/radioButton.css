@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-2549e23
+ * v1.1.21-master-0b83a2c
  */
 md-radio-button {
   box-sizing: border-box;
@@ -52,6 +52,7 @@ md-radio-button {
       top: 0;
       right: 0;
       bottom: 0;
+      -webkit-transition: all 0.5s;
       transition: all 0.5s;
       width: auto; }
   md-radio-button.md-align-top-left > div.md-container {
@@ -66,6 +67,7 @@ md-radio-button {
     border-style: solid;
     border-width: 2px;
     border-radius: 50%;
+    -webkit-transition: border-color ease 0.28s;
     transition: border-color ease 0.28s; }
   md-radio-button .md-on {
     box-sizing: border-box;
@@ -75,6 +77,7 @@ md-radio-button {
     width: 20px;
     height: 20px;
     border-radius: 50%;
+    -webkit-transition: -webkit-transform ease 0.28s;
     transition: -webkit-transform ease 0.28s;
     transition: transform ease 0.28s;
     transition: transform ease 0.28s, -webkit-transform ease 0.28s;

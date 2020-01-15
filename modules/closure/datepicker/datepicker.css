@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-2549e23
+ * v1.1.21-master-0b83a2c
  */
 /** Styles for mdCalendar. */
 md-calendar {
@@ -51,6 +51,7 @@ md-calendar {
     cursor: default; }
 
 .md-calendar-date-selection-indicator {
+  -webkit-transition: background-color, color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: background-color, color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   border-radius: 50%;
   display: inline-block;
@@ -219,6 +220,7 @@ md-datepicker {
           transform: scale(0);
   -webkit-transform-origin: 0 0;
           transform-origin: 0 0;
+  -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: -webkit-transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); }
@@ -237,6 +239,7 @@ md-datepicker {
 
 .md-datepicker-calendar {
   opacity: 0;
+  -webkit-transition: opacity 0.2s cubic-bezier(0.5, 0, 0.25, 1);
   transition: opacity 0.2s cubic-bezier(0.5, 0, 0.25, 1); }
   .md-pane-open .md-datepicker-calendar {
     opacity: 1; }
@@ -296,10 +299,12 @@ md-datepicker[disabled] .md-datepicker-triangle-button {
 .md-datepicker-calendar-pane .md-calendar {
   -webkit-transform: translateY(-85px);
           transform: translateY(-85px);
+  -webkit-transition: -webkit-transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: -webkit-transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
-  transition-delay: 0.125s; }
+  -webkit-transition-delay: 0.125s;
+          transition-delay: 0.125s; }
 
 .md-datepicker-calendar-pane.md-pane-open .md-calendar {
   -webkit-transform: translateY(0);

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-2549e23
+ * v1.1.21-master-0b83a2c
  */
 md-progress-linear {
   display: block;
@@ -39,12 +39,14 @@ md-progress-linear {
       background-size: 10px 10px !important;
       background-position: 0px -23px; }
     md-progress-linear .md-container .md-bar1, md-progress-linear .md-container .md-bar2 {
+      -webkit-transition: -webkit-transform 0.2s linear;
       transition: -webkit-transform 0.2s linear;
       transition: transform 0.2s linear;
       transition: transform 0.2s linear, -webkit-transform 0.2s linear; }
     md-progress-linear .md-container.md-mode-query .md-bar1 {
       display: none; }
     md-progress-linear .md-container.md-mode-query .md-bar2 {
+      -webkit-transition: all 0.2s linear;
       transition: all 0.2s linear;
       -webkit-animation: query 0.8s infinite cubic-bezier(0.39, 0.575, 0.565, 1);
               animation: query 0.8s infinite cubic-bezier(0.39, 0.575, 0.565, 1); }
@@ -67,6 +69,7 @@ md-progress-linear {
                 animation-name: none; }
   md-progress-linear .md-container.md-mode-buffer {
     background-color: transparent !important;
+    -webkit-transition: all 0.2s linear;
     transition: all 0.2s linear; }
     md-progress-linear .md-container.md-mode-buffer .md-dashed:before {
       display: block;

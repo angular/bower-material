@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-2549e23
+ * v1.1.21-master-0b83a2c
  */
 .md-inline-form md-switch {
   margin-top: 18px;
@@ -19,7 +19,9 @@ md-switch {
           user-select: none;
   height: 30px;
   line-height: 28px;
-  align-items: center;
+  -webkit-box-align: center;
+          align-items: center;
+  display: -webkit-box;
   display: flex;
   margin-left: inherit;
   margin-right: 16px; }
@@ -112,6 +114,7 @@ md-switch {
       top: 0;
       right: 0;
       bottom: 0;
+      -webkit-transition: all 0.5s;
       transition: all 0.5s;
       width: auto; }
     md-switch .md-thumb .md-ripple-container {
@@ -126,13 +129,16 @@ md-switch {
   md-switch:not(.md-dragging) .md-bar,
   md-switch:not(.md-dragging) .md-thumb-container,
   md-switch:not(.md-dragging) .md-thumb {
+    -webkit-transition: all 0.08s linear;
     transition: all 0.08s linear;
+    -webkit-transition-property: background-color, -webkit-transform;
     transition-property: background-color, -webkit-transform;
     transition-property: transform, background-color;
     transition-property: transform, background-color, -webkit-transform; }
   md-switch:not(.md-dragging) .md-bar,
   md-switch:not(.md-dragging) .md-thumb {
-    transition-delay: 0.05s; }
+    -webkit-transition-delay: 0.05s;
+            transition-delay: 0.05s; }
 
 @media screen and (-ms-high-contrast: active) {
   md-switch.md-default-theme .md-bar {

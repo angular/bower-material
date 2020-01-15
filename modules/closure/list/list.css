@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-2549e23
+ * v1.1.21-master-0b83a2c
  */
 md-list {
   display: block;
@@ -43,7 +43,8 @@ md-list {
         margin-left: 20px; }
     md-list.md-dense md-list-item .md-avatar,
     md-list.md-dense md-list-item .md-list-item-inner .md-avatar {
-      flex: none;
+      -webkit-box-flex: 0;
+              flex: none;
       width: 36px;
       height: 36px; }
   md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-2-line > .md-no-style .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text.md-offset {
@@ -88,13 +89,17 @@ md-list {
 md-list-item {
   position: relative; }
   md-list-item.md-proxy-focus.md-focused .md-no-style {
+    -webkit-transition: background-color 0.15s linear;
     transition: background-color 0.15s linear; }
   md-list-item._md-button-wrap {
     position: relative; }
     md-list-item._md-button-wrap > div.md-button:first-child {
+      display: -webkit-box;
       display: flex;
-      align-items: center;
-      justify-content: flex-start;
+      -webkit-box-align: center;
+              align-items: center;
+      -webkit-box-pack: start;
+              justify-content: flex-start;
       padding: 0 16px;
       margin: 0;
       font-weight: 400;
@@ -120,7 +125,8 @@ md-list-item {
   md-list-item .md-no-style {
     position: relative;
     padding: 0px 16px;
-    flex: 1 1 auto; }
+    -webkit-box-flex: 1;
+            flex: 1 1 auto; }
     md-list-item.md-no-proxy.md-button,
     md-list-item .md-no-style.md-button {
       font-size: inherit;
@@ -129,8 +135,11 @@ md-list-item {
       text-transform: none;
       width: 100%;
       white-space: normal;
-      flex-direction: inherit;
-      align-items: inherit;
+      -webkit-box-orient: inherit;
+      -webkit-box-direction: inherit;
+              flex-direction: inherit;
+      -webkit-box-align: inherit;
+              align-items: inherit;
       border-radius: 0;
       margin: 0; }
       [dir=rtl] md-list-item.md-no-proxy.md-button, [dir=rtl]
@@ -161,9 +170,12 @@ md-list-item {
         right: 72px; }
   md-list-item,
   md-list-item .md-list-item-inner {
+    display: -webkit-box;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    -webkit-box-pack: start;
+            justify-content: flex-start;
+    -webkit-box-align: center;
+            align-items: center;
     min-height: 48px;
     height: auto; }
     md-list-item::before,
@@ -224,7 +236,8 @@ md-list-item {
         margin-left: 16px; }
     md-list-item .md-avatar,
     md-list-item .md-list-item-inner .md-avatar {
-      flex: none;
+      -webkit-box-flex: 0;
+              flex: none;
       width: 40px;
       height: 40px; }
     md-list-item .md-avatar-icon,
@@ -248,8 +261,10 @@ md-list-item {
         margin-right: 3px; }
     md-list-item .md-secondary-container,
     md-list-item .md-list-item-inner .md-secondary-container {
+      display: -webkit-box;
       display: flex;
-      align-items: center;
+      -webkit-box-align: center;
+              align-items: center;
       position: relative;
       flex-shrink: 0;
       margin: auto;
@@ -294,16 +309,20 @@ md-list-item {
     md-list-item > p, md-list-item > .md-list-item-inner > p,
     md-list-item .md-list-item-inner > p,
     md-list-item .md-list-item-inner > .md-list-item-inner > p {
-      flex: 1 1 auto;
+      -webkit-box-flex: 1;
+              flex: 1 1 auto;
       margin: 0; }
   md-list-item.md-2-line, md-list-item.md-2-line > .md-no-style, md-list-item.md-3-line, md-list-item.md-3-line > .md-no-style {
-    align-items: flex-start;
-    justify-content: center; }
+    -webkit-box-align: start;
+            align-items: flex-start;
+    -webkit-box-pack: center;
+            justify-content: center; }
     md-list-item.md-2-line.md-long-text, md-list-item.md-2-line > .md-no-style.md-long-text, md-list-item.md-3-line.md-long-text, md-list-item.md-3-line > .md-no-style.md-long-text {
       margin-top: 8px;
       margin-bottom: 8px; }
     md-list-item.md-2-line .md-list-item-text, md-list-item.md-2-line > .md-no-style .md-list-item-text, md-list-item.md-3-line .md-list-item-text, md-list-item.md-3-line > .md-no-style .md-list-item-text {
-      flex: 1 1 auto;
+      -webkit-box-flex: 1;
+              flex: 1 1 auto;
       margin: auto;
       text-overflow: ellipsis;
       overflow: hidden; }
@@ -349,7 +368,8 @@ md-list-item {
     md-list-item.md-2-line > md-icon:first-child, md-list-item.md-2-line > .md-no-style > md-icon:first-child {
       align-self: flex-start; }
     md-list-item.md-2-line .md-list-item-text, md-list-item.md-2-line > .md-no-style .md-list-item-text {
-      flex: 1 1 auto; }
+      -webkit-box-flex: 1;
+              flex: 1 1 auto; }
   md-list-item.md-3-line, md-list-item.md-3-line > .md-no-style {
     height: auto;
     min-height: 88px; }
