@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-38fe956
+ * v1.1.21-master-f6b8a3a
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -66,7 +66,8 @@ function mdRadioGroupDirective($mdUtil, $mdConstant, $mdTheming, $timeout) {
   };
 
   function linkRadioGroup(scope, element, attr, ctrls) {
-    element.addClass('_md');     // private md component indicator for styling
+    // private md component indicator for styling
+    element.addClass('_md');
     $mdTheming(element);
 
     var rgCtrl = ctrls[0];
@@ -98,24 +99,22 @@ function mdRadioGroupDirective($mdUtil, $mdConstant, $mdTheming, $timeout) {
       });
 
     /**
-     *
+     * Apply the md-focused class if it isn't already applied.
      */
     function setFocus() {
       if (!element.hasClass('md-focused')) { element.addClass('md-focused'); }
     }
 
     /**
-     *
+     * @param {KeyboardEvent} ev
      */
     function keydownListener(ev) {
       var keyCode = ev.which || ev.keyCode;
 
       // Only listen to events that we originated ourselves
-      // so that we don't trigger on things like arrow keys in
-      // inputs.
-
-      if (keyCode != $mdConstant.KEY_CODE.ENTER &&
-          ev.currentTarget != ev.target) {
+      // so that we don't trigger on things like arrow keys in inputs.
+      if (keyCode !== $mdConstant.KEY_CODE.ENTER &&
+          ev.currentTarget !== ev.target) {
         return;
       }
 
@@ -141,7 +140,6 @@ function mdRadioGroupDirective($mdUtil, $mdConstant, $mdTheming, $timeout) {
           }
           break;
       }
-
     }
   }
 
