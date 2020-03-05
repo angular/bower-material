@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-5b0c9ba
+ * v1.1.21-master-deb3dfc
  */
 goog.provide('ngmaterial.components.bottomSheet');
 goog.require('ngmaterial.components.backdrop');
@@ -179,7 +179,7 @@ function MdBottomSheetDirective($mdBottomSheet) {
  *
  * @description
  * Hide the existing bottom sheet and resolve the promise returned from
- * `$mdBottomSheet.show()`. This call will close the most recently opened/current bottomsheet (if
+ * `$mdBottomSheet.show()`. This call will close the most recently opened/current bottom sheet (if
  * any).
  *
  * <em><b>Note:</b> Use a `.then()` on your `.show()` to handle this callback.</em>
@@ -315,6 +315,10 @@ function MdBottomSheetProvider($$interimElementProvider) {
 
     /**
      * Adds the drag gestures to the bottom sheet.
+     * @param {angular.JQLite} element where CSS transitions will be applied
+     * @param {angular.JQLite} parent used for registering gesture listeners
+     * @return {Function} function that removes gesture listeners that were set up by
+     *  registerGestures()
      */
     function registerGestures(element, parent) {
       var deregister = $mdGesture.register(parent, 'drag', { horizontal: false });

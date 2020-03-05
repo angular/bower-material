@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-5b0c9ba
+ * v1.1.21-master-deb3dfc
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1997,7 +1997,20 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      * documentMode is an IE-only property
      * http://msdn.microsoft.com/en-us/library/ie/cc196988(v=vs.85).aspx
      */
-    msie: window.document.documentMode
+    msie: window.document.documentMode,
+
+    getTouchAction: function() {
+      var testEl = document.createElement('div');
+      var vendorPrefixes = ['', 'webkit', 'Moz', 'MS', 'ms', 'o'];
+
+      for (var i = 0; i < vendorPrefixes.length; i++) {
+        var prefix = vendorPrefixes[i];
+        var property = prefix ? prefix + 'TouchAction' : 'touchAction';
+        if (angular.isDefined(testEl.style[property])) {
+          return property;
+        }
+      }
+    }
   };
 
   // Instantiate other namespace utility methods
@@ -3735,7 +3748,7 @@ MdGestureProvider.prototype = {
  * @ngInject
  */
 function MdGesture($$MdGestureHandler, $$rAF, $timeout, $mdUtil) {
-  var touchActionProperty = getTouchAction();
+  var touchActionProperty = $mdUtil.getTouchAction();
   var hasJQuery = (typeof window.jQuery !== 'undefined') && (angular.element === window.jQuery);
 
   var self = {
@@ -3896,6 +3909,11 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout, $mdUtil) {
         horizontal: true,
         cancelMultiplier: 1.5
       },
+      /**
+       * @param {angular.JQLite} element where touch action styles need to be adjusted
+       * @param {{horizontal: boolean}=} options object whose horizontal property can specify to
+       *  apply 'pan-y' or 'pan-x' touch actions.
+       */
       onSetup: function(element, options) {
         if (touchActionProperty) {
           // We check for horizontal to be false, because otherwise we would overwrite the default opts.
@@ -3903,9 +3921,14 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout, $mdUtil) {
           element[0].style[touchActionProperty] = options.horizontal ? 'pan-y' : 'pan-x';
         }
       },
+      /**
+       * @param {angular.JQLite} element where styles need to be cleaned up
+       */
       onCleanup: function(element) {
         if (this.oldTouchAction) {
           element[0].style[touchActionProperty] = this.oldTouchAction;
+        } else {
+          element[0].style[touchActionProperty] = null;
         }
       },
       onStart: function (ev) {
@@ -3982,20 +4005,6 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout, $mdUtil) {
         }
       }
     });
-
-  function getTouchAction() {
-    var testEl = document.createElement('div');
-    var vendorPrefixes = ['', 'webkit', 'Moz', 'MS', 'ms', 'o'];
-
-    for (var i = 0; i < vendorPrefixes.length; i++) {
-      var prefix = vendorPrefixes[i];
-      var property = prefix ? prefix + 'TouchAction' : 'touchAction';
-      if (angular.isDefined(testEl.style[property])) {
-        return property;
-      }
-    }
-  }
-
 }
 
 /**
@@ -10788,7 +10797,7 @@ function MdBottomSheetDirective($mdBottomSheet) {
  *
  * @description
  * Hide the existing bottom sheet and resolve the promise returned from
- * `$mdBottomSheet.show()`. This call will close the most recently opened/current bottomsheet (if
+ * `$mdBottomSheet.show()`. This call will close the most recently opened/current bottom sheet (if
  * any).
  *
  * <em><b>Note:</b> Use a `.then()` on your `.show()` to handle this callback.</em>
@@ -10924,6 +10933,10 @@ function MdBottomSheetProvider($$interimElementProvider) {
 
     /**
      * Adds the drag gestures to the bottom sheet.
+     * @param {angular.JQLite} element where CSS transitions will be applied
+     * @param {angular.JQLite} parent used for registering gesture listeners
+     * @return {Function} function that removes gesture listeners that were set up by
+     *  registerGestures()
      */
     function registerGestures(element, parent) {
       var deregister = $mdGesture.register(parent, 'drag', { horizontal: false });
@@ -38574,4 +38587,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.21-master-5b0c9ba"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.21-master-deb3dfc"}};
