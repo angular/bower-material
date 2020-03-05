@@ -1,8 +1,8 @@
 {
   "name": "angular-material-virtualRepeat",
-  "version": "1.1.21-master-deb3dfc",
+  "version": "1.1.21-master-d537d25",
   "dependencies": {
-    "angular-material-core": "1.1.21-master-deb3dfc",
-    "angular-material-showHide": "1.1.21-master-deb3dfc"
+    "angular-material-core": "1.1.21-master-d537d25",
+    "angular-material-showHide": "1.1.21-master-d537d25"
   }
 }
