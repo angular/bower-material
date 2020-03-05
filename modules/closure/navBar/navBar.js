@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-498c9ed
+ * v1.1.21-master-4d4e0ac
  */
 goog.provide('ngmaterial.components.navBar');
 goog.require('ngmaterial.core');
@@ -186,7 +186,7 @@ MdNavBarController.prototype._initTabs = function() {
 
   var self = this;
   this._$timeout(function() {
-    self._updateTabs(self.mdSelectedNavItem, undefined);
+    self._updateTabs(self.mdSelectedNavItem, null);
   });
 
   this._$scope.$watch('ctrl.mdSelectedNavItem', function(newValue, oldValue) {
@@ -201,7 +201,7 @@ MdNavBarController.prototype._initTabs = function() {
 /**
  * Set the current tab to be selected.
  * @param {string|undefined} newValue New current tab name.
- * @param {string|undefined} oldValue Previous tab name.
+ * @param {string|undefined|null} oldValue Previous tab name.
  * @private
  */
 MdNavBarController.prototype._updateTabs = function(newValue, oldValue) {
@@ -347,7 +347,7 @@ MdNavBarController.prototype._findTabReverse = function(fn, startIndex) {
  */
 MdNavBarController.prototype.onFocus = function() {
   var tab = this._getSelectedTab();
-  if (tab) {
+  if (tab && !tab._focused) {
     tab.setFocused(true);
   }
 };
@@ -607,9 +607,7 @@ function MdNavItem($mdAria, $$rAF, $mdUtil, $window) {
         });
 
         navButton.on('focus', function() {
-          if (!mdNavBar.getFocusedTab()) {
-            mdNavBar.onFocus();
-          }
+          mdNavItem._focused = true;
         });
 
         navButton.on('click', function() {
