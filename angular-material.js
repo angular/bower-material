@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-f6b8a3a
+ * v1.1.21-master-498c9ed
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -8957,7 +8957,11 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
             scrollContainerElement.on('touchstart touchmove touchend', stopPropagation);
           }
         }
-        $mdUtil.nextTick(updateActiveOption);
+        ctrl.index = getDefaultIndex();
+        $mdUtil.nextTick(function() {
+          updateActiveOption();
+          updateScroll();
+        });
       }
     } else if (hidden && !oldHidden) {
       if ($mdUtil.isIos) {
@@ -38570,4 +38574,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.21-master-f6b8a3a"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.21-master-498c9ed"}};
