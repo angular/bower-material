@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-d537d25
+ * v1.1.21-master-0ab73bd
  */
 html, body {
   height: 100%;
@@ -2548,7 +2548,8 @@ md-list {
   md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text h4,
   md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text p {
     line-height: 1.05;
-    font-size: 12px; }
+    font-size: 12px;
+    padding-bottom: 4px; }
   md-list.md-dense md-list-item.md-2-line .md-list-item-text h3, md-list.md-dense md-list-item.md-2-line > .md-no-style .md-list-item-text h3, md-list.md-dense md-list-item.md-3-line .md-list-item-text h3, md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text h3 {
     font-size: 13px; }
   md-list.md-dense md-list-item.md-2-line, md-list.md-dense md-list-item.md-2-line > .md-no-style {
@@ -2821,7 +2822,7 @@ md-list-item {
         font-size: 16px;
         font-weight: 400;
         letter-spacing: 0.010em;
-        margin: 0 0 0px 0;
+        margin: 0 0 0 0;
         line-height: 1.2em;
         overflow: hidden;
         white-space: nowrap;
