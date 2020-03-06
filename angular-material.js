@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-7a16778
+ * v1.1.21-master-4a4dde4
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -23386,6 +23386,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
     triggerElement.setAttribute('aria-expanded', 'false');
 
     this.isInMenuBar = opts.isInMenuBar;
+    this.mdMenuBarCtrl = opts.mdMenuBarCtrl;
     this.nestedMenus = $mdUtil.nodesToArray(menuContainer[0].querySelectorAll('.md-nested-menu'));
 
     menuContainer.on('$mdInterimElementRemove', function() {
@@ -23867,6 +23868,7 @@ function MenuDirective($mdUtil) {
   function link(scope, element, attr, ctrls) {
     var mdMenuCtrl = ctrls[0];
     var isInMenuBar = !!ctrls[1];
+    var mdMenuBarCtrl = ctrls[1];
     // Move everything into a md-menu-container and pass it to the controller
     var menuContainer = angular.element('<div class="_md md-open-menu-container md-whiteframe-z2"></div>');
     var menuContents = element.children()[1];
@@ -23884,8 +23886,7 @@ function MenuDirective($mdUtil) {
 
     element.append(menuContainer);
     menuContainer[0].style.display = 'none';
-    mdMenuCtrl.init(menuContainer, { isInMenuBar: isInMenuBar });
-
+    mdMenuCtrl.init(menuContainer, { isInMenuBar: isInMenuBar, mdMenuBarCtrl: mdMenuBarCtrl });
   }
 }
 
@@ -24553,7 +24554,8 @@ MenuBarController.prototype.init = function() {
       el[0].classList.remove('md-open');
     }
 
-    if ($element[0].contains(el[0])) {
+    var ctrl = angular.element(el[0]).controller('mdMenu');
+    if (ctrl.isInMenuBar && ctrl.mdMenuBarCtrl === self) {
       var parentMenu = el[0];
       while (parentMenu && rootMenus.indexOf(parentMenu) == -1) {
         parentMenu = $mdUtil.getClosest(parentMenu, 'MD-MENU', true);
@@ -24561,9 +24563,9 @@ MenuBarController.prototype.init = function() {
       if (parentMenu) {
         if (!opts.skipFocus) parentMenu.querySelector('button:not([disabled])').focus();
         self.currentlyOpenMenu = undefined;
-        self.disableOpenOnHover();
-        self.setKeyboardMode(true);
       }
+      self.disableOpenOnHover();
+      self.setKeyboardMode(true);
     }
   }));
 
@@ -38687,4 +38689,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.21-master-7a16778"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.21-master-4a4dde4"}};
