@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-2b0df7e
+ * v1.1.21-master-7a16778
  */
 goog.provide('ngmaterial.components.datepicker');
 goog.require('ngmaterial.components.icon');
@@ -3041,6 +3041,8 @@ angular.module('material.components.datepicker', [
       }, false);
 
       window.addEventListener(this.windowEventName, this.windowEventHandler);
+    } else if (this.inputFocusedOnWindowBlur) {
+      this.resetInputFocused();
     }
   };
 
@@ -3132,6 +3134,14 @@ angular.module('material.components.datepicker', [
    */
   DatePickerCtrl.prototype.handleWindowBlur = function() {
     this.inputFocusedOnWindowBlur = document.activeElement === this.inputElement;
+  };
+
+  /**
+   * Reset the flag inputFocusedOnWindowBlur to default state, to permit user to open calendar
+   * again when he back to tab with calendar focused.
+   */
+  DatePickerCtrl.prototype.resetInputFocused = function() {
+    this.inputFocusedOnWindowBlur = false;
   };
 
   /**
