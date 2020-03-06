@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-4a4dde4
+ * v1.1.21-master-0ec0cc5
  */
 goog.provide('ngmaterial.components.select');
 goog.require('ngmaterial.components.backdrop');
@@ -731,7 +731,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
       }, CLEAR_SEARCH_AFTER);
 
       searchStr += e.key;
-      var search = new RegExp('^' + searchStr, 'i');
+      var search = new RegExp('^' + $mdUtil.sanitize(searchStr), 'i');
       if (!optNodes) {
         optNodes = $element.find('md-option');
         optText = new Array(optNodes.length);
@@ -744,6 +744,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
           return optNodes[i];
         }
       }
+
     };
 
     self.init = function(ngModel, binding) {
