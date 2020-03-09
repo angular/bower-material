@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-5228f23
+ * v1.1.21-master-2f77095
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13542,7 +13542,7 @@ MdContactChipsCtrl.prototype.init = function() {
   // Timeout required to allow the child elements to be compiled.
   this.$timeout(function() {
     deRegister.push(
-      element.find('md-chips').scope().$watchCollection('$mdChipsCtrl.items', function() {
+      element.find('md-chips').controller('mdChips').$scope.$watchCollection('$mdChipsCtrl.items', function() {
         // Make sure our input and wrapper have the correct ARIA attributes
         ctrl.setupChipsAria();
         ctrl.setupAutocompleteAria();
@@ -38696,4 +38696,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.21-master-5228f23"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.21-master-2f77095"}};
