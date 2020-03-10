@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-2f77095
+ * v1.1.21-master-928c71d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1114,7 +1114,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     /**
      * Cross-version compatibility method to retrieve an option of a ngModel controller,
      * which supports the breaking changes in the AngularJS snapshot (SHA 87a2ff76af5d0a9268d8eb84db5755077d27c84c).
-     * @param {!angular.ngModelCtrl} ngModelCtrl
+     * @param {!angular.NgModelController} ngModelCtrl
      * @param {!string} optionName
      * @returns {Object|undefined}
      */
@@ -1211,12 +1211,16 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
       return $mdUtil.clientRect(element, offsetParent, true);
     },
 
-    // Annoying method to copy nodes to an array, thanks to IE
+    /**
+     * Annoying method to copy nodes to an array, thanks to IE.
+     * @param nodes
+     * @return {Array}
+     */
     nodesToArray: function(nodes) {
+      var results = [], i;
       nodes = nodes || [];
 
-      var results = [];
-      for (var i = 0; i < nodes.length; ++i) {
+      for (i = 0; i < nodes.length; ++i) {
         results.push(nodes.item(i));
       }
       return results;
@@ -1950,8 +1954,8 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      *
      *    $mdUtil.uniq(myArray) => [1, 2, 3, 4]
      *
-     * @param {array} array The array whose unique values should be returned.
-     * @returns {array} A copy of the array containing only unique values.
+     * @param {Array} array The array whose unique values should be returned.
+     * @returns {Array|void} A copy of the array containing only unique values.
      */
     uniq: function(array) {
       if (!array) { return; }
@@ -30514,6 +30518,7 @@ SelectDirective.$inject = ["$mdSelect", "$mdUtil", "$mdConstant", "$mdTheming", 
 SelectMenuDirective.$inject = ["$parse", "$mdUtil", "$mdConstant", "$mdTheming"];
 OptionDirective.$inject = ["$mdButtonInkRipple", "$mdUtil", "$mdTheming"];
 SelectProvider.$inject = ["$$interimElementProvider"];
+OptionController.$inject = ["$element"];
 var SELECT_EDGE_MARGIN = 8;
 var selectNextId = 0;
 var CHECKBOX_SELECTION_INDICATOR =
@@ -30553,21 +30558,21 @@ angular.module('material.components.select', [
  *  once; it is not watched.
  * @param {expression=} md-on-close Expression to be evaluated when the select is closed.
  * @param {expression=} md-on-open Expression to be evaluated when opening the select.
- * Will hide the select options and show a spinner until the evaluated promise resolves.
+ *  Will hide the select options and show a spinner until the evaluated promise resolves.
  * @param {expression=} md-selected-text Expression to be evaluated that will return a string
- * to be displayed as a placeholder in the select input box when it is closed. The value
- * will be treated as *text* (not html).
+ *  to be displayed as a placeholder in the select input box when it is closed. The value
+ *  will be treated as *text* (not html).
  * @param {expression=} md-selected-html Expression to be evaluated that will return a string
- * to be displayed as a placeholder in the select input box when it is closed. The value
- * will be treated as *html*. The value must either be explicitly marked as trustedHtml or
- * the ngSanitize module must be loaded.
+ *  to be displayed as a placeholder in the select input box when it is closed. The value
+ *  will be treated as *html*. The value must either be explicitly marked as trustedHtml or
+ *  the ngSanitize module must be loaded.
  * @param {string=} placeholder Placeholder hint text.
  * @param {boolean=} md-no-asterisk When set to true, an asterisk will not be appended to the
- * floating label. **Note:** This attribute is only evaluated once; it is not watched.
- * @param {string=} aria-label Optional label for accessibility. Only necessary if no placeholder or
- * explicit label is present.
+ *  floating label. **Note:** This attribute is only evaluated once; it is not watched.
+ * @param {string=} aria-label Optional label for accessibility. Only necessary if no explicit label
+ *  is present.
  * @param {string=} md-container-class Class list to get applied to the `.md-select-menu-container`
- * element (for custom styling).
+ *  element (for custom styling).
  *
  * @usage
  * With a placeholder (label and aria-label are added dynamically)
@@ -30672,7 +30677,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
     } // empty placeholder controller to be initialized in link
   };
 
-  function compile(element, attr) {
+  function compile(tElement, tAttrs) {
+    var isMultiple = $mdUtil.parseAttributeBoolean(tAttrs.multiple);
     // add the select value that will hold our placeholder or selected option value
     var valueEl = angular.element('<md-select-value><span></span></md-select-value>');
     valueEl.append('<span class="md-select-icon" aria-hidden="true"></span>');
@@ -30682,89 +30688,102 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
     }
 
     // There's got to be an md-content inside. If there's not one, let's add it.
-    var mdContentEl = element.find('md-content');
+    var mdContentEl = tElement.find('md-content');
     if (!mdContentEl.length) {
-      element.append(angular.element('<md-content>').append(element.contents()));
+      tElement.append(angular.element('<md-content>').append(tElement.contents()));
+      mdContentEl = tElement.find('md-content');
     }
-    mdContentEl.attr('role', 'presentation');
+    mdContentEl.attr('role', 'listbox');
+    mdContentEl.attr('tabindex', '-1');
 
+    if (isMultiple) {
+      mdContentEl.attr('aria-multiselectable', 'true');
+    } else {
+      mdContentEl.attr('aria-multiselectable', 'false');
+    }
 
     // Add progress spinner for md-options-loading
-    if (attr.mdOnOpen) {
+    if (tAttrs.mdOnOpen) {
 
       // Show progress indicator while loading async
       // Use ng-hide for `display:none` so the indicator does not interfere with the options list
-      element
+      tElement
         .find('md-content')
         .prepend(angular.element(
           '<div>' +
-          ' <md-progress-circular md-mode="indeterminate" ng-if="$$loadingAsyncDone === false" md-diameter="25px"></md-progress-circular>' +
+          ' <md-progress-circular md-mode="indeterminate" ng-if="$$loadingAsyncDone === false"' +
+          ' md-diameter="25px"></md-progress-circular>' +
           '</div>'
         ));
 
       // Hide list [of item options] while loading async
-      element
+      tElement
         .find('md-option')
         .attr('ng-show', '$$loadingAsyncDone');
     }
 
-    if (attr.name) {
+    if (tAttrs.name) {
       var autofillClone = angular.element('<select class="md-visually-hidden"></select>');
       autofillClone.attr({
-        'name': attr.name,
+        'name': tAttrs.name,
         'aria-hidden': 'true',
         'tabindex': '-1'
       });
-      var opts = element.find('md-option');
+      var opts = tElement.find('md-option');
       angular.forEach(opts, function(el) {
         var newEl = angular.element('<option>' + el.innerHTML + '</option>');
-        if (el.hasAttribute('ng-value')) newEl.attr('ng-value', el.getAttribute('ng-value'));
-        else if (el.hasAttribute('value')) newEl.attr('value', el.getAttribute('value'));
+        if (el.hasAttribute('ng-value')) {
+          newEl.attr('ng-value', el.getAttribute('ng-value'));
+        }
+        else if (el.hasAttribute('value')) {
+          newEl.attr('value', el.getAttribute('value'));
+        }
         autofillClone.append(newEl);
       });
 
       // Adds an extra option that will hold the selected value for the
-      // cases where the select is a part of a non-angular form. This can be done with a ng-model,
+      // cases where the select is a part of a non-AngularJS form. This can be done with a ng-model,
       // however if the `md-option` is being `ng-repeat`-ed, AngularJS seems to insert a similar
       // `option` node, but with a value of `? string: <value> ?` which would then get submitted.
       // This also goes around having to prepend a dot to the name attribute.
       autofillClone.append(
-        '<option ng-value="' + attr.ngModel + '" selected></option>'
+        '<option ng-value="' + tAttrs.ngModel + '" selected></option>'
       );
 
-      element.parent().append(autofillClone);
+      tElement.parent().append(autofillClone);
     }
-
-    var isMultiple = $mdUtil.parseAttributeBoolean(attr.multiple);
 
     // Use everything that's left inside element.contents() as the contents of the menu
     var multipleContent = isMultiple ? 'multiple' : '';
-    var ngModelOptions = attr.ngModelOptions ? $mdUtil.supplant('ng-model-options="{0}"', [attr.ngModelOptions]) : '';
+    var ngModelOptions = tAttrs.ngModelOptions ? $mdUtil.supplant('ng-model-options="{0}"', [tAttrs.ngModelOptions]) : '';
     var selectTemplate = '' +
       '<div class="md-select-menu-container" aria-hidden="true" role="presentation">' +
-      '<md-select-menu role="presentation" {0} {1}>{2}</md-select-menu>' +
+      '  <md-select-menu role="presentation" {0} {1}>{2}</md-select-menu>' +
       '</div>';
 
-    selectTemplate = $mdUtil.supplant(selectTemplate, [multipleContent, ngModelOptions,  element.html()]);
-    element.empty().append(valueEl);
-    element.append(selectTemplate);
+    selectTemplate = $mdUtil.supplant(selectTemplate, [multipleContent, ngModelOptions,  tElement.html()]);
+    tElement.empty().append(valueEl);
+    tElement.append(selectTemplate);
 
-    if (!attr.tabindex){
-      attr.$set('tabindex', 0);
+    if (!tAttrs.tabindex) {
+      tAttrs.$set('tabindex', 0);
     }
 
-    return function postLink(scope, element, attr, ctrls) {
+    return function postLink(scope, element, attrs, ctrls) {
       var untouched = true;
-      var isDisabled, ariaLabelBase;
+      var isDisabled;
 
       var containerCtrl = ctrls[0];
       var mdSelectCtrl = ctrls[1];
       var ngModelCtrl = ctrls[2];
       var formCtrl = ctrls[3];
       // grab a reference to the select menu value label
-      var valueEl = element.find('md-select-value');
-      var isReadonly = angular.isDefined(attr.readonly);
-      var disableAsterisk = $mdUtil.parseAttributeBoolean(attr.mdNoAsterisk);
+      var selectValueElement = element.find('md-select-value');
+      var isReadonly = angular.isDefined(attrs.readonly);
+      var disableAsterisk = $mdUtil.parseAttributeBoolean(attrs.mdNoAsterisk);
+      var stopNgMultipleWatch;
+      var userDefinedLabelledby = angular.isDefined(attrs.ariaLabelledby);
+      var listboxContentElement = element.find('md-content');
 
       if (disableAsterisk) {
         element.addClass('md-no-asterisk');
@@ -30786,80 +30805,119 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
         containerCtrl.input = element;
         if (!containerCtrl.label) {
           $mdAria.expect(element, 'aria-label', element.attr('placeholder'));
+          var selectLabel = element.attr('aria-label');
+          if (!selectLabel) {
+            selectLabel = element.attr('placeholder');
+          }
+          listboxContentElement.attr('aria-label', selectLabel);
+        } else {
+          containerCtrl.label.attr('aria-hidden', 'true');
+          listboxContentElement.attr('aria-label', containerCtrl.label.text());
         }
 
-        scope.$watch(isErrorGetter, containerCtrl.setInvalid);
+        var stopInvalidWatch = scope.$watch(isErrorGetter, containerCtrl.setInvalid);
       }
 
       var selectContainer, selectScope, selectMenuCtrl;
 
-      findSelectContainer();
+      selectContainer = findSelectContainer();
       $mdTheming(element);
 
       var originalRender = ngModelCtrl.$render;
       ngModelCtrl.$render = function() {
         originalRender();
-        syncLabelText();
-        syncAriaLabel();
+        syncSelectValueText();
         inputCheckValue();
       };
 
-      attr.$observe('placeholder', ngModelCtrl.$render);
+      var stopPlaceholderObserver = attrs.$observe('placeholder', ngModelCtrl.$render);
 
-      if (containerCtrl && containerCtrl.label) {
-        attr.$observe('required', function (value) {
-          // Toggle the md-required class on the input containers label, because the input container is automatically
-          // applying the asterisk indicator on the label.
+      var stopRequiredObserver = attrs.$observe('required', function (value) {
+        if (containerCtrl && containerCtrl.label) {
+          // Toggle the md-required class on the input containers label, because the input container
+          // is automatically applying the asterisk indicator on the label.
           containerCtrl.label.toggleClass('md-required', value && !disableAsterisk);
-        });
-      }
+        }
+        element.removeAttr('aria-required');
+        if (value) {
+          listboxContentElement.attr('aria-required', 'true');
+        } else {
+          listboxContentElement.removeAttr('aria-required');
+        }
+      });
 
-      mdSelectCtrl.setLabelText = function(text) {
-        mdSelectCtrl.setIsPlaceholder(!text);
-
+      /**
+       * Set the contents of the md-select-value element. This element's contents are announced by
+       * screen readers and used for displaying the value of the select in both single and multiple
+       * selection modes.
+       * @param {string=} text A sanitized and trusted HTML string or a pure text string from user
+       *  input.
+       */
+      mdSelectCtrl.setSelectValueText = function(text) {
+        var useDefaultText = text === undefined || text === '';
         // Whether the select label has been given via user content rather than the internal
         // template of <md-option>
         var isSelectLabelFromUser = false;
 
-        if (attr.mdSelectedText && attr.mdSelectedHtml) {
+        mdSelectCtrl.setIsPlaceholder(!text);
+
+        if (attrs.mdSelectedText && attrs.mdSelectedHtml) {
           throw Error('md-select cannot have both `md-selected-text` and `md-selected-html`');
         }
 
-        if (attr.mdSelectedText || attr.mdSelectedHtml) {
-          text = $parse(attr.mdSelectedText || attr.mdSelectedHtml)(scope);
+        if (attrs.mdSelectedText || attrs.mdSelectedHtml) {
+          text = $parse(attrs.mdSelectedText || attrs.mdSelectedHtml)(scope);
           isSelectLabelFromUser = true;
-        } else if (!text) {
+        } else if (useDefaultText) {
           // Use placeholder attribute, otherwise fallback to the md-input-container label
-          var tmpPlaceholder = attr.placeholder ||
+          var tmpPlaceholder = attrs.placeholder ||
               (containerCtrl && containerCtrl.label ? containerCtrl.label.text() : '');
 
           text = tmpPlaceholder || '';
           isSelectLabelFromUser = true;
         }
 
-        var target = valueEl.children().eq(0);
+        var target = selectValueElement.children().eq(0);
 
-        if (attr.mdSelectedHtml) {
-            // Using getTrustedHtml will run the content through $sanitize if it is not already
-            // explicitly trusted. If the ngSanitize module is not loaded, this will
-            // *correctly* throw an sce error.
-            target.html($sce.getTrustedHtml(text));
+        if (attrs.mdSelectedHtml) {
+          // Using getTrustedHtml will run the content through $sanitize if it is not already
+          // explicitly trusted. If the ngSanitize module is not loaded, this will
+          // *correctly* throw an sce error.
+          target.html($sce.getTrustedHtml(text));
         } else if (isSelectLabelFromUser) {
           target.text(text);
         } else {
           // If we've reached this point, the text is not user-provided.
           target.html(text);
         }
+
+        if (useDefaultText) {
+          // Avoid screen readers double announcing the label name when no value has been selected
+          selectValueElement.attr('aria-hidden', 'true');
+          if (!userDefinedLabelledby) {
+            element.removeAttr('aria-labelledby');
+          }
+        } else {
+          selectValueElement.removeAttr('aria-hidden');
+          if (!userDefinedLabelledby) {
+            element.attr('aria-labelledby', element[0].id + ' ' + selectValueElement[0].id)
+          }
+        }
       };
 
+      /**
+       * @param {boolean} isPlaceholder true to mark the md-select-value element and
+       *  input container, if one exists, with classes for styling when a placeholder is present.
+       *  false to remove those classes.
+       */
       mdSelectCtrl.setIsPlaceholder = function(isPlaceholder) {
         if (isPlaceholder) {
-          valueEl.addClass('md-select-placeholder');
+          selectValueElement.addClass('md-select-placeholder');
           if (containerCtrl && containerCtrl.label) {
             containerCtrl.label.addClass('md-placeholder');
           }
         } else {
-          valueEl.removeClass('md-select-placeholder');
+          selectValueElement.removeClass('md-select-placeholder');
           if (containerCtrl && containerCtrl.label) {
             containerCtrl.label.removeClass('md-placeholder');
           }
@@ -30891,13 +30949,12 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
       }
 
       mdSelectCtrl.triggerClose = function() {
-        $parse(attr.mdOnClose)(scope);
+        $parse(attrs.mdOnClose)(scope);
       };
 
       scope.$$postDigest(function() {
         initAriaLabel();
-        syncLabelText();
-        syncAriaLabel();
+        syncSelectValueText();
       });
 
       function initAriaLabel() {
@@ -30905,48 +30962,51 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
         if (!labelText && containerCtrl && containerCtrl.label) {
           labelText = containerCtrl.label.text();
         }
-        ariaLabelBase = labelText;
         $mdAria.expect(element, 'aria-label', labelText);
       }
 
-      scope.$watch(function() {
-        return selectMenuCtrl.selectedLabels();
-      }, syncLabelText);
+      var stopSelectedLabelsWatcher = scope.$watch(function() {
+        return selectMenuCtrl.getSelectedLabels();
+      }, syncSelectValueText);
 
-      function syncLabelText() {
-        if (selectContainer) {
-          selectMenuCtrl = selectMenuCtrl || selectContainer.find('md-select-menu').controller('mdSelectMenu');
-          mdSelectCtrl.setLabelText(selectMenuCtrl.selectedLabels());
+      function syncSelectValueText() {
+        selectMenuCtrl = selectMenuCtrl ||
+          selectContainer.find('md-select-menu').controller('mdSelectMenu');
+        mdSelectCtrl.setSelectValueText(selectMenuCtrl.getSelectedLabels());
+      }
+
+      // TODO add tests for ngMultiple
+      // TODO add docs for ngMultiple
+      // TODO in 1.2.0 rename this to mdMultiple
+      var stopNgMultipleObserver = attrs.$observe('ngMultiple', function(val) {
+        if (stopNgMultipleWatch) {
+          stopNgMultipleWatch();
         }
-      }
-
-      function syncAriaLabel() {
-        if (!ariaLabelBase) return;
-        var ariaLabels = selectMenuCtrl.selectedLabels({mode: 'aria'});
-        element.attr('aria-label', ariaLabels.length ? ariaLabelBase + ': ' + ariaLabels : ariaLabelBase);
-      }
-
-      var deregisterWatcher;
-      attr.$observe('ngMultiple', function(val) {
-        if (deregisterWatcher) deregisterWatcher();
         var parser = $parse(val);
-        deregisterWatcher = scope.$watch(function() {
+        stopNgMultipleWatch = scope.$watch(function() {
           return parser(scope);
         }, function(multiple, prevVal) {
-          if (multiple === undefined && prevVal === undefined) return; // assume compiler did a good job
+          var selectMenu = selectContainer.find('md-select-menu');
+          // assume compiler did a good job
+          if (multiple === undefined && prevVal === undefined) {
+            return;
+          }
           if (multiple) {
-            element.attr('multiple', 'multiple');
+            var setMultipleAttrs = {'multiple': 'multiple'};
+            element.attr(setMultipleAttrs);
+            selectMenu.attr(setMultipleAttrs);
           } else {
             element.removeAttr('multiple');
+            selectMenu.removeAttr('multiple');
           }
-          element.attr('aria-multiselectable', multiple ? 'true' : 'false');
+          element.find('md-content').attr('aria-multiselectable', multiple ? 'true' : 'false');
+
           if (selectContainer) {
-            selectMenuCtrl.setMultiple(multiple);
+            selectMenuCtrl.setMultiple(Boolean(multiple));
             originalRender = ngModelCtrl.$render;
             ngModelCtrl.$render = function() {
               originalRender();
-              syncLabelText();
-              syncAriaLabel();
+              syncSelectValueText();
               inputCheckValue();
             };
             ngModelCtrl.$render();
@@ -30954,7 +31014,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
         });
       });
 
-      attr.$observe('disabled', function(disabled) {
+      var stopDisabledObserver = attrs.$observe('disabled', function(disabled) {
         if (angular.isString(disabled)) {
           disabled = true;
         }
@@ -30967,26 +31027,31 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
           element
             .attr({'aria-disabled': 'true'})
             .removeAttr('tabindex')
+            .removeAttr('aria-expanded')
+            .removeAttr('aria-haspopup')
             .off('click', openSelect)
             .off('keydown', handleKeypress);
         } else {
           element
-            .attr({'tabindex': attr.tabindex, 'aria-disabled': 'false'})
+            .attr({
+              'tabindex': attrs.tabindex,
+              'aria-haspopup': 'listbox'
+            })
+            .removeAttr('aria-disabled')
             .on('click', openSelect)
             .on('keydown', handleKeypress);
         }
       });
 
-      if (!attr.hasOwnProperty('disabled') && !attr.hasOwnProperty('ngDisabled')) {
+      if (!attrs.hasOwnProperty('disabled') && !attrs.hasOwnProperty('ngDisabled')) {
         element.attr({'aria-disabled': 'false'});
         element.on('click', openSelect);
         element.on('keydown', handleKeypress);
       }
 
       var ariaAttrs = {
-        role: 'listbox',
-        'aria-expanded': 'false',
-        'aria-multiselectable': isMultiple && !attr.ngMultiple ? 'true' : 'false'
+        role: 'button',
+        'aria-haspopup': 'listbox'
       };
 
       if (!element[0].hasAttribute('id')) {
@@ -30995,13 +31060,26 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
 
       var containerId = 'select_container_' + $mdUtil.nextUid();
       selectContainer.attr('id', containerId);
+      var listboxContentId = 'select_listbox_' + $mdUtil.nextUid();
+      selectContainer.find('md-content').attr('id', listboxContentId);
       // Only add aria-owns if element ownership is NOT represented in the DOM.
       if (!element.find('md-select-menu').length) {
-        ariaAttrs['aria-owns'] = containerId;
+        ariaAttrs['aria-owns'] = listboxContentId;
       }
       element.attr(ariaAttrs);
 
       scope.$on('$destroy', function() {
+        stopRequiredObserver && stopRequiredObserver();
+        stopDisabledObserver && stopDisabledObserver();
+        stopNgMultipleWatch && stopNgMultipleWatch();
+        stopNgMultipleObserver && stopNgMultipleObserver();
+        stopSelectedLabelsWatcher && stopSelectedLabelsWatcher();
+        stopPlaceholderObserver && stopPlaceholderObserver();
+        stopInvalidWatch && stopInvalidWatch();
+
+        element.off('focus');
+        element.off('blur');
+
         $mdSelect
           .destroy()
           .finally(function() {
@@ -31014,32 +31092,38 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
           });
       });
 
-
       function inputCheckValue() {
         // The select counts as having a value if one or more options are selected,
         // or if the input's validity state says it has bad input (eg string in a number input)
         // we must do this on nextTick as the $render is sometimes invoked on nextTick.
         $mdUtil.nextTick(function () {
-          containerCtrl && containerCtrl.setHasValue(selectMenuCtrl.selectedLabels().length > 0 || (element[0].validity || {}).badInput);
+          containerCtrl && containerCtrl.setHasValue(
+            selectMenuCtrl.getSelectedLabels().length > 0 || (element[0].validity || {}).badInput);
         });
       }
 
       function findSelectContainer() {
-        selectContainer = angular.element(
+        var selectContainer = angular.element(
           element[0].querySelector('.md-select-menu-container')
         );
         selectScope = scope;
-        if (attr.mdContainerClass) {
-          var value = selectContainer[0].getAttribute('class') + ' ' + attr.mdContainerClass;
+        if (attrs.mdContainerClass) {
+          var value = selectContainer[0].getAttribute('class') + ' ' + attrs.mdContainerClass;
           selectContainer[0].setAttribute('class', value);
         }
         selectMenuCtrl = selectContainer.find('md-select-menu').controller('mdSelectMenu');
-        selectMenuCtrl.init(ngModelCtrl, attr.ngModel);
+        selectMenuCtrl.init(ngModelCtrl, attrs.ngModel);
         element.on('$destroy', function() {
           selectContainer.remove();
         });
+        return selectContainer;
       }
 
+      /**
+       * Determine if the select menu should be opened or an option in the select menu should be
+       * selected.
+       * @param {KeyboardEvent} e keyboard event to handle
+       */
       function handleKeypress(e) {
         if ($mdConstant.isNavigationKey(e)) {
           // prevent page scrolling on interaction
@@ -31050,10 +31134,14 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
             e.preventDefault();
 
             var node = selectMenuCtrl.optNodeForKeyboardSearch(e);
-            if (!node || node.hasAttribute('disabled')) return;
+            if (!node || node.hasAttribute('disabled')) {
+              return;
+            }
             var optionCtrl = angular.element(node).controller('mdOption');
             if (!selectMenuCtrl.isMultiple) {
-              selectMenuCtrl.deselect(Object.keys(selectMenuCtrl.selected)[0]);
+              angular.forEach(Object.keys(selectMenuCtrl.selected), function (key) {
+                selectMenuCtrl.deselect(key);
+              });
             }
             selectMenuCtrl.select(optionCtrl.hashKey, optionCtrl.value);
             selectMenuCtrl.refreshViewValue();
@@ -31074,10 +31162,11 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
           selectCtrl: mdSelectCtrl,
           preserveElement: true,
           hasBackdrop: true,
-          loadingAsync: attr.mdOnOpen ? scope.$eval(attr.mdOnOpen) || true : false
+          loadingAsync: attrs.mdOnOpen ? scope.$eval(attrs.mdOnOpen) || true : false
         }).finally(function() {
           selectScope._mdSelectIsOpen = false;
-          element.attr('aria-expanded', 'false');
+          element.removeAttr('aria-expanded');
+          element.removeAttr('aria-activedescendant');
           ngModelCtrl.$setTouched();
         });
       }
@@ -31101,8 +31190,8 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
 
   // We use preLink instead of postLink to ensure that the select is initialized before
   // its child options run postLink.
-  function preLink(scope, element, attr, ctrls) {
-    var selectCtrl = ctrls[0];
+  function preLink(scope, element, attrs, ctrls) {
+    var selectMenuCtrl = ctrls[0];
 
     element.addClass('_md');     // private md component indicator for styling
 
@@ -31125,34 +31214,41 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
         return false;
       }
 
-      var optionHashKey = selectCtrl.hashGetter(optionCtrl.value);
-      var isSelected = angular.isDefined(selectCtrl.selected[optionHashKey]);
+      var optionHashKey = selectMenuCtrl.hashGetter(optionCtrl.value);
+      var isSelected = angular.isDefined(selectMenuCtrl.selected[optionHashKey]);
 
       scope.$apply(function() {
-        if (selectCtrl.isMultiple) {
+        if (selectMenuCtrl.isMultiple) {
           if (isSelected) {
-            selectCtrl.deselect(optionHashKey);
+            selectMenuCtrl.deselect(optionHashKey);
           } else {
-            selectCtrl.select(optionHashKey, optionCtrl.value);
+            selectMenuCtrl.select(optionHashKey, optionCtrl.value);
           }
         } else {
           if (!isSelected) {
-            selectCtrl.deselect(Object.keys(selectCtrl.selected)[0]);
-            selectCtrl.select(optionHashKey, optionCtrl.value);
+            angular.forEach(Object.keys(selectMenuCtrl.selected), function (key) {
+              selectMenuCtrl.deselect(key);
+            });
+            selectMenuCtrl.select(optionHashKey, optionCtrl.value);
           }
         }
-        selectCtrl.refreshViewValue();
+        selectMenuCtrl.refreshViewValue();
       });
     }
   }
 
   function SelectMenuController($scope, $attrs, $element) {
     var self = this;
+    var defaultIsEmpty;
+    var searchStr = '';
+    var clearSearchTimeout, optNodes, optText;
+    var CLEAR_SEARCH_AFTER = 300;
+
     self.isMultiple = angular.isDefined($attrs.multiple);
     // selected is an object with keys matching all of the selected options' hashed values
     self.selected = {};
     // options is an object with keys matching every option's hash value,
-    // and values matching every option's controller.
+    // and values containing an instance of every option's controller.
     self.options = {};
 
     $scope.$watchCollection(function() {
@@ -31161,14 +31257,13 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
       self.ngModel.$render();
     });
 
-    var deregisterCollectionWatch;
-    var defaultIsEmpty;
+    /**
+     * @param {boolean} isMultiple
+     */
     self.setMultiple = function(isMultiple) {
       var ngModel = self.ngModel;
       defaultIsEmpty = defaultIsEmpty || ngModel.$isEmpty;
-
       self.isMultiple = isMultiple;
-      if (deregisterCollectionWatch) deregisterCollectionWatch();
 
       if (self.isMultiple) {
         // We want to delay the render method so that the directive has a chance to load before
@@ -31190,7 +31285,9 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
         // watchCollection on the model because by default ngModel only watches the model's
         // reference. This allows the developer to also push and pop from their array.
         $scope.$watchCollection(self.modelBinding, function(value) {
-          if (validateArray(value)) delayedRender(value);
+          if (validateArray(value)) {
+            delayedRender(value);
+          }
         });
 
         ngModel.$isEmpty = function(value) {
@@ -31208,11 +31305,12 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
       }
     };
 
-    var searchStr = '';
-    var clearSearchTimeout, optNodes, optText;
-    var CLEAR_SEARCH_AFTER = 300;
-
+    /**
+     * @param {KeyboardEvent} e keyboard event to handle
+     * @return {DOMElement|HTMLElement|undefined}
+     */
     self.optNodeForKeyboardSearch = function(e) {
+      var search, i;
       clearSearchTimeout && clearTimeout(clearSearchTimeout);
       clearSearchTimeout = setTimeout(function() {
         clearSearchTimeout = undefined;
@@ -31222,7 +31320,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
       }, CLEAR_SEARCH_AFTER);
 
       searchStr += e.key;
-      var search = new RegExp('^' + $mdUtil.sanitize(searchStr), 'i');
+      search = new RegExp('^' + $mdUtil.sanitize(searchStr), 'i');
       if (!optNodes) {
         optNodes = $element.find('md-option');
         optText = new Array(optNodes.length);
@@ -31230,7 +31328,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
           optText[i] = el.textContent.trim();
         });
       }
-      for (var i = 0; i < optText.length; ++i) {
+      for (i = 0; i < optText.length; ++i) {
         if (search.test(optText[i])) {
           return optNodes[i];
         }
@@ -31285,32 +31383,51 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
       }
     };
 
-    self.selectedLabels = function(opts) {
+    /**
+     * @param {string=} id
+     */
+    self.setActiveDescendant = function(id) {
+      if (angular.isDefined(id)) {
+        $element.find('md-content').attr('aria-activedescendant', id);
+      } else {
+        $element.find('md-content').removeAttr('aria-activedescendant');
+      }
+    };
+
+    /**
+     * @param {{mode: string}=} opts options object to allow specifying html (default) or aria mode.
+     * @return {string} comma separated set of selected values
+     */
+    self.getSelectedLabels = function(opts) {
       opts = opts || {};
       var mode = opts.mode || 'html';
-      var selectedOptionEls = $mdUtil.nodesToArray($element[0].querySelectorAll('md-option[selected]'));
+      var selectedOptionEls =
+        $mdUtil.nodesToArray($element[0].querySelectorAll('md-option[selected]'));
+
       if (selectedOptionEls.length) {
         var mapFn;
 
-        if (mode == 'html') {
+        if (mode === 'html') {
           // Map the given element to its innerHTML string. If the element has a child ripple
           // container remove it from the HTML string, before returning the string.
           mapFn = function(el) {
-            // If we do not have a `value` or `ng-value`, assume it is an empty option which clears the select
+            // If we do not have a `value` or `ng-value`, assume it is an empty option which clears
+            // the select.
             if (el.hasAttribute('md-option-empty')) {
               return '';
             }
 
             var html = el.innerHTML;
 
-            // Remove the ripple container from the selected option, copying it would cause a CSP violation.
+            // Remove the ripple container from the selected option, copying it would cause a CSP
+            // violation.
             var rippleContainer = el.querySelector('.md-ripple-container');
             if (rippleContainer) {
               html = html.replace(rippleContainer.outerHTML, '');
             }
 
-            // Remove the checkbox container, because it will cause the label to wrap inside of the placeholder.
-            // It should be not displayed inside of the label element.
+            // Remove the checkbox container, because it will cause the label to wrap inside of the
+            // placeholder. It should be not displayed inside of the label element.
             var checkboxContainer = el.querySelector('.md-container');
             if (checkboxContainer) {
               html = html.replace(checkboxContainer.outerHTML, '');
@@ -31318,8 +31435,10 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
 
             return html;
           };
-        } else if (mode == 'aria') {
-          mapFn = function(el) { return el.hasAttribute('aria-label') ? el.getAttribute('aria-label') : el.textContent; };
+        } else if (mode === 'aria') {
+          mapFn = function(el) {
+            return el.hasAttribute('aria-label') ? el.getAttribute('aria-label') : el.textContent;
+          };
         }
 
         // Ensure there are no duplicates; see https://github.com/angular/material/issues/9442
@@ -31329,17 +31448,35 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
       }
     };
 
+    /**
+     * Mark an option as selected
+     * @param {string} hashKey key within the SelectMenuController.options object, which is an
+     *  instance of OptionController.
+     * @param {OptionController} hashedValue value to associate with the key
+     */
     self.select = function(hashKey, hashedValue) {
       var option = self.options[hashKey];
-      option && option.setSelected(true);
+      option && option.setSelected(true, self.isMultiple);
       self.selected[hashKey] = hashedValue;
     };
+
+    /**
+     * Mark an option as not selected
+     * @param {string} hashKey key within the SelectMenuController.options object, which is an
+     *  instance of OptionController.
+     */
     self.deselect = function(hashKey) {
       var option = self.options[hashKey];
-      option && option.setSelected(false);
+      option && option.setSelected(false, self.isMultiple);
       delete self.selected[hashKey];
     };
 
+    /**
+     * Add an option to the select
+     * @param {string} hashKey key within the SelectMenuController.options object, which is an
+     *  instance of OptionController.
+     * @param {OptionController} optionCtrl instance to associate with the key
+     */
     self.addOption = function(hashKey, optionCtrl) {
       if (angular.isDefined(self.options[hashKey])) {
         throw new Error('Duplicate md-option values are not allowed in a select. ' +
@@ -31364,6 +31501,12 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
         self.refreshViewValue();
       }
     };
+
+    /**
+     * Remove an option from the select
+     * @param {string} hashKey key within the SelectMenuController.options object, which is an
+     *  instance of OptionController.
+     */
     self.removeOption = function(hashKey) {
       delete self.options[hashKey];
       // Don't deselect an option when it's removed - the user's ngModel should be allowed
@@ -31446,7 +31589,6 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
       self.select(self.hashGetter(value), value);
     }
   }
-
 }
 
 /**
@@ -31527,7 +31669,6 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
  */
 function OptionDirective($mdButtonInkRipple, $mdUtil, $mdTheming) {
 
-  OptionController.$inject = ["$element"];
   return {
     restrict: 'E',
     require: ['mdOption', '^^mdSelectMenu'],
@@ -31535,48 +31676,56 @@ function OptionDirective($mdButtonInkRipple, $mdUtil, $mdTheming) {
     compile: compile
   };
 
-  function compile(element, attr) {
+  function compile(element, attrs) {
     // Manual transclusion to avoid the extra inner <span> that ng-transclude generates
     element.append(angular.element('<div class="md-text">').append(element.contents()));
 
-    element.attr('tabindex', attr.tabindex || '0');
+    element.attr('tabindex', attrs.tabindex || '0');
 
-    if (!hasDefinedValue(attr)) {
+    if (!hasDefinedValue(attrs)) {
       element.attr('md-option-empty', '');
     }
 
     return postLink;
   }
 
-  function hasDefinedValue(attr) {
-    var value = attr.value;
-    var ngValue = attr.ngValue;
+  /**
+   * @param {Object} attrs list of attributes from the compile function
+   * @return {string|undefined|null} if defined and non-empty, return the value of the option's
+   *  value attribute, otherwise return the value of the option's ng-value attribute.
+   */
+  function hasDefinedValue(attrs) {
+    var value = attrs.value;
+    var ngValue = attrs.ngValue;
 
     return value || ngValue;
   }
 
-  function postLink(scope, element, attr, ctrls) {
+  function postLink(scope, element, attrs, ctrls) {
     var optionCtrl = ctrls[0];
-    var selectCtrl = ctrls[1];
+    var selectMenuCtrl = ctrls[1];
 
     $mdTheming(element);
 
-    if (selectCtrl.isMultiple) {
+    if (selectMenuCtrl.isMultiple) {
       element.addClass('md-checkbox-enabled');
       element.prepend(CHECKBOX_SELECTION_INDICATOR.clone());
     }
 
-    if (angular.isDefined(attr.ngValue)) {
-      scope.$watch(attr.ngValue, setOptionValue);
-    } else if (angular.isDefined(attr.value)) {
-      setOptionValue(attr.value);
+    if (angular.isDefined(attrs.ngValue)) {
+      scope.$watch(attrs.ngValue, function (newValue, oldValue) {
+        setOptionValue(newValue, oldValue);
+        element.removeAttr('aria-checked');
+      });
+    } else if (angular.isDefined(attrs.value)) {
+      setOptionValue(attrs.value);
     } else {
       scope.$watch(function() {
         return element.text().trim();
       }, setOptionValue);
     }
 
-    attr.$observe('disabled', function(disabled) {
+    attrs.$observe('disabled', function(disabled) {
       if (disabled) {
         element.attr('tabindex', '-1');
       } else {
@@ -31584,27 +31733,17 @@ function OptionDirective($mdButtonInkRipple, $mdUtil, $mdTheming) {
       }
     });
 
-    scope.$$postDigest(function() {
-      attr.$observe('selected', function(selected) {
-        if (!angular.isDefined(selected)) return;
-        if (typeof selected == 'string') selected = true;
-        if (selected) {
-          if (!selectCtrl.isMultiple) {
-            selectCtrl.deselect(Object.keys(selectCtrl.selected)[0]);
-          }
-          selectCtrl.select(optionCtrl.hashKey, optionCtrl.value);
-        } else {
-          selectCtrl.deselect(optionCtrl.hashKey);
-        }
-        selectCtrl.refreshViewValue();
-      });
-    });
-
     $mdButtonInkRipple.attach(scope, element);
     configureAria();
 
+    /**
+     * @param {*} newValue the option's new value
+     * @param {*=} oldValue the option's previous value
+     * @param {boolean=} prevAttempt true if this had to be attempted again due to an undefined
+     *  hashGetter on the selectCtrl, undefined otherwise.
+     */
     function setOptionValue(newValue, oldValue, prevAttempt) {
-      if (!selectCtrl.hashGetter) {
+      if (!selectMenuCtrl.hashGetter) {
         if (!prevAttempt) {
           scope.$$postDigest(function() {
             setOptionValue(newValue, oldValue, true);
@@ -31612,25 +31751,31 @@ function OptionDirective($mdButtonInkRipple, $mdUtil, $mdTheming) {
         }
         return;
       }
-      var oldHashKey = selectCtrl.hashGetter(oldValue, scope);
-      var newHashKey = selectCtrl.hashGetter(newValue, scope);
+      var oldHashKey = selectMenuCtrl.hashGetter(oldValue, scope);
+      var newHashKey = selectMenuCtrl.hashGetter(newValue, scope);
 
       optionCtrl.hashKey = newHashKey;
       optionCtrl.value = newValue;
 
-      selectCtrl.removeOption(oldHashKey, optionCtrl);
-      selectCtrl.addOption(newHashKey, optionCtrl);
+      selectMenuCtrl.removeOption(oldHashKey, optionCtrl);
+      selectMenuCtrl.addOption(newHashKey, optionCtrl);
     }
 
     scope.$on('$destroy', function() {
-      selectCtrl.removeOption(optionCtrl.hashKey, optionCtrl);
+      selectMenuCtrl.removeOption(optionCtrl.hashKey, optionCtrl);
     });
 
     function configureAria() {
       var ariaAttrs = {
-        'role': 'option',
-        'aria-selected': 'false'
+        'role': 'option'
       };
+
+      // We explicitly omit the `aria-selected` attribute from single-selection, unselected
+      // options. Including the `aria-selected="false"` attributes adds a significant amount of
+      // noise to screen-reader users without providing useful information.
+      if (selectMenuCtrl.isMultiple) {
+        ariaAttrs['aria-selected'] = 'false';
+      }
 
       if (!element[0].hasAttribute('id')) {
         ariaAttrs.id = 'select_option_' + $mdUtil.nextUid();
@@ -31638,23 +31783,32 @@ function OptionDirective($mdButtonInkRipple, $mdUtil, $mdTheming) {
       element.attr(ariaAttrs);
     }
   }
+}
 
-  function OptionController($element) {
-    this.selected = false;
-    this.setSelected = function(isSelected) {
-      if (isSelected && !this.selected) {
-        $element.attr({
-          'selected': 'selected',
-          'aria-selected': 'true'
-        });
-      } else if (!isSelected && this.selected) {
-        $element.removeAttr('selected');
+function OptionController($element) {
+  /**
+   * @param {boolean} isSelected
+   * @param {boolean=} isMultiple
+   */
+  this.setSelected = function(isSelected, isMultiple) {
+    if (isSelected) {
+      $element.attr({
+        'selected': 'true',
+        'aria-selected': 'true'
+      });
+    } else if (!isSelected) {
+      $element.removeAttr('selected');
+
+      if (isMultiple) {
         $element.attr('aria-selected', 'false');
+      } else {
+        // We explicitly omit the `aria-selected` attribute from single-selection, unselected
+        // options. Including the `aria-selected="false"` attributes adds a significant amount of
+        // noise to screen-reader users without providing useful information.
+        $element.removeAttr('aria-selected');
       }
-      this.selected = isSelected;
-    };
-  }
-
+    }
+  };
 }
 
 /**
@@ -31710,7 +31864,7 @@ function OptgroupDirective() {
     restrict: 'E',
     compile: compile
   };
-  function compile(el, attrs) {
+  function compile(element, attrs) {
     // If we have a select header element, we don't want to add the normal label
     // header.
     if (!hasSelectHeader()) {
@@ -31718,18 +31872,20 @@ function OptgroupDirective() {
     }
 
     function hasSelectHeader() {
-      return el.parent().find('md-select-header').length;
+      return element.parent().find('md-select-header').length;
     }
 
     function setupLabelElement() {
-      var labelElement = el.find('label');
+      var labelElement = element.find('label');
       if (!labelElement.length) {
         labelElement = angular.element('<label>');
-        el.prepend(labelElement);
+        element.prepend(labelElement);
       }
       labelElement.addClass('md-container-ignore');
       labelElement.attr('aria-hidden', 'true');
-      if (attrs.label) labelElement.text(attrs.label);
+      if (attrs.label) {
+        labelElement.text(attrs.label);
+      }
     }
   }
 }
@@ -31787,7 +31943,7 @@ function SelectProvider($$interimElementProvider) {
       /**
        * For normal closes (eg clicks), animate the removal.
        * For forced closes (like $destroy events from navigation),
-       * skip the animations
+       * skip the animations.
        */
       function animateRemoval() {
         animationRunner = $animateCss(element, {addClass: 'md-leave'});
@@ -31812,19 +31968,24 @@ function SelectProvider($$interimElementProvider) {
             'font-size': '',
             'min-width': ''
           });
-        element.parent().find('md-select-value').removeAttr('aria-hidden');
 
         announceClosed(opts);
 
-        if (!opts.$destroy && opts.restoreFocus) {
-          opts.target.focus();
+        if (!opts.$destroy) {
+          if (opts.restoreFocus) {
+            opts.target.focus();
+          } else {
+            // Make sure that the container's md-input-focused is removed on backdrop click.
+            $mdUtil.nextTick(function() {
+              opts.target.triggerHandler('blur');
+            }, true);
+          }
         }
       }
-
     }
 
     /**
-     * Interim-element onShow logic....
+     * Interim-element onShow logic.
      */
     function onShow(scope, element, opts) {
 
@@ -31839,7 +32000,7 @@ function SelectProvider($$interimElementProvider) {
           opts.alreadyOpen = true;
           opts.cleanupInteraction = activateInteraction();
           opts.cleanupResizing = activateResizing();
-          autoFocus(opts.focusedNode);
+          opts.contentEl[0].focus();
 
           return response;
         }, opts.hideBackdrop);
@@ -31849,21 +32010,17 @@ function SelectProvider($$interimElementProvider) {
       // ************************************
 
       /**
-       *  Attach the select DOM element(s) and animate to the correct positions
-       *  and scalings...
+       * Attach the select DOM element(s) and animate to the correct positions and scale.
        */
       function showDropDown(scope, element, opts) {
         if (opts.parent !== element.parent()) {
-          element.parent().attr('aria-owns', element.attr('id'));
+          element.parent().attr('aria-owns', element.find('md-content').attr('id'));
         }
-        element.parent().find('md-select-value').attr('aria-hidden', 'true');
 
         opts.parent.append(element);
 
         return $q(function(resolve, reject) {
-
           try {
-
             $animateCss(element, {removeClass: 'md-leave', duration: 0})
               .start()
               .then(positionAndFocusMenu)
@@ -31872,13 +32029,11 @@ function SelectProvider($$interimElementProvider) {
           } catch (e) {
             reject(e);
           }
-
         });
       }
 
       /**
-       * Initialize container and dropDown menu positions/scale, then animate
-       * to show.
+       * Initialize container and dropDown menu positions/scale, then animate to show.
        */
       function positionAndFocusMenu() {
         return $q(function(resolve) {
@@ -31901,7 +32056,7 @@ function SelectProvider($$interimElementProvider) {
       }
 
       /**
-       * Show modal backdrop element...
+       * Show modal backdrop element.
        */
       function showBackdrop(scope, element, options) {
 
@@ -31932,11 +32087,45 @@ function SelectProvider($$interimElementProvider) {
       }
 
       /**
-       *
+       * @param {DOMElement|HTMLElement|null=} previousNode
+       * @param {DOMElement|HTMLElement} node
+       * @param {SelectMenuController|Function} menuController SelectMenuController instance
+       * @param {Function|*} selectController SelectController instance
        */
-      function autoFocus(focusedNode) {
-        if (focusedNode && !focusedNode.hasAttribute('disabled')) {
-          focusedNode.focus();
+      function focusOptionNode(previousNode, node, menuController, selectController) {
+        var listboxContentNode = opts.contentEl[0];
+
+        if (node) {
+          if (previousNode) {
+            previousNode.classList.remove('md-focused');
+          }
+
+          node.classList.add('md-focused');
+          menuController.setActiveDescendant(node.id);
+
+          // Scroll the node into view if needed.
+          if (listboxContentNode.scrollHeight > listboxContentNode.clientHeight) {
+            var scrollBottom = listboxContentNode.clientHeight + listboxContentNode.scrollTop;
+            var nodeBottom = node.offsetTop + node.offsetHeight;
+            if (nodeBottom > scrollBottom) {
+              listboxContentNode.scrollTop = nodeBottom - listboxContentNode.clientHeight;
+            } else if (node.offsetTop < listboxContentNode.scrollTop) {
+              listboxContentNode.scrollTop = node.offsetTop;
+            }
+          }
+          opts.focusedNode = node;
+          menuController.refreshViewValue();
+        }
+      }
+
+      /**
+       * @param {DOMElement|HTMLElement} nodeToFocus
+       */
+      function autoFocus(nodeToFocus) {
+        var selectMenuController;
+        if (nodeToFocus && !nodeToFocus.hasAttribute('disabled')) {
+          selectMenuController = opts.selectEl.controller('mdSelectMenu');
+          focusOptionNode(null, nodeToFocus, selectMenuController, opts.selectCtrl);
         }
       }
 
@@ -31944,7 +32133,7 @@ function SelectProvider($$interimElementProvider) {
        * Check for valid opts and set some sane defaults
        */
       function sanitizeAndConfigure(scope, options) {
-        var selectEl = element.find('md-select-menu');
+        var selectMenuElement = element.find('md-select-menu');
 
         if (!options.target) {
           throw new Error($mdUtil.supplant(ERROR_TARGET_EXPECTED, [options.target]));
@@ -31954,9 +32143,9 @@ function SelectProvider($$interimElementProvider) {
           isRemoved: false,
           target: angular.element(options.target), // make sure it's not a naked DOM node
           parent: angular.element(options.parent),
-          selectEl: selectEl,
+          selectEl: selectMenuElement,
           contentEl: element.find('md-content'),
-          optionNodes: selectEl[0].getElementsByTagName('md-option')
+          optionNodes: selectMenuElement[0].getElementsByTagName('md-option')
         });
       }
 
@@ -31993,8 +32182,7 @@ function SelectProvider($$interimElementProvider) {
       }
 
       /**
-       *  If asynchronously loading, watch and update internal
-       *  '$$loadingAsyncDone' flag
+       * If asynchronously loading, watch and update internal '$$loadingAsyncDone' flag.
        */
       function watchAsyncLoad() {
         if (opts.loadingAsync && !opts.isRemoved) {
@@ -32010,14 +32198,14 @@ function SelectProvider($$interimElementProvider) {
         }
       }
 
-      /**
-       *
-       */
       function activateInteraction() {
-        if (opts.isRemoved) return;
+        if (opts.isRemoved) {
+          return;
+        }
 
         var dropDown = opts.selectEl;
-        var selectCtrl = dropDown.controller('mdSelectMenu') || {};
+        var selectMenuController = dropDown.controller('mdSelectMenu') || {};
+        var listbox = opts.contentEl;
 
         element.addClass('md-clickable');
 
@@ -32060,11 +32248,10 @@ function SelectProvider($$interimElementProvider) {
               return focusNextOption();
             case keyCodes.SPACE:
             case keyCodes.ENTER:
-              var option = $mdUtil.getClosest(ev.target, 'md-option');
-              if (option) {
+              if (opts.focusedNode) {
                 dropDown.triggerHandler({
                   type: 'click',
-                  target: option
+                  target: opts.focusedNode
                 });
                 ev.preventDefault();
               }
@@ -32079,17 +32266,24 @@ function SelectProvider($$interimElementProvider) {
               break;
             default:
               if (shouldHandleKey(ev, $mdConstant)) {
-                var optNode = dropDown.controller('mdSelectMenu').optNodeForKeyboardSearch(ev);
-                opts.focusedNode = optNode || opts.focusedNode;
-                optNode && optNode.focus();
+                var optNode = selectMenuController.optNodeForKeyboardSearch(ev);
+                if (optNode && !optNode.hasAttribute('disabled')) {
+                  focusOptionNode(opts.focusedNode, optNode, selectMenuController, opts.selectCtrl);
+                }
               }
           }
         }
 
+        /**
+         * Change the focus to another option. If there is no focused option, focus the first
+         * option. If there is a focused option, then use the direction to determine if we should
+         * focus the previous or next option in the list.
+         * @param {'next'|'prev'} direction
+         */
         function focusOption(direction) {
           var optionsArray = $mdUtil.nodesToArray(opts.optionNodes);
           var index = optionsArray.indexOf(opts.focusedNode);
-
+          var prevOption = optionsArray[index];
           var newOption;
 
           do {
@@ -32102,11 +32296,12 @@ function SelectProvider($$interimElementProvider) {
               index--;
             }
             newOption = optionsArray[index];
-            if (newOption.hasAttribute('disabled')) newOption = undefined;
+            if (newOption.hasAttribute('disabled')) {
+              newOption = null;
+            }
           } while (!newOption && index < optionsArray.length - 1 && index > 0);
 
-          newOption && newOption.focus();
-          opts.focusedNode = newOption;
+          focusOptionNode(prevOption, newOption, selectMenuController, opts.selectCtrl);
         }
 
         function focusNextOption() {
@@ -32118,18 +32313,22 @@ function SelectProvider($$interimElementProvider) {
         }
 
         function checkCloseMenu(ev) {
-          if (ev && (ev.type == 'click') && (ev.currentTarget != dropDown[0])) return;
-          if (mouseOnScrollbar()) return;
+          if (ev && (ev.type === 'click') && (ev.currentTarget != dropDown[0])) {
+            return;
+          }
+          if (mouseOnScrollbar()) {
+            return;
+          }
 
-          var option = $mdUtil.getClosest(ev.target, 'md-option');
-          if (option && option.hasAttribute && !option.hasAttribute('disabled')) {
+          if (opts.focusedNode && opts.focusedNode.hasAttribute &&
+              !opts.focusedNode.hasAttribute('disabled')) {
             ev.preventDefault();
             ev.stopPropagation();
-            if (!selectCtrl.isMultiple) {
+            if (!selectMenuController.isMultiple) {
               opts.restoreFocus = true;
 
               $mdUtil.nextTick(function () {
-                $mdSelect.hide(selectCtrl.ngModel.$viewValue);
+                $mdSelect.hide(selectMenuController.ngModel.$viewValue);
               }, true);
             }
           }
@@ -32151,7 +32350,6 @@ function SelectProvider($$interimElementProvider) {
           }
         }
       }
-
     }
 
     /**
@@ -32162,14 +32360,19 @@ function SelectProvider($$interimElementProvider) {
       var mdSelect = opts.selectCtrl;
       if (mdSelect) {
         var menuController = opts.selectEl.controller('mdSelectMenu');
-        mdSelect.setLabelText(menuController ? menuController.selectedLabels() : '');
+        mdSelect.setSelectValueText(menuController ? menuController.getSelectedLabels() : '');
         mdSelect.triggerClose();
       }
     }
 
 
     /**
-     * Calculate the
+     * Calculate the menu positions after an event like options changing, screen resizing, or
+     * animations finishing.
+     * @param {Object} scope
+     * @param element
+     * @param opts
+     * @return {{container: {styles: {top: number, left: number, 'font-size': *, 'min-width': number}, element: Object}, dropDown: {styles: {transform: string, transformOrigin: string}, element: Object}}}
      */
     function calculateMenuPositions(scope, element, opts) {
       var
@@ -32315,9 +32518,7 @@ function SelectProvider($$interimElementProvider) {
           }
         }
       };
-
     }
-
   }
 
   function isPromiseLike(obj) {
@@ -32355,7 +32556,6 @@ function SelectProvider($$interimElementProvider) {
     }
     return isScrollable;
   }
-
 }
 
 function shouldHandleKey(ev, $mdConstant) {
@@ -38692,8 +38892,8 @@ function MdWhiteframeDirective($log) {
 
 })();
 (function(){ 
-angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-THEME_NAME-theme{background:\"{{background-hue-1}}\"}md-autocomplete.md-THEME_NAME-theme[disabled]:not([md-floating-label]){background:\"{{background-hue-2}}\"}md-autocomplete.md-THEME_NAME-theme button md-icon path{fill:\"{{background-600}}\"}md-autocomplete.md-THEME_NAME-theme button:after{background:\"{{background-600-0.3}}\"}md-autocomplete.md-THEME_NAME-theme input{color:\"{{foreground-1}}\"}md-autocomplete.md-THEME_NAME-theme.md-accent md-input-container.md-input-focused .md-input{border-color:\"{{accent-color}}\"}md-autocomplete.md-THEME_NAME-theme.md-accent md-input-container.md-input-focused label,md-autocomplete.md-THEME_NAME-theme.md-accent md-input-container.md-input-focused md-icon{color:\"{{accent-color}}\"}md-autocomplete.md-THEME_NAME-theme.md-accent md-progress-linear .md-container{background-color:\"{{accent-100}}\"}md-autocomplete.md-THEME_NAME-theme.md-accent md-progress-linear .md-bar{background-color:\"{{accent-color}}\"}md-autocomplete.md-THEME_NAME-theme.md-warn md-input-container.md-input-focused .md-input{border-color:\"{{warn-A700}}\"}md-autocomplete.md-THEME_NAME-theme.md-warn md-input-container.md-input-focused label,md-autocomplete.md-THEME_NAME-theme.md-warn md-input-container.md-input-focused md-icon{color:\"{{warn-A700}}\"}md-autocomplete.md-THEME_NAME-theme.md-warn md-progress-linear .md-container{background-color:\"{{warn-100}}\"}md-autocomplete.md-THEME_NAME-theme.md-warn md-progress-linear .md-bar{background-color:\"{{warn-color}}\"}.md-autocomplete-standard-list-container.md-THEME_NAME-theme,.md-autocomplete-suggestions-container.md-THEME_NAME-theme{background:\"{{background-hue-1}}\"}.md-autocomplete-standard-list-container.md-THEME_NAME-theme .md-autocomplete-suggestion,.md-autocomplete-suggestions-container.md-THEME_NAME-theme .md-autocomplete-suggestion{color:\"{{foreground-1}}\"}.md-autocomplete-standard-list-container.md-THEME_NAME-theme .md-autocomplete-suggestion.selected,.md-autocomplete-standard-list-container.md-THEME_NAME-theme .md-autocomplete-suggestion:hover,.md-autocomplete-suggestions-container.md-THEME_NAME-theme .md-autocomplete-suggestion.selected,.md-autocomplete-suggestions-container.md-THEME_NAME-theme .md-autocomplete-suggestion:hover{background:\"{{background-500-0.18}}\"}md-backdrop{background-color:\"{{background-900-0.0}}\"}md-backdrop.md-opaque.md-THEME_NAME-theme{background-color:\"{{background-900-1.0}}\"}md-bottom-sheet.md-THEME_NAME-theme{background-color:\"{{background-color}}\";border-top-color:\"{{background-hue-3}}\"}md-bottom-sheet.md-THEME_NAME-theme.md-list md-list-item{color:\"{{foreground-1}}\"}md-bottom-sheet.md-THEME_NAME-theme .md-subheader{background-color:\"{{background-color}}\";color:\"{{foreground-1}}\"}.md-button.md-THEME_NAME-theme:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme:not([disabled]):hover{background-color:\"{{background-500-0.2}}\"}.md-button.md-THEME_NAME-theme:not([disabled]).md-icon-button:hover{background-color:transparent}.md-button.md-THEME_NAME-theme.md-fab md-icon{color:\"{{accent-contrast}}\"}.md-button.md-THEME_NAME-theme.md-primary{color:\"{{primary-color}}\"}.md-button.md-THEME_NAME-theme.md-primary.md-fab,.md-button.md-THEME_NAME-theme.md-primary.md-raised{color:\"{{primary-contrast}}\";background-color:\"{{primary-color}}\"}.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]) md-icon,.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]) md-icon{color:\"{{primary-contrast}}\"}.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover,.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover{background-color:\"{{primary-600}}\"}.md-button.md-THEME_NAME-theme.md-primary:not([disabled]) md-icon{color:\"{{primary-color}}\"}.md-button.md-THEME_NAME-theme.md-fab{background-color:\"{{accent-color}}\";color:\"{{accent-contrast}}\"}.md-button.md-THEME_NAME-theme.md-fab:not([disabled]) .md-icon{color:\"{{accent-contrast}}\"}.md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover{background-color:\"{{accent-A700}}\"}.md-button.md-THEME_NAME-theme.md-raised{color:\"{{background-900}}\";background-color:\"{{background-50}}\"}.md-button.md-THEME_NAME-theme.md-raised:not([disabled]) md-icon{color:\"{{background-900}}\"}.md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover{background-color:\"{{background-50}}\"}.md-button.md-THEME_NAME-theme.md-raised:not([disabled]).md-focused{background-color:\"{{background-200}}\"}.md-button.md-THEME_NAME-theme.md-warn{color:\"{{warn-color}}\"}.md-button.md-THEME_NAME-theme.md-warn.md-fab,.md-button.md-THEME_NAME-theme.md-warn.md-raised{color:\"{{warn-contrast}}\";background-color:\"{{warn-color}}\"}.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]) md-icon,.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]) md-icon{color:\"{{warn-contrast}}\"}.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover,.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover{background-color:\"{{warn-600}}\"}.md-button.md-THEME_NAME-theme.md-warn:not([disabled]) md-icon{color:\"{{warn-color}}\"}.md-button.md-THEME_NAME-theme.md-accent{color:\"{{accent-color}}\"}.md-button.md-THEME_NAME-theme.md-accent.md-fab,.md-button.md-THEME_NAME-theme.md-accent.md-raised{color:\"{{accent-contrast}}\";background-color:\"{{accent-color}}\"}.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]) md-icon,.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]) md-icon{color:\"{{accent-contrast}}\"}.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover,.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover{background-color:\"{{accent-A700}}\"}.md-button.md-THEME_NAME-theme.md-accent:not([disabled]) md-icon{color:\"{{accent-color}}\"}.md-button.md-THEME_NAME-theme.md-accent[disabled],.md-button.md-THEME_NAME-theme.md-fab[disabled],.md-button.md-THEME_NAME-theme.md-raised[disabled],.md-button.md-THEME_NAME-theme.md-warn[disabled],.md-button.md-THEME_NAME-theme[disabled]{color:\"{{foreground-3}}\";cursor:default}.md-button.md-THEME_NAME-theme.md-accent[disabled] md-icon,.md-button.md-THEME_NAME-theme.md-fab[disabled] md-icon,.md-button.md-THEME_NAME-theme.md-raised[disabled] md-icon,.md-button.md-THEME_NAME-theme.md-warn[disabled] md-icon,.md-button.md-THEME_NAME-theme[disabled] md-icon{color:\"{{foreground-3}}\"}.md-button.md-THEME_NAME-theme.md-fab[disabled],.md-button.md-THEME_NAME-theme.md-raised[disabled]{background-color:\"{{foreground-4}}\"}.md-button.md-THEME_NAME-theme[disabled]{background-color:transparent}._md a.md-THEME_NAME-theme:not(.md-button).md-primary{color:\"{{primary-color}}\"}._md a.md-THEME_NAME-theme:not(.md-button).md-primary:hover{color:\"{{primary-700}}\"}._md a.md-THEME_NAME-theme:not(.md-button).md-accent{color:\"{{accent-color}}\"}._md a.md-THEME_NAME-theme:not(.md-button).md-accent:hover{color:\"{{accent-A700}}\"}._md a.md-THEME_NAME-theme:not(.md-button).md-warn{color:\"{{warn-color}}\"}._md a.md-THEME_NAME-theme:not(.md-button).md-warn:hover{color:\"{{warn-700}}\"}md-card.md-THEME_NAME-theme{color:\"{{foreground-1}}\";background-color:\"{{background-hue-1}}\";border-radius:2px}md-card.md-THEME_NAME-theme .md-card-image{border-radius:2px 2px 0 0}md-card.md-THEME_NAME-theme md-card-header md-card-avatar md-icon{color:\"{{background-color}}\";background-color:\"{{foreground-3}}\"}md-card.md-THEME_NAME-theme md-card-header md-card-header-text .md-subhead,md-card.md-THEME_NAME-theme md-card-title md-card-title-text:not(:only-child) .md-subhead{color:\"{{foreground-2}}\"}md-checkbox.md-THEME_NAME-theme .md-ripple{color:\"{{accent-A700}}\"}md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple{color:\"{{background-600}}\"}md-checkbox.md-THEME_NAME-theme.md-checked.md-focused .md-container:before{background-color:\"{{accent-color-0.26}}\"}md-checkbox.md-THEME_NAME-theme .md-ink-ripple{color:\"{{foreground-2}}\"}md-checkbox.md-THEME_NAME-theme.md-checked .md-ink-ripple{color:\"{{accent-color-0.87}}\"}md-checkbox.md-THEME_NAME-theme:not(.md-checked) .md-icon{border-color:\"{{foreground-2}}\"}md-checkbox.md-THEME_NAME-theme.md-checked .md-icon{background-color:\"{{accent-color-0.87}}\"}md-checkbox.md-THEME_NAME-theme.md-checked .md-icon:after{border-color:\"{{accent-contrast-0.87}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ripple{color:\"{{primary-600}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ripple{color:\"{{background-600}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ink-ripple{color:\"{{foreground-2}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple{color:\"{{primary-color-0.87}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary:not(.md-checked) .md-icon{border-color:\"{{foreground-2}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon{background-color:\"{{primary-color-0.87}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked.md-focused .md-container:before{background-color:\"{{primary-color-0.26}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon:after{border-color:\"{{primary-contrast-0.87}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-indeterminate[disabled] .md-container{color:\"{{foreground-3}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ripple{color:\"{{warn-600}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ink-ripple{color:\"{{foreground-2}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple{color:\"{{warn-color-0.87}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn:not(.md-checked) .md-icon{border-color:\"{{foreground-2}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon{background-color:\"{{warn-color-0.87}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked.md-focused:not([disabled]) .md-container:before{background-color:\"{{warn-color-0.26}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon:after{border-color:\"{{background-200}}\"}md-checkbox.md-THEME_NAME-theme[disabled]:not(.md-checked) .md-icon{border-color:\"{{foreground-3}}\"}md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon{background-color:\"{{foreground-3}}\"}md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon:after{border-color:\"{{background-200}}\"}md-checkbox.md-THEME_NAME-theme[disabled] .md-icon:after{border-color:\"{{foreground-3}}\"}md-checkbox.md-THEME_NAME-theme[disabled] .md-label{color:\"{{foreground-3}}\"}md-chips.md-THEME_NAME-theme .md-chips{box-shadow:0 1px \"{{foreground-4}}\"}md-chips.md-THEME_NAME-theme .md-chips.md-focused{box-shadow:0 2px \"{{primary-color}}\"}md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input{color:\"{{foreground-1}}\"}md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input::-webkit-input-placeholder{color:\"{{foreground-3}}\"}md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input:-ms-input-placeholder,md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input::-ms-input-placeholder{color:\"{{foreground-3}}\"}md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input::placeholder{color:\"{{foreground-3}}\"}md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input:-moz-placeholder,md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input::-moz-placeholder{color:\"{{foreground-3}}\";opacity:1}md-chips.md-THEME_NAME-theme md-chip{background:\"{{background-300}}\";color:\"{{background-800}}\"}md-chips.md-THEME_NAME-theme md-chip md-icon{color:\"{{background-700}}\"}md-chips.md-THEME_NAME-theme md-chip.md-focused{background:\"{{primary-color}}\";color:\"{{primary-contrast}}\"}md-chips.md-THEME_NAME-theme md-chip.md-focused md-icon{color:\"{{primary-contrast}}\"}md-chips.md-THEME_NAME-theme md-chip._md-chip-editing{background:transparent;color:\"{{background-800}}\"}md-chips.md-THEME_NAME-theme md-chip-remove .md-button md-icon path{fill:\"{{background-500}}\"}.md-contact-suggestion span.md-contact-email{color:\"{{background-400}}\"}md-content.md-THEME_NAME-theme{color:\"{{foreground-1}}\";background-color:\"{{background-default}}\"}.md-THEME_NAME-theme .md-calendar{background:\"{{background-hue-1}}\";color:\"{{foreground-1-0.87}}\"}.md-THEME_NAME-theme .md-calendar tr:last-child td{border-bottom-color:\"{{background-hue-2}}\"}.md-THEME_NAME-theme .md-calendar-day-header{background:\"{{background-500-0.32}}\";color:\"{{foreground-1-0.87}}\"}.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator{border:1px solid \"{{primary-500}}\"}.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today.md-calendar-date-disabled{color:\"{{primary-500-0.6}}\"}.md-calendar-date.md-focus .md-THEME_NAME-theme .md-calendar-date-selection-indicator,.md-THEME_NAME-theme .md-calendar-date-selection-indicator:hover{background:\"{{background-500-0.32}}\"}.md-THEME_NAME-theme .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator,.md-THEME_NAME-theme .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator{background:\"{{primary-500}}\";color:\"{{primary-500-contrast}}\";border-color:transparent}.md-THEME_NAME-theme .md-calendar-date-disabled,.md-THEME_NAME-theme .md-calendar-month-label-disabled{color:\"{{foreground-3}}\"}.md-THEME_NAME-theme .md-calendar-month-label md-icon,.md-THEME_NAME-theme .md-datepicker-input{color:\"{{foreground-1}}\"}.md-THEME_NAME-theme .md-datepicker-input::-webkit-input-placeholder{color:\"{{foreground-3}}\"}.md-THEME_NAME-theme .md-datepicker-input:-ms-input-placeholder,.md-THEME_NAME-theme .md-datepicker-input::-ms-input-placeholder{color:\"{{foreground-3}}\"}.md-THEME_NAME-theme .md-datepicker-input::placeholder{color:\"{{foreground-3}}\"}.md-THEME_NAME-theme .md-datepicker-input:-moz-placeholder,.md-THEME_NAME-theme .md-datepicker-input::-moz-placeholder{color:\"{{foreground-3}}\";opacity:1}.md-THEME_NAME-theme .md-datepicker-input-container{border-bottom-color:\"{{foreground-4}}\"}.md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-focused{border-bottom-color:\"{{primary-color}}\"}.md-accent .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-focused{border-bottom-color:\"{{accent-color}}\"}.md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-invalid,.md-warn .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-focused{border-bottom-color:\"{{warn-A700}}\"}.md-THEME_NAME-theme .md-datepicker-calendar-pane{border-color:\"{{background-hue-1}}\"}.md-THEME_NAME-theme .md-datepicker-triangle-button .md-datepicker-expand-triangle{border-top-color:\"{{foreground-2}}\"}.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon{color:\"{{primary-color}}\"}.md-accent .md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon,.md-THEME_NAME-theme .md-datepicker-open.md-accent .md-datepicker-calendar-icon{color:\"{{accent-color}}\"}.md-THEME_NAME-theme .md-datepicker-open.md-warn .md-datepicker-calendar-icon,.md-warn .md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon{color:\"{{warn-A700}}\"}.md-THEME_NAME-theme .md-datepicker-calendar{background:\"{{background-hue-1}}\"}.md-THEME_NAME-theme .md-datepicker-input-mask-opaque{box-shadow:0 0 0 9999px \"{{background-hue-1}}\"}.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-input-container{background:\"{{background-hue-1}}\"}md-dialog.md-THEME_NAME-theme{border-radius:4px;background-color:\"{{background-hue-1}}\";color:\"{{foreground-1}}\"}md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions,md-dialog.md-THEME_NAME-theme.md-content-overflow md-dialog-actions,md-divider.md-THEME_NAME-theme{border-top-color:\"{{foreground-4}}\"}.layout-gt-lg-row>md-divider.md-THEME_NAME-theme,.layout-gt-md-row>md-divider.md-THEME_NAME-theme,.layout-gt-sm-row>md-divider.md-THEME_NAME-theme,.layout-gt-xs-row>md-divider.md-THEME_NAME-theme,.layout-lg-row>md-divider.md-THEME_NAME-theme,.layout-md-row>md-divider.md-THEME_NAME-theme,.layout-row>md-divider.md-THEME_NAME-theme,.layout-sm-row>md-divider.md-THEME_NAME-theme,.layout-xl-row>md-divider.md-THEME_NAME-theme,.layout-xs-row>md-divider.md-THEME_NAME-theme{border-right-color:\"{{foreground-4}}\"}md-icon.md-THEME_NAME-theme{color:\"{{foreground-2}}\"}md-icon.md-THEME_NAME-theme.md-primary{color:\"{{primary-color}}\"}md-icon.md-THEME_NAME-theme.md-accent{color:\"{{accent-color}}\"}md-icon.md-THEME_NAME-theme.md-warn{color:\"{{warn-color}}\"}md-input-container.md-THEME_NAME-theme .md-input{color:\"{{foreground-1}}\";border-color:\"{{foreground-4}}\"}md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder,md-input-container.md-THEME_NAME-theme .md-input::-ms-input-placeholder{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme .md-input::placeholder{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder,md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder{color:\"{{foreground-2}}\";opacity:1}md-input-container.md-THEME_NAME-theme>md-icon{color:\"{{foreground-1}}\"}md-input-container.md-THEME_NAME-theme .md-placeholder,md-input-container.md-THEME_NAME-theme label{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme label.md-required:after{color:\"{{warn-A700}}\"}md-input-container.md-THEME_NAME-theme:not(.md-input-focused):not(.md-input-invalid) label.md-required:after{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme .md-input-message-animation,md-input-container.md-THEME_NAME-theme .md-input-messages-animation{color:\"{{warn-A700}}\"}md-input-container.md-THEME_NAME-theme .md-input-message-animation .md-char-counter,md-input-container.md-THEME_NAME-theme .md-input-messages-animation .md-char-counter{color:\"{{foreground-1}}\"}md-input-container.md-THEME_NAME-theme.md-input-focused .md-input::-webkit-input-placeholder{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme.md-input-focused .md-input:-ms-input-placeholder,md-input-container.md-THEME_NAME-theme.md-input-focused .md-input::-ms-input-placeholder{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme.md-input-focused .md-input::placeholder{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme.md-input-focused .md-input:-moz-placeholder,md-input-container.md-THEME_NAME-theme.md-input-focused .md-input::-moz-placeholder{color:\"{{foreground-2}}\";opacity:1}md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-has-value label{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused .md-input,md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-resized .md-input{border-color:\"{{primary-color}}\"}md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused label,md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused md-icon{color:\"{{primary-color}}\"}md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent .md-input{border-color:\"{{accent-color}}\"}md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent label,md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent md-icon{color:\"{{accent-color}}\"}md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn .md-input{border-color:\"{{warn-A700}}\"}md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn label,md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn md-icon{color:\"{{warn-A700}}\"}md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input{border-color:\"{{warn-A700}}\"}md-input-container.md-THEME_NAME-theme.md-input-invalid .md-char-counter,md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input-message-animation,md-input-container.md-THEME_NAME-theme.md-input-invalid label{color:\"{{warn-A700}}\"}[disabled] md-input-container.md-THEME_NAME-theme .md-input,md-input-container.md-THEME_NAME-theme .md-input[disabled]{border-bottom-color:transparent;color:\"{{foreground-3}}\";background-image:linear-gradient(90deg,\"{{foreground-3}}\" 0,\"{{foreground-3}}\" 33%,transparent 0);background-image:-ms-linear-gradient(left,transparent 0,\"{{foreground-3}}\" 100%)}md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h3,md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h4,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h3,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h4{color:\"{{foreground-1}}\"}md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text p,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text p{color:\"{{foreground-2}}\"}md-list.md-THEME_NAME-theme .md-proxy-focus.md-focused div.md-no-style{background-color:\"{{background-100}}\"}md-list.md-THEME_NAME-theme md-list-item .md-avatar-icon{background-color:\"{{foreground-3}}\";color:\"{{background-color}}\"}md-list.md-THEME_NAME-theme md-list-item>md-icon{color:\"{{foreground-2}}\"}md-list.md-THEME_NAME-theme md-list-item>md-icon.md-highlight{color:\"{{primary-color}}\"}md-list.md-THEME_NAME-theme md-list-item>md-icon.md-highlight.md-accent{color:\"{{accent-color}}\"}md-menu-content.md-THEME_NAME-theme{background-color:\"{{background-hue-1}}\"}md-menu-content.md-THEME_NAME-theme md-menu-item{color:\"{{foreground-1}}\"}md-menu-content.md-THEME_NAME-theme md-menu-item md-icon{color:\"{{foreground-2}}\"}md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled],md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled] md-icon{color:\"{{foreground-3}}\"}md-menu-content.md-THEME_NAME-theme md-menu-divider{background-color:\"{{foreground-4}}\"}md-menu-bar.md-THEME_NAME-theme>button.md-button{color:\"{{foreground-1}}\";border-radius:2px}md-menu-bar.md-THEME_NAME-theme md-menu>button{color:\"{{foreground-1}}\"}md-menu-bar.md-THEME_NAME-theme md-menu.md-open>button,md-menu-bar.md-THEME_NAME-theme md-menu>button:focus{outline:none;background-color:\"{{ background-500-0.18}}\"}md-menu-bar.md-THEME_NAME-theme.md-open:not(.md-keyboard-mode) md-menu:hover>button{background-color:\"{{ background-500-0.18}}\"}md-menu-bar.md-THEME_NAME-theme:not(.md-keyboard-mode):not(.md-open) md-menu button:focus,md-menu-bar.md-THEME_NAME-theme:not(.md-keyboard-mode):not(.md-open) md-menu button:hover{background:transparent}md-menu-content.md-THEME_NAME-theme .md-menu>.md-button:after{color:\"{{foreground-2}}\"}md-menu-content.md-THEME_NAME-theme .md-menu.md-open>.md-button{background-color:\"{{ background-500-0.18}}\"}md-toolbar.md-THEME_NAME-theme.md-menu-toolbar{background-color:\"{{background-hue-1}}\";color:\"{{foreground-1}}\"}md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler{background-color:\"{{primary-color}}\";color:\"{{primary-contrast}}\"}md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler md-icon{color:\"{{primary-contrast}}\"}md-nav-bar.md-THEME_NAME-theme .md-nav-bar{background-color:transparent;border-color:\"{{foreground-4}}\"}md-nav-bar.md-THEME_NAME-theme .md-button._md-nav-button.md-unselected{color:\"{{foreground-2}}\"}md-nav-bar.md-THEME_NAME-theme .md-button._md-nav-button[disabled]{color:\"{{foreground-3}}\"}md-nav-bar.md-THEME_NAME-theme md-nav-ink-bar{color:\"{{accent-color}}\";background:\"{{accent-color}}\"}md-nav-bar.md-THEME_NAME-theme.md-accent>.md-nav-bar{background-color:\"{{accent-color}}\"}md-nav-bar.md-THEME_NAME-theme.md-accent>.md-nav-bar .md-button._md-nav-button{color:\"{{accent-A100}}\"}md-nav-bar.md-THEME_NAME-theme.md-accent>.md-nav-bar .md-button._md-nav-button.md-active,md-nav-bar.md-THEME_NAME-theme.md-accent>.md-nav-bar .md-button._md-nav-button.md-focused{color:\"{{accent-contrast}}\"}md-nav-bar.md-THEME_NAME-theme.md-accent>.md-nav-bar .md-button._md-nav-button.md-focused{background:\"{{accent-contrast-0.1}}\"}md-nav-bar.md-THEME_NAME-theme.md-accent>.md-nav-bar md-nav-ink-bar{color:\"{{primary-600-1}}\";background:\"{{primary-600-1}}\"}md-nav-bar.md-THEME_NAME-theme.md-warn>.md-nav-bar{background-color:\"{{warn-color}}\"}md-nav-bar.md-THEME_NAME-theme.md-warn>.md-nav-bar .md-button._md-nav-button{color:\"{{warn-100}}\"}md-nav-bar.md-THEME_NAME-theme.md-warn>.md-nav-bar .md-button._md-nav-button.md-active,md-nav-bar.md-THEME_NAME-theme.md-warn>.md-nav-bar .md-button._md-nav-button.md-focused{color:\"{{warn-contrast}}\"}md-nav-bar.md-THEME_NAME-theme.md-warn>.md-nav-bar .md-button._md-nav-button.md-focused{background:\"{{warn-contrast-0.1}}\"}md-nav-bar.md-THEME_NAME-theme.md-primary>.md-nav-bar{background-color:\"{{primary-color}}\"}md-nav-bar.md-THEME_NAME-theme.md-primary>.md-nav-bar .md-button._md-nav-button{color:\"{{primary-100}}\"}md-nav-bar.md-THEME_NAME-theme.md-primary>.md-nav-bar .md-button._md-nav-button.md-active,md-nav-bar.md-THEME_NAME-theme.md-primary>.md-nav-bar .md-button._md-nav-button.md-focused{color:\"{{primary-contrast}}\"}md-nav-bar.md-THEME_NAME-theme.md-primary>.md-nav-bar .md-button._md-nav-button.md-focused{background:\"{{primary-contrast-0.1}}\"}md-toolbar>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar{background-color:\"{{primary-color}}\"}md-toolbar>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button{color:\"{{primary-100}}\"}md-toolbar>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-active,md-toolbar>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-focused{color:\"{{primary-contrast}}\"}md-toolbar>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-focused{background:\"{{primary-contrast-0.1}}\"}md-toolbar.md-accent>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar{background-color:\"{{accent-color}}\"}md-toolbar.md-accent>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button{color:\"{{accent-A100}}\"}md-toolbar.md-accent>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-active,md-toolbar.md-accent>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-focused{color:\"{{accent-contrast}}\"}md-toolbar.md-accent>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-focused{background:\"{{accent-contrast-0.1}}\"}md-toolbar.md-accent>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar md-nav-ink-bar{color:\"{{primary-600-1}}\";background:\"{{primary-600-1}}\"}md-toolbar.md-warn>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar{background-color:\"{{warn-color}}\"}md-toolbar.md-warn>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button{color:\"{{warn-100}}\"}md-toolbar.md-warn>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-active,md-toolbar.md-warn>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-focused{color:\"{{warn-contrast}}\"}md-toolbar.md-warn>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-focused{background:\"{{warn-contrast-0.1}}\"}._md-panel-backdrop.md-THEME_NAME-theme{background-color:\"{{background-900-1.0}}\"}md-progress-circular.md-THEME_NAME-theme path{stroke:\"{{primary-color}}\"}md-progress-circular.md-THEME_NAME-theme.md-warn path{stroke:\"{{warn-color}}\"}md-progress-circular.md-THEME_NAME-theme.md-accent path{stroke:\"{{accent-color}}\"}md-progress-linear.md-THEME_NAME-theme .md-container{background-color:\"{{primary-100}}\"}md-progress-linear.md-THEME_NAME-theme .md-bar{background-color:\"{{primary-color}}\"}md-progress-linear.md-THEME_NAME-theme.md-warn .md-container{background-color:\"{{warn-100}}\"}md-progress-linear.md-THEME_NAME-theme.md-warn .md-bar{background-color:\"{{warn-color}}\"}md-progress-linear.md-THEME_NAME-theme.md-accent .md-container{background-color:\"{{accent-100}}\"}md-progress-linear.md-THEME_NAME-theme.md-accent .md-bar{background-color:\"{{accent-color}}\"}md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-primary .md-bar1{background-color:\"{{primary-100}}\"}md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-primary .md-dashed:before{background:radial-gradient(\"{{primary-100}}\" 0,\"{{primary-100}}\" 16%,transparent 42%)}md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-bar1{background-color:\"{{warn-100}}\"}md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-dashed:before{background:radial-gradient(\"{{warn-100}}\" 0,\"{{warn-100}}\" 16%,transparent 42%)}md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-bar1{background-color:\"{{accent-100}}\"}md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-dashed:before{background:radial-gradient(\"{{accent-100}}\" 0,\"{{accent-100}}\" 16%,transparent 42%)}md-radio-button.md-THEME_NAME-theme .md-off{border-color:\"{{foreground-2}}\"}md-radio-button.md-THEME_NAME-theme .md-on{background-color:\"{{accent-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme.md-checked .md-off{border-color:\"{{accent-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme.md-checked .md-ink-ripple{color:\"{{accent-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme .md-container .md-ripple{color:\"{{accent-A700}}\"}md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-on,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-on,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-on{background-color:\"{{primary-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-off,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-off,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-off,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-off{border-color:\"{{primary-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple{color:\"{{primary-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-container .md-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-container .md-ripple{color:\"{{primary-600}}\"}md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-on,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-on,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-on{background-color:\"{{warn-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-off,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-off,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-off,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-off{border-color:\"{{warn-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple{color:\"{{warn-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-container .md-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-container .md-ripple{color:\"{{warn-600}}\"}md-radio-button.md-THEME_NAME-theme[disabled],md-radio-group.md-THEME_NAME-theme[disabled]{color:\"{{foreground-3}}\"}md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-off,md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-on,md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-off,md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-on{border-color:\"{{foreground-3}}\"}md-radio-group.md-THEME_NAME-theme .md-checked .md-ink-ripple{color:\"{{accent-color-0.26}}\"}md-radio-group.md-THEME_NAME-theme .md-checked:not([disabled]).md-primary .md-ink-ripple,md-radio-group.md-THEME_NAME-theme.md-primary .md-checked:not([disabled]) .md-ink-ripple{color:\"{{primary-color-0.26}}\"}md-radio-group.md-THEME_NAME-theme.md-focused.ng-empty>md-radio-button:first-child .md-container:before{background-color:\"{{foreground-3-0.26}}\"}md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked .md-container:before{background-color:\"{{accent-color-0.26}}\"}md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-primary .md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-primary .md-checked .md-container:before{background-color:\"{{primary-color-0.26}}\"}md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-warn .md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-warn .md-checked .md-container:before{background-color:\"{{warn-color-0.26}}\"}md-input-container md-select.md-THEME_NAME-theme .md-select-value span:first-child:after{color:\"{{warn-A700}}\"}md-input-container:not(.md-input-focused):not(.md-input-invalid) md-select.md-THEME_NAME-theme .md-select-value span:first-child:after{color:\"{{foreground-3}}\"}md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-THEME_NAME-theme .md-select-value,md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-THEME_NAME-theme .md-select-value.md-select-placeholder{color:\"{{primary-color}}\"}md-input-container.md-input-invalid md-select.md-THEME_NAME-theme .md-select-value{color:\"{{warn-A700}}\"!important;border-bottom-color:\"{{warn-A700}}\"!important}md-input-container.md-input-invalid md-select.md-THEME_NAME-theme.md-no-underline .md-select-value{border-bottom-color:transparent!important}md-input-container:not(.md-input-invalid).md-input-focused.md-accent .md-select-value{border-color:\"{{accent-color}}\"}md-input-container:not(.md-input-invalid).md-input-focused.md-accent .md-select-value span{color:\"{{accent-color}}\"}md-input-container:not(.md-input-invalid).md-input-focused.md-warn .md-select-value{border-color:\"{{warn-A700}}\"}md-input-container:not(.md-input-invalid).md-input-focused.md-warn .md-select-value span{color:\"{{warn-A700}}\"}md-select.md-THEME_NAME-theme[disabled] .md-select-value{border-bottom-color:transparent;background-image:linear-gradient(90deg,\"{{foreground-3}}\" 0,\"{{foreground-3}}\" 33%,transparent 0);background-image:-ms-linear-gradient(left,transparent 0,\"{{foreground-3}}\" 100%)}md-select.md-THEME_NAME-theme .md-select-value{border-bottom-color:\"{{foreground-4}}\"}md-select.md-THEME_NAME-theme .md-select-value.md-select-placeholder{color:\"{{foreground-3}}\"}md-select.md-THEME_NAME-theme .md-select-value span:first-child:after{color:\"{{warn-A700}}\"}md-select.md-THEME_NAME-theme.md-no-underline .md-select-value{border-bottom-color:transparent!important}md-select.md-THEME_NAME-theme.ng-invalid.ng-touched .md-select-value{color:\"{{warn-A700}}\"!important;border-bottom-color:\"{{warn-A700}}\"!important}md-select.md-THEME_NAME-theme.ng-invalid.ng-touched.md-no-underline .md-select-value{border-bottom-color:transparent!important}md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-value{border-bottom-color:\"{{primary-color}}\";color:\"{{ foreground-1 }}\"}md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-value.md-select-placeholder{color:\"{{ foreground-1 }}\"}md-select.md-THEME_NAME-theme:not([disabled]):focus.md-no-underline .md-select-value{border-bottom-color:transparent!important}md-select.md-THEME_NAME-theme:not([disabled]):focus.md-accent .md-select-value{border-bottom-color:\"{{accent-color}}\"}md-select.md-THEME_NAME-theme:not([disabled]):focus.md-warn .md-select-value{border-bottom-color:\"{{warn-color}}\"}md-select.md-THEME_NAME-theme[disabled] .md-select-icon,md-select.md-THEME_NAME-theme[disabled] .md-select-value,md-select.md-THEME_NAME-theme[disabled] .md-select-value.md-select-placeholder{color:\"{{foreground-3}}\"}md-select.md-THEME_NAME-theme .md-select-icon{color:\"{{foreground-2}}\"}md-select-menu.md-THEME_NAME-theme md-content{background-color:\"{{background-hue-1}}\"}md-select-menu.md-THEME_NAME-theme md-content md-optgroup{color:\"{{foreground-2}}\"}md-select-menu.md-THEME_NAME-theme md-content md-option{color:\"{{foreground-1}}\"}md-select-menu.md-THEME_NAME-theme md-content md-option[disabled] .md-text{color:\"{{foreground-3}}\"}md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):focus,md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):hover{background-color:\"{{background-500-0.18}}\"}md-select-menu.md-THEME_NAME-theme md-content md-option[selected]{color:\"{{primary-500}}\"}md-select-menu.md-THEME_NAME-theme md-content md-option[selected]:focus{color:\"{{primary-600}}\"}md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent{color:\"{{accent-color}}\"}md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent:focus{color:\"{{accent-A700}}\"}.md-checkbox-enabled.md-THEME_NAME-theme .md-ripple{color:\"{{primary-600}}\"}.md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-ripple{color:\"{{background-600}}\"}.md-checkbox-enabled.md-THEME_NAME-theme .md-ink-ripple{color:\"{{foreground-2}}\"}.md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-ink-ripple{color:\"{{primary-color-0.87}}\"}.md-checkbox-enabled.md-THEME_NAME-theme:not(.md-checked) .md-icon{border-color:\"{{foreground-2}}\"}.md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-icon{background-color:\"{{primary-color-0.87}}\"}.md-checkbox-enabled.md-THEME_NAME-theme[selected].md-focused .md-container:before{background-color:\"{{primary-color-0.26}}\"}.md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-icon:after{border-color:\"{{primary-contrast-0.87}}\"}.md-checkbox-enabled.md-THEME_NAME-theme .md-indeterminate[disabled] .md-container{color:\"{{foreground-3}}\"}.md-checkbox-enabled.md-THEME_NAME-theme md-option .md-text{color:\"{{foreground-1}}\"}md-sidenav.md-THEME_NAME-theme,md-sidenav.md-THEME_NAME-theme md-content{background-color:\"{{background-hue-1}}\"}md-slider.md-THEME_NAME-theme .md-track{background-color:\"{{foreground-3}}\"}md-slider.md-THEME_NAME-theme .md-track-ticks{color:\"{{background-contrast}}\"}md-slider.md-THEME_NAME-theme .md-focus-ring{background-color:\"{{accent-A200-0.2}}\"}md-slider.md-THEME_NAME-theme .md-disabled-thumb{border-color:\"{{background-color}}\";background-color:\"{{background-color}}\"}md-slider.md-THEME_NAME-theme.md-min .md-thumb:after{background-color:\"{{background-color}}\";border-color:\"{{foreground-3}}\"}md-slider.md-THEME_NAME-theme.md-min .md-focus-ring{background-color:\"{{foreground-3-0.38}}\"}md-slider.md-THEME_NAME-theme.md-min[md-discrete] .md-thumb:after{background-color:\"{{background-contrast}}\";border-color:transparent}md-slider.md-THEME_NAME-theme.md-min[md-discrete] .md-sign{background-color:\"{{background-400}}\"}md-slider.md-THEME_NAME-theme.md-min[md-discrete] .md-sign:after{border-top-color:\"{{background-400}}\"}md-slider.md-THEME_NAME-theme.md-min[md-discrete][md-vertical] .md-sign:after{border-top-color:transparent;border-left-color:\"{{background-400}}\"}md-slider.md-THEME_NAME-theme .md-track.md-track-fill{background-color:\"{{accent-color}}\"}md-slider.md-THEME_NAME-theme .md-thumb:after{border-color:\"{{accent-color}}\";background-color:\"{{accent-color}}\"}md-slider.md-THEME_NAME-theme .md-sign{background-color:\"{{accent-color}}\"}md-slider.md-THEME_NAME-theme .md-sign:after{border-top-color:\"{{accent-color}}\"}md-slider.md-THEME_NAME-theme[md-vertical] .md-sign:after{border-top-color:transparent;border-left-color:\"{{accent-color}}\"}md-slider.md-THEME_NAME-theme .md-thumb-text{color:\"{{accent-contrast}}\"}md-slider.md-THEME_NAME-theme.md-warn .md-focus-ring{background-color:\"{{warn-200-0.38}}\"}md-slider.md-THEME_NAME-theme.md-warn .md-track.md-track-fill{background-color:\"{{warn-color}}\"}md-slider.md-THEME_NAME-theme.md-warn .md-thumb:after{border-color:\"{{warn-color}}\";background-color:\"{{warn-color}}\"}md-slider.md-THEME_NAME-theme.md-warn .md-sign{background-color:\"{{warn-color}}\"}md-slider.md-THEME_NAME-theme.md-warn .md-sign:after{border-top-color:\"{{warn-color}}\"}md-slider.md-THEME_NAME-theme.md-warn[md-vertical] .md-sign:after{border-top-color:transparent;border-left-color:\"{{warn-color}}\"}md-slider.md-THEME_NAME-theme.md-warn .md-thumb-text{color:\"{{warn-contrast}}\"}md-slider.md-THEME_NAME-theme.md-primary .md-focus-ring{background-color:\"{{primary-200-0.38}}\"}md-slider.md-THEME_NAME-theme.md-primary .md-track.md-track-fill{background-color:\"{{primary-color}}\"}md-slider.md-THEME_NAME-theme.md-primary .md-thumb:after{border-color:\"{{primary-color}}\";background-color:\"{{primary-color}}\"}md-slider.md-THEME_NAME-theme.md-primary .md-sign{background-color:\"{{primary-color}}\"}md-slider.md-THEME_NAME-theme.md-primary .md-sign:after{border-top-color:\"{{primary-color}}\"}md-slider.md-THEME_NAME-theme.md-primary[md-vertical] .md-sign:after{border-top-color:transparent;border-left-color:\"{{primary-color}}\"}md-slider.md-THEME_NAME-theme.md-primary .md-thumb-text{color:\"{{primary-contrast}}\"}md-slider.md-THEME_NAME-theme[disabled] .md-thumb:after{border-color:transparent}md-slider.md-THEME_NAME-theme[disabled]:not(.md-min) .md-thumb:after,md-slider.md-THEME_NAME-theme[disabled][md-discrete] .md-thumb:after{background-color:\"{{foreground-3}}\";border-color:transparent}md-slider.md-THEME_NAME-theme[disabled][readonly] .md-sign{background-color:\"{{background-400}}\"}md-slider.md-THEME_NAME-theme[disabled][readonly] .md-sign:after{border-top-color:\"{{background-400}}\"}md-slider.md-THEME_NAME-theme[disabled][readonly][md-vertical] .md-sign:after{border-top-color:transparent;border-left-color:\"{{background-400}}\"}md-slider.md-THEME_NAME-theme[disabled][readonly] .md-disabled-thumb{border-color:transparent;background-color:transparent}md-slider-container[disabled]>:first-child:not(md-slider),md-slider-container[disabled]>:last-child:not(md-slider){color:\"{{foreground-3}}\"}.md-subheader.md-THEME_NAME-theme{color:\"{{ foreground-2-0.23 }}\";background-color:\"{{background-default}}\"}.md-subheader.md-THEME_NAME-theme.md-primary{color:\"{{primary-color}}\"}.md-subheader.md-THEME_NAME-theme.md-accent{color:\"{{accent-color}}\"}.md-subheader.md-THEME_NAME-theme.md-warn{color:\"{{warn-color}}\"}md-switch.md-THEME_NAME-theme .md-ink-ripple{color:\"{{background-500}}\"}md-switch.md-THEME_NAME-theme .md-thumb{background-color:\"{{background-50}}\"}md-switch.md-THEME_NAME-theme .md-bar{background-color:\"{{background-500}}\"}md-switch.md-THEME_NAME-theme.md-focused:not(.md-checked) .md-thumb:before,md-switch.md-THEME_NAME-theme.md-focused[disabled] .md-thumb:before{background-color:\"{{foreground-4}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]) .md-ink-ripple{color:\"{{accent-color}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]) .md-thumb{background-color:\"{{accent-color}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]) .md-bar{background-color:\"{{accent-color-0.5}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-focused .md-thumb:before{background-color:\"{{accent-color-0.26}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-primary .md-ink-ripple{color:\"{{primary-color}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-primary .md-thumb{background-color:\"{{primary-color}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-primary .md-bar{background-color:\"{{primary-color-0.5}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-primary.md-focused .md-thumb:before{background-color:\"{{primary-color-0.26}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-warn .md-ink-ripple{color:\"{{warn-color}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-warn .md-thumb{background-color:\"{{warn-color}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-warn .md-bar{background-color:\"{{warn-color-0.5}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-warn.md-focused .md-thumb:before{background-color:\"{{warn-color-0.26}}\"}md-switch.md-THEME_NAME-theme[disabled] .md-thumb{background-color:\"{{background-400}}\"}md-switch.md-THEME_NAME-theme[disabled] .md-bar{background-color:\"{{foreground-4}}\"}md-tabs.md-THEME_NAME-theme md-tabs-wrapper{background-color:transparent;border-color:\"{{foreground-4}}\"}md-tabs.md-THEME_NAME-theme .md-paginator md-icon{color:\"{{primary-color}}\"}md-tabs.md-THEME_NAME-theme md-ink-bar{color:\"{{accent-color}}\";background:\"{{accent-color}}\"}md-tabs.md-THEME_NAME-theme .md-tab{color:\"{{foreground-2}}\"}md-tabs.md-THEME_NAME-theme .md-tab[disabled],md-tabs.md-THEME_NAME-theme .md-tab[disabled] md-icon{color:\"{{foreground-3}}\"}md-tabs.md-THEME_NAME-theme .md-tab.md-active,md-tabs.md-THEME_NAME-theme .md-tab.md-active md-icon,md-tabs.md-THEME_NAME-theme .md-tab.md-focused,md-tabs.md-THEME_NAME-theme .md-tab.md-focused md-icon{color:\"{{primary-color}}\"}md-tabs.md-THEME_NAME-theme .md-tab.md-focused{background:\"{{primary-color-0.1}}\"}md-tabs.md-THEME_NAME-theme .md-tab .md-ripple-container{color:\"{{accent-A100}}\"}md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper{background-color:\"{{accent-color}}\"}md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]),md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]) md-icon{color:\"{{accent-A100}}\"}md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active,md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active md-icon,md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused,md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused md-icon{color:\"{{accent-contrast}}\"}md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused{background:\"{{accent-contrast-0.1}}\"}md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-ink-bar{color:\"{{primary-600-1}}\";background:\"{{primary-600-1}}\"}md-tabs.md-THEME_NAME-theme.md-primary>md-tabs-wrapper{background-color:\"{{primary-color}}\"}md-tabs.md-THEME_NAME-theme.md-primary>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]),md-tabs.md-THEME_NAME-theme.md-primary>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]) md-icon{color:\"{{primary-100}}\"}md-tabs.md-THEME_NAME-theme.md-primary>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active,md-tabs.md-THEME_NAME-theme.md-primary>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active md-icon,md-tabs.md-THEME_NAME-theme.md-primary>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused,md-tabs.md-THEME_NAME-theme.md-primary>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused md-icon{color:\"{{primary-contrast}}\"}md-tabs.md-THEME_NAME-theme.md-primary>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused{background:\"{{primary-contrast-0.1}}\"}md-tabs.md-THEME_NAME-theme.md-warn>md-tabs-wrapper{background-color:\"{{warn-color}}\"}md-tabs.md-THEME_NAME-theme.md-warn>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]),md-tabs.md-THEME_NAME-theme.md-warn>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]) md-icon{color:\"{{warn-100}}\"}md-tabs.md-THEME_NAME-theme.md-warn>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active,md-tabs.md-THEME_NAME-theme.md-warn>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active md-icon,md-tabs.md-THEME_NAME-theme.md-warn>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused,md-tabs.md-THEME_NAME-theme.md-warn>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused md-icon{color:\"{{warn-contrast}}\"}md-tabs.md-THEME_NAME-theme.md-warn>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused{background:\"{{warn-contrast-0.1}}\"}md-toolbar>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper{background-color:\"{{primary-color}}\"}md-toolbar>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]),md-toolbar>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]) md-icon{color:\"{{primary-100}}\"}md-toolbar>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active,md-toolbar>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active md-icon,md-toolbar>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused,md-toolbar>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused md-icon{color:\"{{primary-contrast}}\"}md-toolbar>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused{background:\"{{primary-contrast-0.1}}\"}md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper{background-color:\"{{accent-color}}\"}md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]),md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]) md-icon{color:\"{{accent-A100}}\"}md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active,md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active md-icon,md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused,md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused md-icon{color:\"{{accent-contrast}}\"}md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused{background:\"{{accent-contrast-0.1}}\"}md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-ink-bar{color:\"{{primary-600-1}}\";background:\"{{primary-600-1}}\"}md-toolbar.md-warn>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper{background-color:\"{{warn-color}}\"}md-toolbar.md-warn>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]),md-toolbar.md-warn>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]) md-icon{color:\"{{warn-100}}\"}md-toolbar.md-warn>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active,md-toolbar.md-warn>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active md-icon,md-toolbar.md-warn>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused,md-toolbar.md-warn>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused md-icon{color:\"{{warn-contrast}}\"}md-toolbar.md-warn>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused{background:\"{{warn-contrast-0.1}}\"}md-toast.md-THEME_NAME-theme .md-toast-content{background-color:#323232;color:\"{{background-50}}\"}md-toast.md-THEME_NAME-theme .md-toast-content .md-button{color:\"{{background-50}}\"}md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight{color:\"{{accent-color}}\"}md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-primary{color:\"{{primary-color}}\"}md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-warn{color:\"{{warn-color}}\"}md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar){background-color:\"{{primary-color}}\";color:\"{{primary-contrast}}\"}md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-icon{color:\"{{primary-contrast}}\";fill:\"{{primary-contrast}}\"}md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) .md-button[disabled] md-icon{color:\"{{primary-contrast-0.26}}\";fill:\"{{primary-contrast-0.26}}\"}md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent{background-color:\"{{accent-color}}\";color:\"{{accent-contrast}}\"}md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent .md-ink-ripple{color:\"{{accent-contrast}}\"}md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent md-icon{color:\"{{accent-contrast}}\";fill:\"{{accent-contrast}}\"}md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent .md-button[disabled] md-icon{color:\"{{accent-contrast-0.26}}\";fill:\"{{accent-contrast-0.26}}\"}md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn{background-color:\"{{warn-color}}\";color:\"{{warn-contrast}}\"}.md-panel.md-tooltip.md-THEME_NAME-theme{color:\"{{background-700-contrast}}\";background-color:\"{{background-700}}\"}body.md-THEME_NAME-theme,html.md-THEME_NAME-theme{color:\"{{foreground-1}}\";background-color:\"{{background-color}}\"}"); 
+angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-THEME_NAME-theme{background:\"{{background-hue-1}}\"}md-autocomplete.md-THEME_NAME-theme[disabled]:not([md-floating-label]){background:\"{{background-hue-2}}\"}md-autocomplete.md-THEME_NAME-theme button md-icon path{fill:\"{{background-600}}\"}md-autocomplete.md-THEME_NAME-theme button:after{background:\"{{background-600-0.3}}\"}md-autocomplete.md-THEME_NAME-theme input{color:\"{{foreground-1}}\"}md-autocomplete.md-THEME_NAME-theme.md-accent md-input-container.md-input-focused .md-input{border-color:\"{{accent-color}}\"}md-autocomplete.md-THEME_NAME-theme.md-accent md-input-container.md-input-focused label,md-autocomplete.md-THEME_NAME-theme.md-accent md-input-container.md-input-focused md-icon{color:\"{{accent-color}}\"}md-autocomplete.md-THEME_NAME-theme.md-accent md-progress-linear .md-container{background-color:\"{{accent-100}}\"}md-autocomplete.md-THEME_NAME-theme.md-accent md-progress-linear .md-bar{background-color:\"{{accent-color}}\"}md-autocomplete.md-THEME_NAME-theme.md-warn md-input-container.md-input-focused .md-input{border-color:\"{{warn-A700}}\"}md-autocomplete.md-THEME_NAME-theme.md-warn md-input-container.md-input-focused label,md-autocomplete.md-THEME_NAME-theme.md-warn md-input-container.md-input-focused md-icon{color:\"{{warn-A700}}\"}md-autocomplete.md-THEME_NAME-theme.md-warn md-progress-linear .md-container{background-color:\"{{warn-100}}\"}md-autocomplete.md-THEME_NAME-theme.md-warn md-progress-linear .md-bar{background-color:\"{{warn-color}}\"}.md-autocomplete-standard-list-container.md-THEME_NAME-theme,.md-autocomplete-suggestions-container.md-THEME_NAME-theme{background:\"{{background-hue-1}}\"}.md-autocomplete-standard-list-container.md-THEME_NAME-theme .md-autocomplete-suggestion,.md-autocomplete-suggestions-container.md-THEME_NAME-theme .md-autocomplete-suggestion{color:\"{{foreground-1}}\"}.md-autocomplete-standard-list-container.md-THEME_NAME-theme .md-autocomplete-suggestion.selected,.md-autocomplete-standard-list-container.md-THEME_NAME-theme .md-autocomplete-suggestion:hover,.md-autocomplete-suggestions-container.md-THEME_NAME-theme .md-autocomplete-suggestion.selected,.md-autocomplete-suggestions-container.md-THEME_NAME-theme .md-autocomplete-suggestion:hover{background:\"{{background-500-0.18}}\"}md-backdrop{background-color:\"{{background-900-0.0}}\"}md-backdrop.md-opaque.md-THEME_NAME-theme{background-color:\"{{background-900-1.0}}\"}md-bottom-sheet.md-THEME_NAME-theme{background-color:\"{{background-color}}\";border-top-color:\"{{background-hue-3}}\"}md-bottom-sheet.md-THEME_NAME-theme.md-list md-list-item{color:\"{{foreground-1}}\"}md-bottom-sheet.md-THEME_NAME-theme .md-subheader{background-color:\"{{background-color}}\";color:\"{{foreground-1}}\"}.md-button.md-THEME_NAME-theme:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme:not([disabled]):hover{background-color:\"{{background-500-0.2}}\"}.md-button.md-THEME_NAME-theme:not([disabled]).md-icon-button:hover{background-color:transparent}.md-button.md-THEME_NAME-theme.md-fab md-icon{color:\"{{accent-contrast}}\"}.md-button.md-THEME_NAME-theme.md-primary{color:\"{{primary-color}}\"}.md-button.md-THEME_NAME-theme.md-primary.md-fab,.md-button.md-THEME_NAME-theme.md-primary.md-raised{color:\"{{primary-contrast}}\";background-color:\"{{primary-color}}\"}.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]) md-icon,.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]) md-icon{color:\"{{primary-contrast}}\"}.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover,.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover{background-color:\"{{primary-600}}\"}.md-button.md-THEME_NAME-theme.md-primary:not([disabled]) md-icon{color:\"{{primary-color}}\"}.md-button.md-THEME_NAME-theme.md-fab{background-color:\"{{accent-color}}\";color:\"{{accent-contrast}}\"}.md-button.md-THEME_NAME-theme.md-fab:not([disabled]) .md-icon{color:\"{{accent-contrast}}\"}.md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover{background-color:\"{{accent-A700}}\"}.md-button.md-THEME_NAME-theme.md-raised{color:\"{{background-900}}\";background-color:\"{{background-50}}\"}.md-button.md-THEME_NAME-theme.md-raised:not([disabled]) md-icon{color:\"{{background-900}}\"}.md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover{background-color:\"{{background-50}}\"}.md-button.md-THEME_NAME-theme.md-raised:not([disabled]).md-focused{background-color:\"{{background-200}}\"}.md-button.md-THEME_NAME-theme.md-warn{color:\"{{warn-color}}\"}.md-button.md-THEME_NAME-theme.md-warn.md-fab,.md-button.md-THEME_NAME-theme.md-warn.md-raised{color:\"{{warn-contrast}}\";background-color:\"{{warn-color}}\"}.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]) md-icon,.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]) md-icon{color:\"{{warn-contrast}}\"}.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover,.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover{background-color:\"{{warn-600}}\"}.md-button.md-THEME_NAME-theme.md-warn:not([disabled]) md-icon{color:\"{{warn-color}}\"}.md-button.md-THEME_NAME-theme.md-accent{color:\"{{accent-color}}\"}.md-button.md-THEME_NAME-theme.md-accent.md-fab,.md-button.md-THEME_NAME-theme.md-accent.md-raised{color:\"{{accent-contrast}}\";background-color:\"{{accent-color}}\"}.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]) md-icon,.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]) md-icon{color:\"{{accent-contrast}}\"}.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover,.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover{background-color:\"{{accent-A700}}\"}.md-button.md-THEME_NAME-theme.md-accent:not([disabled]) md-icon{color:\"{{accent-color}}\"}.md-button.md-THEME_NAME-theme.md-accent[disabled],.md-button.md-THEME_NAME-theme.md-fab[disabled],.md-button.md-THEME_NAME-theme.md-raised[disabled],.md-button.md-THEME_NAME-theme.md-warn[disabled],.md-button.md-THEME_NAME-theme[disabled]{color:\"{{foreground-3}}\";cursor:default}.md-button.md-THEME_NAME-theme.md-accent[disabled] md-icon,.md-button.md-THEME_NAME-theme.md-fab[disabled] md-icon,.md-button.md-THEME_NAME-theme.md-raised[disabled] md-icon,.md-button.md-THEME_NAME-theme.md-warn[disabled] md-icon,.md-button.md-THEME_NAME-theme[disabled] md-icon{color:\"{{foreground-3}}\"}.md-button.md-THEME_NAME-theme.md-fab[disabled],.md-button.md-THEME_NAME-theme.md-raised[disabled]{background-color:\"{{foreground-4}}\"}.md-button.md-THEME_NAME-theme[disabled]{background-color:transparent}._md a.md-THEME_NAME-theme:not(.md-button).md-primary{color:\"{{primary-color}}\"}._md a.md-THEME_NAME-theme:not(.md-button).md-primary:hover{color:\"{{primary-700}}\"}._md a.md-THEME_NAME-theme:not(.md-button).md-accent{color:\"{{accent-color}}\"}._md a.md-THEME_NAME-theme:not(.md-button).md-accent:hover{color:\"{{accent-A700}}\"}._md a.md-THEME_NAME-theme:not(.md-button).md-warn{color:\"{{warn-color}}\"}._md a.md-THEME_NAME-theme:not(.md-button).md-warn:hover{color:\"{{warn-700}}\"}md-card.md-THEME_NAME-theme{color:\"{{foreground-1}}\";background-color:\"{{background-hue-1}}\";border-radius:2px}md-card.md-THEME_NAME-theme .md-card-image{border-radius:2px 2px 0 0}md-card.md-THEME_NAME-theme md-card-header md-card-avatar md-icon{color:\"{{background-color}}\";background-color:\"{{foreground-3}}\"}md-card.md-THEME_NAME-theme md-card-header md-card-header-text .md-subhead,md-card.md-THEME_NAME-theme md-card-title md-card-title-text:not(:only-child) .md-subhead{color:\"{{foreground-2}}\"}md-checkbox.md-THEME_NAME-theme .md-ripple{color:\"{{accent-A700}}\"}md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple{color:\"{{background-600}}\"}md-checkbox.md-THEME_NAME-theme.md-checked.md-focused .md-container:before{background-color:\"{{accent-color-0.26}}\"}md-checkbox.md-THEME_NAME-theme .md-ink-ripple{color:\"{{foreground-2}}\"}md-checkbox.md-THEME_NAME-theme.md-checked .md-ink-ripple{color:\"{{accent-color-0.87}}\"}md-checkbox.md-THEME_NAME-theme:not(.md-checked) .md-icon{border-color:\"{{foreground-2}}\"}md-checkbox.md-THEME_NAME-theme.md-checked .md-icon{background-color:\"{{accent-color-0.87}}\"}md-checkbox.md-THEME_NAME-theme.md-checked .md-icon:after{border-color:\"{{accent-contrast-0.87}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ripple{color:\"{{primary-600}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ripple{color:\"{{background-600}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ink-ripple{color:\"{{foreground-2}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple{color:\"{{primary-color-0.87}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary:not(.md-checked) .md-icon{border-color:\"{{foreground-2}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon{background-color:\"{{primary-color-0.87}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked.md-focused .md-container:before{background-color:\"{{primary-color-0.26}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon:after{border-color:\"{{primary-contrast-0.87}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-indeterminate[disabled] .md-container{color:\"{{foreground-3}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ripple{color:\"{{warn-600}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ink-ripple{color:\"{{foreground-2}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple{color:\"{{warn-color-0.87}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn:not(.md-checked) .md-icon{border-color:\"{{foreground-2}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon{background-color:\"{{warn-color-0.87}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked.md-focused:not([disabled]) .md-container:before{background-color:\"{{warn-color-0.26}}\"}md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon:after{border-color:\"{{background-200}}\"}md-checkbox.md-THEME_NAME-theme[disabled]:not(.md-checked) .md-icon{border-color:\"{{foreground-3}}\"}md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon{background-color:\"{{foreground-3}}\"}md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon:after{border-color:\"{{background-200}}\"}md-checkbox.md-THEME_NAME-theme[disabled] .md-icon:after{border-color:\"{{foreground-3}}\"}md-checkbox.md-THEME_NAME-theme[disabled] .md-label{color:\"{{foreground-3}}\"}md-chips.md-THEME_NAME-theme .md-chips{box-shadow:0 1px \"{{foreground-4}}\"}md-chips.md-THEME_NAME-theme .md-chips.md-focused{box-shadow:0 2px \"{{primary-color}}\"}md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input{color:\"{{foreground-1}}\"}md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input::-webkit-input-placeholder{color:\"{{foreground-3}}\"}md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input:-ms-input-placeholder,md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input::-ms-input-placeholder{color:\"{{foreground-3}}\"}md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input::placeholder{color:\"{{foreground-3}}\"}md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input:-moz-placeholder,md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input::-moz-placeholder{color:\"{{foreground-3}}\";opacity:1}md-chips.md-THEME_NAME-theme md-chip{background:\"{{background-300}}\";color:\"{{background-800}}\"}md-chips.md-THEME_NAME-theme md-chip md-icon{color:\"{{background-700}}\"}md-chips.md-THEME_NAME-theme md-chip.md-focused{background:\"{{primary-color}}\";color:\"{{primary-contrast}}\"}md-chips.md-THEME_NAME-theme md-chip.md-focused md-icon{color:\"{{primary-contrast}}\"}md-chips.md-THEME_NAME-theme md-chip._md-chip-editing{background:transparent;color:\"{{background-800}}\"}md-chips.md-THEME_NAME-theme md-chip-remove .md-button md-icon path{fill:\"{{background-500}}\"}.md-contact-suggestion span.md-contact-email{color:\"{{background-400}}\"}md-content.md-THEME_NAME-theme{color:\"{{foreground-1}}\";background-color:\"{{background-default}}\"}.md-THEME_NAME-theme .md-calendar{background:\"{{background-hue-1}}\";color:\"{{foreground-1-0.87}}\"}.md-THEME_NAME-theme .md-calendar tr:last-child td{border-bottom-color:\"{{background-hue-2}}\"}.md-THEME_NAME-theme .md-calendar-day-header{background:\"{{background-500-0.32}}\";color:\"{{foreground-1-0.87}}\"}.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator{border:1px solid \"{{primary-500}}\"}.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today.md-calendar-date-disabled{color:\"{{primary-500-0.6}}\"}.md-calendar-date.md-focus .md-THEME_NAME-theme .md-calendar-date-selection-indicator,.md-THEME_NAME-theme .md-calendar-date-selection-indicator:hover{background:\"{{background-500-0.32}}\"}.md-THEME_NAME-theme .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator,.md-THEME_NAME-theme .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator{background:\"{{primary-500}}\";color:\"{{primary-500-contrast}}\";border-color:transparent}.md-THEME_NAME-theme .md-calendar-date-disabled,.md-THEME_NAME-theme .md-calendar-month-label-disabled{color:\"{{foreground-3}}\"}.md-THEME_NAME-theme .md-calendar-month-label md-icon,.md-THEME_NAME-theme .md-datepicker-input{color:\"{{foreground-1}}\"}.md-THEME_NAME-theme .md-datepicker-input::-webkit-input-placeholder{color:\"{{foreground-3}}\"}.md-THEME_NAME-theme .md-datepicker-input:-ms-input-placeholder,.md-THEME_NAME-theme .md-datepicker-input::-ms-input-placeholder{color:\"{{foreground-3}}\"}.md-THEME_NAME-theme .md-datepicker-input::placeholder{color:\"{{foreground-3}}\"}.md-THEME_NAME-theme .md-datepicker-input:-moz-placeholder,.md-THEME_NAME-theme .md-datepicker-input::-moz-placeholder{color:\"{{foreground-3}}\";opacity:1}.md-THEME_NAME-theme .md-datepicker-input-container{border-bottom-color:\"{{foreground-4}}\"}.md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-focused{border-bottom-color:\"{{primary-color}}\"}.md-accent .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-focused{border-bottom-color:\"{{accent-color}}\"}.md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-invalid,.md-warn .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-focused{border-bottom-color:\"{{warn-A700}}\"}.md-THEME_NAME-theme .md-datepicker-calendar-pane{border-color:\"{{background-hue-1}}\"}.md-THEME_NAME-theme .md-datepicker-triangle-button .md-datepicker-expand-triangle{border-top-color:\"{{foreground-2}}\"}.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon{color:\"{{primary-color}}\"}.md-accent .md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon,.md-THEME_NAME-theme .md-datepicker-open.md-accent .md-datepicker-calendar-icon{color:\"{{accent-color}}\"}.md-THEME_NAME-theme .md-datepicker-open.md-warn .md-datepicker-calendar-icon,.md-warn .md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon{color:\"{{warn-A700}}\"}.md-THEME_NAME-theme .md-datepicker-calendar{background:\"{{background-hue-1}}\"}.md-THEME_NAME-theme .md-datepicker-input-mask-opaque{box-shadow:0 0 0 9999px \"{{background-hue-1}}\"}.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-input-container{background:\"{{background-hue-1}}\"}md-dialog.md-THEME_NAME-theme{border-radius:4px;background-color:\"{{background-hue-1}}\";color:\"{{foreground-1}}\"}md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions,md-dialog.md-THEME_NAME-theme.md-content-overflow md-dialog-actions,md-divider.md-THEME_NAME-theme{border-top-color:\"{{foreground-4}}\"}.layout-gt-lg-row>md-divider.md-THEME_NAME-theme,.layout-gt-md-row>md-divider.md-THEME_NAME-theme,.layout-gt-sm-row>md-divider.md-THEME_NAME-theme,.layout-gt-xs-row>md-divider.md-THEME_NAME-theme,.layout-lg-row>md-divider.md-THEME_NAME-theme,.layout-md-row>md-divider.md-THEME_NAME-theme,.layout-row>md-divider.md-THEME_NAME-theme,.layout-sm-row>md-divider.md-THEME_NAME-theme,.layout-xl-row>md-divider.md-THEME_NAME-theme,.layout-xs-row>md-divider.md-THEME_NAME-theme{border-right-color:\"{{foreground-4}}\"}md-icon.md-THEME_NAME-theme{color:\"{{foreground-2}}\"}md-icon.md-THEME_NAME-theme.md-primary{color:\"{{primary-color}}\"}md-icon.md-THEME_NAME-theme.md-accent{color:\"{{accent-color}}\"}md-icon.md-THEME_NAME-theme.md-warn{color:\"{{warn-color}}\"}md-input-container.md-THEME_NAME-theme .md-input{color:\"{{foreground-1}}\";border-color:\"{{foreground-4}}\"}md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder,md-input-container.md-THEME_NAME-theme .md-input::-ms-input-placeholder{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme .md-input::placeholder{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder,md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder{color:\"{{foreground-2}}\";opacity:1}md-input-container.md-THEME_NAME-theme>md-icon{color:\"{{foreground-1}}\"}md-input-container.md-THEME_NAME-theme .md-placeholder,md-input-container.md-THEME_NAME-theme label{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme label.md-required:after{color:\"{{warn-A700}}\"}md-input-container.md-THEME_NAME-theme:not(.md-input-focused):not(.md-input-invalid) label.md-required:after{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme .md-input-message-animation,md-input-container.md-THEME_NAME-theme .md-input-messages-animation{color:\"{{warn-A700}}\"}md-input-container.md-THEME_NAME-theme .md-input-message-animation .md-char-counter,md-input-container.md-THEME_NAME-theme .md-input-messages-animation .md-char-counter{color:\"{{foreground-1}}\"}md-input-container.md-THEME_NAME-theme.md-input-focused .md-input::-webkit-input-placeholder{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme.md-input-focused .md-input:-ms-input-placeholder,md-input-container.md-THEME_NAME-theme.md-input-focused .md-input::-ms-input-placeholder{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme.md-input-focused .md-input::placeholder{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme.md-input-focused .md-input:-moz-placeholder,md-input-container.md-THEME_NAME-theme.md-input-focused .md-input::-moz-placeholder{color:\"{{foreground-2}}\";opacity:1}md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-has-value label{color:\"{{foreground-2}}\"}md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused .md-input,md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-resized .md-input{border-color:\"{{primary-color}}\"}md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused label,md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused md-icon{color:\"{{primary-color}}\"}md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent .md-input{border-color:\"{{accent-color}}\"}md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent label,md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent md-icon{color:\"{{accent-color}}\"}md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn .md-input{border-color:\"{{warn-A700}}\"}md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn label,md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn md-icon{color:\"{{warn-A700}}\"}md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input{border-color:\"{{warn-A700}}\"}md-input-container.md-THEME_NAME-theme.md-input-invalid .md-char-counter,md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input-message-animation,md-input-container.md-THEME_NAME-theme.md-input-invalid label{color:\"{{warn-A700}}\"}[disabled] md-input-container.md-THEME_NAME-theme .md-input,md-input-container.md-THEME_NAME-theme .md-input[disabled]{border-bottom-color:transparent;color:\"{{foreground-3}}\";background-image:linear-gradient(90deg,\"{{foreground-3}}\" 0,\"{{foreground-3}}\" 33%,transparent 0);background-image:-ms-linear-gradient(left,transparent 0,\"{{foreground-3}}\" 100%)}md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h3,md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h4,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h3,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h4{color:\"{{foreground-1}}\"}md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text p,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text p{color:\"{{foreground-2}}\"}md-list.md-THEME_NAME-theme .md-proxy-focus.md-focused div.md-no-style{background-color:\"{{background-100}}\"}md-list.md-THEME_NAME-theme md-list-item .md-avatar-icon{background-color:\"{{foreground-3}}\";color:\"{{background-color}}\"}md-list.md-THEME_NAME-theme md-list-item>md-icon{color:\"{{foreground-2}}\"}md-list.md-THEME_NAME-theme md-list-item>md-icon.md-highlight{color:\"{{primary-color}}\"}md-list.md-THEME_NAME-theme md-list-item>md-icon.md-highlight.md-accent{color:\"{{accent-color}}\"}md-menu-content.md-THEME_NAME-theme{background-color:\"{{background-hue-1}}\"}md-menu-content.md-THEME_NAME-theme md-menu-item{color:\"{{foreground-1}}\"}md-menu-content.md-THEME_NAME-theme md-menu-item md-icon{color:\"{{foreground-2}}\"}md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled],md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled] md-icon{color:\"{{foreground-3}}\"}md-menu-content.md-THEME_NAME-theme md-menu-divider{background-color:\"{{foreground-4}}\"}md-menu-bar.md-THEME_NAME-theme>button.md-button{color:\"{{foreground-1}}\";border-radius:2px}md-menu-bar.md-THEME_NAME-theme md-menu>button{color:\"{{foreground-1}}\"}md-menu-bar.md-THEME_NAME-theme md-menu.md-open>button,md-menu-bar.md-THEME_NAME-theme md-menu>button:focus{outline:none;background-color:\"{{ background-500-0.18}}\"}md-menu-bar.md-THEME_NAME-theme.md-open:not(.md-keyboard-mode) md-menu:hover>button{background-color:\"{{ background-500-0.18}}\"}md-menu-bar.md-THEME_NAME-theme:not(.md-keyboard-mode):not(.md-open) md-menu button:focus,md-menu-bar.md-THEME_NAME-theme:not(.md-keyboard-mode):not(.md-open) md-menu button:hover{background:transparent}md-menu-content.md-THEME_NAME-theme .md-menu>.md-button:after{color:\"{{foreground-2}}\"}md-menu-content.md-THEME_NAME-theme .md-menu.md-open>.md-button{background-color:\"{{ background-500-0.18}}\"}md-toolbar.md-THEME_NAME-theme.md-menu-toolbar{background-color:\"{{background-hue-1}}\";color:\"{{foreground-1}}\"}md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler{background-color:\"{{primary-color}}\";color:\"{{primary-contrast}}\"}md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler md-icon{color:\"{{primary-contrast}}\"}md-nav-bar.md-THEME_NAME-theme .md-nav-bar{background-color:transparent;border-color:\"{{foreground-4}}\"}md-nav-bar.md-THEME_NAME-theme .md-button._md-nav-button.md-unselected{color:\"{{foreground-2}}\"}md-nav-bar.md-THEME_NAME-theme .md-button._md-nav-button[disabled]{color:\"{{foreground-3}}\"}md-nav-bar.md-THEME_NAME-theme md-nav-ink-bar{color:\"{{accent-color}}\";background:\"{{accent-color}}\"}md-nav-bar.md-THEME_NAME-theme.md-accent>.md-nav-bar{background-color:\"{{accent-color}}\"}md-nav-bar.md-THEME_NAME-theme.md-accent>.md-nav-bar .md-button._md-nav-button{color:\"{{accent-A100}}\"}md-nav-bar.md-THEME_NAME-theme.md-accent>.md-nav-bar .md-button._md-nav-button.md-active,md-nav-bar.md-THEME_NAME-theme.md-accent>.md-nav-bar .md-button._md-nav-button.md-focused{color:\"{{accent-contrast}}\"}md-nav-bar.md-THEME_NAME-theme.md-accent>.md-nav-bar .md-button._md-nav-button.md-focused{background:\"{{accent-contrast-0.1}}\"}md-nav-bar.md-THEME_NAME-theme.md-accent>.md-nav-bar md-nav-ink-bar{color:\"{{primary-600-1}}\";background:\"{{primary-600-1}}\"}md-nav-bar.md-THEME_NAME-theme.md-warn>.md-nav-bar{background-color:\"{{warn-color}}\"}md-nav-bar.md-THEME_NAME-theme.md-warn>.md-nav-bar .md-button._md-nav-button{color:\"{{warn-100}}\"}md-nav-bar.md-THEME_NAME-theme.md-warn>.md-nav-bar .md-button._md-nav-button.md-active,md-nav-bar.md-THEME_NAME-theme.md-warn>.md-nav-bar .md-button._md-nav-button.md-focused{color:\"{{warn-contrast}}\"}md-nav-bar.md-THEME_NAME-theme.md-warn>.md-nav-bar .md-button._md-nav-button.md-focused{background:\"{{warn-contrast-0.1}}\"}md-nav-bar.md-THEME_NAME-theme.md-primary>.md-nav-bar{background-color:\"{{primary-color}}\"}md-nav-bar.md-THEME_NAME-theme.md-primary>.md-nav-bar .md-button._md-nav-button{color:\"{{primary-100}}\"}md-nav-bar.md-THEME_NAME-theme.md-primary>.md-nav-bar .md-button._md-nav-button.md-active,md-nav-bar.md-THEME_NAME-theme.md-primary>.md-nav-bar .md-button._md-nav-button.md-focused{color:\"{{primary-contrast}}\"}md-nav-bar.md-THEME_NAME-theme.md-primary>.md-nav-bar .md-button._md-nav-button.md-focused{background:\"{{primary-contrast-0.1}}\"}md-toolbar>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar{background-color:\"{{primary-color}}\"}md-toolbar>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button{color:\"{{primary-100}}\"}md-toolbar>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-active,md-toolbar>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-focused{color:\"{{primary-contrast}}\"}md-toolbar>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-focused{background:\"{{primary-contrast-0.1}}\"}md-toolbar.md-accent>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar{background-color:\"{{accent-color}}\"}md-toolbar.md-accent>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button{color:\"{{accent-A100}}\"}md-toolbar.md-accent>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-active,md-toolbar.md-accent>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-focused{color:\"{{accent-contrast}}\"}md-toolbar.md-accent>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-focused{background:\"{{accent-contrast-0.1}}\"}md-toolbar.md-accent>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar md-nav-ink-bar{color:\"{{primary-600-1}}\";background:\"{{primary-600-1}}\"}md-toolbar.md-warn>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar{background-color:\"{{warn-color}}\"}md-toolbar.md-warn>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button{color:\"{{warn-100}}\"}md-toolbar.md-warn>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-active,md-toolbar.md-warn>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-focused{color:\"{{warn-contrast}}\"}md-toolbar.md-warn>md-nav-bar.md-THEME_NAME-theme>.md-nav-bar .md-button._md-nav-button.md-focused{background:\"{{warn-contrast-0.1}}\"}._md-panel-backdrop.md-THEME_NAME-theme{background-color:\"{{background-900-1.0}}\"}md-progress-circular.md-THEME_NAME-theme path{stroke:\"{{primary-color}}\"}md-progress-circular.md-THEME_NAME-theme.md-warn path{stroke:\"{{warn-color}}\"}md-progress-circular.md-THEME_NAME-theme.md-accent path{stroke:\"{{accent-color}}\"}md-progress-linear.md-THEME_NAME-theme .md-container{background-color:\"{{primary-100}}\"}md-progress-linear.md-THEME_NAME-theme .md-bar{background-color:\"{{primary-color}}\"}md-progress-linear.md-THEME_NAME-theme.md-warn .md-container{background-color:\"{{warn-100}}\"}md-progress-linear.md-THEME_NAME-theme.md-warn .md-bar{background-color:\"{{warn-color}}\"}md-progress-linear.md-THEME_NAME-theme.md-accent .md-container{background-color:\"{{accent-100}}\"}md-progress-linear.md-THEME_NAME-theme.md-accent .md-bar{background-color:\"{{accent-color}}\"}md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-primary .md-bar1{background-color:\"{{primary-100}}\"}md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-primary .md-dashed:before{background:radial-gradient(\"{{primary-100}}\" 0,\"{{primary-100}}\" 16%,transparent 42%)}md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-bar1{background-color:\"{{warn-100}}\"}md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-dashed:before{background:radial-gradient(\"{{warn-100}}\" 0,\"{{warn-100}}\" 16%,transparent 42%)}md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-bar1{background-color:\"{{accent-100}}\"}md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-dashed:before{background:radial-gradient(\"{{accent-100}}\" 0,\"{{accent-100}}\" 16%,transparent 42%)}md-radio-button.md-THEME_NAME-theme .md-off{border-color:\"{{foreground-2}}\"}md-radio-button.md-THEME_NAME-theme .md-on{background-color:\"{{accent-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme.md-checked .md-off{border-color:\"{{accent-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme.md-checked .md-ink-ripple{color:\"{{accent-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme .md-container .md-ripple{color:\"{{accent-A700}}\"}md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-on,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-on,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-on{background-color:\"{{primary-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-off,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-off,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-off,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-off{border-color:\"{{primary-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple{color:\"{{primary-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-container .md-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-container .md-ripple{color:\"{{primary-600}}\"}md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-on,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-on,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-on{background-color:\"{{warn-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-off,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-off,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-off,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-off{border-color:\"{{warn-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple{color:\"{{warn-color-0.87}}\"}md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-container .md-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple,md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-container .md-ripple{color:\"{{warn-600}}\"}md-radio-button.md-THEME_NAME-theme[disabled],md-radio-group.md-THEME_NAME-theme[disabled]{color:\"{{foreground-3}}\"}md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-off,md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-on,md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-off,md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-on{border-color:\"{{foreground-3}}\"}md-radio-group.md-THEME_NAME-theme .md-checked .md-ink-ripple{color:\"{{accent-color-0.26}}\"}md-radio-group.md-THEME_NAME-theme .md-checked:not([disabled]).md-primary .md-ink-ripple,md-radio-group.md-THEME_NAME-theme.md-primary .md-checked:not([disabled]) .md-ink-ripple{color:\"{{primary-color-0.26}}\"}md-radio-group.md-THEME_NAME-theme.md-focused.ng-empty>md-radio-button:first-child .md-container:before{background-color:\"{{foreground-3-0.26}}\"}md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked .md-container:before{background-color:\"{{accent-color-0.26}}\"}md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-primary .md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-primary .md-checked .md-container:before{background-color:\"{{primary-color-0.26}}\"}md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-warn .md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-warn .md-checked .md-container:before{background-color:\"{{warn-color-0.26}}\"}md-input-container md-select.md-THEME_NAME-theme .md-select-value span:first-child:after{color:\"{{warn-A700}}\"}md-input-container:not(.md-input-focused):not(.md-input-invalid) md-select.md-THEME_NAME-theme .md-select-value span:first-child:after{color:\"{{foreground-3}}\"}md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-THEME_NAME-theme .md-select-value,md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-THEME_NAME-theme .md-select-value.md-select-placeholder{color:\"{{primary-color}}\"}md-input-container.md-input-invalid md-select.md-THEME_NAME-theme .md-select-value{color:\"{{warn-A700}}\"!important;border-bottom-color:\"{{warn-A700}}\"!important}md-input-container.md-input-invalid md-select.md-THEME_NAME-theme.md-no-underline .md-select-value{border-bottom-color:transparent!important}md-input-container:not(.md-input-invalid).md-input-focused.md-accent .md-select-value{border-color:\"{{accent-color}}\"}md-input-container:not(.md-input-invalid).md-input-focused.md-accent .md-select-value span{color:\"{{accent-color}}\"}md-input-container:not(.md-input-invalid).md-input-focused.md-warn .md-select-value{border-color:\"{{warn-A700}}\"}md-input-container:not(.md-input-invalid).md-input-focused.md-warn .md-select-value span{color:\"{{warn-A700}}\"}md-select.md-THEME_NAME-theme[disabled] .md-select-value{border-bottom-color:transparent;background-image:linear-gradient(90deg,\"{{foreground-3}}\" 0,\"{{foreground-3}}\" 33%,transparent 0);background-image:-ms-linear-gradient(left,transparent 0,\"{{foreground-3}}\" 100%)}md-select.md-THEME_NAME-theme .md-select-value{border-bottom-color:\"{{foreground-4}}\"}md-select.md-THEME_NAME-theme .md-select-value.md-select-placeholder{color:\"{{foreground-3}}\"}md-select.md-THEME_NAME-theme .md-select-value span:first-child:after{color:\"{{warn-A700}}\"}md-select.md-THEME_NAME-theme.md-no-underline .md-select-value{border-bottom-color:transparent!important}md-select.md-THEME_NAME-theme.ng-invalid.ng-touched .md-select-value{color:\"{{warn-A700}}\"!important;border-bottom-color:\"{{warn-A700}}\"!important}md-select.md-THEME_NAME-theme.ng-invalid.ng-touched.md-no-underline .md-select-value{border-bottom-color:transparent!important}md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-value{border-bottom-color:\"{{primary-color}}\";color:\"{{ foreground-1 }}\"}md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-value.md-select-placeholder{color:\"{{ foreground-1 }}\"}md-select.md-THEME_NAME-theme:not([disabled]):focus.md-no-underline .md-select-value{border-bottom-color:transparent!important}md-select.md-THEME_NAME-theme:not([disabled]):focus.md-accent .md-select-value{border-bottom-color:\"{{accent-color}}\"}md-select.md-THEME_NAME-theme:not([disabled]):focus.md-warn .md-select-value{border-bottom-color:\"{{warn-color}}\"}md-select.md-THEME_NAME-theme[disabled] .md-select-icon,md-select.md-THEME_NAME-theme[disabled] .md-select-value,md-select.md-THEME_NAME-theme[disabled] .md-select-value.md-select-placeholder{color:\"{{foreground-3}}\"}md-select.md-THEME_NAME-theme .md-select-icon{color:\"{{foreground-2}}\"}md-select-menu.md-THEME_NAME-theme md-content{background-color:\"{{background-hue-1}}\"}md-select-menu.md-THEME_NAME-theme md-content md-optgroup{color:\"{{foreground-2}}\"}md-select-menu.md-THEME_NAME-theme md-content md-option{color:\"{{foreground-1}}\"}md-select-menu.md-THEME_NAME-theme md-content md-option[disabled] .md-text{color:\"{{foreground-3}}\"}md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]).md-focused,md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):focus,md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):hover{background-color:\"{{background-500-0.18}}\"}md-select-menu.md-THEME_NAME-theme md-content md-option[selected]{color:\"{{primary-500}}\"}md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-focused,md-select-menu.md-THEME_NAME-theme md-content md-option[selected]:focus{color:\"{{primary-600}}\"}md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent{color:\"{{accent-color}}\"}md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent.md-focused,md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent:focus{color:\"{{accent-A700}}\"}.md-checkbox-enabled.md-THEME_NAME-theme .md-ripple{color:\"{{primary-600}}\"}.md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-ripple{color:\"{{background-600}}\"}.md-checkbox-enabled.md-THEME_NAME-theme .md-ink-ripple{color:\"{{foreground-2}}\"}.md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-ink-ripple{color:\"{{primary-color-0.87}}\"}.md-checkbox-enabled.md-THEME_NAME-theme:not(.md-checked) .md-icon{border-color:\"{{foreground-2}}\"}.md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-icon{background-color:\"{{primary-color-0.87}}\"}.md-checkbox-enabled.md-THEME_NAME-theme[selected].md-focused .md-container:before{background-color:\"{{primary-color-0.26}}\"}.md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-icon:after{border-color:\"{{primary-contrast-0.87}}\"}.md-checkbox-enabled.md-THEME_NAME-theme .md-indeterminate[disabled] .md-container{color:\"{{foreground-3}}\"}.md-checkbox-enabled.md-THEME_NAME-theme md-option .md-text{color:\"{{foreground-1}}\"}md-sidenav.md-THEME_NAME-theme,md-sidenav.md-THEME_NAME-theme md-content{background-color:\"{{background-hue-1}}\"}md-slider.md-THEME_NAME-theme .md-track{background-color:\"{{foreground-3}}\"}md-slider.md-THEME_NAME-theme .md-track-ticks{color:\"{{background-contrast}}\"}md-slider.md-THEME_NAME-theme .md-focus-ring{background-color:\"{{accent-A200-0.2}}\"}md-slider.md-THEME_NAME-theme .md-disabled-thumb{border-color:\"{{background-color}}\";background-color:\"{{background-color}}\"}md-slider.md-THEME_NAME-theme.md-min .md-thumb:after{background-color:\"{{background-color}}\";border-color:\"{{foreground-3}}\"}md-slider.md-THEME_NAME-theme.md-min .md-focus-ring{background-color:\"{{foreground-3-0.38}}\"}md-slider.md-THEME_NAME-theme.md-min[md-discrete] .md-thumb:after{background-color:\"{{background-contrast}}\";border-color:transparent}md-slider.md-THEME_NAME-theme.md-min[md-discrete] .md-sign{background-color:\"{{background-400}}\"}md-slider.md-THEME_NAME-theme.md-min[md-discrete] .md-sign:after{border-top-color:\"{{background-400}}\"}md-slider.md-THEME_NAME-theme.md-min[md-discrete][md-vertical] .md-sign:after{border-top-color:transparent;border-left-color:\"{{background-400}}\"}md-slider.md-THEME_NAME-theme .md-track.md-track-fill{background-color:\"{{accent-color}}\"}md-slider.md-THEME_NAME-theme .md-thumb:after{border-color:\"{{accent-color}}\";background-color:\"{{accent-color}}\"}md-slider.md-THEME_NAME-theme .md-sign{background-color:\"{{accent-color}}\"}md-slider.md-THEME_NAME-theme .md-sign:after{border-top-color:\"{{accent-color}}\"}md-slider.md-THEME_NAME-theme[md-vertical] .md-sign:after{border-top-color:transparent;border-left-color:\"{{accent-color}}\"}md-slider.md-THEME_NAME-theme .md-thumb-text{color:\"{{accent-contrast}}\"}md-slider.md-THEME_NAME-theme.md-warn .md-focus-ring{background-color:\"{{warn-200-0.38}}\"}md-slider.md-THEME_NAME-theme.md-warn .md-track.md-track-fill{background-color:\"{{warn-color}}\"}md-slider.md-THEME_NAME-theme.md-warn .md-thumb:after{border-color:\"{{warn-color}}\";background-color:\"{{warn-color}}\"}md-slider.md-THEME_NAME-theme.md-warn .md-sign{background-color:\"{{warn-color}}\"}md-slider.md-THEME_NAME-theme.md-warn .md-sign:after{border-top-color:\"{{warn-color}}\"}md-slider.md-THEME_NAME-theme.md-warn[md-vertical] .md-sign:after{border-top-color:transparent;border-left-color:\"{{warn-color}}\"}md-slider.md-THEME_NAME-theme.md-warn .md-thumb-text{color:\"{{warn-contrast}}\"}md-slider.md-THEME_NAME-theme.md-primary .md-focus-ring{background-color:\"{{primary-200-0.38}}\"}md-slider.md-THEME_NAME-theme.md-primary .md-track.md-track-fill{background-color:\"{{primary-color}}\"}md-slider.md-THEME_NAME-theme.md-primary .md-thumb:after{border-color:\"{{primary-color}}\";background-color:\"{{primary-color}}\"}md-slider.md-THEME_NAME-theme.md-primary .md-sign{background-color:\"{{primary-color}}\"}md-slider.md-THEME_NAME-theme.md-primary .md-sign:after{border-top-color:\"{{primary-color}}\"}md-slider.md-THEME_NAME-theme.md-primary[md-vertical] .md-sign:after{border-top-color:transparent;border-left-color:\"{{primary-color}}\"}md-slider.md-THEME_NAME-theme.md-primary .md-thumb-text{color:\"{{primary-contrast}}\"}md-slider.md-THEME_NAME-theme[disabled] .md-thumb:after{border-color:transparent}md-slider.md-THEME_NAME-theme[disabled]:not(.md-min) .md-thumb:after,md-slider.md-THEME_NAME-theme[disabled][md-discrete] .md-thumb:after{background-color:\"{{foreground-3}}\";border-color:transparent}md-slider.md-THEME_NAME-theme[disabled][readonly] .md-sign{background-color:\"{{background-400}}\"}md-slider.md-THEME_NAME-theme[disabled][readonly] .md-sign:after{border-top-color:\"{{background-400}}\"}md-slider.md-THEME_NAME-theme[disabled][readonly][md-vertical] .md-sign:after{border-top-color:transparent;border-left-color:\"{{background-400}}\"}md-slider.md-THEME_NAME-theme[disabled][readonly] .md-disabled-thumb{border-color:transparent;background-color:transparent}md-slider-container[disabled]>:first-child:not(md-slider),md-slider-container[disabled]>:last-child:not(md-slider){color:\"{{foreground-3}}\"}.md-subheader.md-THEME_NAME-theme{color:\"{{ foreground-2-0.23 }}\";background-color:\"{{background-default}}\"}.md-subheader.md-THEME_NAME-theme.md-primary{color:\"{{primary-color}}\"}.md-subheader.md-THEME_NAME-theme.md-accent{color:\"{{accent-color}}\"}.md-subheader.md-THEME_NAME-theme.md-warn{color:\"{{warn-color}}\"}md-switch.md-THEME_NAME-theme .md-ink-ripple{color:\"{{background-500}}\"}md-switch.md-THEME_NAME-theme .md-thumb{background-color:\"{{background-50}}\"}md-switch.md-THEME_NAME-theme .md-bar{background-color:\"{{background-500}}\"}md-switch.md-THEME_NAME-theme.md-focused:not(.md-checked) .md-thumb:before,md-switch.md-THEME_NAME-theme.md-focused[disabled] .md-thumb:before{background-color:\"{{foreground-4}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]) .md-ink-ripple{color:\"{{accent-color}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]) .md-thumb{background-color:\"{{accent-color}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]) .md-bar{background-color:\"{{accent-color-0.5}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-focused .md-thumb:before{background-color:\"{{accent-color-0.26}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-primary .md-ink-ripple{color:\"{{primary-color}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-primary .md-thumb{background-color:\"{{primary-color}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-primary .md-bar{background-color:\"{{primary-color-0.5}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-primary.md-focused .md-thumb:before{background-color:\"{{primary-color-0.26}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-warn .md-ink-ripple{color:\"{{warn-color}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-warn .md-thumb{background-color:\"{{warn-color}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-warn .md-bar{background-color:\"{{warn-color-0.5}}\"}md-switch.md-THEME_NAME-theme.md-checked:not([disabled]).md-warn.md-focused .md-thumb:before{background-color:\"{{warn-color-0.26}}\"}md-switch.md-THEME_NAME-theme[disabled] .md-thumb{background-color:\"{{background-400}}\"}md-switch.md-THEME_NAME-theme[disabled] .md-bar{background-color:\"{{foreground-4}}\"}md-tabs.md-THEME_NAME-theme md-tabs-wrapper{background-color:transparent;border-color:\"{{foreground-4}}\"}md-tabs.md-THEME_NAME-theme .md-paginator md-icon{color:\"{{primary-color}}\"}md-tabs.md-THEME_NAME-theme md-ink-bar{color:\"{{accent-color}}\";background:\"{{accent-color}}\"}md-tabs.md-THEME_NAME-theme .md-tab{color:\"{{foreground-2}}\"}md-tabs.md-THEME_NAME-theme .md-tab[disabled],md-tabs.md-THEME_NAME-theme .md-tab[disabled] md-icon{color:\"{{foreground-3}}\"}md-tabs.md-THEME_NAME-theme .md-tab.md-active,md-tabs.md-THEME_NAME-theme .md-tab.md-active md-icon,md-tabs.md-THEME_NAME-theme .md-tab.md-focused,md-tabs.md-THEME_NAME-theme .md-tab.md-focused md-icon{color:\"{{primary-color}}\"}md-tabs.md-THEME_NAME-theme .md-tab.md-focused{background:\"{{primary-color-0.1}}\"}md-tabs.md-THEME_NAME-theme .md-tab .md-ripple-container{color:\"{{accent-A100}}\"}md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper{background-color:\"{{accent-color}}\"}md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]),md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]) md-icon{color:\"{{accent-A100}}\"}md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active,md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active md-icon,md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused,md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused md-icon{color:\"{{accent-contrast}}\"}md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused{background:\"{{accent-contrast-0.1}}\"}md-tabs.md-THEME_NAME-theme.md-accent>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-ink-bar{color:\"{{primary-600-1}}\";background:\"{{primary-600-1}}\"}md-tabs.md-THEME_NAME-theme.md-primary>md-tabs-wrapper{background-color:\"{{primary-color}}\"}md-tabs.md-THEME_NAME-theme.md-primary>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]),md-tabs.md-THEME_NAME-theme.md-primary>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]) md-icon{color:\"{{primary-100}}\"}md-tabs.md-THEME_NAME-theme.md-primary>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active,md-tabs.md-THEME_NAME-theme.md-primary>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active md-icon,md-tabs.md-THEME_NAME-theme.md-primary>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused,md-tabs.md-THEME_NAME-theme.md-primary>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused md-icon{color:\"{{primary-contrast}}\"}md-tabs.md-THEME_NAME-theme.md-primary>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused{background:\"{{primary-contrast-0.1}}\"}md-tabs.md-THEME_NAME-theme.md-warn>md-tabs-wrapper{background-color:\"{{warn-color}}\"}md-tabs.md-THEME_NAME-theme.md-warn>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]),md-tabs.md-THEME_NAME-theme.md-warn>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]) md-icon{color:\"{{warn-100}}\"}md-tabs.md-THEME_NAME-theme.md-warn>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active,md-tabs.md-THEME_NAME-theme.md-warn>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active md-icon,md-tabs.md-THEME_NAME-theme.md-warn>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused,md-tabs.md-THEME_NAME-theme.md-warn>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused md-icon{color:\"{{warn-contrast}}\"}md-tabs.md-THEME_NAME-theme.md-warn>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused{background:\"{{warn-contrast-0.1}}\"}md-toolbar>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper{background-color:\"{{primary-color}}\"}md-toolbar>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]),md-toolbar>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]) md-icon{color:\"{{primary-100}}\"}md-toolbar>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active,md-toolbar>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active md-icon,md-toolbar>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused,md-toolbar>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused md-icon{color:\"{{primary-contrast}}\"}md-toolbar>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused{background:\"{{primary-contrast-0.1}}\"}md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper{background-color:\"{{accent-color}}\"}md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]),md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]) md-icon{color:\"{{accent-A100}}\"}md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active,md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active md-icon,md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused,md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused md-icon{color:\"{{accent-contrast}}\"}md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused{background:\"{{accent-contrast-0.1}}\"}md-toolbar.md-accent>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-ink-bar{color:\"{{primary-600-1}}\";background:\"{{primary-600-1}}\"}md-toolbar.md-warn>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper{background-color:\"{{warn-color}}\"}md-toolbar.md-warn>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]),md-toolbar.md-warn>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]) md-icon{color:\"{{warn-100}}\"}md-toolbar.md-warn>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active,md-toolbar.md-warn>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-active md-icon,md-toolbar.md-warn>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused,md-toolbar.md-warn>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused md-icon{color:\"{{warn-contrast}}\"}md-toolbar.md-warn>md-tabs.md-THEME_NAME-theme>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]).md-focused{background:\"{{warn-contrast-0.1}}\"}md-toast.md-THEME_NAME-theme .md-toast-content{background-color:#323232;color:\"{{background-50}}\"}md-toast.md-THEME_NAME-theme .md-toast-content .md-button{color:\"{{background-50}}\"}md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight{color:\"{{accent-color}}\"}md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-primary{color:\"{{primary-color}}\"}md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-warn{color:\"{{warn-color}}\"}md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar){background-color:\"{{primary-color}}\";color:\"{{primary-contrast}}\"}md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-icon{color:\"{{primary-contrast}}\";fill:\"{{primary-contrast}}\"}md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) .md-button[disabled] md-icon{color:\"{{primary-contrast-0.26}}\";fill:\"{{primary-contrast-0.26}}\"}md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent{background-color:\"{{accent-color}}\";color:\"{{accent-contrast}}\"}md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent .md-ink-ripple{color:\"{{accent-contrast}}\"}md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent md-icon{color:\"{{accent-contrast}}\";fill:\"{{accent-contrast}}\"}md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent .md-button[disabled] md-icon{color:\"{{accent-contrast-0.26}}\";fill:\"{{accent-contrast-0.26}}\"}md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn{background-color:\"{{warn-color}}\";color:\"{{warn-contrast}}\"}.md-panel.md-tooltip.md-THEME_NAME-theme{color:\"{{background-700-contrast}}\";background-color:\"{{background-700}}\"}body.md-THEME_NAME-theme,html.md-THEME_NAME-theme{color:\"{{foreground-1}}\";background-color:\"{{background-color}}\"}"); 
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.21-master-2f77095"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.21-master-928c71d"}};

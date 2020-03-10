@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-2f77095
+ * v1.1.21-master-928c71d
  */
 md-input-container md-select.md-THEME_NAME-theme .md-select-value span:first-child:after {
   color: '{{warn-A700}}'; }
@@ -89,15 +89,15 @@ md-select-menu.md-THEME_NAME-theme md-content {
     color: '{{foreground-1}}'; }
     md-select-menu.md-THEME_NAME-theme md-content md-option[disabled] .md-text {
       color: '{{foreground-3}}'; }
-    md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):focus, md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):hover {
+    md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):focus, md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):hover, md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]).md-focused {
       background-color: '{{background-500-0.18}}'; }
     md-select-menu.md-THEME_NAME-theme md-content md-option[selected] {
       color: '{{primary-500}}'; }
-      md-select-menu.md-THEME_NAME-theme md-content md-option[selected]:focus {
+      md-select-menu.md-THEME_NAME-theme md-content md-option[selected]:focus, md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-focused {
         color: '{{primary-600}}'; }
       md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent {
         color: '{{accent-color}}'; }
-        md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent:focus {
+        md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent:focus, md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent.md-focused {
           color: '{{accent-A700}}'; }
 
 .md-checkbox-enabled.md-THEME_NAME-theme .md-ripple {
