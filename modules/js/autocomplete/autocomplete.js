@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-85c9f52
+ * v1.1.22-rc.0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1613,7 +1613,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
         var templateTag = element.find('md-not-found').detach(),
             template = templateTag.length ? templateTag.html() : '';
         return template
-            ? '<li ng-if="$mdAutocompleteCtrl.notFoundVisible()"\
+            ? '<li ng-if="$mdAutocompleteCtrl.notFoundVisible()" class="md-autocomplete-suggestion"\
                          md-autocomplete-parent-scope>' + template + '</li>'
             : '';
       }
