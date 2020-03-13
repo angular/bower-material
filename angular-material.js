@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21-master-85c9f52
+ * v1.1.21-master-ce6e2ff
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -10181,7 +10181,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
         var templateTag = element.find('md-not-found').detach(),
             template = templateTag.length ? templateTag.html() : '';
         return template
-            ? '<li ng-if="$mdAutocompleteCtrl.notFoundVisible()"\
+            ? '<li ng-if="$mdAutocompleteCtrl.notFoundVisible()" class="md-autocomplete-suggestion"\
                          md-autocomplete-parent-scope>' + template + '</li>'
             : '';
       }
@@ -38910,4 +38910,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.21-master-85c9f52"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.21-master-ce6e2ff"}};
