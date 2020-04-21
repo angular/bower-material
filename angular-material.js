@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-rc.0-master-1e1298a
+ * v1.1.22-rc.0-master-5c75b12
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -17987,8 +17987,9 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  * @name $mdDialog#confirm
  *
  * @description
- * Builds a preconfigured dialog with the specified message. You can call show and the promise returned
- * will be resolved only if the user clicks the confirm action on the dialog.
+ * Builds a preconfigured dialog with the specified message. You can call show and the promise
+ * returned will be resolved if the user clicks the confirm action on the dialog. The promise will
+ * be rejected if the user clicks the cancel action or dismisses the dialog.
  *
  * @returns {obj} an `$mdDialogPreset` with the chainable configuration methods:
  *
@@ -18012,8 +18013,10 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  * @name $mdDialog#prompt
  *
  * @description
- * Builds a preconfigured dialog with the specified message and input box. You can call show and the promise returned
- * will be resolved only if the user clicks the prompt action on the dialog, passing the input value as the first argument.
+ * Builds a preconfigured dialog with the specified message and input box. You can call show and the
+ * promise returned will be resolved, if the user clicks the prompt action on the dialog, passing
+ * the input value as the first argument. The promise will be rejected if the user clicks the cancel
+ * action or dismisses the dialog.
  *
  * @returns {obj} an `$mdDialogPreset` with the chainable configuration methods:
  *
@@ -38910,4 +38913,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-rc.0-master-1e1298a"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-rc.0-master-5c75b12"}};

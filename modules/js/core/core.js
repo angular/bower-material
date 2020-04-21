@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-rc.0-master-1e1298a
+ * v1.1.22-rc.0-master-5c75b12
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -315,6 +315,163 @@ function ColorUtilFactory() {
   };
 }
 
+angular.module('material.core')
+.factory('$mdConstant', MdConstantFactory);
+
+/**
+ * Factory function that creates the grab-bag $mdConstant service.
+ * ngInject
+ */
+function MdConstantFactory() {
+
+  var prefixTestEl = document.createElement('div');
+  var vendorPrefix = getVendorPrefix(prefixTestEl);
+  var isWebkit = /webkit/i.test(vendorPrefix);
+  var SPECIAL_CHARS_REGEXP = /([:\-_]+(.))/g;
+
+  function vendorProperty(name) {
+    // Add a dash between the prefix and name, to be able to transform the string into camelcase.
+    var prefixedName = vendorPrefix + '-' + name;
+    var ucPrefix = camelCase(prefixedName);
+    var lcPrefix = ucPrefix.charAt(0).toLowerCase() + ucPrefix.substring(1);
+
+    return hasStyleProperty(prefixTestEl, name)     ? name     :       // The current browser supports the un-prefixed property
+           hasStyleProperty(prefixTestEl, ucPrefix) ? ucPrefix :       // The current browser only supports the prefixed property.
+           hasStyleProperty(prefixTestEl, lcPrefix) ? lcPrefix : name; // Some browsers are only supporting the prefix in lowercase.
+  }
+
+  function hasStyleProperty(testElement, property) {
+    return angular.isDefined(testElement.style[property]);
+  }
+
+  function camelCase(input) {
+    return input.replace(SPECIAL_CHARS_REGEXP, function(matches, separator, letter, offset) {
+      return offset ? letter.toUpperCase() : letter;
+    });
+  }
+
+  function getVendorPrefix(testElement) {
+    var prop, match;
+    var vendorRegex = /^(Moz|webkit|ms)(?=[A-Z])/;
+
+    for (prop in testElement.style) {
+      if (match = vendorRegex.exec(prop)) {
+        return match[0];
+      }
+    }
+  }
+
+  var self = {
+    isInputKey : function(e) { return (e.keyCode >= 31 && e.keyCode <= 90); },
+    isNumPadKey : function(e) { return (3 === e.location && e.keyCode >= 97 && e.keyCode <= 105); },
+    isMetaKey: function(e) { return (e.keyCode >= 91 && e.keyCode <= 93); },
+    isFnLockKey: function(e) { return (e.keyCode >= 112 && e.keyCode <= 145); },
+    isNavigationKey : function(e) {
+      var kc = self.KEY_CODE, NAVIGATION_KEYS =  [kc.SPACE, kc.ENTER, kc.UP_ARROW, kc.DOWN_ARROW];
+      return (NAVIGATION_KEYS.indexOf(e.keyCode) != -1);
+    },
+    hasModifierKey: function(e) {
+      return e.ctrlKey || e.metaKey || e.altKey;
+    },
+
+    /**
+     * Maximum size, in pixels, that can be explicitly set to an element. The actual value varies
+     * between browsers, but IE11 has the very lowest size at a mere 1,533,917px. Ideally we could
+     * compute this value, but Firefox always reports an element to have a size of zero if it
+     * goes over the max, meaning that we'd have to binary search for the value.
+     */
+    ELEMENT_MAX_PIXELS: 1533917,
+
+    /**
+     * Priority for a directive that should run before the directives from ngAria.
+     */
+    BEFORE_NG_ARIA: 210,
+
+    /**
+     * Common Keyboard actions and their associated keycode.
+     */
+    KEY_CODE: {
+      COMMA: 188,
+      SEMICOLON : 186,
+      ENTER: 13,
+      ESCAPE: 27,
+      SPACE: 32,
+      PAGE_UP: 33,
+      PAGE_DOWN: 34,
+      END: 35,
+      HOME: 36,
+      LEFT_ARROW : 37,
+      UP_ARROW : 38,
+      RIGHT_ARROW : 39,
+      DOWN_ARROW : 40,
+      TAB : 9,
+      BACKSPACE: 8,
+      DELETE: 46
+    },
+
+    /**
+     * Vendor prefixed CSS properties to be used to support the given functionality in older browsers
+     * as well.
+     */
+    CSS: {
+      /* Constants */
+      TRANSITIONEND: 'transitionend' + (isWebkit ? ' webkitTransitionEnd' : ''),
+      ANIMATIONEND: 'animationend' + (isWebkit ? ' webkitAnimationEnd' : ''),
+
+      TRANSFORM: vendorProperty('transform'),
+      TRANSFORM_ORIGIN: vendorProperty('transformOrigin'),
+      TRANSITION: vendorProperty('transition'),
+      TRANSITION_DURATION: vendorProperty('transitionDuration'),
+      ANIMATION_PLAY_STATE: vendorProperty('animationPlayState'),
+      ANIMATION_DURATION: vendorProperty('animationDuration'),
+      ANIMATION_NAME: vendorProperty('animationName'),
+      ANIMATION_TIMING: vendorProperty('animationTimingFunction'),
+      ANIMATION_DIRECTION: vendorProperty('animationDirection')
+    },
+
+    /**
+     * As defined in core/style/variables.scss
+     *
+     * $layout-breakpoint-xs:     600px !default;
+     * $layout-breakpoint-sm:     960px !default;
+     * $layout-breakpoint-md:     1280px !default;
+     * $layout-breakpoint-lg:     1920px !default;
+     *
+     */
+    MEDIA: {
+      'xs'        : '(max-width: 599px)'                         ,
+      'gt-xs'     : '(min-width: 600px)'                         ,
+      'sm'        : '(min-width: 600px) and (max-width: 959px)'  ,
+      'gt-sm'     : '(min-width: 960px)'                         ,
+      'md'        : '(min-width: 960px) and (max-width: 1279px)' ,
+      'gt-md'     : '(min-width: 1280px)'                        ,
+      'lg'        : '(min-width: 1280px) and (max-width: 1919px)',
+      'gt-lg'     : '(min-width: 1920px)'                        ,
+      'xl'        : '(min-width: 1920px)'                        ,
+      'landscape' : '(orientation: landscape)'                   ,
+      'portrait'  : '(orientation: portrait)'                    ,
+      'print' : 'print'
+    },
+
+    MEDIA_PRIORITY: [
+      'xl',
+      'gt-lg',
+      'lg',
+      'gt-md',
+      'md',
+      'gt-sm',
+      'sm',
+      'gt-xs',
+      'xs',
+      'landscape',
+      'portrait',
+      'print'
+    ]
+  };
+
+  return self;
+}
+
   angular
     .module('material.core')
     .config(["$provide", function($provide){
@@ -542,163 +699,6 @@ function ColorUtilFactory() {
     }
   }
 
-
-angular.module('material.core')
-.factory('$mdConstant', MdConstantFactory);
-
-/**
- * Factory function that creates the grab-bag $mdConstant service.
- * ngInject
- */
-function MdConstantFactory() {
-
-  var prefixTestEl = document.createElement('div');
-  var vendorPrefix = getVendorPrefix(prefixTestEl);
-  var isWebkit = /webkit/i.test(vendorPrefix);
-  var SPECIAL_CHARS_REGEXP = /([:\-_]+(.))/g;
-
-  function vendorProperty(name) {
-    // Add a dash between the prefix and name, to be able to transform the string into camelcase.
-    var prefixedName = vendorPrefix + '-' + name;
-    var ucPrefix = camelCase(prefixedName);
-    var lcPrefix = ucPrefix.charAt(0).toLowerCase() + ucPrefix.substring(1);
-
-    return hasStyleProperty(prefixTestEl, name)     ? name     :       // The current browser supports the un-prefixed property
-           hasStyleProperty(prefixTestEl, ucPrefix) ? ucPrefix :       // The current browser only supports the prefixed property.
-           hasStyleProperty(prefixTestEl, lcPrefix) ? lcPrefix : name; // Some browsers are only supporting the prefix in lowercase.
-  }
-
-  function hasStyleProperty(testElement, property) {
-    return angular.isDefined(testElement.style[property]);
-  }
-
-  function camelCase(input) {
-    return input.replace(SPECIAL_CHARS_REGEXP, function(matches, separator, letter, offset) {
-      return offset ? letter.toUpperCase() : letter;
-    });
-  }
-
-  function getVendorPrefix(testElement) {
-    var prop, match;
-    var vendorRegex = /^(Moz|webkit|ms)(?=[A-Z])/;
-
-    for (prop in testElement.style) {
-      if (match = vendorRegex.exec(prop)) {
-        return match[0];
-      }
-    }
-  }
-
-  var self = {
-    isInputKey : function(e) { return (e.keyCode >= 31 && e.keyCode <= 90); },
-    isNumPadKey : function(e) { return (3 === e.location && e.keyCode >= 97 && e.keyCode <= 105); },
-    isMetaKey: function(e) { return (e.keyCode >= 91 && e.keyCode <= 93); },
-    isFnLockKey: function(e) { return (e.keyCode >= 112 && e.keyCode <= 145); },
-    isNavigationKey : function(e) {
-      var kc = self.KEY_CODE, NAVIGATION_KEYS =  [kc.SPACE, kc.ENTER, kc.UP_ARROW, kc.DOWN_ARROW];
-      return (NAVIGATION_KEYS.indexOf(e.keyCode) != -1);
-    },
-    hasModifierKey: function(e) {
-      return e.ctrlKey || e.metaKey || e.altKey;
-    },
-
-    /**
-     * Maximum size, in pixels, that can be explicitly set to an element. The actual value varies
-     * between browsers, but IE11 has the very lowest size at a mere 1,533,917px. Ideally we could
-     * compute this value, but Firefox always reports an element to have a size of zero if it
-     * goes over the max, meaning that we'd have to binary search for the value.
-     */
-    ELEMENT_MAX_PIXELS: 1533917,
-
-    /**
-     * Priority for a directive that should run before the directives from ngAria.
-     */
-    BEFORE_NG_ARIA: 210,
-
-    /**
-     * Common Keyboard actions and their associated keycode.
-     */
-    KEY_CODE: {
-      COMMA: 188,
-      SEMICOLON : 186,
-      ENTER: 13,
-      ESCAPE: 27,
-      SPACE: 32,
-      PAGE_UP: 33,
-      PAGE_DOWN: 34,
-      END: 35,
-      HOME: 36,
-      LEFT_ARROW : 37,
-      UP_ARROW : 38,
-      RIGHT_ARROW : 39,
-      DOWN_ARROW : 40,
-      TAB : 9,
-      BACKSPACE: 8,
-      DELETE: 46
-    },
-
-    /**
-     * Vendor prefixed CSS properties to be used to support the given functionality in older browsers
-     * as well.
-     */
-    CSS: {
-      /* Constants */
-      TRANSITIONEND: 'transitionend' + (isWebkit ? ' webkitTransitionEnd' : ''),
-      ANIMATIONEND: 'animationend' + (isWebkit ? ' webkitAnimationEnd' : ''),
-
-      TRANSFORM: vendorProperty('transform'),
-      TRANSFORM_ORIGIN: vendorProperty('transformOrigin'),
-      TRANSITION: vendorProperty('transition'),
-      TRANSITION_DURATION: vendorProperty('transitionDuration'),
-      ANIMATION_PLAY_STATE: vendorProperty('animationPlayState'),
-      ANIMATION_DURATION: vendorProperty('animationDuration'),
-      ANIMATION_NAME: vendorProperty('animationName'),
-      ANIMATION_TIMING: vendorProperty('animationTimingFunction'),
-      ANIMATION_DIRECTION: vendorProperty('animationDirection')
-    },
-
-    /**
-     * As defined in core/style/variables.scss
-     *
-     * $layout-breakpoint-xs:     600px !default;
-     * $layout-breakpoint-sm:     960px !default;
-     * $layout-breakpoint-md:     1280px !default;
-     * $layout-breakpoint-lg:     1920px !default;
-     *
-     */
-    MEDIA: {
-      'xs'        : '(max-width: 599px)'                         ,
-      'gt-xs'     : '(min-width: 600px)'                         ,
-      'sm'        : '(min-width: 600px) and (max-width: 959px)'  ,
-      'gt-sm'     : '(min-width: 960px)'                         ,
-      'md'        : '(min-width: 960px) and (max-width: 1279px)' ,
-      'gt-md'     : '(min-width: 1280px)'                        ,
-      'lg'        : '(min-width: 1280px) and (max-width: 1919px)',
-      'gt-lg'     : '(min-width: 1920px)'                        ,
-      'xl'        : '(min-width: 1920px)'                        ,
-      'landscape' : '(orientation: landscape)'                   ,
-      'portrait'  : '(orientation: portrait)'                    ,
-      'print' : 'print'
-    },
-
-    MEDIA_PRIORITY: [
-      'xl',
-      'gt-lg',
-      'lg',
-      'gt-md',
-      'md',
-      'gt-sm',
-      'sm',
-      'gt-xs',
-      'xs',
-      'landscape',
-      'portrait',
-      'print'
-    ]
-  };
-
-  return self;
-}
 
 
 mdMediaFactory['$inject'] = ["$mdConstant", "$rootScope", "$window"];angular.module('material.core')
@@ -2918,6 +2918,179 @@ function MdCompilerProvider($compileProvider) {
 }
 
 
+/**
+ * @ngdoc module
+ * @name material.core.interaction
+ * @description
+ * User interaction detection to provide proper accessibility.
+ */
+MdInteractionService['$inject'] = ["$timeout", "$mdUtil", "$rootScope"];
+angular
+  .module('material.core.interaction', [])
+  .service('$mdInteraction', MdInteractionService);
+
+
+/**
+ * @ngdoc service
+ * @name $mdInteraction
+ * @module material.core.interaction
+ *
+ * @description
+ *
+ * Service which keeps track of the last interaction type and validates them for several browsers.
+ * The service hooks into the document's body and listens for touch, mouse and keyboard events.
+ *
+ * The most recent interaction type can be retrieved by calling the `getLastInteractionType` method.
+ *
+ * Here is an example markup for using the interaction service.
+ *
+ * <hljs lang="js">
+ *   var lastType = $mdInteraction.getLastInteractionType();
+ *
+ *   if (lastType === 'keyboard') {
+ *     // We only restore the focus for keyboard users.
+ *     restoreFocus();
+ *   }
+ * </hljs>
+ *
+ */
+function MdInteractionService($timeout, $mdUtil, $rootScope) {
+  this.$timeout = $timeout;
+  this.$mdUtil = $mdUtil;
+  this.$rootScope = $rootScope;
+
+  // IE browsers can also trigger pointer events, which also leads to an interaction.
+  this.pointerEvent = 'MSPointerEvent' in window ? 'MSPointerDown' : 'PointerEvent' in window ? 'pointerdown' : null;
+  this.bodyElement = angular.element(document.body);
+  this.isBuffering = false;
+  this.bufferTimeout = null;
+  this.lastInteractionType = null;
+  this.lastInteractionTime = null;
+  this.inputHandler = this.onInputEvent.bind(this);
+  this.bufferedInputHandler = this.onBufferInputEvent.bind(this);
+
+  // Type Mappings for the different events
+  // There will be three three interaction types
+  // `keyboard`, `mouse` and `touch`
+  // type `pointer` will be evaluated in `pointerMap` for IE Browser events
+  this.inputEventMap = {
+    'keydown': 'keyboard',
+    'mousedown': 'mouse',
+    'mouseenter': 'mouse',
+    'touchstart': 'touch',
+    'pointerdown': 'pointer',
+    'MSPointerDown': 'pointer'
+  };
+
+  // IE PointerDown events will be validated in `touch` or `mouse`
+  // Index numbers referenced here: https://msdn.microsoft.com/library/windows/apps/hh466130.aspx
+  this.iePointerMap = {
+    2: 'touch',
+    3: 'touch',
+    4: 'mouse'
+  };
+
+  this.initializeEvents();
+  this.$rootScope.$on('$destroy', this.deregister.bind(this));
+}
+
+/**
+ * Removes all event listeners created by $mdInteration on the
+ * body element.
+ */
+MdInteractionService.prototype.deregister = function() {
+
+    this.bodyElement.off('keydown mousedown', this.inputHandler);
+
+    if ('ontouchstart' in document.documentElement) {
+      this.bodyElement.off('touchstart', this.bufferedInputHandler);
+    }
+
+    if (this.pointerEvent) {
+      this.bodyElement.off(this.pointerEvent, this.inputHandler);
+    }
+
+};
+
+/**
+ * Initializes the interaction service, by registering all interaction events to the
+ * body element.
+ */
+MdInteractionService.prototype.initializeEvents = function() {
+
+  this.bodyElement.on('keydown mousedown', this.inputHandler);
+
+  if ('ontouchstart' in document.documentElement) {
+    this.bodyElement.on('touchstart', this.bufferedInputHandler);
+  }
+
+  if (this.pointerEvent) {
+    this.bodyElement.on(this.pointerEvent, this.inputHandler);
+  }
+
+};
+
+/**
+ * Event listener for normal interaction events, which should be tracked.
+ * @param event {MouseEvent|KeyboardEvent|PointerEvent|TouchEvent}
+ */
+MdInteractionService.prototype.onInputEvent = function(event) {
+  if (this.isBuffering) {
+    return;
+  }
+
+  var type = this.inputEventMap[event.type];
+
+  if (type === 'pointer') {
+    type = this.iePointerMap[event.pointerType] || event.pointerType;
+  }
+
+  this.lastInteractionType = type;
+  this.lastInteractionTime = this.$mdUtil.now();
+};
+
+/**
+ * Event listener for interaction events which should be buffered (touch events).
+ * @param event {TouchEvent}
+ */
+MdInteractionService.prototype.onBufferInputEvent = function(event) {
+  this.$timeout.cancel(this.bufferTimeout);
+
+  this.onInputEvent(event);
+  this.isBuffering = true;
+
+  // The timeout of 650ms is needed to delay the touchstart, because otherwise the touch will call
+  // the `onInput` function multiple times.
+  this.bufferTimeout = this.$timeout(function() {
+    this.isBuffering = false;
+  }.bind(this), 650, false);
+
+};
+
+/**
+ * @ngdoc method
+ * @name $mdInteraction#getLastInteractionType
+ * @description Retrieves the last interaction type triggered in body.
+ * @returns {string|null} Last interaction type.
+ */
+MdInteractionService.prototype.getLastInteractionType = function() {
+  return this.lastInteractionType;
+};
+
+/**
+ * @ngdoc method
+ * @name $mdInteraction#isUserInvoked
+ * @description Method to detect whether any interaction happened recently or not.
+ * @param {number=} checkDelay Time to check for any interaction to have been triggered.
+ * @returns {boolean} Whether there was any interaction or not.
+ */
+MdInteractionService.prototype.isUserInvoked = function(checkDelay) {
+  var delay = angular.isNumber(checkDelay) ? checkDelay : 15;
+
+  // Check for any interaction to be within the specified check time.
+  return this.lastInteractionTime >= this.$mdUtil.now() - delay;
+};
+
 
 MdGesture['$inject'] = ["$$MdGestureHandler", "$$rAF", "$timeout", "$mdUtil"];
 attachToDocument['$inject'] = ["$mdGesture", "$$MdGestureHandler", "$mdUtil"];var HANDLERS = {};
@@ -3745,179 +3918,6 @@ function canFocus(element) {
     )
   );
 }
-
-/**
- * @ngdoc module
- * @name material.core.interaction
- * @description
- * User interaction detection to provide proper accessibility.
- */
-MdInteractionService['$inject'] = ["$timeout", "$mdUtil", "$rootScope"];
-angular
-  .module('material.core.interaction', [])
-  .service('$mdInteraction', MdInteractionService);
-
-
-/**
- * @ngdoc service
- * @name $mdInteraction
- * @module material.core.interaction
- *
- * @description
- *
- * Service which keeps track of the last interaction type and validates them for several browsers.
- * The service hooks into the document's body and listens for touch, mouse and keyboard events.
- *
- * The most recent interaction type can be retrieved by calling the `getLastInteractionType` method.
- *
- * Here is an example markup for using the interaction service.
- *
- * <hljs lang="js">
- *   var lastType = $mdInteraction.getLastInteractionType();
- *
- *   if (lastType === 'keyboard') {
- *     // We only restore the focus for keyboard users.
- *     restoreFocus();
- *   }
- * </hljs>
- *
- */
-function MdInteractionService($timeout, $mdUtil, $rootScope) {
-  this.$timeout = $timeout;
-  this.$mdUtil = $mdUtil;
-  this.$rootScope = $rootScope;
-
-  // IE browsers can also trigger pointer events, which also leads to an interaction.
-  this.pointerEvent = 'MSPointerEvent' in window ? 'MSPointerDown' : 'PointerEvent' in window ? 'pointerdown' : null;
-  this.bodyElement = angular.element(document.body);
-  this.isBuffering = false;
-  this.bufferTimeout = null;
-  this.lastInteractionType = null;
-  this.lastInteractionTime = null;
-  this.inputHandler = this.onInputEvent.bind(this);
-  this.bufferedInputHandler = this.onBufferInputEvent.bind(this);
-
-  // Type Mappings for the different events
-  // There will be three three interaction types
-  // `keyboard`, `mouse` and `touch`
-  // type `pointer` will be evaluated in `pointerMap` for IE Browser events
-  this.inputEventMap = {
-    'keydown': 'keyboard',
-    'mousedown': 'mouse',
-    'mouseenter': 'mouse',
-    'touchstart': 'touch',
-    'pointerdown': 'pointer',
-    'MSPointerDown': 'pointer'
-  };
-
-  // IE PointerDown events will be validated in `touch` or `mouse`
-  // Index numbers referenced here: https://msdn.microsoft.com/library/windows/apps/hh466130.aspx
-  this.iePointerMap = {
-    2: 'touch',
-    3: 'touch',
-    4: 'mouse'
-  };
-
-  this.initializeEvents();
-  this.$rootScope.$on('$destroy', this.deregister.bind(this));
-}
-
-/**
- * Removes all event listeners created by $mdInteration on the
- * body element.
- */
-MdInteractionService.prototype.deregister = function() {
-
-    this.bodyElement.off('keydown mousedown', this.inputHandler);
-
-    if ('ontouchstart' in document.documentElement) {
-      this.bodyElement.off('touchstart', this.bufferedInputHandler);
-    }
-
-    if (this.pointerEvent) {
-      this.bodyElement.off(this.pointerEvent, this.inputHandler);
-    }
-
-};
-
-/**
- * Initializes the interaction service, by registering all interaction events to the
- * body element.
- */
-MdInteractionService.prototype.initializeEvents = function() {
-
-  this.bodyElement.on('keydown mousedown', this.inputHandler);
-
-  if ('ontouchstart' in document.documentElement) {
-    this.bodyElement.on('touchstart', this.bufferedInputHandler);
-  }
-
-  if (this.pointerEvent) {
-    this.bodyElement.on(this.pointerEvent, this.inputHandler);
-  }
-
-};
-
-/**
- * Event listener for normal interaction events, which should be tracked.
- * @param event {MouseEvent|KeyboardEvent|PointerEvent|TouchEvent}
- */
-MdInteractionService.prototype.onInputEvent = function(event) {
-  if (this.isBuffering) {
-    return;
-  }
-
-  var type = this.inputEventMap[event.type];
-
-  if (type === 'pointer') {
-    type = this.iePointerMap[event.pointerType] || event.pointerType;
-  }
-
-  this.lastInteractionType = type;
-  this.lastInteractionTime = this.$mdUtil.now();
-};
-
-/**
- * Event listener for interaction events which should be buffered (touch events).
- * @param event {TouchEvent}
- */
-MdInteractionService.prototype.onBufferInputEvent = function(event) {
-  this.$timeout.cancel(this.bufferTimeout);
-
-  this.onInputEvent(event);
-  this.isBuffering = true;
-
-  // The timeout of 650ms is needed to delay the touchstart, because otherwise the touch will call
-  // the `onInput` function multiple times.
-  this.bufferTimeout = this.$timeout(function() {
-    this.isBuffering = false;
-  }.bind(this), 650, false);
-
-};
-
-/**
- * @ngdoc method
- * @name $mdInteraction#getLastInteractionType
- * @description Retrieves the last interaction type triggered in body.
- * @returns {string|null} Last interaction type.
- */
-MdInteractionService.prototype.getLastInteractionType = function() {
-  return this.lastInteractionType;
-};
-
-/**
- * @ngdoc method
- * @name $mdInteraction#isUserInvoked
- * @description Method to detect whether any interaction happened recently or not.
- * @param {number=} checkDelay Time to check for any interaction to have been triggered.
- * @returns {boolean} Whether there was any interaction or not.
- */
-MdInteractionService.prototype.isUserInvoked = function(checkDelay) {
-  var delay = angular.isNumber(checkDelay) ? checkDelay : 15;
-
-  // Check for any interaction to be within the specified check time.
-  return this.lastInteractionTime >= this.$mdUtil.now() - delay;
-};
 
 angular.module('material.core')
   .provider('$$interimElement', InterimElementProvider);
