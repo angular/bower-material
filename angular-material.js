@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-rc.0-master-939f6c9
+ * v1.1.22-rc.0-master-d1a9976
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -31217,7 +31217,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
     element.on('keypress', keyListener);
 
     function keyListener(e) {
-      if (e.keyCode == 13 || e.keyCode == 32) {
+      if (e.keyCode === 13 || e.keyCode === 32) {
         clickListener(e);
       }
     }
@@ -31323,10 +31323,10 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
     };
 
     /**
-     * @param {KeyboardEvent} e keyboard event to handle
-     * @return {DOMElement|HTMLElement|undefined}
+     * @param {KeyboardEvent} keyboardEvent keyboard event to handle
+     * @return {Element|HTMLElement|undefined}
      */
-    self.optNodeForKeyboardSearch = function(e) {
+    self.optNodeForKeyboardSearch = function(keyboardEvent) {
       var search, i;
       clearSearchTimeout && clearTimeout(clearSearchTimeout);
       clearSearchTimeout = setTimeout(function() {
@@ -31336,7 +31336,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
         optNodes = undefined;
       }, CLEAR_SEARCH_AFTER);
 
-      searchStr += e.key;
+      searchStr += keyboardEvent.key;
       search = new RegExp('^' + $mdUtil.sanitize(searchStr), 'i');
       if (!optNodes) {
         optNodes = $element.find('md-option');
@@ -31345,12 +31345,12 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
           optText[i] = el.textContent.trim();
         });
       }
+
       for (i = 0; i < optText.length; ++i) {
         if (search.test(optText[i])) {
           return optNodes[i];
         }
       }
-
     };
 
     self.init = function(ngModel, binding) {
@@ -32051,6 +32051,7 @@ function SelectProvider($$interimElementProvider) {
 
       /**
        * Initialize container and dropDown menu positions/scale, then animate to show.
+       * @return {*} a Promise that resolves after the menu is animated in and an item is focused
        */
       function positionAndFocusMenu() {
         return $q(function(resolve) {
@@ -32104,12 +32105,11 @@ function SelectProvider($$interimElementProvider) {
       }
 
       /**
-       * @param {DOMElement|HTMLElement|null=} previousNode
-       * @param {DOMElement|HTMLElement} node
-       * @param {SelectMenuController|Function} menuController SelectMenuController instance
-       * @param {Function|*} selectController SelectController instance
+       * @param {Element|HTMLElement|null=} previousNode
+       * @param {Element|HTMLElement} node
+       * @param {SelectMenuController|Function|Object=} menuController SelectMenuController instance
        */
-      function focusOptionNode(previousNode, node, menuController, selectController) {
+      function focusOptionNode(previousNode, node, menuController) {
         var listboxContentNode = opts.contentEl[0];
 
         if (node) {
@@ -32118,7 +32118,9 @@ function SelectProvider($$interimElementProvider) {
           }
 
           node.classList.add('md-focused');
-          menuController.setActiveDescendant(node.id);
+          if (menuController && menuController.setActiveDescendant) {
+            menuController.setActiveDescendant(node.id);
+          }
 
           // Scroll the node into view if needed.
           if (listboxContentNode.scrollHeight > listboxContentNode.clientHeight) {
@@ -32131,18 +32133,20 @@ function SelectProvider($$interimElementProvider) {
             }
           }
           opts.focusedNode = node;
-          menuController.refreshViewValue();
+          if (menuController && menuController.refreshViewValue) {
+            menuController.refreshViewValue();
+          }
         }
       }
 
       /**
-       * @param {DOMElement|HTMLElement} nodeToFocus
+       * @param {Element|HTMLElement} nodeToFocus
        */
       function autoFocus(nodeToFocus) {
         var selectMenuController;
         if (nodeToFocus && !nodeToFocus.hasAttribute('disabled')) {
           selectMenuController = opts.selectEl.controller('mdSelectMenu');
-          focusOptionNode(null, nodeToFocus, selectMenuController, opts.selectCtrl);
+          focusOptionNode(null, nodeToFocus, selectMenuController);
         }
       }
 
@@ -32285,7 +32289,7 @@ function SelectProvider($$interimElementProvider) {
               if (shouldHandleKey(ev, $mdConstant)) {
                 var optNode = selectMenuController.optNodeForKeyboardSearch(ev);
                 if (optNode && !optNode.hasAttribute('disabled')) {
-                  focusOptionNode(opts.focusedNode, optNode, selectMenuController, opts.selectCtrl);
+                  focusOptionNode(opts.focusedNode, optNode, selectMenuController);
                 }
               }
           }
@@ -32318,7 +32322,7 @@ function SelectProvider($$interimElementProvider) {
             }
           } while (!newOption && index < optionsArray.length - 1 && index > 0);
 
-          focusOptionNode(prevOption, newOption, selectMenuController, opts.selectCtrl);
+          focusOptionNode(prevOption, newOption, selectMenuController);
         }
 
         function focusNextOption() {
@@ -32329,8 +32333,11 @@ function SelectProvider($$interimElementProvider) {
           focusOption('prev');
         }
 
-        function checkCloseMenu(ev) {
-          if (ev && (ev.type === 'click') && (ev.currentTarget != dropDown[0])) {
+        /**
+         * @param {KeyboardEvent|MouseEvent} event
+         */
+        function checkCloseMenu(event) {
+          if (event && (event.type === 'click') && (event.currentTarget !== dropDown[0])) {
             return;
           }
           if (mouseOnScrollbar()) {
@@ -32339,8 +32346,8 @@ function SelectProvider($$interimElementProvider) {
 
           if (opts.focusedNode && opts.focusedNode.hasAttribute &&
               !opts.focusedNode.hasAttribute('disabled')) {
-            ev.preventDefault();
-            ev.stopPropagation();
+            event.preventDefault();
+            event.stopPropagation();
             if (!selectMenuController.isMultiple) {
               opts.restoreFocus = true;
 
@@ -32349,16 +32356,17 @@ function SelectProvider($$interimElementProvider) {
               }, true);
             }
           }
+
           /**
            * check if the mouseup event was on a scrollbar
            */
           function mouseOnScrollbar() {
             var clickOnScrollbar = false;
-            if (ev && (ev.currentTarget.children.length > 0)) {
-              var child = ev.currentTarget.children[0];
+            if (event && (event.currentTarget.children.length > 0)) {
+              var child = event.currentTarget.children[0];
               var hasScrollbar = child.scrollHeight > child.clientHeight;
               if (hasScrollbar && child.children.length > 0) {
-                var relPosX = ev.pageX - ev.currentTarget.getBoundingClientRect().left;
+                var relPosX = event.pageX - event.currentTarget.getBoundingClientRect().left;
                 if (relPosX > child.querySelector('md-option').offsetWidth)
                   clickOnScrollbar = true;
               }
@@ -38913,4 +38921,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-rc.0-master-939f6c9"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-rc.0-master-d1a9976"}};
