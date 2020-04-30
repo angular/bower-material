@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-6372027
+ * v1.1.22-master-9f49e10
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2028,7 +2028,7 @@ function SelectProvider($$interimElementProvider) {
         container: {
           element: angular.element(containerNode),
           styles: {
-            left: Math.floor(clamp(bounds.left, left, bounds.right - containerRect.width)),
+            left: Math.floor(clamp(bounds.left, left, bounds.right - minWidth)),
             top: Math.floor(clamp(bounds.top, top, bounds.bottom - containerRect.height)),
             'min-width': minWidth,
             'font-size': fontSize
