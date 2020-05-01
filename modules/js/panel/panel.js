@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-9f49e10
+ * v1.1.22-master-b391c68
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3366,7 +3366,8 @@ MdPanelAnimation.prototype.animateOpen = function(panelEl) {
       panelEl.css('opacity', '1');
 
       animationOptions = {
-        transitionInClass: '_md-panel-animate-enter'
+        transitionInClass: '_md-panel-animate-enter',
+        transitionOutClass: '_md-panel-animate-leave',
       };
 
       var openSlide = animator.calculateSlideToOrigin(
@@ -3431,7 +3432,8 @@ MdPanelAnimation.prototype.animateClose = function(panelEl) {
       // Slide should start with opacity: 1.
       panelEl.css('opacity', '1');
       reverseAnimationOptions = {
-        transitionInClass: '_md-panel-animate-leave'
+        transitionInClass: '_md-panel-animate-leave',
+        transitionOutClass: '_md-panel-animate-enter _md-panel-animate-leave'
       };
 
       var closeSlide = animator.calculateSlideToOrigin(
@@ -3441,7 +3443,8 @@ MdPanelAnimation.prototype.animateClose = function(panelEl) {
 
     case MdPanelAnimation.animation.SCALE:
       reverseAnimationOptions = {
-        transitionInClass: '_md-panel-animate-scale-out _md-panel-animate-leave'
+        transitionInClass: '_md-panel-animate-scale-out _md-panel-animate-leave',
+        transitionOutClass: '_md-panel-animate-scale-out _md-panel-animate-enter _md-panel-animate-leave'
       };
 
       var closeScale = animator.calculateZoomToOrigin(
@@ -3451,7 +3454,8 @@ MdPanelAnimation.prototype.animateClose = function(panelEl) {
 
     case MdPanelAnimation.animation.FADE:
       reverseAnimationOptions = {
-        transitionInClass: '_md-panel-animate-fade-out _md-panel-animate-leave'
+        transitionInClass: '_md-panel-animate-fade-out _md-panel-animate-leave',
+        transitionOutClass: '_md-panel-animate-fade-out _md-panel-animate-enter _md-panel-animate-leave'
       };
       break;
 

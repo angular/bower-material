@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-9f49e10
+ * v1.1.22-master-b391c68
  */
 md-input-container:not([md-no-float]) .md-select-placeholder span:first-child {
   -webkit-transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -79,10 +79,9 @@ md-select {
     font-size: 13px;
     vertical-align: top; }
   md-select[disabled] .md-select-value {
-    background-position: 0 bottom;
+    background-position: bottom -1px left 0;
     background-size: 4px 1px;
-    background-repeat: repeat-x;
-    margin-bottom: -1px; }
+    background-repeat: repeat-x; }
   md-select:focus {
     outline: none; }
   md-select[disabled]:hover {
@@ -99,9 +98,16 @@ md-select {
   md-select:not([disabled]):focus.ng-invalid.ng-touched .md-select-value {
     padding-bottom: 0; }
 
-md-input-container.md-input-has-value .md-select-value > span:not(.md-select-icon) {
-  -webkit-transform: translate3d(0, 1px, 0);
-          transform: translate3d(0, 1px, 0); }
+md-input-container md-select:not([disabled]):focus .md-select-value {
+  border-bottom-width: 2px; }
+
+md-input-container md-select[disabled] .md-select-value {
+  background-position: bottom -1px left 0; }
+
+md-input-container md-select .md-select-value {
+  min-height: 26px;
+  padding-bottom: 1px;
+  border-bottom-width: 1px; }
 
 .md-select-value {
   display: -webkit-box;

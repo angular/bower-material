@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-9f49e10
+ * v1.1.22-master-b391c68
  */
 // Typography
 // ------------------------------
@@ -137,6 +137,34 @@ $checkbox-width: 20px !default;
 $checkbox-height: $checkbox-width !default;
 $checkbox-border-radius: 2px !default;
 $checkbox-border-width: 2px !default;
+
+$input-container-padding: 2px !default;
+
+$input-label-default-offset: 24px !default;
+$input-label-default-scale: 1.0 !default;
+$input-label-float-offset: 6px !default;
+$input-label-float-scale: 0.75 !default;
+$input-label-float-width: $input-container-padding + 16px !default;
+
+$input-placeholder-offset: $input-label-default-offset !default;
+
+$input-border-width-default: 1px !default;
+$input-border-width-focused: 2px !default;
+$input-line-height: 26px !default;
+$input-padding-top: 2px !default;
+
+$input-error-font-size: 12px !default;
+$input-error-height: 24px !default;
+$input-error-line-height: $input-error-font-size + 2px !default;
+$error-padding-top: ($input-error-height - $input-error-line-height) / 2 !default;
+
+$icon-offset: 36px !default;
+
+$icon-top-offset: ($icon-offset - $input-padding-top - $input-border-width-focused) / 4 !default;
+
+$icon-float-focused-top: -8px !default;
+
+$input-resize-handle-height: 10px !default;
 
 @mixin margin-selectors($before:1em, $after:1em, $start:0px, $end:0px) {
   -webkit-margin-before: $before;
@@ -1743,7 +1771,7 @@ md-bottom-sheet {
         @include grid-items-per-row(7);
       }
 
-      // Override of the IE11 fix from @mixin ie11-min-height-flexbug, line 109 mixins.scss
+      // Override of the IE11 fix from @mixin ie11-min-height-flexbug, line 109 _mixins.scss
       &::before {
         display: none;
       }
@@ -2268,7 +2296,7 @@ md-card {
 //$checkbox-border-radius: 2px !default;
 //$checkbox-border-width: 2px !default;
 //
-// ^^ defined in variables.scss
+// ^^ defined in _variables.scss
 //
 $checkbox-margin: 16px !default;
 $checkbox-text-margin: 10px !default;
@@ -3532,34 +3560,6 @@ md-icon {
   }
 }
 
-$input-container-padding: 2px !default;
-
-$input-label-default-offset: 24px !default;
-$input-label-default-scale: 1.0 !default;
-$input-label-float-offset: 6px !default;
-$input-label-float-scale: 0.75 !default;
-$input-label-float-width: $input-container-padding + 16px !default;
-
-$input-placeholder-offset: $input-label-default-offset !default;
-
-$input-border-width-default: 1px !default;
-$input-border-width-focused: 2px !default;
-$input-line-height: 26px !default;
-$input-padding-top: 2px !default;
-
-$input-error-font-size: 12px !default;
-$input-error-height: 24px !default;
-$input-error-line-height: $input-error-font-size + 2px !default;
-$error-padding-top: ($input-error-height - $input-error-line-height) / 2 !default;
-
-$icon-offset: 36px !default;
-
-$icon-top-offset: ($icon-offset - $input-padding-top - $input-border-width-focused) / 4 !default;
-
-$icon-float-focused-top: -8px !default;
-
-$input-resize-handle-height: 10px !default;
-
 md-input-container {
   @include pie-clearfix();
   display: inline-block;
@@ -4693,6 +4693,8 @@ md-progress-circular {
     position: relative;
     display: block;
 
+    @include rtl(transform, scale(1, 1), scale(-1, 1));
+
     &._md-progress-circular-disabled {
         visibility: hidden;
     }
@@ -4719,6 +4721,8 @@ md-progress-linear {
 
   padding-top: 0 !important;
   margin-bottom: 0 !important;
+
+  @include rtl(transform, scale(1, 1), scale(-1, 1));
 
   &._md-progress-linear-disabled {
     visibility: hidden;
@@ -5114,6 +5118,7 @@ md-radio-group {
 
 $select-checkbox-border-radius: 2px !default;
 $select-checkbox-border-width: 2px !default;
+$select-border-width-default: 1px !default;
 $select-checkbox-width: rem(1.4) !default;
 $select-option-height: 48px !default;
 $select-option-padding: 16px !default;
@@ -5229,12 +5234,14 @@ md-select {
   }
 
   &[disabled] .md-select-value {
-    background-position: 0 bottom;
+    // This background-position was taken from the styling of disabled md-inputs.
+    // The negative border width offsets the dotted "border" so it's placed in the same place as the
+    // solid one before it.
+    background-position: bottom $select-border-width-default * -1 left 0;
     // This background-size is coordinated with a linear-gradient set in select-theme.scss
     // to create a dotted line under the input.
     background-size: 4px 1px;
     background-repeat: repeat-x;
-    margin-bottom: -1px; // Shift downward so dotted line is positioned the same as other bottom borders
   }
 
   &:focus {
@@ -5255,7 +5262,7 @@ md-select {
     }
     &:focus {
       .md-select-value {
-        border-bottom-width: 2px;
+        border-bottom-width: $select-border-width-default + 1px;
         border-bottom-style: solid;
         padding-bottom: 0;
       }
@@ -5268,10 +5275,26 @@ md-select {
   }
 }
 
-// Fix value by 1px to align with standard text inputs (and spec)
-md-input-container.md-input-has-value .md-select-value {
-  > span:not(.md-select-icon) {
-    transform: translate3d(0, 1px, 0);
+md-input-container md-select {
+  &:not([disabled]) {
+    &:focus {
+      .md-select-value {
+        border-bottom-width: $input-border-width-focused;
+      }
+    }
+  }
+  &[disabled] {
+    .md-select-value {
+      // This background-position was taken from and matches the styling of disabled md-inputs.
+      // The negative border width offsets the dotted "border" so it's placed in the same place as
+      // the solid one before it.
+      background-position: bottom $input-border-width-default * -1 left 0;
+    }
+  }
+  .md-select-value {
+    min-height: ($input-line-height + $input-padding-top * 2) - $input-border-width-focused - $input-border-width-default * 2;
+    padding-bottom: $input-border-width-focused - $input-border-width-default;
+    border-bottom-width: $input-border-width-default;
   }
 }
 
@@ -5279,7 +5302,7 @@ md-input-container.md-input-has-value .md-select-value {
   display: flex;
   align-items: center;
   padding: 2px 2px 1px;
-  border-bottom-width: 1px;
+  border-bottom-width: $select-border-width-default;
   border-bottom-style: solid;
   background-color: rgba(0,0,0,0);
   position: relative;
@@ -5287,7 +5310,6 @@ md-input-container.md-input-has-value .md-select-value {
   min-width: 8 * $baseline-grid;
   min-height: 26px;
   flex-grow: 1;
-
 
   > span:not(.md-select-icon) {
     max-width: 100%;

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-9f49e10
+ * v1.1.22-master-b391c68
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -450,7 +450,7 @@ function MdConstantFactory() {
     },
 
     /**
-     * As defined in core/style/variables.scss
+     * As defined in core/style/_variables.scss
      *
      * $layout-breakpoint-xs:     600px !default;
      * $layout-breakpoint-sm:     960px !default;
@@ -3538,6 +3538,15 @@ function MdCompilerProvider($compileProvider) {
 
         // Create the specified controller instance.
         var ctrl = self._createController(options, injectLocals, locals);
+
+        // Registering extra $destroy listeners should be avoided.
+        // Only register the listener if the controller implements a $onDestroy hook.
+        if (angular.isFunction(ctrl.$onDestroy)) {
+          scope.$on('$destroy', function() {
+            // Call the $onDestroy hook if it's present on the controller.
+            angular.isFunction(ctrl.$onDestroy) && ctrl.$onDestroy();
+          });
+        }
 
         // Unique identifier for AngularJS Route ngView controllers.
         element.data('$ngControllerController', ctrl);
@@ -29280,7 +29289,8 @@ MdPanelAnimation.prototype.animateOpen = function(panelEl) {
       panelEl.css('opacity', '1');
 
       animationOptions = {
-        transitionInClass: '_md-panel-animate-enter'
+        transitionInClass: '_md-panel-animate-enter',
+        transitionOutClass: '_md-panel-animate-leave',
       };
 
       var openSlide = animator.calculateSlideToOrigin(
@@ -29345,7 +29355,8 @@ MdPanelAnimation.prototype.animateClose = function(panelEl) {
       // Slide should start with opacity: 1.
       panelEl.css('opacity', '1');
       reverseAnimationOptions = {
-        transitionInClass: '_md-panel-animate-leave'
+        transitionInClass: '_md-panel-animate-leave',
+        transitionOutClass: '_md-panel-animate-enter _md-panel-animate-leave'
       };
 
       var closeSlide = animator.calculateSlideToOrigin(
@@ -29355,7 +29366,8 @@ MdPanelAnimation.prototype.animateClose = function(panelEl) {
 
     case MdPanelAnimation.animation.SCALE:
       reverseAnimationOptions = {
-        transitionInClass: '_md-panel-animate-scale-out _md-panel-animate-leave'
+        transitionInClass: '_md-panel-animate-scale-out _md-panel-animate-leave',
+        transitionOutClass: '_md-panel-animate-scale-out _md-panel-animate-enter _md-panel-animate-leave'
       };
 
       var closeScale = animator.calculateZoomToOrigin(
@@ -29365,7 +29377,8 @@ MdPanelAnimation.prototype.animateClose = function(panelEl) {
 
     case MdPanelAnimation.animation.FADE:
       reverseAnimationOptions = {
-        transitionInClass: '_md-panel-animate-fade-out _md-panel-animate-leave'
+        transitionInClass: '_md-panel-animate-fade-out _md-panel-animate-leave',
+        transitionOutClass: '_md-panel-animate-fade-out _md-panel-animate-enter _md-panel-animate-leave'
       };
       break;
 
@@ -38932,4 +38945,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-master-9f49e10"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-master-b391c68"}};
