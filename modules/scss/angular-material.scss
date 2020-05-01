@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-b391c68
+ * v1.1.22-master-b486a41
  */
 // Typography
 // ------------------------------
@@ -3717,6 +3717,7 @@ md-input-container {
     -ms-flex-preferred-size: $input-line-height; //IE fix
     border-radius: 0;
     border-style: solid; // Firefox fix
+    transition: border-color $swift-ease-out-duration $swift-ease-out-timing-function;
 
     // Fix number inputs in Firefox to be full-width
     width: 100%;
