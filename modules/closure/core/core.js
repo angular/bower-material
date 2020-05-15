@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-a3a977a
+ * v1.1.22-master-bc71d0b
  */
 goog.provide('ngmaterial.core');
 
@@ -2009,7 +2009,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      */
     sanitize: function(term) {
       if (!term) return term;
-      return term.replace(/[\\^$*+?.()|{}[]]/g, '\\$&');
+      return term.replace(/[\\^$*+?.()|{}[]/g, '\\$&');
     }
   };
 

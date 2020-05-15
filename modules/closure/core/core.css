@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-a3a977a
+ * v1.1.22-master-bc71d0b
  */
 /*
 *  Responsive attributes
@@ -14,6 +14,94 @@
 *  4) https://github.com/philipwalton/flexbugs#3-min-height-on-a-flex-container-wont-apply-to-its-flex-items
 *  5) http://godban.com.ua/projects/flexgrid
 */
+html, body {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-touch-callout: none;
+  min-height: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+/************
+ * Headings
+ ************/
+.md-display-4 {
+  font-size: 112px;
+  font-weight: 300;
+  letter-spacing: -0.010em;
+  line-height: 112px; }
+
+.md-display-3 {
+  font-size: 56px;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 56px; }
+
+.md-display-2 {
+  font-size: 45px;
+  font-weight: 400;
+  line-height: 64px; }
+
+.md-display-1 {
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 40px; }
+
+.md-headline {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px; }
+
+.md-title {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.005em; }
+
+.md-subhead {
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.010em;
+  line-height: 24px; }
+
+/************
+ * Body Copy
+ ************/
+.md-body-1 {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.010em;
+  line-height: 20px; }
+
+.md-body-2 {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.010em;
+  line-height: 24px; }
+
+.md-caption {
+  font-size: 12px;
+  letter-spacing: 0.020em; }
+
+.md-button {
+  letter-spacing: 0.010em; }
+
+/************
+ * Defaults
+ ************/
+button,
+select,
+html,
+textarea,
+input {
+  font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+select,
+button,
+textarea,
+input {
+  font-size: 100%; }
+
 html, body {
   height: 100%;
   position: relative; }
@@ -192,94 +280,6 @@ bdo[dir=rtl] {
 bdo[dir=ltr] {
   direction: ltr;
   unicode-bidi: bidi-override; }
-
-html, body {
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  -webkit-touch-callout: none;
-  min-height: 100%;
-  -webkit-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; }
-
-/************
- * Headings
- ************/
-.md-display-4 {
-  font-size: 112px;
-  font-weight: 300;
-  letter-spacing: -0.010em;
-  line-height: 112px; }
-
-.md-display-3 {
-  font-size: 56px;
-  font-weight: 400;
-  letter-spacing: -0.005em;
-  line-height: 56px; }
-
-.md-display-2 {
-  font-size: 45px;
-  font-weight: 400;
-  line-height: 64px; }
-
-.md-display-1 {
-  font-size: 34px;
-  font-weight: 400;
-  line-height: 40px; }
-
-.md-headline {
-  font-size: 24px;
-  font-weight: 400;
-  line-height: 32px; }
-
-.md-title {
-  font-size: 20px;
-  font-weight: 500;
-  letter-spacing: 0.005em; }
-
-.md-subhead {
-  font-size: 16px;
-  font-weight: 400;
-  letter-spacing: 0.010em;
-  line-height: 24px; }
-
-/************
- * Body Copy
- ************/
-.md-body-1 {
-  font-size: 14px;
-  font-weight: 400;
-  letter-spacing: 0.010em;
-  line-height: 20px; }
-
-.md-body-2 {
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.010em;
-  line-height: 24px; }
-
-.md-caption {
-  font-size: 12px;
-  letter-spacing: 0.020em; }
-
-.md-button {
-  letter-spacing: 0.010em; }
-
-/************
- * Defaults
- ************/
-button,
-select,
-html,
-textarea,
-input {
-  font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-select,
-button,
-textarea,
-input {
-  font-size: 100%; }
 
 /*
 * Since Layout API uses ng-cloak to hide the dom elements while layouts are adjusted
