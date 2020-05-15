@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-5fbabe7
+ * v1.1.22-master-2a01746
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1114,7 +1114,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     /**
      * Cross-version compatibility method to retrieve an option of a ngModel controller,
      * which supports the breaking changes in the AngularJS snapshot (SHA 87a2ff76af5d0a9268d8eb84db5755077d27c84c).
-     * @param {!angular.NgModelController} ngModelCtrl
+     * @param {!ngModel.NgModelController} ngModelCtrl
      * @param {!string} optionName
      * @returns {Object|undefined}
      */
@@ -2060,13 +2060,13 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
  * Since removing jQuery from the demos, some code that uses `element.focus()` is broken.
  * We need to add `element.focus()`, because it's testable unlike `element[0].focus`.
  */
-
 angular.element.prototype.focus = angular.element.prototype.focus || function() {
   if (this.length) {
     this[0].focus();
   }
   return this;
 };
+
 angular.element.prototype.blur = angular.element.prototype.blur || function() {
   if (this.length) {
     this[0].blur();
@@ -14374,6 +14374,10 @@ angular.module('material.components.datepicker', [
    * @module material.components.datepicker
    *
    * @param {Date} ng-model The component's model. Should be a Date object.
+   * @param {Object=} ng-model-options Allows tuning of the way in which `ng-model` is being
+   *  updated. Also allows for a timezone to be specified.
+   *  <a href="https://docs.angularjs.org/api/ng/directive/ngModelOptions#usage">Read more at the
+   *  ngModelOptions docs.</a>
    * @param {Date=} md-min-date Expression representing the minimum date.
    * @param {Date=} md-max-date Expression representing the maximum date.
    * @param {(function(Date): boolean)=} md-date-filter Function expecting a date and returning a
@@ -14394,7 +14398,8 @@ angular.module('material.components.datepicker', [
    *   <md-calendar ng-model="birthday"></md-calendar>
    * </hljs>
    */
-  CalendarCtrl.$inject = ["$element", "$scope", "$$mdDateUtil", "$mdUtil", "$mdConstant", "$mdTheming", "$$rAF", "$attrs", "$mdDateLocale"];
+  CalendarCtrl.$inject = ["$element", "$scope", "$$mdDateUtil", "$mdUtil", "$mdConstant", "$mdTheming", "$$rAF", "$attrs", "$mdDateLocale", "$filter"];
+  calendarDirective.$inject = ["inputDirective"];
   angular.module('material.components.datepicker')
     .directive('mdCalendar', calendarDirective);
 
@@ -14409,24 +14414,16 @@ angular.module('material.components.datepicker', [
   // TODO(jelbourn): Previous month opacity is lowered when partially scrolled out of view.
   // TODO(jelbourn): Support md-calendar standalone on a page (as a tabstop w/ aria-live
   //     announcement and key handling).
-  // Read-only calendar (not just date-picker).
+  // TODO Read-only calendar (not just date-picker).
 
-  function calendarDirective() {
+  function calendarDirective(inputDirective) {
     return {
       template: function(tElement, tAttr) {
-        // TODO(crisbeto): This is a workaround that allows the calendar to work, without
-        // a datepicker, until issue #8585 gets resolved. It can safely be removed
-        // afterwards. This ensures that the virtual repeater scrolls to the proper place on load by
-        // deferring the execution until the next digest. It's necessary only if the calendar is used
-        // without a datepicker, otherwise it's already wrapped in an ngIf.
-        var extraAttrs = tAttr.hasOwnProperty('ngIf') ? '' : 'ng-if="calendarCtrl.isInitialized"';
-        var template = '' +
-          '<div ng-switch="calendarCtrl.currentView" ' + extraAttrs + '>' +
+        return '' +
+          '<div ng-switch="calendarCtrl.currentView">' +
             '<md-calendar-year ng-switch-when="year"></md-calendar-year>' +
             '<md-calendar-month ng-switch-default></md-calendar-month>' +
           '</div>';
-
-        return template;
       },
       scope: {
         minDate: '=mdMinDate',
@@ -14445,7 +14442,7 @@ angular.module('material.components.datepicker', [
       link: function(scope, element, attrs, controllers) {
         var ngModelCtrl = controllers[0];
         var mdCalendarCtrl = controllers[1];
-        mdCalendarCtrl.configureNgModel(ngModelCtrl);
+        mdCalendarCtrl.configureNgModel(ngModelCtrl, inputDirective);
       }
     };
   }
@@ -14473,15 +14470,27 @@ angular.module('material.components.datepicker', [
    * @ngInject @constructor
    */
   function CalendarCtrl($element, $scope, $$mdDateUtil, $mdUtil,
-    $mdConstant, $mdTheming, $$rAF, $attrs, $mdDateLocale) {
+    $mdConstant, $mdTheming, $$rAF, $attrs, $mdDateLocale, $filter) {
 
     $mdTheming($element);
 
-    /** @final {!angular.JQLite} */
+    /**
+     * @final
+     * @type {!JQLite}
+     */
     this.$element = $element;
 
-    /** @final {!angular.Scope} */
+    /**
+     * @final
+     * @type {!angular.Scope}
+     */
     this.$scope = $scope;
+
+    /**
+     * @final
+     * @type {!angular.$attrs} Current attributes object for the element
+     */
+    this.$attrs = $attrs;
 
     /** @final */
     this.dateUtil = $$mdDateUtil;
@@ -14498,19 +14507,25 @@ angular.module('material.components.datepicker', [
     /** @final */
     this.$mdDateLocale = $mdDateLocale;
 
-    /** @final {Date} */
+    /** @final The built-in Angular date filter. */
+    this.ngDateFilter = $filter('date');
+
+    /**
+     * @final
+     * @type {Date}
+     */
     this.today = this.dateUtil.createDateAtMidnight();
 
-    /** @type {!angular.NgModelController} */
+    /** @type {!ngModel.NgModelController} */
     this.ngModelCtrl = null;
 
-    /** @type {String} Class applied to the selected date cell. */
+    /** @type {string} Class applied to the selected date cell. */
     this.SELECTED_DATE_CLASS = 'md-calendar-selected-date';
 
-    /** @type {String} Class applied to the cell for today. */
+    /** @type {string} Class applied to the cell for today. */
     this.TODAY_CLASS = 'md-calendar-date-today';
 
-    /** @type {String} Class applied to the focused cell. */
+    /** @type {string} Class applied to the focused cell. */
     this.FOCUSED_DATE_CLASS = 'md-focus';
 
     /** @final {number} Unique ID for this calendar instance. */
@@ -14524,6 +14539,12 @@ angular.module('material.components.datepicker', [
      * @type {Date}
      */
     this.displayDate = null;
+
+    /**
+     * Allows restricting the calendar to only allow selecting a month or a day.
+     * @type {'month'|'day'|null}
+     */
+    this.mode = null;
 
     /**
      * The selected date. Keep track of this separately from the ng-model value so that we
@@ -14547,12 +14568,6 @@ angular.module('material.components.datepicker', [
      * @type {Date}
      */
     this.lastRenderableDate = null;
-
-    /**
-     * Used to toggle initialize the root element in the next digest.
-     * @type {Boolean}
-     */
-    this.isInitialized = false;
 
     /**
      * Cache for the  width of the element without a scrollbar. Used to hide the scrollbar later on
@@ -14601,12 +14616,12 @@ angular.module('material.components.datepicker', [
     if (angular.version.major === 1 && angular.version.minor <= 4) {
       this.$onInit();
     }
-
   }
 
   /**
    * AngularJS Lifecycle hook for newer AngularJS versions.
-   * Bindings are not guaranteed to have been assigned in the controller, but they are in the $onInit hook.
+   * Bindings are not guaranteed to have been assigned in the controller, but they are in the
+   * $onInit hook.
    */
   CalendarCtrl.prototype.$onInit = function() {
     /**
@@ -14623,36 +14638,55 @@ angular.module('material.components.datepicker', [
       this.mode = null;
     }
 
-    var dateLocale = this.$mdDateLocale;
-
-    if (this.minDate && this.minDate > dateLocale.firstRenderableDate) {
+    if (this.minDate && this.minDate > this.$mdDateLocale.firstRenderableDate) {
       this.firstRenderableDate = this.minDate;
     } else {
-      this.firstRenderableDate = dateLocale.firstRenderableDate;
+      this.firstRenderableDate = this.$mdDateLocale.firstRenderableDate;
     }
 
-    if (this.maxDate && this.maxDate < dateLocale.lastRenderableDate) {
+    if (this.maxDate && this.maxDate < this.$mdDateLocale.lastRenderableDate) {
       this.lastRenderableDate = this.maxDate;
     } else {
-      this.lastRenderableDate = dateLocale.lastRenderableDate;
+      this.lastRenderableDate = this.$mdDateLocale.lastRenderableDate;
     }
   };
 
   /**
    * Sets up the controller's reference to ngModelController.
-   * @param {!angular.NgModelController} ngModelCtrl
+   * @param {!ngModel.NgModelController} ngModelCtrl Instance of the ngModel controller.
+   * @param {Object} inputDirective Config for Angular's `input` directive.
    */
-  CalendarCtrl.prototype.configureNgModel = function(ngModelCtrl) {
+  CalendarCtrl.prototype.configureNgModel = function(ngModelCtrl, inputDirective) {
     var self = this;
-
     self.ngModelCtrl = ngModelCtrl;
 
-    self.$mdUtil.nextTick(function() {
-      self.isInitialized = true;
-    });
+    // The component needs to be [type="date"] in order to be picked up by AngularJS.
+    this.$attrs.$set('type', 'date');
+
+    // Invoke the `input` directive link function, adding a stub for the element.
+    // This allows us to re-use AngularJS' logic for setting the timezone via ng-model-options.
+    // It works by calling the link function directly which then adds the proper `$parsers` and
+    // `$formatters` to the NgModelController.
+    inputDirective[0].link.pre(this.$scope, {
+      on: angular.noop,
+      val: angular.noop,
+      0: {}
+    }, this.$attrs, [ngModelCtrl]);
 
     ngModelCtrl.$render = function() {
       var value = this.$viewValue;
+      var parsedValue, convertedValue;
+
+      // In the case where a conversion is needed, the $viewValue here will be a string like
+      // "2020-05-10" instead of a Date object.
+      if (!self.dateUtil.isValidDate(value)) {
+        parsedValue = self.$mdDateLocale.parseDate(this.$viewValue);
+        convertedValue =
+          new Date(parsedValue.getTime() + 60000 * parsedValue.getTimezoneOffset());
+        if (self.dateUtil.isValidDate(convertedValue)) {
+          value = convertedValue;
+        }
+      }
 
       // Notify the child scopes of any changes.
       self.$scope.$broadcast('md-calendar-parent-changed', value);
@@ -14671,13 +14705,14 @@ angular.module('material.components.datepicker', [
 
   /**
    * Sets the ng-model value for the calendar and emits a change event.
-   * @param {Date} date
+   * @param {Date} date new value for the calendar
    */
   CalendarCtrl.prototype.setNgModelValue = function(date) {
+    var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
     var value = this.dateUtil.createDateAtMidnight(date);
-    this.focus(value);
+    this.focusDate(value);
     this.$scope.$emit('md-calendar-change', value);
-    this.ngModelCtrl.$setViewValue(value);
+    this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone), 'default');
     this.ngModelCtrl.$render();
     return value;
   };
@@ -14701,9 +14736,9 @@ angular.module('material.components.datepicker', [
 
   /**
    * Focus the cell corresponding to the given date.
-   * @param {Date} date The date to be focused.
+   * @param {Date=} date The date to be focused.
    */
-  CalendarCtrl.prototype.focus = function(date) {
+  CalendarCtrl.prototype.focusDate = function(date) {
     if (this.dateUtil.isValidDate(date)) {
       var previousFocus = this.$element[0].querySelector('.' + this.FOCUSED_DATE_CLASS);
       if (previousFocus) {
@@ -14792,10 +14827,10 @@ angular.module('material.components.datepicker', [
     this.$scope.$apply(function() {
       // Capture escape and emit back up so that a wrapping component
       // (such as a date-picker) can decide to close.
-      if (event.which == self.keyCode.ESCAPE || event.which == self.keyCode.TAB) {
+      if (event.which === self.keyCode.ESCAPE || event.which === self.keyCode.TAB) {
         self.$scope.$emit('md-calendar-close');
 
-        if (event.which == self.keyCode.TAB) {
+        if (event.which === self.keyCode.TAB) {
           event.preventDefault();
         }
 
@@ -14996,7 +15031,7 @@ angular.module('material.components.datepicker', [
     this.cellClickHandler = function() {
       var timestamp = $$mdDateUtil.getTimestampFromNode(this);
       self.$scope.$apply(function() {
-        self.calendarCtrl.setNgModelValue(timestamp);
+        self.calendarCtrl.setNgModelValue(self.dateLocale.parseDate(timestamp));
       });
     };
 
@@ -15043,7 +15078,7 @@ angular.module('material.components.datepicker', [
 
   /**
    * Gets the "index" of the currently selected date as it would be in the virtual-repeat.
-   * @returns {number}
+   * @returns {number} the "index" of the currently selected date
    */
   CalendarMonthCtrl.prototype.getSelectedMonthIndex = function() {
     var calendarCtrl = this.calendarCtrl;
@@ -15166,7 +15201,7 @@ angular.module('material.components.datepicker', [
         date = this.dateUtil.clampDate(date, calendarCtrl.minDate, calendarCtrl.maxDate);
 
         this.changeDisplayDate(date).then(function() {
-          calendarCtrl.focus(date);
+          calendarCtrl.focusDate(date);
         });
       }
     }
@@ -15267,7 +15302,6 @@ angular.module('material.components.datepicker', [
 
     if (this.focusAfterAppend) {
       this.focusAfterAppend.classList.add(this.calendarCtrl.FOCUSED_DATE_CLASS);
-      this.focusAfterAppend.focus();
       this.focusAfterAppend = null;
     }
   };
@@ -15538,8 +15572,7 @@ angular.module('material.components.datepicker', [
    * Controller for the mdCalendar component.
    * @ngInject @constructor
    */
-  function CalendarYearCtrl($element, $scope, $animate, $q,
-    $$mdDateUtil, $mdUtil) {
+  function CalendarYearCtrl($element, $scope, $animate, $q, $$mdDateUtil, $mdUtil) {
 
     /** @final {!angular.JQLite} */
     this.$element = $element;
@@ -15688,7 +15721,7 @@ angular.module('material.components.datepicker', [
         date = dateUtil.getFirstDateOfMonth(self.dateUtil.clampDate(date, min, max));
 
         self.changeDate(date).then(function() {
-          calendarCtrl.focus(date);
+          calendarCtrl.focusDate(date);
         });
       }
     }
@@ -15719,7 +15752,7 @@ angular.module('material.components.datepicker', [
 
     if (calendarCtrl.mode) {
       this.$mdUtil.nextTick(function() {
-        calendarCtrl.setNgModelValue(timestamp);
+        calendarCtrl.setNgModelValue(calendarCtrl.$mdDateLocale.parseDate(timestamp));
       });
     } else {
       calendarCtrl.setCurrentView('month', timestamp);
@@ -15810,7 +15843,6 @@ angular.module('material.components.datepicker', [
 
     if (this.focusAfterAppend) {
       this.focusAfterAppend.classList.add(this.calendarCtrl.FOCUSED_DATE_CLASS);
-      this.focusAfterAppend.focus();
       this.focusAfterAppend = null;
     }
   };
@@ -15897,7 +15929,7 @@ angular.module('material.components.datepicker', [
     var firstRow = document.createElement('tr');
     var labelCell = document.createElement('td');
     labelCell.className = 'md-calendar-month-label';
-    labelCell.textContent = year;
+    labelCell.textContent = String(year);
     firstRow.appendChild(labelCell);
 
     for (i = 0; i < 6; i++) {
@@ -16106,6 +16138,7 @@ angular.module('material.components.datepicker', [
      * Factory function that returns an instance of the dateLocale service.
      * @ngInject
      * @param $locale
+     * @param $filter
      * @returns {DateLocale}
      */
     DateLocaleProvider.prototype.$get = function($locale, $filter) {
@@ -16137,7 +16170,7 @@ angular.module('material.components.datepicker', [
 
       /**
        * Default string-to-date parsing function.
-       * @param {string} dateString
+       * @param {string|number} dateString
        * @returns {!Date}
        */
       function defaultParseDate(dateString) {
@@ -16337,7 +16370,7 @@ angular.module('material.components.datepicker', [
     }
 
     /**
-     * Gets whether two dates are the same day (not not necesarily the same time).
+     * Gets whether two dates are the same day (not not necessarily the same time).
      * @param {Date} d1
      * @param {Date} d2
      * @returns {boolean}
@@ -16465,19 +16498,19 @@ angular.module('material.components.datepicker', [
 
     /**
      * Creates a date with the time set to midnight.
-     * Drop-in replacement for two forms of the Date constructor:
-     * 1. No argument for Date representing now.
-     * 2. Single-argument value representing number of seconds since Unix Epoch
-     * or a Date object.
-     * @param {number|Date=} opt_value
+     * Drop-in replacement for two forms of the Date constructor via opt_value.
+     * @param {number|Date=} opt_value Leave undefined for a Date representing now. Or use a
+     *  single value representing the number of seconds since the Unix Epoch or a Date object.
      * @return {Date} New date with time set to midnight.
      */
     function createDateAtMidnight(opt_value) {
       var date;
-      if (angular.isUndefined(opt_value)) {
-        date = new Date();
-      } else {
+      if (angular.isDate(opt_value)) {
+        date = opt_value;
+      } else if (angular.isNumber(opt_value)) {
         date = new Date(opt_value);
+      } else {
+        date = new Date();
       }
       setDateTimeToMidnight(date);
       return date;
@@ -16856,17 +16889,20 @@ angular.module('material.components.datepicker', [
      * close the calendar panel when a click outside said panel occurs. We use `documentElement`
      * instead of body because, when scrolling is disabled, some browsers consider the body element
      * to be completely off the screen and propagate events directly to the html element.
-     * @type {!angular.JQLite}
+     * @type {!JQLite}
      */
     this.documentElement = angular.element(document.documentElement);
 
-    /** @type {!angular.NgModelController} */
+    /** @type {!ngModel.NgModelController} */
     this.ngModelCtrl = null;
 
     /** @type {HTMLInputElement} */
     this.inputElement = $element[0].querySelector('input');
 
-    /** @final {!angular.JQLite} */
+    /**
+     * @final
+     * @type {!JQLite}
+     */
     this.ngInputElement = angular.element(this.inputElement);
 
     /** @type {HTMLElement} */
@@ -16880,17 +16916,26 @@ angular.module('material.components.datepicker', [
 
     /**
      * Element covering everything but the input in the top of the floating calendar pane.
-     * @type {!angular.JQLite}
+     * @type {!JQLite}
      */
     this.inputMask = angular.element($element[0].querySelector('.md-datepicker-input-mask-opaque'));
 
-    /** @final {!angular.JQLite} */
+    /**
+     * @final
+     * @type {!JQLite}
+     */
     this.$element = $element;
 
-    /** @final {!angular.Attributes} */
+    /**
+     * @final
+     * @type {!angular.Attributes}
+     */
     this.$attrs = $attrs;
 
-    /** @final {!angular.Scope} */
+    /**
+     * @final
+     * @type {!angular.Scope}
+     */
     this.$scope = $scope;
 
     /** @type {Date} */
@@ -16987,7 +17032,6 @@ angular.module('material.components.datepicker', [
     if (angular.version.major === 1 && angular.version.minor <= 4) {
       this.$onInit();
     }
-
   }
 
   /**
@@ -17461,7 +17505,7 @@ angular.module('material.components.datepicker', [
     // Use a timeout in order to allow the calendar to be rendered, as it is gated behind an ng-if.
     var self = this;
     this.$mdUtil.nextTick(function() {
-      self.getCalendarCtrl().focus();
+      self.getCalendarCtrl().focusDate();
     }, false);
   };
 
@@ -17535,7 +17579,7 @@ angular.module('material.components.datepicker', [
    */
   DatePickerCtrl.prototype.setModelValue = function(value) {
     var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
-    this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone));
+    this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone), 'default');
   };
 
   /**
@@ -39001,4 +39045,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-master-5fbabe7"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-master-2a01746"}};
