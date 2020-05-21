@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-fd4e737
+ * v1.1.22-master-546bd84
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1185,6 +1185,12 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
  * @param {string=} value Attribute to set the value of the option.
  * @param {expression=} ng-repeat <a ng-href="https://docs.angularjs.org/api/ng/directive/ngRepeat">
  *  AngularJS directive</a> that instantiates a template once per item from a collection.
+ * @param {expression=} ng-selected <a ng-href="https://docs.angularjs.org/api/ng/directive/ngSelected">
+ *  AngularJS directive</a> that adds the `selected` attribute to the option when the expression
+ *  evaluates as truthy.
+ *
+ *  **Note:** Unlike native `option` elements used with AngularJS, `md-option` elements
+ *  watch their `selected` attributes for changes and trigger model value changes on `md-select`.
  * @param {boolean=} md-option-empty If the attribute exists, mark the option as "empty" allowing
  * the option to clear the select and put it back in it's default state. You may supply this
  * attribute on any option you wish, however, it is automatically applied to an option whose `value`
@@ -1273,6 +1279,22 @@ function OptionDirective($mdButtonInkRipple, $mdUtil, $mdTheming) {
       }
     });
 
+    scope.$$postDigest(function() {
+      attrs.$observe('selected', function(selected) {
+        if (!angular.isDefined(selected)) return;
+        if (typeof selected == 'string') selected = true;
+        if (selected) {
+          if (!selectMenuCtrl.isMultiple) {
+            selectMenuCtrl.deselect(Object.keys(selectMenuCtrl.selected)[0]);
+          }
+          selectMenuCtrl.select(optionCtrl.hashKey, optionCtrl.value);
+        } else {
+          selectMenuCtrl.deselect(optionCtrl.hashKey);
+        }
+        selectMenuCtrl.refreshViewValue();
+      });
+    });
+
     $mdButtonInkRipple.attach(scope, element);
     configureAria();
 
@@ -1280,7 +1302,7 @@ function OptionDirective($mdButtonInkRipple, $mdUtil, $mdTheming) {
      * @param {*} newValue the option's new value
      * @param {*=} oldValue the option's previous value
      * @param {boolean=} prevAttempt true if this had to be attempted again due to an undefined
-     *  hashGetter on the selectCtrl, undefined otherwise.
+     *  hashGetter on the selectMenuCtrl, undefined otherwise.
      */
     function setOptionValue(newValue, oldValue, prevAttempt) {
       if (!selectMenuCtrl.hashGetter) {
