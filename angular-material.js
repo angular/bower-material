@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-e625a9c
+ * v1.1.22-master-3d5ff5d
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -14381,7 +14381,9 @@ angular.module('material.components.datepicker', [
    * @param {Date=} md-min-date Expression representing the minimum date.
    * @param {Date=} md-max-date Expression representing the maximum date.
    * @param {(function(Date): boolean)=} md-date-filter Function expecting a date and returning a
-   *  boolean whether it can be selected or not.
+   *  boolean whether it can be selected in "day" mode or not.
+   * @param {(function(Date): boolean)=} md-month-filter Function expecting a date and returning a
+   *  boolean whether it can be selected in "month" mode or not.
    * @param {String=} md-current-view Current view of the calendar. Can be either "month" or "year".
    * @param {String=} md-mode Restricts the user to only selecting a value from a particular view.
    *  This option can be used if the user is only supposed to choose from a certain date type
@@ -14429,6 +14431,7 @@ angular.module('material.components.datepicker', [
         minDate: '=mdMinDate',
         maxDate: '=mdMaxDate',
         dateFilter: '=mdDateFilter',
+        monthFilter: '=mdMonthFilter',
 
         // These need to be prefixed, because Angular resets
         // any changes to the value due to bindToController.
@@ -15880,8 +15883,8 @@ angular.module('material.components.datepicker', [
 
     if (this.dateUtil.isMonthWithinRange(
           firstOfMonth, calendarCtrl.minDate, calendarCtrl.maxDate) &&
-      (!angular.isFunction(this.calendarCtrl.dateFilter) ||
-        this.calendarCtrl.dateFilter(firstOfMonth))) {
+      (!angular.isFunction(calendarCtrl.monthFilter) ||
+        calendarCtrl.monthFilter(firstOfMonth))) {
       var selectionIndicator = document.createElement('span');
       selectionIndicator.classList.add('md-calendar-date-selection-indicator');
       selectionIndicator.textContent = cellText;
@@ -16638,7 +16641,11 @@ angular.module('material.components.datepicker', [
    * @param {Date=} md-min-date Expression representing a min date (inclusive).
    * @param {Date=} md-max-date Expression representing a max date (inclusive).
    * @param {(function(Date): boolean)=} md-date-filter Function expecting a date and returning a
-   *  boolean whether it can be selected or not.
+   *  boolean whether it can be selected in "day" mode or not. Returning false will also trigger a
+   *  `filtered` model validation error.
+   * @param {(function(Date): boolean)=} md-month-filter Function expecting a date and returning a
+   *  boolean whether it can be selected in "month" mode or not. Returning false will also trigger a
+   *  `filtered` model validation error.
    * @param {String=} md-placeholder The date input placeholder value.
    * @param {String=} md-open-on-focus When present, the calendar will be opened when the input
    *  is focused.
@@ -16658,7 +16665,7 @@ angular.module('material.components.datepicker', [
    * * `"calendar"` - Only hides the calendar icon.
    * * `"triangle"` - Only hides the triangle icon.
    * @param {Object=} md-date-locale Allows for the values from the `$mdDateLocaleProvider` to be
-   * ovewritten on a per-element basis (e.g. `msgOpenCalendar` can be overwritten with
+   * overwritten on a per-element basis (e.g. `msgOpenCalendar` can be overwritten with
    * `md-date-locale="{ msgOpenCalendar: 'Open a special calendar' }"`).
    *
    * @description
@@ -16736,6 +16743,7 @@ angular.module('material.components.datepicker', [
                 'md-min-date="ctrl.minDate" ' +
                 'md-max-date="ctrl.maxDate" ' +
                 'md-date-filter="ctrl.dateFilter" ' +
+                'md-month-filter="ctrl.monthFilter" ' +
                 'ng-model="ctrl.date" ng-if="ctrl.isCalendarOpen">' +
             '</md-calendar>' +
           '</div>' +
@@ -16749,6 +16757,7 @@ angular.module('material.components.datepicker', [
         currentView: '@mdCurrentView',
         mode: '@mdMode',
         dateFilter: '=mdDateFilter',
+        monthFilter: '=mdMonthFilter',
         isOpen: '=?mdIsOpen',
         debounceInterval: '=mdDebounceInterval',
         dateLocale: '=mdDateLocale'
@@ -17250,6 +17259,10 @@ angular.module('material.components.datepicker', [
       if (angular.isFunction(this.dateFilter)) {
         this.ngModelCtrl.$setValidity('filtered', this.dateFilter(date));
       }
+
+      if (angular.isFunction(this.monthFilter)) {
+        this.ngModelCtrl.$setValidity('filtered', this.monthFilter(date));
+      }
     } else {
       // The date is seen as "not a valid date" if there is *something* set
       // (i.e.., not null or undefined), but that something isn't a valid date.
@@ -17323,7 +17336,8 @@ angular.module('material.components.datepicker', [
    */
   DatePickerCtrl.prototype.isDateEnabled = function(opt_date) {
     return this.dateUtil.isDateWithinRange(opt_date, this.minDate, this.maxDate) &&
-          (!angular.isFunction(this.dateFilter) || this.dateFilter(opt_date));
+          (!angular.isFunction(this.dateFilter) || this.dateFilter(opt_date)) &&
+          (!angular.isFunction(this.monthFilter) || this.monthFilter(opt_date));
   };
 
   /** Position and attach the floating calendar to the document. */
@@ -17352,11 +17366,11 @@ angular.module('material.components.datepicker', [
     // then it's possible that the already-scrolled body has a negative top/left. In this case,
     // we want to treat the "real" top as (0 - bodyRect.top). In a normal scrolling situation,
     // though, the top of the viewport should just be the body's scroll position.
-    var viewportTop = (bodyRect.top < 0 && document.body.scrollTop == 0) ?
+    var viewportTop = (bodyRect.top < 0 && document.body.scrollTop === 0) ?
         -bodyRect.top :
         document.body.scrollTop;
 
-    var viewportLeft = (bodyRect.left < 0 && document.body.scrollLeft == 0) ?
+    var viewportLeft = (bodyRect.left < 0 && document.body.scrollLeft === 0) ?
         -bodyRect.left :
         document.body.scrollLeft;
 
@@ -39074,4 +39088,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-master-e625a9c"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-master-3d5ff5d"}};
