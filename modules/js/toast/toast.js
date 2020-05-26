@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-546bd84
+ * v1.1.22-master-e625a9c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -338,7 +338,7 @@ function MdToastProvider($$interimElementProvider) {
   // Differentiate promise resolves: hide timeout (value == true) and hide action clicks
   // (value == ok).
   MdToastController['$inject'] = ["$mdToast", "$scope", "$log"];
-  toastDefaultOptions['$inject'] = ["$animate", "$mdToast", "$mdUtil", "$mdMedia", "$document"];
+  toastDefaultOptions['$inject'] = ["$animate", "$mdToast", "$mdUtil", "$mdMedia", "$document", "$q"];
   var ACTION_RESOLVE = 'ok';
 
   var activeToastContent;
@@ -429,7 +429,7 @@ function MdToastProvider($$interimElementProvider) {
   }
 
   /* ngInject */
-  function toastDefaultOptions($animate, $mdToast, $mdUtil, $mdMedia, $document) {
+  function toastDefaultOptions($animate, $mdToast, $mdUtil, $mdMedia, $document, $q) {
     var SWIPE_EVENTS = '$md.swipeleft $md.swiperight $md.swipeup $md.swipedown';
     return {
       onShow: onShow,
@@ -531,6 +531,12 @@ function MdToastProvider($$interimElementProvider) {
       });
     }
 
+    /**
+     * @param {object} scope the toast's scope
+     * @param {JQLite} element the toast to be removed
+     * @param {object} options
+     * @return {Promise<*>} a Promise to remove the element immediately or to animate it out.
+     */
     function onRemove(scope, element, options) {
       if (scope.toast && scope.toast.actionKey) {
         removeActionKeyListener();
@@ -539,7 +545,8 @@ function MdToastProvider($$interimElementProvider) {
       if (options.parent) options.parent.addClass('md-toast-animating');
       if (options.openClass) options.parent.removeClass(options.openClass);
 
-      return ((options.$destroy === true) ? element.remove() : $animate.leave(element))
+      // Don't run the leave animation if the element has already been destroyed.
+      return ((options.$destroy === true) ? $q.when(element.remove()) : $animate.leave(element))
         .then(function () {
           if (options.parent) options.parent.removeClass('md-toast-animating');
           if ($mdUtil.hasComputedStyle(options.parent, 'position', 'static')) {
