@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-3d5ff5d
+ * v1.1.22-master-11f65e3
  */
 goog.provide('ngmaterial.components.datepicker');
 goog.require('ngmaterial.components.icon');
@@ -2903,7 +2903,8 @@ angular.module('material.components.datepicker', [
       this.ngModelCtrl.$setValidity('valid', date == null);
     }
 
-    angular.element(this.inputContainer).toggleClass(INVALID_CLASS, !this.ngModelCtrl.$valid);
+    angular.element(this.inputContainer).toggleClass(INVALID_CLASS,
+      this.ngModelCtrl.$invalid && (this.ngModelCtrl.$touched || this.ngModelCtrl.$submitted));
   };
 
   /**
@@ -3228,13 +3229,17 @@ angular.module('material.components.datepicker', [
    * @param {Date=} value Value that was set to the model.
    */
   DatePickerCtrl.prototype.onExternalChange = function(value) {
+    var self = this;
     var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
 
     this.date = value;
     this.inputElement.value = this.locale.formatDate(value, timezone);
     this.mdInputContainer && this.mdInputContainer.setHasValue(!!value);
     this.resizeInputElement();
-    this.updateErrorState();
+    // This is often called from the $formatters section of the $validators pipeline.
+    // In that case, we need to delay to let $render and $validate run, so that the checks for
+    // error state are accurate.
+    this.$mdUtil.nextTick(function() {self.updateErrorState();}, false, self.$scope);
   };
 })();
 
