@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-11f65e3
+ * v1.1.22-master-a17ef4f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -35283,10 +35283,11 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
     defineBooleanAttribute('dynamicHeight', handleDynamicHeight);
     defineBooleanAttribute('noPagination');
     defineBooleanAttribute('swipeContent');
+    // TODO remove noDisconnect in 1.2.0
     defineBooleanAttribute('noDisconnect');
     defineBooleanAttribute('autoselect');
     defineBooleanAttribute('noSelectClick');
-    defineBooleanAttribute('centerTabs', handleCenterTabs, false);
+    defineBooleanAttribute('centerTabs', handleCenterTabs);
     defineBooleanAttribute('enableDisconnect');
 
     // Define public properties
@@ -35366,11 +35367,11 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * Defines boolean attributes with default value set to true. I.e. md-stretch-tabs with no value
    * will be treated as being truthy.
    * @param {string} key
-   * @param {Function} handler
+   * @param {Function=} handler
    */
   function defineBooleanAttribute (key, handler) {
     var attr = $attrs.$normalize('md-' + key);
-    if (handler) defineProperty(key, handler);
+    if (handler) defineProperty(key, handler, undefined);
     if ($attrs.hasOwnProperty(attr)) updateValue($attrs[attr]);
     $attrs.$observe(attr, updateValue);
     function updateValue (newValue) {
@@ -35668,6 +35669,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
           isActive:     function () { return this.getIndex() === ctrl.selectedIndex; },
           isLeft:       function () { return this.getIndex() < ctrl.selectedIndex; },
           isRight:      function () { return this.getIndex() > ctrl.selectedIndex; },
+          // TODO remove reference to noDisconnect in 1.2.0
           shouldRender: function () { return !ctrl.noDisconnect || this.isActive(); },
           hasFocus:     function () {
             return ctrl.styleTabItemFocus
@@ -36258,26 +36260,29 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
  * `always`          | stretched | stretched
  * `never`           | ---       | ---
  *
- * @param {integer=} md-selected Index of the active/selected tab.
- * @param {boolean=} md-no-ink-bar If present, disables the selection ink bar.
- * @param {string=}  md-align-tabs Attribute to indicate position of tab buttons: `bottom` or `top`;
+ * @param {number=} md-selected Index of the active/selected tab.
+ * @param {expression=} md-no-ink-bar If `true` or no value, disables the selection ink bar.
+ * @param {string=} md-align-tabs Attribute to indicate position of tab buttons: `bottom` or `top`;
  *  Default is `top`.
  * @param {string=} md-stretch-tabs Attribute to indicate whether or not to stretch tabs: `auto`,
  *  `always`, or `never`; Default is `auto`.
- * @param {boolean=} md-dynamic-height When enabled, the tab wrapper will resize based on the
- *  contents of the selected tab.
- * @param {boolean=} md-border-bottom If present, shows a solid `1px` border between the tabs and
- *  their content.
- * @param {boolean=} md-center-tabs If defined, tabs will be centered provided there is no need
- *  for pagination.
- * @param {boolean=} md-no-pagination When enabled, pagination will remain off.
- * @param {boolean=} md-swipe-content When enabled, swipe gestures will be enabled for the content
+ * @param {expression=} md-dynamic-height If `true` or no value, the tab wrapper will resize based
+ *  on the contents of the selected tab.
+ * @param {boolean=} md-border-bottom If the attribute is present, shows a solid `1px` border
+ *  between the tabs and their content.
+ * @param {boolean=} md-center-tabs If the attribute is present, tabs will be centered provided
+ *  there is no need for pagination.
+ * @param {boolean=} md-no-pagination If the attribute is present, pagination will remain off.
+ * @param {expression=} md-swipe-content When enabled, swipe gestures will be enabled for the content
  *  area to allow swiping between tabs.
  * @param {boolean=} md-enable-disconnect When enabled, scopes will be disconnected for tabs that
  *  are not being displayed. This provides a performance boost, but may also cause unexpected
  *  issues. It is not recommended for most users.
- * @param {boolean=} md-autoselect When present, any tabs added after the initial load will be
- *  automatically selected.
+ * @param {boolean=} md-no-disconnect **Deprecated**: If your tab content has background tasks
+ *  (ie. event listeners), you will want to include this to prevent the scope from being
+ *  disconnected.
+ * @param {boolean=} md-autoselect If the attribute is present, any tabs added after the initial
+ *  load will be automatically selected.
  * @param {boolean=} md-no-select-click When true, click events will not be fired when the value of
  *  `md-active` on an `md-tab` changes. This is useful when using tabs with UI-Router's child
  *  states, as triggering a click event in that case can cause an extra tab change to occur.
@@ -39093,4 +39098,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-master-11f65e3"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-master-a17ef4f"}};
