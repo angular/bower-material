@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-c74f16e
+ * v1.1.22-master-f7d9027
  */
 html, body {
   height: 100%;
@@ -2589,7 +2589,7 @@ md-list-item {
               align-items: center;
       -webkit-box-pack: start;
               justify-content: flex-start;
-      padding: 0 16px;
+      padding: 0px 16px;
       margin: 0;
       font-weight: 400;
       text-align: left;

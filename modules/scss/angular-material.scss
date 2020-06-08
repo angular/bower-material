@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-c74f16e
+ * v1.1.22-master-f7d9027
  */
 // Typography
 // ------------------------------
@@ -4071,7 +4071,7 @@ md-list-item {
       align-items: center;
       justify-content: flex-start;
 
-      padding: 0 16px;
+      padding: $list-item-padding-vertical $list-item-padding-horizontal;
       margin: 0;
 
       font-weight: 400;
