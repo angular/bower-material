@@ -1,9 +1,9 @@
-This repository is used for publishing the AngularJS Material v1.x library and localized installs
-using `npm`. The component source-code for this library is in the
+This repository publishes the AngularJS Material v1.x library and localized installs
+using `npm`. You can find the component source-code for this library in the
 [AngularJS Material repository](https://github.com/angular/material).
 
 > Please file issues and pull requests against that `angular/material` repository only. Do not file
-issues here on the deployment repository.
+issues here on the publishing repository.
 
 ## Layouts and SCSS
 
@@ -21,9 +21,9 @@ developer access and contain IE flexbox fixes; as needed.
 
 You can install this package locally either with `npm`, `jspm`, or `bower` (deprecated). 
 
-**Please note**: AngularJS Material requires **AngularJS 1.4.x** to **AngularJS 1.7.x**.
+**Please note**: AngularJS Material requires **AngularJS 1.4.x** to **AngularJS 1.8.x**.
 
-**Please note**: AngularJS Material does not support AngularJS 1.7.1. 
+**Please note**: AngularJS Material does not support AngularJS 1.7.1, which has been deprecated.
 
 ### npm
 
@@ -43,8 +43,8 @@ npm install http://github.com/angular/bower-material#master --save
 #      "angular-material": "git+ssh://git@github.com/angular/bower-material.git#master"
 
 
-# To install a v1.1.9 version 
-npm install http://github.com/angular/bower-material/tarball/v1.1.9 --save
+# To install the v1.1.22 version 
+npm install http://github.com/angular/bower-material/tarball/v1.1.22 --save
 
 # To view all installed package 
 npm list;
@@ -148,28 +148,28 @@ under `/bower_components/angular-material/`.
 ## Using the CDN
 
 With the Google CDN, you will not need to download local copies of the distribution files.
-Instead simply reference the CDN urls to easily use those remote library files. 
+Instead, simply reference the CDN urls to easily use those remote library files. 
 This is especially useful when using online tools such as CodePen, Plunker, or jsFiddle.
 
 ```html
 <head>
-    <!-- Angular Material CSS now available via Google CDN; version 1.1.9 used here -->
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.9/angular-material.min.css">
+    <!-- Angular Material CSS now available via Google CDN; version 1.1.22 used here -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.22/angular-material.min.css">
 </head>
 <body>
 
     <!-- Angular Material Dependencies -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-messages.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-messages.min.js"></script>
     
-    <!-- Angular Material Javascript now available via Google CDN; version 1.1.9 used here -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.9/angular-material.min.js"></script>
+    <!-- Angular Material Javascript now available via Google CDN; version 1.1.22 used here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.22/angular-material.min.js"></script>
 </body>
 ```
 
-> Note that the above sample references the 1.1.9 CDN release. Your version will change 
+> Note that the above sample references the 1.1.22 CDN release. Your version will change 
 based on the latest stable release version.
 
 ## Unit Testing with Angular Material
