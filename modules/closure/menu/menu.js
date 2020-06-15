@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-5a7e967
+ * v1.1.22-master-98e259b
  */
 goog.provide('ngmaterial.components.menu');
 goog.require('ngmaterial.components.backdrop');
@@ -842,7 +842,11 @@ function MenuProvider($$interimElementProvider) {
           var handled;
           switch (ev.keyCode) {
             case $mdConstant.KEY_CODE.ESCAPE:
-              opts.mdMenuCtrl.close(false, { closeAll: true });
+              if (opts.nestLevel) {
+                opts.mdMenuCtrl.close();
+              } else {
+                opts.mdMenuCtrl.close(false, { closeAll: true });
+              }
               handled = true;
               break;
             case $mdConstant.KEY_CODE.TAB:

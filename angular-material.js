@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-5a7e967
+ * v1.1.22-master-98e259b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -24308,7 +24308,11 @@ function MenuProvider($$interimElementProvider) {
           var handled;
           switch (ev.keyCode) {
             case $mdConstant.KEY_CODE.ESCAPE:
-              opts.mdMenuCtrl.close(false, { closeAll: true });
+              if (opts.nestLevel) {
+                opts.mdMenuCtrl.close();
+              } else {
+                opts.mdMenuCtrl.close(false, { closeAll: true });
+              }
               handled = true;
               break;
             case $mdConstant.KEY_CODE.TAB:
@@ -39121,4 +39125,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-master-5a7e967"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-master-98e259b"}};
