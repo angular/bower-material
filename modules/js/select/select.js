@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-1ed54bb
+ * v1.1.22-master-5a7e967
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1900,6 +1900,7 @@ function SelectProvider($$interimElementProvider) {
 
               $mdUtil.nextTick(function () {
                 $mdSelect.hide(selectMenuController.ngModel.$viewValue);
+                opts.focusedNode.classList.remove('md-focused');
               }, true);
             }
           }

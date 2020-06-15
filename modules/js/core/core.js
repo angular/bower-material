@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-1ed54bb
+ * v1.1.22-master-5a7e967
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -4290,17 +4290,17 @@ function InterimElementProvider() {
         return interimElement.deferred.promise;
       }
 
-      /*
+      /**
        * @ngdoc method
        * @name $$interimElement.$service#hide
        * @kind function
        *
        * @description
-       * Removes the `$interimElement` from the DOM and resolves the promise returned from `show`
+       * Removes the `$interimElement` from the DOM and resolves the promise returned from `show`.
        *
-       * @param {*} resolveParam Data to resolve the promise with
-       * @returns a Promise that will be resolved after the element has been removed.
-       *
+       * @param {*} reason Data to resolve the promise with
+       * @param {object} options
+       * @returns {Promise} a Promise that will be resolved after the element has been removed.
        */
       function hide(reason, options) {
         options = options || {};
@@ -4315,8 +4315,11 @@ function InterimElementProvider() {
         // Hide the latest showing interim element.
         return closeElement(showingInterims[showingInterims.length - 1]);
 
+        /**
+         * @param {InterimElement} interim element to close
+         * @returns {Promise<InterimElement>}
+         */
         function closeElement(interim) {
-
           if (!interim) {
             return $q.when(reason);
           }
@@ -4335,7 +4338,7 @@ function InterimElementProvider() {
         }
       }
 
-      /*
+      /**
        * @ngdoc method
        * @name $$interimElement.$service#cancel
        * @kind function
@@ -4344,8 +4347,8 @@ function InterimElementProvider() {
        * Removes the `$interimElement` from the DOM and rejects the promise returned from `show`
        *
        * @param {*} reason Data to reject the promise with
-       * @returns Promise that will be resolved after the element has been removed.
-       *
+       * @param {object} options
+       * @returns {Promise} Promise that will be resolved after the element has been removed.
        */
       function cancel(reason, options) {
         var interim = showingInterims.pop();
