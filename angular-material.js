@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-3746148
+ * v1.1.22-master-1ed54bb
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1635,8 +1635,27 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     },
 
     /**
-     * getClosest replicates jQuery.closest() to walk up the DOM tree until it finds a matching
-     * nodeName.
+     * Get an element's siblings matching a given tag name.
+     *
+     * @param {JQLite|angular.element|HTMLElement} element Element to start walking the DOM from
+     * @param {string} tagName HTML tag name to match against
+     * @returns {Object[]} JQLite
+     */
+    getSiblings: function getSiblings(element, tagName) {
+      var upperCasedTagName = tagName.toUpperCase();
+      if (element instanceof angular.element) {
+        element = element[0];
+      }
+      var siblings = Array.prototype.filter.call(element.parentNode.children, function(node) {
+        return element !== node && node.tagName.toUpperCase() === upperCasedTagName;
+      });
+      return siblings.map(function (sibling) {
+        return angular.element(sibling);
+      });
+    },
+
+    /*
+     * getClosest replicates jQuery.closest() to walk up the DOM tree until it finds a matching nodeName
      *
      * @param {Node} el Element to start walking the DOM from
      * @param {string|function} validateWith If a string is passed, it will be evaluated against
@@ -37124,7 +37143,7 @@ function MdToastProvider($$interimElementProvider) {
  * @ngdoc module
  * @name material.components.toolbar
  */
-mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming", "$animate"];
+mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming", "$animate", "$timeout"];
 angular.module('material.components.toolbar', [
   'material.core',
   'material.components.content'
@@ -37205,7 +37224,7 @@ angular.module('material.components.toolbar', [
  *
  */
 
-function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
+function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate, $timeout) {
   var translateY = angular.bind(null, $mdUtil.supplant, 'translate3d(0,{0}px,0)');
 
   return {
@@ -37264,16 +37283,15 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
         scope.$on('$destroy', disableScrollShrink);
 
         /**
-         *
+         * @param {string} shrinkWithScroll value of md-scroll-shrink attribute
          */
         function onChangeScrollShrink(shrinkWithScroll) {
-          var closestContent = element.parent().find('md-content');
+          var closestContent = $mdUtil.getSiblings(element, 'md-content');
 
-          // If we have a content element, fake the call; this might still fail
-          // if the content element isn't a sibling of the toolbar
-
+          // If there are content elements, fake the call using the first content element.
+          // This might still fail if the content element isn't a sibling of the toolbar.
           if (!contentElement && closestContent.length) {
-            onMdContentLoad(null, closestContent);
+            onMdContentLoad(null, closestContent[0]);
           }
 
           // Evaluate the expression
@@ -37288,7 +37306,8 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
         }
 
         /**
-         *
+         * @param {null} $event $mdContentLoaded always has a null event
+         * @param {JQLite} newContentEl JQLite object containing an md-content
          */
         function onMdContentLoad($event, newContentEl) {
           // Toolbar and content must be siblings
@@ -37342,7 +37361,7 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
           contentElement.on('scroll', debouncedContentScroll);
           contentElement.attr('scroll-shrink', 'true');
 
-          $mdUtil.nextTick(updateToolbarHeight, false);
+          $timeout(updateToolbarHeight);
 
           return function disableScrollShrink() {
             contentElement.off('scroll', debouncedContentScroll);
@@ -39098,4 +39117,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-master-3746148"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-master-1ed54bb"}};
