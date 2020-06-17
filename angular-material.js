@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-6f64da6
+ * v1.1.22-master-79bf96b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -34004,7 +34004,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       element[0].focus();
       refreshSliderDimensions();
 
-      var exactVal = percentToValue(positionToPercent(vertical ? ev.pointer.y : ev.pointer.x));
+      var exactVal = percentToValue(positionToPercent(vertical ? ev.srcEvent.clientY : ev.srcEvent.clientX));
       var closestVal = minMaxValidator(stepValidator(exactVal));
       scope.$apply(function() {
         setModelValue(closestVal);
@@ -34016,7 +34016,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
 
       element.removeClass('md-dragging');
 
-      var exactVal = percentToValue(positionToPercent(vertical ? ev.pointer.y : ev.pointer.x));
+      var exactVal = percentToValue(positionToPercent(vertical ? ev.srcEvent.clientY : ev.srcEvent.clientX));
       var closestVal = minMaxValidator(stepValidator(exactVal));
       scope.$apply(function() {
         setModelValue(closestVal);
@@ -34046,8 +34046,8 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     function setSliderFromEvent(ev) {
       // While panning discrete, update only the
       // visual positioning but not the model value.
-      if (discrete) adjustThumbPosition(vertical ? ev.pointer.y : ev.pointer.x);
-      else            doSlide(vertical ? ev.pointer.y : ev.pointer.x);
+      if (discrete) adjustThumbPosition(vertical ? ev.srcEvent.clientY : ev.srcEvent.clientX);
+      else            doSlide(vertical ? ev.srcEvent.clientY : ev.srcEvent.clientX);
     }
 
     /**
@@ -39148,4 +39148,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-master-6f64da6"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22-master-79bf96b"}};
