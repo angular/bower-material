@@ -1,7 +1,7 @@
 {
   "name": "angular-material-fabActions",
-  "version": "1.1.22-master-98e259b",
+  "version": "1.1.22-master-6f64da6",
   "dependencies": {
-    "angular-material-core": "1.1.22-master-98e259b"
+    "angular-material-core": "1.1.22-master-6f64da6"
   }
 }

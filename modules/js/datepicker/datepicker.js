@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-98e259b
+ * v1.1.22-master-6f64da6
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -59,7 +59,6 @@ angular.module('material.components.datepicker', [
   angular.module('material.components.datepicker')
     .directive('mdCalendar', calendarDirective);
 
-  // POST RELEASE
   // TODO(jelbourn): Mac Cmd + left / right == Home / End
   // TODO(jelbourn): Refactor month element creation to use cloneNode (performance).
   // TODO(jelbourn): Define virtual scrolling constants (compactness) users can override.
@@ -75,8 +74,13 @@ angular.module('material.components.datepicker', [
   function calendarDirective(inputDirective) {
     return {
       template: function(tElement, tAttr) {
+        // This allows the calendar to work, without a datepicker. This ensures that the virtual
+        // repeater scrolls to the proper place on load by deferring the execution until the next
+        // digest. It's necessary only if the calendar is used without a datepicker, otherwise it's
+        // already wrapped in an ngIf.
+        var extraAttrs = tAttr.hasOwnProperty('ngIf') ? '' : 'ng-if="calendarCtrl.isInitialized"';
         return '' +
-          '<div ng-switch="calendarCtrl.currentView">' +
+          '<div ng-switch="calendarCtrl.currentView" ' + extraAttrs + '>' +
             '<md-calendar-year ng-switch-when="year"></md-calendar-year>' +
             '<md-calendar-month ng-switch-default></md-calendar-month>' +
           '</div>';
@@ -174,7 +178,7 @@ angular.module('material.components.datepicker', [
     this.today = this.dateUtil.createDateAtMidnight();
 
     /** @type {!ngModel.NgModelController} */
-    this.ngModelCtrl = null;
+    this.ngModelCtrl = undefined;
 
     /** @type {string} Class applied to the selected date cell. */
     this.SELECTED_DATE_CLASS = 'md-calendar-selected-date';
@@ -185,7 +189,10 @@ angular.module('material.components.datepicker', [
     /** @type {string} Class applied to the focused cell. */
     this.FOCUSED_DATE_CLASS = 'md-focus';
 
-    /** @final {number} Unique ID for this calendar instance. */
+    /**
+     * @final
+     * @type {number} Unique ID for this calendar instance.
+     */
     this.id = nextUniqueId++;
 
     /**
@@ -227,15 +234,21 @@ angular.module('material.components.datepicker', [
     this.lastRenderableDate = null;
 
     /**
+     * Used to toggle initialize the root element in the next digest.
+     * @type {boolean}
+     */
+    this.isInitialized = false;
+
+    /**
      * Cache for the  width of the element without a scrollbar. Used to hide the scrollbar later on
      * and to avoid extra reflows when switching between views.
-     * @type {Number}
+     * @type {number}
      */
     this.width = 0;
 
     /**
      * Caches the width of the scrollbar in order to be used when hiding it and to avoid extra reflows.
-     * @type {Number}
+     * @type {number}
      */
     this.scrollbarWidth = 0;
 
@@ -358,6 +371,10 @@ angular.module('material.components.datepicker', [
         self.displayDate = self.selectedDate || self.today;
       }
     };
+
+    self.$mdUtil.nextTick(function() {
+      self.isInitialized = true;
+    });
   };
 
   /**
@@ -912,7 +929,10 @@ angular.module('material.components.datepicker', [
    * ngInject @constructor
    */
   function CalendarMonthBodyCtrl($element, $$mdDateUtil, $mdDateLocale) {
-    /** @final {!angular.JQLite} */
+    /**
+     * @final
+     * @type {!JQLite}
+     */
     this.$element = $element;
 
     /** @final */
@@ -930,7 +950,7 @@ angular.module('material.components.datepicker', [
     /**
      * Number of months from the start of the month "items" that the currently rendered month
      * occurs. Set via angular data binding.
-     * @type {number}
+     * @type {number|null}
      */
     this.offset = null;
 
@@ -1445,7 +1465,10 @@ angular.module('material.components.datepicker', [
    * ngInject @constructor
    */
   function CalendarYearBodyCtrl($element, $$mdDateUtil, $mdDateLocale) {
-    /** @final {!angular.JQLite} */
+    /**
+     * @final
+     * @type {!JQLite}
+     */
     this.$element = $element;
 
     /** @final */
@@ -1463,7 +1486,7 @@ angular.module('material.components.datepicker', [
     /**
      * Number of months from the start of the month "items" that the currently rendered month
      * occurs. Set via angular data binding.
-     * @type {number}
+     * @type {number|null}
      */
     this.offset = null;
 
