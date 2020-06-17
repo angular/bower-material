@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-79bf96b
+ * v1.1.22-master-20194ba
  */
 // Typography
 // ------------------------------
@@ -1270,21 +1270,16 @@ input {
   width: 100%;
 }
 
-._md-panel-hidden {
-  display: none;
+.md-panel-inner-wrapper {
+  position: fixed;
 }
 
 ._md-panel-offscreen {
   left: -9999px;
 }
 
-._md-panel-fullscreen {
-  border-radius: 0;
-  left: 0;
-  min-height: 100%;
-  min-width: 100%;
-  position: fixed;
-  top: 0;
+._md-panel-hidden {
+  display: none;
 }
 
 // Only used when no animations are present.
@@ -1295,7 +1290,7 @@ input {
 
 .md-panel {
   opacity: 0;
-  position: fixed;
+  position: relative;
 
   &._md-panel-shown {
     // Only used when custom animations are present.
@@ -1321,7 +1316,7 @@ input {
 
   &._md-panel-backdrop {
     height: 100%;
-    position: absolute;
+    position: fixed;
     width: 100%;
   }
 
@@ -1333,6 +1328,15 @@ input {
   &._md-opaque-leave {
     transition: opacity $material-leave-duration $material-leave-timing-function;
   }
+}
+
+._md-panel-fullscreen {
+  border-radius: 0;
+  left: 0;
+  min-height: 100%;
+  min-width: 100%;
+  position: fixed;
+  top: 0;
 }
 
 // The default item height is also specified in the JavaScript.
@@ -7070,6 +7074,7 @@ $tooltip-lr-padding-sm: 16px !default;
 $tooltip-max-width: 32px !default;
 
 .md-tooltip {
+  display: inline-block;
   pointer-events: none;
   border-radius: 4px;
   overflow: hidden;
