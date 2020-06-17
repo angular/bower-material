@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-20194ba
+ * v1.1.22-master-08313be
  */
 goog.provide('ngmaterial.core');
 
@@ -3954,10 +3954,10 @@ MdInteractionService.prototype.isUserInvoked = function(checkDelay) {
 angular.module('material.core')
   .provider('$$interimElement', InterimElementProvider);
 
-/*
+/**
  * @ngdoc service
- * @name $$interimElement
- * @module material.core
+ * @name $$interimElementProvider
+ * @module material.core.interimElement
  *
  * @description
  *
@@ -3966,16 +3966,16 @@ angular.module('material.core')
  * The service provides a promise-like API for interacting with the temporary
  * elements.
  *
- * ```js
- * app.service('$mdToast', function($$interimElement) {
- *   var $mdToast = $$interimElement(toastDefaultOptions);
- *   return $mdToast;
- * });
- * ```
+ * <hljs lang="js">
+ *   app.service('$mdToast', function($$interimElement) {
+ *     var $mdToast = $$interimElement(toastDefaultOptions);
+ *     return $mdToast;
+ *   });
+ * </hljs>
+ *
  * @param {object=} defaultOptions Options used by default for the `show` method on the service.
  *
  * @returns {$$interimElement.$service}
- *
  */
 
 function InterimElementProvider() {
@@ -4026,7 +4026,6 @@ function InterimElementProvider() {
     /**
      * Add a method to the factory that isn't specific to any interim element operations
      */
-
     function addMethod(name, fn) {
       customMethods[name] = fn;
       return provider;
@@ -4193,9 +4192,7 @@ function InterimElementProvider() {
         locals[interimFactoryName] = publicService;
         return $injector.invoke(factory || function() { return defaultVal; }, {}, locals);
       }
-
     }
-
   }
 
   /* ngInject */
@@ -4204,15 +4201,14 @@ function InterimElementProvider() {
     return function createInterimElementService() {
       var SHOW_CANCELLED = false;
 
-      /*
+      /**
        * @ngdoc service
-       * @name $$interimElement.$service
+       * @name $$interimElementProvider.$service
        *
        * @description
-       * A service used to control inserting and removing an element into the DOM.
-       *
+       * A service used to control inserting and removing of an element from the DOM.
+       * It is used by $mdBottomSheet, $mdDialog, $mdToast, $mdMenu, $mdPanel, and $mdSelect.
        */
-
       var service;
 
       var showPromises = []; // Promises for the interim's which are currently opening.
@@ -4220,8 +4216,6 @@ function InterimElementProvider() {
       var showingInterims = []; // Interim elements which are currently showing up.
 
       // Publish instance $$interimElement service;
-      // ... used as $mdDialog, $mdToast, $mdMenu, and $mdSelect
-
       return service = {
         show: show,
         hide: waitForInterim(hide),
@@ -4230,18 +4224,18 @@ function InterimElementProvider() {
         $injector_: $injector
       };
 
-      /*
+      /**
        * @ngdoc method
-       * @name $$interimElement.$service#show
+       * @name $$interimElementProvider.$service#show
        * @kind function
        *
        * @description
-       * Adds the `$interimElement` to the DOM and returns a special promise that will be resolved or rejected
-       * with hide or cancel, respectively. To external cancel/hide, developers should use the
+       * Adds the `$interimElement` to the DOM and returns a special promise that will be resolved
+       * or rejected with hide or cancel, respectively.
        *
-       * @param {*} options is hashMap of settings
-       * @returns a Promise
-       *
+       * @param {object} options map of options and values
+       * @returns {Promise} a Promise that will be resolved when hide() is called or rejected when
+       *  cancel() is called.
        */
       function show(options) {
         options = options || {};
@@ -4296,15 +4290,16 @@ function InterimElementProvider() {
 
       /**
        * @ngdoc method
-       * @name $$interimElement.$service#hide
+       * @name $$interimElementProvider.$service#hide
        * @kind function
        *
        * @description
-       * Removes the `$interimElement` from the DOM and resolves the promise returned from `show`.
+       * Removes the `$interimElement` from the DOM and resolves the Promise returned from `show()`.
        *
-       * @param {*} reason Data to resolve the promise with
-       * @param {object} options
-       * @returns {Promise} a Promise that will be resolved after the element has been removed.
+       * @param {*} reason Data used to resolve the Promise
+       * @param {object} options map of options and values
+       * @returns {Promise} a Promise that will be resolved after the element has been removed
+       *  from the DOM.
        */
       function hide(reason, options) {
         options = options || {};
@@ -4344,15 +4339,16 @@ function InterimElementProvider() {
 
       /**
        * @ngdoc method
-       * @name $$interimElement.$service#cancel
+       * @name $$interimElementProvider.$service#cancel
        * @kind function
        *
        * @description
-       * Removes the `$interimElement` from the DOM and rejects the promise returned from `show`
+       * Removes the `$interimElement` from the DOM and rejects the Promise returned from `show()`.
        *
-       * @param {*} reason Data to reject the promise with
-       * @param {object} options
-       * @returns {Promise} Promise that will be resolved after the element has been removed.
+       * @param {*} reason Data used to resolve the Promise
+       * @param {object} options map of options and values
+       * @returns {Promise} Promise that will be resolved after the element has been removed
+       *  from the DOM.
        */
       function cancel(reason, options) {
         var interim = showingInterims.pop();
@@ -4400,9 +4396,15 @@ function InterimElementProvider() {
         };
       }
 
-      /*
-       * Special method to quick-remove the interim element without animations
-       * Note: interim elements are in "interim containers"
+      /**
+       * @ngdoc method
+       * @name $$interimElementProvider.$service#destroy
+       * @kind function
+       *
+       * Special method to quick-remove the interim element without running animations. This is
+       * useful when the parent component has been or is being destroyed.
+       *
+       * Note: interim elements are in "interim containers".
        */
       function destroy(targetEl) {
         var interim = !targetEl ? showingInterims.shift() : null;
@@ -4713,9 +4715,7 @@ function InterimElementProvider() {
 
       }
     };
-
   }
-
 }
 
 (function() {
