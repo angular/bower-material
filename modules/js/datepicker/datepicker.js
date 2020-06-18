@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.22-master-1bd1a97
+ * v1.1.22-master-000a023
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1625,7 +1625,8 @@ angular.module('material.components.datepicker', [
    * The `$mdDateLocaleProvider` is the provider that creates the `$mdDateLocale` service.
    * This provider that allows the user to specify messages, formatters, and parsers for date
    * internationalization. The `$mdDateLocale` service itself is consumed by AngularJS Material
-   * components that deal with dates (i.e. {@link api/directive/mdDatepicker mdDatepicker}).
+   * components that deal with dates
+   * (i.e. <a ng-href="api/directive/mdDatepicker">mdDatepicker</a>).
    *
    * @property {Array<string>} months Array of month names (in order).
    * @property {Array<string>} shortMonths Array of abbreviated month names.
@@ -2320,7 +2321,7 @@ angular.module('material.components.datepicker', [
    * @description
    * `<md-datepicker>` is a component used to select a single date.
    * For information on how to configure internationalization for the date picker,
-   * see {@link api/service/$mdDateLocaleProvider $mdDateLocaleProvider}.
+   * see <a ng-href="api/service/$mdDateLocaleProvider">$mdDateLocaleProvider</a>.
    *
    * This component supports
    * [ngMessages](https://docs.angularjs.org/api/ngMessages/directive/ngMessages).
