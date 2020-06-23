@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.23-master-0f9d111
+ * v1.1.23-master-6322e98
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1641,7 +1641,7 @@ MdPanelRef.prototype.destroy = function() {
   this.config.onDomRemoved = null;
   this.config.onRemoving = null;
   this.config.onOpenComplete = null;
-  this._interceptors = null;
+  this._interceptors = undefined;
 };
 
 
@@ -1715,7 +1715,7 @@ MdPanelRef.prototype.hide = function() {
     };
     var removeFromGroupOpen = function() {
       if (self.config.groupName) {
-        var group, index;
+        var index;
         angular.forEach(self.config.groupName, function(group) {
           group = self._$mdPanel._groups[group];
           index = group.openPanels.indexOf(self);
@@ -2033,6 +2033,7 @@ MdPanelRef.prototype._updatePosition = function(init) {
     // Hide the panel now that position is known.
     if (init) {
       this.panelEl.removeClass('_md-panel-offscreen');
+      this.innerWrapper.removeClass('_md-panel-offscreen');
       this.panelContainer.addClass(MD_PANEL_HIDDEN);
     }
 
@@ -2329,34 +2330,34 @@ MdPanelRef.prototype._animateOpen = function() {
 
 /**
  * Animate the panel closing.
- * @returns {!Q.IPromise} A promise that is resolved when the panel has
- *     animated closed.
+ * @returns {!Q.IPromise} A promise that is resolved when the panel has animated closed.
  * @private
  */
 MdPanelRef.prototype._animateClose = function() {
+  var self = this;
   var animationConfig = this.config['animation'];
+
   if (!animationConfig) {
     this.panelContainer.removeClass('md-panel-is-showing');
     this.panelContainer.removeClass('_md-panel-shown');
     return this._$q.when(this);
+  } else {
+    return this._$q(function (resolve) {
+      var done = function () {
+        self.panelContainer.removeClass('md-panel-is-showing');
+        // Remove the transform so that re-used panels don't accumulate transforms.
+        self.panelEl.css('transform', '');
+        resolve(self);
+      };
+      var warnAndClose = function () {
+        self._$log.warn(
+          'mdPanel: MdPanel Animations failed. Hiding panel without animating.');
+        done();
+      };
+
+      animationConfig.animateClose(self.panelEl).then(done, warnAndClose);
+    });
   }
-
-  var self = this;
-  return this._$q(function(resolve) {
-    var done = function() {
-      self.panelContainer.removeClass('md-panel-is-showing');
-      resolve(self);
-    };
-    var warnAndClose = function() {
-      self._$log.warn(
-          'mdPanel: MdPanel Animations failed. ' +
-          'Hiding panel without animating.');
-      done();
-    };
-
-    animationConfig.animateClose(self.panelEl)
-        .then(done, warnAndClose);
-  });
 };
 
 
@@ -2477,7 +2478,7 @@ MdPanelRef.prototype._simpleBind = function(callback, self) {
 
 
 /**
- * @param {function} callback
+ * @param {function|IQResolveReject} callback
  * @param {!Object} self
  * @return {function} Callback function with a self param.
  */
@@ -2892,7 +2893,7 @@ MdPanelPosition.prototype.getRight = function() {
 
 /**
  * Gets the value of `transform` for the panel.
- * @returns {string}
+ * @returns {string} representation of the translateX and translateY rules and values
  */
 MdPanelPosition.prototype.getTransform = function() {
   var translateX = this._reduceTranslateValues('translateX', this._translateX);
@@ -3379,8 +3380,7 @@ MdPanelAnimation.prototype.animateOpen = function(panelEl) {
 /**
  * Animate the panel close.
  * @param {!JQLite} panelEl
- * @returns {!Q.IPromise} A promise that resolves when the close
- *     animation is complete.
+ * @returns {!Q.IPromise} A promise that resolves when the close animation is complete.
  */
 MdPanelAnimation.prototype.animateClose = function(panelEl) {
   var animator = this._$mdUtil.dom.animator;
@@ -3401,8 +3401,7 @@ MdPanelAnimation.prototype.animateClose = function(panelEl) {
         transitionOutClass: '_md-panel-animate-enter _md-panel-animate-leave'
       };
 
-      var closeSlide = animator.calculateSlideToOrigin(
-              panelEl, this._closeTo) || '';
+      var closeSlide = animator.calculateSlideToOrigin(panelEl, this._closeTo) || '';
       closeTo = animator.toTransformCss(closeSlide + ' ' + panelTransform);
       break;
 
@@ -3412,8 +3411,7 @@ MdPanelAnimation.prototype.animateClose = function(panelEl) {
         transitionOutClass: '_md-panel-animate-scale-out _md-panel-animate-enter _md-panel-animate-leave'
       };
 
-      var closeScale = animator.calculateZoomToOrigin(
-              panelEl, this._closeTo) || '';
+      var closeScale = animator.calculateZoomToOrigin(panelEl, this._closeTo) || '';
       closeTo = animator.toTransformCss(panelTransform + ' ' + closeScale);
       break;
 
@@ -3502,9 +3500,9 @@ function getElement(el) {
 
 /**
  * Gets the computed values for an element's translateX and translateY in px.
- * @param {!JQLite|!Element} el
+ * @param {!JQLite|!Element} el the element to evaluate
  * @param {string} property
- * @return {{x: number, y: number}}
+ * @return {{x: number, y: number}} an element's translateX and translateY in px
  */
 function getComputedTranslations(el, property) {
   // The transform being returned by `getComputedStyle` is in the format:

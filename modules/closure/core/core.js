@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.23-master-0f9d111
+ * v1.1.23-master-6322e98
  */
 goog.provide('ngmaterial.core');
 
@@ -333,6 +333,10 @@ function MdConstantFactory() {
   var isWebkit = /webkit/i.test(vendorPrefix);
   var SPECIAL_CHARS_REGEXP = /([:\-_]+(.))/g;
 
+  /**
+   * @param {string} name CSS property name
+   * @return {string} the property name supported by the browser
+   */
   function vendorProperty(name) {
     // Add a dash between the prefix and name, to be able to transform the string into camelcase.
     var prefixedName = vendorPrefix + '-' + name;
@@ -348,6 +352,10 @@ function MdConstantFactory() {
     return angular.isDefined(testElement.style[property]);
   }
 
+  /**
+   * @param {!string} input value to convert to camelCase
+   * @return {string} camelCased version of the input string
+   */
   function camelCase(input) {
     return input.replace(SPECIAL_CHARS_REGEXP, function(matches, separator, letter, offset) {
       return offset ? letter.toUpperCase() : letter;
@@ -7854,7 +7862,7 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
         duration: options.duration
       })
       .start()
-      .then(function(){
+      .then(function() {
           // Resolve with reverser function...
           return reverseTranslate;
       });
@@ -8024,6 +8032,10 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
 
     /**
      * Convert the translate CSS value to key/value pair(s).
+     * @param {string} transform
+     * @param {boolean=} addTransition
+     * @param {string=} transition
+     * @return {Object} object containing CSS translate key/value pair(s)
      */
     toTransformCss: function (transform, addTransition, transition) {
       var css = {};

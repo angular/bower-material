@@ -1,7 +1,7 @@
 {
   "name": "angular-material-showHide",
-  "version": "1.1.23-master-0f9d111",
+  "version": "1.1.23-master-6322e98",
   "dependencies": {
-    "angular-material-core": "1.1.23-master-0f9d111"
+    "angular-material-core": "1.1.23-master-6322e98"
   }
 }
