@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.23-master-c893050
+ * v1.1.23-master-31a596f
  */
 md-input-container:not([md-no-float]) .md-select-placeholder span:first-child {
   -webkit-transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -106,15 +106,25 @@ md-input-container md-select[disabled] .md-select-value {
 
 md-input-container md-select .md-select-value {
   min-height: 26px;
-  padding-bottom: 1px;
-  border-bottom-width: 1px; }
+  border-bottom-width: 1px;
+  padding-bottom: 1px; }
+  md-input-container md-select .md-select-value.md-select-placeholder {
+    padding-left: 0;
+    padding-right: 2px; }
+    [dir=rtl] md-input-container md-select .md-select-value.md-select-placeholder {
+      padding-left: 2px; }
+    [dir=rtl] md-input-container md-select .md-select-value.md-select-placeholder {
+      padding-right: 0; }
 
 .md-select-value {
   display: -webkit-box;
   display: flex;
   -webkit-box-align: center;
           align-items: center;
-  padding: 2px 2px 1px;
+  padding-top: 2px;
+  padding-bottom: 1px;
+  padding-left: 0;
+  padding-right: 2px;
   border-bottom-width: 1px;
   border-bottom-style: solid;
   background-color: rgba(0, 0, 0, 0);
@@ -124,6 +134,10 @@ md-input-container md-select .md-select-value {
   min-height: 26px;
   -webkit-box-flex: 1;
           flex-grow: 1; }
+  [dir=rtl] .md-select-value {
+    padding-left: 2px; }
+  [dir=rtl] .md-select-value {
+    padding-right: 0; }
   .md-select-value > span:not(.md-select-icon) {
     max-width: 100%;
     -webkit-box-flex: 1;
@@ -164,7 +178,6 @@ md-input-container md-select .md-select-value {
             order: 1;
     pointer-events: none;
     -webkit-font-smoothing: antialiased;
-    padding-left: 2px;
     z-index: 1; }
 
 md-select-menu {
