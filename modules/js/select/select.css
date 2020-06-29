@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.23-master-96ec741
+ * v1.1.23-master-c893050
  */
 md-input-container:not([md-no-float]) .md-select-placeholder span:first-child {
   -webkit-transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -258,8 +258,8 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
             transform: translateY(-50%);
     box-sizing: border-box;
     display: inline-block;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     left: 0;
     right: auto; }
     [dir=rtl] md-select-menu[multiple] md-option.md-checkbox-enabled .md-container {
@@ -305,8 +305,8 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
     position: absolute;
     top: 0;
     left: 0;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border-width: 2px;
     border-style: solid;
     border-radius: 2px; }
@@ -317,11 +317,11 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
       -webkit-transform: rotate(45deg);
               transform: rotate(45deg);
       position: absolute;
-      left: 4.66667px;
-      top: 0.22222px;
+      left: 4px;
+      top: 0px;
       display: table;
-      width: 6.66667px;
-      height: 13.33333px;
+      width: 6px;
+      height: 12px;
       border-width: 2px;
       border-style: solid;
       border-top: 0;
@@ -337,7 +337,7 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
     -webkit-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
     display: table;
-    width: 12px;
+    width: 10.8px;
     height: 2px;
     border-width: 2px;
     border-style: solid;

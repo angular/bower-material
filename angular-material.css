@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.23-master-96ec741
+ * v1.1.23-master-c893050
  */
 html, body {
   height: 100%;
@@ -1084,12 +1084,12 @@ md-card {
   height: auto; }
 
 .md-inline-form md-checkbox {
-  margin: 19px 0 18px; }
+  margin-top: 14px;
+  margin-bottom: auto; }
 
 md-checkbox {
   box-sizing: border-box;
   display: inline-block;
-  margin-bottom: 16px;
   white-space: nowrap;
   cursor: pointer;
   outline: none;
@@ -1098,10 +1098,13 @@ md-checkbox {
       -ms-user-select: none;
           user-select: none;
   position: relative;
-  min-width: 20px;
-  min-height: 20px;
+  min-width: 18px;
+  min-height: 48px;
   margin-left: 0;
   margin-right: 16px; }
+  .md-dense > md-checkbox:not(.md-dense-disabled),
+  .md-dense :not(.md-dense-disabled) md-checkbox:not(.md-dense-disabled) {
+    min-height: 36px; }
   [dir=rtl] md-checkbox {
     margin-left: 16px; }
   [dir=rtl] md-checkbox {
@@ -1116,8 +1119,6 @@ md-checkbox {
     bottom: -8px; }
   md-checkbox.md-focused:not([disabled]):not(.md-checked) .md-container:before {
     background-color: rgba(0, 0, 0, 0.12); }
-  md-checkbox.md-align-top-left > div.md-container {
-    top: 12px; }
   md-checkbox .md-container {
     position: absolute;
     top: 50%;
@@ -1125,8 +1126,8 @@ md-checkbox {
             transform: translateY(-50%);
     box-sizing: border-box;
     display: inline-block;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     left: 0;
     right: auto; }
     [dir=rtl] md-checkbox .md-container {
@@ -1172,8 +1173,8 @@ md-checkbox {
     position: absolute;
     top: 0;
     left: 0;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border-width: 2px;
     border-style: solid;
     border-radius: 2px; }
@@ -1184,11 +1185,11 @@ md-checkbox {
       -webkit-transform: rotate(45deg);
               transform: rotate(45deg);
       position: absolute;
-      left: 4.66667px;
-      top: 0.22222px;
+      left: 4px;
+      top: 0px;
       display: table;
-      width: 6.66667px;
-      height: 13.33333px;
+      width: 6px;
+      height: 12px;
       border-width: 2px;
       border-style: solid;
       border-top: 0;
@@ -1204,13 +1205,19 @@ md-checkbox {
     -webkit-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
     display: table;
-    width: 12px;
+    width: 10.8px;
     height: 2px;
     border-width: 2px;
     border-style: solid;
     border-top: 0;
     border-left: 0;
     content: ''; }
+  md-checkbox .md-container {
+    top: auto;
+    left: auto;
+    right: auto;
+    margin: 3px;
+    margin-top: 21px; }
   md-checkbox .md-label {
     box-sizing: border-box;
     position: relative;
@@ -1221,12 +1228,19 @@ md-checkbox {
        -moz-user-select: text;
         -ms-user-select: text;
             user-select: text;
-    margin-left: 30px;
-    margin-right: 0; }
+    margin-top: 10px;
+    margin-bottom: auto;
+    margin-left: 36px; }
     [dir=rtl] md-checkbox .md-label {
-      margin-left: 0; }
-    [dir=rtl] md-checkbox .md-label {
-      margin-right: 30px; }
+      margin-left: 0;
+      margin-right: 36px; }
+    md-checkbox .md-label:empty {
+      margin-left: 24px;
+      margin-right: 0; }
+      [dir=rtl] md-checkbox .md-label:empty {
+        margin-left: 0; }
+      [dir=rtl] md-checkbox .md-label:empty {
+        margin-right: 24px; }
 
 .md-contact-chips .md-chips md-chip {
   padding: 0 25px 0 0; }
@@ -3858,8 +3872,8 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
             transform: translateY(-50%);
     box-sizing: border-box;
     display: inline-block;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     left: 0;
     right: auto; }
     [dir=rtl] md-select-menu[multiple] md-option.md-checkbox-enabled .md-container {
@@ -3905,8 +3919,8 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
     position: absolute;
     top: 0;
     left: 0;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border-width: 2px;
     border-style: solid;
     border-radius: 2px; }
@@ -3917,11 +3931,11 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
       -webkit-transform: rotate(45deg);
               transform: rotate(45deg);
       position: absolute;
-      left: 4.66667px;
-      top: 0.22222px;
+      left: 4px;
+      top: 0px;
       display: table;
-      width: 6.66667px;
-      height: 13.33333px;
+      width: 6px;
+      height: 12px;
       border-width: 2px;
       border-style: solid;
       border-top: 0;
@@ -3937,7 +3951,7 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
     -webkit-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
     display: table;
-    width: 12px;
+    width: 10.8px;
     height: 2px;
     border-width: 2px;
     border-style: solid;
