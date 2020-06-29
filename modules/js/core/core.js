@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.23-master-e24d09c
+ * v1.1.23-master-96ec741
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1677,7 +1677,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      * Functional equivalent for $element.filter(‘md-bottom-sheet’)
      * useful with interimElements where the element and its container are important...
      *
-     * @param {angular.JQLite} element to scan
+     * @param {JQLite} element to scan
      * @param {string} nodeName of node to find (e.g. 'md-dialog')
      * @param {boolean=} scanDeep optional flag to allow deep scans; defaults to 'false'.
      * @param {boolean=} warnNotFound optional flag to enable log warnings; defaults to false

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.23-master-e24d09c
+ * v1.1.23-master-96ec741
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1713,7 +1713,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      * Functional equivalent for $element.filter(‘md-bottom-sheet’)
      * useful with interimElements where the element and its container are important...
      *
-     * @param {angular.JQLite} element to scan
+     * @param {JQLite} element to scan
      * @param {string} nodeName of node to find (e.g. 'md-dialog')
      * @param {boolean=} scanDeep optional flag to allow deep scans; defaults to 'false'.
      * @param {boolean=} warnNotFound optional flag to enable log warnings; defaults to false
@@ -37124,6 +37124,12 @@ function MdToastProvider($$interimElementProvider) {
       }
     };
 
+    /**
+     * @param {{toast: {actionKey: string=}}=} scope
+     * @param {JQLite} element
+     * @param {Object.<string, string>} options
+     * @return {*}
+     */
     function onShow(scope, element, options) {
       // support deprecated #content method
       // TODO remove support for content in 1.2.
@@ -37169,9 +37175,24 @@ function MdToastProvider($$interimElementProvider) {
         scope.toast.actionKey : undefined);
 
       element.on(SWIPE_EVENTS, options.onSwipe);
-      element.addClass(isSmScreen ? 'md-bottom' : options.position.split(' ').map(function(pos) {
-        return 'md-' + pos;
-      }).join(' '));
+
+      var verticalPositionDefined = false;
+      var positionClasses = options.position.split(' ').map(function (position) {
+        if (position) {
+          var className = 'md-' + position;
+          if (className === 'md-top' || className === 'md-bottom') {
+            verticalPositionDefined = true;
+          }
+          return className;
+        }
+        return 'md-bottom';
+      });
+      // If only "right" or "left" are defined, default to a vertical position of "bottom"
+      // as documented.
+      if (!verticalPositionDefined) {
+        positionClasses.push('md-bottom');
+      }
+      element.addClass(isSmScreen ? 'md-bottom' : positionClasses.join(' '));
 
       if (options.parent) {
         options.parent.addClass('md-toast-animating');
@@ -37216,6 +37237,9 @@ function MdToastProvider($$interimElementProvider) {
       return 'md-toast-open-' + (position.indexOf('top') > -1 ? 'top' : 'bottom');
     }
 
+    /**
+     * @param {string} actionKey
+     */
     function setupActionKeyListener(actionKey) {
       /**
        * @param {KeyboardEvent} event
@@ -39219,4 +39243,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.23-master-e24d09c"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.23-master-96ec741"}};
