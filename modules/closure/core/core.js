@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.23-master-6322e98
+ * v1.1.23-master-e24d09c
  */
 goog.provide('ngmaterial.core');
 
@@ -1092,7 +1092,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      * which supports the breaking changes in the AngularJS snapshot (SHA 87a2ff76af5d0a9268d8eb84db5755077d27c84c).
      * @param {!ngModel.NgModelController} ngModelCtrl
      * @param {!string} optionName
-     * @returns {Object|undefined}
+     * @returns {string|number|boolean|Object|undefined}
      */
     getModelOption: function (ngModelCtrl, optionName) {
       if (!ngModelCtrl.$options) {
@@ -1101,8 +1101,8 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
 
       var $options = ngModelCtrl.$options;
 
-      // The newer versions of AngularJS introduced a `getOption function and made the option values no longer
-      // visible on the $options object.
+      // The newer versions of AngularJS introduced a getOption function and made the option values
+      // no longer visible on the $options object.
       return $options.getOption ? $options.getOption(optionName) : $options[optionName];
     },
 

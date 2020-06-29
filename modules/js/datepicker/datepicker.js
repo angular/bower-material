@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.23-master-6322e98
+ * v1.1.23-master-e24d09c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -344,17 +344,14 @@ angular.module('material.components.datepicker', [
     }, this.$attrs, [ngModelCtrl]);
 
     ngModelCtrl.$render = function() {
-      var value = this.$viewValue;
-      var parsedValue, convertedValue;
+      var value = this.$viewValue, convertedDate;
 
       // In the case where a conversion is needed, the $viewValue here will be a string like
       // "2020-05-10" instead of a Date object.
       if (!self.dateUtil.isValidDate(value)) {
-        parsedValue = self.$mdDateLocale.parseDate(this.$viewValue);
-        convertedValue =
-          new Date(parsedValue.getTime() + 60000 * parsedValue.getTimezoneOffset());
-        if (self.dateUtil.isValidDate(convertedValue)) {
-          value = convertedValue;
+        convertedDate = self.dateUtil.removeLocalTzAndReparseDate(new Date(this.$viewValue));
+        if (self.dateUtil.isValidDate(convertedDate)) {
+          value = convertedDate;
         }
       }
 
@@ -701,7 +698,8 @@ angular.module('material.components.datepicker', [
     this.cellClickHandler = function() {
       var timestamp = $$mdDateUtil.getTimestampFromNode(this);
       self.$scope.$apply(function() {
-        self.calendarCtrl.setNgModelValue(self.dateLocale.parseDate(timestamp));
+        // The timestamp has to be converted to a valid date.
+        self.calendarCtrl.setNgModelValue(new Date(timestamp));
       });
     };
 
@@ -1417,7 +1415,8 @@ angular.module('material.components.datepicker', [
 
     if (calendarCtrl.mode) {
       this.$mdUtil.nextTick(function() {
-        calendarCtrl.setNgModelValue(calendarCtrl.$mdDateLocale.parseDate(timestamp));
+        // The timestamp has to be converted to a valid date.
+        calendarCtrl.setNgModelValue(new Date(timestamp));
       });
     } else {
       calendarCtrl.setCurrentView('month', timestamp);
@@ -1953,7 +1952,7 @@ angular.module('material.components.datepicker', [
    * Utility for performing date calculations to facilitate operation of the calendar and
    * datepicker.
    */
-  angular.module('material.components.datepicker').factory('$$mdDateUtil', function() {
+  angular.module('material.components.datepicker').factory('$$mdDateUtil', ["$mdDateLocale", function($mdDateLocale) {
     return {
       getFirstDateOfMonth: getFirstDateOfMonth,
       getNumberOfDaysInMonth: getNumberOfDaysInMonth,
@@ -1977,7 +1976,8 @@ angular.module('material.components.datepicker', [
       getYearDistance: getYearDistance,
       clampDate: clampDate,
       getTimestampFromNode: getTimestampFromNode,
-      isMonthWithinRange: isMonthWithinRange
+      isMonthWithinRange: isMonthWithinRange,
+      removeLocalTzAndReparseDate: removeLocalTzAndReparseDate
     };
 
     /**
@@ -2255,7 +2255,20 @@ angular.module('material.components.datepicker', [
        return (!minDate || minDate.getFullYear() < year || minDate.getMonth() <= month) &&
         (!maxDate || maxDate.getFullYear() > year || maxDate.getMonth() >= month);
      }
-  });
+
+    /**
+     * @param {Date} value
+     * @return {boolean|boolean}
+     */
+    function removeLocalTzAndReparseDate(value) {
+      var dateValue, formattedDate;
+      // Remove the local timezone offset before calling formatDate.
+      dateValue = new Date(value.getTime() + 60000 * value.getTimezoneOffset());
+      formattedDate = $mdDateLocale.formatDate(dateValue);
+      // parseDate only works with a date formatted by formatDate when using Moment validation.
+      return $mdDateLocale.parseDate(formattedDate);
+    }
+  }]);
 })();
 
 (function() {
@@ -2347,6 +2360,7 @@ angular.module('material.components.datepicker', [
         // may be confusing.
         var hiddenIcons = tAttrs.mdHideIcons;
         var ariaLabelValue = tAttrs.ariaLabel || tAttrs.mdPlaceholder;
+        var ngModelOptions = tAttrs.ngModelOptions;
 
         var calendarButton = (hiddenIcons === 'all' || hiddenIcons === 'calendar') ? '' :
           '<md-button class="md-datepicker-button md-icon-button" type="button" ' +
@@ -2394,6 +2408,7 @@ angular.module('material.components.datepicker', [
                 'md-max-date="ctrl.maxDate" ' +
                 'md-date-filter="ctrl.dateFilter" ' +
                 'md-month-filter="ctrl.monthFilter" ' +
+                (ngModelOptions ? 'ng-model-options="' + ngModelOptions + '" ' : '') +
                 'ng-model="ctrl.date" ng-if="ctrl.isCalendarOpen">' +
             '</md-calendar>' +
           '</div>' +
@@ -2442,7 +2457,8 @@ angular.module('material.components.datepicker', [
           mdInputContainer.input = element;
           mdInputContainer.element
             .addClass(INPUT_CONTAINER_CLASS)
-            .toggleClass(HAS_CALENDAR_ICON_CLASS, attr.mdHideIcons !== 'calendar' && attr.mdHideIcons !== 'all');
+            .toggleClass(HAS_CALENDAR_ICON_CLASS,
+              attr.mdHideIcons !== 'calendar' && attr.mdHideIcons !== 'all');
 
           if (!mdInputContainer.label) {
             $mdAria.expect(element, 'aria-label', attr.mdPlaceholder);
@@ -2453,7 +2469,8 @@ angular.module('material.components.datepicker', [
           }
 
           scope.$watch(mdInputContainer.isErrorGetter || function() {
-            return ngModelCtrl.$invalid && (ngModelCtrl.$touched || (parentForm && parentForm.$submitted));
+            return ngModelCtrl.$invalid && (ngModelCtrl.$touched ||
+              (parentForm && parentForm.$submitted));
           }, mdInputContainer.setInvalid);
         } else if (parentForm) {
           // If invalid, highlights the input when the parent form is submitted.
@@ -2686,8 +2703,8 @@ angular.module('material.components.datepicker', [
       });
     }
 
-    // For AngularJS 1.4 and older, where there are no lifecycle hooks but bindings are pre-assigned,
-    // manually call the $onInit hook.
+    // For AngularJS 1.4 and older, where there are no lifecycle hooks but bindings are
+    // pre-assigned, manually call the $onInit hook.
     if (angular.version.major === 1 && angular.version.minor <= 4) {
       this.$onInit();
     }
@@ -2695,7 +2712,8 @@ angular.module('material.components.datepicker', [
 
   /**
    * AngularJS Lifecycle hook for newer AngularJS versions.
-   * Bindings are not guaranteed to have been assigned in the controller, but they are in the $onInit hook.
+   * Bindings are not guaranteed to have been assigned in the controller, but they are in the
+   * $onInit hook.
    */
   DatePickerCtrl.prototype.$onInit = function() {
 
@@ -2704,7 +2722,8 @@ angular.module('material.components.datepicker', [
      * the user to override specific ones from the $mdDateLocale provider.
      * @type {!Object}
      */
-    this.locale = this.dateLocale ? angular.extend({}, this.$mdDateLocale, this.dateLocale) : this.$mdDateLocale;
+    this.locale = this.dateLocale ? angular.extend({}, this.$mdDateLocale, this.dateLocale)
+      : this.$mdDateLocale;
 
     this.installPropertyInterceptors();
     this.attachChangeListeners();
@@ -3005,7 +3024,9 @@ angular.module('material.components.datepicker', [
     var bodyRect = body.getBoundingClientRect();
 
     if (!this.topMargin || this.topMargin < 0) {
-      this.topMargin = (this.inputMask.parent().prop('clientHeight') - this.ngInputElement.prop('clientHeight')) / 2;
+      this.topMargin =
+        (this.inputMask.parent().prop('clientHeight')
+          - this.ngInputElement.prop('clientHeight')) / 2;
     }
 
     // Check to see if the calendar pane would go off the screen. If so, adjust position
@@ -3255,7 +3276,11 @@ angular.module('material.components.datepicker', [
     var self = this;
     var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
 
-    this.date = value;
+    if (this.dateUtil.isValidDate(value)) {
+      this.date = this.dateUtil.removeLocalTzAndReparseDate(value);
+    } else {
+      this.date = value;
+    }
     this.inputElement.value = this.locale.formatDate(value, timezone);
     this.mdInputContainer && this.mdInputContainer.setHasValue(!!value);
     this.resizeInputElement();
