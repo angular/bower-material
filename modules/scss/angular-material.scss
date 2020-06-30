@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-693ecca
+ * v1.1.24-master-29c0a4a
  */
 // Typography
 // ------------------------------
@@ -6581,14 +6581,6 @@ md-pagination-wrapper {
     position: relative;
     justify-content: center;
   }
-  md-tab-item {
-    min-width: 72px;
-  }
-  @media (min-width: $layout-breakpoint-xs) {
-    md-tab-item {
-      min-width: 160px;
-    }
-  }
 }
 
 md-tabs-content-wrapper {
@@ -6676,7 +6668,7 @@ md-tab {
   font-size: 14px;
   text-align: center;
   line-height: $tabs-header-height - 24;
-  padding: 12px;
+  padding: 12px 24px;
   transition: background-color 0.35s $swift-ease-in-out-timing-function;
   cursor: pointer;
   white-space: nowrap;
