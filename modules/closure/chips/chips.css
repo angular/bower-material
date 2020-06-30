@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-4d36fd2
+ * v1.1.24-master-693ecca
  */
 .md-contact-chips .md-chips md-chip {
   padding: 0 25px 0 0; }
@@ -126,6 +126,8 @@
       .md-chips md-chip .md-chip-remove md-icon {
         height: 18px;
         width: 18px;
+        min-height: 18px;
+        min-width: 18px;
         position: absolute;
         top: 50%;
         left: 50%;

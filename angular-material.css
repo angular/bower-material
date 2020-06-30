@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-4d36fd2
+ * v1.1.24-master-693ecca
  */
 html, body {
   height: 100%;
@@ -1383,6 +1383,8 @@ md-input-container .md-checkbox-link-label {
       .md-chips md-chip .md-chip-remove md-icon {
         height: 18px;
         width: 18px;
+        min-height: 18px;
+        min-width: 18px;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -4924,6 +4926,11 @@ md-pagination-wrapper {
     position: relative;
     -webkit-box-pack: center;
             justify-content: center; }
+  md-pagination-wrapper md-tab-item {
+    min-width: 72px; }
+  @media (min-width: 600px) {
+    md-pagination-wrapper md-tab-item {
+      min-width: 160px; } }
 
 md-tabs-content-wrapper {
   display: block;
@@ -5015,7 +5022,7 @@ md-tab {
   font-size: 14px;
   text-align: center;
   line-height: 24px;
-  padding: 12px 24px;
+  padding: 12px;
   -webkit-transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
   transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
   cursor: pointer;

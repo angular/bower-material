@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-4d36fd2
+ * v1.1.24-master-693ecca
  */
 // Typography
 // ------------------------------
@@ -2538,6 +2538,8 @@ $contact-chip-name-width: rem(12) !default;
       md-icon {
         height: $chip-delete-icon-size;
         width: $chip-delete-icon-size;
+        min-height: $chip-delete-icon-size;
+        min-width: $chip-delete-icon-size;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -6579,6 +6581,14 @@ md-pagination-wrapper {
     position: relative;
     justify-content: center;
   }
+  md-tab-item {
+    min-width: 72px;
+  }
+  @media (min-width: $layout-breakpoint-xs) {
+    md-tab-item {
+      min-width: 160px;
+    }
+  }
 }
 
 md-tabs-content-wrapper {
@@ -6666,7 +6676,7 @@ md-tab {
   font-size: 14px;
   text-align: center;
   line-height: $tabs-header-height - 24;
-  padding: 12px 24px;
+  padding: 12px;
   transition: background-color 0.35s $swift-ease-in-out-timing-function;
   cursor: pointer;
   white-space: nowrap;
