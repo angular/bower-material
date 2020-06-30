@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24
+ * v1.1.24-master-96e4f1c
  */
 html, body {
   height: 100%;
@@ -1084,12 +1084,12 @@ md-card {
   height: auto; }
 
 .md-inline-form md-checkbox {
-  margin: 19px 0 18px; }
+  margin-top: 14px;
+  margin-bottom: auto; }
 
 md-checkbox {
   box-sizing: border-box;
   display: inline-block;
-  margin-bottom: 16px;
   white-space: nowrap;
   cursor: pointer;
   outline: none;
@@ -1098,10 +1098,13 @@ md-checkbox {
       -ms-user-select: none;
           user-select: none;
   position: relative;
-  min-width: 20px;
-  min-height: 20px;
+  min-width: 18px;
+  min-height: 48px;
   margin-left: 0;
   margin-right: 16px; }
+  .md-dense > md-checkbox:not(.md-dense-disabled),
+  .md-dense :not(.md-dense-disabled) md-checkbox:not(.md-dense-disabled) {
+    min-height: 36px; }
   [dir=rtl] md-checkbox {
     margin-left: 16px; }
   [dir=rtl] md-checkbox {
@@ -1116,8 +1119,6 @@ md-checkbox {
     bottom: -8px; }
   md-checkbox.md-focused:not([disabled]):not(.md-checked) .md-container:before {
     background-color: rgba(0, 0, 0, 0.12); }
-  md-checkbox.md-align-top-left > div.md-container {
-    top: 12px; }
   md-checkbox .md-container {
     position: absolute;
     top: 50%;
@@ -1125,8 +1126,8 @@ md-checkbox {
             transform: translateY(-50%);
     box-sizing: border-box;
     display: inline-block;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     left: 0;
     right: auto; }
     [dir=rtl] md-checkbox .md-container {
@@ -1172,8 +1173,8 @@ md-checkbox {
     position: absolute;
     top: 0;
     left: 0;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border-width: 2px;
     border-style: solid;
     border-radius: 2px; }
@@ -1184,11 +1185,11 @@ md-checkbox {
       -webkit-transform: rotate(45deg);
               transform: rotate(45deg);
       position: absolute;
-      left: 4.66667px;
-      top: 0.22222px;
+      left: 4px;
+      top: 0px;
       display: table;
-      width: 6.66667px;
-      height: 13.33333px;
+      width: 6px;
+      height: 12px;
       border-width: 2px;
       border-style: solid;
       border-top: 0;
@@ -1204,13 +1205,19 @@ md-checkbox {
     -webkit-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
     display: table;
-    width: 12px;
+    width: 10.8px;
     height: 2px;
     border-width: 2px;
     border-style: solid;
     border-top: 0;
     border-left: 0;
     content: ''; }
+  md-checkbox .md-container {
+    top: auto;
+    left: auto;
+    right: auto;
+    margin: 3px;
+    margin-top: 21px; }
   md-checkbox .md-label {
     box-sizing: border-box;
     position: relative;
@@ -1221,12 +1228,19 @@ md-checkbox {
        -moz-user-select: text;
         -ms-user-select: text;
             user-select: text;
-    margin-left: 30px;
-    margin-right: 0; }
+    margin-top: 10px;
+    margin-bottom: auto;
+    margin-left: 36px; }
     [dir=rtl] md-checkbox .md-label {
-      margin-left: 0; }
-    [dir=rtl] md-checkbox .md-label {
-      margin-right: 30px; }
+      margin-left: 0;
+      margin-right: 36px; }
+    md-checkbox .md-label:empty {
+      margin-left: 24px;
+      margin-right: 0; }
+      [dir=rtl] md-checkbox .md-label:empty {
+        margin-left: 0; }
+      [dir=rtl] md-checkbox .md-label:empty {
+        margin-right: 24px; }
 
 .md-contact-chips .md-chips md-chip {
   padding: 0 25px 0 0; }
@@ -2274,7 +2288,7 @@ md-input-container {
             order: 1;
     pointer-events: none;
     -webkit-font-smoothing: antialiased;
-    padding-left: 3px;
+    padding-left: 2px;
     padding-right: 0;
     z-index: 1;
     -webkit-transform: translate3d(0, 28px, 0) scale(1);
@@ -2291,11 +2305,21 @@ md-input-container {
       padding-left: 0; }
     [dir=rtl] md-input-container label:not(.md-no-float):not(.md-container-ignore), [dir=rtl]
     md-input-container .md-placeholder {
-      padding-right: 3px; }
+      padding-right: 2px; }
     [dir=rtl] md-input-container label:not(.md-no-float):not(.md-container-ignore), [dir=rtl]
     md-input-container .md-placeholder {
       -webkit-transform-origin: right top;
               transform-origin: right top; }
+  md-input-container.md-input-has-value label:not(.md-no-float):not(.md-container-ignore),
+  md-input-container.md-input-has-value .md-placeholder {
+    padding-left: 3px;
+    padding-right: 0; }
+    [dir=rtl] md-input-container.md-input-has-value label:not(.md-no-float):not(.md-container-ignore), [dir=rtl]
+    md-input-container.md-input-has-value .md-placeholder {
+      padding-left: 0; }
+    [dir=rtl] md-input-container.md-input-has-value label:not(.md-no-float):not(.md-container-ignore), [dir=rtl]
+    md-input-container.md-input-has-value .md-placeholder {
+      padding-right: 3px; }
   md-input-container .md-placeholder {
     position: absolute;
     top: 0;
@@ -2335,7 +2359,7 @@ md-input-container {
     background: none;
     padding-top: 2px;
     padding-bottom: 1px;
-    padding-left: 2px;
+    padding-left: 0;
     padding-right: 2px;
     border-width: 0 0 1px 0;
     line-height: 26px;
@@ -2348,6 +2372,10 @@ md-input-container {
     width: 100%;
     box-sizing: border-box;
     float: left; }
+    [dir=rtl] md-input-container .md-input {
+      padding-left: 2px; }
+    [dir=rtl] md-input-container .md-input {
+      padding-right: 0; }
     [dir=rtl] md-input-container .md-input {
       float: right; }
     md-input-container .md-input:focus {
@@ -2438,7 +2466,8 @@ md-input-container {
   md-input-container.md-icon-left > label:not(.md-no-float):not(.md-container-ignore),
   md-input-container.md-icon-left > label .md-placeholder, md-input-container.md-icon-right > label:not(.md-no-float):not(.md-container-ignore),
   md-input-container.md-icon-right > label .md-placeholder {
-    width: calc(100% - 36px - 18px); }
+    width: calc(100% - 36px);
+    padding: 0; }
   md-input-container.md-icon-left {
     padding-left: 36px;
     padding-right: 0; }
@@ -3706,15 +3735,25 @@ md-input-container md-select[disabled] .md-select-value {
 
 md-input-container md-select .md-select-value {
   min-height: 26px;
-  padding-bottom: 1px;
-  border-bottom-width: 1px; }
+  border-bottom-width: 1px;
+  padding-bottom: 1px; }
+  md-input-container md-select .md-select-value.md-select-placeholder {
+    padding-left: 0;
+    padding-right: 2px; }
+    [dir=rtl] md-input-container md-select .md-select-value.md-select-placeholder {
+      padding-left: 2px; }
+    [dir=rtl] md-input-container md-select .md-select-value.md-select-placeholder {
+      padding-right: 0; }
 
 .md-select-value {
   display: -webkit-box;
   display: flex;
   -webkit-box-align: center;
           align-items: center;
-  padding: 2px 2px 1px;
+  padding-top: 2px;
+  padding-bottom: 1px;
+  padding-left: 0;
+  padding-right: 2px;
   border-bottom-width: 1px;
   border-bottom-style: solid;
   background-color: rgba(0, 0, 0, 0);
@@ -3724,6 +3763,10 @@ md-input-container md-select .md-select-value {
   min-height: 26px;
   -webkit-box-flex: 1;
           flex-grow: 1; }
+  [dir=rtl] .md-select-value {
+    padding-left: 2px; }
+  [dir=rtl] .md-select-value {
+    padding-right: 0; }
   .md-select-value > span:not(.md-select-icon) {
     max-width: 100%;
     -webkit-box-flex: 1;
@@ -3764,7 +3807,6 @@ md-input-container md-select .md-select-value {
             order: 1;
     pointer-events: none;
     -webkit-font-smoothing: antialiased;
-    padding-left: 2px;
     z-index: 1; }
 
 md-select-menu {
@@ -3858,8 +3900,8 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
             transform: translateY(-50%);
     box-sizing: border-box;
     display: inline-block;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     left: 0;
     right: auto; }
     [dir=rtl] md-select-menu[multiple] md-option.md-checkbox-enabled .md-container {
@@ -3905,8 +3947,8 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
     position: absolute;
     top: 0;
     left: 0;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border-width: 2px;
     border-style: solid;
     border-radius: 2px; }
@@ -3917,11 +3959,11 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
       -webkit-transform: rotate(45deg);
               transform: rotate(45deg);
       position: absolute;
-      left: 4.66667px;
-      top: 0.22222px;
+      left: 4px;
+      top: 0px;
       display: table;
-      width: 6.66667px;
-      height: 13.33333px;
+      width: 6px;
+      height: 12px;
       border-width: 2px;
       border-style: solid;
       border-top: 0;
@@ -3937,7 +3979,7 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
     -webkit-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
     display: table;
-    width: 12px;
+    width: 10.8px;
     height: 2px;
     border-width: 2px;
     border-style: solid;
