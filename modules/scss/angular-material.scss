@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-96e4f1c
+ * v1.1.24-master-4d36fd2
  */
 // Typography
 // ------------------------------
@@ -2390,6 +2390,23 @@ md-checkbox {
 
   }
 }
+md-input-container .md-checkbox-link-label {
+  box-sizing: border-box;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  white-space: normal;
+  user-select: text;
+  cursor: pointer;
+  // The span is actually after the checkbox in the DOM, but we need it to line up, so we move it up
+  // while not introducing any breaking changes to existing styles.
+  top: -21px;
+
+  // In this mode, the checkbox's width needs to be factored in as well.
+  @include rtl(margin-left, $checkbox-text-margin - $checkbox-width, 0);
+  @include rtl(margin-right, 0, $checkbox-text-margin - $checkbox-width);
+}
+
 $chip-font-size: rem(1.6) !default;
 $chip-height: rem(3.2) !default;
 $chip-padding: 0 rem(1.2) 0 rem(1.2) !default;

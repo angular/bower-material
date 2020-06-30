@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-96e4f1c
+ * v1.1.24-master-4d36fd2
  */
 .md-inline-form md-checkbox {
   margin-top: 14px;
@@ -162,3 +162,22 @@ md-checkbox {
         margin-left: 0; }
       [dir=rtl] md-checkbox .md-label:empty {
         margin-right: 24px; }
+
+md-input-container .md-checkbox-link-label {
+  box-sizing: border-box;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  white-space: normal;
+  -webkit-user-select: text;
+     -moz-user-select: text;
+      -ms-user-select: text;
+          user-select: text;
+  cursor: pointer;
+  top: -21px;
+  margin-left: 18px;
+  margin-right: 0; }
+  [dir=rtl] md-input-container .md-checkbox-link-label {
+    margin-left: 0; }
+  [dir=rtl] md-input-container .md-checkbox-link-label {
+    margin-right: 18px; }
