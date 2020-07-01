@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-29c0a4a
+ * v1.1.24-master-01917b3
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -6729,13 +6729,27 @@ function detectDisabledThemes($mdThemingProvider) {
  * {{primary-color-0.7}} - Apply 0.7 opacity to each of the above rules
  * {{primary-contrast}} - Generates .md-hue-1, .md-hue-2, .md-hue-3 with configured contrast (ie. text) color shades set for each hue
  * {{primary-contrast-0.7}} - Apply 0.7 opacity to each of the above rules
+ * {{primary-contrast-divider}} - Apply divider opacity to contrast color
  *
  * Foreground expansion: Applies rgba to black/white foreground text
  *
+ * Old Foreground Expressions:
  * {{foreground-1}} - used for primary text
  * {{foreground-2}} - used for secondary text/divider
  * {{foreground-3}} - used for disabled text
  * {{foreground-4}} - used for dividers
+ *
+ * New Foreground Expressions:
+ *
+ * Apply primary text color for contrasting with default background
+ *  {{background-default-contrast}} - default opacity
+ *  {{background-default-contrast-secondary}} - opacity for secondary text
+ *  {{background-default-contrast-hint}} - opacity for hints and placeholders
+ *  {{background-default-contrast-disabled}} - opacity for disabled text
+ *  {{background-default-contrast-divider}} - opacity for dividers
+ *
+ * Apply contrast color for specific shades
+ *  {{background-50-contrast-icon}} - Apply contrast color for icon on background's shade 50 hue
  */
 
 // In memory generated CSS rules; registered by theme.name
@@ -6744,21 +6758,14 @@ var GENERATED = { };
 // In memory storage of defined themes and color palettes (both loaded by CSS, and user specified)
 var PALETTES;
 
-// Text Colors on light and dark backgrounds
+// Text colors are automatically generated based on background color when not specified
+// Custom palettes can provide override colors
 // @see https://material.io/archive/guidelines/style/color.html#color-usability
 var DARK_FOREGROUND = {
   name: 'dark',
-  '1': 'rgba(0,0,0,0.87)',
-  '2': 'rgba(0,0,0,0.54)',
-  '3': 'rgba(0,0,0,0.38)',
-  '4': 'rgba(0,0,0,0.12)'
 };
 var LIGHT_FOREGROUND = {
   name: 'light',
-  '1': 'rgba(255,255,255,1.0)',
-  '2': 'rgba(255,255,255,0.7)',
-  '3': 'rgba(255,255,255,0.5)',
-  '4': 'rgba(255,255,255,0.12)'
 };
 
 var DARK_SHADOW = '1px 1px 0px rgba(0,0,0,0.4), -1px -1px 0px rgba(0,0,0,0.4)';
@@ -6795,6 +6802,35 @@ var DARK_DEFAULT_HUES = {
     'hue-3': 'A200'
   }
 };
+
+// Icon opacity values (active/inactive) from
+// https://material.io/archive/guidelines/style/color.html#color-usability
+var DARK_CONTRAST_OPACITY = {
+  'icon': 0.54,
+  'secondary': 0.54,
+  'disabled': 0.38,
+  'hint': 0.38,
+  'divider': 0.12,
+};
+
+var LIGHT_CONTRAST_OPACITY = {
+  'icon': 0.87,
+  'secondary': 0.7,
+  'disabled': 0.5,
+  'hint': 0.5,
+  'divider': 0.12
+};
+
+// Icon opacity values (active/inactive) from
+// https://material.io/archive/guidelines/style/color.html#color-usability
+var STRONG_LIGHT_CONTRAST_OPACITY = {
+  'icon': 1.0,
+  'secondary': 0.7,
+  'disabled': 0.5,
+  'hint': 0.5,
+  'divider': 0.12
+};
+
 THEME_COLOR_TYPES.forEach(function(colorType) {
   // Color types with unspecified default hues will use these default hue values
   var defaultDefaultHues = {
@@ -6940,7 +6976,8 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
     /**
      * @ngdoc method
      * @name $mdThemingProvider#setDefaultTheme
-     * @param {string} theme Default theme name to be applied to elements. Default value is `default`.
+     * @param {string} theme Default theme name to be applied to elements.
+     *  Default value is `default`.
      */
     setDefaultTheme: function(theme) {
       defaultTheme = theme;
@@ -7144,7 +7181,7 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
         Object.keys(color.hues).map(function(key) {
           return color.hues[key];
         }).forEach(function(hueValue) {
-          if (VALID_HUE_VALUES.indexOf(hueValue) == -1) {
+          if (VALID_HUE_VALUES.indexOf(hueValue) === -1) {
             throw new Error("Invalid hue value '%1' in theme %2's %3 color %4. Available hue values: %5"
               .replace('%1', hueValue)
               .replace('%2', self.name)
@@ -7571,18 +7608,44 @@ function parseRules(theme, colorType, rules) {
 
   rules = rules.replace(/THEME_NAME/g, theme.name);
   var themeNameRegex = new RegExp('\\.md-' + theme.name + '-theme', 'g');
-  var simpleVariableRegex = /'?"?\{\{\s*([a-zA-Z]+)-(A?\d+|hue-[0-3]|shadow|default)-?(\d\.?\d*)?(contrast)?\s*\}\}'?"?/g;
+  // Matches '{{ primary-color }}', etc
+  var hueRegex = new RegExp('([\'"])?{{\\s*([a-zA-Z]+)-?(color|default)?-?(contrast)?-?((?:\\d\\.?\\d*)|(?:[a-zA-Z]+))?\\s*}}(["\'])?','g');
+  var simpleVariableRegex = /'?"?{{\s*([a-zA-Z]+)-(A?\d+|hue-[0-3]|shadow|default)-?(contrast)?-?((?:\d\.?\d*)|(?:[a-zA-Z]+))?\s*}}'?"?/g;
+  var defaultBgHue = theme.colors['background'].hues['default'];
+  var defaultBgContrastType = PALETTES[theme.colors['background'].name][defaultBgHue].contrastType;
 
   // find and replace simple variables where we use a specific hue, not an entire palette
   // eg. "{{primary-100}}"
   // \(' + THEME_COLOR_TYPES.join('\|') + '\)'
-  rules = rules.replace(simpleVariableRegex, function(match, colorType, hue, opacity, contrast) {
+  rules = rules.replace(simpleVariableRegex, function(match, colorType, hue, contrast, opacity) {
+    var regexColorType = colorType;
     if (colorType === 'foreground') {
-      if (hue == 'shadow') {
+      if (hue === 'shadow') {
         return theme.foregroundShadow;
-      } else {
-        return theme.foregroundPalette[hue] || theme.foregroundPalette['1'];
+      } else if (theme.foregroundPalette[hue]) {
+        // Use user defined palette number (ie: foreground-2)
+        return rgba(colorToRgbaArray(theme.foregroundPalette[hue]));
+      } else if (theme.foregroundPalette['1']){
+        return rgba(colorToRgbaArray(theme.foregroundPalette['1']));
       }
+      // Default to background-default-contrast-{opacity}
+      colorType = 'background';
+      contrast = 'contrast';
+      if (!opacity && hue) {
+        // Convert references to legacy hues to opacities (i.e. foreground-4 to *-divider)
+        switch (hue) {
+          // hue-1 uses default opacity
+          case '2':
+            opacity = 'secondary';
+            break;
+          case '3':
+            opacity = 'disabled';
+            break;
+          case '4':
+            opacity = 'divider';
+        }
+      }
+      hue = 'default';
     }
 
     // `default` is also accepted as a hue-value, because the background palettes are
@@ -7591,20 +7654,57 @@ function parseRules(theme, colorType, rules) {
       hue = theme.colors[colorType].hues[hue];
     }
 
-    return rgba((PALETTES[ theme.colors[colorType].name ][hue] || '')[contrast ? 'contrast' : 'value'], opacity);
+    var colorDetails = (PALETTES[ theme.colors[colorType].name ][hue] || '');
+
+    // If user has specified a foreground color, use those
+    if (colorType === 'background' && contrast && regexColorType !== 'foreground' &&
+        colorDetails.contrastType === defaultBgContrastType) {
+      // Don't process if colorType was changed
+      switch (opacity) {
+        case 'secondary':
+        case 'icon':
+          if (theme.foregroundPalette['2']) {
+            return rgba(colorToRgbaArray(theme.foregroundPalette['2']));
+          }
+          break;
+        case 'disabled':
+        case 'hint':
+          if (theme.foregroundPalette['3']) {
+            return rgba(colorToRgbaArray(theme.foregroundPalette['3']));
+          }
+          break;
+        case 'divider':
+          if (theme.foregroundPalette['4']) {
+            return rgba(colorToRgbaArray(theme.foregroundPalette['4']));
+          }
+          break;
+        default:
+          if (theme.foregroundPalette['1']) {
+            return rgba(colorToRgbaArray(theme.foregroundPalette['1']));
+          }
+          break;
+      }
+    }
+
+    if (contrast && opacity) {
+      opacity = colorDetails.opacity[opacity] || opacity;
+    }
+
+    return rgba(colorDetails[contrast ? 'contrast' : 'value'], opacity);
   });
 
-  // Matches '{{ primary-color }}', etc
-  var hueRegex = new RegExp('(\'|")?{{\\s*([a-zA-Z]+)-(color|contrast)-?(\\d\\.?\\d*)?\\s*}}("|\')?','g');
   var generatedRules = [];
 
   // For each type, generate rules for each hue (ie. default, md-hue-1, md-hue-2, md-hue-3)
   angular.forEach(['default', 'hue-1', 'hue-2', 'hue-3'], function(hueName) {
     var newRule = rules
-      .replace(hueRegex, function(match, _, matchedColorType, hueType, opacity) {
+      .replace(hueRegex, function(match, _, matchedColorType, hueType, contrast, opacity) {
         var color = theme.colors[matchedColorType];
         var palette = PALETTES[color.name];
         var hueValue = color.hues[hueName];
+        if (contrast && opacity) {
+          opacity = palette[hueValue].opacity[opacity] || opacity;
+        }
         return rgba(palette[hueValue][hueType === 'color' ? 'value' : 'contrast'], opacity);
       });
     if (hueName !== 'default') {
@@ -7613,8 +7713,8 @@ function parseRules(theme, colorType, rules) {
 
     // Don't apply a selector rule to the default theme, making it easier to override
     // styles of the base-component
-    if (theme.name == 'default') {
-      var themeRuleRegex = /((?:\s|>|\.|\w|-|:|\(|\)|\[|\]|"|'|=)*)\.md-default-theme((?:\s|>|\.|\w|-|:|\(|\)|\[|\]|"|'|=)*)/g;
+    if (theme.name === 'default') {
+      var themeRuleRegex = /((?:\s|>|\.|\w|-|:|\(|\)|\[|]|"|'|=)*)\.md-default-theme((?:\s|>|\.|\w|-|:|\(|\)|\[|]|"|'|=)*)/g;
 
       newRule = newRule.replace(themeRuleRegex, function(match, start, end) {
         return match + ', ' + start + end;
@@ -7648,7 +7748,7 @@ function generateAllThemes($injector, $mdTheming) {
 
   // Break the CSS into individual rules
   var rules = themeCss
-                  .split(/\}(?!(\}|'|"|;))/)
+                  .split(/}(?!([}'";]))/)
                   .filter(function(rule) { return rule && rule.trim().length; })
                   .map(function(rule) { return rule.trim() + '}'; });
 
@@ -7692,9 +7792,12 @@ function generateAllThemes($injector, $mdTheming) {
   // Internal functions
   // *************************
 
-  // The user specifies a 'default' contrast color as either light or dark,
-  // then explicitly lists which hues are the opposite contrast (eg. A100 has dark, A200 has light)
-  function sanitizePalette(palette, name) {
+  /**
+   * The user specifies a 'default' contrast color as either light or dark, then explicitly lists
+   * which hues are the opposite contrast (eg. A100 has dark, A200 has light).
+   * @param {!object} palette to sanitize
+   */
+  function sanitizePalette(palette) {
     var defaultContrast = palette.contrastDefaultColor;
     var lightColors = palette.contrastLightColors || [];
     var strongLightColors = palette.contrastStrongLightColors || [];
@@ -7711,6 +7814,37 @@ function generateAllThemes($injector, $mdTheming) {
     delete palette.contrastStrongLightColors;
     delete palette.contrastDarkColors;
 
+    function getContrastType(hueName) {
+      if (defaultContrast === 'light' ? darkColors.indexOf(hueName) !== -1  : lightColors.indexOf(hueName) === -1) {
+        return 'dark';
+      }
+      if (strongLightColors.indexOf(hueName) !== -1) {
+        return 'strongLight';
+      }
+      return 'light';
+    }
+    function getContrastColor(contrastType) {
+      switch (contrastType) {
+        default:
+        case 'strongLight':
+          return STRONG_LIGHT_CONTRAST_COLOR;
+        case 'light':
+          return LIGHT_CONTRAST_COLOR;
+        case 'dark':
+          return DARK_CONTRAST_COLOR;
+      }
+    }
+    function getOpacityValues(contrastType) {
+      switch (contrastType) {
+        default:
+        case 'strongLight':
+          return STRONG_LIGHT_CONTRAST_OPACITY;
+        case 'light':
+          return LIGHT_CONTRAST_OPACITY;
+        case 'dark':
+          return DARK_CONTRAST_OPACITY;
+      }
+    }
     // Change { 'A100': '#fffeee' } to { 'A100': { value: '#fffeee', contrast:DARK_CONTRAST_COLOR }
     angular.forEach(palette, function(hueValue, hueName) {
       if (angular.isObject(hueValue)) return; // Already converted
@@ -7723,28 +7857,14 @@ function generateAllThemes($injector, $mdTheming) {
                         .replace('%3', hueName));
       }
 
+      var contrastType = getContrastType(hueName);
       palette[hueName] = {
         hex: palette[hueName],
         value: rgbValue,
-        contrast: getContrastColor()
+        contrastType: contrastType,
+        contrast: getContrastColor(contrastType),
+        opacity: getOpacityValues(contrastType)
       };
-      function getContrastColor() {
-        if (defaultContrast === 'light') {
-          if (darkColors.indexOf(hueName) > -1) {
-            return DARK_CONTRAST_COLOR;
-          } else {
-            return strongLightColors.indexOf(hueName) > -1 ? STRONG_LIGHT_CONTRAST_COLOR
-              : LIGHT_CONTRAST_COLOR;
-          }
-        } else {
-          if (lightColors.indexOf(hueName) > -1) {
-            return strongLightColors.indexOf(hueName) > -1 ? STRONG_LIGHT_CONTRAST_COLOR
-              : LIGHT_CONTRAST_COLOR;
-          } else {
-            return DARK_CONTRAST_COLOR;
-          }
-        }
-      }
     });
   }
 }
@@ -7791,13 +7911,13 @@ function checkValidPalette(theme, colorType) {
 }
 
 function colorToRgbaArray(clr) {
-  if (angular.isArray(clr) && clr.length == 3) return clr;
+  if (angular.isArray(clr) && clr.length === 3) return clr;
   if (/^rgb/.test(clr)) {
     return clr.replace(/(^\s*rgba?\(|\)\s*$)/g, '').split(',').map(function(value, i) {
-      return i == 3 ? parseFloat(value, 10) : parseInt(value, 10);
+      return i === 3 ? parseFloat(value) : parseInt(value, 10);
     });
   }
-  if (clr.charAt(0) == '#') clr = clr.substring(1);
+  if (clr.charAt(0) === '#') clr = clr.substring(1);
   if (!/^([a-fA-F0-9]{3}){1,2}$/g.test(clr)) return;
 
   var dig = clr.length / 3;
@@ -7815,7 +7935,7 @@ function colorToRgbaArray(clr) {
 function rgba(rgbArray, opacity) {
   if (!rgbArray) return "rgb('0,0,0')";
 
-  if (rgbArray.length == 4) {
+  if (rgbArray.length === 4) {
     rgbArray = angular.copy(rgbArray);
     opacity ? rgbArray.pop() : opacity = rgbArray.pop();
   }
