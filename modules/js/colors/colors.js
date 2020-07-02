@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-a82fc93
+ * v1.1.24-master-7157b3b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -16,7 +16,7 @@
    */
   MdColorsDirective['$inject'] = ["$mdColors", "$mdUtil", "$log", "$parse"];
   MdColorsService['$inject'] = ["$mdTheming", "$mdUtil", "$log"];
-  var STATIC_COLOR_EXPRESSION = /^{((\s|,)*?["'a-zA-Z-]+?\s*?:\s*?('|")[a-zA-Z0-9-.]*('|"))+\s*}$/;
+  var STATIC_COLOR_EXPRESSION = /^{((\s|,)*?["'a-zA-Z-]+?\s*?:\s*?(['"])[a-zA-Z0-9-.]*(['"]))+\s*}$/;
   var colorPalettes = null;
 
   /**

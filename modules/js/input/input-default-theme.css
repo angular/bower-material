@@ -2,26 +2,26 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-a82fc93
+ * v1.1.24-master-7157b3b
  */
 md-input-container.md-THEME_NAME-theme .md-input {
   color: '{{background-default-contrast}}';
   border-color: '{{background-default-contrast-divider}}'; }
   md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder {
-    color: '{{background-default-contrast-hint}}'; }
+    color: '{{background-default-contrast-secondary}}'; }
   md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder {
-    color: '{{background-default-contrast-hint}}'; }
+    color: '{{background-default-contrast-secondary}}'; }
   md-input-container.md-THEME_NAME-theme .md-input::-ms-input-placeholder {
-    color: '{{background-default-contrast-hint}}'; }
+    color: '{{background-default-contrast-secondary}}'; }
   md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder {
-    color: '{{background-default-contrast-hint}}'; }
+    color: '{{background-default-contrast-secondary}}'; }
   md-input-container.md-THEME_NAME-theme .md-input::placeholder {
-    color: '{{background-default-contrast-hint}}'; }
+    color: '{{background-default-contrast-secondary}}'; }
   md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder {
-    color: '{{background-default-contrast-hint}}';
+    color: '{{background-default-contrast-secondary}}';
     opacity: 1; }
   md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder {
-    color: '{{background-default-contrast-hint}}';
+    color: '{{background-default-contrast-secondary}}';
     opacity: 1; }
 
 md-input-container.md-THEME_NAME-theme > md-icon {
@@ -29,7 +29,7 @@ md-input-container.md-THEME_NAME-theme > md-icon {
 
 md-input-container.md-THEME_NAME-theme label,
 md-input-container.md-THEME_NAME-theme .md-placeholder {
-  color: '{{background-default-contrast-hint}}'; }
+  color: '{{background-default-contrast-secondary}}'; }
 
 md-input-container.md-THEME_NAME-theme label.md-required:after {
   color: '{{warn-A700}}'; }

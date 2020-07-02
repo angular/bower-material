@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-a82fc93
+ * v1.1.24-master-7157b3b
  */
 md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {
   background-color: '{{primary-color}}';
@@ -103,6 +103,9 @@ md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {
   md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn {
     background-color: '{{warn-color}}';
     color: '{{warn-contrast}}'; }
+    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn md-icon {
+      color: '{{accent-contrast}}';
+      fill: '{{accent-contrast}}'; }
     md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn md-input-container[md-no-float] .md-input {
       color: '{{warn-default-contrast}}';
       border-color: '{{warn-default-contrast-divider}}'; }
