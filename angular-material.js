@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-7157b3b
+ * v1.1.24-master-4178459
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -26527,7 +26527,7 @@ angular
  * @description
  * Creates a panel with the specified options.
  *
- * @param config {!Object=} Specific configuration object that may contain the
+ * @param {!Object=} config Specific configuration object that may contain the
  *     following properties:
  *
  *   - `id` - `{string=}`: An ID to track the panel by. When an ID is provided,
@@ -26655,25 +26655,6 @@ angular
  * the animation config object.
  *
  * @returns {!MdPanelAnimation} panelAnimation
- */
-
-/**
- * @ngdoc method
- * @name $mdPanel#newPanelGroup
- * @description
- * Creates a panel group and adds it to a tracked list of panel groups.
- *
- * @param {string} groupName Name of the group to create.
- * @param {!Object=} config Specific configuration object that may contain the
- *     following properties:
- *
- *   - `maxOpen` - `{number=}`: The maximum number of panels that are allowed to
- *     be open within a defined panel group.
- *
- * @returns {!Object<string,
- *     {panels: !Array<!MdPanelRef>,
- *     openPanels: !Array<!MdPanelRef>,
- *     maxOpen: number}>} panelGroup
  */
 
 /**
@@ -27327,6 +27308,16 @@ function $getProvider() {
   ];
 }
 
+/**
+ * @param {string|[]} value
+ * @returns {[]} the input string wrapped in an Array or the original Array
+ */
+function coerceToArray(value) {
+  if (angular.isString(value)) {
+    value = [value];
+  }
+  return value;
+}
 
 /*****************************************************************************
  *                               MdPanel Service                             *
@@ -27480,9 +27471,7 @@ MdPanelService.prototype.create = function(preset, config) {
 
   // Add the panel to each of its requested groups.
   if (this._config.groupName) {
-    if (angular.isString(this._config.groupName)) {
-      this._config.groupName = [this._config.groupName];
-    }
+    this._config.groupName = coerceToArray(this._config.groupName);
     angular.forEach(this._config.groupName, function(group) {
       panelRef.addToGroup(group);
     });
@@ -27545,28 +27534,27 @@ MdPanelService.prototype.newPanelAnimation = function() {
 
 
 /**
+ * @ngdoc method
+ * @name $mdPanel#newPanelGroup
+ * @description
  * Creates a panel group and adds it to a tracked list of panel groups.
- * @param groupName {string} Name of the group to create.
- * @param config {!Object=} Specific configuration object that may contain the
- *     following properties:
+ * @param {string} groupName Name of the group to create.
+ * @param {{maxOpen: number}=} config Configuration object that may contain the following
+ *  properties:
  *
- *   - `maxOpen` - `{number=}`: The maximum number of panels that are allowed
- *     open within a defined panel group.
+ *   - `maxOpen`: The maximum number of panels that are allowed open within a defined panel group.
  *
- * @returns {!Object<string,
- *     {panels: !Array<!MdPanelRef>,
- *     openPanels: !Array<!MdPanelRef>,
- *     maxOpen: number}>} panelGroup
+ * @returns {!{panels: !Array<!MdPanelRef>, openPanels: !Array<!MdPanelRef>, maxOpen: number}}
+ *  the new panel group
  */
 MdPanelService.prototype.newPanelGroup = function(groupName, config) {
   if (!this._groups[groupName]) {
     config = config || {};
-    var group = {
+    this._groups[groupName] = {
       panels: [],
       openPanels: [],
       maxOpen: config.maxOpen > 0 ? config.maxOpen : Infinity
     };
-    this._groups[groupName] = group;
   }
   return this._groups[groupName];
 };
@@ -27610,7 +27598,10 @@ MdPanelService.prototype._openCountExceedsMaxOpen = function(groupName) {
  * @private
  */
 MdPanelService.prototype._closeFirstOpenedPanel = function(groupName) {
-  this._groups[groupName].openPanels[0].close();
+  var group = this._groups[groupName];
+  if (group && group.openPanels.length) {
+    group.openPanels[0].close();
+  }
 };
 
 
@@ -27792,6 +27783,7 @@ MdPanelRef.prototype.open = function() {
     var show = self._simpleBind(self.show, self);
     var checkGroupMaxOpen = function() {
       if (self.config.groupName) {
+        self.config.groupName = coerceToArray(self.config.groupName);
         angular.forEach(self.config.groupName, function(group) {
           if (self._$mdPanel._openCountExceedsMaxOpen(group)) {
             self._$mdPanel._closeFirstOpenedPanel(group);
@@ -27930,6 +27922,7 @@ MdPanelRef.prototype.detach = function() {
 MdPanelRef.prototype.destroy = function() {
   var self = this;
   if (this.config.groupName) {
+    this.config.groupName = coerceToArray(this.config.groupName);
     angular.forEach(this.config.groupName, function(group) {
       self.removeFromGroup(group);
     });
@@ -27971,8 +27964,12 @@ MdPanelRef.prototype.show = function() {
     var onOpenComplete = self.config['onOpenComplete'] || angular.noop;
     var addToGroupOpen = function() {
       if (self.config.groupName) {
+        self.config.groupName = coerceToArray(self.config.groupName);
         angular.forEach(self.config.groupName, function(group) {
-          self._$mdPanel._groups[group].openPanels.push(self);
+          group = self._$mdPanel._groups[group];
+          if (group) {
+            group.openPanels.push(self);
+          }
         });
       }
     };
@@ -28015,6 +28012,7 @@ MdPanelRef.prototype.hide = function() {
     var removeFromGroupOpen = function() {
       if (self.config.groupName) {
         var index;
+        self.config.groupName = coerceToArray(self.config.groupName);
         angular.forEach(self.config.groupName, function(group) {
           group = self._$mdPanel._groups[group];
           index = group.openPanels.indexOf(self);
@@ -28042,7 +28040,6 @@ MdPanelRef.prototype.hide = function() {
     ]).then(done, reject);
   });
 };
-
 
 /**
  * Add a class to the panel. DO NOT use this to hide/show the panel.
@@ -39421,4 +39418,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.24-master-7157b3b"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.24-master-4178459"}};
