@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-e8e8ac8
+ * v1.1.24-master-dda25a6
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -11672,7 +11672,8 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
         attr.$set('aria-labelledby', labelId);
 
         var label = element.children()[1];
-        label.remove();
+        // Use jQLite here since ChildNode.remove() is not supported in IE11.
+        angular.element(label).remove();
         label.removeAttribute('ng-transclude');
         label.className = 'md-checkbox-link-label';
         label.setAttribute('id', labelId);
@@ -25514,8 +25515,6 @@ function MenuItemDirective($mdUtil, $mdConstant, $$mdSvgRegistry) {
  * @ngdoc module
  * @name material.components.navBar
  */
-
-
 MdNavBar.$inject = ["$mdAria", "$mdTheming", "$window", "$mdUtil"];
 MdNavBarController.$inject = ["$element", "$scope", "$timeout", "$mdConstant"];
 MdNavItem.$inject = ["$mdAria", "$$rAF", "$mdUtil", "$window"];
@@ -25654,9 +25653,9 @@ function MdNavBar($mdAria, $mdTheming, $window, $mdUtil) {
  * (https://www.w3.org/TR/wai-aria-1.0/complete#tablist) and
  * tabs (https://www.w3.org/TR/wai-aria-1.0/complete#tab).
  *
- * @param {!angular.JQLite} $element
- * @param {!angular.Scope} $scope
- * @param {!angular.Timeout} $timeout
+ * @param {!JQLite} $element
+ * @param {!IScope} $scope
+ * @param {!ITimeoutService} $timeout
  * @param {!Object} $mdConstant
  * @constructor
  * @final
@@ -25664,28 +25663,36 @@ function MdNavBar($mdAria, $mdTheming, $window, $mdUtil) {
  */
 function MdNavBarController($element, $scope, $timeout, $mdConstant) {
   // Injected variables
-  /** @private @const {!angular.Timeout} */
+  /**
+   * @private @const
+   * @type {!ITimeoutService}
+   */
   this._$timeout = $timeout;
 
-  /** @private @const {!angular.Scope} */
+  /**
+   * @private @const
+   * @type {!IScope}
+   */
   this._$scope = $scope;
 
-  /** @private @const {!Object} */
+  /**
+   * @private @const
+   * @type {!Object}
+   */
   this._$mdConstant = $mdConstant;
 
   // Data-bound variables.
-  /** @type {string} */
+  /** @type {?string} */
   this.mdSelectedNavItem;
 
-  /** @type {string} */
+  /** @type {?string} */
   this.navBarAriaLabel;
 
   // State variables.
-
-  /** @type {?angular.JQLite} */
+  /** @type {?HTMLElement} */
   this._navBarEl = $element[0];
 
-  /** @type {?angular.JQLite} */
+  /** @type {?JQLite} */
   this._inkbar;
 
   var self = this;
@@ -25736,14 +25743,12 @@ MdNavBarController.prototype._updateTabs = function(newValue, oldValue) {
   // this._getTabs can return null if nav-bar has not yet been initialized
   if (!tabs) return;
 
-  var oldIndex = -1;
   var newIndex = -1;
   var newTab = this._getTabByName(newValue);
   var oldTab = this._getTabByName(oldValue);
 
   if (oldTab) {
     oldTab.setSelected(false);
-    oldIndex = tabs.indexOf(oldTab);
   }
 
   if (newTab) {
@@ -25752,7 +25757,7 @@ MdNavBarController.prototype._updateTabs = function(newValue, oldValue) {
   }
 
   this._$timeout(function() {
-    self._updateInkBarStyles(newTab, newIndex, oldIndex);
+    self._updateInkBarStyles(newTab, newIndex);
     // Don't change focus when there is no newTab, the new and old tabs are the same, or when
     // called from MdNavBarController._initTabs() which would have no oldTab defined.
     if (newTab && oldTab && !sameTab) {
@@ -25763,6 +25768,8 @@ MdNavBarController.prototype._updateTabs = function(newValue, oldValue) {
 
 /**
  * Repositions the ink bar to the selected tab.
+ * @param {MdNavItemController} tab the nav item that should have ink bar styles applied
+ * @param {number=} newIndex the index of the newly selected nav item
  * @private
  */
 MdNavBarController.prototype._updateInkBarStyles = function(tab, newIndex) {
@@ -25781,11 +25788,11 @@ MdNavBarController.prototype._updateInkBarStyles = function(tab, newIndex) {
 };
 
 /**
- * Updates inkbar to match current tab.
+ * Updates ink bar to match current tab.
  */
 MdNavBarController.prototype.updateSelectedTabInkBar = function() {
   this._updateInkBarStyles(this._getSelectedTab());
-}
+};
 
 /**
  * Returns an array of the current tabs.
@@ -25798,7 +25805,7 @@ MdNavBarController.prototype._getTabs = function() {
     .map(function(el) {
       return angular.element(el).controller('mdNavItem');
     });
-  return controllers.indexOf(undefined) ? controllers : null;
+  return controllers.indexOf(undefined) ? controllers : [];
 };
 
 /**
@@ -25842,11 +25849,11 @@ MdNavBarController.prototype.getFocusedTab = function() {
  * @private
  */
 MdNavBarController.prototype._findTab = function(fn, startIndex) {
-  var tabs = this._getTabs();
-  if (startIndex === undefined || startIndex === null) {
+  var tabs = this._getTabs(), i;
+  if (startIndex == null) {
     startIndex = 0;
   }
-  for (var i = startIndex; i < tabs.length; i++) {
+  for (i = startIndex; i < tabs.length; i++) {
     if (fn(tabs[i])) {
       return tabs[i];
     }
@@ -25879,7 +25886,7 @@ MdNavBarController.prototype._findTabReverse = function(fn, startIndex) {
  */
 MdNavBarController.prototype.onFocus = function() {
   var tab = this._getSelectedTab();
-  if (tab && !tab._focused) {
+  if (tab && !tab.isFocused) {
     tab.setFocused(true);
   }
 };
@@ -26186,40 +26193,66 @@ function MdNavItem($mdAria, $$rAF, $mdUtil, $window) {
 
 /**
  * Controller for the nav-item component.
- * @param {!angular.JQLite} $element
+ * @param {!JQLite} $element
  * @constructor
  * @final
  * @ngInject
  */
 function MdNavItemController($element) {
 
-  /** @private @const {!angular.JQLite} */
+  /**
+   * @private @const
+   * @type {!JQLite}
+   */
   this._$element = $element;
 
   // Data-bound variables
 
-  /** @const {?Function} */
+  /**
+   * @const
+   * @type {?Function}
+   */
   this.mdNavClick;
 
-  /** @const {?string} */
+  /**
+   * @const
+   * @type {?string}
+   */
   this.mdNavHref;
 
-  /** @const {?string} */
+  /**
+   * @const
+   * @type {?string}
+   */
   this.mdNavSref;
-  /** @const {?Object} */
+  /**
+   * @const
+   * @type {?Object}
+   */
   this.srefOpts;
-  /** @const {?string} */
+  /**
+   * @const
+   * @type {?string}
+   */
   this.name;
 
-  /** @type {string} */
+  /**
+   * @const
+   * @type {string}
+   */
   this.navItemAriaLabel;
 
   // State variables
-  /** @private {boolean} */
+  /**
+   * @private
+   * @type {boolean}
+   */
   this._selected = false;
 
-  /** @private {boolean} */
-  this._focused = false;
+  /**
+   * @type {boolean}
+   */
+  this.isFocused = false;
 }
 
 /**
@@ -26231,7 +26264,7 @@ MdNavItemController.prototype.getNgClassMap = function() {
     'md-active': this._selected,
     'md-primary': this._selected,
     'md-unselected': !this._selected,
-    'md-focused': this._focused,
+    'md-focused': this.isFocused,
   };
 };
 
@@ -26280,7 +26313,7 @@ MdNavItemController.prototype.isSelected = function() {
  * @param {boolean} isFocused
  */
 MdNavItemController.prototype.setFocused = function(isFocused) {
-  this._focused = isFocused;
+  this.isFocused = isFocused;
 
   if (isFocused) {
     this.getButtonEl().focus();
@@ -26291,7 +26324,7 @@ MdNavItemController.prototype.setFocused = function(isFocused) {
  * @return {boolean} true if the tab has focus, false if not.
  */
 MdNavItemController.prototype.hasFocus = function() {
-  return this._focused;
+  return this.isFocused;
 };
 
 /**
@@ -39418,4 +39451,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.24-master-e8e8ac8"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.24-master-dda25a6"}};
