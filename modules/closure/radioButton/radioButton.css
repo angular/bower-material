@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-55ae966
+ * v1.1.24-master-e8e8ac8
  */
 md-radio-button {
   box-sizing: border-box;
@@ -18,8 +18,7 @@ md-radio-button {
   md-radio-button .md-container {
     position: absolute;
     top: 50%;
-    -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
+    transform: translateY(-50%);
     box-sizing: border-box;
     display: inline-block;
     width: 20px;
@@ -52,7 +51,6 @@ md-radio-button {
       top: 0;
       right: 0;
       bottom: 0;
-      -webkit-transition: all 0.5s;
       transition: all 0.5s;
       width: auto; }
   md-radio-button.md-align-top-left > div.md-container {
@@ -67,7 +65,6 @@ md-radio-button {
     border-style: solid;
     border-width: 2px;
     border-radius: 50%;
-    -webkit-transition: border-color ease 0.28s;
     transition: border-color ease 0.28s; }
   md-radio-button .md-on {
     box-sizing: border-box;
@@ -77,15 +74,10 @@ md-radio-button {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    -webkit-transition: -webkit-transform ease 0.28s;
-    transition: -webkit-transform ease 0.28s;
     transition: transform ease 0.28s;
-    transition: transform ease 0.28s, -webkit-transform ease 0.28s;
-    -webkit-transform: scale(0);
-            transform: scale(0); }
+    transform: scale(0); }
   md-radio-button.md-checked .md-on {
-    -webkit-transform: scale(0.5);
-            transform: scale(0.5); }
+    transform: scale(0.5); }
   md-radio-button .md-label {
     box-sizing: border-box;
     position: relative;

@@ -2,22 +2,16 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-55ae966
+ * v1.1.24-master-e8e8ac8
  */
 md-input-container:not([md-no-float]) .md-select-placeholder span:first-child {
-  -webkit-transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  -webkit-transform-origin: left top;
-          transform-origin: left top; }
+  transform-origin: left top; }
   [dir=rtl] md-input-container:not([md-no-float]) .md-select-placeholder span:first-child {
-    -webkit-transform-origin: right top;
-            transform-origin: right top; }
+    transform-origin: right top; }
 
 md-input-container.md-input-focused:not([md-no-float]) .md-select-placeholder span:first-child {
-  -webkit-transform: translateY(-22px) translateX(-2px) scale(0.75);
-          transform: translateY(-22px) translateX(-2px) scale(0.75); }
+  transform: translateY(-22px) translateX(-2px) scale(0.75); }
 
 .md-select-menu-container {
   position: fixed;
@@ -26,8 +20,7 @@ md-input-container.md-input-focused:not([md-no-float]) .md-select-placeholder sp
   z-index: 90;
   opacity: 0;
   display: none;
-  -webkit-transform: translateY(-1px);
-          transform: translateY(-1px); }
+  transform: translateY(-1px); }
   .md-select-menu-container:not(.md-clickable) {
     pointer-events: none; }
   .md-select-menu-container md-progress-circular {
@@ -37,29 +30,21 @@ md-input-container.md-input-focused:not([md-no-float]) .md-select-placeholder sp
     display: block;
     opacity: 1; }
     .md-select-menu-container.md-active md-select-menu {
-      -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      -webkit-transition-duration: 150ms;
-              transition-duration: 150ms; }
+      transition-duration: 150ms; }
       .md-select-menu-container.md-active md-select-menu > * {
         opacity: 1;
-        -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
         transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-        -webkit-transition-duration: 150ms;
-                transition-duration: 150ms;
-        -webkit-transition-delay: 100ms;
-                transition-delay: 100ms; }
+        transition-duration: 150ms;
+        transition-delay: 100ms; }
   .md-select-menu-container.md-leave {
     opacity: 0;
-    -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
     transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-    -webkit-transition-duration: 250ms;
-            transition-duration: 250ms; }
+    transition-duration: 250ms; }
 
 md-input-container > md-select {
   margin: 0;
-  -webkit-box-ordinal-group: 3;
-          order: 2; }
+  order: 2; }
 
 md-input-container:not(.md-input-has-value) md-select[required]:not(.md-no-asterisk) .md-select-value span:first-child:after, md-input-container:not(.md-input-has-value) md-select.ng-required:not(.md-no-asterisk) .md-select-value span:first-child:after {
   content: ' *';
@@ -71,7 +56,6 @@ md-input-container.md-input-invalid md-select .md-select-value {
   padding-bottom: 1px; }
 
 md-select {
-  display: -webkit-box;
   display: flex;
   margin: 20px 0 26px 0; }
   md-select[required].ng-empty.ng-invalid:not(.md-no-asterisk) .md-select-value span:first-child:after, md-select.ng-required.ng-empty.ng-invalid:not(.md-no-asterisk) .md-select-value span:first-child:after {
@@ -117,10 +101,8 @@ md-input-container md-select .md-select-value {
       padding-right: 0; }
 
 .md-select-value {
-  display: -webkit-box;
   display: flex;
-  -webkit-box-align: center;
-          align-items: center;
+  align-items: center;
   padding-top: 2px;
   padding-bottom: 1px;
   padding-left: 0;
@@ -132,16 +114,14 @@ md-input-container md-select .md-select-value {
   box-sizing: content-box;
   min-width: 64px;
   min-height: 26px;
-  -webkit-box-flex: 1;
-          flex-grow: 1; }
+  flex-grow: 1; }
   [dir=rtl] .md-select-value {
     padding-left: 2px; }
   [dir=rtl] .md-select-value {
     padding-right: 0; }
   .md-select-value > span:not(.md-select-icon) {
     max-width: 100%;
-    -webkit-box-flex: 1;
-            flex: 1 1 auto;
+    flex: 1 1 auto;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden; }
@@ -149,17 +129,14 @@ md-input-container md-select .md-select-value {
       display: inline; }
   .md-select-value .md-select-icon {
     display: block;
-    -webkit-box-align: end;
-            align-items: flex-end;
+    align-items: flex-end;
     text-align: right;
     width: 24px;
     margin: 0 4px;
-    -webkit-transform: translate3d(0, -2px, 0);
-            transform: translate3d(0, -2px, 0);
+    transform: translate3d(0, -2px, 0);
     font-size: 1.2rem; }
     [dir=rtl] .md-select-value .md-select-icon {
-      -webkit-box-align: start;
-              align-items: flex-start; }
+      align-items: flex-start; }
     [dir=rtl] .md-select-value .md-select-icon {
       text-align: left; }
   .md-select-value .md-select-icon:after {
@@ -169,41 +146,30 @@ md-input-container md-select .md-select-value {
     top: 2px;
     speak: none;
     font-size: 13px;
-    -webkit-transform: scaleY(0.5) scaleX(1);
-            transform: scaleY(0.5) scaleX(1); }
+    transform: scaleY(0.5) scaleX(1); }
   .md-select-value.md-select-placeholder {
-    display: -webkit-box;
     display: flex;
-    -webkit-box-ordinal-group: 2;
-            order: 1;
+    order: 1;
     pointer-events: none;
     -webkit-font-smoothing: antialiased;
     z-index: 1; }
 
 md-select-menu {
-  display: -webkit-box;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-          flex-direction: column;
+  flex-direction: column;
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
   max-height: 256px;
   min-height: 48px;
   overflow-y: hidden;
-  -webkit-transform-origin: left top;
-          transform-origin: left top;
-  -webkit-transform: scale(1);
-          transform: scale(1); }
+  transform-origin: left top;
+  transform: scale(1); }
   md-select-menu.md-reverse {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: reverse;
-            flex-direction: column-reverse; }
+    flex-direction: column-reverse; }
   md-select-menu:not(.md-overflow) md-content {
     padding-top: 8px;
     padding-bottom: 8px; }
   [dir=rtl] md-select-menu {
-    -webkit-transform-origin: right top;
-            transform-origin: right top; }
+    transform-origin: right top; }
   md-select-menu md-content {
     min-width: 136px;
     min-height: 48px;
@@ -215,12 +181,9 @@ md-select-menu {
 md-option {
   cursor: pointer;
   position: relative;
-  display: -webkit-box;
   display: flex;
-  -webkit-box-align: center;
-          align-items: center;
+  align-items: center;
   width: auto;
-  -webkit-transition: background 0.15s linear;
   transition: background 0.15s linear;
   padding: 0 16px 0 16px;
   height: 48px; }
@@ -267,8 +230,7 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
   md-select-menu[multiple] md-option.md-checkbox-enabled .md-container {
     position: absolute;
     top: 50%;
-    -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
+    transform: translateY(-50%);
     box-sizing: border-box;
     display: inline-block;
     width: 18px;
@@ -291,7 +253,6 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
       top: 0;
       right: 0;
       bottom: 0;
-      -webkit-transition: all 0.5s;
       transition: all 0.5s;
       width: auto; }
     md-select-menu[multiple] md-option.md-checkbox-enabled .md-container:after {
@@ -313,7 +274,6 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
       bottom: -15px; }
   md-select-menu[multiple] md-option.md-checkbox-enabled .md-icon {
     box-sizing: border-box;
-    -webkit-transition: 240ms;
     transition: 240ms;
     position: absolute;
     top: 0;
@@ -327,8 +287,7 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
     border-color: transparent; }
     md-select-menu[multiple] md-option.md-checkbox-enabled[selected] .md-icon:after {
       box-sizing: border-box;
-      -webkit-transform: rotate(45deg);
-              transform: rotate(45deg);
+      transform: rotate(45deg);
       position: absolute;
       left: 4px;
       top: 0px;
@@ -347,8 +306,7 @@ md-select-menu[multiple] md-option.md-checkbox-enabled {
     position: absolute;
     top: 50%;
     left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     display: table;
     width: 10.8px;
     height: 2px;

@@ -2,24 +2,18 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-55ae966
+ * v1.1.24-master-e8e8ac8
  */
 md-card {
   box-sizing: border-box;
-  display: -webkit-box;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-          flex-direction: column;
+  flex-direction: column;
   margin: 8px;
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12); }
   md-card md-card-header {
     padding: 16px;
-    display: -webkit-box;
     display: flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-            flex-direction: row; }
+    flex-direction: row; }
     md-card md-card-header:first-child md-card-avatar {
       margin-right: 12px; }
       [dir=rtl] md-card md-card-header:first-child md-card-avatar {
@@ -46,43 +40,29 @@ md-card {
         md-card md-card-header md-card-avatar + md-card-header-text .md-title {
           font-size: 14px; }
     md-card md-card-header md-card-header-text {
-      display: -webkit-box;
       display: flex;
-      -webkit-box-flex: 1;
-              flex: 1;
-      -webkit-box-orient: vertical;
-      -webkit-box-direction: normal;
-              flex-direction: column; }
+      flex: 1;
+      flex-direction: column; }
       md-card md-card-header md-card-header-text .md-subhead {
         font-size: 14px; }
   md-card > img,
   md-card > md-card-header img,
   md-card md-card-title-media img {
     box-sizing: border-box;
-    display: -webkit-box;
     display: flex;
-    -webkit-box-flex: 0;
-            flex: 0 0 auto;
+    flex: 0 0 auto;
     width: 100%;
     height: auto; }
   md-card md-card-title {
     padding: 24px 16px 16px;
-    display: -webkit-box;
     display: flex;
-    -webkit-box-flex: 1;
-            flex: 1 1 auto;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-            flex-direction: row; }
+    flex: 1 1 auto;
+    flex-direction: row; }
     md-card md-card-title + md-card-content {
       padding-top: 0; }
     md-card md-card-title md-card-title-text {
-      -webkit-box-flex: 1;
-              flex: 1;
-      -webkit-box-orient: vertical;
-      -webkit-box-direction: normal;
-              flex-direction: column;
-      display: -webkit-box;
+      flex: 1;
+      flex-direction: column;
       display: flex; }
       md-card md-card-title md-card-title-text .md-subhead {
         padding-top: 0;
@@ -122,15 +102,10 @@ md-card {
       margin-top: 6px;
       margin-bottom: 6px; }
     md-card .md-actions md-card-icon-actions, md-card md-card-actions md-card-icon-actions {
-      -webkit-box-flex: 1;
-              flex: 1;
-      -webkit-box-pack: start;
-              justify-content: flex-start;
-      display: -webkit-box;
+      flex: 1;
+      justify-content: flex-start;
       display: flex;
-      -webkit-box-orient: horizontal;
-      -webkit-box-direction: normal;
-              flex-direction: row; }
+      flex-direction: row; }
     md-card .md-actions:not(.layout-column) .md-button:not(.md-icon-button), md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button) {
       margin: 0 4px; }
       md-card .md-actions:not(.layout-column) .md-button:not(.md-icon-button):first-of-type, md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button):first-of-type {
@@ -157,15 +132,10 @@ md-card {
           margin-right: auto;
           margin-left: 12px; }
     md-card .md-actions:not(.layout-column) .md-button + md-card-icon-actions, md-card md-card-actions:not(.layout-column) .md-button + md-card-icon-actions {
-      -webkit-box-flex: 1;
-              flex: 1;
-      -webkit-box-pack: end;
-              justify-content: flex-end;
-      display: -webkit-box;
+      flex: 1;
+      justify-content: flex-end;
       display: flex;
-      -webkit-box-orient: horizontal;
-      -webkit-box-direction: normal;
-              flex-direction: row; }
+      flex-direction: row; }
   md-card md-card-footer {
     margin-top: auto;
     padding: 16px; }

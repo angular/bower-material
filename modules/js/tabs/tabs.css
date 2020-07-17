@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-55ae966
+ * v1.1.24-master-e8e8ac8
  */
 @-webkit-keyframes md-tab-content-hide {
   0% {
@@ -69,21 +69,18 @@ md-tabs {
 md-tabs-wrapper {
   display: block;
   position: relative;
-  -webkit-transform: translate(0, 0);
-          transform: translate(0, 0); }
+  transform: translate(0, 0); }
   md-tabs-wrapper md-prev-button, md-tabs-wrapper md-next-button {
     height: 100%;
     width: 32px;
     position: absolute;
     top: 50%;
-    -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
+    transform: translateY(-50%);
     line-height: 1em;
     z-index: 2;
     cursor: pointer;
     font-size: 16px;
     background: transparent no-repeat center center;
-    -webkit-transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
     transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1); }
     md-tabs-wrapper md-prev-button:focus, md-tabs-wrapper md-next-button:focus {
       outline: none; }
@@ -91,17 +88,14 @@ md-tabs-wrapper {
       opacity: 0.25;
       cursor: default; }
     md-tabs-wrapper md-prev-button.ng-leave, md-tabs-wrapper md-next-button.ng-leave {
-      -webkit-transition: none;
       transition: none; }
     md-tabs-wrapper md-prev-button md-icon, md-tabs-wrapper md-next-button md-icon {
       position: absolute;
       top: 50%;
       left: 50%;
-      -webkit-transform: translate(-50%, -50%);
-              transform: translate(-50%, -50%); }
+      transform: translate(-50%, -50%); }
     [dir="rtl"] md-tabs-wrapper md-prev-button, [dir="rtl"] md-tabs-wrapper md-next-button {
-      -webkit-transform: rotateY(180deg) translateY(-50%);
-              transform: rotateY(180deg) translateY(-50%); }
+      transform: rotateY(180deg) translateY(-50%); }
   md-tabs-wrapper md-prev-button {
     left: 0;
     background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE3LjEuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPiA8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPiA8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSIyNHB4IiBoZWlnaHQ9IjI0cHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjQgMjQiIHhtbDpzcGFjZT0icHJlc2VydmUiPiA8ZyBpZD0iSGVhZGVyIj4gPGc+IDxyZWN0IHg9Ii02MTgiIHk9Ii0xMjA4IiBmaWxsPSJub25lIiB3aWR0aD0iMTQwMCIgaGVpZ2h0PSIzNjAwIi8+IDwvZz4gPC9nPiA8ZyBpZD0iTGFiZWwiPiA8L2c+IDxnIGlkPSJJY29uIj4gPGc+IDxwb2x5Z29uIHBvaW50cz0iMTUuNCw3LjQgMTQsNiA4LDEyIDE0LDE4IDE1LjQsMTYuNiAxMC44LDEyIAkJIiBzdHlsZT0iZmlsbDp3aGl0ZTsiLz4gPHJlY3QgZmlsbD0ibm9uZSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ii8+IDwvZz4gPC9nPiA8ZyBpZD0iR3JpZCIgZGlzcGxheT0ibm9uZSI+IDxnIGRpc3BsYXk9ImlubGluZSI+IDwvZz4gPC9nPiA8L3N2Zz4NCg=="); }
@@ -115,16 +109,12 @@ md-tabs-wrapper {
       right: auto;
       left: 0; }
     md-tabs-wrapper md-next-button md-icon {
-      -webkit-transform: translate(-50%, -50%) rotate(180deg);
-              transform: translate(-50%, -50%) rotate(180deg); }
+      transform: translate(-50%, -50%) rotate(180deg); }
   md-tabs-wrapper.md-stretch-tabs md-pagination-wrapper {
     width: 100%;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-            flex-direction: row; }
+    flex-direction: row; }
     md-tabs-wrapper.md-stretch-tabs md-pagination-wrapper md-tab-item {
-      -webkit-box-flex: 1;
-              flex-grow: 1; }
+      flex-grow: 1; }
 
 md-tabs-canvas {
   position: relative;
@@ -145,11 +135,8 @@ md-tabs-canvas {
   md-tabs-canvas.md-paginated {
     margin: 0 32px; }
   md-tabs-canvas.md-center-tabs {
-    display: -webkit-box;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-            flex-direction: column;
+    flex-direction: column;
     text-align: center; }
     md-tabs-canvas.md-center-tabs .md-tab {
       float: none;
@@ -157,16 +144,11 @@ md-tabs-canvas {
 
 md-pagination-wrapper {
   height: 48px;
-  display: -webkit-box;
   display: flex;
-  -webkit-transition: -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
-  transition: -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
   transition: transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
-  transition: transform 0.5s cubic-bezier(0.35, 0, 0.25, 1), -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
   position: absolute;
   left: 0;
-  -webkit-transform: translate(0, 0);
-          transform: translate(0, 0); }
+  transform: translate(0, 0); }
   md-pagination-wrapper:after {
     content: '';
     display: table;
@@ -176,8 +158,7 @@ md-pagination-wrapper {
     right: 0; }
   md-pagination-wrapper.md-center-tabs {
     position: relative;
-    -webkit-box-pack: center;
-            justify-content: center; }
+    justify-content: center; }
   md-pagination-wrapper md-tab-item {
     min-width: 72px; }
   @media (min-width: 600px) {
@@ -194,59 +175,44 @@ md-tabs-content-wrapper {
   overflow: hidden; }
 
 md-tab-content {
-  display: -webkit-box;
   display: flex;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  -webkit-transition: -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
-  transition: -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
   transition: transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
-  transition: transform 0.5s cubic-bezier(0.35, 0, 0.25, 1), -webkit-transform 0.5s cubic-bezier(0.35, 0, 0.25, 1);
   overflow: auto;
-  -webkit-transform: translate(0, 0);
-          transform: translate(0, 0); }
+  transform: translate(0, 0); }
   md-tab-content.md-no-scroll {
     bottom: auto;
     overflow: hidden; }
   md-tab-content.ng-leave, md-tab-content.md-no-transition {
-    -webkit-transition: none;
     transition: none; }
   md-tab-content.md-left:not(.md-active) {
-    -webkit-transform: translateX(-100%);
-            transform: translateX(-100%);
+    transform: translateX(-100%);
     -webkit-animation: 1s md-tab-content-hide;
             animation: 1s md-tab-content-hide;
     visibility: hidden; }
     [dir=rtl] md-tab-content.md-left:not(.md-active) {
-      -webkit-transform: translateX(100%);
-              transform: translateX(100%); }
+      transform: translateX(100%); }
     md-tab-content.md-left:not(.md-active) * {
-      -webkit-transition: visibility 0s linear;
       transition: visibility 0s linear;
-      -webkit-transition-delay: 0.5s;
-              transition-delay: 0.5s;
+      transition-delay: 0.5s;
       visibility: hidden; }
   md-tab-content.md-right:not(.md-active) {
-    -webkit-transform: translateX(100%);
-            transform: translateX(100%);
+    transform: translateX(100%);
     -webkit-animation: 1s md-tab-content-hide;
             animation: 1s md-tab-content-hide;
     visibility: hidden; }
     [dir=rtl] md-tab-content.md-right:not(.md-active) {
-      -webkit-transform: translateX(-100%);
-              transform: translateX(-100%); }
+      transform: translateX(-100%); }
     md-tab-content.md-right:not(.md-active) * {
-      -webkit-transition: visibility 0s linear;
       transition: visibility 0s linear;
-      -webkit-transition-delay: 0.5s;
-              transition-delay: 0.5s;
+      transition-delay: 0.5s;
       visibility: hidden; }
   md-tab-content > div {
-    -webkit-box-flex: 1;
-            flex: 1 0 100%;
+    flex: 1 0 100%;
     min-width: 0; }
     md-tab-content > div.ng-leave {
       -webkit-animation: 1s md-tab-content-hide;
@@ -259,10 +225,8 @@ md-ink-bar {
   bottom: 0;
   height: 2px; }
   md-ink-bar.md-left {
-    -webkit-transition: left 0.125s cubic-bezier(0.35, 0, 0.25, 1), right 0.25s cubic-bezier(0.35, 0, 0.25, 1);
     transition: left 0.125s cubic-bezier(0.35, 0, 0.25, 1), right 0.25s cubic-bezier(0.35, 0, 0.25, 1); }
   md-ink-bar.md-right {
-    -webkit-transition: left 0.25s cubic-bezier(0.35, 0, 0.25, 1), right 0.125s cubic-bezier(0.35, 0, 0.25, 1);
     transition: left 0.25s cubic-bezier(0.35, 0, 0.25, 1), right 0.125s cubic-bezier(0.35, 0, 0.25, 1); }
 
 md-tab {
@@ -275,7 +239,6 @@ md-tab {
   text-align: center;
   line-height: 24px;
   padding: 12px;
-  -webkit-transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
   transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
   cursor: pointer;
   white-space: nowrap;
@@ -304,7 +267,6 @@ md-tab {
     opacity: 0.5;
     cursor: default; }
   .md-tab.ng-leave {
-    -webkit-transition: none;
     transition: none; }
 
 md-toolbar + md-tabs, md-toolbar + md-dialog-content md-tabs {

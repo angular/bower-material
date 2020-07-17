@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-55ae966
+ * v1.1.24-master-e8e8ac8
  */
 .md-inline-form md-checkbox {
   margin-top: 14px;
@@ -43,8 +43,7 @@ md-checkbox {
   md-checkbox .md-container {
     position: absolute;
     top: 50%;
-    -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
+    transform: translateY(-50%);
     box-sizing: border-box;
     display: inline-block;
     width: 18px;
@@ -67,7 +66,6 @@ md-checkbox {
       top: 0;
       right: 0;
       bottom: 0;
-      -webkit-transition: all 0.5s;
       transition: all 0.5s;
       width: auto; }
     md-checkbox .md-container:after {
@@ -89,7 +87,6 @@ md-checkbox {
       bottom: -15px; }
   md-checkbox .md-icon {
     box-sizing: border-box;
-    -webkit-transition: 240ms;
     transition: 240ms;
     position: absolute;
     top: 0;
@@ -103,8 +100,7 @@ md-checkbox {
     border-color: transparent; }
     md-checkbox.md-checked .md-icon:after {
       box-sizing: border-box;
-      -webkit-transform: rotate(45deg);
-              transform: rotate(45deg);
+      transform: rotate(45deg);
       position: absolute;
       left: 4px;
       top: 0px;
@@ -123,8 +119,7 @@ md-checkbox {
     position: absolute;
     top: 50%;
     left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     display: table;
     width: 10.8px;
     height: 2px;

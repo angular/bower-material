@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-55ae966
+ * v1.1.24-master-e8e8ac8
  */
 md-input-container {
   display: inline-block;
@@ -86,22 +86,16 @@ md-input-container {
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100%;
-    -webkit-box-ordinal-group: 2;
-            order: 1;
+    order: 1;
     pointer-events: none;
     -webkit-font-smoothing: antialiased;
     padding-left: 2px;
     padding-right: 0;
     z-index: 1;
-    -webkit-transform: translate3d(0, 28px, 0) scale(1);
-            transform: translate3d(0, 28px, 0) scale(1);
-    -webkit-transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform: translate3d(0, 28px, 0) scale(1);
     transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     max-width: 100%;
-    -webkit-transform-origin: left top;
-            transform-origin: left top; }
+    transform-origin: left top; }
     [dir=rtl] md-input-container label:not(.md-no-float):not(.md-container-ignore), [dir=rtl]
     md-input-container .md-placeholder {
       padding-left: 0; }
@@ -110,8 +104,7 @@ md-input-container {
       padding-right: 2px; }
     [dir=rtl] md-input-container label:not(.md-no-float):not(.md-container-ignore), [dir=rtl]
     md-input-container .md-placeholder {
-      -webkit-transform-origin: right top;
-              transform-origin: right top; }
+      transform-origin: right top; }
   md-input-container.md-input-has-value label:not(.md-no-float):not(.md-container-ignore),
   md-input-container.md-input-has-value .md-placeholder {
     padding-left: 3px;
@@ -126,18 +119,12 @@ md-input-container {
     position: absolute;
     top: 0;
     opacity: 0;
-    -webkit-transition-property: opacity, -webkit-transform;
-    transition-property: opacity, -webkit-transform;
     transition-property: opacity, transform;
-    transition-property: opacity, transform, -webkit-transform;
-    -webkit-transform: translate3d(0, 30px, 0);
-            transform: translate3d(0, 30px, 0); }
+    transform: translate3d(0, 30px, 0); }
   md-input-container.md-input-focused .md-placeholder {
     opacity: 1;
-    -webkit-transform: translate3d(0, 24px, 0);
-            transform: translate3d(0, 24px, 0); }
+    transform: translate3d(0, 24px, 0); }
   md-input-container.md-input-has-value .md-placeholder {
-    -webkit-transition: none;
     transition: none;
     opacity: 0; }
   md-input-container:not(.md-input-has-value):not(.md-input-has-placeholder) input:not(:focus) {
@@ -154,8 +141,7 @@ md-input-container {
   md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-text {
     color: transparent; }
   md-input-container .md-input {
-    -webkit-box-ordinal-group: 3;
-            order: 2;
+    order: 2;
     display: block;
     margin-top: 0;
     background: none;
@@ -169,7 +155,6 @@ md-input-container {
     -ms-flex-preferred-size: 26px;
     border-radius: 0;
     border-style: solid;
-    -webkit-transition: border-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     transition: border-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     width: 100%;
     box-sizing: border-box;
@@ -186,8 +171,7 @@ md-input-container {
       outline: none;
       box-shadow: none; }
     md-input-container .md-input.md-no-flex {
-      -webkit-box-flex: 0 !important;
-              flex: none !important; }
+      flex: none !important; }
   md-input-container .md-char-counter {
     text-align: right;
     padding-right: 2px;
@@ -200,8 +184,7 @@ md-input-container {
       padding-left: 2px; }
   md-input-container .md-input-messages-animation {
     position: relative;
-    -webkit-box-ordinal-group: 5;
-            order: 4;
+    order: 4;
     overflow: hidden;
     clear: left; }
     [dir=rtl] md-input-container .md-input-messages-animation {
@@ -210,7 +193,6 @@ md-input-container {
     font-size: 12px;
     line-height: 14px;
     overflow: hidden;
-    -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
     transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
     opacity: 1;
     margin-top: 0;
@@ -232,14 +214,9 @@ md-input-container {
     opacity: 0;
     margin-top: -100px; }
   md-input-container.md-input-focused label:not(.md-no-float), md-input-container.md-input-has-placeholder label:not(.md-no-float), md-input-container.md-input-has-value label:not(.md-no-float) {
-    -webkit-transform: translate3d(0, 6px, 0) scale(0.75);
-            transform: translate3d(0, 6px, 0) scale(0.75);
-    -webkit-transition: width cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s, -webkit-transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s;
-    transition: width cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s, -webkit-transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s;
-    transition: transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s, width cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s;
-    transition: transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s, width cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s, -webkit-transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s; }
+    transform: translate3d(0, 6px, 0) scale(0.75);
+    transition: transform cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s, width cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s; }
   md-input-container.md-input-has-value label {
-    -webkit-transition: none;
     transition: none; }
   md-input-container.md-input-focused .md-input,
   md-input-container .md-input.ng-invalid.ng-dirty,
@@ -252,7 +229,6 @@ md-input-container {
     background-size: 4px 1px;
     background-repeat: repeat-x; }
   md-input-container.md-icon-float {
-    -webkit-transition: margin-top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     transition: margin-top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
     md-input-container.md-icon-float > label {
       pointer-events: none;

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-55ae966
+ * v1.1.24-master-e8e8ac8
  */
 /** Matches "md-tabs md-tabs-wrapper" style. */
 .md-nav-bar {
@@ -17,11 +17,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  display: -webkit-box;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-          flex-direction: row; }
+  flex-direction: row; }
 
 .md-nav-item:first-of-type {
   margin-left: 8px; }
@@ -30,7 +27,6 @@
   line-height: 24px;
   margin: 0 4px;
   padding: 12px 16px;
-  -webkit-transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
   transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1); }
   .md-button._md-nav-button:focus {
     outline: none; }
@@ -42,15 +38,10 @@ md-nav-ink-bar {
   left: 0;
   width: 100%;
   height: 2px;
-  -webkit-transform-origin: left top;
-          transform-origin: left top;
+  transform-origin: left top;
   will-change: transform;
-  -webkit-transition: -webkit-transform 0.125s cubic-bezier(0.35, 0, 0.25, 1);
-  transition: -webkit-transform 0.125s cubic-bezier(0.35, 0, 0.25, 1);
-  transition: transform 0.125s cubic-bezier(0.35, 0, 0.25, 1);
-  transition: transform 0.125s cubic-bezier(0.35, 0, 0.25, 1), -webkit-transform 0.125s cubic-bezier(0.35, 0, 0.25, 1); }
+  transition: transform 0.125s cubic-bezier(0.35, 0, 0.25, 1); }
   md-nav-ink-bar.ng-animate {
-    -webkit-transition: none;
     transition: none; }
 
 md-nav-extra-content {
