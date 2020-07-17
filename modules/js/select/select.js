@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-b1c7154
+ * v1.1.24-master-579a327
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -19,7 +19,7 @@
 
  ***************************************************/
 
-SelectDirective['$inject'] = ["$mdSelect", "$mdUtil", "$mdConstant", "$mdTheming", "$mdAria", "$parse", "$sce", "$injector"];
+SelectDirective['$inject'] = ["$mdSelect", "$mdUtil", "$mdConstant", "$mdTheming", "$mdAria", "$parse", "$sce"];
 SelectMenuDirective['$inject'] = ["$parse", "$mdUtil", "$mdConstant", "$mdTheming"];
 OptionDirective['$inject'] = ["$mdButtonInkRipple", "$mdUtil", "$mdTheming"];
 SelectProvider['$inject'] = ["$$interimElementProvider"];
@@ -171,8 +171,7 @@ angular.module('material.components.select', [
  * </div>
  * </hljs>
  */
-function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $parse, $sce,
-    $injector) {
+function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $parse, $sce) {
   return {
     restrict: 'E',
     require: ['^?mdInputContainer', 'mdSelect', 'ngModel', '?^form'],
@@ -181,6 +180,11 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
     } // empty placeholder controller to be initialized in link
   };
 
+  /**
+   * @param {JQLite} tElement
+   * @param {IAttributes} tAttrs
+   * @return {postLink}
+   */
   function compile(tElement, tAttrs) {
     var isMultiple = $mdUtil.parseAttributeBoolean(tAttrs.multiple);
     // add the select value that will hold our placeholder or selected option value
@@ -285,7 +289,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
       var selectValueElement = element.find('md-select-value');
       var isReadonly = angular.isDefined(attrs.readonly);
       var disableAsterisk = $mdUtil.parseAttributeBoolean(attrs.mdNoAsterisk);
-      var stopNgMultipleWatch;
+      var stopMdMultipleWatch;
       var userDefinedLabelledby = angular.isDefined(attrs.ariaLabelledby);
       var listboxContentElement = element.find('md-content');
 
@@ -404,7 +408,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
         } else {
           selectValueElement.removeAttr('aria-hidden');
           if (!userDefinedLabelledby) {
-            element.attr('aria-labelledby', element[0].id + ' ' + selectValueElement[0].id)
+            element.attr('aria-labelledby', element[0].id + ' ' + selectValueElement[0].id);
           }
         }
       };
@@ -442,7 +446,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
           containerCtrl && containerCtrl.setFocused(false);
           inputCheckValue();
         };
-        var handleFocus = function(ev) {
+        var handleFocus = function() {
           // Always focus the container (if we have one) so floating labels and other styles are
           // applied properly
           containerCtrl && containerCtrl.setFocused(true);
@@ -479,15 +483,14 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
         mdSelectCtrl.setSelectValueText(selectMenuCtrl.getSelectedLabels());
       }
 
-      // TODO add tests for ngMultiple
-      // TODO add docs for ngMultiple
-      // TODO in 1.2.0 rename this to mdMultiple
-      var stopNgMultipleObserver = attrs.$observe('ngMultiple', function(val) {
-        if (stopNgMultipleWatch) {
-          stopNgMultipleWatch();
+      // TODO add tests for mdMultiple
+      // TODO add docs for mdMultiple
+      var stopMdMultipleObserver = attrs.$observe('mdMultiple', function(val) {
+        if (stopMdMultipleWatch) {
+          stopMdMultipleWatch();
         }
         var parser = $parse(val);
-        stopNgMultipleWatch = scope.$watch(function() {
+        stopMdMultipleWatch = scope.$watch(function() {
           return parser(scope);
         }, function(multiple, prevVal) {
           var selectMenu = selectContainer.find('md-select-menu');
@@ -575,8 +578,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
       scope.$on('$destroy', function() {
         stopRequiredObserver && stopRequiredObserver();
         stopDisabledObserver && stopDisabledObserver();
-        stopNgMultipleWatch && stopNgMultipleWatch();
-        stopNgMultipleObserver && stopNgMultipleObserver();
+        stopMdMultipleWatch && stopMdMultipleWatch();
+        stopMdMultipleObserver && stopMdMultipleObserver();
         stopSelectedLabelsWatcher && stopSelectedLabelsWatcher();
         stopPlaceholderObserver && stopPlaceholderObserver();
         stopInvalidWatch && stopInvalidWatch();
@@ -1222,6 +1225,11 @@ function OptionDirective($mdButtonInkRipple, $mdUtil, $mdTheming) {
     compile: compile
   };
 
+  /**
+   * @param {JQLite} element
+   * @param {IAttributes} attrs
+   * @return {postLink}
+   */
   function compile(element, attrs) {
     // Manual transclusion to avoid the extra inner <span> that ng-transclude generates
     element.append(angular.element('<div class="md-text">').append(element.contents()));
@@ -1347,6 +1355,10 @@ function OptionDirective($mdButtonInkRipple, $mdUtil, $mdTheming) {
   }
 }
 
+/**
+ * @param {JQLite} $element
+ * @constructor
+ */
 function OptionController($element) {
   /**
    * @param {boolean} isSelected
@@ -1773,7 +1785,6 @@ function SelectProvider($$interimElementProvider) {
 
         var dropDown = opts.selectEl;
         var selectMenuController = dropDown.controller('mdSelectMenu') || {};
-        var listbox = opts.contentEl;
 
         element.addClass('md-clickable');
 

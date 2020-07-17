@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-b1c7154
+ * v1.1.24-master-579a327
  */
 goog.provide('ngmaterial.components.checkbox');
 goog.require('ngmaterial.core');
@@ -120,7 +120,8 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
         attr.$set('aria-labelledby', labelId);
 
         var label = element.children()[1];
-        label.remove();
+        // Use jQLite here since ChildNode.remove() is not supported in IE11.
+        angular.element(label).remove();
         label.removeAttribute('ng-transclude');
         label.className = 'md-checkbox-link-label';
         label.setAttribute('id', labelId);

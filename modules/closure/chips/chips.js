@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-b1c7154
+ * v1.1.24-master-579a327
  */
 goog.provide('ngmaterial.components.chips');
 goog.require('ngmaterial.components.autocomplete');
@@ -1199,18 +1199,6 @@ MdChipsCtrl.prototype.selectChip = function(index) {
     }
   } else {
     this.$log.warn('Selected Chip index out of bounds; ignoring.');
-  }
-};
-
-/**
- * Selects the chip at {@code index} and gives it focus.
- * @param {number} index location of chip to select and focus
- * @deprecated use MdChipsCtrl.selectAndFocusChipSafe. Will be removed in 1.2.
- */
-MdChipsCtrl.prototype.selectAndFocusChip = function(index) {
-  this.selectChip(index);
-  if (index !== -1) {
-    this.focusChip(index);
   }
 };
 
