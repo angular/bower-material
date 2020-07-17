@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-579a327
+ * v1.1.24-master-91300ec
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -25627,7 +25627,7 @@ MdNavBarController.prototype.getFocusedTab = function() {
  * Find a tab that matches the specified function, starting from the first tab.
  * @param {Function} fn
  * @param {number=} startIndex index to start at. Defaults to 0.
- * @returns {MdNavItemController}
+ * @returns {MdNavItemController|null}
  * @private
  */
 MdNavBarController.prototype._findTab = function(fn, startIndex) {
@@ -39239,4 +39239,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.24-master-579a327"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.24-master-91300ec"}};
