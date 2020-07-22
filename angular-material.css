@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-f2fca2e
+ * v1.1.24-master-a13722e
  */
 html, body {
   height: 100%;
@@ -2312,79 +2312,93 @@ md-list {
     font-weight: 500;
     letter-spacing: 0.010em;
     line-height: 1.2em; }
-  md-list.md-dense md-list-item,
-  md-list.md-dense md-list-item .md-list-item-inner {
-    min-height: 48px; }
-    md-list.md-dense md-list-item::before,
-    md-list.md-dense md-list-item .md-list-item-inner::before {
+  md-list.md-dense:not(.md-dense-disabled) md-list-item,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner {
+    min-height: 40px; }
+    md-list.md-dense:not(.md-dense-disabled) md-list-item::before,
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner::before {
       content: '';
-      min-height: 48px;
+      min-height: 40px;
       visibility: hidden;
       display: inline-block; }
-    md-list.md-dense md-list-item md-icon:first-child,
-    md-list.md-dense md-list-item .md-list-item-inner md-icon:first-child {
+    md-list.md-dense:not(.md-dense-disabled) md-list-item md-icon:first-child,
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner md-icon:first-child {
       width: 20px;
       height: 20px; }
-    md-list.md-dense md-list-item > md-icon:first-child:not(.md-avatar-icon),
-    md-list.md-dense md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
-      margin-right: 36px; }
-      [dir=rtl] md-list.md-dense md-list-item > md-icon:first-child:not(.md-avatar-icon), [dir=rtl]
-      md-list.md-dense md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
+    md-list.md-dense:not(.md-dense-disabled) md-list-item > md-icon:first-child:not(.md-avatar-icon),
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
+      margin-right: 36px;
+      margin-top: 4px;
+      margin-bottom: 4px; }
+      [dir=rtl] md-list.md-dense:not(.md-dense-disabled) md-list-item > md-icon:first-child:not(.md-avatar-icon), [dir=rtl]
+      md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
         margin-right: auto;
         margin-left: 36px; }
-    md-list.md-dense md-list-item .md-avatar, md-list.md-dense md-list-item .md-avatar-icon,
-    md-list.md-dense md-list-item .md-list-item-inner .md-avatar,
-    md-list.md-dense md-list-item .md-list-item-inner .md-avatar-icon {
-      margin-right: 20px; }
-      [dir=rtl] md-list.md-dense md-list-item .md-avatar, [dir=rtl] md-list.md-dense md-list-item .md-avatar-icon, [dir=rtl]
-      md-list.md-dense md-list-item .md-list-item-inner .md-avatar, [dir=rtl]
-      md-list.md-dense md-list-item .md-list-item-inner .md-avatar-icon {
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-avatar, md-list.md-dense:not(.md-dense-disabled) md-list-item .md-avatar-icon,
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner .md-avatar,
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner .md-avatar-icon {
+      margin-right: 20px;
+      margin-top: 6px;
+      margin-bottom: 6px; }
+      [dir=rtl] md-list.md-dense:not(.md-dense-disabled) md-list-item .md-avatar, [dir=rtl] md-list.md-dense:not(.md-dense-disabled) md-list-item .md-avatar-icon, [dir=rtl]
+      md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner .md-avatar, [dir=rtl]
+      md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner .md-avatar-icon {
         margin-right: auto;
         margin-left: 20px; }
-    md-list.md-dense md-list-item .md-avatar,
-    md-list.md-dense md-list-item .md-list-item-inner .md-avatar {
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-avatar,
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner .md-avatar {
       flex: none;
       width: 36px;
       height: 36px; }
-  md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-2-line > .md-no-style .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text.md-offset {
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-secondary-container .md-secondary.md-button,
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner .md-secondary-container .md-secondary.md-button {
+      margin-top: 4px;
+      margin-bottom: 4px; }
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-secondary-container md-checkbox:not(.md-dense-disabled),
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner .md-secondary-container md-checkbox:not(.md-dense-disabled) {
+      min-height: 40px; }
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line .md-list-item-text.md-offset, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style .md-list-item-text.md-offset, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line .md-list-item-text.md-offset, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style .md-list-item-text.md-offset {
     margin-left: 56px; }
-    [dir=rtl] md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense md-list-item.md-2-line > .md-no-style .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text.md-offset {
+    [dir=rtl] md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style .md-list-item-text.md-offset {
       margin-left: auto;
       margin-right: 56px; }
-  md-list.md-dense md-list-item.md-2-line .md-list-item-text h3,
-  md-list.md-dense md-list-item.md-2-line .md-list-item-text h4,
-  md-list.md-dense md-list-item.md-2-line .md-list-item-text p, md-list.md-dense md-list-item.md-2-line > .md-no-style .md-list-item-text h3,
-  md-list.md-dense md-list-item.md-2-line > .md-no-style .md-list-item-text h4,
-  md-list.md-dense md-list-item.md-2-line > .md-no-style .md-list-item-text p, md-list.md-dense md-list-item.md-3-line .md-list-item-text h3,
-  md-list.md-dense md-list-item.md-3-line .md-list-item-text h4,
-  md-list.md-dense md-list-item.md-3-line .md-list-item-text p, md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text h3,
-  md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text h4,
-  md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text p {
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line .md-list-item-text h3,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line .md-list-item-text h4,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line .md-list-item-text p, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style .md-list-item-text h3,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style .md-list-item-text h4,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style .md-list-item-text p, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line .md-list-item-text h3,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line .md-list-item-text h4,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line .md-list-item-text p, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style .md-list-item-text h3,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style .md-list-item-text h4,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style .md-list-item-text p {
     line-height: 1.05;
     font-size: 12px;
     padding-bottom: 4px; }
-  md-list.md-dense md-list-item.md-2-line .md-list-item-text h3, md-list.md-dense md-list-item.md-2-line > .md-no-style .md-list-item-text h3, md-list.md-dense md-list-item.md-3-line .md-list-item-text h3, md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text h3 {
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line .md-list-item-text h3, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style .md-list-item-text h3, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line .md-list-item-text h3, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style .md-list-item-text h3 {
     font-size: 13px; }
-  md-list.md-dense md-list-item.md-2-line, md-list.md-dense md-list-item.md-2-line > .md-no-style {
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style {
     min-height: 60px; }
-    md-list.md-dense md-list-item.md-2-line::before, md-list.md-dense md-list-item.md-2-line > .md-no-style::before {
+    md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line::before, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style::before {
       content: '';
       min-height: 60px;
       visibility: hidden;
       display: inline-block; }
-    md-list.md-dense md-list-item.md-2-line > .md-avatar, md-list.md-dense md-list-item.md-2-line .md-avatar-icon, md-list.md-dense md-list-item.md-2-line > .md-no-style > .md-avatar, md-list.md-dense md-list-item.md-2-line > .md-no-style .md-avatar-icon {
+    md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-avatar, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line .md-avatar-icon, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style > .md-avatar, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style .md-avatar-icon {
       margin-top: 12px; }
-  md-list.md-dense md-list-item.md-3-line, md-list.md-dense md-list-item.md-3-line > .md-no-style {
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style {
     min-height: 76px; }
-    md-list.md-dense md-list-item.md-3-line::before, md-list.md-dense md-list-item.md-3-line > .md-no-style::before {
+    md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line::before, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style::before {
       content: '';
       min-height: 76px;
       visibility: hidden;
       display: inline-block; }
-    md-list.md-dense md-list-item.md-3-line > md-icon:first-child,
-    md-list.md-dense md-list-item.md-3-line > .md-avatar, md-list.md-dense md-list-item.md-3-line > .md-no-style > md-icon:first-child,
-    md-list.md-dense md-list-item.md-3-line > .md-no-style > .md-avatar {
+    md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > md-icon:first-child,
+    md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-avatar, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style > md-icon:first-child,
+    md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style > .md-avatar {
       margin-top: 16px; }
+  md-list.md-dense:not(.md-dense-disabled) .md-subheader-inner {
+    padding-top: 12px;
+    padding-bottom: 12px; }
 
 md-list-item {
   position: relative; }
@@ -2538,15 +2552,15 @@ md-list-item {
     md-list-item > md-checkbox,
     md-list-item .md-list-item-inner > md-checkbox {
       width: 24px;
-      margin-left: 3px;
-      margin-right: 29px;
-      margin-top: 16px; }
+      min-height: 40px;
+      margin-left: 0px;
+      margin-right: 29px; }
       [dir=rtl] md-list-item > md-checkbox, [dir=rtl]
       md-list-item .md-list-item-inner > md-checkbox {
         margin-left: 29px; }
       [dir=rtl] md-list-item > md-checkbox, [dir=rtl]
       md-list-item .md-list-item-inner > md-checkbox {
-        margin-right: 3px; }
+        margin-right: 0px; }
     md-list-item .md-secondary-container,
     md-list-item .md-list-item-inner .md-secondary-container {
       display: flex;
@@ -2573,11 +2587,12 @@ md-list-item {
           margin-left: 0; }
       md-list-item .md-secondary-container md-checkbox,
       md-list-item .md-list-item-inner .md-secondary-container md-checkbox {
-        margin-top: 0;
-        margin-bottom: 0; }
+        margin: 0 6px;
+        padding: 0 8px;
+        min-height: 40px; }
         md-list-item .md-secondary-container md-checkbox:last-child,
         md-list-item .md-list-item-inner .md-secondary-container md-checkbox:last-child {
-          width: 24px;
+          width: 40px;
           margin-right: 0; }
           [dir=rtl] md-list-item .md-secondary-container md-checkbox:last-child, [dir=rtl]
           md-list-item .md-list-item-inner .md-secondary-container md-checkbox:last-child {

@@ -15,7 +15,6 @@ $layout-breakpoint-xs:     600px !default;
 $layout-breakpoint-sm:     960px !default;
 $layout-breakpoint-md:     1280px !default;
 $layout-breakpoint-lg:     1920px !default;
-$button-left-right-padding: rem(0.800) !default;
 $icon-size: rem(2.400) !default;
 $app-bar-height: 64px !default;
 $toast-height: $baseline-grid * 3 !default;
@@ -78,6 +77,9 @@ $material-enter: all $material-enter-duration $material-enter-timing-function;
 $material-leave-duration: 0.3s;
 $material-leave-timing-function: cubic-bezier(0.4, 0.0, 1, 1);
 $material-leave: all $material-leave-duration $material-leave-timing-function;
+$button-left-right-padding: rem(0.800) !default;
+$icon-button-height: rem(4.000) !default;
+$icon-button-width: rem(4.000) !default;
 $button-fab-width: rem(5.600) !default;
 $button-fab-height: rem(5.600) !default;
 $button-fab-padding: rem(1.60) !default;
@@ -106,8 +108,6 @@ $layout-breakpoint-lg:     1920px !default;
 
 
 
-// Button
-
 // Icon
 
 // App bar variables
@@ -132,8 +132,9 @@ $layout-breakpoint-lg:     1920px !default;
 
 
 
+// Button
+
 // Fab Buttons (shared between buttons.scss and fab*.scss)
-// -------------------------------------------
 
 
 // Shared Checkbox variables
