@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-6e91c62
+ * v1.1.24-master-3205b33
  */
 /** Styles for mdCalendar. */
 md-calendar {
@@ -155,8 +155,8 @@ md-datepicker {
     border: none; }
   ._md-datepicker-floating-label > md-datepicker .md-datepicker-button {
     float: left;
-    margin-top: -12px;
-    top: 9.5px; }
+    margin-top: -16px;
+    top: 13.5px; }
     [dir=rtl] ._md-datepicker-floating-label > md-datepicker .md-datepicker-button {
       float: right; }
 

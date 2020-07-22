@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-6e91c62
+ * v1.1.24-master-3205b33
  */
 // Typography
 // ------------------------------
@@ -37,7 +37,7 @@ $layout-breakpoint-md:     1280px !default;
 $layout-breakpoint-lg:     1920px !default;
 
 // Button
-$button-left-right-padding: rem(0.600) !default;
+$button-left-right-padding: rem(0.800) !default;
 
 // Icon
 $icon-size: rem(2.400) !default;
@@ -1817,8 +1817,7 @@ md-bottom-sheet {
   }
 }
 
-// Material Design Button
-// https://material.google.com/components/buttons.html
+// Material Design Button: https://material.io/archive/guidelines/components/buttons.html
 
 $button-border-radius: 2px !default;
 $button-fab-border-radius: 50% !default;

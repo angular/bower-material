@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24-master-6e91c62
+ * v1.1.24-master-3205b33
  */
 html, body {
   height: 100%;
@@ -674,7 +674,7 @@ button.md-button::-moz-focus-inner {
   outline: none;
   border: 0;
   /** Custom styling for button */
-  padding: 0 6px;
+  padding: 0 8px;
   margin: 6px 8px;
   background: transparent;
   color: currentColor;
@@ -1484,8 +1484,8 @@ md-datepicker {
     border: none; }
   ._md-datepicker-floating-label > md-datepicker .md-datepicker-button {
     float: left;
-    margin-top: -12px;
-    top: 9.5px; }
+    margin-top: -16px;
+    top: 13.5px; }
     [dir=rtl] ._md-datepicker-floating-label > md-datepicker .md-datepicker-button {
       float: right; }
 
@@ -4553,7 +4553,7 @@ md-toolbar + md-tabs, md-toolbar + md-dialog-content md-tabs {
   border-top-right-radius: 0; }
 
 .md-toast-text {
-  padding: 0 6px; }
+  padding: 0 8px; }
 
 md-toast {
   position: absolute;
@@ -4576,7 +4576,7 @@ md-toast {
     max-height: 168px;
     max-width: 100%;
     min-height: 48px;
-    padding: 0 18px;
+    padding: 0 16px;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
     border-radius: 2px;
     font-size: 14px;
@@ -4632,9 +4632,9 @@ md-toast {
   md-toast .md-button {
     min-width: 0;
     margin-right: 0;
-    margin-left: 12px; }
+    margin-left: 8px; }
     [dir=rtl] md-toast .md-button {
-      margin-right: 12px; }
+      margin-right: 8px; }
     [dir=rtl] md-toast .md-button {
       margin-left: 0; }
 
