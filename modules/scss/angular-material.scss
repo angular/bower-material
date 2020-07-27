@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-fe081c5
+ * v1.2.0-rc.1-master-89c76e8
  */
 // Typography
 // ------------------------------
@@ -2206,7 +2206,7 @@ md-card {
     }
   }
 
-  .md-actions, md-card-actions {
+  md-card-actions {
     margin: $baseline-grid;
 
     &.layout-column {
@@ -3163,7 +3163,7 @@ md-dialog {
     }
   }
 
-  .md-actions, md-dialog-actions {
+  md-dialog-actions {
     display: flex;
     order: 2;
     box-sizing: border-box;
@@ -3183,12 +3183,11 @@ md-dialog {
     }
   }
   &.md-content-overflow {
-    .md-actions, md-dialog-actions {
+    md-dialog-actions {
       border-top-width: 1px;
       border-top-style: solid;
     }
   }
-
 }
 
 @media screen and (-ms-high-contrast: active) {

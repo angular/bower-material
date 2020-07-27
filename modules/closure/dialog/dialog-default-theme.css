@@ -2,11 +2,11 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-fe081c5
+ * v1.2.0-rc.1-master-89c76e8
  */
 md-dialog.md-THEME_NAME-theme {
   border-radius: 4px;
   background-color: '{{background-hue-1}}';
   color: '{{foreground-1}}'; }
-  md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions, md-dialog.md-THEME_NAME-theme.md-content-overflow md-dialog-actions {
+  md-dialog.md-THEME_NAME-theme.md-content-overflow md-dialog-actions {
     border-top-color: '{{foreground-4}}'; }

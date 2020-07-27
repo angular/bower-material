@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-fe081c5
+ * v1.2.0-rc.1-master-89c76e8
  */
 .md-dialog-is-showing {
   max-height: 100%; }
@@ -59,7 +59,7 @@ md-dialog {
     md-dialog md-dialog-content .md-prompt-input-container {
       width: 100%;
       box-sizing: border-box; }
-  md-dialog .md-actions, md-dialog md-dialog-actions {
+  md-dialog md-dialog-actions {
     display: flex;
     order: 2;
     box-sizing: border-box;
@@ -70,20 +70,20 @@ md-dialog {
     padding-left: 16px;
     min-height: 52px;
     overflow: hidden; }
-    [dir=rtl] md-dialog .md-actions, [dir=rtl] md-dialog md-dialog-actions {
+    [dir=rtl] md-dialog md-dialog-actions {
       padding-right: 16px; }
-    [dir=rtl] md-dialog .md-actions, [dir=rtl] md-dialog md-dialog-actions {
+    [dir=rtl] md-dialog md-dialog-actions {
       padding-left: 8px; }
-    md-dialog .md-actions .md-button, md-dialog md-dialog-actions .md-button {
+    md-dialog md-dialog-actions .md-button {
       margin-bottom: 8px;
       margin-left: 8px;
       margin-right: 0;
       margin-top: 8px; }
-      [dir=rtl] md-dialog .md-actions .md-button, [dir=rtl] md-dialog md-dialog-actions .md-button {
+      [dir=rtl] md-dialog md-dialog-actions .md-button {
         margin-left: 0; }
-      [dir=rtl] md-dialog .md-actions .md-button, [dir=rtl] md-dialog md-dialog-actions .md-button {
+      [dir=rtl] md-dialog md-dialog-actions .md-button {
         margin-right: 8px; }
-  md-dialog.md-content-overflow .md-actions, md-dialog.md-content-overflow md-dialog-actions {
+  md-dialog.md-content-overflow md-dialog-actions {
     border-top-width: 1px;
     border-top-style: solid; }
 

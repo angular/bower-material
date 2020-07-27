@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-fe081c5
+ * v1.2.0-rc.1-master-89c76e8
  */
 html, body {
   height: 100%;
@@ -905,48 +905,48 @@ md-card {
     md-card md-card-content .md-media-xl {
       height: 240px;
       width: 240px; }
-  md-card .md-actions, md-card md-card-actions {
+  md-card md-card-actions {
     margin: 8px; }
-    md-card .md-actions.layout-column .md-button:not(.md-icon-button), md-card md-card-actions.layout-column .md-button:not(.md-icon-button) {
+    md-card md-card-actions.layout-column .md-button:not(.md-icon-button) {
       margin: 2px 0; }
-      md-card .md-actions.layout-column .md-button:not(.md-icon-button):first-of-type, md-card md-card-actions.layout-column .md-button:not(.md-icon-button):first-of-type {
+      md-card md-card-actions.layout-column .md-button:not(.md-icon-button):first-of-type {
         margin-top: 0; }
-      md-card .md-actions.layout-column .md-button:not(.md-icon-button):last-of-type, md-card md-card-actions.layout-column .md-button:not(.md-icon-button):last-of-type {
+      md-card md-card-actions.layout-column .md-button:not(.md-icon-button):last-of-type {
         margin-bottom: 0; }
-    md-card .md-actions.layout-column .md-button.md-icon-button, md-card md-card-actions.layout-column .md-button.md-icon-button {
+    md-card md-card-actions.layout-column .md-button.md-icon-button {
       margin-top: 6px;
       margin-bottom: 6px; }
-    md-card .md-actions md-card-icon-actions, md-card md-card-actions md-card-icon-actions {
+    md-card md-card-actions md-card-icon-actions {
       flex: 1;
       justify-content: flex-start;
       display: flex;
       flex-direction: row; }
-    md-card .md-actions:not(.layout-column) .md-button:not(.md-icon-button), md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button) {
+    md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button) {
       margin: 0 4px; }
-      md-card .md-actions:not(.layout-column) .md-button:not(.md-icon-button):first-of-type, md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button):first-of-type {
+      md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button):first-of-type {
         margin-left: 0; }
-        [dir=rtl] md-card .md-actions:not(.layout-column) .md-button:not(.md-icon-button):first-of-type, [dir=rtl] md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button):first-of-type {
+        [dir=rtl] md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button):first-of-type {
           margin-left: auto;
           margin-right: 0; }
-      md-card .md-actions:not(.layout-column) .md-button:not(.md-icon-button):last-of-type, md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button):last-of-type {
+      md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button):last-of-type {
         margin-right: 0; }
-        [dir=rtl] md-card .md-actions:not(.layout-column) .md-button:not(.md-icon-button):last-of-type, [dir=rtl] md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button):last-of-type {
+        [dir=rtl] md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button):last-of-type {
           margin-right: auto;
           margin-left: 0; }
-    md-card .md-actions:not(.layout-column) .md-button.md-icon-button, md-card md-card-actions:not(.layout-column) .md-button.md-icon-button {
+    md-card md-card-actions:not(.layout-column) .md-button.md-icon-button {
       margin-left: 6px;
       margin-right: 6px; }
-      md-card .md-actions:not(.layout-column) .md-button.md-icon-button:first-of-type, md-card md-card-actions:not(.layout-column) .md-button.md-icon-button:first-of-type {
+      md-card md-card-actions:not(.layout-column) .md-button.md-icon-button:first-of-type {
         margin-left: 12px; }
-        [dir=rtl] md-card .md-actions:not(.layout-column) .md-button.md-icon-button:first-of-type, [dir=rtl] md-card md-card-actions:not(.layout-column) .md-button.md-icon-button:first-of-type {
+        [dir=rtl] md-card md-card-actions:not(.layout-column) .md-button.md-icon-button:first-of-type {
           margin-left: auto;
           margin-right: 12px; }
-      md-card .md-actions:not(.layout-column) .md-button.md-icon-button:last-of-type, md-card md-card-actions:not(.layout-column) .md-button.md-icon-button:last-of-type {
+      md-card md-card-actions:not(.layout-column) .md-button.md-icon-button:last-of-type {
         margin-right: 12px; }
-        [dir=rtl] md-card .md-actions:not(.layout-column) .md-button.md-icon-button:last-of-type, [dir=rtl] md-card md-card-actions:not(.layout-column) .md-button.md-icon-button:last-of-type {
+        [dir=rtl] md-card md-card-actions:not(.layout-column) .md-button.md-icon-button:last-of-type {
           margin-right: auto;
           margin-left: 12px; }
-    md-card .md-actions:not(.layout-column) .md-button + md-card-icon-actions, md-card md-card-actions:not(.layout-column) .md-button + md-card-icon-actions {
+    md-card md-card-actions:not(.layout-column) .md-button + md-card-icon-actions {
       flex: 1;
       justify-content: flex-end;
       display: flex;
@@ -1675,7 +1675,7 @@ md-dialog {
     md-dialog md-dialog-content .md-prompt-input-container {
       width: 100%;
       box-sizing: border-box; }
-  md-dialog .md-actions, md-dialog md-dialog-actions {
+  md-dialog md-dialog-actions {
     display: flex;
     order: 2;
     box-sizing: border-box;
@@ -1686,20 +1686,20 @@ md-dialog {
     padding-left: 16px;
     min-height: 52px;
     overflow: hidden; }
-    [dir=rtl] md-dialog .md-actions, [dir=rtl] md-dialog md-dialog-actions {
+    [dir=rtl] md-dialog md-dialog-actions {
       padding-right: 16px; }
-    [dir=rtl] md-dialog .md-actions, [dir=rtl] md-dialog md-dialog-actions {
+    [dir=rtl] md-dialog md-dialog-actions {
       padding-left: 8px; }
-    md-dialog .md-actions .md-button, md-dialog md-dialog-actions .md-button {
+    md-dialog md-dialog-actions .md-button {
       margin-bottom: 8px;
       margin-left: 8px;
       margin-right: 0;
       margin-top: 8px; }
-      [dir=rtl] md-dialog .md-actions .md-button, [dir=rtl] md-dialog md-dialog-actions .md-button {
+      [dir=rtl] md-dialog md-dialog-actions .md-button {
         margin-left: 0; }
-      [dir=rtl] md-dialog .md-actions .md-button, [dir=rtl] md-dialog md-dialog-actions .md-button {
+      [dir=rtl] md-dialog md-dialog-actions .md-button {
         margin-right: 8px; }
-  md-dialog.md-content-overflow .md-actions, md-dialog.md-content-overflow md-dialog-actions {
+  md-dialog.md-content-overflow md-dialog-actions {
     border-top-width: 1px;
     border-top-style: solid; }
 

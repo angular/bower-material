@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-fe081c5
+ * v1.2.0-rc.1-master-89c76e8
  */
 /*
 *  Responsive attributes
@@ -1487,29 +1487,26 @@
 [layout="row"] {
   flex-direction: row; }
 
-[layout-padding] > [flex-sm], [layout-padding] > [flex-lt-md] {
+[layout-padding] > [flex-sm] {
   padding: 4px; }
 
 [layout-padding],
 [layout-padding] > [flex],
 [layout-padding] > [flex-gt-sm],
-[layout-padding] > [flex-md],
-[layout-padding] > [flex-lt-lg] {
+[layout-padding] > [flex-md] {
   padding: 8px; }
 
 [layout-padding] > [flex-gt-md],
 [layout-padding] > [flex-lg] {
   padding: 16px; }
 
-[layout-margin] > [flex-sm],
-[layout-margin] > [flex-lt-md] {
+[layout-margin] > [flex-sm] {
   margin: 4px; }
 
 [layout-margin],
 [layout-margin] > [flex],
 [layout-margin] > [flex-gt-sm],
-[layout-margin] > [flex-md],
-[layout-margin] > [flex-lt-lg] {
+[layout-margin] > [flex-md] {
   margin: 8px; }
 
 [layout-margin] > [flex-gt-md],

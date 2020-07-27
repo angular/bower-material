@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-fe081c5
+ * v1.2.0-rc.1-master-89c76e8
  */
 goog.provide('ngmaterial.components.chips');
 goog.require('ngmaterial.components.autocomplete');
@@ -1556,8 +1556,11 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    * @param {string=} delete-hint A string read by screen readers instructing users that pressing
    *    the delete key will remove the chip. You will want to use this to override the default when
    *    in a non-English locale.
-   * @param {string=} delete-button-label <strong>Deprecated</strong> A label for the delete button.
-   *    Used to be read by screen readers.
+   * @param {string=} delete-button-label Text for the `aria-label` of the button with the
+   *    `md-chip-remove` class. If the chip is an Object, then this will be the only text in the
+   *    label. Otherwise, this is prepended to the string representation of the chip. Defaults to
+   *    "Remove", which would be "Remove Apple" for a chip that contained the string "Apple".
+   *    You will want to use this to override the default when in a non-English locale.
    * @param {string=} md-removed-message Screen readers will announce this message following the
    *    chips contents. The default is `"removed"`. If a chip with the content of "Apple" was
    *    removed, the screen reader would read "Apple removed". You will want to use this to override
@@ -1699,7 +1702,6 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
         secondaryPlaceholder: '@?',
         maxChips: '@?mdMaxChips',
         transformChip: '&mdTransformChip',
-        onAppend: '&?mdOnAppend',
         onAdd: '&?mdOnAdd',
         onRemove: '&?mdOnRemove',
         addedMessage: '@?mdAddedMessage',
@@ -1816,13 +1818,6 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
           // If an `md-transform-chip` attribute was set, tell the controller to use the expression
           // before appending chips.
           if (attrs.mdTransformChip) mdChipsCtrl.useTransformChipExpression();
-
-          // If an `md-on-append` attribute was set, tell the controller to use the expression
-          // when appending chips.
-          //
-          // TODO: Remove this now that 1.0 is long since released
-          // DEPRECATED: Will remove in official 1.0 release
-          if (attrs.mdOnAppend) mdChipsCtrl.useOnAppendExpression();
 
           // If an `md-on-add` attribute was set, tell the controller to use the expression
           // when adding chips.

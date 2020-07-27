@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-fe081c5
+ * v1.2.0-rc.1-master-89c76e8
  */
 goog.provide('ngmaterial.components.dialog');
 goog.require('ngmaterial.components.backdrop');
@@ -574,17 +574,17 @@ function MdDialogProvider($$interimElementProvider) {
       options: dialogDefaultOptions
     })
     .addPreset('alert', {
-      methods: ['title', 'htmlContent', 'textContent', 'content', 'ariaLabel', 'ok', 'theme',
+      methods: ['title', 'htmlContent', 'textContent', 'ariaLabel', 'ok', 'theme',
           'css'],
       options: advancedDialogOptions
     })
     .addPreset('confirm', {
-      methods: ['title', 'htmlContent', 'textContent', 'content', 'ariaLabel', 'ok', 'cancel',
+      methods: ['title', 'htmlContent', 'textContent', 'ariaLabel', 'ok', 'cancel',
           'theme', 'css'],
       options: advancedDialogOptions
     })
     .addPreset('prompt', {
-      methods: ['title', 'htmlContent', 'textContent', 'initialValue', 'content', 'placeholder', 'ariaLabel',
+      methods: ['title', 'htmlContent', 'textContent', 'initialValue', 'placeholder', 'ariaLabel',
           'ok', 'cancel', 'theme', 'css', 'required'],
       options: advancedDialogOptions
     });
@@ -711,8 +711,7 @@ function MdDialogProvider($$interimElementProvider) {
 
       if (controller) {
         var mdHtmlContent = controller.htmlContent || options.htmlContent || '';
-        var mdTextContent = controller.textContent || options.textContent ||
-            controller.content || options.content || '';
+        var mdTextContent = controller.textContent || options.textContent || '';
 
         if (mdHtmlContent && !$injector.has('$sanitize')) {
           throw Error('The ngSanitize module must be loaded in order to use htmlContent.');
@@ -750,22 +749,11 @@ function MdDialogProvider($$interimElementProvider) {
       return dialogPopIn(element, options)
         .then(function() {
           lockScreenReader(element, options);
-          warnDeprecatedActions();
           focusOnOpen();
         });
 
       /**
-       * Check to see if they used the deprecated .md-actions class and log a warning
-       */
-      function warnDeprecatedActions() {
-        if (element[0].querySelector('.md-actions')) {
-          $log.warn('Using a class of md-actions is deprecated, please use <md-dialog-actions>.');
-        }
-      }
-
-      /**
-       * For alerts, focus on content... otherwise focus on
-       * the close button (or equivalent)
+       * For alerts, focus on content... otherwise focus on the close button (or equivalent)
        */
       function focusOnOpen() {
         if (options.focusOnOpen) {
@@ -775,7 +763,7 @@ function MdDialogProvider($$interimElementProvider) {
 
         /**
          * If no element with class dialog-close, try to find the last
-         * button child in md-actions and assume it is a close button.
+         * button child in md-dialog-actions and assume it is a close button.
          *
          * If we find no actions at all, log a warning to the console.
          */
