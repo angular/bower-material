@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-89c76e8
+ * v1.2.0-rc.1-master-b1e3ae7
  */
 goog.provide('ngmaterial.core');
 
@@ -2553,29 +2553,29 @@ function MdCompilerProvider() {
    *        dependency. If the result is a promise, it is resolved before its value is
    *        injected into the controller.
    *
-   * @returns {Object} promise A promise, which will be resolved with a `compileData` object.
-   * `compileData` has the following properties:
+   * @returns {Q.Promise<{element: JQLite, link: Function, locals: Object, cleanup: any,
+   *  controller: Object=}>} promise A promise, which will be resolved with a `compileData` object.
+   *  `compileData` has the following properties:
    *
-   *   - `element` - `{Element}`: an uncompiled element matching the provided template.
+   *   - `element` - `{JQLite}`: an uncompiled element matching the provided template.
    *   - `link` - `{function(scope)}`: A link function, which, when called, will compile
    *     the element and instantiate the provided controller (if given).
    *   - `locals` - `{Object}`: The locals which will be passed into the controller once `link` is
    *     called. If `bindToController` is true, they will be copied to the ctrl instead
    */
   MdCompilerService.prototype.compile = function(options) {
-
     if (options.contentElement) {
       return this._prepareContentElement(options);
     } else {
       return this._compileTemplate(options);
     }
-
   };
 
   /**
    * Instead of compiling any template, the compiler just fetches an existing HTML element from the
    * DOM and provides a restore function to put the element back it old DOM position.
    * @param {!Object} options Options to be used for the compiler.
+   * @returns {Q.Promise<{element: JQLite, link: Function, locals: Object, cleanup: any}>}
    */
   MdCompilerService.prototype._prepareContentElement = function(options) {
 
@@ -2595,7 +2595,8 @@ function MdCompilerProvider() {
   /**
    * Compiles a template by considering all options and waiting for all resolves to be ready.
    * @param {!Object} options Compile options
-   * @returns {!Object} Compile data with link function.
+   * @returns {!Q.Promise<{element: JQLite, link: Function, locals: Object, cleanup: any}>} Compile
+   *  data with link function.
    */
   MdCompilerService.prototype._compileTemplate = function(options) {
 
@@ -2644,7 +2645,7 @@ function MdCompilerProvider() {
    * @param {!Object} locals Locals to be injected to the controller if present
    * @param {!JQLite} element Element to be compiled and linked
    * @param {!Object} options Options to be used for linking.
-   * @returns {!Object} Compile data with link function.
+   * @returns {!{element: JQLite, link: Function, locals: Object, cleanup: any, controller: Object}} Compile data with link function.
    */
   MdCompilerService.prototype._compileElement = function(locals, element, options) {
     var self = this;
@@ -4057,7 +4058,7 @@ function InterimElementProvider() {
        * Adds the `$interimElement` to the DOM and returns a special promise that will be resolved
        * or rejected with hide or cancel, respectively.
        *
-       * @param {object} options map of options and values
+       * @param {Object} options map of options and values
        * @returns {Promise} a Promise that will be resolved when hide() is called or rejected when
        *  cancel() is called.
        */
@@ -4270,8 +4271,9 @@ function InterimElementProvider() {
         };
 
         /**
-         * Compile, link, and show this interim element
-         * Use optional autoHided and transition-in effects
+         * Compile, link, and show this interim element. Use optional autoHide and transition-in
+         * effects.
+         * @return {Q.Promise}
          */
         function createAndTransitionIn() {
           return $q(function(resolve, reject) {
@@ -4385,6 +4387,9 @@ function InterimElementProvider() {
 
         /**
          * Compile an element with a templateUrl, controller, and locals
+         * @param {Object} options
+         * @return {Q.Promise<{element: JQLite=, link: Function, locals: Object, cleanup: any=,
+         *  controller: Object=}>}
          */
         function compileElement(options) {
 
@@ -4401,9 +4406,12 @@ function InterimElementProvider() {
         }
 
         /**
-         *  Link an element with compiled configuration
+         * Link an element with compiled configuration
+         * @param {{element: JQLite=, link: Function, locals: Object, controller: Object=}} compileData
+         * @param {Object} options
+         * @return {JQLite}
          */
-        function linkElement(compileData, options){
+        function linkElement(compileData, options) {
           angular.extend(compileData.locals, options);
 
           var element = compileData.link(options.scope);
@@ -4417,7 +4425,10 @@ function InterimElementProvider() {
         }
 
         /**
-         * Search for parent at insertion time, if not specified
+         * Search for parent at insertion time, if not specified.
+         * @param {JQLite} element
+         * @param {Object} options
+         * @return {JQLite}
          */
         function findParent(element, options) {
           var parent = options.parent;
@@ -4439,7 +4450,7 @@ function InterimElementProvider() {
               el = $rootElement[0].querySelector(':not(svg) > body');
             }
             if (!el) el = $rootElement[0];
-            if (el.nodeName == '#comment') {
+            if (el.nodeName === '#comment') {
               el = $document[0].body;
             }
             return angular.element(el);
@@ -4469,8 +4480,12 @@ function InterimElementProvider() {
         }
 
         /**
-         * Show the element ( with transitions), notify complete and start
-         * optional auto-Hide
+         * Show the element (with transitions), notify complete and start optional auto hiding
+         * timer.
+         * @param {JQLite} element
+         * @param {Object} options
+         * @param {Object} controller
+         * @return {Q.Promise<JQLite>}
          */
         function showElement(element, options, controller) {
           // Trigger onShowing callback before the `show()` starts
@@ -4480,6 +4495,7 @@ function InterimElementProvider() {
 
           // Necessary for consistency between AngularJS 1.5 and 1.6.
           try {
+            // This fourth controller parameter is used by $mdDialog in beforeShow().
             notifyShowing(options.scope, element, options, controller);
           } catch (e) {
             return $q.reject(e);
@@ -4488,7 +4504,7 @@ function InterimElementProvider() {
           return $q(function (resolve, reject) {
             try {
               // Start transitionIn
-              $q.when(options.onShow(options.scope, element, options, controller))
+              $q.when(options.onShow(options.scope, element, options))
                 .then(function () {
                   notifyComplete(options.scope, element, options);
                   startAutoHide();
@@ -5024,96 +5040,6 @@ function InterimElementProvider() {
 })();
 
 /**
- * @ngdoc module
- * @name material.core.liveannouncer
- * @description
- * AngularJS Material Live Announcer to provide accessibility for Voice Readers.
- */
-MdLiveAnnouncer['$inject'] = ["$timeout"];
-angular
-  .module('material.core')
-  .service('$mdLiveAnnouncer', MdLiveAnnouncer);
-
-/**
- * @ngdoc service
- * @name $mdLiveAnnouncer
- * @module material.core.liveannouncer
- *
- * @description
- *
- * Service to announce messages to supported screenreaders.
- *
- * > The `$mdLiveAnnouncer` service is internally used for components to provide proper accessibility.
- *
- * <hljs lang="js">
- *   module.controller('AppCtrl', function($mdLiveAnnouncer) {
- *     // Basic announcement (Polite Mode)
- *     $mdLiveAnnouncer.announce('Hey Google');
- *
- *     // Custom announcement (Assertive Mode)
- *     $mdLiveAnnouncer.announce('Hey Google', 'assertive');
- *   });
- * </hljs>
- *
- */
-function MdLiveAnnouncer($timeout) {
-  /** @private @const @type {!angular.$timeout} */
-  this._$timeout = $timeout;
-
-  /** @private @const @type {!HTMLElement} */
-  this._liveElement = this._createLiveElement();
-
-  /** @private @const @type {!number} */
-  this._announceTimeout = 100;
-}
-
-/**
- * @ngdoc method
- * @name $mdLiveAnnouncer#announce
- * @description Announces messages to supported screenreaders.
- * @param {string} message Message to be announced to the screenreader
- * @param {'off'|'polite'|'assertive'} politeness The politeness of the announcer element.
- */
-MdLiveAnnouncer.prototype.announce = function(message, politeness) {
-  if (!politeness) {
-    politeness = 'polite';
-  }
-
-  var self = this;
-
-  self._liveElement.textContent = '';
-  self._liveElement.setAttribute('aria-live', politeness);
-
-  // This 100ms timeout is necessary for some browser + screen-reader combinations:
-  // - Both JAWS and NVDA over IE11 will not announce anything without a non-zero timeout.
-  // - With Chrome and IE11 with NVDA or JAWS, a repeated (identical) message won't be read a
-  //   second time without clearing and then using a non-zero delay.
-  // (using JAWS 17 at time of this writing).
-  self._$timeout(function() {
-    self._liveElement.textContent = message;
-  }, self._announceTimeout, false);
-};
-
-/**
- * Creates a live announcer element, which listens for DOM changes and announces them
- * to the screenreaders.
- * @returns {!HTMLElement}
- * @private
- */
-MdLiveAnnouncer.prototype._createLiveElement = function() {
-  var liveEl = document.createElement('div');
-
-  liveEl.classList.add('md-visually-hidden');
-  liveEl.setAttribute('role', 'status');
-  liveEl.setAttribute('aria-atomic', 'true');
-  liveEl.setAttribute('aria-live', 'polite');
-
-  document.body.appendChild(liveEl);
-
-  return liveEl;
-};
-
-/**
  * @ngdoc service
  * @name $$mdMeta
  * @module material.core.meta
@@ -5233,6 +5159,96 @@ angular.module('material.core.meta', [])
       }
     });
   });
+/**
+ * @ngdoc module
+ * @name material.core.liveannouncer
+ * @description
+ * AngularJS Material Live Announcer to provide accessibility for Voice Readers.
+ */
+MdLiveAnnouncer['$inject'] = ["$timeout"];
+angular
+  .module('material.core')
+  .service('$mdLiveAnnouncer', MdLiveAnnouncer);
+
+/**
+ * @ngdoc service
+ * @name $mdLiveAnnouncer
+ * @module material.core.liveannouncer
+ *
+ * @description
+ *
+ * Service to announce messages to supported screenreaders.
+ *
+ * > The `$mdLiveAnnouncer` service is internally used for components to provide proper accessibility.
+ *
+ * <hljs lang="js">
+ *   module.controller('AppCtrl', function($mdLiveAnnouncer) {
+ *     // Basic announcement (Polite Mode)
+ *     $mdLiveAnnouncer.announce('Hey Google');
+ *
+ *     // Custom announcement (Assertive Mode)
+ *     $mdLiveAnnouncer.announce('Hey Google', 'assertive');
+ *   });
+ * </hljs>
+ *
+ */
+function MdLiveAnnouncer($timeout) {
+  /** @private @const @type {!angular.$timeout} */
+  this._$timeout = $timeout;
+
+  /** @private @const @type {!HTMLElement} */
+  this._liveElement = this._createLiveElement();
+
+  /** @private @const @type {!number} */
+  this._announceTimeout = 100;
+}
+
+/**
+ * @ngdoc method
+ * @name $mdLiveAnnouncer#announce
+ * @description Announces messages to supported screenreaders.
+ * @param {string} message Message to be announced to the screenreader
+ * @param {'off'|'polite'|'assertive'} politeness The politeness of the announcer element.
+ */
+MdLiveAnnouncer.prototype.announce = function(message, politeness) {
+  if (!politeness) {
+    politeness = 'polite';
+  }
+
+  var self = this;
+
+  self._liveElement.textContent = '';
+  self._liveElement.setAttribute('aria-live', politeness);
+
+  // This 100ms timeout is necessary for some browser + screen-reader combinations:
+  // - Both JAWS and NVDA over IE11 will not announce anything without a non-zero timeout.
+  // - With Chrome and IE11 with NVDA or JAWS, a repeated (identical) message won't be read a
+  //   second time without clearing and then using a non-zero delay.
+  // (using JAWS 17 at time of this writing).
+  self._$timeout(function() {
+    self._liveElement.textContent = message;
+  }, self._announceTimeout, false);
+};
+
+/**
+ * Creates a live announcer element, which listens for DOM changes and announces them
+ * to the screenreaders.
+ * @returns {!HTMLElement}
+ * @private
+ */
+MdLiveAnnouncer.prototype._createLiveElement = function() {
+  var liveEl = document.createElement('div');
+
+  liveEl.classList.add('md-visually-hidden');
+  liveEl.setAttribute('role', 'status');
+  liveEl.setAttribute('aria-atomic', 'true');
+  liveEl.setAttribute('aria-live', 'polite');
+
+  document.body.appendChild(liveEl);
+
+  return liveEl;
+};
+
   /**
    * @ngdoc module
    * @name material.core.componentRegistry

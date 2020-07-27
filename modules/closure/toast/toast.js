@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-89c76e8
+ * v1.2.0-rc.1-master-b1e3ae7
  */
 goog.provide('ngmaterial.components.toast');
 goog.require('ngmaterial.components.button');
@@ -439,7 +439,7 @@ function MdToastProvider($$interimElementProvider) {
             }
           }
 
-          // We have to return the innerHTMl, because we do not want to have the `md-template`
+          // We have to return the innerHTML, because we do not want to have the `md-template`
           // element to be the root element of our interimElement.
           return templateRoot.innerHTML;
         }

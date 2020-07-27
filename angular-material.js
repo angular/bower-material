@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-89c76e8
+ * v1.2.0-rc.1-master-b1e3ae7
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -3292,29 +3292,29 @@ function MdCompilerProvider() {
    *        dependency. If the result is a promise, it is resolved before its value is
    *        injected into the controller.
    *
-   * @returns {Object} promise A promise, which will be resolved with a `compileData` object.
-   * `compileData` has the following properties:
+   * @returns {Q.Promise<{element: JQLite, link: Function, locals: Object, cleanup: any,
+   *  controller: Object=}>} promise A promise, which will be resolved with a `compileData` object.
+   *  `compileData` has the following properties:
    *
-   *   - `element` - `{Element}`: an uncompiled element matching the provided template.
+   *   - `element` - `{JQLite}`: an uncompiled element matching the provided template.
    *   - `link` - `{function(scope)}`: A link function, which, when called, will compile
    *     the element and instantiate the provided controller (if given).
    *   - `locals` - `{Object}`: The locals which will be passed into the controller once `link` is
    *     called. If `bindToController` is true, they will be copied to the ctrl instead
    */
   MdCompilerService.prototype.compile = function(options) {
-
     if (options.contentElement) {
       return this._prepareContentElement(options);
     } else {
       return this._compileTemplate(options);
     }
-
   };
 
   /**
    * Instead of compiling any template, the compiler just fetches an existing HTML element from the
    * DOM and provides a restore function to put the element back it old DOM position.
    * @param {!Object} options Options to be used for the compiler.
+   * @returns {Q.Promise<{element: JQLite, link: Function, locals: Object, cleanup: any}>}
    */
   MdCompilerService.prototype._prepareContentElement = function(options) {
 
@@ -3334,7 +3334,8 @@ function MdCompilerProvider() {
   /**
    * Compiles a template by considering all options and waiting for all resolves to be ready.
    * @param {!Object} options Compile options
-   * @returns {!Object} Compile data with link function.
+   * @returns {!Q.Promise<{element: JQLite, link: Function, locals: Object, cleanup: any}>} Compile
+   *  data with link function.
    */
   MdCompilerService.prototype._compileTemplate = function(options) {
 
@@ -3383,7 +3384,7 @@ function MdCompilerProvider() {
    * @param {!Object} locals Locals to be injected to the controller if present
    * @param {!JQLite} element Element to be compiled and linked
    * @param {!Object} options Options to be used for linking.
-   * @returns {!Object} Compile data with link function.
+   * @returns {!{element: JQLite, link: Function, locals: Object, cleanup: any, controller: Object}} Compile data with link function.
    */
   MdCompilerService.prototype._compileElement = function(locals, element, options) {
     var self = this;
@@ -4808,7 +4809,7 @@ function InterimElementProvider() {
        * Adds the `$interimElement` to the DOM and returns a special promise that will be resolved
        * or rejected with hide or cancel, respectively.
        *
-       * @param {object} options map of options and values
+       * @param {Object} options map of options and values
        * @returns {Promise} a Promise that will be resolved when hide() is called or rejected when
        *  cancel() is called.
        */
@@ -5021,8 +5022,9 @@ function InterimElementProvider() {
         };
 
         /**
-         * Compile, link, and show this interim element
-         * Use optional autoHided and transition-in effects
+         * Compile, link, and show this interim element. Use optional autoHide and transition-in
+         * effects.
+         * @return {Q.Promise}
          */
         function createAndTransitionIn() {
           return $q(function(resolve, reject) {
@@ -5136,6 +5138,9 @@ function InterimElementProvider() {
 
         /**
          * Compile an element with a templateUrl, controller, and locals
+         * @param {Object} options
+         * @return {Q.Promise<{element: JQLite=, link: Function, locals: Object, cleanup: any=,
+         *  controller: Object=}>}
          */
         function compileElement(options) {
 
@@ -5152,9 +5157,12 @@ function InterimElementProvider() {
         }
 
         /**
-         *  Link an element with compiled configuration
+         * Link an element with compiled configuration
+         * @param {{element: JQLite=, link: Function, locals: Object, controller: Object=}} compileData
+         * @param {Object} options
+         * @return {JQLite}
          */
-        function linkElement(compileData, options){
+        function linkElement(compileData, options) {
           angular.extend(compileData.locals, options);
 
           var element = compileData.link(options.scope);
@@ -5168,7 +5176,10 @@ function InterimElementProvider() {
         }
 
         /**
-         * Search for parent at insertion time, if not specified
+         * Search for parent at insertion time, if not specified.
+         * @param {JQLite} element
+         * @param {Object} options
+         * @return {JQLite}
          */
         function findParent(element, options) {
           var parent = options.parent;
@@ -5190,7 +5201,7 @@ function InterimElementProvider() {
               el = $rootElement[0].querySelector(':not(svg) > body');
             }
             if (!el) el = $rootElement[0];
-            if (el.nodeName == '#comment') {
+            if (el.nodeName === '#comment') {
               el = $document[0].body;
             }
             return angular.element(el);
@@ -5220,8 +5231,12 @@ function InterimElementProvider() {
         }
 
         /**
-         * Show the element ( with transitions), notify complete and start
-         * optional auto-Hide
+         * Show the element (with transitions), notify complete and start optional auto hiding
+         * timer.
+         * @param {JQLite} element
+         * @param {Object} options
+         * @param {Object} controller
+         * @return {Q.Promise<JQLite>}
          */
         function showElement(element, options, controller) {
           // Trigger onShowing callback before the `show()` starts
@@ -5231,6 +5246,7 @@ function InterimElementProvider() {
 
           // Necessary for consistency between AngularJS 1.5 and 1.6.
           try {
+            // This fourth controller parameter is used by $mdDialog in beforeShow().
             notifyShowing(options.scope, element, options, controller);
           } catch (e) {
             return $q.reject(e);
@@ -5239,7 +5255,7 @@ function InterimElementProvider() {
           return $q(function (resolve, reject) {
             try {
               // Start transitionIn
-              $q.when(options.onShow(options.scope, element, options, controller))
+              $q.when(options.onShow(options.scope, element, options))
                 .then(function () {
                   notifyComplete(options.scope, element, options);
                   startAutoHide();
@@ -18090,12 +18106,12 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  * @param {Object} optionsOrPreset Either provide a dialog preset returned from `alert()`,
  * `prompt()`, or `confirm()`; or an options object with the following properties:
  *   - `templateUrl` - `{string=}`: The url of a template that will be used as the content
- *   of the dialog.
+ *      of the dialog.
  *   - `template` - `{string=}`: HTML template to show in the dialog. This **must** be trusted HTML
  *      with respect to Angular's [$sce service](https://docs.angularjs.org/api/ng/service/$sce).
  *      This template should **never** be constructed with any kind of user input or user data.
  *   - `contentElement` - `{string|Element}`: Instead of using a template, which will be compiled
- *   each time a dialog opens, you can also use a DOM element.<br/>
+ *      each time a dialog opens, you can also use a DOM element.<br/>
  *     * When specifying an element, which is present on the DOM, `$mdDialog` will temporary fetch
  *     the element into the dialog and restores it at the old DOM position upon close.
  *     * When specifying a string, the string be used as a CSS selector, to lookup for the element
@@ -18117,7 +18133,7 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  *     This scope will be destroyed when the dialog is removed unless `preserveScope` is set to
  *     true.
  *   - `preserveScope` - `{boolean=}`: whether to preserve the scope when the element is removed.
- *   Default is false
+ *     Default is false
  *   - `disableParentScroll` - `{boolean=}`: Whether to disable scrolling while the dialog is open.
  *     Default true.
  *   - `hasBackdrop` - `{boolean=}`: Whether there should be an opaque backdrop behind the dialog.
@@ -18129,31 +18145,30 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  *   - `focusOnOpen` - `{boolean=}`: An option to override focus behavior on open. Only disable if
  *     focusing some other way, as focus management is required for dialogs to be accessible.
  *     Defaults to true.
- *   - `controller` - `{function|string=}`: The controller to associate with the dialog. The
- *   controller will be injected with the local `$mdDialog`, which passes along a scope for the
- *   dialog.
+ *   - `controller` - `{Function|string=}`: The controller to associate with the dialog. The
+ *     controller will be injected with the local `$mdDialog`, which passes along a scope for the
+ *     dialog.
  *   - `locals` - `{Object=}`: An object containing key/value pairs. The keys will be used as names
  *     of values to inject into the controller. For example, `locals: {three: 3}` would inject
  *     `three` into the controller, with the value 3. If `bindToController` is true, they will be
  *     copied to the controller instead.
  *   - `bindToController` - `bool`: bind the locals to the controller, instead of passing them in.
- *   - `resolve` - `{function=}`: Similar to locals, except it takes as values functions that return
- *   promises, and the
- *      dialog will not open until all of the promises resolve.
+ *   - `resolve` - `{Function=}`: Similar to locals, except it takes as values functions that return
+ *     promises, and the dialog will not open until all of the promises resolve.
  *   - `controllerAs` - `{string=}`: An alias to assign the controller to on the scope.
  *   - `parent` - `{element=}`: The element to append the dialog to. Defaults to appending
  *     to the root element of the application.
- *   - `onShowing` - `function(scope, element)`: Callback function used to announce the show()
- *   action is starting.
- *   - `onComplete` - `function(scope, element)`: Callback function used to announce when the show()
- *   action is finished.
- *   - `onRemoving` - `function(element, removePromise)`: Callback function used to announce the
+ *   - `onShowing` - `Function(scope, element, options: Object=, controller: Object)=`: Callback
+ *     function used to notify the show() animation is starting.
+ *   - `onComplete` - `Function(scope, element, options: Object=)=`: Callback function used to
+ *     notify when the show() animation is finished.
+ *   - `onRemoving` - `Function(element, removePromise)`: Callback function used to announce the
  *      close/hide() action is starting. This allows developers to run custom animations
  *      in parallel with the close animations.
  *   - `fullscreen` `{boolean=}`: An option to toggle whether the dialog should show in fullscreen
  *      or not. Defaults to `false`.
  *   - `multiple` `{boolean=}`: An option to allow this dialog to display over one that's currently
- *   open.
+ *     open.
  * @returns {Promise} A promise that can be resolved with `$mdDialog.hide()` or
  * rejected with `$mdDialog.cancel()`.
  */
@@ -36823,7 +36838,7 @@ function MdToastProvider($$interimElementProvider) {
             }
           }
 
-          // We have to return the innerHTMl, because we do not want to have the `md-template`
+          // We have to return the innerHTML, because we do not want to have the `md-template`
           // element to be the root element of our interimElement.
           return templateRoot.innerHTML;
         }
@@ -38949,4 +38964,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.2.0-rc.1-master-89c76e8"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.2.0-rc.1-master-b1e3ae7"}};
