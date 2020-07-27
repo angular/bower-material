@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-b1e3ae7
+ * v1.2.0-rc.1-master-c2c336b
  */
 goog.provide('ngmaterial.components.radioButton');
 goog.require('ngmaterial.core');
@@ -272,6 +272,7 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
 
     $mdTheming(element);
     configureAria(element, scope);
+    element.addClass('md-auto-horizontal-margin');
 
     // ngAria overwrites the aria-checked inside a $watch for ngValue.
     // We should defer the initialization until all the watches have fired.

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-b1e3ae7
+ * v1.2.0-rc.1-master-c2c336b
  */
 goog.provide('ngmaterial.components.select');
 goog.require('ngmaterial.components.backdrop');
@@ -187,6 +187,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
    */
   function compile(tElement, tAttrs) {
     var isMultiple = $mdUtil.parseAttributeBoolean(tAttrs.multiple);
+    tElement.addClass('md-auto-horizontal-margin');
+
     // add the select value that will hold our placeholder or selected option value
     var valueEl = angular.element('<md-select-value><span></span></md-select-value>');
     valueEl.append('<span class="md-select-icon" aria-hidden="true"></span>');

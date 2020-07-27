@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-b1e3ae7
+ * v1.2.0-rc.1-master-c2c336b
  */
 goog.provide('ngmaterial.components.input');
 goog.require('ngmaterial.core');
@@ -164,6 +164,8 @@ function mdInputContainerDirective($mdTheming, $parse, $$rAF) {
 
   function ContainerCtrl($scope, $element, $attrs, $animate) {
     var self = this;
+
+    $element.addClass('md-auto-horizontal-margin');
 
     self.isErrorGetter = $attrs.mdIsError && $parse($attrs.mdIsError);
 

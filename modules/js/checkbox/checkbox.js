@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-b1e3ae7
+ * v1.2.0-rc.1-master-c2c336b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -91,6 +91,7 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
     tAttrs.$set('tabindex', tAttrs.tabindex || '0');
     tAttrs.$set('type', 'checkbox');
     tAttrs.$set('role', tAttrs.type);
+    tElement.addClass('md-auto-horizontal-margin');
 
     return  {
       pre: function(scope, element) {

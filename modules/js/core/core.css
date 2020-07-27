@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-b1e3ae7
+ * v1.2.0-rc.1-master-c2c336b
  */
 /*
 *  Responsive attributes
@@ -184,6 +184,71 @@ bdo[dir=rtl] {
 bdo[dir=ltr] {
   direction: ltr;
   unicode-bidi: bidi-override; }
+
+@media (max-width: 599px) {
+  .layout-row:not(.layout-xs-column) > .md-auto-horizontal-margin:not(:first-child),
+  .layout-xs-row > .md-auto-horizontal-margin:not(:first-child) {
+    margin-left: 16px; }
+    [dir=rtl] .layout-row:not(.layout-xs-column) > .md-auto-horizontal-margin:not(:first-child), [dir=rtl]
+    .layout-xs-row > .md-auto-horizontal-margin:not(:first-child) {
+      margin-left: 0;
+      margin-right: 16px; } }
+
+@media (min-width: 600px) and (max-width: 959px) {
+  .layout-row:not(.layout-gt-xs-column):not(.layout-sm-column) > .md-auto-horizontal-margin:not(:first-child),
+  .layout-gt-xs-row:not(.layout-sm-column) > .md-auto-horizontal-margin:not(:first-child),
+  .layout-sm-row:not(.layout-sm-column) > .md-auto-horizontal-margin:not(:first-child) {
+    margin-left: 16px; }
+    [dir=rtl] .layout-row:not(.layout-gt-xs-column):not(.layout-sm-column) > .md-auto-horizontal-margin:not(:first-child), [dir=rtl]
+    .layout-gt-xs-row:not(.layout-sm-column) > .md-auto-horizontal-margin:not(:first-child), [dir=rtl]
+    .layout-sm-row:not(.layout-sm-column) > .md-auto-horizontal-margin:not(:first-child) {
+      margin-left: 0;
+      margin-right: 16px; } }
+
+@media (min-width: 960px) and (max-width: 1279px) {
+  .layout-row:not(.layout-gt-xs-column):not(.layout-gt-sm-column):not(.layout-md-column) > .md-auto-horizontal-margin:not(:first-child),
+  .layout-gt-xs-row:not(.layout-gt-sm-column):not(.layout-md-column) > .md-auto-horizontal-margin:not(:first-child),
+  .layout-gt-sm-row:not(.layout-md-column) > .md-auto-horizontal-margin:not(:first-child),
+  .layout-md-row:not(.layout-md-column) > .md-auto-horizontal-margin:not(:first-child) {
+    margin-left: 16px; }
+    [dir=rtl] .layout-row:not(.layout-gt-xs-column):not(.layout-gt-sm-column):not(.layout-md-column) > .md-auto-horizontal-margin:not(:first-child), [dir=rtl]
+    .layout-gt-xs-row:not(.layout-gt-sm-column):not(.layout-md-column) > .md-auto-horizontal-margin:not(:first-child), [dir=rtl]
+    .layout-gt-sm-row:not(.layout-md-column) > .md-auto-horizontal-margin:not(:first-child), [dir=rtl]
+    .layout-md-row:not(.layout-md-column) > .md-auto-horizontal-margin:not(:first-child) {
+      margin-left: 0;
+      margin-right: 16px; } }
+
+@media (min-width: 1280px) and (max-width: 1919px) {
+  .layout-row:not(.layout-gt-xs-column):not(.layout-gt-sm-column):not(.layout-gt-md-column):not(.layout-lg-column) > .md-auto-horizontal-margin:not(:first-child),
+  .layout-gt-xs-row:not(.layout-gt-sm-column):not(.layout-gt-md-column):not(.layout-lg-column) > .md-auto-horizontal-margin:not(:first-child),
+  .layout-gt-sm-row:not(.layout-gt-md-column):not(.layout-lg-column) > .md-auto-horizontal-margin:not(:first-child),
+  .layout-gt-md-row:not(.layout-lg-column) > .md-auto-horizontal-margin:not(:first-child),
+  .layout-lg-row:not(.layout-lg-column) > .md-auto-horizontal-margin:not(:first-child) {
+    margin-left: 16px; }
+    [dir=rtl] .layout-row:not(.layout-gt-xs-column):not(.layout-gt-sm-column):not(.layout-gt-md-column):not(.layout-lg-column) > .md-auto-horizontal-margin:not(:first-child), [dir=rtl]
+    .layout-gt-xs-row:not(.layout-gt-sm-column):not(.layout-gt-md-column):not(.layout-lg-column) > .md-auto-horizontal-margin:not(:first-child), [dir=rtl]
+    .layout-gt-sm-row:not(.layout-gt-md-column):not(.layout-lg-column) > .md-auto-horizontal-margin:not(:first-child), [dir=rtl]
+    .layout-gt-md-row:not(.layout-lg-column) > .md-auto-horizontal-margin:not(:first-child), [dir=rtl]
+    .layout-lg-row:not(.layout-lg-column) > .md-auto-horizontal-margin:not(:first-child) {
+      margin-left: 0;
+      margin-right: 16px; } }
+
+@media (min-width: 1920px) {
+  .layout-row:not(.layout-gt-xs-column):not(.layout-gt-sm-column):not(.layout-gt-md-column):not(.layout-gt-lg-column):not(.layout-xl-column) > .md-auto-horizontal-margin:not(:first-child),
+  .layout-gt-xs-row:not(.layout-gt-sm-column):not(.layout-gt-md-column):not(.layout-gt-lg-column):not(.layout-xl-column) > .md-auto-horizontal-margin:not(:first-child),
+  .layout-gt-sm-row:not(.layout-gt-md-column):not(.layout-gt-lg-column):not(.layout-xl-column) > .md-auto-horizontal-margin:not(:first-child),
+  .layout-gt-md-row:not(.layout-gt-lg-column):not(.layout-xl-column) > .md-auto-horizontal-margin:not(:first-child),
+  .layout-gt-lg-row:not(.layout-gt-lg-column):not(.layout-xl-column) > .md-auto-horizontal-margin:not(:first-child),
+  .layout-xl-row:not(.layout-gt-lg-column):not(.layout-xl-column) > .md-auto-horizontal-margin:not(:first-child) {
+    margin-left: 16px; }
+    [dir=rtl] .layout-row:not(.layout-gt-xs-column):not(.layout-gt-sm-column):not(.layout-gt-md-column):not(.layout-gt-lg-column):not(.layout-xl-column) > .md-auto-horizontal-margin:not(:first-child), [dir=rtl]
+    .layout-gt-xs-row:not(.layout-gt-sm-column):not(.layout-gt-md-column):not(.layout-gt-lg-column):not(.layout-xl-column) > .md-auto-horizontal-margin:not(:first-child), [dir=rtl]
+    .layout-gt-sm-row:not(.layout-gt-md-column):not(.layout-gt-lg-column):not(.layout-xl-column) > .md-auto-horizontal-margin:not(:first-child), [dir=rtl]
+    .layout-gt-md-row:not(.layout-gt-lg-column):not(.layout-xl-column) > .md-auto-horizontal-margin:not(:first-child), [dir=rtl]
+    .layout-gt-lg-row:not(.layout-gt-lg-column):not(.layout-xl-column) > .md-auto-horizontal-margin:not(:first-child), [dir=rtl]
+    .layout-xl-row:not(.layout-gt-lg-column):not(.layout-xl-column) > .md-auto-horizontal-margin:not(:first-child) {
+      margin-left: 0;
+      margin-right: 16px; } }
 
 html, body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);

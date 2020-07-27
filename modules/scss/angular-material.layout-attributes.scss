@@ -87,6 +87,7 @@ $checkbox-width: 18px !default;
 $checkbox-height: $checkbox-width !default;
 $checkbox-border-radius: 2px !default;
 $checkbox-border-width: 2px !default;
+$default-horizontal-margin: 16px !default;
 $baseline-grid:            8px !default;
 $layout-gutter-width:      ($baseline-grid * 2) !default;
 $layout-breakpoint-xs:     600px !default;
@@ -138,6 +139,8 @@ $layout-breakpoint-lg:     1920px !default;
 
 
 // Shared Checkbox variables
+
+// Shared Horizontal Margin Variables
 
 @mixin margin-selectors($before:1em, $after:1em, $start:0px, $end:0px) {
   -webkit-margin-before: $before;
@@ -487,6 +490,59 @@ $layout-breakpoint-lg:     1920px !default;
   .md-dense > &:not(.md-dense-disabled),
   .md-dense :not(.md-dense-disabled) &:not(.md-dense-disabled) {
     @include rtl($prop, $ltr-dense, $rtl-dense);
+  }
+}
+
+// Only use when in row layout
+@mixin when-layout-row($element) {
+  @media (max-width: $layout-breakpoint-xs - 1) {
+    .layout-row:not(.layout-xs-column),
+    .layout-xs-row {
+      & > #{$element} { @content; }
+    }
+  }
+  @media (min-width: $layout-breakpoint-xs) and (max-width: $layout-breakpoint-sm - 1) {
+    .layout-row:not(.layout-gt-xs-column),
+    .layout-gt-xs-row,
+    .layout-sm-row {
+      &:not(.layout-sm-column) > #{$element} { @content; }
+    }
+  }
+  @media (min-width: $layout-breakpoint-sm) and (max-width: $layout-breakpoint-md - 1) {
+    .layout-row:not(.layout-gt-xs-column):not(.layout-gt-sm-column),
+    .layout-gt-xs-row:not(.layout-gt-sm-column),
+    .layout-gt-sm-row,
+    .layout-md-row {
+      &:not(.layout-md-column) > #{$element} { @content; }
+    }
+  }
+  @media (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg - 1) {
+    .layout-row:not(.layout-gt-xs-column):not(.layout-gt-sm-column):not(.layout-gt-md-column),
+    .layout-gt-xs-row:not(.layout-gt-sm-column):not(.layout-gt-md-column),
+    .layout-gt-sm-row:not(.layout-gt-md-column),
+    .layout-gt-md-row,
+    .layout-lg-row {
+      &:not(.layout-lg-column) > #{$element} { @content; }
+    }
+  }
+  @media (min-width: $layout-breakpoint-lg) {
+    .layout-row:not(.layout-gt-xs-column):not(.layout-gt-sm-column):not(.layout-gt-md-column),
+    .layout-gt-xs-row:not(.layout-gt-sm-column):not(.layout-gt-md-column),
+    .layout-gt-sm-row:not(.layout-gt-md-column),
+    .layout-gt-md-row,
+    .layout-gt-lg-row,
+    .layout-xl-row {
+      &:not(.layout-gt-lg-column):not(.layout-xl-column) > #{$element} { @content; }
+    }
+  }
+}
+
+// Auto insert object margin
+@mixin auto-horizontal-margin($selector) {
+  @include when-layout-row($selector) {
+    &:not(:first-child) {
+      @include rtl-prop(margin-left, margin-right, $default-horizontal-margin, 0);
+    }
   }
 }
 
