@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-c2c336b
+ * v1.2.0-rc.1-master-0626482
  */
 md-input-container:not([md-no-float]) .md-select-placeholder span:first-child {
   transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -11,7 +11,7 @@ md-input-container:not([md-no-float]) .md-select-placeholder span:first-child {
     transform-origin: right top; }
 
 md-input-container.md-input-focused:not([md-no-float]) .md-select-placeholder span:first-child {
-  transform: translateY(-22px) translateX(-2px) scale(0.75); }
+  transform: translate(-2px, -22px) scale(0.75); }
 
 .md-select-menu-container {
   position: fixed;
@@ -42,8 +42,14 @@ md-input-container.md-input-focused:not([md-no-float]) .md-select-placeholder sp
     transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
     transition-duration: 250ms; }
 
+.md-inline-form md-select {
+  margin-top: 20px; }
+
+md-input-container > md-select,
+.md-inline-form md-input-container > md-select {
+  margin-top: 0px; }
+
 md-input-container > md-select {
-  margin: 0;
   order: 2; }
 
 md-input-container:not(.md-input-has-value) md-select[required]:not(.md-no-asterisk) .md-select-value span:first-child:after, md-input-container:not(.md-input-has-value) md-select.ng-required:not(.md-no-asterisk) .md-select-value span:first-child:after {
@@ -56,8 +62,7 @@ md-input-container.md-input-invalid md-select .md-select-value {
   padding-bottom: 1px; }
 
 md-select {
-  display: flex;
-  margin: 20px 0 26px 0; }
+  display: flex; }
   md-select[required].ng-empty.ng-invalid:not(.md-no-asterisk) .md-select-value span:first-child:after, md-select.ng-required.ng-empty.ng-invalid:not(.md-no-asterisk) .md-select-value span:first-child:after {
     content: ' *';
     font-size: 13px;
@@ -65,22 +70,19 @@ md-select {
   md-select[disabled] .md-select-value {
     background-position: bottom -1px left 0;
     background-size: 4px 1px;
-    background-repeat: repeat-x; }
+    background-repeat: repeat-x;
+    padding-bottom: 2px;
+    padding-top: 1px;
+    transform: translateY(1px); }
   md-select:focus {
     outline: none; }
   md-select[disabled]:hover {
     cursor: default; }
   md-select:not([disabled]):hover {
     cursor: pointer; }
-  md-select:not([disabled]).ng-invalid.ng-touched .md-select-value {
-    border-bottom-style: solid;
-    padding-bottom: 1px; }
   md-select:not([disabled]):focus .md-select-value {
-    border-bottom-width: 2px;
-    border-bottom-style: solid;
-    padding-bottom: 0; }
-  md-select:not([disabled]):focus.ng-invalid.ng-touched .md-select-value {
-    padding-bottom: 0; }
+    border-bottom: 2px solid;
+    padding-bottom: 0px; }
 
 md-input-container md-select:not([disabled]):focus .md-select-value {
   border-bottom-width: 2px; }
@@ -112,8 +114,10 @@ md-input-container md-select .md-select-value {
   background-color: rgba(0, 0, 0, 0);
   position: relative;
   box-sizing: content-box;
-  min-width: 64px;
+  min-width: 88px;
   min-height: 26px;
+  margin-bottom: auto;
+  -ms-flex-item-align: start;
   flex-grow: 1; }
   [dir=rtl] .md-select-value {
     padding-left: 2px; }
@@ -132,8 +136,7 @@ md-input-container md-select .md-select-value {
     align-items: flex-end;
     text-align: right;
     width: 24px;
-    margin: 0 4px;
-    transform: translate3d(0, -2px, 0);
+    transform: translateY(-2px);
     font-size: 1.2rem; }
     [dir=rtl] .md-select-value .md-select-icon {
       align-items: flex-start; }
@@ -144,9 +147,15 @@ md-input-container md-select .md-select-value {
     content: '\25BC';
     position: relative;
     top: 2px;
+    right: -4px;
+    left: auto;
     speak: none;
     font-size: 13px;
-    transform: scaleY(0.5) scaleX(1); }
+    transform: scaleY(0.5); }
+    [dir=rtl] .md-select-value .md-select-icon:after {
+      right: auto; }
+    [dir=rtl] .md-select-value .md-select-icon:after {
+      left: -4px; }
   .md-select-value.md-select-placeholder {
     display: flex;
     order: 1;

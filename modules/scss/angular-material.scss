@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-c2c336b
+ * v1.2.0-rc.1-master-0626482
  */
 // Typography
 // ------------------------------
@@ -143,6 +143,8 @@ $checkbox-border-width: 2px !default;
 $default-horizontal-margin: 16px !default;
 
 $input-container-padding: 2px !default;
+$input-container-vertical-margin: 18px !default;
+$input-container-horizontal-margin: 0px !default;
 
 $input-label-default-offset: 24px !default;
 $input-label-default-scale: 1.0 !default;
@@ -155,11 +157,13 @@ $input-border-width-default: 1px !default;
 $input-border-width-focused: 2px !default;
 $input-line-height: 26px !default;
 $input-padding-top: 2px !default;
+$input-padding-bottom: $input-border-width-focused - $input-border-width-default !default;
 
 $input-error-font-size: 12px !default;
 $input-error-height: 24px !default;
 $input-error-line-height: $input-error-font-size + 2px !default;
-$error-padding-top: ($input-error-height - $input-error-line-height) / 2 !default;
+// From Text field spec
+$error-padding-top: $baseline-grid !default;
 
 $icon-offset: 36px !default;
 
@@ -2362,15 +2366,8 @@ $checkbox-min-height: 48px !default;
 $checkbox-min-height-dense: 36px !default;
 $checkbox-text-margin: 36px !default;
 
-// from input.scss
-$input-container-margin-top: 18px !default;
-$input-container-padding-top: 2px !default;
-$input-padding-top: 2px !default;
-$input-padding-bottom: 1px !default;
-$input-border: 1px !default;
-
-$md-inline-alignment: $input-container-margin-top + $input-container-padding-top
-                    + $input-padding-top + $input-padding-bottom + $input-border
+$md-inline-alignment: $input-container-vertical-margin + $input-container-padding
+                    + $input-padding-top + $input-padding-bottom + $input-border-width-default
                     - $checkbox-text-margin-top !default;
 
 .md-inline-form {
@@ -2890,7 +2887,7 @@ md-datepicker {
 
 .md-inline-form {
   md-datepicker {
-    margin-top: 12px;
+    margin-top: $input-container-vertical-margin - 6px;
   }
 }
 
@@ -3651,7 +3648,7 @@ md-input-container {
   display: inline-block;
   position: relative;
   padding: $input-container-padding;
-  margin: 18px 0;
+  margin: $input-container-vertical-margin $input-container-horizontal-margin;
   vertical-align: middle;
 
   &.md-block {
@@ -3699,15 +3696,15 @@ md-input-container {
   input[type="month"],
   input[type="time"],
   input[type="week"] {
-    min-height: $input-line-height;
+    min-height: $input-line-height + $input-padding-top * 2;
   }
   textarea {
     resize: none;
     overflow: hidden;
 
     &.md-input {
-      min-height: $input-line-height;
-      -ms-flex-preferred-size: auto; //IE fix
+      min-height: $input-line-height + $input-padding-top * 2;
+      -ms-flex-preferred-size: auto; // IE fix
     }
 
     // The height usually gets set to 1 line by `.md-input`.
@@ -3801,12 +3798,12 @@ md-input-container {
 
     background: none;
     padding-top: $input-padding-top;
-    padding-bottom: $input-border-width-focused - $input-border-width-default;
+    padding-bottom: $input-padding-bottom;
     @include rtl(padding-left, 0, $input-container-padding);
     @include rtl(padding-right, $input-container-padding, 0);
     border-width: 0 0 $input-border-width-default 0;
     line-height: $input-line-height;
-    height: $input-line-height + ($input-padding-top * 2);
+    height: $input-line-height + $input-padding-top * 2;
     -ms-flex-preferred-size: $input-line-height; //IE fix
     border-radius: 0;
     border-style: solid; // Firefox fix
@@ -3848,7 +3845,6 @@ md-input-container {
     order: 4;
     overflow: hidden;
     @include rtl(clear, left, right);
-
   }
 
   .md-input-message-animation, .md-char-counter {
@@ -3861,9 +3857,6 @@ md-input-container {
     // Default state for messages is to be visible
     opacity: 1;
     margin-top: 0;
-
-    // Add some top padding which is equal to half the difference between the expected height
-    // and the actual height
     padding-top: $error-padding-top;
 
     &:not(.md-char-counter) {
@@ -5178,14 +5171,21 @@ md-radio-group {
 
 .md-inline-form {
   md-radio-group {
-    margin: 18px 0 19px;
+    margin: $input-container-vertical-margin 0 $input-container-vertical-margin + 1px;
     md-radio-button {
       display: inline-block;
       height: 30px;
-      padding: 2px;
+      padding: 2px 10px 2px 6px;
       box-sizing: border-box;
       margin-top: 0;
       margin-bottom: 0;
+
+      .md-label {
+        top: 4px;
+      }
+      .md-container {
+        margin-top: 2px;
+      }
     }
   }
 }
@@ -5204,8 +5204,16 @@ $select-option-height: 48px !default;
 $select-option-padding: 16px !default;
 $select-container-padding: 16px !default;
 $select-container-transition-duration: 350ms !default;
+$select-value-padding-top: 2px;
+$select-value-padding-bottom: 1px;
 
 $select-max-visible-options: 5 !default;
+
+$input-alignment: ($input-padding-top + $input-padding-bottom)
+                   - ($select-value-padding-top + $select-value-padding-bottom);
+$md-inline-alignment: ($input-container-vertical-margin + $input-container-padding)
+                      + ($input-padding-top + $input-padding-bottom)
+                      - ($select-value-padding-top + $select-value-padding-bottom);
 
 // Fixes the animations with the floating label when select is inside an input container
 md-input-container {
@@ -5218,7 +5226,7 @@ md-input-container {
   &.md-input-focused {
     &:not([md-no-float]) {
       .md-select-placeholder span:first-child {
-        transform: translateY(-22px) translateX(-2px) scale(0.75);
+        transform: translate(-2px, -22px) scale(0.75);
       }
     }
   }
@@ -5245,7 +5253,6 @@ md-input-container {
     margin: 3*$baseline-grid auto !important;
   }
 
-
   // enter: md-select scales in, then options fade in.
   &.md-active {
     display: block;
@@ -5270,11 +5277,19 @@ md-input-container {
   }
 }
 
-md-input-container > md-select {
-  margin: 0;
-  order: 2;
+.md-inline-form md-select {
+  margin-top: $md-inline-alignment;
 }
 
+md-input-container {
+  > md-select,
+  .md-inline-form & > md-select {
+    margin-top: $input-alignment;
+  }
+  > md-select {
+    order: 2;
+  }
+}
 
 // Show the asterisk on the placeholder if the element is required
 //
@@ -5301,7 +5316,6 @@ md-input-container.md-input-invalid {
 
 md-select {
   display: flex;
-  margin: 2.5*$baseline-grid 0 3*$baseline-grid + 2 0;
 
   &[required], &.ng-required {
     &.ng-empty.ng-invalid:not(.md-no-asterisk) {
@@ -5322,6 +5336,12 @@ md-select {
     // to create a dotted line under the input.
     background-size: 4px 1px;
     background-repeat: repeat-x;
+    // Add to padding-bottom to keep dotted line aligned with other bottom borders
+    // Sub from padding-top to keep height consistent
+    // Translate text 1px up to keep in alignment
+    padding-bottom: $select-value-padding-bottom + 1;
+    padding-top: $select-value-padding-top - 1;
+    transform: translateY(1px);
   }
 
   &:focus {
@@ -5334,22 +5354,10 @@ md-select {
     &:hover {
       cursor: pointer
     }
-    &.ng-invalid.ng-touched {
-      .md-select-value {
-        border-bottom-style: solid;
-        padding-bottom: 1px;
-      }
-    }
     &:focus {
       .md-select-value {
-        border-bottom-width: $select-border-width-default + 1px;
-        border-bottom-style: solid;
-        padding-bottom: 0;
-      }
-      &.ng-invalid.ng-touched {
-        .md-select-value {
-          padding-bottom: 0;
-        }
+        border-bottom: $select-border-width-default + 1px solid;
+        padding-bottom: $select-value-padding-bottom - 1px;
       }
     }
   }
@@ -5385,8 +5393,8 @@ md-input-container md-select {
 .md-select-value {
   display: flex;
   align-items: center;
-  padding-top: 2px;
-  padding-bottom: 1px;
+  padding-top: $select-value-padding-top;
+  padding-bottom: $select-value-padding-bottom;
   @include rtl(padding-left, 0, $input-container-padding);
   @include rtl(padding-right, $input-container-padding, 0);
   border-bottom-width: $select-border-width-default;
@@ -5394,8 +5402,10 @@ md-input-container md-select {
   background-color: rgba(0,0,0,0);
   position: relative;
   box-sizing: content-box;
-  min-width: 8 * $baseline-grid;
+  min-width: 11 * $baseline-grid;
   min-height: 26px;
+  margin-bottom: auto;
+  -ms-flex-item-align: start; // workaround for margin-bottom: auto
   flex-grow: 1;
 
   > span:not(.md-select-icon) {
@@ -5415,8 +5425,7 @@ md-input-container md-select {
     @include rtl(align-items, flex-end, flex-start);
     @include rtl(text-align, right, left);
     width: 3 * $baseline-grid;
-    margin: 0 .5 * $baseline-grid;
-    transform: translate3d(0, -2px, 0);
+    transform: translateY(-2px);
     font-size: 1.2rem;
   }
 
@@ -5425,9 +5434,11 @@ md-input-container md-select {
     content: '\25BC';
     position: relative;
     top: 2px;
+    @include rtl(right, -4px, auto);
+    @include rtl(left, auto, -4px);
     speak: none;
     font-size: 13px;
-    transform: scaleY(0.5) scaleX(1);
+    transform: scaleY(0.5);
   }
 
   &.md-select-placeholder {
@@ -6281,8 +6292,8 @@ $switch-margin: 16px !default;
 
 .md-inline-form {
   md-switch {
-    margin-top: 18px;
-    margin-bottom: 19px;
+    margin-top: $input-container-vertical-margin;
+    margin-bottom: $input-container-vertical-margin + 1px;
   }
 }
 

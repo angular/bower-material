@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-c2c336b
+ * v1.2.0-rc.1-master-0626482
  */
 goog.provide('ngmaterial.components.select');
 goog.require('ngmaterial.components.backdrop');
@@ -2083,7 +2083,7 @@ function SelectProvider($$interimElementProvider) {
           transformOrigin = '50% 100%';
         }
       } else {
-        left = (targetRect.left + centeredRect.left - centeredRect.paddingLeft) + 2;
+        left = (targetRect.left + centeredRect.left - centeredRect.paddingLeft);
         top = Math.floor(targetRect.top + targetRect.height / 2 - centeredRect.height / 2 -
             centeredRect.top + contentNode.scrollTop) + 2;
 

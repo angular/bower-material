@@ -2,13 +2,13 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-c2c336b
+ * v1.2.0-rc.1-master-0626482
  */
 md-input-container {
   display: inline-block;
   position: relative;
   padding: 2px;
-  margin: 18px 0;
+  margin: 18px 0px;
   vertical-align: middle;
   /*
    * The .md-input class is added to the input/textarea
@@ -57,12 +57,12 @@ md-input-container {
   md-input-container input[type="month"],
   md-input-container input[type="time"],
   md-input-container input[type="week"] {
-    min-height: 26px; }
+    min-height: 30px; }
   md-input-container textarea {
     resize: none;
     overflow: hidden; }
     md-input-container textarea.md-input {
-      min-height: 26px;
+      min-height: 30px;
       -ms-flex-preferred-size: auto; }
     md-input-container textarea[md-no-autogrow] {
       height: auto;
@@ -196,7 +196,7 @@ md-input-container {
     transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
     opacity: 1;
     margin-top: 0;
-    padding-top: 5px; }
+    padding-top: 8px; }
     md-input-container .md-input-message-animation:not(.md-char-counter), md-input-container .md-char-counter:not(.md-char-counter) {
       padding-right: 5px;
       padding-left: 0; }

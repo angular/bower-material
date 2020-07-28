@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.1-master-c2c336b
+ * v1.2.0-rc.1-master-0626482
  */
 md-radio-button {
   box-sizing: border-box;
@@ -153,10 +153,14 @@ md-radio-group[disabled] md-radio-button {
   .md-inline-form md-radio-group md-radio-button {
     display: inline-block;
     height: 30px;
-    padding: 2px;
+    padding: 2px 10px 2px 6px;
     box-sizing: border-box;
     margin-top: 0;
     margin-bottom: 0; }
+    .md-inline-form md-radio-group md-radio-button .md-label {
+      top: 4px; }
+    .md-inline-form md-radio-group md-radio-button .md-container {
+      margin-top: 2px; }
 
 @media screen and (-ms-high-contrast: active) {
   md-radio-button.md-default-theme .md-on {
