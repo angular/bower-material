@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.2-master-9159384
+ * v1.2.0-rc.2-master-3400321
  */
 md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {
   background-color: '{{primary-color}}';
@@ -16,8 +16,6 @@ md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {
   md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-input-container[md-no-float] .md-input {
     color: '{{primary-default-contrast}}';
     border-color: '{{primary-default-contrast-divider}}'; }
-    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-input-container[md-no-float] .md-input::-webkit-input-placeholder {
-      color: '{{primary-default-contrast-hint}}'; }
     md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-input-container[md-no-float] .md-input:-ms-input-placeholder {
       color: '{{primary-default-contrast-hint}}'; }
     md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-input-container[md-no-float] .md-input::-ms-input-placeholder {
@@ -29,8 +27,6 @@ md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {
     md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-input-container[md-no-float] .md-input::-moz-placeholder {
       color: '{{primary-default-contrast-hint}}';
       opacity: 1; }
-  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-input-container[md-no-float].md-input-focused .md-input::-webkit-input-placeholder {
-    color: '{{primary-default-contrast-secondary}}'; }
   md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-input-container[md-no-float].md-input-focused .md-input:-ms-input-placeholder {
     color: '{{primary-default-contrast-secondary}}'; }
   md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-input-container[md-no-float].md-input-focused .md-input::-ms-input-placeholder {
@@ -65,8 +61,6 @@ md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {
     md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent md-input-container[md-no-float] .md-input {
       color: '{{accent-default-contrast}}';
       border-color: '{{accent-default-contrast-divider}}'; }
-      md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent md-input-container[md-no-float] .md-input::-webkit-input-placeholder {
-        color: '{{accent-default-contrast-hint}}'; }
       md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent md-input-container[md-no-float] .md-input:-ms-input-placeholder {
         color: '{{accent-default-contrast-hint}}'; }
       md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent md-input-container[md-no-float] .md-input::-ms-input-placeholder {
@@ -78,8 +72,6 @@ md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {
       md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent md-input-container[md-no-float] .md-input::-moz-placeholder {
         color: '{{accent-default-contrast-hint}}';
         opacity: 1; }
-    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent md-input-container[md-no-float].md-input-focused .md-input::-webkit-input-placeholder {
-      color: '{{accent-default-contrast-secondary}}'; }
     md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent md-input-container[md-no-float].md-input-focused .md-input:-ms-input-placeholder {
       color: '{{accent-default-contrast-secondary}}'; }
     md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent md-input-container[md-no-float].md-input-focused .md-input::-ms-input-placeholder {
@@ -109,8 +101,6 @@ md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {
     md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn md-input-container[md-no-float] .md-input {
       color: '{{warn-default-contrast}}';
       border-color: '{{warn-default-contrast-divider}}'; }
-      md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn md-input-container[md-no-float] .md-input::-webkit-input-placeholder {
-        color: '{{warn-default-contrast-hint}}'; }
       md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn md-input-container[md-no-float] .md-input:-ms-input-placeholder {
         color: '{{warn-default-contrast-hint}}'; }
       md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn md-input-container[md-no-float] .md-input::-ms-input-placeholder {
@@ -122,8 +112,6 @@ md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {
       md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn md-input-container[md-no-float] .md-input::-moz-placeholder {
         color: '{{warn-default-contrast-hint}}';
         opacity: 1; }
-    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn md-input-container[md-no-float].md-input-focused .md-input::-webkit-input-placeholder {
-      color: '{{warn-default-contrast-secondary}}'; }
     md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn md-input-container[md-no-float].md-input-focused .md-input:-ms-input-placeholder {
       color: '{{warn-default-contrast-secondary}}'; }
     md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn md-input-container[md-no-float].md-input-focused .md-input::-ms-input-placeholder {
