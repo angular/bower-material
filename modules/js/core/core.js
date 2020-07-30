@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.2-master-87bcb47
+ * v1.2.0-rc.2-master-9159384
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -492,10 +492,12 @@ function MdConstantFactory() {
      }]);
 
   /**
-   * iterator is a list facade to easily support iteration and accessors
+   * iterator is a list facade to easily support iteration and accessors/
    *
-   * @param items Array list which this iterator will enumerate
-   * @param reloop Boolean enables iterator to consider the list as an endless reloop
+   * @param {any[]} items Array list which this iterator will enumerate
+   * @param {boolean=} reloop enables iterator to consider the list as an endless loop
+   * @return {{add: add, next: (function()), last: (function(): any|null), previous: (function()), count: (function(): number), hasNext: (function(*=): Array.length|*|number|boolean), inRange: (function(*): boolean), remove: remove, contains: (function(*=): *|boolean), itemAt: (function(*=): any|null), findBy: (function(*, *): *[]), hasPrevious: (function(*=): Array.length|*|number|boolean), items: (function(): *[]), indexOf: (function(*=): number), first: (function(): any|null)}}
+   * @constructor
    */
   function MdIterator(items, reloop) {
     var trueFn = function() { return true; };
@@ -529,7 +531,6 @@ function MdConstantFactory() {
 
       hasPrevious: hasPrevious,
       hasNext: hasNext
-
     };
 
     /**
