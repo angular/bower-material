@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.2-master-01351b1
+ * v1.2.0-rc.2-master-6699ae6
  */
 goog.provide('ngmaterial.components.chips');
 goog.require('ngmaterial.components.autocomplete');
@@ -477,6 +477,12 @@ function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $md
 
   /** @type {string} */
   this.addOnBlur = $mdUtil.parseAttributeBoolean($attrs.mdAddOnBlur);
+
+  /**
+   * The class names to apply to the autocomplete or input.
+   * @type {string}
+   */
+  this.inputClass = '';
 
   /**
    * The text to be used as the aria-label for the input.
@@ -1434,7 +1440,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    * <ul style="padding-left:20px;">
    *
    *   <ul>Style
-   *     <li>Colours for hover, press states (ripple?).</li>
+   *     <li>Colors for hover, press states (ripple?).</li>
    *   </ul>
    *
    *   <ul>Validation
@@ -1536,6 +1542,9 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    * @param {expression=} md-on-select An expression which will be called when a chip is selected.
    * @param {boolean=} md-require-match If true, and the chips template contains an autocomplete,
    *    only allow selection of pre-defined chips (i.e. you cannot add new ones).
+   * @param {string=} md-input-class This class will be applied to the child input for custom
+   *    styling. If you are using an `md-autocomplete`, then you need to put this attribute on the
+   *    `md-autocomplete` rather than the `md-chips`.
    * @param {string=} input-aria-describedby A space-separated list of element IDs. This should
    *     contain the IDs of any elements that describe this autocomplete. Screen readers will read
    *     the content of these elements at the end of announcing that the chips input has been
@@ -1650,7 +1659,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
 
   var CHIP_INPUT_TEMPLATE = '\
         <input\
-            class="md-input"\
+            class="md-input{{ $mdChipsCtrl.inputClass ? \' \' + $mdChipsCtrl.inputClass: \'\'}}"\
             tabindex="0"\
             aria-label="{{$mdChipsCtrl.inputAriaLabel}}"\
             placeholder="{{$mdChipsCtrl.getPlaceholder()}}"\
@@ -1707,6 +1716,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
         addedMessage: '@?mdAddedMessage',
         removedMessage: '@?mdRemovedMessage',
         onSelect: '&?mdOnSelect',
+        inputClass: '@?mdInputClass',
         inputAriaDescribedBy: '@?inputAriaDescribedby',
         inputAriaLabelledBy: '@?inputAriaLabelledby',
         inputAriaLabel: '@?',
@@ -1958,6 +1968,9 @@ MdContactChipsCtrl.prototype.setupChipsAria = function() {
   if (this.inputAriaLabel) {
     chipsCtrl.inputAriaLabel = this.inputAriaLabel;
   }
+  if (this.inputClass) {
+    chipsCtrl.inputClass = this.inputClass;
+  }
 };
 
 MdContactChipsCtrl.prototype.setupAutocompleteAria = function() {
@@ -2041,6 +2054,8 @@ MdContactChips['$inject'] = ["$mdTheming", "$mdUtil"];angular
  *    contact's image.
  * @param {number=} md-min-length Specifies the minimum length of text before autocomplete will
  *    make suggestions
+ * @param {string=} md-input-class This class will be applied to the child `md-autocomplete` for
+ *    custom styling.
  * @param {string=} input-aria-describedby A space-separated list of element IDs. This should
  *     contain the IDs of any elements that describe this autocomplete. Screen readers will read
  *     the content of these elements at the end of announcing that the chips input has been
@@ -2099,6 +2114,7 @@ var MD_CONTACT_CHIPS_TEMPLATE = '\
               md-no-cache="true"\
               md-min-length="$mdContactChipsCtrl.minLength"\
               md-autoselect\
+              ng-attr-md-input-class="{{$mdContactChipsCtrl.inputClass}}"\
               ng-keydown="$mdContactChipsCtrl.inputKeydown($event)"\
               placeholder="{{$mdContactChipsCtrl.contacts.length === 0 ?\
                   $mdContactChipsCtrl.placeholder : $mdContactChipsCtrl.secondaryPlaceholder}}">\
@@ -2161,6 +2177,7 @@ function MdContactChips($mdTheming, $mdUtil) {
       chipAppendDelay: '@?mdChipAppendDelay',
       separatorKeys: '=?mdSeparatorKeys',
       removedMessage: '@?mdRemovedMessage',
+      inputClass: '@?mdInputClass',
       inputAriaDescribedBy: '@?inputAriaDescribedby',
       inputAriaLabelledBy: '@?inputAriaLabelledby',
       inputAriaLabel: '@?',
