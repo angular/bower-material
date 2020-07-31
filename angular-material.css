@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-rc.2-master-98a94db
+ * v1.2.0-rc.2-master-01351b1
  */
 html, body {
   height: 100%;
@@ -1234,7 +1234,7 @@ md-input-container .md-checkbox-link-label {
 .md-chips {
   display: block;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-size: 16px;
+  font-size: 13px;
   padding: 0 0 8px 3px;
   vertical-align: middle; }
   .md-chips:after {
@@ -1248,10 +1248,10 @@ md-input-container .md-checkbox-link-label {
   .md-chips:not(.md-readonly) {
     cursor: text; }
   .md-chips.md-removable md-chip {
-    padding-right: 22px; }
+    padding-right: 28px; }
     [dir=rtl] .md-chips.md-removable md-chip {
       padding-right: 0;
-      padding-left: 22px; }
+      padding-left: 28px; }
     .md-chips.md-removable md-chip .md-chip-content {
       padding-right: 4px; }
       [dir=rtl] .md-chips.md-removable md-chip .md-chip-content {
