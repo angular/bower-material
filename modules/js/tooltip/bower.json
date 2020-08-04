@@ -1,8 +1,8 @@
 {
   "name": "angular-material-tooltip",
-  "version": "1.2.0-master-963c34f",
+  "version": "1.2.0-master-66c017e",
   "dependencies": {
-    "angular-material-core": "1.2.0-master-963c34f",
-    "angular-material-panel": "1.2.0-master-963c34f"
+    "angular-material-core": "1.2.0-master-66c017e",
+    "angular-material-panel": "1.2.0-master-66c017e"
   }
 }
