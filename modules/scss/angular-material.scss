@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-master-66c017e
+ * v1.2.0-master-4afba57
  */
 // Typography
 // ------------------------------
@@ -5369,7 +5369,8 @@ md-select {
     }
     &:focus {
       .md-select-value {
-        border-bottom: $select-border-width-default + 1px solid;
+        border-bottom-style: solid;
+        border-bottom-width: $select-border-width-default + 1px;
         padding-bottom: $select-value-padding-bottom - 1px;
       }
     }
