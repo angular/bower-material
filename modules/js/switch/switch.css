@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.25
+ * v1.1.25-master-e9c8f6a
  */
 .md-inline-form md-switch {
   margin-top: 18px;
@@ -19,9 +19,7 @@ md-switch {
           user-select: none;
   height: 30px;
   line-height: 28px;
-  -webkit-box-align: center;
-          align-items: center;
-  display: -webkit-box;
+  align-items: center;
   display: flex;
   margin-left: inherit;
   margin-right: 16px; }
@@ -87,12 +85,10 @@ md-switch {
     left: 0;
     width: 16px;
     position: absolute;
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
     z-index: 1; }
   md-switch.md-checked .md-thumb-container {
-    -webkit-transform: translate3d(100%, 0, 0);
-            transform: translate3d(100%, 0, 0); }
+    transform: translate3d(100%, 0, 0); }
   md-switch .md-thumb {
     position: absolute;
     margin: 0;
@@ -114,7 +110,6 @@ md-switch {
       top: 0;
       right: 0;
       bottom: 0;
-      -webkit-transition: all 0.5s;
       transition: all 0.5s;
       width: auto; }
     md-switch .md-thumb .md-ripple-container {
@@ -129,16 +124,11 @@ md-switch {
   md-switch:not(.md-dragging) .md-bar,
   md-switch:not(.md-dragging) .md-thumb-container,
   md-switch:not(.md-dragging) .md-thumb {
-    -webkit-transition: all 0.08s linear;
     transition: all 0.08s linear;
-    -webkit-transition-property: background-color, -webkit-transform;
-    transition-property: background-color, -webkit-transform;
-    transition-property: transform, background-color;
-    transition-property: transform, background-color, -webkit-transform; }
+    transition-property: transform, background-color; }
   md-switch:not(.md-dragging) .md-bar,
   md-switch:not(.md-dragging) .md-thumb {
-    -webkit-transition-delay: 0.05s;
-            transition-delay: 0.05s; }
+    transition-delay: 0.05s; }
 
 @media screen and (-ms-high-contrast: active) {
   md-switch.md-default-theme .md-bar {

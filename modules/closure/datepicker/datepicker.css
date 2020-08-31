@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.25
+ * v1.1.25-master-e9c8f6a
  */
 /** Styles for mdCalendar. */
 md-calendar {
@@ -51,7 +51,6 @@ md-calendar {
     cursor: default; }
 
 .md-calendar-date-selection-indicator {
-  -webkit-transition: background-color, color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: background-color, color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   border-radius: 50%;
   display: inline-block;
@@ -71,11 +70,9 @@ md-calendar {
   .md-calendar-month-label.md-calendar-label-clickable {
     cursor: pointer; }
   .md-calendar-month-label md-icon {
-    -webkit-transform: rotate(180deg);
-            transform: rotate(180deg); }
+    transform: rotate(180deg); }
     [dir=rtl] .md-calendar-month-label md-icon {
-      -webkit-transform: none;
-              transform: none; }
+      transform: none; }
   .md-calendar-month-label span {
     vertical-align: middle; }
 
@@ -158,8 +155,8 @@ md-datepicker {
     border: none; }
   ._md-datepicker-floating-label > md-datepicker .md-datepicker-button {
     float: left;
-    margin-top: -12px;
-    top: 9.5px; }
+    margin-top: -16px;
+    top: 13.5px; }
     [dir=rtl] ._md-datepicker-floating-label > md-datepicker .md-datepicker-button {
       float: right; }
 
@@ -216,17 +213,11 @@ md-datepicker {
   border-width: 1px;
   border-style: solid;
   background: transparent;
-  -webkit-transform: scale(0);
-          transform: scale(0);
-  -webkit-transform-origin: 0 0;
-          transform-origin: 0 0;
-  -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-  transition: -webkit-transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-  transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-  transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  transform: scale(0);
+  transform-origin: 0 0;
+  transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); }
   .md-datepicker-calendar-pane.md-pane-open {
-    -webkit-transform: scale(1);
-            transform: scale(1); }
+    transform: scale(1); }
 
 .md-datepicker-input-mask {
   height: 40px;
@@ -239,7 +230,6 @@ md-datepicker {
 
 .md-datepicker-calendar {
   opacity: 0;
-  -webkit-transition: opacity 0.2s cubic-bezier(0.5, 0, 0.25, 1);
   transition: opacity 0.2s cubic-bezier(0.5, 0, 0.25, 1); }
   .md-pane-open .md-datepicker-calendar {
     opacity: 1; }
@@ -250,8 +240,7 @@ md-datepicker {
   position: absolute;
   top: 50%;
   left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   width: 0;
   height: 0;
   border-left: 5px solid transparent;
@@ -262,14 +251,12 @@ md-datepicker {
   position: absolute;
   right: 0;
   bottom: -2.5px;
-  -webkit-transform: translateX(45%);
-          transform: translateX(45%); }
+  transform: translateX(45%); }
   [dir=rtl] .md-datepicker-triangle-button {
     right: auto;
     left: 0; }
   [dir=rtl] .md-datepicker-triangle-button {
-    -webkit-transform: translateX(-45%);
-            transform: translateX(-45%); }
+    transform: translateX(-45%); }
 
 .md-datepicker-triangle-button.md-button.md-icon-button {
   height: 36px;
@@ -297,15 +284,9 @@ md-datepicker[disabled] .md-datepicker-triangle-button {
   display: none; }
 
 .md-datepicker-calendar-pane .md-calendar {
-  -webkit-transform: translateY(-85px);
-          transform: translateY(-85px);
-  -webkit-transition: -webkit-transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
-  transition: -webkit-transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transform: translateY(-85px);
   transition: transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
-  transition: transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
-  -webkit-transition-delay: 0.125s;
-          transition-delay: 0.125s; }
+  transition-delay: 0.125s; }
 
 .md-datepicker-calendar-pane.md-pane-open .md-calendar {
-  -webkit-transform: translateY(0);
-          transform: translateY(0); }
+  transform: translateY(0); }

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.25
+ * v1.1.25-master-e9c8f6a
  */
 md-list {
   display: block;
@@ -12,95 +12,104 @@ md-list {
     font-weight: 500;
     letter-spacing: 0.010em;
     line-height: 1.2em; }
-  md-list.md-dense md-list-item,
-  md-list.md-dense md-list-item .md-list-item-inner {
-    min-height: 48px; }
-    md-list.md-dense md-list-item::before,
-    md-list.md-dense md-list-item .md-list-item-inner::before {
+  md-list.md-dense:not(.md-dense-disabled) md-list-item,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner {
+    min-height: 40px; }
+    md-list.md-dense:not(.md-dense-disabled) md-list-item::before,
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner::before {
       content: '';
-      min-height: 48px;
+      min-height: 40px;
       visibility: hidden;
       display: inline-block; }
-    md-list.md-dense md-list-item md-icon:first-child,
-    md-list.md-dense md-list-item .md-list-item-inner md-icon:first-child {
+    md-list.md-dense:not(.md-dense-disabled) md-list-item md-icon:first-child,
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner md-icon:first-child {
       width: 20px;
       height: 20px; }
-    md-list.md-dense md-list-item > md-icon:first-child:not(.md-avatar-icon),
-    md-list.md-dense md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
-      margin-right: 36px; }
-      [dir=rtl] md-list.md-dense md-list-item > md-icon:first-child:not(.md-avatar-icon), [dir=rtl]
-      md-list.md-dense md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
+    md-list.md-dense:not(.md-dense-disabled) md-list-item > md-icon:first-child:not(.md-avatar-icon),
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
+      margin-right: 36px;
+      margin-top: 4px;
+      margin-bottom: 4px; }
+      [dir=rtl] md-list.md-dense:not(.md-dense-disabled) md-list-item > md-icon:first-child:not(.md-avatar-icon), [dir=rtl]
+      md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
         margin-right: auto;
         margin-left: 36px; }
-    md-list.md-dense md-list-item .md-avatar, md-list.md-dense md-list-item .md-avatar-icon,
-    md-list.md-dense md-list-item .md-list-item-inner .md-avatar,
-    md-list.md-dense md-list-item .md-list-item-inner .md-avatar-icon {
-      margin-right: 20px; }
-      [dir=rtl] md-list.md-dense md-list-item .md-avatar, [dir=rtl] md-list.md-dense md-list-item .md-avatar-icon, [dir=rtl]
-      md-list.md-dense md-list-item .md-list-item-inner .md-avatar, [dir=rtl]
-      md-list.md-dense md-list-item .md-list-item-inner .md-avatar-icon {
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-avatar, md-list.md-dense:not(.md-dense-disabled) md-list-item .md-avatar-icon,
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner .md-avatar,
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner .md-avatar-icon {
+      margin-right: 20px;
+      margin-top: 6px;
+      margin-bottom: 6px; }
+      [dir=rtl] md-list.md-dense:not(.md-dense-disabled) md-list-item .md-avatar, [dir=rtl] md-list.md-dense:not(.md-dense-disabled) md-list-item .md-avatar-icon, [dir=rtl]
+      md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner .md-avatar, [dir=rtl]
+      md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner .md-avatar-icon {
         margin-right: auto;
         margin-left: 20px; }
-    md-list.md-dense md-list-item .md-avatar,
-    md-list.md-dense md-list-item .md-list-item-inner .md-avatar {
-      -webkit-box-flex: 0;
-              flex: none;
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-avatar,
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner .md-avatar {
+      flex: none;
       width: 36px;
       height: 36px; }
-  md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-2-line > .md-no-style .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset, md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text.md-offset {
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-secondary-container .md-secondary.md-button,
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner .md-secondary-container .md-secondary.md-button {
+      margin-top: 4px;
+      margin-bottom: 4px; }
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-secondary-container md-checkbox:not(.md-dense-disabled),
+    md-list.md-dense:not(.md-dense-disabled) md-list-item .md-list-item-inner .md-secondary-container md-checkbox:not(.md-dense-disabled) {
+      min-height: 40px; }
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line .md-list-item-text.md-offset, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style .md-list-item-text.md-offset, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line .md-list-item-text.md-offset, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style .md-list-item-text.md-offset {
     margin-left: 56px; }
-    [dir=rtl] md-list.md-dense md-list-item.md-2-line .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense md-list-item.md-2-line > .md-no-style .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense md-list-item.md-3-line .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text.md-offset {
+    [dir=rtl] md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line .md-list-item-text.md-offset, [dir=rtl] md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style .md-list-item-text.md-offset {
       margin-left: auto;
       margin-right: 56px; }
-  md-list.md-dense md-list-item.md-2-line .md-list-item-text h3,
-  md-list.md-dense md-list-item.md-2-line .md-list-item-text h4,
-  md-list.md-dense md-list-item.md-2-line .md-list-item-text p, md-list.md-dense md-list-item.md-2-line > .md-no-style .md-list-item-text h3,
-  md-list.md-dense md-list-item.md-2-line > .md-no-style .md-list-item-text h4,
-  md-list.md-dense md-list-item.md-2-line > .md-no-style .md-list-item-text p, md-list.md-dense md-list-item.md-3-line .md-list-item-text h3,
-  md-list.md-dense md-list-item.md-3-line .md-list-item-text h4,
-  md-list.md-dense md-list-item.md-3-line .md-list-item-text p, md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text h3,
-  md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text h4,
-  md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text p {
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line .md-list-item-text h3,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line .md-list-item-text h4,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line .md-list-item-text p, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style .md-list-item-text h3,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style .md-list-item-text h4,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style .md-list-item-text p, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line .md-list-item-text h3,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line .md-list-item-text h4,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line .md-list-item-text p, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style .md-list-item-text h3,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style .md-list-item-text h4,
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style .md-list-item-text p {
     line-height: 1.05;
     font-size: 12px;
     padding-bottom: 4px; }
-  md-list.md-dense md-list-item.md-2-line .md-list-item-text h3, md-list.md-dense md-list-item.md-2-line > .md-no-style .md-list-item-text h3, md-list.md-dense md-list-item.md-3-line .md-list-item-text h3, md-list.md-dense md-list-item.md-3-line > .md-no-style .md-list-item-text h3 {
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line .md-list-item-text h3, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style .md-list-item-text h3, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line .md-list-item-text h3, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style .md-list-item-text h3 {
     font-size: 13px; }
-  md-list.md-dense md-list-item.md-2-line, md-list.md-dense md-list-item.md-2-line > .md-no-style {
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style {
     min-height: 60px; }
-    md-list.md-dense md-list-item.md-2-line::before, md-list.md-dense md-list-item.md-2-line > .md-no-style::before {
+    md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line::before, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style::before {
       content: '';
       min-height: 60px;
       visibility: hidden;
       display: inline-block; }
-    md-list.md-dense md-list-item.md-2-line > .md-avatar, md-list.md-dense md-list-item.md-2-line .md-avatar-icon, md-list.md-dense md-list-item.md-2-line > .md-no-style > .md-avatar, md-list.md-dense md-list-item.md-2-line > .md-no-style .md-avatar-icon {
+    md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-avatar, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line .md-avatar-icon, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style > .md-avatar, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-2-line > .md-no-style .md-avatar-icon {
       margin-top: 12px; }
-  md-list.md-dense md-list-item.md-3-line, md-list.md-dense md-list-item.md-3-line > .md-no-style {
+  md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style {
     min-height: 76px; }
-    md-list.md-dense md-list-item.md-3-line::before, md-list.md-dense md-list-item.md-3-line > .md-no-style::before {
+    md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line::before, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style::before {
       content: '';
       min-height: 76px;
       visibility: hidden;
       display: inline-block; }
-    md-list.md-dense md-list-item.md-3-line > md-icon:first-child,
-    md-list.md-dense md-list-item.md-3-line > .md-avatar, md-list.md-dense md-list-item.md-3-line > .md-no-style > md-icon:first-child,
-    md-list.md-dense md-list-item.md-3-line > .md-no-style > .md-avatar {
+    md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > md-icon:first-child,
+    md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-avatar, md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style > md-icon:first-child,
+    md-list.md-dense:not(.md-dense-disabled) md-list-item.md-3-line > .md-no-style > .md-avatar {
       margin-top: 16px; }
+  md-list.md-dense:not(.md-dense-disabled) .md-subheader-inner {
+    padding-top: 12px;
+    padding-bottom: 12px; }
 
 md-list-item {
   position: relative; }
   md-list-item.md-proxy-focus.md-focused .md-no-style {
-    -webkit-transition: background-color 0.15s linear;
     transition: background-color 0.15s linear; }
   md-list-item._md-button-wrap {
     position: relative; }
     md-list-item._md-button-wrap > div.md-button:first-child {
-      display: -webkit-box;
       display: flex;
-      -webkit-box-align: center;
-              align-items: center;
-      -webkit-box-pack: start;
-              justify-content: flex-start;
+      align-items: center;
+      justify-content: flex-start;
       padding: 0px 16px;
       margin: 0;
       font-weight: 400;
@@ -126,8 +135,7 @@ md-list-item {
   md-list-item .md-no-style {
     position: relative;
     padding: 0px 16px;
-    -webkit-box-flex: 1;
-            flex: 1 1 auto; }
+    flex: 1 1 auto; }
     md-list-item.md-no-proxy.md-button,
     md-list-item .md-no-style.md-button {
       font-size: inherit;
@@ -136,11 +144,8 @@ md-list-item {
       text-transform: none;
       width: 100%;
       white-space: normal;
-      -webkit-box-orient: inherit;
-      -webkit-box-direction: inherit;
-              flex-direction: inherit;
-      -webkit-box-align: inherit;
-              align-items: inherit;
+      flex-direction: inherit;
+      align-items: inherit;
       border-radius: 0;
       margin: 0; }
       [dir=rtl] md-list-item.md-no-proxy.md-button, [dir=rtl]
@@ -171,12 +176,9 @@ md-list-item {
         right: 72px; }
   md-list-item,
   md-list-item .md-list-item-inner {
-    display: -webkit-box;
     display: flex;
-    -webkit-box-pack: start;
-            justify-content: flex-start;
-    -webkit-box-align: center;
-            align-items: center;
+    justify-content: flex-start;
+    align-items: center;
     min-height: 48px;
     height: auto; }
     md-list-item::before,
@@ -237,8 +239,7 @@ md-list-item {
         margin-left: 16px; }
     md-list-item .md-avatar,
     md-list-item .md-list-item-inner .md-avatar {
-      -webkit-box-flex: 0;
-              flex: none;
+      flex: none;
       width: 40px;
       height: 40px; }
     md-list-item .md-avatar-icon,
@@ -251,21 +252,19 @@ md-list-item {
     md-list-item > md-checkbox,
     md-list-item .md-list-item-inner > md-checkbox {
       width: 24px;
-      margin-left: 3px;
-      margin-right: 29px;
-      margin-top: 16px; }
+      min-height: 40px;
+      margin-left: 0px;
+      margin-right: 29px; }
       [dir=rtl] md-list-item > md-checkbox, [dir=rtl]
       md-list-item .md-list-item-inner > md-checkbox {
         margin-left: 29px; }
       [dir=rtl] md-list-item > md-checkbox, [dir=rtl]
       md-list-item .md-list-item-inner > md-checkbox {
-        margin-right: 3px; }
+        margin-right: 0px; }
     md-list-item .md-secondary-container,
     md-list-item .md-list-item-inner .md-secondary-container {
-      display: -webkit-box;
       display: flex;
-      -webkit-box-align: center;
-              align-items: center;
+      align-items: center;
       position: relative;
       flex-shrink: 0;
       margin: auto;
@@ -288,11 +287,12 @@ md-list-item {
           margin-left: 0; }
       md-list-item .md-secondary-container md-checkbox,
       md-list-item .md-list-item-inner .md-secondary-container md-checkbox {
-        margin-top: 0;
-        margin-bottom: 0; }
+        margin: 0 6px;
+        padding: 0 8px;
+        min-height: 40px; }
         md-list-item .md-secondary-container md-checkbox:last-child,
         md-list-item .md-list-item-inner .md-secondary-container md-checkbox:last-child {
-          width: 24px;
+          width: 40px;
           margin-right: 0; }
           [dir=rtl] md-list-item .md-secondary-container md-checkbox:last-child, [dir=rtl]
           md-list-item .md-list-item-inner .md-secondary-container md-checkbox:last-child {
@@ -310,20 +310,16 @@ md-list-item {
     md-list-item > p, md-list-item > .md-list-item-inner > p,
     md-list-item .md-list-item-inner > p,
     md-list-item .md-list-item-inner > .md-list-item-inner > p {
-      -webkit-box-flex: 1;
-              flex: 1 1 auto;
+      flex: 1 1 auto;
       margin: 0; }
   md-list-item.md-2-line, md-list-item.md-2-line > .md-no-style, md-list-item.md-3-line, md-list-item.md-3-line > .md-no-style {
-    -webkit-box-align: start;
-            align-items: flex-start;
-    -webkit-box-pack: center;
-            justify-content: center; }
+    align-items: flex-start;
+    justify-content: center; }
     md-list-item.md-2-line.md-long-text, md-list-item.md-2-line > .md-no-style.md-long-text, md-list-item.md-3-line.md-long-text, md-list-item.md-3-line > .md-no-style.md-long-text {
       margin-top: 8px;
       margin-bottom: 8px; }
     md-list-item.md-2-line .md-list-item-text, md-list-item.md-2-line > .md-no-style .md-list-item-text, md-list-item.md-3-line .md-list-item-text, md-list-item.md-3-line > .md-no-style .md-list-item-text {
-      -webkit-box-flex: 1;
-              flex: 1 1 auto;
+      flex: 1 1 auto;
       margin: auto;
       text-overflow: ellipsis;
       overflow: hidden; }
@@ -369,8 +365,7 @@ md-list-item {
     md-list-item.md-2-line > md-icon:first-child, md-list-item.md-2-line > .md-no-style > md-icon:first-child {
       align-self: flex-start; }
     md-list-item.md-2-line .md-list-item-text, md-list-item.md-2-line > .md-no-style .md-list-item-text {
-      -webkit-box-flex: 1;
-              flex: 1 1 auto; }
+      flex: 1 1 auto; }
   md-list-item.md-3-line, md-list-item.md-3-line > .md-no-style {
     height: auto;
     min-height: 88px; }
