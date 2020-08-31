@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-master-7395914
+ * v1.2.0-master-90d24cf
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -14669,7 +14669,7 @@ angular.module('material.components.datepicker', [
   /**
    * Sets up the controller's reference to ngModelController.
    * @param {!ngModel.NgModelController} ngModelCtrl Instance of the ngModel controller.
-   * @param {Object} inputDirective Config for Angular's `input` directive.
+   * @param {Object} inputDirective Config for AngularJS's `input` directive.
    */
   CalendarCtrl.prototype.configureNgModel = function(ngModelCtrl, inputDirective) {
     var self = this;
@@ -14694,7 +14694,7 @@ angular.module('material.components.datepicker', [
       // In the case where a conversion is needed, the $viewValue here will be a string like
       // "2020-05-10" instead of a Date object.
       if (!self.dateUtil.isValidDate(value)) {
-        convertedDate = self.dateUtil.removeLocalTzAndReparseDate(new Date(this.$viewValue));
+        convertedDate = self.dateUtil.removeLocalTzAndReparseDate(new Date(value));
         if (self.dateUtil.isValidDate(convertedDate)) {
           value = convertedDate;
         }
@@ -14728,7 +14728,13 @@ angular.module('material.components.datepicker', [
     var value = this.dateUtil.createDateAtMidnight(date);
     this.focusDate(value);
     this.$scope.$emit('md-calendar-change', value);
-    this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone), 'default');
+    // Using the timezone when the offset is negative (GMT+X) causes the previous day to be
+    // selected here. This check avoids that.
+    if (timezone == null || value.getTimezoneOffset() < 0) {
+      this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd'), 'default');
+    } else {
+      this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone), 'default');
+    }
     this.ngModelCtrl.$render();
     return value;
   };
@@ -16627,15 +16633,10 @@ angular.module('material.components.datepicker', [
 
     /**
      * @param {Date} value date in local timezone
-     * @return {Date} date with local timezone removed
+     * @return {Date} date with local timezone offset removed
      */
     function removeLocalTzAndReparseDate(value) {
-      var dateValue, formattedDate;
-      // Remove the local timezone offset before calling formatDate.
-      dateValue = new Date(value.getTime() + 60000 * value.getTimezoneOffset());
-      formattedDate = $mdDateLocale.formatDate(dateValue);
-      // parseDate only works with a date formatted by formatDate when using Moment validation.
-      return $mdDateLocale.parseDate(formattedDate);
+      return $mdDateLocale.parseDate(value.getTime() + 60000 * value.getTimezoneOffset());
     }
   }]);
 })();
@@ -17638,7 +17639,13 @@ angular.module('material.components.datepicker', [
    */
   DatePickerCtrl.prototype.setModelValue = function(value) {
     var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
-    this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone), 'default');
+    // Using the timezone when the offset is negative (GMT+X) causes the previous day to be
+    // set as the model value here. This check avoids that.
+    if (timezone == null || value.getTimezoneOffset() < 0) {
+      this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd'), 'default');
+    } else {
+      this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone), 'default');
+    }
   };
 
   /**
@@ -17649,12 +17656,18 @@ angular.module('material.components.datepicker', [
     var self = this;
     var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
 
-    if (this.dateUtil.isValidDate(value) && timezone != null) {
+    if (this.dateUtil.isValidDate(value) && timezone != null && value.getTimezoneOffset() >= 0) {
       this.date = this.dateUtil.removeLocalTzAndReparseDate(value);
     } else {
       this.date = value;
     }
-    this.inputElement.value = this.locale.formatDate(value, timezone);
+    // Using the timezone when the offset is negative (GMT+X) causes the previous day to be
+    // used here. This check avoids that.
+    if (timezone == null || value.getTimezoneOffset() < 0) {
+      this.inputElement.value = this.locale.formatDate(value);
+    } else {
+      this.inputElement.value = this.locale.formatDate(value, timezone);
+    }
     this.mdInputContainer && this.mdInputContainer.setHasValue(!!value);
     this.resizeInputElement();
     // This is often called from the $formatters section of the $validators pipeline.
@@ -39070,4 +39083,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.2.0-master-7395914"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.2.0-master-90d24cf"}};
