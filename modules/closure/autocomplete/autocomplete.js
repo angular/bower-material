@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-master-90d24cf
+ * v1.1.25
  */
 goog.provide('ngmaterial.components.autocomplete');
 goog.require('ngmaterial.components.icon');
@@ -78,7 +78,6 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   ctrl.isReadonly = null;
   ctrl.hasNotFound = false;
   ctrl.selectedMessage = $scope.selectedMessage || 'selected';
-  ctrl.defaultEscapeOptions = 'clear';
 
   // Public Exported Methods
   ctrl.keydown = keydown;
@@ -829,11 +828,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * @returns {boolean} if the specified escape option is set, return true. Return false otherwise.
    */
   function hasEscapeOption(option) {
-    if (!angular.isString($scope.escapeOptions)) {
-      return ctrl.defaultEscapeOptions.indexOf(option) !== -1;
-    } else {
-      return $scope.escapeOptions.toLowerCase().indexOf(option) !== -1;
-    }
+    return !$scope.escapeOptions || $scope.escapeOptions.toLowerCase().indexOf(option) !== -1;
   }
 
   /**
@@ -1316,7 +1311,7 @@ MdAutocomplete['$inject'] = ["$$mdSvgRegistry"];angular
  *     An exact match is when only one match is displayed.
  * @param {boolean=} md-match-case-insensitive When set and using `md-select-on-match`, autocomplete
  *     will select on case-insensitive match.
- * @param {string=} md-escape-options Override escape key logic. Default is `clear`.<br/>
+ * @param {string=} md-escape-options Override escape key logic. Default is `blur clear`.<br/>
  *     Options: `blur`, `clear`, `none`.
  * @param {string=} md-dropdown-items Specifies the maximum amount of items to be shown in
  *     the dropdown.<br/><br/>

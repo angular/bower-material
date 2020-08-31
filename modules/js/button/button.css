@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-master-90d24cf
+ * v1.1.25
  */
 button.md-button::-moz-focus-inner {
   border: 0; }
@@ -16,7 +16,8 @@ button.md-button::-moz-focus-inner {
   min-width: 88px;
   line-height: 36px;
   vertical-align: middle;
-  align-items: center;
+  -webkit-box-align: center;
+          align-items: center;
   text-align: center;
   border-radius: 2px;
   box-sizing: border-box;
@@ -28,7 +29,7 @@ button.md-button::-moz-focus-inner {
   outline: none;
   border: 0;
   /** Custom styling for button */
-  padding: 0 8px;
+  padding: 0 6px;
   margin: 6px 8px;
   background: transparent;
   color: currentColor;
@@ -42,6 +43,7 @@ button.md-button::-moz-focus-inner {
   font-family: inherit;
   text-decoration: none;
   overflow: hidden;
+  -webkit-transition: box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
   .md-dense > .md-button:not(.md-dense-disabled),
   .md-dense :not(.md-dense-disabled) .md-button:not(.md-dense-disabled) {
@@ -57,6 +59,7 @@ button.md-button::-moz-focus-inner {
   .md-button:hover, .md-button:focus {
     text-decoration: none; }
   .md-button.ng-hide, .md-button.ng-leave {
+    -webkit-transition: none;
     transition: none; }
   .md-button.md-cornered {
     border-radius: 0; }
@@ -84,8 +87,12 @@ button.md-button::-moz-focus-inner {
     border-radius: 50%;
     background-clip: padding-box;
     overflow: hidden;
+    -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
     transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-    transition-property: background-color, box-shadow, transform; }
+    -webkit-transition-property: background-color, box-shadow, -webkit-transform;
+    transition-property: background-color, box-shadow, -webkit-transform;
+    transition-property: background-color, box-shadow, transform;
+    transition-property: background-color, box-shadow, transform, -webkit-transform; }
     .md-button.md-fab.md-fab-bottom-right {
       top: auto;
       right: 20px;
@@ -115,6 +122,7 @@ button.md-button::-moz-focus-inner {
       width: 40px;
       height: 40px; }
     .md-button.md-fab.ng-hide, .md-button.md-fab.ng-leave {
+      -webkit-transition: none;
       transition: none; }
   .md-button:not([disabled]).md-raised.md-focused, .md-button:not([disabled]).md-fab.md-focused {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
@@ -132,28 +140,37 @@ button.md-button.md-fab md-icon {
 
 .md-toast-open-top .md-button.md-fab-top-left,
 .md-toast-open-top .md-button.md-fab-top-right {
+  -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  transform: translate3d(0, 42px, 0); }
+  -webkit-transform: translate3d(0, 42px, 0);
+          transform: translate3d(0, 42px, 0); }
   .md-toast-open-top .md-button.md-fab-top-left:not([disabled]).md-focused, .md-toast-open-top .md-button.md-fab-top-left:not([disabled]):hover,
   .md-toast-open-top .md-button.md-fab-top-right:not([disabled]).md-focused,
   .md-toast-open-top .md-button.md-fab-top-right:not([disabled]):hover {
-    transform: translate3d(0, 41px, 0); }
+    -webkit-transform: translate3d(0, 41px, 0);
+            transform: translate3d(0, 41px, 0); }
 
 .md-toast-open-bottom .md-button.md-fab-bottom-left,
 .md-toast-open-bottom .md-button.md-fab-bottom-right {
+  -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  transform: translate3d(0, -42px, 0); }
+  -webkit-transform: translate3d(0, -42px, 0);
+          transform: translate3d(0, -42px, 0); }
   .md-toast-open-bottom .md-button.md-fab-bottom-left:not([disabled]).md-focused, .md-toast-open-bottom .md-button.md-fab-bottom-left:not([disabled]):hover,
   .md-toast-open-bottom .md-button.md-fab-bottom-right:not([disabled]).md-focused,
   .md-toast-open-bottom .md-button.md-fab-bottom-right:not([disabled]):hover {
-    transform: translate3d(0, -43px, 0); }
+    -webkit-transform: translate3d(0, -43px, 0);
+            transform: translate3d(0, -43px, 0); }
 
 .md-button-group {
+  display: -webkit-box;
   display: flex;
-  flex: 1;
+  -webkit-box-flex: 1;
+          flex: 1;
   width: 100%; }
   .md-button-group > .md-button {
-    flex: 1;
+    -webkit-box-flex: 1;
+            flex: 1;
     display: block;
     overflow: hidden;
     width: 0;

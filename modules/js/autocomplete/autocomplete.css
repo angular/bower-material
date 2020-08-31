@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-master-90d24cf
+ * v1.1.25
  */
 md-autocomplete {
   border-radius: 2px;
@@ -34,8 +34,11 @@ md-autocomplete {
         padding-right: 0;
         padding-left: 30px; }
   md-autocomplete md-autocomplete-wrap {
+    display: -webkit-box;
     display: flex;
-    flex-direction: row;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+            flex-direction: row;
     box-sizing: border-box;
     position: relative;
     overflow: visible;
@@ -44,7 +47,8 @@ md-autocomplete {
       z-index: 51; }
     md-autocomplete md-autocomplete-wrap md-input-container,
     md-autocomplete md-autocomplete-wrap input {
-      flex: 1 1 0;
+      -webkit-box-flex: 1;
+              flex: 1 1 0;
       box-sizing: border-box;
       min-width: 0; }
     md-autocomplete md-autocomplete-wrap md-progress-linear {
@@ -62,15 +66,19 @@ md-autocomplete {
         left: 0;
         width: 100%;
         height: 3px;
+        -webkit-transition: none;
         transition: none; }
         md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate .md-container {
+          -webkit-transition: none;
           transition: none;
           height: 3px; }
         md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-enter {
+          -webkit-transition: opacity 0.15s linear;
           transition: opacity 0.15s linear; }
           md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-enter.ng-enter-active {
             opacity: 1; }
         md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-leave {
+          -webkit-transition: opacity 0.15s linear;
           transition: opacity 0.15s linear; }
           md-autocomplete md-autocomplete-wrap md-progress-linear .md-mode-indeterminate.ng-leave.ng-leave-active {
             opacity: 0; }
@@ -108,30 +116,43 @@ md-autocomplete {
       bottom: -6px;
       left: -6px;
       border-radius: 50%;
-      transform: scale(0);
+      -webkit-transform: scale(0);
+              transform: scale(0);
       opacity: 0;
+      -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
     md-autocomplete .md-show-clear-button button:focus {
       outline: none; }
       md-autocomplete .md-show-clear-button button:focus:after {
-        transform: scale(1);
+        -webkit-transform: scale(1);
+                transform: scale(1);
         opacity: 1; }
     md-autocomplete .md-show-clear-button button md-icon {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate3d(-50%, -50%, 0) scale(0.9); }
+      -webkit-transform: translate3d(-50%, -50%, 0) scale(0.9);
+              transform: translate3d(-50%, -50%, 0) scale(0.9); }
       md-autocomplete .md-show-clear-button button md-icon path {
         stroke-width: 0; }
     md-autocomplete .md-show-clear-button button.ng-enter {
-      transform: scale(0);
-      transition: transform 0.15s ease-out; }
+      -webkit-transform: scale(0);
+              transform: scale(0);
+      -webkit-transition: -webkit-transform 0.15s ease-out;
+      transition: -webkit-transform 0.15s ease-out;
+      transition: transform 0.15s ease-out;
+      transition: transform 0.15s ease-out, -webkit-transform 0.15s ease-out; }
       md-autocomplete .md-show-clear-button button.ng-enter.ng-enter-active {
-        transform: scale(1); }
+        -webkit-transform: scale(1);
+                transform: scale(1); }
     md-autocomplete .md-show-clear-button button.ng-leave {
-      transition: transform 0.15s ease-out; }
+      -webkit-transition: -webkit-transform 0.15s ease-out;
+      transition: -webkit-transform 0.15s ease-out;
+      transition: transform 0.15s ease-out;
+      transition: transform 0.15s ease-out, -webkit-transform 0.15s ease-out; }
       md-autocomplete .md-show-clear-button button.ng-leave.ng-leave-active {
-        transform: scale(0); }
+        -webkit-transform: scale(0);
+                transform: scale(0); }
   @media screen and (-ms-high-contrast: active) {
     md-autocomplete input {
       border: 1px solid #fff; }
@@ -170,6 +191,7 @@ md-autocomplete {
     padding: 0 15px;
     line-height: 48px;
     height: 48px;
+    -webkit-transition: background 0.15s linear;
     transition: background 0.15s linear;
     margin: 0;
     white-space: nowrap;

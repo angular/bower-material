@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-master-90d24cf
+ * v1.1.25
  */
 .md-button.md-THEME_NAME-theme:not([disabled]):hover {
   background-color: '{{background-500-0.2}}'; }
@@ -36,6 +36,16 @@
       background-color: '{{primary-600}}'; }
   .md-button.md-THEME_NAME-theme.md-primary:not([disabled]) md-icon {
     color: '{{primary-color}}'; }
+
+.md-button.md-THEME_NAME-theme.md-fab {
+  background-color: '{{accent-color}}';
+  color: '{{accent-contrast}}'; }
+  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]) .md-icon {
+    color: '{{accent-contrast}}'; }
+  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {
+    background-color: '{{accent-A700}}'; }
+  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {
+    background-color: '{{accent-A700}}'; }
 
 .md-button.md-THEME_NAME-theme.md-raised {
   color: '{{background-900}}';
