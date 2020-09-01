@@ -1,12 +1,12 @@
 {
   "name": "angular-material-core",
-  "version": "1.2.0-master-5ba2f94",
+  "version": "1.2.0-master-d099bec",
   "dependencies": {
-    "angular-material-ngAnimate": "1.2.0-master-5ba2f94",
-    "angular-material-animate": "1.2.0-master-5ba2f94",
-    "angular-material-layout": "1.2.0-master-5ba2f94",
-    "angular-material-interaction": "1.2.0-master-5ba2f94",
-    "angular-material-gestures": "1.2.0-master-5ba2f94",
-    "angular-material-theming": "1.2.0-master-5ba2f94"
+    "angular-material-ngAnimate": "1.2.0-master-d099bec",
+    "angular-material-animate": "1.2.0-master-d099bec",
+    "angular-material-layout": "1.2.0-master-d099bec",
+    "angular-material-interaction": "1.2.0-master-d099bec",
+    "angular-material-gestures": "1.2.0-master-d099bec",
+    "angular-material-theming": "1.2.0-master-d099bec"
   }
 }
