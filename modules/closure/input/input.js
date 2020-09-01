@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.26
+ * v1.1.26-master-e21e24b
  */
 goog.provide('ngmaterial.components.input');
 goog.require('ngmaterial.core');
@@ -106,10 +106,45 @@ if (window._mdMocksIncluded) {
  *
  * <h3>When disabling floating labels</h3>
  * <hljs lang="html">
- *
  * <md-input-container md-no-float>
  *   <input type="text" placeholder="Non-Floating Label">
  * </md-input-container>
+ * </hljs>
+ *
+ * <h3>Aligning Form Elements</h3>
+ * Wrap your form elements with the `md-inline-form` class in order to align them horizontally
+ * within a form.
+ *
+ * <hljs lang="html">
+ * <form class="md-inline-form">
+ *   <md-input-container>
+ *     <label>Username</label>
+ *     <input type="text" ng-model="user.name">
+ *   </md-input-container>
+ *
+ *   <md-input-container>
+ *     <label>Description</label>
+ *     <textarea ng-model="user.description"></textarea>
+ *   </md-input-container>
+ *
+ *   <md-input-container>
+ *     <label>State of Residence</label>
+ *     <md-select ng-model="user.state">
+ *       <md-option ng-value="state" ng-repeat="state in states">{{ state }}</md-option>
+ *     </md-select>
+ *   </md-input-container>
+ *
+ *   <md-input-container>
+ *     <label>Enter date</label>
+ *     <md-datepicker ng-model="user.submissionDate"></md-datepicker>
+ *   </md-input-container>
+ *
+ *   <md-input-container>
+ *     <md-checkbox ng-model="user.licenseAccepted">
+ *       I agree to the license terms.
+ *     </md-checkbox>
+ *   </md-input-container>
+ * </form>
  * </hljs>
  */
 function mdInputContainerDirective($mdTheming, $parse, $$rAF) {
@@ -164,6 +199,8 @@ function mdInputContainerDirective($mdTheming, $parse, $$rAF) {
 
   function ContainerCtrl($scope, $element, $attrs, $animate) {
     var self = this;
+
+    $element.addClass('md-auto-horizontal-margin');
 
     self.isErrorGetter = $attrs.mdIsError && $parse($attrs.mdIsError);
 

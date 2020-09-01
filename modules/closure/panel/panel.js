@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.26
+ * v1.1.26-master-e21e24b
  */
 goog.provide('ngmaterial.components.panel');
 goog.require('ngmaterial.components.backdrop');
@@ -228,7 +228,7 @@ angular
  * @description
  * Creates a panel with the specified options.
  *
- * @param config {!Object=} Specific configuration object that may contain the
+ * @param {!Object=} config Specific configuration object that may contain the
  *     following properties:
  *
  *   - `id` - `{string=}`: An ID to track the panel by. When an ID is provided,
@@ -258,7 +258,7 @@ angular
  *     will be used as names of values to inject into the controller. For
  *     example, `locals: {three: 3}` would inject `three` into the controller,
  *     with the value 3. 'mdPanelRef' is a reserved key, and will always
- *     be set to the created MdPanelRef instance.
+ *     be set to the created `MdPanelRef` instance.
  *   - `resolve` - `{Object=}`: Similar to locals, except it takes promises as
  *     values. The panel will not open until all of the promises resolve.
  *   - `attachTo` - `{(string|!JQLite|!Element)=}`: The element to
@@ -282,7 +282,7 @@ angular
  *     called after the close successfully finishes. The first parameter passed
  *     into this function is the current panelRef and the 2nd is an optional
  *     string explaining the close reason. The currently supported closeReasons
- *     can be found in the MdPanelRef.closeReasons enum. These are by default
+ *     can be found in the `MdPanelRef.closeReasons` enum. These are by default
  *     passed along by the panel.
  *   - `trapFocus` - `{boolean=}`: Whether focus should be trapped within the
  *     panel. If `trapFocus` is true, the user will not be able to interact
@@ -356,25 +356,6 @@ angular
  * the animation config object.
  *
  * @returns {!MdPanelAnimation} panelAnimation
- */
-
-/**
- * @ngdoc method
- * @name $mdPanel#newPanelGroup
- * @description
- * Creates a panel group and adds it to a tracked list of panel groups.
- *
- * @param {string} groupName Name of the group to create.
- * @param {!Object=} config Specific configuration object that may contain the
- *     following properties:
- *
- *   - `maxOpen` - `{number=}`: The maximum number of panels that are allowed to
- *     be open within a defined panel group.
- *
- * @returns {!Object<string,
- *     {panels: !Array<!MdPanelRef>,
- *     openPanels: !Array<!MdPanelRef>,
- *     maxOpen: number}>} panelGroup
  */
 
 /**
@@ -486,51 +467,6 @@ angular
  * @name MdPanelRef#destroy
  * @description
  * Destroys the panel. The panel cannot be opened again after this is called.
- */
-
-/**
- * @ngdoc method
- * @name MdPanelRef#addClass
- * @deprecated
- * This method is in the process of being deprecated in favor of using the panel
- * and container JQLite elements that are referenced in the MdPanelRef object.
- * Full deprecation is scheduled for material 1.2.
- * @description
- * Adds a class to the panel. DO NOT use this hide/show the panel.
- *
- * @param {string} newClass class to be added.
- * @param {boolean} toElement Whether or not to add the class to the panel
- *     element instead of the container.
- */
-
-/**
- * @ngdoc method
- * @name MdPanelRef#removeClass
- * @deprecated
- * This method is in the process of being deprecated in favor of using the panel
- * and container JQLite elements that are referenced in the MdPanelRef object.
- * Full deprecation is scheduled for material 1.2.
- * @description
- * Removes a class from the panel. DO NOT use this to hide/show the panel.
- *
- * @param {string} oldClass Class to be removed.
- * @param {boolean} fromElement Whether or not to remove the class from the
- *     panel element instead of the container.
- */
-
-/**
- * @ngdoc method
- * @name MdPanelRef#toggleClass
- * @deprecated
- * This method is in the process of being deprecated in favor of using the panel
- * and container JQLite elements that are referenced in the MdPanelRef object.
- * Full deprecation is scheduled for material 1.2.
- * @description
- * Toggles a class on the panel. DO NOT use this to hide/show the panel.
- *
- * @param {string} toggleClass Class to be toggled.
- * @param {boolean} onElement Whether or not to remove the class from the panel
- *     element instead of the container.
  */
 
 /**
@@ -1028,6 +964,16 @@ function $getProvider() {
   ];
 }
 
+/**
+ * @param {string|[]} value
+ * @returns {[]} the input string wrapped in an Array or the original Array
+ */
+function coerceToArray(value) {
+  if (angular.isString(value)) {
+    value = [value];
+  }
+  return value;
+}
 
 /*****************************************************************************
  *                               MdPanel Service                             *
@@ -1181,9 +1127,7 @@ MdPanelService.prototype.create = function(preset, config) {
 
   // Add the panel to each of its requested groups.
   if (this._config.groupName) {
-    if (angular.isString(this._config.groupName)) {
-      this._config.groupName = [this._config.groupName];
-    }
+    this._config.groupName = coerceToArray(this._config.groupName);
     angular.forEach(this._config.groupName, function(group) {
       panelRef.addToGroup(group);
     });
@@ -1246,28 +1190,27 @@ MdPanelService.prototype.newPanelAnimation = function() {
 
 
 /**
+ * @ngdoc method
+ * @name $mdPanel#newPanelGroup
+ * @description
  * Creates a panel group and adds it to a tracked list of panel groups.
- * @param groupName {string} Name of the group to create.
- * @param config {!Object=} Specific configuration object that may contain the
- *     following properties:
+ * @param {string} groupName Name of the group to create.
+ * @param {{maxOpen: number}=} config Configuration object that may contain the following
+ *  properties:
  *
- *   - `maxOpen` - `{number=}`: The maximum number of panels that are allowed
- *     open within a defined panel group.
+ *   - `maxOpen`: The maximum number of panels that are allowed open within a defined panel group.
  *
- * @returns {!Object<string,
- *     {panels: !Array<!MdPanelRef>,
- *     openPanels: !Array<!MdPanelRef>,
- *     maxOpen: number}>} panelGroup
+ * @returns {!{panels: !Array<!MdPanelRef>, openPanels: !Array<!MdPanelRef>, maxOpen: number}}
+ *  the new panel group
  */
 MdPanelService.prototype.newPanelGroup = function(groupName, config) {
   if (!this._groups[groupName]) {
     config = config || {};
-    var group = {
+    this._groups[groupName] = {
       panels: [],
       openPanels: [],
       maxOpen: config.maxOpen > 0 ? config.maxOpen : Infinity
     };
-    this._groups[groupName] = group;
   }
   return this._groups[groupName];
 };
@@ -1311,7 +1254,10 @@ MdPanelService.prototype._openCountExceedsMaxOpen = function(groupName) {
  * @private
  */
 MdPanelService.prototype._closeFirstOpenedPanel = function(groupName) {
-  this._groups[groupName].openPanels[0].close();
+  var group = this._groups[groupName];
+  if (group && group.openPanels.length) {
+    group.openPanels[0].close();
+  }
 };
 
 
@@ -1493,6 +1439,7 @@ MdPanelRef.prototype.open = function() {
     var show = self._simpleBind(self.show, self);
     var checkGroupMaxOpen = function() {
       if (self.config.groupName) {
+        self.config.groupName = coerceToArray(self.config.groupName);
         angular.forEach(self.config.groupName, function(group) {
           if (self._$mdPanel._openCountExceedsMaxOpen(group)) {
             self._$mdPanel._closeFirstOpenedPanel(group);
@@ -1631,6 +1578,7 @@ MdPanelRef.prototype.detach = function() {
 MdPanelRef.prototype.destroy = function() {
   var self = this;
   if (this.config.groupName) {
+    this.config.groupName = coerceToArray(this.config.groupName);
     angular.forEach(this.config.groupName, function(group) {
       self.removeFromGroup(group);
     });
@@ -1672,8 +1620,12 @@ MdPanelRef.prototype.show = function() {
     var onOpenComplete = self.config['onOpenComplete'] || angular.noop;
     var addToGroupOpen = function() {
       if (self.config.groupName) {
+        self.config.groupName = coerceToArray(self.config.groupName);
         angular.forEach(self.config.groupName, function(group) {
-          self._$mdPanel._groups[group].openPanels.push(self);
+          group = self._$mdPanel._groups[group];
+          if (group) {
+            group.openPanels.push(self);
+          }
         });
       }
     };
@@ -1716,6 +1668,7 @@ MdPanelRef.prototype.hide = function() {
     var removeFromGroupOpen = function() {
       if (self.config.groupName) {
         var index;
+        self.config.groupName = coerceToArray(self.config.groupName);
         angular.forEach(self.config.groupName, function(group) {
           group = self._$mdPanel._groups[group];
           index = group.openPanels.indexOf(self);
@@ -1743,100 +1696,6 @@ MdPanelRef.prototype.hide = function() {
     ]).then(done, reject);
   });
 };
-
-
-/**
- * Add a class to the panel. DO NOT use this to hide/show the panel.
- * @deprecated
- * This method is in the process of being deprecated in favor of using the panel
- * and container JQLite elements that are referenced in the MdPanelRef object.
- * Full deprecation is scheduled for material 1.2.
- *
- * @param {string} newClass Class to be added.
- * @param {boolean} toElement Whether or not to add the class to the panel
- *     element instead of the container.
- */
-MdPanelRef.prototype.addClass = function(newClass, toElement) {
-  this._$log.warn(
-      'mdPanel: The addClass method is in the process of being deprecated. ' +
-      'Full deprecation is scheduled for the AngularJS Material 1.2 release. ' +
-      'To achieve the same results, use the panelContainer or panelEl ' +
-      'JQLite elements that are referenced in MdPanelRef.');
-
-  if (!this.panelContainer) {
-    throw new Error(
-        'mdPanel: Panel does not exist yet. Call open() or attach().');
-  }
-
-  if (!toElement && !this.panelContainer.hasClass(newClass)) {
-    this.panelContainer.addClass(newClass);
-  } else if (toElement && !this.panelEl.hasClass(newClass)) {
-    this.panelEl.addClass(newClass);
-  }
-};
-
-
-/**
- * Remove a class from the panel. DO NOT use this to hide/show the panel.
- * @deprecated
- * This method is in the process of being deprecated in favor of using the panel
- * and container JQLite elements that are referenced in the MdPanelRef object.
- * Full deprecation is scheduled for material 1.2.
- *
- * @param {string} oldClass Class to be removed.
- * @param {boolean} fromElement Whether or not to remove the class from the
- *     panel element instead of the container.
- */
-MdPanelRef.prototype.removeClass = function(oldClass, fromElement) {
-  this._$log.warn(
-      'mdPanel: The removeClass method is in the process of being deprecated. ' +
-      'Full deprecation is scheduled for the AngularJS Material 1.2 release. ' +
-      'To achieve the same results, use the panelContainer or panelEl ' +
-      'JQLite elements that are referenced in MdPanelRef.');
-
-  if (!this.panelContainer) {
-    throw new Error(
-        'mdPanel: Panel does not exist yet. Call open() or attach().');
-  }
-
-  if (!fromElement && this.panelContainer.hasClass(oldClass)) {
-    this.panelContainer.removeClass(oldClass);
-  } else if (fromElement && this.panelEl.hasClass(oldClass)) {
-    this.panelEl.removeClass(oldClass);
-  }
-};
-
-
-/**
- * Toggle a class on the panel. DO NOT use this to hide/show the panel.
- * @deprecated
- * This method is in the process of being deprecated in favor of using the panel
- * and container JQLite elements that are referenced in the MdPanelRef object.
- * Full deprecation is scheduled for material 1.2.
- *
- * @param {string} toggleClass The class to toggle.
- * @param {boolean} onElement Whether or not to toggle the class on the panel
- *     element instead of the container.
- */
-MdPanelRef.prototype.toggleClass = function(toggleClass, onElement) {
-  this._$log.warn(
-      'mdPanel: The toggleClass method is in the process of being deprecated. ' +
-      'Full deprecation is scheduled for the AngularJS Material 1.2 release. ' +
-      'To achieve the same results, use the panelContainer or panelEl ' +
-      'JQLite elements that are referenced in MdPanelRef.');
-
-  if (!this.panelContainer) {
-    throw new Error(
-        'mdPanel: Panel does not exist yet. Call open() or attach().');
-  }
-
-  if (!onElement) {
-    this.panelContainer.toggleClass(toggleClass);
-  } else {
-    this.panelEl.toggleClass(toggleClass);
-  }
-};
-
 
 /**
  * Compiles the panel, according to the passed in config and appends it to

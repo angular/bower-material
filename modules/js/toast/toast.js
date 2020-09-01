@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.26
+ * v1.1.26-master-e21e24b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -134,8 +134,7 @@ function MdToastDirective($mdToast) {
  * @description
  * Convenience method which builds and shows a simple toast.
  *
- * @returns {promise} A promise that can be resolved with `$mdToast.hide()` or
- * rejected with `$mdToast.cancel()`.
+ * @returns {promise} A promise that can be resolved with `$mdToast.hide()`.
  */
 
 /**
@@ -254,7 +253,7 @@ function MdToastDirective($mdToast) {
  *
  * @description Shows the toast.
  *
- * @param {object} optionsOrPreset Either provide an `$mdToastPreset` returned from `simple()`
+ * @param {Object} optionsOrPreset Either provide an `$mdToastPreset` returned from `simple()`
  * and `build()`, or an options object with the following properties:
  *
  *   - `templateUrl` - `{string=}`: The url of an html template file that will
@@ -265,7 +264,7 @@ function MdToastDirective($mdToast) {
  *   - `autoWrap` - `{boolean=}`: Whether or not to automatically wrap the template content with a
  *     `<div class="md-toast-content">` if one is not provided. Defaults to true. Can be disabled
  *     if you provide a custom toast directive.
- *   - `scope` - `{object=}`: the scope to link the template / controller to. If none is specified,
+ *   - `scope` - `{Object=}`: the scope to link the template / controller to. If none is specified,
  *     it will create a new child scope. This scope will be destroyed when the toast is removed
  *     unless `preserveScope` is set to true.
  *   - `preserveScope` - `{boolean=}`: whether to preserve the scope when the element is removed.
@@ -284,22 +283,20 @@ function MdToastDirective($mdToast) {
  *   - `controller` - `{string=}`: The controller to associate with this toast.
  *     The controller will be injected the local `$mdToast.hide()`, which is a function
  *     used to hide the toast.
- *   - `locals` - `{object=}`: An object containing key/value pairs. The keys will
- *     be used as names of values to inject into the controller. For example,
- *     `locals: {three: 3}` would inject `three` into the controller with the value
- *     of 3.
+ *   - `locals` - `{Object=}`: An object containing key/value pairs. The keys will be used as names
+ *     of values to inject into the controller. For example, `locals: {three: 3}` would inject
+ *     `three` into the controller with the value of 3.
  *   - `bindToController` - `{boolean=}`: bind the locals to the controller, instead of passing
  *     them in.
- *   - `resolve` - `{object=}`: Similar to locals, except it takes promises as values
+ *   - `resolve` - `{Object=}`: Similar to locals, except it takes promises as values
  *     and the toast will not open until the promises resolve.
  *   - `controllerAs` - `{string=}`: An alias to assign the controller to on the scope.
  *   - `parent` - `{element=}`: The element to append the toast to. Defaults to appending
  *     to the root element of the application.
  *
- * @returns {promise} A promise that can be resolved with `$mdToast.hide()` or
- * rejected with `$mdToast.cancel()`. `$mdToast.hide()` will resolve either with the Boolean
- * value `true` or the value passed as an argument to `$mdToast.hide()`.
- * `$mdToast.cancel()` will resolve the promise with the Boolean value `false`.
+ * @returns {promise} A promise that can be resolved with `$mdToast.hide()`. `$mdToast.hide()` will
+ * resolve either with the boolean value `true` or the value passed as an argument to
+ * `$mdToast.hide()`.
  */
 
 /**
@@ -314,24 +311,6 @@ function MdToastDirective($mdToast) {
  * @returns {promise} A promise that is called when the existing element is removed from the DOM.
  * The promise is resolved with either the Boolean value `true` or the value passed as the
  * argument to `$mdToast.hide()`.
- */
-
-/**
- * @ngdoc method
- * @name $mdToast#cancel
- *
- * @description
- * `DEPRECATED` - The promise returned from opening a toast is used only to notify about the
- * closing of the toast. As such, there isn't any reason to also allow that promise to be rejected,
- * since it's not clear what the difference between resolve and reject would be.
- *
- * Hide the existing toast and reject the promise returned from
- * `$mdToast.show()`.
- *
- * @param {*=} response An argument for the rejected promise.
- *
- * @returns {promise} A promise that is called when the existing element is removed from the DOM
- * The promise is resolved with the Boolean value `false`.
  */
 
 function MdToastProvider($$interimElementProvider) {
@@ -349,7 +328,7 @@ function MdToastProvider($$interimElementProvider) {
     })
     .addPreset('simple', {
       argOption: 'textContent',
-      methods: ['textContent', 'content', 'action', 'actionKey', 'actionHint', 'highlightAction',
+      methods: ['textContent', 'action', 'actionKey', 'actionHint', 'highlightAction',
                 'highlightClass', 'theme', 'parent', 'dismissHint'],
       options: /* ngInject */ ["$mdToast", "$mdTheming", function($mdToast, $mdTheming) {
         return {
@@ -376,10 +355,7 @@ function MdToastProvider($$interimElementProvider) {
         };
       }]
     })
-    .addMethod('updateTextContent', updateTextContent)
-    // updateContent is deprecated. Use updateTextContent instead.
-    // TODO remove this in 1.2.
-    .addMethod('updateContent', updateTextContent);
+    .addMethod('updateTextContent', updateTextContent);
 
     function updateTextContent(newContent) {
       activeToastContent = newContent;
@@ -463,7 +439,7 @@ function MdToastProvider($$interimElementProvider) {
             }
           }
 
-          // We have to return the innerHTMl, because we do not want to have the `md-template`
+          // We have to return the innerHTML, because we do not want to have the `md-template`
           // element to be the root element of our interimElement.
           return templateRoot.innerHTML;
         }
@@ -472,17 +448,21 @@ function MdToastProvider($$interimElementProvider) {
       }
     };
 
+    /**
+     * @param {{toast: {actionKey: string=}}=} scope
+     * @param {JQLite} element
+     * @param {Object.<string, string>} options
+     * @return {*}
+     */
     function onShow(scope, element, options) {
-      // support deprecated #content method
-      // TODO remove support for content in 1.2.
-      activeToastContent = options.textContent || options.content;
+      activeToastContent = options.textContent;
 
       var isSmScreen = !$mdMedia('gt-sm');
 
       element = $mdUtil.extractElementByName(element, 'md-toast', true);
       options.element = element;
 
-      options.onSwipe = function(ev, gesture) {
+      options.onSwipe = function(ev) {
         // Add the relevant swipe class to the element so it can animate correctly
         var swipe = ev.type.replace('$md.','');
         var direction = swipe.replace('swipe', '');
@@ -517,9 +497,24 @@ function MdToastProvider($$interimElementProvider) {
         scope.toast.actionKey : undefined);
 
       element.on(SWIPE_EVENTS, options.onSwipe);
-      element.addClass(isSmScreen ? 'md-bottom' : options.position.split(' ').map(function(pos) {
-        return 'md-' + pos;
-      }).join(' '));
+
+      var verticalPositionDefined = false;
+      var positionClasses = options.position.split(' ').map(function (position) {
+        if (position) {
+          var className = 'md-' + position;
+          if (className === 'md-top' || className === 'md-bottom') {
+            verticalPositionDefined = true;
+          }
+          return className;
+        }
+        return 'md-bottom';
+      });
+      // If only "right" or "left" are defined, default to a vertical position of "bottom"
+      // as documented.
+      if (!verticalPositionDefined) {
+        positionClasses.push('md-bottom');
+      }
+      element.addClass(isSmScreen ? 'md-bottom' : positionClasses.join(' '));
 
       if (options.parent) {
         options.parent.addClass('md-toast-animating');
@@ -532,9 +527,9 @@ function MdToastProvider($$interimElementProvider) {
     }
 
     /**
-     * @param {object} scope the toast's scope
+     * @param {Object} scope the toast's scope
      * @param {JQLite} element the toast to be removed
-     * @param {object} options
+     * @param {Object} options
      * @return {Promise<*>} a Promise to remove the element immediately or to animate it out.
      */
     function onRemove(scope, element, options) {
@@ -564,6 +559,9 @@ function MdToastProvider($$interimElementProvider) {
       return 'md-toast-open-' + (position.indexOf('top') > -1 ? 'top' : 'bottom');
     }
 
+    /**
+     * @param {string} actionKey
+     */
     function setupActionKeyListener(actionKey) {
       /**
        * @param {KeyboardEvent} event

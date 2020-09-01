@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.26
+ * v1.1.26-master-e21e24b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -319,8 +319,8 @@ MdChipRemove['$inject'] = ["$timeout"];angular
  * ### With Standard Chips
  * <hljs lang="html">
  *   <md-chips ...>
- *     <button md-chip-remove class="md-primary" type="button" aria-label="Remove {{$chip}}">
- *       <md-icon md-svg-icon="md-close"></md-icon>
+ *     <button md-chip-remove type="button" aria-label="Remove {{$chip}}">
+ *       <md-icon md-svg-icon="md-cancel"></md-icon>
  *     </button>
  *   </md-chips>
  * </hljs>
@@ -328,8 +328,8 @@ MdChipRemove['$inject'] = ["$timeout"];angular
  * ### With Object Chips
  * <hljs lang="html">
  *   <md-chips ...>
- *     <button md-chip-remove class="md-primary" type="button" aria-label="Remove {{$chip.name}}">
- *       <md-icon md-svg-icon="md-close"></md-icon>
+ *     <button md-chip-remove type="button" aria-label="Remove {{$chip.name}}">
+ *       <md-icon md-svg-icon="md-cancel"></md-icon>
  *     </button>
  *   </md-chips>
  * </hljs>
@@ -352,7 +352,7 @@ function MdChipRemove ($timeout) {
   };
 
   function postLink(scope, element, attr, ctrl) {
-    element.on('click', function(event) {
+    element.on('click', function() {
       scope.$apply(function() {
         ctrl.removeChip(scope.$$replacedScope.$index);
       });
@@ -477,6 +477,12 @@ function MdChipsCtrl ($scope, $attrs, $mdConstant, $log, $element, $timeout, $md
 
   /** @type {string} */
   this.addOnBlur = $mdUtil.parseAttributeBoolean($attrs.mdAddOnBlur);
+
+  /**
+   * The class names to apply to the autocomplete or input.
+   * @type {string}
+   */
+  this.inputClass = '';
 
   /**
    * The text to be used as the aria-label for the input.
@@ -1203,18 +1209,6 @@ MdChipsCtrl.prototype.selectChip = function(index) {
 };
 
 /**
- * Selects the chip at {@code index} and gives it focus.
- * @param {number} index location of chip to select and focus
- * @deprecated use MdChipsCtrl.selectAndFocusChipSafe. Will be removed in 1.2.
- */
-MdChipsCtrl.prototype.selectAndFocusChip = function(index) {
-  this.selectChip(index);
-  if (index !== -1) {
-    this.focusChip(index);
-  }
-};
-
-/**
  * Call {@code focus()} on the chip at {@code index}
  * @param {number} index location of chip to focus
  */
@@ -1446,7 +1440,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    * <ul style="padding-left:20px;">
    *
    *   <ul>Style
-   *     <li>Colours for hover, press states (ripple?).</li>
+   *     <li>Colors for hover, press states (ripple?).</li>
    *   </ul>
    *
    *   <ul>Validation
@@ -1548,6 +1542,9 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    * @param {expression=} md-on-select An expression which will be called when a chip is selected.
    * @param {boolean=} md-require-match If true, and the chips template contains an autocomplete,
    *    only allow selection of pre-defined chips (i.e. you cannot add new ones).
+   * @param {string=} md-input-class This class will be applied to the child input for custom
+   *    styling. If you are using an `md-autocomplete`, then you need to put this attribute on the
+   *    `md-autocomplete` rather than the `md-chips`.
    * @param {string=} input-aria-describedby A space-separated list of element IDs. This should
    *     contain the IDs of any elements that describe this autocomplete. Screen readers will read
    *     the content of these elements at the end of announcing that the chips input has been
@@ -1568,8 +1565,11 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
    * @param {string=} delete-hint A string read by screen readers instructing users that pressing
    *    the delete key will remove the chip. You will want to use this to override the default when
    *    in a non-English locale.
-   * @param {string=} delete-button-label <strong>Deprecated</strong> A label for the delete button.
-   *    Used to be read by screen readers.
+   * @param {string=} delete-button-label Text for the `aria-label` of the button with the
+   *    `md-chip-remove` class. If the chip is an Object, then this will be the only text in the
+   *    label. Otherwise, this is prepended to the string representation of the chip. Defaults to
+   *    "Remove", which would be "Remove Apple" for a chip that contained the string "Apple".
+   *    You will want to use this to override the default when in a non-English locale.
    * @param {string=} md-removed-message Screen readers will announce this message following the
    *    chips contents. The default is `"removed"`. If a chip with the content of "Apple" was
    *    removed, the screen reader would read "Apple removed". You will want to use this to override
@@ -1659,7 +1659,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
 
   var CHIP_INPUT_TEMPLATE = '\
         <input\
-            class="md-input"\
+            class="md-input{{ $mdChipsCtrl.inputClass ? \' \' + $mdChipsCtrl.inputClass: \'\'}}"\
             tabindex="0"\
             aria-label="{{$mdChipsCtrl.inputAriaLabel}}"\
             placeholder="{{$mdChipsCtrl.getPlaceholder()}}"\
@@ -1711,12 +1711,12 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
         secondaryPlaceholder: '@?',
         maxChips: '@?mdMaxChips',
         transformChip: '&mdTransformChip',
-        onAppend: '&?mdOnAppend',
         onAdd: '&?mdOnAdd',
         onRemove: '&?mdOnRemove',
         addedMessage: '@?mdAddedMessage',
         removedMessage: '@?mdRemovedMessage',
         onSelect: '&?mdOnSelect',
+        inputClass: '@?mdInputClass',
         inputAriaDescribedBy: '@?inputAriaDescribedby',
         inputAriaLabelledBy: '@?inputAriaLabelledby',
         inputAriaLabel: '@?',
@@ -1811,7 +1811,7 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
         mdChipsCtrl.chipRemoveTemplate   = chipRemoveTemplate;
         mdChipsCtrl.chipInputTemplate    = chipInputTemplate;
 
-        mdChipsCtrl.mdCloseIcon = $$mdSvgRegistry.mdClose;
+        mdChipsCtrl.mdCloseIcon = $$mdSvgRegistry.mdCancel;
 
         element
             .attr({ tabindex: -1 })
@@ -1828,13 +1828,6 @@ MdChipsCtrl.prototype.contentIdFor = function(index) {
           // If an `md-transform-chip` attribute was set, tell the controller to use the expression
           // before appending chips.
           if (attrs.mdTransformChip) mdChipsCtrl.useTransformChipExpression();
-
-          // If an `md-on-append` attribute was set, tell the controller to use the expression
-          // when appending chips.
-          //
-          // TODO: Remove this now that 1.0 is long since released
-          // DEPRECATED: Will remove in official 1.0 release
-          if (attrs.mdOnAppend) mdChipsCtrl.useOnAppendExpression();
 
           // If an `md-on-add` attribute was set, tell the controller to use the expression
           // when adding chips.
@@ -1975,6 +1968,9 @@ MdContactChipsCtrl.prototype.setupChipsAria = function() {
   if (this.inputAriaLabel) {
     chipsCtrl.inputAriaLabel = this.inputAriaLabel;
   }
+  if (this.inputClass) {
+    chipsCtrl.inputClass = this.inputClass;
+  }
 };
 
 MdContactChipsCtrl.prototype.setupAutocompleteAria = function() {
@@ -2058,6 +2054,8 @@ MdContactChips['$inject'] = ["$mdTheming", "$mdUtil"];angular
  *    contact's image.
  * @param {number=} md-min-length Specifies the minimum length of text before autocomplete will
  *    make suggestions
+ * @param {string=} md-input-class This class will be applied to the child `md-autocomplete` for
+ *    custom styling.
  * @param {string=} input-aria-describedby A space-separated list of element IDs. This should
  *     contain the IDs of any elements that describe this autocomplete. Screen readers will read
  *     the content of these elements at the end of announcing that the chips input has been
@@ -2116,6 +2114,7 @@ var MD_CONTACT_CHIPS_TEMPLATE = '\
               md-no-cache="true"\
               md-min-length="$mdContactChipsCtrl.minLength"\
               md-autoselect\
+              ng-attr-md-input-class="{{$mdContactChipsCtrl.inputClass}}"\
               ng-keydown="$mdContactChipsCtrl.inputKeydown($event)"\
               placeholder="{{$mdContactChipsCtrl.contacts.length === 0 ?\
                   $mdContactChipsCtrl.placeholder : $mdContactChipsCtrl.secondaryPlaceholder}}">\
@@ -2178,6 +2177,7 @@ function MdContactChips($mdTheming, $mdUtil) {
       chipAppendDelay: '@?mdChipAppendDelay',
       separatorKeys: '=?mdSeparatorKeys',
       removedMessage: '@?mdRemovedMessage',
+      inputClass: '@?mdInputClass',
       inputAriaDescribedBy: '@?inputAriaDescribedby',
       inputAriaLabelledBy: '@?inputAriaLabelledby',
       inputAriaLabel: '@?',

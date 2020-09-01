@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.26
+ * v1.1.26-master-e21e24b
  */
 goog.provide('ngmaterial.components.menuBar');
 goog.require('ngmaterial.components.icon');
@@ -278,6 +278,23 @@ MenuBarController.prototype.handleParentClick = function(event) {
   }
 };
 
+
+angular
+  .module('material.components.menuBar')
+  .directive('mdMenuDivider', MenuDividerDirective);
+
+
+function MenuDividerDirective() {
+  return {
+    restrict: 'E',
+    compile: function(templateEl, templateAttrs) {
+      if (!templateAttrs.role) {
+        templateEl[0].setAttribute('role', 'separator');
+      }
+    }
+  };
+}
+
 /**
  * @ngdoc directive
  * @name mdMenuBar
@@ -426,23 +443,6 @@ function MenuBarDirective($mdUtil, $mdTheming) {
     }
   };
 
-}
-
-
-angular
-  .module('material.components.menuBar')
-  .directive('mdMenuDivider', MenuDividerDirective);
-
-
-function MenuDividerDirective() {
-  return {
-    restrict: 'E',
-    compile: function(templateEl, templateAttrs) {
-      if (!templateAttrs.role) {
-        templateEl[0].setAttribute('role', 'separator');
-      }
-    }
-  };
 }
 
 
