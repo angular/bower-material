@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.25-master-e9c8f6a
+ * v1.1.25-master-8f9e213
  */
 goog.provide('ngmaterial.components.datepicker');
 goog.require('ngmaterial.components.icon');
@@ -2268,7 +2268,12 @@ angular.module('material.components.datepicker', [
      * @return {Date} date with local timezone offset removed
      */
     function removeLocalTzAndReparseDate(value) {
-      return $mdDateLocale.parseDate(value.getTime() + 60000 * value.getTimezoneOffset());
+      var dateValue, formattedDate;
+      // Remove the local timezone offset before calling formatDate.
+      dateValue = new Date(value.getTime() + 60000 * value.getTimezoneOffset());
+      formattedDate = $mdDateLocale.formatDate(dateValue);
+      // parseDate only works with a date formatted by formatDate when using Moment validation.
+      return $mdDateLocale.parseDate(formattedDate);
     }
   }]);
 })();
