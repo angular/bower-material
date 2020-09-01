@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-master-d099bec
+ * v1.1.26
  */
 md-fab-toolbar {
   display: block;
@@ -51,11 +51,13 @@ md-fab-toolbar {
       position: absolute;
       z-index: 21;
       opacity: 1;
+      -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
       transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
     md-fab-toolbar md-fab-trigger md-icon {
       position: relative;
       z-index: 22;
       opacity: 1;
+      -webkit-transition: all 200ms ease-in;
       transition: all 200ms ease-in; }
   md-fab-toolbar.md-left md-fab-trigger {
     right: 0; }
@@ -63,7 +65,9 @@ md-fab-toolbar {
       right: auto;
       left: 0; }
   md-fab-toolbar.md-left .md-toolbar-tools {
-    flex-direction: row-reverse; }
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: reverse;
+            flex-direction: row-reverse; }
     md-fab-toolbar.md-left .md-toolbar-tools > .md-button:first-child {
       margin-right: 0.6rem; }
       [dir=rtl] md-fab-toolbar.md-left .md-toolbar-tools > .md-button:first-child {
@@ -85,7 +89,9 @@ md-fab-toolbar {
       left: auto;
       right: 0; }
   md-fab-toolbar.md-right .md-toolbar-tools {
-    flex-direction: row; }
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+            flex-direction: row; }
   md-fab-toolbar md-toolbar {
     background-color: transparent !important;
     pointer-events: none;
@@ -95,13 +101,17 @@ md-fab-toolbar {
       margin-top: 3px; }
     md-fab-toolbar md-toolbar .md-fab-action-item {
       opacity: 0;
-      transform: scale(0);
+      -webkit-transform: scale(0);
+              transform: scale(0);
+      -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
       transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-      transition-duration: 0.15s; }
+      -webkit-transition-duration: 0.15s;
+              transition-duration: 0.15s; }
   md-fab-toolbar.md-is-open md-fab-trigger > button {
     box-shadow: none; }
     md-fab-toolbar.md-is-open md-fab-trigger > button md-icon {
       opacity: 0; }
   md-fab-toolbar.md-is-open .md-fab-action-item {
     opacity: 1;
-    transform: scale(1); }
+    -webkit-transform: scale(1);
+            transform: scale(1); }

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-master-d099bec
+ * v1.1.26
  */
 md-grid-list {
   box-sizing: border-box;
@@ -17,9 +17,12 @@ md-grid-list {
     display: block;
     position: absolute; }
     md-grid-list md-grid-tile figure {
+      display: -webkit-box;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      -webkit-box-align: center;
+              align-items: center;
+      -webkit-box-pack: center;
+              justify-content: center;
       height: 100%;
       position: absolute;
       top: 0;
@@ -30,9 +33,13 @@ md-grid-list {
       margin: 0; }
     md-grid-list md-grid-tile md-grid-tile-header,
     md-grid-list md-grid-tile md-grid-tile-footer {
+      display: -webkit-box;
       display: flex;
-      flex-direction: row;
-      align-items: center;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+              flex-direction: row;
+      -webkit-box-align: center;
+              align-items: center;
       height: 48px;
       color: #fff;
       background: rgba(0, 0, 0, 0.18);
