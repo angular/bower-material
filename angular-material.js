@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-master-0d431e0
+ * v1.2.0-master-8ce0813
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -30571,16 +30571,17 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
     }
 
     /**
-     *  Add or remove the `.md-checked` class from the RadioButton (and conditionally its parent).
-     *  Update the `aria-activedescendant` attribute.
+     * Add or remove the `.md-checked` class from the RadioButton (and conditionally its parent).
+     * Update the `aria-activedescendant` attribute.
      */
     function render() {
       var checked = radioGroupController.getViewValue() == attr.value;
 
       if (checked === lastChecked) return;
 
-      if (element[0].parentNode.nodeName.toLowerCase() !== 'md-radio-group') {
-        // If the radioButton is inside a div, then add class so highlighting will work
+      if (element[0] && element[0].parentNode &&
+          element[0].parentNode.nodeName.toLowerCase() !== 'md-radio-group') {
+        // If the radioButton is inside a div, then add class so highlighting will work.
         element.parent().toggleClass(CHECKED_CSS, checked);
       }
 
@@ -39091,4 +39092,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.2.0-master-0d431e0"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.2.0-master-8ce0813"}};
