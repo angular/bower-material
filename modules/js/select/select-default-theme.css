@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-master-3cf78a7
+ * v1.2.0-master-d5863b8
  */
 md-input-container md-select.md-THEME_NAME-theme .md-select-value span:first-child:after {
   color: '{{warn-A700}}'; }
@@ -88,7 +88,9 @@ md-select-menu.md-THEME_NAME-theme md-content {
     color: '{{foreground-1}}'; }
     md-select-menu.md-THEME_NAME-theme md-content md-option[disabled] .md-text {
       color: '{{foreground-3}}'; }
-    md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):focus, md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):hover, md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]).md-focused {
+    md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):hover {
+      background-color: '{{background-500-0.10}}'; }
+    md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):focus, md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]).md-focused {
       background-color: '{{background-500-0.18}}'; }
     md-select-menu.md-THEME_NAME-theme md-content md-option[selected] {
       color: '{{primary-500}}'; }
