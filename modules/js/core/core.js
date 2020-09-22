@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-master-3d98b6e
+ * v1.2.0-master-1babe8c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2146,9 +2146,9 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
 
   /**
    * Check if expected attribute has been specified on the target element or child
-   * @param element
-   * @param attrName
-   * @param {optional} defaultValue What to set the attr to if no value is found
+   * @param {string|JQLite} element
+   * @param {string} attrName
+   * @param {string=} defaultValue What to set the attr to if no value is found
    */
   function expect(element, attrName, defaultValue) {
 
@@ -2265,8 +2265,8 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
 
   /**
    * Check if expected element's parent has aria label attribute and has valid role and tagName
-   * @param element
-   * @param {optional} level Number of levels deep search should be performed
+   * @param {string|JQLite|Node & ParentNode} element
+   * @param {number=} level Number of levels deep search should be performed
    */
   function parentHasAriaLabel(element, level) {
     level = level || 1;
@@ -2287,7 +2287,7 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
       if (!hasAriaLabel(parentNode)) {
         return false;
       }
-      /* Perform role blacklist check */
+      /* Perform role block-list check */
       if (parentNode.hasAttribute('role')) {
         switch (parentNode.getAttribute('role').toLowerCase()) {
           case 'command':
@@ -2309,7 +2309,7 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
             return false;
         }
       }
-      /* Perform tagName blacklist check */
+      /* Perform tagName block-list check */
       switch (parentNode.tagName.toLowerCase()) {
         case 'abbr':
         case 'acronym':
