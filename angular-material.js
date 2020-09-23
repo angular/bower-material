@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.0-master-c644d6a
+ * v1.2.0-master-5c455d3
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2940,9 +2940,13 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
     }
   }
 
+  /**
+   * @param {Element|JQLite} element
+   * @returns {string}
+   */
   function getText(element) {
     element = element[0] || element;
-    var walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+    var walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null);
     var text = '';
 
     var node;
@@ -2954,6 +2958,10 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
 
     return text.trim() || '';
 
+    /**
+     * @param {Node} node
+     * @returns {boolean}
+     */
     function isAriaHiddenNode(node) {
       while (node.parentNode && (node = node.parentNode) !== element) {
         if (node.getAttribute && node.getAttribute('aria-hidden') === 'true') {
@@ -23215,9 +23223,7 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
           );
 
           // Button which shows ripple and executes primary action.
-          var buttonWrap = angular.element(
-            '<md-button class="md-no-style"></md-button>'
-          );
+          var buttonWrap = angular.element('<md-button class="md-no-style"></md-button>');
 
           moveAttributes(tElement[0], buttonWrap[0]);
 
@@ -23225,6 +23231,13 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
           // we determine the label from the content and copy it to the button.
           if (!buttonWrap.attr('aria-label')) {
             buttonWrap.attr('aria-label', $mdAria.getText(tElement));
+
+            // If we set the button's aria-label to the text content, then make the content hidden
+            // from screen readers so that it isn't read/traversed twice.
+            var listItemInner = itemContainer[0].querySelector('.md-list-item-inner');
+            if (listItemInner) {
+              listItemInner.setAttribute('aria-hidden', 'true');
+            }
           }
 
           // We allow developers to specify the `md-no-focus` class, to disable the focus style
@@ -23258,7 +23271,7 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
 
       /**
        * @param {HTMLElement} secondaryItem
-       * @param container
+       * @param {HTMLDivElement} container
        */
       function wrapSecondaryItem(secondaryItem, container) {
         // If the current secondary item is not a button, but contains a ng-click attribute,
@@ -23295,9 +23308,9 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
        * Moves attributes from a source element to the destination element.
        * By default, the function will copy the most necessary attributes, supported
        * by the button executor for clickable list items.
-       * @param source Element with the specified attributes
-       * @param destination Element which will receive the attributes
-       * @param extraAttrs Additional attributes, which will be moved over
+       * @param {Element} source Element with the specified attributes
+       * @param {Element} destination Element which will receive the attributes
+       * @param {string|string[]} extraAttrs Additional attributes, which will be moved over
        */
       function moveAttributes(source, destination, extraAttrs) {
         var copiedAttrs = $mdUtil.prefixer([
@@ -39126,4 +39139,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.2.0-master-c644d6a"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.2.0-master-5c455d3"}};
