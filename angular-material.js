@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-7856883
+ * v1.2.1-master-b406623
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -14550,7 +14550,7 @@ angular.module('material.components.datepicker', [
     /**
      * The date that is currently focused or showing in the calendar. This will initially be set
      * to the ng-model value if set, otherwise to today. It will be updated as the user navigates
-     * to other months. The cell corresponding to the displayDate does not necesarily always have
+     * to other months. The cell corresponding to the displayDate does not necessarily always have
      * focus in the document (such as for cases when the user is scrolling the calendar).
      * @type {Date}
      */
@@ -17016,7 +17016,10 @@ angular.module('material.components.datepicker', [
      */
     this.$scope = $scope;
 
-    /** @type {Date} */
+    /**
+     * This holds the model that will be used by the calendar.
+     * @type {Date|null|undefined}
+     */
     this.date = null;
 
     /** @type {boolean} */
@@ -17308,7 +17311,12 @@ angular.module('material.components.datepicker', [
    * @param {Date=} opt_date Date to check. If not given, defaults to the datepicker's model value.
    */
   DatePickerCtrl.prototype.updateErrorState = function(opt_date) {
-    var date = opt_date || this.date;
+    var date;
+    if (opt_date) {
+      date = new Date(opt_date.valueOf());
+    } else {
+      date = angular.copy(this.ngModelCtrl.$modelValue);
+    }
 
     // Clear any existing errors to get rid of anything that's no longer relevant.
     this.clearErrorState();
@@ -17517,7 +17525,7 @@ angular.module('material.components.datepicker', [
 
   /**
    * Open the floating calendar pane.
-   * @param {Event} event
+   * @param {MouseEvent|KeyboardEvent|{target: HTMLInputElement}} event
    */
   DatePickerCtrl.prototype.openCalendarPane = function(event) {
     if (!this.isCalendarOpen && !this.isDisabled && !this.inputFocusedOnWindowBlur) {
@@ -17578,7 +17586,7 @@ angular.module('material.components.datepicker', [
       }
     }
 
-    function reset(){
+    function reset() {
       self.isCalendarOpen = self.isOpen = false;
     }
   };
@@ -17593,7 +17601,7 @@ angular.module('material.components.datepicker', [
     // Use a timeout in order to allow the calendar to be rendered, as it is gated behind an ng-if.
     var self = this;
     this.$mdUtil.nextTick(function() {
-      self.getCalendarCtrl().focusDate();
+      self.getCalendarCtrl().focusDate(self.date);
     }, false);
   };
 
@@ -17684,6 +17692,7 @@ angular.module('material.components.datepicker', [
     var self = this;
     var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
 
+    // Update the model used by the calendar.
     if (this.dateUtil.isValidDate(value) && timezone != null && value.getTimezoneOffset() >= 0) {
       this.date = this.dateUtil.removeLocalTzAndReparseDate(value);
     } else {
@@ -39154,4 +39163,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-7856883"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-b406623"}};
