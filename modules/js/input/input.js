@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-ff34149
+ * v1.2.1-master-c0c91b7
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -493,9 +493,11 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
     function setupAttributeWatchers() {
       if (containerCtrl.label) {
         attr.$observe('required', function (value) {
-          // We don't need to parse the required value, it's always a boolean because of angular's
+          // We don't need to parse the required value, it's always a boolean because of AngularJS'
           // required directive.
-          containerCtrl.label.toggleClass('md-required', value && !mdNoAsterisk);
+          if (containerCtrl.label) {
+            containerCtrl.label.toggleClass('md-required', value && !mdNoAsterisk);
+          }
         });
       }
     }
