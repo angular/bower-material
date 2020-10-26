@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-d77fbc4
+ * v1.2.1-master-f79186f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -18003,8 +18003,9 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  * </hljs>
  *
  * ### JavaScript: promise API syntax, custom dialog template
+ *
  * <hljs lang="js">
- * (function(angular, undefined){
+ * (function(angular, undefined) {
  *   "use strict";
  *
  *   angular
@@ -18019,7 +18020,6 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  *     var ctrl = this;
  *
  *     ctrl.showAlert = showAlert;
- *     ctrl.closeAlert = closeAlert;
  *     ctrl.showGreeting = showCustomGreeting;
  *
  *     ctrl.hasAlert = function() { return !!alert };
@@ -18034,44 +18034,36 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  *         .ok('Close');
  *
  *       $mdDialog
- *         .show( alert )
+ *         .show(alert)
  *         .finally(function() {
  *           alert = undefined;
  *         });
  *     }
  *
- *     // Close the specified dialog instance and resolve with 'finished' flag
- *     // Normally this is not needed, just use '$mdDialog.hide()' to close
- *     // the most recent dialog popup.
- *     function closeAlert() {
- *       $mdDialog.hide( alert, "finished" );
- *       alert = undefined;
- *     }
- *
  *     // Dialog #2 - Demonstrate more complex dialogs construction and popup.
  *
  *     function showCustomGreeting($event) {
- *         $mdDialog.show({
- *           targetEvent: $event,
- *           template:
- *             '<md-dialog>' +
- *             '  <md-dialog-content>Hello {{ ctrl.employee }}!</md-dialog-content>' +
- *             '  <md-dialog-actions>' +
- *             '    <md-button ng-click="ctrl.closeDialog()" class="md-primary">' +
- *             '      Close Greeting' +
- *             '    </md-button>' +
- *             '  </md-dialog-actions>' +
- *             '</md-dialog>',
- *           controller: GreetingController,
- *           controllerAs: 'ctrl',
- *           onComplete: afterShowAnimation,
- *           locals: { employee: ctrl.userName }
- *         });
+ *       $mdDialog.show({
+ *         targetEvent: $event,
+ *         template:
+ *           '<md-dialog>' +
+ *           '  <md-dialog-content>Hello {{ ctrl.employee }}!</md-dialog-content>' +
+ *           '  <md-dialog-actions>' +
+ *           '    <md-button ng-click="ctrl.closeDialog()" class="md-primary">' +
+ *           '      Close Greeting' +
+ *           '    </md-button>' +
+ *           '  </md-dialog-actions>' +
+ *           '</md-dialog>',
+ *         controller: GreetingController,
+ *         controllerAs: 'ctrl',
+ *         onComplete: afterShowAnimation,
+ *         locals: { employee: ctrl.userName }
+ *       });
  *
- *         // When the 'enter' animation finishes...
- *         function afterShowAnimation(scope, element, options) {
- *           // post-show code here: DOM element focus, etc.
- *         }
+ *       // When the 'enter' animation finishes...
+ *       function afterShowAnimation(scope, element, options) {
+ *         // post-show code here: DOM element focus, etc.
+ *       }
  *     }
  *   }
  *
@@ -22189,9 +22181,11 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
     function setupAttributeWatchers() {
       if (containerCtrl.label) {
         attr.$observe('required', function (value) {
-          // We don't need to parse the required value, it's always a boolean because of angular's
+          // We don't need to parse the required value, it's always a boolean because of AngularJS'
           // required directive.
-          containerCtrl.label.toggleClass('md-required', value && !mdNoAsterisk);
+          if (containerCtrl.label) {
+            containerCtrl.label.toggleClass('md-required', value && !mdNoAsterisk);
+          }
         });
       }
     }
@@ -39163,4 +39157,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-d77fbc4"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-f79186f"}};
