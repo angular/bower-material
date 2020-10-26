@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-77825d5
+ * v1.2.1-master-d77fbc4
  */
 html, body {
   height: 100%;
@@ -4469,14 +4469,14 @@ md-tabs {
     min-height: 248px; }
   md-tabs[md-align-tabs="bottom"] {
     padding-bottom: 48px; }
-    md-tabs[md-align-tabs="bottom"] md-tabs-wrapper {
+    md-tabs[md-align-tabs="bottom"] > md-tabs-wrapper {
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
       height: 48px;
       z-index: 2; }
-    md-tabs[md-align-tabs="bottom"] md-tabs-content-wrapper {
+    md-tabs[md-align-tabs="bottom"] > md-tabs-content-wrapper {
       top: 0;
       bottom: 48px; }
   md-tabs.md-dynamic-height md-tabs-content-wrapper {
