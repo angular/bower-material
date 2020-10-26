@@ -1,7 +1,7 @@
 {
   "name": "angular-material-whiteframe",
-  "version": "1.2.1-master-b406623",
+  "version": "1.2.1-master-77825d5",
   "dependencies": {
-    "angular-material-core": "1.2.1-master-b406623"
+    "angular-material-core": "1.2.1-master-77825d5"
   }
 }
