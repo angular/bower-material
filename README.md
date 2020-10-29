@@ -39,8 +39,8 @@ npm install http://github.com/angular/bower-material#master --save
 #      "angular-material": "git+ssh://git@github.com/angular/bower-material.git#master"
 
 
-# To install the v1.1.22 version 
-npm install http://github.com/angular/bower-material/tarball/v1.1.22 --save
+# To install the v1.2.1 version 
+npm install http://github.com/angular/bower-material/tarball/v1.2.1 --save
 
 # To view all installed package 
 npm list
@@ -86,23 +86,23 @@ This is especially useful when using online tools such as CodePen, Plunker, or j
 
 ```html
 <head>
-    <!-- Angular Material CSS now available via Google CDN; version 1.1.24 used here -->
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.24/angular-material.min.css">
+    <!-- Angular Material CSS now available via Google CDN; version 1.2.1 used here -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.1/angular-material.min.css">
 </head>
 <body>
 
     <!-- Angular Material Dependencies -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-messages.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-messages.min.js"></script>
     
-    <!-- Angular Material Javascript now available via Google CDN; version 1.1.24 used here -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.24/angular-material.min.js"></script>
+    <!-- Angular Material Javascript now available via Google CDN; version 1.2.1 used here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.1/angular-material.min.js"></script>
 </body>
 ```
 
-> Note that the above sample references the 1.1.24 CDN release. Your version will change 
+> Note that the above sample references the 1.2.1 CDN release. Your version will change 
 based on the latest stable release version.
 
 ## Unit Testing with Angular Material
