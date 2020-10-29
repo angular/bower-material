@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-c0c91b7
+ * v1.2.1-master-faa4c42
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -16235,7 +16235,7 @@ angular.module('material.components.datepicker', [
        * Default function to determine whether a string makes sense to be
        * parsed to a Date object.
        *
-       * This is very permissive and is just a basic sanity check to ensure that
+       * This is very permissive and is just a basic check to ensure that
        * things like single integers aren't able to be parsed into dates.
        * @param {string} dateString
        * @returns {boolean}
@@ -21008,7 +21008,7 @@ MdIconService.$inject = ["config", "$templateRequest", "$q", "$log", "$mdUtil", 
  *
  * <hljs lang="js">
  *   app.config(function($sceDelegateProvider) {
- *     $sceDelegateProvider.resourceUrlWhitelist([
+ *     $sceDelegateProvider.trustedResourceUrlList([
  *       // Adding 'self' to the allow-list, will allow requests from the current origin.
  *       'self',
  *       // Using double asterisks here, will allow all URLs to load.
@@ -24261,7 +24261,7 @@ function MenuProvider($$interimElementProvider) {
       }
 
       /**
-       * Check for valid opts and set some sane defaults
+       * Check for valid opts and set some useful defaults
        */
       function sanitizeAndConfigure() {
         if (!opts.target) {
@@ -32399,7 +32399,7 @@ function SelectProvider($$interimElementProvider) {
       }
 
       /**
-       * Check for valid opts and set some sane defaults
+       * Check for valid opts and set some useful defaults
        */
       function sanitizeAndConfigure(scope, options) {
         var selectMenuElement = element.find('md-select-menu');
@@ -39157,4 +39157,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-c0c91b7"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-faa4c42"}};

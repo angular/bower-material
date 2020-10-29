@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-c0c91b7
+ * v1.2.1-master-faa4c42
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1726,7 +1726,7 @@ function SelectProvider($$interimElementProvider) {
       }
 
       /**
-       * Check for valid opts and set some sane defaults
+       * Check for valid opts and set some useful defaults
        */
       function sanitizeAndConfigure(scope, options) {
         var selectMenuElement = element.find('md-select-menu');

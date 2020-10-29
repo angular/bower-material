@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-c0c91b7
+ * v1.2.1-master-faa4c42
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -350,7 +350,7 @@ MdIconService['$inject'] = ["config", "$templateRequest", "$q", "$log", "$mdUtil
  *
  * <hljs lang="js">
  *   app.config(function($sceDelegateProvider) {
- *     $sceDelegateProvider.resourceUrlWhitelist([
+ *     $sceDelegateProvider.trustedResourceUrlList([
  *       // Adding 'self' to the allow-list, will allow requests from the current origin.
  *       'self',
  *       // Using double asterisks here, will allow all URLs to load.

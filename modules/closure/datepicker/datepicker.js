@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-c0c91b7
+ * v1.2.1-master-faa4c42
  */
 goog.provide('ngmaterial.components.datepicker');
 goog.require('ngmaterial.components.icon');
@@ -1863,7 +1863,7 @@ angular.module('material.components.datepicker', [
        * Default function to determine whether a string makes sense to be
        * parsed to a Date object.
        *
-       * This is very permissive and is just a basic sanity check to ensure that
+       * This is very permissive and is just a basic check to ensure that
        * things like single integers aren't able to be parsed into dates.
        * @param {string} dateString
        * @returns {boolean}
