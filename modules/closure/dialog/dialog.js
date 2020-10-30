@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-faa4c42
+ * v1.2.1-master-ba38777
  */
 goog.provide('ngmaterial.components.dialog');
 goog.require('ngmaterial.components.backdrop');
@@ -363,7 +363,7 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  *
  *     ctrl.closeDialog = function() {
  *       // Hides the most recent dialog shown.
- *       // Mo specific dialog instance reference is needed.
+ *       // No specific dialog instance reference is needed.
  *       $mdDialog.hide();
  *     };
  *   }
@@ -389,7 +389,7 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  * - `title(string)` - Sets the alert title.
  * - `textContent(string)` - Sets the alert message.
  * - `htmlContent(string)` - Sets the alert message as HTML. Requires the `ngSanitize`
- *     module to be loaded. HTML is not run through Angular's compiler.
+ *     module to be loaded. HTML is not run through AngularJS' compiler.
  * - `ok(string)` - Sets the alert "Okay" button text.
  * - `theme(string)` - Sets the theme of the alert dialog.
  * - `targetEvent(DOMClickEvent=)` - A click's event object. When passed in as an
@@ -413,7 +413,7 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  * - `title(string)` - Sets the confirm title.
  * - `textContent(string)` - Sets the confirm message.
  * - `htmlContent(string)` - Sets the confirm message as HTML. Requires the `ngSanitize`
- *     module to be loaded. HTML is not run through Angular's compiler.
+ *     module to be loaded. HTML is not run through AngularJS' compiler.
  * - `ok(string)` - Sets the confirm "Okay" button text.
  * - `cancel(string)` - Sets the confirm "Cancel" button text.
  * - `theme(string)` - Sets the theme of the confirm dialog.
@@ -439,7 +439,7 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  * - `title(string)` - Sets the prompt title.
  * - `textContent(string)` - Sets the prompt message.
  * - `htmlContent(string)` - Sets the prompt message as HTML. Requires the `ngSanitize`
- *     module to be loaded. HTML is not run through Angular's compiler.
+ *     module to be loaded. HTML is not run through AngularJS' compiler.
  * - `placeholder(string)` - Sets the placeholder text for the input.
  * - `required(boolean)` - Sets the input required value.
  * - `initialValue(string)` - Sets the initial value for the prompt input.
@@ -463,7 +463,7 @@ function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
  *   - `templateUrl` - `{string=}`: The url of a template that will be used as the content
  *      of the dialog.
  *   - `template` - `{string=}`: HTML template to show in the dialog. This **must** be trusted HTML
- *      with respect to Angular's [$sce service](https://docs.angularjs.org/api/ng/service/$sce).
+ *      with respect to AngularJS' [$sce service](https://docs.angularjs.org/api/ng/service/$sce).
  *      This template should **never** be constructed with any kind of user input or user data.
  *   - `contentElement` - `{string|Element}`: Instead of using a template, which will be compiled
  *      each time a dialog opens, you can also use a DOM element.<br/>
