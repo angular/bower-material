@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-fc4e51b
+ * v1.2.1-master-eab5c81
  */
 goog.provide('ngmaterial.core');
 
@@ -2211,7 +2211,7 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
    */
   function getText(element) {
     element = element[0] || element;
-    var walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null);
+    var walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
     var text = '';
 
     var node;
