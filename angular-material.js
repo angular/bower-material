@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-eab5c81
+ * v1.2.1-master-c609385
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -11579,15 +11579,27 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
 
       function render() {
         // Cast the $viewValue to a boolean since it could be undefined
-        element.toggleClass('md-checked', !!ngModelCtrl.$viewValue && !isIndeterminate);
+        var checked = !!ngModelCtrl.$viewValue && !isIndeterminate;
+        element.toggleClass('md-checked', checked);
+        if (!isIndeterminate) {
+          if (checked) {
+            element.attr('aria-checked', 'true');
+          } else {
+            element.attr('aria-checked', 'false');
+          }
+        }
       }
 
+      /**
+       * @param {string=} newValue
+       */
       function setIndeterminateState(newValue) {
         isIndeterminate = newValue !== false;
         if (isIndeterminate) {
           element.attr('aria-checked', 'mixed');
         }
         element.toggleClass('md-indeterminate', isIndeterminate);
+        ngModelCtrl.$render();
       }
     }
   }
@@ -39157,4 +39169,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-eab5c81"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-c609385"}};
