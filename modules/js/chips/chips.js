@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-71dc4eb
+ * v1.2.1-master-e6b5482
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1066,7 +1066,9 @@ MdChipsCtrl.prototype.resetChipBuffer = function() {
  * @returns {boolean} true if the max chips limit has been reached, false otherwise.
  */
 MdChipsCtrl.prototype.hasMaxChipsReached = function() {
-  if (angular.isString(this.maxChips)) this.maxChips = parseInt(this.maxChips, 10) || 0;
+  if (angular.isString(this.maxChips)) {
+    this.maxChips = parseInt(this.maxChips, 10) || 0;
+  }
 
   return this.maxChips > 0 && this.items.length >= this.maxChips;
 };
@@ -2052,6 +2054,9 @@ MdContactChips['$inject'] = ["$mdTheming", "$mdUtil"];angular
  *    contact's email address.
  * @param {string} md-contact-image The field name of the contact object representing the
  *    contact's image.
+ * @param {number=} md-max-chips The maximum number of chips allowed to add through user input.
+ *    <br/><br/>The validation property `md-max-chips` can be used when the max chips
+ *    amount is reached.
  * @param {number=} md-min-length Specifies the minimum length of text before autocomplete will
  *    make suggestions
  * @param {string=} md-input-class This class will be applied to the child `md-autocomplete` for
@@ -2102,6 +2107,7 @@ var MD_CONTACT_CHIPS_TEMPLATE = '\
           ng-model="$mdContactChipsCtrl.contacts"\
           ng-change="$mdContactChipsCtrl.ngChange($mdContactChipsCtrl.contacts)"\
           md-require-match="$mdContactChipsCtrl.requireMatch"\
+          md-max-chips="{{$mdContactChipsCtrl.maxChips}}"\
           md-chip-append-delay="{{$mdContactChipsCtrl.chipAppendDelay}}"\
           md-separator-keys="$mdContactChipsCtrl.separatorKeys"\
           md-autocomplete-snap>\
@@ -2173,6 +2179,7 @@ function MdContactChips($mdTheming, $mdUtil) {
       ngChange: '&?',
       requireMatch: '=?mdRequireMatch',
       minLength: '=?mdMinLength',
+      maxChips: '=?mdMaxChips',
       highlightFlags: '@?mdHighlightFlags',
       chipAppendDelay: '@?mdChipAppendDelay',
       separatorKeys: '=?mdSeparatorKeys',
