@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-5f8472c
+ * v1.2.1-master-61412b4
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -31381,8 +31381,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
 
       function inputCheckValue() {
         // The select counts as having a value if one or more options are selected,
-        // or if the input's validity state says it has bad input (eg string in a number input)
-        // we must do this on nextTick as the $render is sometimes invoked on nextTick.
+        // or if the input's validity state says it has bad input (eg: string in a number input).
+        // We must do this on nextTick as the $render is sometimes invoked on nextTick.
         $mdUtil.nextTick(function () {
           containerCtrl && containerCtrl.setHasValue(
             selectMenuCtrl.getSelectedLabels().length > 0 || (element[0].validity || {}).badInput);
@@ -31643,7 +31643,10 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
       self.ngModel.$isEmpty = function($viewValue) {
         // We have to transform the viewValue into the hashKey, because otherwise the
         // OptionCtrl may not exist. Developers may have specified a trackBy function.
-        return !self.options[self.hashGetter($viewValue)];
+        var hashedValue = self.options[self.hashGetter($viewValue)] ? self.options[self.hashGetter($viewValue)].value : null;
+        // Base this check on the default AngularJS $isEmpty() function.
+        // eslint-disable-next-line no-self-compare
+        return !angular.isDefined(hashedValue) || hashedValue === null || hashedValue === '' || hashedValue !== hashedValue;
       };
 
       // Allow users to provide `ng-model="foo" ng-model-options="{trackBy: '$value.id'}"` so
@@ -39262,4 +39265,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-5f8472c"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-61412b4"}};
