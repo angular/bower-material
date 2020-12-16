@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-a8878ef
+ * v1.2.1-master-d9949d6
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1014,14 +1014,13 @@ function MdPrefixer(initialAttributes, buildSelector) {
  * will not be unique.
  */
 UtilFactory['$inject'] = ["$document", "$timeout", "$compile", "$rootScope", "$$mdAnimate", "$interpolate", "$log", "$rootElement", "$window", "$$rAF"];
-var nextUniqueId = 0, isIos, isAndroid, isFirefox;
+var nextUniqueId = 0, isIos, isAndroid;
 
 // Support material-tools builds.
 if (window.navigator) {
   var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
   isIos = userAgent.match(/ipad|iphone|ipod/i);
   isAndroid = userAgent.match(/android/i);
-  isFirefox = userAgent.match(/(firefox|minefield)/i);
 }
 
 /**
@@ -2039,322 +2038,6 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     sanitize: function(term) {
       if (!term) return term;
       return term.replace(/[\\^$*+?.()|{}[]/g, '\\$&');
-    },
-
-    /**
-     * Gets whether an element is disabled.
-     * @param {HTMLElement} element Element to be checked.
-     * @returns {boolean} Whether the element is disabled.
-     */
-    isDisabled: function(element) {
-      // This does not capture some cases, such as a non-form control with a disabled attribute or
-      // a form control inside of a disabled form, but should capture the most common cases.
-      return element.hasAttribute('disabled');
-    },
-
-    /**
-     * Gets whether an element is visible for the purposes of interactivity.
-     *
-     * This will capture states like `display: none` and `visibility: hidden`, but not things like
-     * being clipped by an `overflow: hidden` parent or being outside the viewport.
-     *
-     * @param {HTMLElement} element
-     * @returns {boolean} Whether the element is visible.
-     */
-    isVisible: function(element) {
-      return $mdUtil.hasGeometry(element) && getComputedStyle(element).visibility === 'visible';
-    },
-
-    /**
-     * Gets whether an element can be reached via Tab key.
-     * Assumes that the element has already been checked with isFocusable.
-     * @param {HTMLElement} element Element to be checked.
-     * @returns {boolean} Whether the element is tabbable.
-     */
-    isTabbable: function(element) {
-      var frameElement = $mdUtil.getFrameElement($mdUtil.getWindow(element));
-
-      if (frameElement) {
-        // Frame elements inherit their tabindex onto all child elements.
-        if ($mdUtil.getTabIndexValue(frameElement) === -1) {
-          return false;
-        }
-
-        // Browsers disable tabbing to an element inside of an invisible frame.
-        if (!$mdUtil.isVisible(frameElement)) {
-          return false;
-        }
-      }
-
-      var nodeName = element.nodeName.toLowerCase();
-      var tabIndexValue = $mdUtil.getTabIndexValue(element);
-
-      if (element.hasAttribute('contenteditable')) {
-        return tabIndexValue !== -1;
-      }
-
-      if (nodeName === 'iframe' || nodeName === 'object') {
-        // The frame or object's content may be tabbable depending on the content, but it's
-        // not possibly to reliably detect the content of the frames. We always consider such
-        // elements as non-tabbable.
-        return false;
-      }
-
-      // In iOS, the browser only considers some specific elements as tabbable.
-      if (isIos && !$mdUtil.isPotentiallyTabbableIOS(element)) {
-        return false;
-      }
-
-      if (nodeName === 'audio') {
-        // Audio elements without controls enabled are never tabbable, regardless
-        // of the tabindex attribute explicitly being set.
-        if (!element.hasAttribute('controls')) {
-          return false;
-        }
-        // Audio elements with controls are by default tabbable unless the
-        // tabindex attribute is set to `-1` explicitly.
-        return tabIndexValue !== -1;
-      }
-
-      if (nodeName === 'video') {
-        // For all video elements, if the tabindex attribute is set to `-1`, the video
-        // is not tabbable. Note: We cannot rely on the default `HTMLElement.tabIndex`
-        // property as that one is set to `-1` in Chrome, Edge and Safari v13.1. The
-        // tabindex attribute is the source of truth here.
-        if (tabIndexValue === -1) {
-          return false;
-        }
-        // If the tabindex is explicitly set, and not `-1` (as per check before), the
-        // video element is always tabbable (regardless of whether it has controls or not).
-        if (tabIndexValue !== null) {
-          return true;
-        }
-        // Otherwise (when no explicit tabindex is set), a video is only tabbable if it
-        // has controls enabled. Firefox is special as videos are always tabbable regardless
-        // of whether there are controls or not.
-        return isFirefox || element.hasAttribute('controls');
-      }
-
-      return element.tabIndex >= 0;
-    },
-
-    /**
-     * Gets whether an element can be focused by the user.
-     * @param {HTMLElement} element Element to be checked.
-     * @returns {boolean} Whether the element is focusable.
-     */
-    isFocusable: function(element) {
-      // Perform checks in order of left to most expensive.
-      // Again, naive approach that does not capture many edge cases and browser quirks.
-      return $mdUtil.isPotentiallyFocusable(element) && !$mdUtil.isDisabled(element) &&
-        $mdUtil.isVisible(element);
-    },
-
-    /**
-     * Gets whether an element is potentially focusable without taking current visible/disabled
-     * state into account.
-     * @param {HTMLElement} element
-     * @returns {boolean}
-     */
-    isPotentiallyFocusable: function(element) {
-      // Inputs are potentially focusable *unless* they're type="hidden".
-      if ($mdUtil.isHiddenInput(element)) {
-        return false;
-      }
-
-      return $mdUtil.isNativeFormElement(element) ||
-        $mdUtil.isAnchorWithHref(element) ||
-        element.hasAttribute('contenteditable') ||
-        $mdUtil.hasValidTabIndex(element);
-    },
-
-    /**
-     * Checks whether the specified element is potentially tabbable on iOS.
-     * @param {HTMLElement} element
-     * @returns {boolean}
-     */
-    isPotentiallyTabbableIOS: function(element) {
-      var nodeName = element.nodeName.toLowerCase();
-        var inputType = nodeName === 'input' && element.type;
-
-      return inputType === 'text'
-        || inputType === 'password'
-        || nodeName === 'select'
-        || nodeName === 'textarea';
-    },
-
-    /**
-     * Returns the parsed tabindex from the element attributes instead of returning the
-     * evaluated tabindex from the browsers defaults.
-     * @param {HTMLElement} element
-     * @returns {null|number}
-     */
-    getTabIndexValue: function(element) {
-      if (!$mdUtil.hasValidTabIndex(element)) {
-        return null;
-      }
-
-      // See browser issue in Gecko https://bugzilla.mozilla.org/show_bug.cgi?id=1128054
-      var tabIndex = parseInt(element.getAttribute('tabindex') || '', 10);
-
-      return isNaN(tabIndex) ? -1 : tabIndex;
-    },
-
-    /**
-     * Gets whether an element has a valid tabindex.
-     * @param {HTMLElement} element
-     * @returns {boolean}
-     */
-    hasValidTabIndex: function(element) {
-      if (!element.hasAttribute('tabindex') || element.tabIndex === undefined) {
-        return false;
-      }
-
-      var tabIndex = element.getAttribute('tabindex');
-
-      // IE11 parses tabindex="" as the value "-32768"
-      if (tabIndex == '-32768') {
-        return false;
-      }
-
-      return !!(tabIndex && !isNaN(parseInt(tabIndex, 10)));
-    },
-
-    /**
-     * Checks whether the specified element has any geometry / rectangles.
-     * @param {HTMLElement} element
-     * @returns {boolean}
-     */
-    hasGeometry: function(element) {
-      // Use logic from jQuery to check for an invisible element.
-      // See https://github.com/jquery/jquery/blob/master/src/css/hiddenVisibleSelectors.js#L12
-      return !!(element.offsetWidth || element.offsetHeight ||
-        (typeof element.getClientRects === 'function' && element.getClientRects().length));
-    },
-
-    /**
-     * Returns the frame element from a window object. Since browsers like MS Edge throw errors if
-     * the frameElement property is being accessed from a different host address, this property
-     * should be accessed carefully.
-     * @param {Window} window
-     * @returns {null|HTMLElement}
-     */
-    getFrameElement: function(window) {
-      try {
-        return window.frameElement;
-      } catch (error) {
-        return null;
-      }
-    },
-
-    /**
-     * Gets the parent window of a DOM node with regards of being inside of an iframe.
-     * @param {HTMLElement} node
-     * @returns {Window}
-     */
-    getWindow: function(node) {
-      // ownerDocument is null if `node` itself *is* a document.
-      return node.ownerDocument && node.ownerDocument.defaultView || window;
-    },
-
-    /**
-     * Gets whether an element's
-     * @param {Node} element
-     * @returns {boolean}
-     */
-    isNativeFormElement: function(element) {
-      var nodeName = element.nodeName.toLowerCase();
-      return nodeName === 'input' ||
-        nodeName === 'select' ||
-        nodeName === 'button' ||
-        nodeName === 'textarea';
-    },
-
-    /**
-     * Gets whether an element is an `<input type="hidden">`.
-     * @param {HTMLElement} element
-     * @returns {boolean}
-     */
-    isHiddenInput: function(element) {
-      return $mdUtil.isInputElement(element) && element.type == 'hidden';
-    },
-
-    /**
-     * Gets whether an element is an anchor that has an href attribute.
-     * @param {HTMLElement} element
-     * @returns {boolean}
-     */
-    isAnchorWithHref: function(element) {
-      return $mdUtil.isAnchorElement(element) && element.hasAttribute('href');
-    },
-
-    /**
-     * Gets whether an element is an input element.
-     * @param {HTMLElement} element
-     * @returns {boolean}
-     */
-    isInputElement: function(element) {
-      return element.nodeName.toLowerCase() == 'input';
-    },
-
-    /**
-     * Gets whether an element is an anchor element.
-     * @param {HTMLElement} element
-     * @returns {boolean}
-     */
-    isAnchorElement: function(element) {
-      return element.nodeName.toLowerCase() == 'a';
-    },
-
-    /**
-     * Get the first tabbable element from a DOM subtree (inclusive).
-     * @param {HTMLElement} root
-     * @returns {HTMLElement|null}
-     */
-    getFirstTabbableElement: function(root) {
-      if ($mdUtil.isFocusable(root) && $mdUtil.isTabbable(root)) {
-        return root;
-      }
-
-      // Iterate in DOM order. Note that IE doesn't have `children` for SVG so we fall
-      // back to `childNodes` which includes text nodes, comments etc.
-      var children = root.children || root.childNodes;
-
-      for (var i = 0; i < children.length; i++) {
-        var tabbableChild = children[i].nodeType === $document[0].ELEMENT_NODE ?
-          $mdUtil.getFirstTabbableElement(children[i]) : null;
-
-        if (tabbableChild) {
-          return tabbableChild;
-        }
-      }
-
-      return null;
-    },
-
-    /**
-     * Get the last tabbable element from a DOM subtree (inclusive).
-     * @param {HTMLElement} root
-     * @returns {HTMLElement|null}
-     */
-    getLastTabbableElement: function(root) {
-      if ($mdUtil.isFocusable(root) && $mdUtil.isTabbable(root)) {
-        return root;
-      }
-
-      // Iterate in reverse DOM order.
-      var children = root.children || root.childNodes;
-
-      for (var i = children.length - 1; i >= 0; i--) {
-        var tabbableChild = children[i].nodeType === $document[0].ELEMENT_NODE ?
-          $mdUtil.getLastTabbableElement(children[i]) : null;
-
-        if (tabbableChild) {
-          return tabbableChild;
-        }
-      }
-
-      return null;
     }
   };
 
@@ -3096,179 +2779,6 @@ function MdCompilerProvider() {
   };
 }
 
-
-/**
- * @ngdoc module
- * @name material.core.interaction
- * @description
- * User interaction detection to provide proper accessibility.
- */
-MdInteractionService['$inject'] = ["$timeout", "$mdUtil", "$rootScope"];
-angular
-  .module('material.core.interaction', [])
-  .service('$mdInteraction', MdInteractionService);
-
-
-/**
- * @ngdoc service
- * @name $mdInteraction
- * @module material.core.interaction
- *
- * @description
- *
- * Service which keeps track of the last interaction type and validates them for several browsers.
- * The service hooks into the document's body and listens for touch, mouse and keyboard events.
- *
- * The most recent interaction type can be retrieved by calling the `getLastInteractionType` method.
- *
- * Here is an example markup for using the interaction service.
- *
- * <hljs lang="js">
- *   var lastType = $mdInteraction.getLastInteractionType();
- *
- *   if (lastType === 'keyboard') {
- *     // We only restore the focus for keyboard users.
- *     restoreFocus();
- *   }
- * </hljs>
- *
- */
-function MdInteractionService($timeout, $mdUtil, $rootScope) {
-  this.$timeout = $timeout;
-  this.$mdUtil = $mdUtil;
-  this.$rootScope = $rootScope;
-
-  // IE browsers can also trigger pointer events, which also leads to an interaction.
-  this.pointerEvent = 'MSPointerEvent' in window ? 'MSPointerDown' : 'PointerEvent' in window ? 'pointerdown' : null;
-  this.bodyElement = angular.element(document.body);
-  this.isBuffering = false;
-  this.bufferTimeout = null;
-  this.lastInteractionType = null;
-  this.lastInteractionTime = null;
-  this.inputHandler = this.onInputEvent.bind(this);
-  this.bufferedInputHandler = this.onBufferInputEvent.bind(this);
-
-  // Type Mappings for the different events
-  // There will be three three interaction types
-  // `keyboard`, `mouse` and `touch`
-  // type `pointer` will be evaluated in `pointerMap` for IE Browser events
-  this.inputEventMap = {
-    'keydown': 'keyboard',
-    'mousedown': 'mouse',
-    'mouseenter': 'mouse',
-    'touchstart': 'touch',
-    'pointerdown': 'pointer',
-    'MSPointerDown': 'pointer'
-  };
-
-  // IE PointerDown events will be validated in `touch` or `mouse`
-  // Index numbers referenced here: https://msdn.microsoft.com/library/windows/apps/hh466130.aspx
-  this.iePointerMap = {
-    2: 'touch',
-    3: 'touch',
-    4: 'mouse'
-  };
-
-  this.initializeEvents();
-  this.$rootScope.$on('$destroy', this.deregister.bind(this));
-}
-
-/**
- * Removes all event listeners created by $mdInteration on the
- * body element.
- */
-MdInteractionService.prototype.deregister = function() {
-
-    this.bodyElement.off('keydown mousedown', this.inputHandler);
-
-    if ('ontouchstart' in document.documentElement) {
-      this.bodyElement.off('touchstart', this.bufferedInputHandler);
-    }
-
-    if (this.pointerEvent) {
-      this.bodyElement.off(this.pointerEvent, this.inputHandler);
-    }
-
-};
-
-/**
- * Initializes the interaction service, by registering all interaction events to the
- * body element.
- */
-MdInteractionService.prototype.initializeEvents = function() {
-
-  this.bodyElement.on('keydown mousedown', this.inputHandler);
-
-  if ('ontouchstart' in document.documentElement) {
-    this.bodyElement.on('touchstart', this.bufferedInputHandler);
-  }
-
-  if (this.pointerEvent) {
-    this.bodyElement.on(this.pointerEvent, this.inputHandler);
-  }
-
-};
-
-/**
- * Event listener for normal interaction events, which should be tracked.
- * @param event {MouseEvent|KeyboardEvent|PointerEvent|TouchEvent}
- */
-MdInteractionService.prototype.onInputEvent = function(event) {
-  if (this.isBuffering) {
-    return;
-  }
-
-  var type = this.inputEventMap[event.type];
-
-  if (type === 'pointer') {
-    type = this.iePointerMap[event.pointerType] || event.pointerType;
-  }
-
-  this.lastInteractionType = type;
-  this.lastInteractionTime = this.$mdUtil.now();
-};
-
-/**
- * Event listener for interaction events which should be buffered (touch events).
- * @param event {TouchEvent}
- */
-MdInteractionService.prototype.onBufferInputEvent = function(event) {
-  this.$timeout.cancel(this.bufferTimeout);
-
-  this.onInputEvent(event);
-  this.isBuffering = true;
-
-  // The timeout of 650ms is needed to delay the touchstart, because otherwise the touch will call
-  // the `onInput` function multiple times.
-  this.bufferTimeout = this.$timeout(function() {
-    this.isBuffering = false;
-  }.bind(this), 650, false);
-
-};
-
-/**
- * @ngdoc method
- * @name $mdInteraction#getLastInteractionType
- * @description Retrieves the last interaction type triggered in body.
- * @returns {string|null} Last interaction type.
- */
-MdInteractionService.prototype.getLastInteractionType = function() {
-  return this.lastInteractionType;
-};
-
-/**
- * @ngdoc method
- * @name $mdInteraction#isUserInvoked
- * @description Method to detect whether any interaction happened recently or not.
- * @param {number=} checkDelay Time to check for any interaction to have been triggered.
- * @returns {boolean} Whether there was any interaction or not.
- */
-MdInteractionService.prototype.isUserInvoked = function(checkDelay) {
-  var delay = angular.isNumber(checkDelay) ? checkDelay : 15;
-
-  // Check for any interaction to be within the specified check time.
-  return this.lastInteractionTime >= this.$mdUtil.now() - delay;
-};
 
 
 MdGesture['$inject'] = ["$$MdGestureHandler", "$$rAF", "$timeout", "$mdUtil"];
@@ -4880,6 +4390,179 @@ function InterimElementProvider() {
   }
 }
 
+/**
+ * @ngdoc module
+ * @name material.core.interaction
+ * @description
+ * User interaction detection to provide proper accessibility.
+ */
+MdInteractionService['$inject'] = ["$timeout", "$mdUtil", "$rootScope"];
+angular
+  .module('material.core.interaction', [])
+  .service('$mdInteraction', MdInteractionService);
+
+
+/**
+ * @ngdoc service
+ * @name $mdInteraction
+ * @module material.core.interaction
+ *
+ * @description
+ *
+ * Service which keeps track of the last interaction type and validates them for several browsers.
+ * The service hooks into the document's body and listens for touch, mouse and keyboard events.
+ *
+ * The most recent interaction type can be retrieved by calling the `getLastInteractionType` method.
+ *
+ * Here is an example markup for using the interaction service.
+ *
+ * <hljs lang="js">
+ *   var lastType = $mdInteraction.getLastInteractionType();
+ *
+ *   if (lastType === 'keyboard') {
+ *     // We only restore the focus for keyboard users.
+ *     restoreFocus();
+ *   }
+ * </hljs>
+ *
+ */
+function MdInteractionService($timeout, $mdUtil, $rootScope) {
+  this.$timeout = $timeout;
+  this.$mdUtil = $mdUtil;
+  this.$rootScope = $rootScope;
+
+  // IE browsers can also trigger pointer events, which also leads to an interaction.
+  this.pointerEvent = 'MSPointerEvent' in window ? 'MSPointerDown' : 'PointerEvent' in window ? 'pointerdown' : null;
+  this.bodyElement = angular.element(document.body);
+  this.isBuffering = false;
+  this.bufferTimeout = null;
+  this.lastInteractionType = null;
+  this.lastInteractionTime = null;
+  this.inputHandler = this.onInputEvent.bind(this);
+  this.bufferedInputHandler = this.onBufferInputEvent.bind(this);
+
+  // Type Mappings for the different events
+  // There will be three three interaction types
+  // `keyboard`, `mouse` and `touch`
+  // type `pointer` will be evaluated in `pointerMap` for IE Browser events
+  this.inputEventMap = {
+    'keydown': 'keyboard',
+    'mousedown': 'mouse',
+    'mouseenter': 'mouse',
+    'touchstart': 'touch',
+    'pointerdown': 'pointer',
+    'MSPointerDown': 'pointer'
+  };
+
+  // IE PointerDown events will be validated in `touch` or `mouse`
+  // Index numbers referenced here: https://msdn.microsoft.com/library/windows/apps/hh466130.aspx
+  this.iePointerMap = {
+    2: 'touch',
+    3: 'touch',
+    4: 'mouse'
+  };
+
+  this.initializeEvents();
+  this.$rootScope.$on('$destroy', this.deregister.bind(this));
+}
+
+/**
+ * Removes all event listeners created by $mdInteration on the
+ * body element.
+ */
+MdInteractionService.prototype.deregister = function() {
+
+    this.bodyElement.off('keydown mousedown', this.inputHandler);
+
+    if ('ontouchstart' in document.documentElement) {
+      this.bodyElement.off('touchstart', this.bufferedInputHandler);
+    }
+
+    if (this.pointerEvent) {
+      this.bodyElement.off(this.pointerEvent, this.inputHandler);
+    }
+
+};
+
+/**
+ * Initializes the interaction service, by registering all interaction events to the
+ * body element.
+ */
+MdInteractionService.prototype.initializeEvents = function() {
+
+  this.bodyElement.on('keydown mousedown', this.inputHandler);
+
+  if ('ontouchstart' in document.documentElement) {
+    this.bodyElement.on('touchstart', this.bufferedInputHandler);
+  }
+
+  if (this.pointerEvent) {
+    this.bodyElement.on(this.pointerEvent, this.inputHandler);
+  }
+
+};
+
+/**
+ * Event listener for normal interaction events, which should be tracked.
+ * @param event {MouseEvent|KeyboardEvent|PointerEvent|TouchEvent}
+ */
+MdInteractionService.prototype.onInputEvent = function(event) {
+  if (this.isBuffering) {
+    return;
+  }
+
+  var type = this.inputEventMap[event.type];
+
+  if (type === 'pointer') {
+    type = this.iePointerMap[event.pointerType] || event.pointerType;
+  }
+
+  this.lastInteractionType = type;
+  this.lastInteractionTime = this.$mdUtil.now();
+};
+
+/**
+ * Event listener for interaction events which should be buffered (touch events).
+ * @param event {TouchEvent}
+ */
+MdInteractionService.prototype.onBufferInputEvent = function(event) {
+  this.$timeout.cancel(this.bufferTimeout);
+
+  this.onInputEvent(event);
+  this.isBuffering = true;
+
+  // The timeout of 650ms is needed to delay the touchstart, because otherwise the touch will call
+  // the `onInput` function multiple times.
+  this.bufferTimeout = this.$timeout(function() {
+    this.isBuffering = false;
+  }.bind(this), 650, false);
+
+};
+
+/**
+ * @ngdoc method
+ * @name $mdInteraction#getLastInteractionType
+ * @description Retrieves the last interaction type triggered in body.
+ * @returns {string|null} Last interaction type.
+ */
+MdInteractionService.prototype.getLastInteractionType = function() {
+  return this.lastInteractionType;
+};
+
+/**
+ * @ngdoc method
+ * @name $mdInteraction#isUserInvoked
+ * @description Method to detect whether any interaction happened recently or not.
+ * @param {number=} checkDelay Time to check for any interaction to have been triggered.
+ * @returns {boolean} Whether there was any interaction or not.
+ */
+MdInteractionService.prototype.isUserInvoked = function(checkDelay) {
+  var delay = angular.isNumber(checkDelay) ? checkDelay : 15;
+
+  // Check for any interaction to be within the specified check time.
+  return this.lastInteractionTime >= this.$mdUtil.now() - delay;
+};
+
 (function() {
   'use strict';
 
@@ -5362,6 +5045,96 @@ function InterimElementProvider() {
 })();
 
 /**
+ * @ngdoc module
+ * @name material.core.liveannouncer
+ * @description
+ * AngularJS Material Live Announcer to provide accessibility for Voice Readers.
+ */
+MdLiveAnnouncer['$inject'] = ["$timeout"];
+angular
+  .module('material.core')
+  .service('$mdLiveAnnouncer', MdLiveAnnouncer);
+
+/**
+ * @ngdoc service
+ * @name $mdLiveAnnouncer
+ * @module material.core.liveannouncer
+ *
+ * @description
+ *
+ * Service to announce messages to supported screenreaders.
+ *
+ * > The `$mdLiveAnnouncer` service is internally used for components to provide proper accessibility.
+ *
+ * <hljs lang="js">
+ *   module.controller('AppCtrl', function($mdLiveAnnouncer) {
+ *     // Basic announcement (Polite Mode)
+ *     $mdLiveAnnouncer.announce('Hey Google');
+ *
+ *     // Custom announcement (Assertive Mode)
+ *     $mdLiveAnnouncer.announce('Hey Google', 'assertive');
+ *   });
+ * </hljs>
+ *
+ */
+function MdLiveAnnouncer($timeout) {
+  /** @private @const @type {!angular.$timeout} */
+  this._$timeout = $timeout;
+
+  /** @private @const @type {!HTMLElement} */
+  this._liveElement = this._createLiveElement();
+
+  /** @private @const @type {!number} */
+  this._announceTimeout = 100;
+}
+
+/**
+ * @ngdoc method
+ * @name $mdLiveAnnouncer#announce
+ * @description Announces messages to supported screenreaders.
+ * @param {string} message Message to be announced to the screenreader
+ * @param {'off'|'polite'|'assertive'} politeness The politeness of the announcer element.
+ */
+MdLiveAnnouncer.prototype.announce = function(message, politeness) {
+  if (!politeness) {
+    politeness = 'polite';
+  }
+
+  var self = this;
+
+  self._liveElement.textContent = '';
+  self._liveElement.setAttribute('aria-live', politeness);
+
+  // This 100ms timeout is necessary for some browser + screen-reader combinations:
+  // - Both JAWS and NVDA over IE11 will not announce anything without a non-zero timeout.
+  // - With Chrome and IE11 with NVDA or JAWS, a repeated (identical) message won't be read a
+  //   second time without clearing and then using a non-zero delay.
+  // (using JAWS 17 at time of this writing).
+  self._$timeout(function() {
+    self._liveElement.textContent = message;
+  }, self._announceTimeout, false);
+};
+
+/**
+ * Creates a live announcer element, which listens for DOM changes and announces them
+ * to the screenreaders.
+ * @returns {!HTMLElement}
+ * @private
+ */
+MdLiveAnnouncer.prototype._createLiveElement = function() {
+  var liveEl = document.createElement('div');
+
+  liveEl.classList.add('md-visually-hidden');
+  liveEl.setAttribute('role', 'status');
+  liveEl.setAttribute('aria-atomic', 'true');
+  liveEl.setAttribute('aria-live', 'polite');
+
+  document.body.appendChild(liveEl);
+
+  return liveEl;
+};
+
+/**
  * @ngdoc service
  * @name $$mdMeta
  * @module material.core.meta
@@ -5481,96 +5254,6 @@ angular.module('material.core.meta', [])
       }
     });
   });
-/**
- * @ngdoc module
- * @name material.core.liveannouncer
- * @description
- * AngularJS Material Live Announcer to provide accessibility for Voice Readers.
- */
-MdLiveAnnouncer['$inject'] = ["$timeout"];
-angular
-  .module('material.core')
-  .service('$mdLiveAnnouncer', MdLiveAnnouncer);
-
-/**
- * @ngdoc service
- * @name $mdLiveAnnouncer
- * @module material.core.liveannouncer
- *
- * @description
- *
- * Service to announce messages to supported screenreaders.
- *
- * > The `$mdLiveAnnouncer` service is internally used for components to provide proper accessibility.
- *
- * <hljs lang="js">
- *   module.controller('AppCtrl', function($mdLiveAnnouncer) {
- *     // Basic announcement (Polite Mode)
- *     $mdLiveAnnouncer.announce('Hey Google');
- *
- *     // Custom announcement (Assertive Mode)
- *     $mdLiveAnnouncer.announce('Hey Google', 'assertive');
- *   });
- * </hljs>
- *
- */
-function MdLiveAnnouncer($timeout) {
-  /** @private @const @type {!angular.$timeout} */
-  this._$timeout = $timeout;
-
-  /** @private @const @type {!HTMLElement} */
-  this._liveElement = this._createLiveElement();
-
-  /** @private @const @type {!number} */
-  this._announceTimeout = 100;
-}
-
-/**
- * @ngdoc method
- * @name $mdLiveAnnouncer#announce
- * @description Announces messages to supported screenreaders.
- * @param {string} message Message to be announced to the screenreader
- * @param {'off'|'polite'|'assertive'} politeness The politeness of the announcer element.
- */
-MdLiveAnnouncer.prototype.announce = function(message, politeness) {
-  if (!politeness) {
-    politeness = 'polite';
-  }
-
-  var self = this;
-
-  self._liveElement.textContent = '';
-  self._liveElement.setAttribute('aria-live', politeness);
-
-  // This 100ms timeout is necessary for some browser + screen-reader combinations:
-  // - Both JAWS and NVDA over IE11 will not announce anything without a non-zero timeout.
-  // - With Chrome and IE11 with NVDA or JAWS, a repeated (identical) message won't be read a
-  //   second time without clearing and then using a non-zero delay.
-  // (using JAWS 17 at time of this writing).
-  self._$timeout(function() {
-    self._liveElement.textContent = message;
-  }, self._announceTimeout, false);
-};
-
-/**
- * Creates a live announcer element, which listens for DOM changes and announces them
- * to the screenreaders.
- * @returns {!HTMLElement}
- * @private
- */
-MdLiveAnnouncer.prototype._createLiveElement = function() {
-  var liveEl = document.createElement('div');
-
-  liveEl.classList.add('md-visually-hidden');
-  liveEl.setAttribute('role', 'status');
-  liveEl.setAttribute('aria-atomic', 'true');
-  liveEl.setAttribute('aria-live', 'polite');
-
-  document.body.appendChild(liveEl);
-
-  return liveEl;
-};
-
   /**
    * @ngdoc module
    * @name material.core.componentRegistry
