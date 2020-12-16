@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-34a3f95
+ * v1.2.1-master-a8878ef
  */
 md-input-container:not([md-no-float]) .md-select-placeholder span:first-child {
   transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);

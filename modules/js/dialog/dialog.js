@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-34a3f95
+ * v1.2.1-master-a8878ef
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -667,8 +667,8 @@ function MdDialogProvider($$interimElementProvider) {
       autoWrap: true,
       fullscreen: false,
       transformTemplate: function(template, options) {
-        // Make the dialog container focusable, because otherwise the focus will be always redirected to
-        // an element outside of the container, and the focus trap won't work probably..
+        // Make the dialog container focusable, because otherwise the focus will be always
+        // redirected to an element outside of the container, and the focus trap won't work.
         // Also the tabindex is needed for the `escapeToClose` functionality, because
         // the keyDown event can't be triggered when the focus is outside of the container.
         var startSymbol = $interpolate.startSymbol();
@@ -1083,11 +1083,25 @@ function MdDialogProvider($$interimElementProvider) {
 
       bottomFocusTrap = topFocusTrap.cloneNode(false);
 
-      // When focus is about to move out of the dialog, we want to intercept it and redirect it
-      // back to the dialog element.
-      var focusHandler = function() {
-        element.focus();
+      /**
+       * When focus is about to move out of the end of the dialog, we intercept it and redirect it
+       * back to the md-dialog element.
+       * When focus is about to move out of the start of the dialog, we intercept it and redirect it
+       * back to the last focusable element in the md-dialog.
+       * @param {FocusEvent} event
+       */
+      var focusHandler = function(event) {
+        if (event.target && event.target.nextSibling &&
+            event.target.nextSibling.nodeName === 'MD-DIALOG') {
+          var lastFocusableElement = $mdUtil.getLastTabbableElement(element[0]);
+          if (angular.isElement(lastFocusableElement)) {
+            lastFocusableElement.focus();
+          }
+        } else {
+          element.focus();
+        }
       };
+
       topFocusTrap.addEventListener('focus', focusHandler);
       bottomFocusTrap.addEventListener('focus', focusHandler);
 
@@ -1105,7 +1119,7 @@ function MdDialogProvider($$interimElementProvider) {
       };
 
       // The top focus trap inserted immediately before the md-dialog element (as a sibling).
-      // The bottom focus trap is inserted at the very end of the md-dialog element (as a child).
+      // The bottom focus trap is inserted immediately after the md-dialog element (as a sibling).
       element[0].parentNode.insertBefore(topFocusTrap, element[0]);
       element.after(bottomFocusTrap);
     }
