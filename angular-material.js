@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-d9949d6
+ * v1.2.1-master-6391b13
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -24423,7 +24423,10 @@ function MenuProvider($$interimElementProvider) {
             if (focusTarget) {
               break;
             }
-            if (child.firstElementChild && !child.firstElementChild.disabled) {
+            // Need to check the attribute as well since this might be a custom element whose
+            // disabled property is undefined.
+            if (child.firstElementChild && !child.firstElementChild.disabled &&
+                !child.firstElementChild.getAttribute('disabled')) {
               focusTarget = child.firstElementChild;
               break;
             }
@@ -39221,4 +39224,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-d9949d6"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-6391b13"}};
