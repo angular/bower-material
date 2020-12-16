@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-6391b13
+ * v1.2.1-master-5157f94
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -8670,6 +8670,10 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   ctrl.isReadonly = null;
   ctrl.hasNotFound = false;
   ctrl.selectedMessage = $scope.selectedMessage || 'selected';
+  ctrl.noMatchMessage = $scope.noMatchMessage || 'There are no matches available.';
+  ctrl.singleMatchMessage = $scope.singleMatchMessage || 'There is 1 match available.';
+  ctrl.multipleMatchStartMessage = $scope.multipleMatchStartMessage || 'There are ';
+  ctrl.multipleMatchEndMessage = $scope.multipleMatchEndMessage || ' matches available.';
   ctrl.defaultEscapeOptions = 'clear';
 
   // Public Exported Methods
@@ -9640,11 +9644,11 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
   function getCountMessage () {
     switch (ctrl.matches.length) {
       case 0:
-        return 'There are no matches available.';
+        return ctrl.noMatchMessage;
       case 1:
-        return 'There is 1 match available.';
+        return ctrl.singleMatchMessage;
       default:
-        return 'There are ' + ctrl.matches.length + ' matches available.';
+        return ctrl.multipleMatchStartMessage + ctrl.matches.length + ctrl.multipleMatchEndMessage;
     }
   }
 
@@ -9937,7 +9941,23 @@ MdAutocomplete.$inject = ["$$mdSvgRegistry"];angular
  * @param {string=} md-selected-message Attribute to specify the text that the screen reader will
  *    announce after a value is selected. Default is: "selected". If `Alaska` is selected in the
  *    options panel, it will read "Alaska selected". You will want to override this when your app
- *    is running in a non-English locale.
+ *    runs in a non-English locale.
+ * @param {string=} md-no-match-message Attribute to specify the text that the screen reader will
+ *    announce after a query returns no matching results.
+ *    Default is: "There are no matches available.". You will want to override this when your app
+ *    runs in a non-English locale.
+ * @param {string=} md-single-match-message Attribute to specify the text that the screen reader
+ *    will announce after a query returns a single matching result.
+ *    Default is: "There is 1 match available.". You will want to override this when your app
+ *    runs in a non-English locale.
+ * @param {string=} md-multiple-match-start-message Attribute to specify the text that the screen
+ *    reader will announce after a query returns multiple matching results. The number of matching
+ *    results will be read after this text. Default is: "There are ". You will want to override this
+ *    when your app runs in a non-English locale.
+ * @param {string=} md-multiple-match-end-message Attribute to specify the text that the screen
+ *    reader will announce after a query returns multiple matching results. The number of matching
+ *    results will be read before this text. Default is: " matches available.". You will want to
+ *    override this when your app runs in a non-English locale.
  * @param {boolean=} ng-trim If set to false, the search text will be not trimmed automatically.
  *     Defaults to true.
  * @param {string=} ng-pattern Adds the pattern validator to the ngModel of the search text.
@@ -10122,6 +10142,10 @@ function MdAutocomplete ($$mdSvgRegistry) {
       dropdownPosition:   '@?mdDropdownPosition',
       clearButton:        '=?mdClearButton',
       selectedMessage:    '@?mdSelectedMessage',
+      noMatchMessage:     '@?mdNoMatchMessage',
+      singleMatchMessage: '@?mdSingleMatchMessage',
+      multipleMatchStartMessage: '@?mdMultipleMatchStartMessage',
+      multipleMatchEndMessage: '@?mdMultipleMatchEndMessage',
       mdMode: '=?mdMode'
     },
     compile: function(tElement, tAttrs) {
@@ -39224,4 +39248,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-6391b13"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-5157f94"}};
