@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-3ea5630
+ * v1.2.1-master-7d5e262
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1014,13 +1014,14 @@ function MdPrefixer(initialAttributes, buildSelector) {
  * will not be unique.
  */
 UtilFactory['$inject'] = ["$document", "$timeout", "$compile", "$rootScope", "$$mdAnimate", "$interpolate", "$log", "$rootElement", "$window", "$$rAF"];
-var nextUniqueId = 0, isIos, isAndroid;
+var nextUniqueId = 0, isIos, isAndroid, isFirefox;
 
 // Support material-tools builds.
 if (window.navigator) {
   var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
   isIos = userAgent.match(/ipad|iphone|ipod/i);
   isAndroid = userAgent.match(/android/i);
+  isFirefox = userAgent.match(/(firefox|minefield)/i);
 }
 
 /**
@@ -2038,6 +2039,332 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     sanitize: function(term) {
       if (!term) return term;
       return term.replace(/[\\^$*+?.()|{}[]/g, '\\$&');
+    },
+
+    /**********************************************************************************************
+     * The following functions were sourced from
+     * https://github.com/angular/components/blob/3c37e4b1c1cb74a3d0a90d173240fc730d21d9d4/src/cdk/a11y/interactivity-checker/interactivity-checker.ts
+     **********************************************************************************************/
+
+    /**
+     * Gets whether an element is disabled.
+     * @param {HTMLElement} element Element to be checked.
+     * @returns {boolean} Whether the element is disabled.
+     */
+    isDisabled: function(element) {
+      // This does not capture some cases, such as a non-form control with a disabled attribute or
+      // a form control inside of a disabled form, but should capture the most common cases.
+      return element.hasAttribute('disabled');
+    },
+
+    /**
+     * Gets whether an element is visible for the purposes of interactivity.
+     *
+     * This will capture states like `display: none` and `visibility: hidden`, but not things like
+     * being clipped by an `overflow: hidden` parent or being outside the viewport.
+     *
+     * @param {HTMLElement} element
+     * @returns {boolean} Whether the element is visible.
+     */
+    isVisible: function(element) {
+      return $mdUtil.hasGeometry(element) && getComputedStyle(element).visibility === 'visible';
+    },
+
+    /**
+     * Gets whether an element can be reached via Tab key.
+     * Assumes that the element has already been checked with isFocusable.
+     * @param {HTMLElement} element Element to be checked.
+     * @returns {boolean} Whether the element is tabbable.
+     */
+    isTabbable: function(element) {
+      var frameElement = $mdUtil.getFrameElement($mdUtil.getWindow(element));
+
+      if (frameElement) {
+        // Frame elements inherit their tabindex onto all child elements.
+        if ($mdUtil.getTabIndexValue(frameElement) === -1) {
+          return false;
+        }
+
+        // Browsers disable tabbing to an element inside of an invisible frame.
+        if (!$mdUtil.isVisible(frameElement)) {
+          return false;
+        }
+      }
+
+      var nodeName = element.nodeName.toLowerCase();
+      var tabIndexValue = $mdUtil.getTabIndexValue(element);
+
+      if (element.hasAttribute('contenteditable')) {
+        return tabIndexValue !== -1;
+      }
+
+      if (nodeName === 'iframe' || nodeName === 'object') {
+        // The frame or object's content may be tabbable depending on the content, but it's
+        // not possibly to reliably detect the content of the frames. We always consider such
+        // elements as non-tabbable.
+        return false;
+      }
+
+      // In iOS, the browser only considers some specific elements as tabbable.
+      if (isIos && !$mdUtil.isPotentiallyTabbableIOS(element)) {
+        return false;
+      }
+
+      if (nodeName === 'audio') {
+        // Audio elements without controls enabled are never tabbable, regardless
+        // of the tabindex attribute explicitly being set.
+        if (!element.hasAttribute('controls')) {
+          return false;
+        }
+        // Audio elements with controls are by default tabbable unless the
+        // tabindex attribute is set to `-1` explicitly.
+        return tabIndexValue !== -1;
+      }
+
+      if (nodeName === 'video') {
+        // For all video elements, if the tabindex attribute is set to `-1`, the video
+        // is not tabbable. Note: We cannot rely on the default `HTMLElement.tabIndex`
+        // property as that one is set to `-1` in Chrome, Edge and Safari v13.1. The
+        // tabindex attribute is the source of truth here.
+        if (tabIndexValue === -1) {
+          return false;
+        }
+        // If the tabindex is explicitly set, and not `-1` (as per check before), the
+        // video element is always tabbable (regardless of whether it has controls or not).
+        if (tabIndexValue !== null) {
+          return true;
+        }
+        // Otherwise (when no explicit tabindex is set), a video is only tabbable if it
+        // has controls enabled. Firefox is special as videos are always tabbable regardless
+        // of whether there are controls or not.
+        return isFirefox || element.hasAttribute('controls');
+      }
+
+      return element.tabIndex >= 0;
+    },
+
+    /**
+     * Gets whether an element can be focused by the user.
+     * @param {HTMLElement} element Element to be checked.
+     * @returns {boolean} Whether the element is focusable.
+     */
+    isFocusable: function(element) {
+      // Perform checks in order of left to most expensive.
+      // Again, naive approach that does not capture many edge cases and browser quirks.
+      return $mdUtil.isPotentiallyFocusable(element) && !$mdUtil.isDisabled(element) &&
+        $mdUtil.isVisible(element);
+    },
+
+    /**
+     * Gets whether an element is potentially focusable without taking current visible/disabled
+     * state into account.
+     * @param {HTMLElement} element
+     * @returns {boolean}
+     */
+    isPotentiallyFocusable: function(element) {
+      // Inputs are potentially focusable *unless* they're type="hidden".
+      if ($mdUtil.isHiddenInput(element)) {
+        return false;
+      }
+
+      return $mdUtil.isNativeFormElement(element) ||
+        $mdUtil.isAnchorWithHref(element) ||
+        element.hasAttribute('contenteditable') ||
+        $mdUtil.hasValidTabIndex(element);
+    },
+
+    /**
+     * Checks whether the specified element is potentially tabbable on iOS.
+     * @param {HTMLElement} element
+     * @returns {boolean}
+     */
+    isPotentiallyTabbableIOS: function(element) {
+      var nodeName = element.nodeName.toLowerCase();
+        var inputType = nodeName === 'input' && element.type;
+
+      return inputType === 'text'
+        || inputType === 'password'
+        || nodeName === 'select'
+        || nodeName === 'textarea';
+    },
+
+    /**
+     * Returns the parsed tabindex from the element attributes instead of returning the
+     * evaluated tabindex from the browsers defaults.
+     * @param {HTMLElement} element
+     * @returns {null|number}
+     */
+    getTabIndexValue: function(element) {
+      if (!$mdUtil.hasValidTabIndex(element)) {
+        return null;
+      }
+
+      // See browser issue in Gecko https://bugzilla.mozilla.org/show_bug.cgi?id=1128054
+      var tabIndex = parseInt(element.getAttribute('tabindex') || '', 10);
+
+      return isNaN(tabIndex) ? -1 : tabIndex;
+    },
+
+    /**
+     * Gets whether an element has a valid tabindex.
+     * @param {HTMLElement} element
+     * @returns {boolean}
+     */
+    hasValidTabIndex: function(element) {
+      if (!element.hasAttribute('tabindex') || element.tabIndex === undefined) {
+        return false;
+      }
+
+      var tabIndex = element.getAttribute('tabindex');
+
+      // IE11 parses tabindex="" as the value "-32768"
+      if (tabIndex == '-32768') {
+        return false;
+      }
+
+      return !!(tabIndex && !isNaN(parseInt(tabIndex, 10)));
+    },
+
+    /**
+     * Checks whether the specified element has any geometry / rectangles.
+     * @param {HTMLElement} element
+     * @returns {boolean}
+     */
+    hasGeometry: function(element) {
+      // Use logic from jQuery to check for an invisible element.
+      // See https://github.com/jquery/jquery/blob/8969732518470a7f8e654d5bc5be0b0076cb0b87/src/css/hiddenVisibleSelectors.js#L9
+      return !!(element.offsetWidth || element.offsetHeight ||
+        (typeof element.getClientRects === 'function' && element.getClientRects().length));
+    },
+
+    /**
+     * Returns the frame element from a window object. Since browsers like MS Edge throw errors if
+     * the frameElement property is being accessed from a different host address, this property
+     * should be accessed carefully.
+     * @param {Window} window
+     * @returns {null|HTMLElement}
+     */
+    getFrameElement: function(window) {
+      try {
+        return window.frameElement;
+      } catch (error) {
+        return null;
+      }
+    },
+
+    /**
+     * Gets the parent window of a DOM node with regards of being inside of an iframe.
+     * @param {HTMLElement} node
+     * @returns {Window}
+     */
+    getWindow: function(node) {
+      // ownerDocument is null if `node` itself *is* a document.
+      return node.ownerDocument && node.ownerDocument.defaultView || window;
+    },
+
+    /**
+     * Gets whether an element's
+     * @param {Node} element
+     * @returns {boolean}
+     */
+    isNativeFormElement: function(element) {
+      var nodeName = element.nodeName.toLowerCase();
+      return nodeName === 'input' ||
+        nodeName === 'select' ||
+        nodeName === 'button' ||
+        nodeName === 'textarea';
+    },
+
+    /**
+     * Gets whether an element is an `<input type="hidden">`.
+     * @param {HTMLElement} element
+     * @returns {boolean}
+     */
+    isHiddenInput: function(element) {
+      return $mdUtil.isInputElement(element) && element.type == 'hidden';
+    },
+
+    /**
+     * Gets whether an element is an anchor that has an href attribute.
+     * @param {HTMLElement} element
+     * @returns {boolean}
+     */
+    isAnchorWithHref: function(element) {
+      return $mdUtil.isAnchorElement(element) && element.hasAttribute('href');
+    },
+
+    /**
+     * Gets whether an element is an input element.
+     * @param {HTMLElement} element
+     * @returns {boolean}
+     */
+    isInputElement: function(element) {
+      return element.nodeName.toLowerCase() == 'input';
+    },
+
+    /**
+     * Gets whether an element is an anchor element.
+     * @param {HTMLElement} element
+     * @returns {boolean}
+     */
+    isAnchorElement: function(element) {
+      return element.nodeName.toLowerCase() == 'a';
+    },
+
+    /**********************************************************************************************
+     * The following two functions were sourced from
+     * https://github.com/angular/components/blob/3c37e4b1c1cb74a3d0a90d173240fc730d21d9d4/src/cdk/a11y/focus-trap/focus-trap.ts#L268-L311
+     **********************************************************************************************/
+
+    /**
+     * Get the first tabbable element from a DOM subtree (inclusive).
+     * @param {HTMLElement} root
+     * @returns {HTMLElement|null}
+     */
+    getFirstTabbableElement: function(root) {
+      if ($mdUtil.isFocusable(root) && $mdUtil.isTabbable(root)) {
+        return root;
+      }
+
+      // Iterate in DOM order. Note that IE doesn't have `children` for SVG so we fall
+      // back to `childNodes` which includes text nodes, comments etc.
+      var children = root.children || root.childNodes;
+
+      for (var i = 0; i < children.length; i++) {
+        var tabbableChild = children[i].nodeType === $document[0].ELEMENT_NODE ?
+          $mdUtil.getFirstTabbableElement(children[i]) : null;
+
+        if (tabbableChild) {
+          return tabbableChild;
+        }
+      }
+
+      return null;
+    },
+
+    /**
+     * Get the last tabbable element from a DOM subtree (inclusive).
+     * @param {HTMLElement} root
+     * @returns {HTMLElement|null}
+     */
+    getLastTabbableElement: function(root) {
+      if ($mdUtil.isFocusable(root) && $mdUtil.isTabbable(root)) {
+        return root;
+      }
+
+      // Iterate in reverse DOM order.
+      var children = root.children || root.childNodes;
+
+      for (var i = children.length - 1; i >= 0; i--) {
+        var tabbableChild = children[i].nodeType === $document[0].ELEMENT_NODE ?
+          $mdUtil.getLastTabbableElement(children[i]) : null;
+
+        if (tabbableChild) {
+          return tabbableChild;
+        }
+      }
+
+      return null;
     }
   };
 
@@ -3781,6 +4108,487 @@ MdInteractionService.prototype.isUserInvoked = function(checkDelay) {
   return this.lastInteractionTime >= this.$mdUtil.now() - delay;
 };
 
+(function() {
+  'use strict';
+
+  var $mdUtil, $interpolate, $log;
+
+  var SUFFIXES = /(-gt)?-(sm|md|lg|print)/g;
+  var WHITESPACE = /\s+/g;
+
+  var FLEX_OPTIONS = ['grow', 'initial', 'auto', 'none', 'noshrink', 'nogrow'];
+  var LAYOUT_OPTIONS = ['row', 'column'];
+  var ALIGNMENT_MAIN_AXIS= ["", "start", "center", "end", "stretch", "space-around", "space-between"];
+  var ALIGNMENT_CROSS_AXIS= ["", "start", "center", "end", "stretch"];
+
+  var config = {
+    /**
+     * Enable directive attribute-to-class conversions
+     * Developers can use `<body md-layout-css />` to quickly
+     * disable the Layout directives and prohibit the injection of Layout classNames
+     */
+    enabled: true,
+
+    /**
+     * List of mediaQuery breakpoints and associated suffixes
+     *   [
+     *    { suffix: "sm", mediaQuery: "screen and (max-width: 599px)" },
+     *    { suffix: "md", mediaQuery: "screen and (min-width: 600px) and (max-width: 959px)" }
+     *   ]
+     */
+    breakpoints: []
+  };
+
+  registerLayoutAPI(angular.module('material.core.layout', ['ng']));
+
+  /**
+   *   registerLayoutAPI()
+   *
+   *   The original AngularJS Material Layout solution used attribute selectors and CSS.
+   *
+   *  ```html
+   *  <div layout="column"> My Content </div>
+   *  ```
+   *
+   *  ```css
+   *  [layout] {
+   *    box-sizing: border-box;
+   *    display:flex;
+   *  }
+   *  [layout=column] {
+   *    flex-direction : column
+   *  }
+   *  ```
+   *
+   *  Use of attribute selectors creates significant performance impacts in some
+   *  browsers... mainly IE.
+   *
+   *  This module registers directives that allow the same layout attributes to be
+   *  interpreted and converted to class selectors. The directive will add equivalent classes to
+   *  each element that contains a Layout directive.
+   *
+   * ```html
+   *   <div layout="column" class="layout layout-column"> My Content </div>
+   * ```
+   *
+   *  ```css
+   *  .layout {
+   *    box-sizing: border-box;
+   *    display:flex;
+   *  }
+   *  .layout-column {
+   *    flex-direction : column
+   *  }
+   *  ```
+   */
+  function registerLayoutAPI(module){
+    var PREFIX_REGEXP = /^((?:x|data)[:\-_])/i;
+    var SPECIAL_CHARS_REGEXP = /([:\-_]+(.))/g;
+
+    // NOTE: these are also defined in constants::MEDIA_PRIORITY and constants::MEDIA
+    var BREAKPOINTS     = ["", "xs", "gt-xs", "sm", "gt-sm", "md", "gt-md", "lg", "gt-lg", "xl", "print"];
+    var API_WITH_VALUES = ["layout", "flex", "flex-order", "flex-offset", "layout-align"];
+    var API_NO_VALUES   = ["show", "hide", "layout-padding", "layout-margin"];
+
+
+    // Build directive registration functions for the standard Layout API... for all breakpoints.
+    angular.forEach(BREAKPOINTS, function(mqb) {
+
+      // Attribute directives with expected, observable value(s)
+      angular.forEach(API_WITH_VALUES, function(name){
+        var fullName = mqb ? name + "-" + mqb : name;
+        module.directive(directiveNormalize(fullName), attributeWithObserve(fullName));
+      });
+
+      // Attribute directives with no expected value(s)
+      angular.forEach(API_NO_VALUES, function(name){
+        var fullName = mqb ? name + "-" + mqb : name;
+        module.directive(directiveNormalize(fullName), attributeWithoutValue(fullName));
+      });
+
+    });
+
+    // Register other, special directive functions for the Layout features:
+    module
+      .provider('$$mdLayout', function() {
+        // Publish internal service for Layouts
+        return {
+          $get : angular.noop,
+          validateAttributeValue : validateAttributeValue,
+          validateAttributeUsage : validateAttributeUsage,
+          /**
+           * Easy way to disable/enable the Layout API.
+           * When disabled, this stops all attribute-to-classname generations
+           */
+          disableLayouts  : function(isDisabled) {
+            config.enabled =  (isDisabled !== true);
+          }
+        };
+      })
+
+      .directive('mdLayoutCss'        , disableLayoutDirective)
+      .directive('ngCloak'            , buildCloakInterceptor('ng-cloak'))
+
+      .directive('layoutWrap'   , attributeWithoutValue('layout-wrap'))
+      .directive('layoutNowrap' , attributeWithoutValue('layout-nowrap'))
+      .directive('layoutNoWrap' , attributeWithoutValue('layout-no-wrap'))
+      .directive('layoutFill'   , attributeWithoutValue('layout-fill'))
+
+      // Determine if
+      .config(detectDisabledLayouts);
+
+    /**
+     * Converts snake_case to camelCase.
+     * Also there is special case for Moz prefix starting with upper case letter.
+     * @param name Name to normalize
+     */
+    function directiveNormalize(name) {
+      return name
+        .replace(PREFIX_REGEXP, '')
+        .replace(SPECIAL_CHARS_REGEXP, function(_, separator, letter, offset) {
+          return offset ? letter.toUpperCase() : letter;
+        });
+    }
+  }
+
+
+  /**
+    * Detect if any of the HTML tags has a [md-layouts-disabled] attribute;
+    * If yes, then immediately disable all layout API features
+    *
+    * Note: this attribute should be specified on either the HTML or BODY tags
+    * ngInject
+    */
+   function detectDisabledLayouts() {
+     var isDisabled = !!document.querySelector('[md-layouts-disabled]');
+     config.enabled = !isDisabled;
+   }
+
+  /**
+   * Special directive that will disable ALL Layout conversions of layout
+   * attribute(s) to classname(s).
+   *
+   * <link rel="stylesheet" href="angular-material.min.css">
+   * <link rel="stylesheet" href="angular-material.layout.css">
+   *
+   * <body md-layout-css>
+   *  ...
+   * </body>
+   *
+   * Note: Using md-layout-css directive requires the developer to load the Material
+   * Layout Attribute stylesheet (which only uses attribute selectors):
+   *
+   *       `angular-material.layout.css`
+   *
+   * Another option is to use the LayoutProvider to configure and disable the attribute
+   * conversions; this would obviate the use of the `md-layout-css` directive
+   */
+  function disableLayoutDirective() {
+    // Return a 1x-only, first-match attribute directive
+    config.enabled = false;
+
+    return {
+      restrict : 'A',
+      priority : '900'
+    };
+  }
+
+  /**
+   * Tail-hook ngCloak to delay the uncloaking while Layout transformers
+   * finish processing. Eliminates flicker with Material.Layouts
+   */
+  function buildCloakInterceptor(className) {
+    return ['$timeout', function($timeout){
+      return {
+        restrict : 'A',
+        priority : -10,   // run after normal ng-cloak
+        compile  : function(element) {
+          if (!config.enabled) return angular.noop;
+
+          // Re-add the cloak
+          element.addClass(className);
+
+          return function(scope, element) {
+            // Wait while layout injectors configure, then uncloak
+            // NOTE: $rAF does not delay enough... and this is a 1x-only event,
+            //       $timeout is acceptable.
+            $timeout(function(){
+              element.removeClass(className);
+            }, 10, false);
+          };
+        }
+      };
+    }];
+  }
+
+
+  // *********************************************************************************
+  //
+  // These functions create registration functions for AngularJS Material Layout attribute
+  // directives. This provides easy translation to switch AngularJS Material attribute selectors to
+  // CLASS selectors and directives; which has huge performance implications for IE Browsers.
+  //
+  // *********************************************************************************
+
+  /**
+   * Creates a directive registration function where a possible dynamic attribute
+   * value will be observed/watched.
+   * @param {string} className attribute name; eg `layout-gt-md` with value ="row"
+   */
+  function attributeWithObserve(className) {
+
+    return ['$mdUtil', '$interpolate', "$log", function(_$mdUtil_, _$interpolate_, _$log_) {
+      $mdUtil = _$mdUtil_;
+      $interpolate = _$interpolate_;
+      $log = _$log_;
+
+      return {
+        restrict: 'A',
+        compile: function(element, attr) {
+          var linkFn;
+          if (config.enabled) {
+            // immediately replace static (non-interpolated) invalid values...
+
+            validateAttributeUsage(className, attr, element, $log);
+
+            validateAttributeValue(className,
+              getNormalizedAttrValue(className, attr, ""),
+              buildUpdateFn(element, className, attr)
+            );
+
+            linkFn = translateWithValueToCssClass;
+          }
+
+          // Use for postLink to account for transforms after ng-transclude.
+          return linkFn || angular.noop;
+        }
+      };
+    }];
+
+    /**
+     * Observe deprecated layout attributes and update the element's layout classes to match.
+     */
+    function translateWithValueToCssClass(scope, element, attrs) {
+      var updateFn = updateClassWithValue(element, className, attrs);
+      var unwatch = attrs.$observe(attrs.$normalize(className), updateFn);
+
+      updateFn(getNormalizedAttrValue(className, attrs, ""));
+      scope.$on("$destroy", function() { unwatch(); });
+    }
+  }
+
+  /**
+   * Creates a registration function for AngularJS Material Layout attribute directive.
+   * This is a `simple` transpose of attribute usage to class usage; where we ignore
+   * any attribute value.
+   */
+  function attributeWithoutValue(className) {
+    return ['$mdUtil', '$interpolate', "$log", function(_$mdUtil_, _$interpolate_, _$log_) {
+      $mdUtil = _$mdUtil_;
+      $interpolate = _$interpolate_;
+      $log = _$log_;
+
+      return {
+        restrict: 'A',
+        compile: function(element, attr) {
+          var linkFn;
+          if (config.enabled) {
+            // immediately replace static (non-interpolated) invalid values...
+
+            validateAttributeValue(className,
+              getNormalizedAttrValue(className, attr, ""),
+              buildUpdateFn(element, className, attr)
+            );
+
+            translateToCssClass(null, element);
+
+            // Use for postLink to account for transforms after ng-transclude.
+            linkFn = translateToCssClass;
+          }
+
+          return linkFn || angular.noop;
+        }
+      };
+    }];
+
+    /**
+     * Add transformed class selector.
+     */
+    function translateToCssClass(scope, element) {
+      element.addClass(className);
+    }
+  }
+
+  /**
+   * After link-phase, do NOT remove deprecated layout attribute selector.
+   * Instead watch the attribute so interpolated data-bindings to layout
+   * selectors will continue to be supported.
+   *
+   * $observe() the className and update with new class (after removing the last one)
+   *
+   * e.g. `layout="{{layoutDemo.direction}}"` will update...
+   *
+   * NOTE: The value must match one of the specified styles in the CSS.
+   * For example `flex-gt-md="{{size}}`  where `scope.size == 47` will NOT work since
+   * only breakpoints for 0, 5, 10, 15... 100, 33, 34, 66, 67 are defined.
+   */
+  function updateClassWithValue(element, className) {
+    var lastClass;
+
+    return function updateClassFn(newValue) {
+      var value = validateAttributeValue(className, newValue || "");
+      if (angular.isDefined(value)) {
+        if (lastClass) element.removeClass(lastClass);
+        lastClass = !value ? className : className + "-" + value.trim().replace(WHITESPACE, "-");
+        element.addClass(lastClass);
+      }
+    };
+  }
+
+  /**
+   * Centralize warnings for known flexbox issues (especially IE-related issues)
+   */
+  function validateAttributeUsage(className, attr, element, $log){
+    var message, usage, url;
+    var nodeName = element[0].nodeName.toLowerCase();
+
+    switch (className.replace(SUFFIXES,"")) {
+      case "flex":
+        if ((nodeName === "md-button") || (nodeName === "fieldset")){
+          // @see https://github.com/philipwalton/flexbugs#9-some-html-elements-cant-be-flex-containers
+          // Use <div flex> wrapper inside (preferred) or outside
+
+          usage = "<" + nodeName + " " + className + "></" + nodeName + ">";
+          url = "https://github.com/philipwalton/flexbugs#9-some-html-elements-cant-be-flex-containers";
+          message = "Markup '{0}' may not work as expected in IE Browsers. Consult '{1}' for details.";
+
+          $log.warn($mdUtil.supplant(message, [usage, url]));
+        }
+    }
+  }
+
+
+  /**
+   * For the Layout attribute value, validate or replace with default fallback value.
+   */
+  function validateAttributeValue(className, value, updateFn) {
+    var origValue = value;
+
+    if (!needsInterpolation(value)) {
+      switch (className.replace(SUFFIXES,"")) {
+        case 'layout'        :
+          if (!findIn(value, LAYOUT_OPTIONS)) {
+            value = LAYOUT_OPTIONS[0];    // 'row';
+          }
+          break;
+
+        case 'flex'          :
+          if (!findIn(value, FLEX_OPTIONS)) {
+            if (isNaN(value)) {
+              value = '';
+            }
+          }
+          break;
+
+        case 'flex-offset' :
+        case 'flex-order'    :
+          if (!value || isNaN(+value)) {
+            value = '0';
+          }
+          break;
+
+        case 'layout-align'  :
+          var axis = extractAlignAxis(value);
+          value = $mdUtil.supplant("{main}-{cross}",axis);
+          break;
+
+        case 'layout-padding' :
+        case 'layout-margin'  :
+        case 'layout-fill'    :
+        case 'layout-wrap'    :
+        case 'layout-nowrap' :
+          value = '';
+          break;
+      }
+
+      if (value !== origValue) {
+        (updateFn || angular.noop)(value);
+      }
+    }
+
+    return value ? value.trim() : "";
+  }
+
+  /**
+   * Replace current attribute value with fallback value
+   */
+  function buildUpdateFn(element, className, attrs) {
+    return function updateAttrValue(fallback) {
+      if (!needsInterpolation(fallback)) {
+        // Do not modify the element's attribute value; so
+        // uses '<ui-layout layout="/api/sidebar.html" />' will not
+        // be affected. Just update the attrs value.
+        attrs[attrs.$normalize(className)] = fallback;
+      }
+    };
+  }
+
+  /**
+   * See if the original value has interpolation symbols:
+   * e.g.  flex-gt-md="{{triggerPoint}}"
+   */
+  function needsInterpolation(value) {
+    return (value || "").indexOf($interpolate.startSymbol()) > -1;
+  }
+
+  function getNormalizedAttrValue(className, attrs, defaultVal) {
+    var normalizedAttr = attrs.$normalize(className);
+    return attrs[normalizedAttr] ? attrs[normalizedAttr].trim().replace(WHITESPACE, "-") :
+      defaultVal || null;
+  }
+
+  function findIn(item, list, replaceWith) {
+    item = replaceWith && item ? item.replace(WHITESPACE, replaceWith) : item;
+
+    var found = false;
+    if (item) {
+      list.forEach(function(it) {
+        it = replaceWith ? it.replace(WHITESPACE, replaceWith) : it;
+        found = found || (it === item);
+      });
+    }
+    return found;
+  }
+
+  function extractAlignAxis(attrValue) {
+    var axis = {
+      main : "start",
+      cross: "stretch"
+    }, values;
+
+    attrValue = (attrValue || "");
+
+    if (attrValue.indexOf("-") === 0 || attrValue.indexOf(" ") === 0) {
+      // For missing main-axis values
+      attrValue = "none" + attrValue;
+    }
+
+    values = attrValue.toLowerCase().trim().replace(WHITESPACE, "-").split("-");
+    if (values.length && (values[0] === "space")) {
+      // for main-axis values of "space-around" or "space-between"
+      values = [values[0]+"-"+values[1],values[2]];
+    }
+
+    if (values.length > 0) axis.main  = values[0] || axis.main;
+    if (values.length > 1) axis.cross = values[1] || axis.cross;
+
+    if (ALIGNMENT_MAIN_AXIS.indexOf(axis.main) < 0)   axis.main = "start";
+    if (ALIGNMENT_CROSS_AXIS.indexOf(axis.cross) < 0) axis.cross = "stretch";
+
+    return axis;
+  }
+})();
+
 angular.module('material.core')
   .provider('$$interimElement', InterimElementProvider);
 
@@ -4562,487 +5370,6 @@ function InterimElementProvider() {
     };
   }
 }
-
-(function() {
-  'use strict';
-
-  var $mdUtil, $interpolate, $log;
-
-  var SUFFIXES = /(-gt)?-(sm|md|lg|print)/g;
-  var WHITESPACE = /\s+/g;
-
-  var FLEX_OPTIONS = ['grow', 'initial', 'auto', 'none', 'noshrink', 'nogrow'];
-  var LAYOUT_OPTIONS = ['row', 'column'];
-  var ALIGNMENT_MAIN_AXIS= ["", "start", "center", "end", "stretch", "space-around", "space-between"];
-  var ALIGNMENT_CROSS_AXIS= ["", "start", "center", "end", "stretch"];
-
-  var config = {
-    /**
-     * Enable directive attribute-to-class conversions
-     * Developers can use `<body md-layout-css />` to quickly
-     * disable the Layout directives and prohibit the injection of Layout classNames
-     */
-    enabled: true,
-
-    /**
-     * List of mediaQuery breakpoints and associated suffixes
-     *   [
-     *    { suffix: "sm", mediaQuery: "screen and (max-width: 599px)" },
-     *    { suffix: "md", mediaQuery: "screen and (min-width: 600px) and (max-width: 959px)" }
-     *   ]
-     */
-    breakpoints: []
-  };
-
-  registerLayoutAPI(angular.module('material.core.layout', ['ng']));
-
-  /**
-   *   registerLayoutAPI()
-   *
-   *   The original AngularJS Material Layout solution used attribute selectors and CSS.
-   *
-   *  ```html
-   *  <div layout="column"> My Content </div>
-   *  ```
-   *
-   *  ```css
-   *  [layout] {
-   *    box-sizing: border-box;
-   *    display:flex;
-   *  }
-   *  [layout=column] {
-   *    flex-direction : column
-   *  }
-   *  ```
-   *
-   *  Use of attribute selectors creates significant performance impacts in some
-   *  browsers... mainly IE.
-   *
-   *  This module registers directives that allow the same layout attributes to be
-   *  interpreted and converted to class selectors. The directive will add equivalent classes to
-   *  each element that contains a Layout directive.
-   *
-   * ```html
-   *   <div layout="column" class="layout layout-column"> My Content </div>
-   * ```
-   *
-   *  ```css
-   *  .layout {
-   *    box-sizing: border-box;
-   *    display:flex;
-   *  }
-   *  .layout-column {
-   *    flex-direction : column
-   *  }
-   *  ```
-   */
-  function registerLayoutAPI(module){
-    var PREFIX_REGEXP = /^((?:x|data)[:\-_])/i;
-    var SPECIAL_CHARS_REGEXP = /([:\-_]+(.))/g;
-
-    // NOTE: these are also defined in constants::MEDIA_PRIORITY and constants::MEDIA
-    var BREAKPOINTS     = ["", "xs", "gt-xs", "sm", "gt-sm", "md", "gt-md", "lg", "gt-lg", "xl", "print"];
-    var API_WITH_VALUES = ["layout", "flex", "flex-order", "flex-offset", "layout-align"];
-    var API_NO_VALUES   = ["show", "hide", "layout-padding", "layout-margin"];
-
-
-    // Build directive registration functions for the standard Layout API... for all breakpoints.
-    angular.forEach(BREAKPOINTS, function(mqb) {
-
-      // Attribute directives with expected, observable value(s)
-      angular.forEach(API_WITH_VALUES, function(name){
-        var fullName = mqb ? name + "-" + mqb : name;
-        module.directive(directiveNormalize(fullName), attributeWithObserve(fullName));
-      });
-
-      // Attribute directives with no expected value(s)
-      angular.forEach(API_NO_VALUES, function(name){
-        var fullName = mqb ? name + "-" + mqb : name;
-        module.directive(directiveNormalize(fullName), attributeWithoutValue(fullName));
-      });
-
-    });
-
-    // Register other, special directive functions for the Layout features:
-    module
-      .provider('$$mdLayout', function() {
-        // Publish internal service for Layouts
-        return {
-          $get : angular.noop,
-          validateAttributeValue : validateAttributeValue,
-          validateAttributeUsage : validateAttributeUsage,
-          /**
-           * Easy way to disable/enable the Layout API.
-           * When disabled, this stops all attribute-to-classname generations
-           */
-          disableLayouts  : function(isDisabled) {
-            config.enabled =  (isDisabled !== true);
-          }
-        };
-      })
-
-      .directive('mdLayoutCss'        , disableLayoutDirective)
-      .directive('ngCloak'            , buildCloakInterceptor('ng-cloak'))
-
-      .directive('layoutWrap'   , attributeWithoutValue('layout-wrap'))
-      .directive('layoutNowrap' , attributeWithoutValue('layout-nowrap'))
-      .directive('layoutNoWrap' , attributeWithoutValue('layout-no-wrap'))
-      .directive('layoutFill'   , attributeWithoutValue('layout-fill'))
-
-      // Determine if
-      .config(detectDisabledLayouts);
-
-    /**
-     * Converts snake_case to camelCase.
-     * Also there is special case for Moz prefix starting with upper case letter.
-     * @param name Name to normalize
-     */
-    function directiveNormalize(name) {
-      return name
-        .replace(PREFIX_REGEXP, '')
-        .replace(SPECIAL_CHARS_REGEXP, function(_, separator, letter, offset) {
-          return offset ? letter.toUpperCase() : letter;
-        });
-    }
-  }
-
-
-  /**
-    * Detect if any of the HTML tags has a [md-layouts-disabled] attribute;
-    * If yes, then immediately disable all layout API features
-    *
-    * Note: this attribute should be specified on either the HTML or BODY tags
-    * ngInject
-    */
-   function detectDisabledLayouts() {
-     var isDisabled = !!document.querySelector('[md-layouts-disabled]');
-     config.enabled = !isDisabled;
-   }
-
-  /**
-   * Special directive that will disable ALL Layout conversions of layout
-   * attribute(s) to classname(s).
-   *
-   * <link rel="stylesheet" href="angular-material.min.css">
-   * <link rel="stylesheet" href="angular-material.layout.css">
-   *
-   * <body md-layout-css>
-   *  ...
-   * </body>
-   *
-   * Note: Using md-layout-css directive requires the developer to load the Material
-   * Layout Attribute stylesheet (which only uses attribute selectors):
-   *
-   *       `angular-material.layout.css`
-   *
-   * Another option is to use the LayoutProvider to configure and disable the attribute
-   * conversions; this would obviate the use of the `md-layout-css` directive
-   */
-  function disableLayoutDirective() {
-    // Return a 1x-only, first-match attribute directive
-    config.enabled = false;
-
-    return {
-      restrict : 'A',
-      priority : '900'
-    };
-  }
-
-  /**
-   * Tail-hook ngCloak to delay the uncloaking while Layout transformers
-   * finish processing. Eliminates flicker with Material.Layouts
-   */
-  function buildCloakInterceptor(className) {
-    return ['$timeout', function($timeout){
-      return {
-        restrict : 'A',
-        priority : -10,   // run after normal ng-cloak
-        compile  : function(element) {
-          if (!config.enabled) return angular.noop;
-
-          // Re-add the cloak
-          element.addClass(className);
-
-          return function(scope, element) {
-            // Wait while layout injectors configure, then uncloak
-            // NOTE: $rAF does not delay enough... and this is a 1x-only event,
-            //       $timeout is acceptable.
-            $timeout(function(){
-              element.removeClass(className);
-            }, 10, false);
-          };
-        }
-      };
-    }];
-  }
-
-
-  // *********************************************************************************
-  //
-  // These functions create registration functions for AngularJS Material Layout attribute
-  // directives. This provides easy translation to switch AngularJS Material attribute selectors to
-  // CLASS selectors and directives; which has huge performance implications for IE Browsers.
-  //
-  // *********************************************************************************
-
-  /**
-   * Creates a directive registration function where a possible dynamic attribute
-   * value will be observed/watched.
-   * @param {string} className attribute name; eg `layout-gt-md` with value ="row"
-   */
-  function attributeWithObserve(className) {
-
-    return ['$mdUtil', '$interpolate', "$log", function(_$mdUtil_, _$interpolate_, _$log_) {
-      $mdUtil = _$mdUtil_;
-      $interpolate = _$interpolate_;
-      $log = _$log_;
-
-      return {
-        restrict: 'A',
-        compile: function(element, attr) {
-          var linkFn;
-          if (config.enabled) {
-            // immediately replace static (non-interpolated) invalid values...
-
-            validateAttributeUsage(className, attr, element, $log);
-
-            validateAttributeValue(className,
-              getNormalizedAttrValue(className, attr, ""),
-              buildUpdateFn(element, className, attr)
-            );
-
-            linkFn = translateWithValueToCssClass;
-          }
-
-          // Use for postLink to account for transforms after ng-transclude.
-          return linkFn || angular.noop;
-        }
-      };
-    }];
-
-    /**
-     * Observe deprecated layout attributes and update the element's layout classes to match.
-     */
-    function translateWithValueToCssClass(scope, element, attrs) {
-      var updateFn = updateClassWithValue(element, className, attrs);
-      var unwatch = attrs.$observe(attrs.$normalize(className), updateFn);
-
-      updateFn(getNormalizedAttrValue(className, attrs, ""));
-      scope.$on("$destroy", function() { unwatch(); });
-    }
-  }
-
-  /**
-   * Creates a registration function for AngularJS Material Layout attribute directive.
-   * This is a `simple` transpose of attribute usage to class usage; where we ignore
-   * any attribute value.
-   */
-  function attributeWithoutValue(className) {
-    return ['$mdUtil', '$interpolate', "$log", function(_$mdUtil_, _$interpolate_, _$log_) {
-      $mdUtil = _$mdUtil_;
-      $interpolate = _$interpolate_;
-      $log = _$log_;
-
-      return {
-        restrict: 'A',
-        compile: function(element, attr) {
-          var linkFn;
-          if (config.enabled) {
-            // immediately replace static (non-interpolated) invalid values...
-
-            validateAttributeValue(className,
-              getNormalizedAttrValue(className, attr, ""),
-              buildUpdateFn(element, className, attr)
-            );
-
-            translateToCssClass(null, element);
-
-            // Use for postLink to account for transforms after ng-transclude.
-            linkFn = translateToCssClass;
-          }
-
-          return linkFn || angular.noop;
-        }
-      };
-    }];
-
-    /**
-     * Add transformed class selector.
-     */
-    function translateToCssClass(scope, element) {
-      element.addClass(className);
-    }
-  }
-
-  /**
-   * After link-phase, do NOT remove deprecated layout attribute selector.
-   * Instead watch the attribute so interpolated data-bindings to layout
-   * selectors will continue to be supported.
-   *
-   * $observe() the className and update with new class (after removing the last one)
-   *
-   * e.g. `layout="{{layoutDemo.direction}}"` will update...
-   *
-   * NOTE: The value must match one of the specified styles in the CSS.
-   * For example `flex-gt-md="{{size}}`  where `scope.size == 47` will NOT work since
-   * only breakpoints for 0, 5, 10, 15... 100, 33, 34, 66, 67 are defined.
-   */
-  function updateClassWithValue(element, className) {
-    var lastClass;
-
-    return function updateClassFn(newValue) {
-      var value = validateAttributeValue(className, newValue || "");
-      if (angular.isDefined(value)) {
-        if (lastClass) element.removeClass(lastClass);
-        lastClass = !value ? className : className + "-" + value.trim().replace(WHITESPACE, "-");
-        element.addClass(lastClass);
-      }
-    };
-  }
-
-  /**
-   * Centralize warnings for known flexbox issues (especially IE-related issues)
-   */
-  function validateAttributeUsage(className, attr, element, $log){
-    var message, usage, url;
-    var nodeName = element[0].nodeName.toLowerCase();
-
-    switch (className.replace(SUFFIXES,"")) {
-      case "flex":
-        if ((nodeName === "md-button") || (nodeName === "fieldset")){
-          // @see https://github.com/philipwalton/flexbugs#9-some-html-elements-cant-be-flex-containers
-          // Use <div flex> wrapper inside (preferred) or outside
-
-          usage = "<" + nodeName + " " + className + "></" + nodeName + ">";
-          url = "https://github.com/philipwalton/flexbugs#9-some-html-elements-cant-be-flex-containers";
-          message = "Markup '{0}' may not work as expected in IE Browsers. Consult '{1}' for details.";
-
-          $log.warn($mdUtil.supplant(message, [usage, url]));
-        }
-    }
-  }
-
-
-  /**
-   * For the Layout attribute value, validate or replace with default fallback value.
-   */
-  function validateAttributeValue(className, value, updateFn) {
-    var origValue = value;
-
-    if (!needsInterpolation(value)) {
-      switch (className.replace(SUFFIXES,"")) {
-        case 'layout'        :
-          if (!findIn(value, LAYOUT_OPTIONS)) {
-            value = LAYOUT_OPTIONS[0];    // 'row';
-          }
-          break;
-
-        case 'flex'          :
-          if (!findIn(value, FLEX_OPTIONS)) {
-            if (isNaN(value)) {
-              value = '';
-            }
-          }
-          break;
-
-        case 'flex-offset' :
-        case 'flex-order'    :
-          if (!value || isNaN(+value)) {
-            value = '0';
-          }
-          break;
-
-        case 'layout-align'  :
-          var axis = extractAlignAxis(value);
-          value = $mdUtil.supplant("{main}-{cross}",axis);
-          break;
-
-        case 'layout-padding' :
-        case 'layout-margin'  :
-        case 'layout-fill'    :
-        case 'layout-wrap'    :
-        case 'layout-nowrap' :
-          value = '';
-          break;
-      }
-
-      if (value !== origValue) {
-        (updateFn || angular.noop)(value);
-      }
-    }
-
-    return value ? value.trim() : "";
-  }
-
-  /**
-   * Replace current attribute value with fallback value
-   */
-  function buildUpdateFn(element, className, attrs) {
-    return function updateAttrValue(fallback) {
-      if (!needsInterpolation(fallback)) {
-        // Do not modify the element's attribute value; so
-        // uses '<ui-layout layout="/api/sidebar.html" />' will not
-        // be affected. Just update the attrs value.
-        attrs[attrs.$normalize(className)] = fallback;
-      }
-    };
-  }
-
-  /**
-   * See if the original value has interpolation symbols:
-   * e.g.  flex-gt-md="{{triggerPoint}}"
-   */
-  function needsInterpolation(value) {
-    return (value || "").indexOf($interpolate.startSymbol()) > -1;
-  }
-
-  function getNormalizedAttrValue(className, attrs, defaultVal) {
-    var normalizedAttr = attrs.$normalize(className);
-    return attrs[normalizedAttr] ? attrs[normalizedAttr].trim().replace(WHITESPACE, "-") :
-      defaultVal || null;
-  }
-
-  function findIn(item, list, replaceWith) {
-    item = replaceWith && item ? item.replace(WHITESPACE, replaceWith) : item;
-
-    var found = false;
-    if (item) {
-      list.forEach(function(it) {
-        it = replaceWith ? it.replace(WHITESPACE, replaceWith) : it;
-        found = found || (it === item);
-      });
-    }
-    return found;
-  }
-
-  function extractAlignAxis(attrValue) {
-    var axis = {
-      main : "start",
-      cross: "stretch"
-    }, values;
-
-    attrValue = (attrValue || "");
-
-    if (attrValue.indexOf("-") === 0 || attrValue.indexOf(" ") === 0) {
-      // For missing main-axis values
-      attrValue = "none" + attrValue;
-    }
-
-    values = attrValue.toLowerCase().trim().replace(WHITESPACE, "-").split("-");
-    if (values.length && (values[0] === "space")) {
-      // for main-axis values of "space-around" or "space-between"
-      values = [values[0]+"-"+values[1],values[2]];
-    }
-
-    if (values.length > 0) axis.main  = values[0] || axis.main;
-    if (values.length > 1) axis.cross = values[1] || axis.cross;
-
-    if (ALIGNMENT_MAIN_AXIS.indexOf(axis.main) < 0)   axis.main = "start";
-    if (ALIGNMENT_CROSS_AXIS.indexOf(axis.cross) < 0) axis.cross = "stretch";
-
-    return axis;
-  }
-})();
 
 /**
  * @ngdoc module
