@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-61412b4
+ * v1.2.1-master-3ea5630
  */
 // Typography
 // ------------------------------
@@ -5238,7 +5238,7 @@ md-input-container {
   }
   &.md-input-focused {
     &:not([md-no-float]) {
-      .md-select-placeholder span:first-child {
+      md-select:not([placeholder]) .md-select-placeholder span:first-child {
         transform: translate(-2px, -22px) scale(0.75);
       }
     }
