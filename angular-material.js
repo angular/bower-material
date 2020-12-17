@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-7d5e262
+ * v1.2.1-master-a4732a9
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -9541,6 +9541,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
   /**
    * Handles input blur event, determines if the dropdown should hide.
+   * @param {Event=} $event
    */
   function blur($event) {
     hasFocus = false;
@@ -9548,6 +9549,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     if (!noBlur) {
       ctrl.hidden = shouldHide();
       evalAttr('ngBlur', { $event: $event });
+    } else if (angular.isObject($event)) {
+      $event.stopImmediatePropagation();
     }
   }
 
@@ -39609,4 +39612,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-7d5e262"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-a4732a9"}};
