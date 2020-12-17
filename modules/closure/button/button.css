@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-da86e62
+ * v1.2.1-master-e7dfcc1
  */
 button.md-button::-moz-focus-inner {
   border: 0; }
@@ -116,6 +116,8 @@ button.md-button::-moz-focus-inner {
       height: 40px; }
     .md-button.md-fab.ng-hide, .md-button.md-fab.ng-leave {
       transition: none; }
+    .md-button.md-fab[disabled] {
+      box-shadow: none; }
   .md-button:not([disabled]).md-raised.md-focused, .md-button:not([disabled]).md-fab.md-focused {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
   .md-button:not([disabled]).md-raised:active, .md-button:not([disabled]).md-fab:active {

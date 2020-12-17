@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-da86e62
+ * v1.2.1-master-e7dfcc1
  */
 // Typography
 // ------------------------------
@@ -2025,6 +2025,10 @@ button.md-button::-moz-focus-inner {
     &.ng-hide, &.ng-leave {
       transition: none;
     }
+
+    &[disabled] {
+      box-shadow: none;
+    }
   }
 
   &:not([disabled]) {
@@ -3425,7 +3429,6 @@ md-fab-speed-dial {
   }
 }
 
-$button-fab-width: rem(5.600) !default;
 $icon-button-margin: rem(0.600) !default;
 
 md-fab-toolbar {
@@ -3532,7 +3535,7 @@ md-fab-toolbar {
   }
 
   /*
-   * Hover styling
+   * Open styling
    */
   &.md-is-open {
     md-fab-trigger > button {

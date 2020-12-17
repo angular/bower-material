@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-da86e62
+ * v1.2.1-master-e7dfcc1
  */
 md-fab-toolbar {
   display: block;
@@ -10,7 +10,7 @@ md-fab-toolbar {
    * Closed styling
    */
   /*
-   * Hover styling
+   * Open styling
    */ }
   md-fab-toolbar.md-fab-bottom-right {
     top: auto;
