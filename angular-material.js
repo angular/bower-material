@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.1-master-a4732a9
+ * v1.2.1-master-da86e62
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -19530,8 +19530,14 @@ function MdDividerDirective($mdTheming) {
 
       compile: function(element, attributes) {
         var children = element.children();
-
+        var actionItemButtons;
         var hasNgRepeat = $mdUtil.prefixer().hasAttribute(children, 'ng-repeat');
+
+        // Action item buttons should not be in the tab order when the speed dial is closed.
+        actionItemButtons = element.find('md-button');
+        angular.forEach(actionItemButtons, function(button) {
+          button.setAttribute('tabindex', -1);
+        });
 
         // Support both ng-repeat and static content
         if (hasNgRepeat) {
@@ -19543,7 +19549,6 @@ function MdDividerDirective($mdTheming) {
       }
     };
   }
-
 })();
 
 })();
@@ -39612,4 +39617,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-a4732a9"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.2.1-master-da86e62"}};
