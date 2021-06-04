@@ -2,5 +2,5 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.2-master-139a381
- */.md-truncate{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.md-truncate.md-clip{text-overflow:clip}.md-truncate.flex{width:0}
+ * v1.2.2-master-4d75a8c
+ */.md-truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.md-truncate.md-clip{text-overflow:clip}.md-truncate.flex{width:0}

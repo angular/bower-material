@@ -2,5 +2,5 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.2-master-139a381
- */md-content.md-THEME_NAME-theme{color:"{{foreground-1}}";background-color:"{{background-default}}"}
+ * v1.2.2-master-4d75a8c
+ */md-content.md-THEME_NAME-theme{background-color:"{{background-default}}";color:"{{foreground-1}}"}
