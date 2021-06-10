@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.2-master-4d75a8c
+ * v1.2.2-master-78b1073
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -24633,7 +24633,7 @@ function MenuProvider($$interimElementProvider) {
       if (options.hasBackdrop) {
         options.backdrop = $mdUtil.createBackdrop(scope, "md-menu-backdrop md-click-catcher");
 
-        $animate.enter(options.backdrop, $document[0].body);
+        $animate.enter(options.backdrop, options.backdropParent || $document[0].body);
       }
 
       /**
@@ -39648,4 +39648,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.2.2-master-4d75a8c"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.2.2-master-78b1073"}};
