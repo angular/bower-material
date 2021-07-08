@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.2-master-901982b
+ * v1.2.2-master-0a06f99
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -17748,7 +17748,11 @@ angular.module('material.components.datepicker', [
     if (opt_date) {
       date = new Date(opt_date.valueOf());
     } else {
-      date = angular.copy(this.ngModelCtrl.$modelValue);
+      if (angular.isString(this.ngModelCtrl.$modelValue)) {
+        date = new Date(this.ngModelCtrl.$modelValue);
+      } else {
+        date = angular.copy(this.ngModelCtrl.$modelValue);
+      }
     }
 
     // Clear any existing errors to get rid of anything that's no longer relevant.
@@ -39648,4 +39652,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.2.2-master-901982b"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.2.2-master-0a06f99"}};

@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.2-master-901982b
+ * v1.2.2-master-0a06f99
  */
 goog.provide('ngmaterial.components.datepicker');
 goog.require('ngmaterial.components.icon');
@@ -2949,7 +2949,11 @@ angular.module('material.components.datepicker', [
     if (opt_date) {
       date = new Date(opt_date.valueOf());
     } else {
-      date = angular.copy(this.ngModelCtrl.$modelValue);
+      if (angular.isString(this.ngModelCtrl.$modelValue)) {
+        date = new Date(this.ngModelCtrl.$modelValue);
+      } else {
+        date = angular.copy(this.ngModelCtrl.$modelValue);
+      }
     }
 
     // Clear any existing errors to get rid of anything that's no longer relevant.
