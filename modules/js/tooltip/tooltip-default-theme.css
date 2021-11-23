@@ -2,8 +2,9 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.3-master-441a912
+ * v1.2.3-master-5e2d213
  */
 .md-panel.md-tooltip.md-THEME_NAME-theme {
-  color: '{{background-700-contrast}}';
-  background-color: '{{background-700}}'; }
+  color: "{{background-700-contrast}}";
+  background-color: "{{background-700}}";
+}
