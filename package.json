@@ -1,6 +1,6 @@
 {
   "name": "angular-material",
-  "version": "1.2.4",
+  "version": "1.2.4-master-4cb5de8",
   "main": "index",
   "format": "cjs",
   "registry": "github",
