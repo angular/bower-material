@@ -94,6 +94,8 @@ $layout-breakpoint-xs:     600px !default;
 $layout-breakpoint-sm:     960px !default;
 $layout-breakpoint-md:     1280px !default;
 $layout-breakpoint-lg:     1920px !default;
+@use "sass:math";
+
 // Typography
 // ------------------------------
 
@@ -311,10 +313,10 @@ $layout-breakpoint-lg:     1920px !default;
 }
 
 @mixin fab-all-positions() {
-  @include fab-position(bottom-right, auto, ($button-fab-width - $button-fab-padding)/2, ($button-fab-height - $button-fab-padding)/2, auto);
-  @include fab-position(bottom-left, auto, auto, ($button-fab-height - $button-fab-padding)/2, ($button-fab-width - $button-fab-padding)/2);
-  @include fab-position(top-right, ($button-fab-height - $button-fab-padding)/2, ($button-fab-width - $button-fab-padding)/2, auto, auto);
-  @include fab-position(top-left, ($button-fab-height - $button-fab-padding)/2, auto, auto, ($button-fab-width - $button-fab-padding)/2);
+  @include fab-position(bottom-right, auto, ($button-fab-width - $button-fab-padding)*0.5, ($button-fab-height - $button-fab-padding)*0.5, auto);
+  @include fab-position(bottom-left, auto, auto, ($button-fab-height - $button-fab-padding)*0.5, ($button-fab-width - $button-fab-padding)*0.5);
+  @include fab-position(top-right, ($button-fab-height - $button-fab-padding)*0.5, ($button-fab-width - $button-fab-padding)*0.5, auto, auto);
+  @include fab-position(top-left, ($button-fab-height - $button-fab-padding)*0.5, auto, auto, ($button-fab-width - $button-fab-padding)*0.5);
 }
 
 // This mixin allows a user to use the md-checkbox css outside of the
@@ -398,11 +400,11 @@ $layout-breakpoint-lg:     1920px !default;
       box-sizing: border-box;
       transform: rotate(45deg);
       position: absolute;
-      left: $width / 3 - $border-width;
-      top: $width / 9 - $border-width;
+      left: math.div($width, 3) - $border-width;
+      top: math.div($width, 9) - $border-width;
       display: table;
-      width: $width / 3;
-      height: $width * 2 / 3;
+      width: math.div($width, 3);
+      height: math.div($width * 2, 3);
       border-width: $border-width;
       border-style: solid;
       border-top: 0;
@@ -559,6 +561,7 @@ $layout-breakpoint-lg:     1920px !default;
 
 // Layout
 // ------------------------------
+
 
 
 
@@ -877,24 +880,24 @@ $layout-breakpoint-lg:     1920px !default;
 @mixin layout-padding-margin() {
 
   [layout-padding] > [flex-sm] {
-    padding: $layout-gutter-width / 4;
+    padding: $layout-gutter-width * 0.25;
   }
   [layout-padding],
   [layout-padding] > [flex],
   [layout-padding] > [flex-gt-sm],
   [layout-padding] > [flex-md]
   {
-    padding: $layout-gutter-width / 2;
+    padding: $layout-gutter-width * 0.5;
   }
   [layout-padding] > [flex-gt-md],
   [layout-padding] > [flex-lg]
   {
-    padding: $layout-gutter-width / 1;
+    padding: math.div($layout-gutter-width, 1);
   }
 
   [layout-margin] > [flex-sm]
   {
-    margin: $layout-gutter-width / 4;
+    margin: $layout-gutter-width * 0.25;
   }
 
   [layout-margin],
@@ -902,13 +905,13 @@ $layout-breakpoint-lg:     1920px !default;
   [layout-margin]  > [flex-gt-sm],
   [layout-margin]  > [flex-md]
   {
-    margin: $layout-gutter-width / 2;
+    margin: $layout-gutter-width * 0.5;
   }
 
   [layout-margin]  > [flex-gt-md],
   [layout-margin]  > [flex-lg]
   {
-    margin: $layout-gutter-width / 1;
+    margin: math.div($layout-gutter-width, 1);
   }
 
   [layout-wrap] {

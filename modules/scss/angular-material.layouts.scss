@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.3-master-5e2d213
+ * v1.2.3-master-625adc5
  */
 $font-family: Roboto, 'Helvetica Neue', sans-serif !default;
 $font-size:   10px !default;
@@ -94,6 +94,8 @@ $checkbox-height: $checkbox-width !default;
 $checkbox-border-radius: 2px !default;
 $checkbox-border-width: 2px !default;
 $default-horizontal-margin: 16px !default;
+@use "sass:math";
+
 // Typography
 // ------------------------------
 
@@ -311,10 +313,10 @@ $default-horizontal-margin: 16px !default;
 }
 
 @mixin fab-all-positions() {
-  @include fab-position(bottom-right, auto, ($button-fab-width - $button-fab-padding)/2, ($button-fab-height - $button-fab-padding)/2, auto);
-  @include fab-position(bottom-left, auto, auto, ($button-fab-height - $button-fab-padding)/2, ($button-fab-width - $button-fab-padding)/2);
-  @include fab-position(top-right, ($button-fab-height - $button-fab-padding)/2, ($button-fab-width - $button-fab-padding)/2, auto, auto);
-  @include fab-position(top-left, ($button-fab-height - $button-fab-padding)/2, auto, auto, ($button-fab-width - $button-fab-padding)/2);
+  @include fab-position(bottom-right, auto, ($button-fab-width - $button-fab-padding)*0.5, ($button-fab-height - $button-fab-padding)*0.5, auto);
+  @include fab-position(bottom-left, auto, auto, ($button-fab-height - $button-fab-padding)*0.5, ($button-fab-width - $button-fab-padding)*0.5);
+  @include fab-position(top-right, ($button-fab-height - $button-fab-padding)*0.5, ($button-fab-width - $button-fab-padding)*0.5, auto, auto);
+  @include fab-position(top-left, ($button-fab-height - $button-fab-padding)*0.5, auto, auto, ($button-fab-width - $button-fab-padding)*0.5);
 }
 
 // This mixin allows a user to use the md-checkbox css outside of the
@@ -398,11 +400,11 @@ $default-horizontal-margin: 16px !default;
       box-sizing: border-box;
       transform: rotate(45deg);
       position: absolute;
-      left: $width / 3 - $border-width;
-      top: $width / 9 - $border-width;
+      left: math.div($width, 3) - $border-width;
+      top: math.div($width, 9) - $border-width;
       display: table;
-      width: $width / 3;
-      height: $width * 2 / 3;
+      width: math.div($width, 3);
+      height: math.div($width * 2, 3);
       border-width: $border-width;
       border-style: solid;
       border-top: 0;
@@ -556,6 +558,7 @@ $default-horizontal-margin: 16px !default;
 *  4) https://github.com/philipwalton/flexbugs#3-min-height-on-a-flex-container-wont-apply-to-its-flex-items
 *  5) http://godban.com.ua/projects/flexgrid
 */
+
 @mixin flex-order-for-name($sizes:null) {
   @if $sizes == null {
     $sizes : '';
@@ -893,7 +896,7 @@ $default-horizontal-margin: 16px !default;
   .layout-padding-sm > *,
   .layout-padding    > .flex-sm
   {
-    padding: $layout-gutter-width / 4;
+    padding: $layout-gutter-width * 0.25;
   }
 
   .layout-padding,
@@ -909,7 +912,7 @@ $default-horizontal-margin: 16px !default;
   .layout-padding        > .flex-gt-sm,
   .layout-padding        > .flex-md
   {
-    padding: $layout-gutter-width / 2;
+    padding: $layout-gutter-width * 0.5;
   }
 
   // NOTE: these`> *` selectors should only be applied for layout="row" or layout="column" children !!
@@ -922,7 +925,7 @@ $default-horizontal-margin: 16px !default;
   .layout-padding        > .flex-lg,
   .layout-padding        > .flex-gt-lg
   {
-    padding: $layout-gutter-width / 1;
+    padding: math.div($layout-gutter-width, 1);
   }
 
   // Margin enhancements
@@ -930,7 +933,7 @@ $default-horizontal-margin: 16px !default;
   .layout-margin-sm      > *,
   .layout-margin         > .flex-sm
   {
-    margin: $layout-gutter-width / 4;
+    margin: $layout-gutter-width * 0.25;
   }
 
   .layout-margin,
@@ -946,7 +949,7 @@ $default-horizontal-margin: 16px !default;
   .layout-margin         > .flex-gt-sm,
   .layout-margin         > .flex-md
   {
-    margin: $layout-gutter-width / 2;
+    margin: $layout-gutter-width * 0.5;
   }
 
   // NOTE: these`> *` selectors should only be applied for layout="row" or layout="column" children !!
@@ -958,7 +961,7 @@ $default-horizontal-margin: 16px !default;
   .layout-margin        > .flex-lg,
   .layout-margin        > .flex-gt-lg
   {
-    margin: $layout-gutter-width / 1;
+    margin: math.div($layout-gutter-width, 1);
   }
 
   .layout-wrap {

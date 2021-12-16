@@ -2,8 +2,10 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.3-master-5e2d213
+ * v1.2.3-master-625adc5
  */
+@use "sass:math";
+
 // Typography
 // ------------------------------
 $font-family: Roboto, 'Helvetica Neue', sans-serif !default;
@@ -167,7 +169,7 @@ $error-padding-top: $baseline-grid !default;
 
 $icon-offset: 36px !default;
 
-$icon-top-offset: ($icon-offset - $input-padding-top - $input-border-width-focused) / 4 !default;
+$icon-top-offset: ($icon-offset - $input-padding-top - $input-border-width-focused) * 0.25 !default;
 
 $icon-float-focused-top: -8px !default;
 
@@ -342,10 +344,10 @@ $input-resize-handle-height: 10px !default;
 }
 
 @mixin fab-all-positions() {
-  @include fab-position(bottom-right, auto, ($button-fab-width - $button-fab-padding)/2, ($button-fab-height - $button-fab-padding)/2, auto);
-  @include fab-position(bottom-left, auto, auto, ($button-fab-height - $button-fab-padding)/2, ($button-fab-width - $button-fab-padding)/2);
-  @include fab-position(top-right, ($button-fab-height - $button-fab-padding)/2, ($button-fab-width - $button-fab-padding)/2, auto, auto);
-  @include fab-position(top-left, ($button-fab-height - $button-fab-padding)/2, auto, auto, ($button-fab-width - $button-fab-padding)/2);
+  @include fab-position(bottom-right, auto, ($button-fab-width - $button-fab-padding)*0.5, ($button-fab-height - $button-fab-padding)*0.5, auto);
+  @include fab-position(bottom-left, auto, auto, ($button-fab-height - $button-fab-padding)*0.5, ($button-fab-width - $button-fab-padding)*0.5);
+  @include fab-position(top-right, ($button-fab-height - $button-fab-padding)*0.5, ($button-fab-width - $button-fab-padding)*0.5, auto, auto);
+  @include fab-position(top-left, ($button-fab-height - $button-fab-padding)*0.5, auto, auto, ($button-fab-width - $button-fab-padding)*0.5);
 }
 
 // This mixin allows a user to use the md-checkbox css outside of the
@@ -429,11 +431,11 @@ $input-resize-handle-height: 10px !default;
       box-sizing: border-box;
       transform: rotate(45deg);
       position: absolute;
-      left: $width / 3 - $border-width;
-      top: $width / 9 - $border-width;
+      left: math.div($width, 3) - $border-width;
+      top: math.div($width, 9) - $border-width;
       display: table;
-      width: $width / 3;
-      height: $width * 2 / 3;
+      width: math.div($width, 3);
+      height: math.div($width * 2, 3);
       border-width: $border-width;
       border-style: solid;
       border-top: 0;
@@ -892,6 +894,7 @@ input {
 *  4) https://github.com/philipwalton/flexbugs#3-min-height-on-a-flex-container-wont-apply-to-its-flex-items
 *  5) http://godban.com.ua/projects/flexgrid
 */
+
 @mixin flex-order-for-name($sizes:null) {
   @if $sizes == null {
     $sizes : '';
@@ -1229,7 +1232,7 @@ input {
   .layout-padding-sm > *,
   .layout-padding    > .flex-sm
   {
-    padding: $layout-gutter-width / 4;
+    padding: $layout-gutter-width * 0.25;
   }
 
   .layout-padding,
@@ -1245,7 +1248,7 @@ input {
   .layout-padding        > .flex-gt-sm,
   .layout-padding        > .flex-md
   {
-    padding: $layout-gutter-width / 2;
+    padding: $layout-gutter-width * 0.5;
   }
 
   // NOTE: these`> *` selectors should only be applied for layout="row" or layout="column" children !!
@@ -1258,7 +1261,7 @@ input {
   .layout-padding        > .flex-lg,
   .layout-padding        > .flex-gt-lg
   {
-    padding: $layout-gutter-width / 1;
+    padding: math.div($layout-gutter-width, 1);
   }
 
   // Margin enhancements
@@ -1266,7 +1269,7 @@ input {
   .layout-margin-sm      > *,
   .layout-margin         > .flex-sm
   {
-    margin: $layout-gutter-width / 4;
+    margin: $layout-gutter-width * 0.25;
   }
 
   .layout-margin,
@@ -1282,7 +1285,7 @@ input {
   .layout-margin         > .flex-gt-sm,
   .layout-margin         > .flex-md
   {
-    margin: $layout-gutter-width / 2;
+    margin: $layout-gutter-width * 0.5;
   }
 
   // NOTE: these`> *` selectors should only be applied for layout="row" or layout="column" children !!
@@ -1294,7 +1297,7 @@ input {
   .layout-margin        > .flex-lg,
   .layout-margin        > .flex-gt-lg
   {
-    margin: $layout-gutter-width / 1;
+    margin: math.div($layout-gutter-width, 1);
   }
 
   .layout-wrap {
@@ -1805,7 +1808,7 @@ md-bottom-sheet {
 
       /* Mixin for how many grid items to show per row */
       @mixin grid-items-per-row($num, $alignEdges: false) {
-        $width: 100% / $num;
+        $width: math.div(100%, $num);
         flex: 1 1 $width;
         max-width: $width;
 
@@ -1885,7 +1888,7 @@ $button-fab-border-radius: 50% !default;
 $button-icon-border-radius: $button-fab-border-radius !default;
 
 $button-font-size: $body-font-size-base !default;
-$button-font-size-dense: $body-font-size-base * 13/14 !default;
+$button-font-size-dense: math.div($body-font-size-base * 13, 14) !default;
 
 $button-line-height: rem(3.60) !default;
 $button-line-height-dense: rem(3.20) !default;
@@ -2206,7 +2209,7 @@ md-card {
   }
 
   md-card-title {
-    padding: 3 * $card-padding / 2 $card-padding $card-padding;
+    padding: 3 * $card-padding * 0.5 $card-padding $card-padding;
     display: flex;
     flex: 1 1 auto;
     flex-direction: row;
@@ -2227,13 +2230,13 @@ md-card {
 
       &:only-child {
         .md-subhead {
-          padding-top: 3 * $card-padding / 4;
+          padding-top: 3 * $card-padding * 0.25;
         }
       }
     }
 
     md-card-title-media {
-      margin-top: - $card-padding / 2;
+      margin-top: - $card-padding * 0.5;
 
       .md-media-sm {
         height: 80px;
@@ -2276,7 +2279,7 @@ md-card {
     &.layout-column {
       .md-button {
         &:not(.md-icon-button) {
-          margin: $baseline-grid / 4 0;
+          margin: $baseline-grid * 0.25 0;
 
           &:first-of-type {
             margin-top: 0;
@@ -2288,8 +2291,8 @@ md-card {
         }
 
         &.md-icon-button {
-          margin-top: 3 * $baseline-grid / 4;
-          margin-bottom: 3 * $baseline-grid / 4;
+          margin-top: 3 * $baseline-grid * 0.25;
+          margin-bottom: 3 * $baseline-grid * 0.25;
         }
       }
     }
@@ -2315,15 +2318,15 @@ md-card {
       }
 
       &.md-icon-button {
-        margin-left: 3 * $baseline-grid / 4;
-        margin-right: 3 * $baseline-grid / 4;
+        margin-left: 3 * $baseline-grid * 0.25;
+        margin-right: 3 * $baseline-grid * 0.25;
 
         &:first-of-type {
-          @include rtl-prop(margin-left, margin-right, 3 * $baseline-grid / 2, auto);
+          @include rtl-prop(margin-left, margin-right, 3 * $baseline-grid * 0.5, auto);
         }
 
         &:last-of-type {
-          @include rtl-prop(margin-right, margin-left, 3 * $baseline-grid / 2, auto);
+          @include rtl-prop(margin-right, margin-left, 3 * $baseline-grid * 0.5, auto);
         }
       }
 
@@ -2477,7 +2480,7 @@ $contact-chip-name-width: rem(12) !default;
         @include rtl(float, left, right);
         img {
           height: $chip-height;
-          border-radius: $chip-height / 2;
+          border-radius: $chip-height * 0.5;
         }
       }
       .md-contact-name {
@@ -2492,7 +2495,7 @@ $contact-chip-name-width: rem(12) !default;
   height: ($contact-chip-suggestion-margin * 2) + $contact-chip-suggestion-image-height;
   img {
     height: $contact-chip-suggestion-image-height;
-    border-radius: $contact-chip-suggestion-image-height / 2;
+    border-radius: $contact-chip-suggestion-image-height * 0.5;
     margin-top: $contact-chip-suggestion-margin;
   }
   .md-contact-name {
@@ -2544,7 +2547,7 @@ md-chips {
 
   md-chip {
     cursor: default;
-    border-radius: $chip-height / 2;
+    border-radius: $chip-height * 0.5;
     display: block;
     height: $chip-height;
     line-height: $chip-height;
@@ -2952,7 +2955,7 @@ md-datepicker {
       // down the error messages more than they should be.
       @include rtl(float, left, right);
       margin-top: $button-left-right-padding * -2;
-      top: $button-left-right-padding * 2 - $md-datepicker-border-bottom-gap / 2;
+      top: $button-left-right-padding * 2 - $md-datepicker-border-bottom-gap * 0.5;
     }
   }
 
@@ -2963,7 +2966,7 @@ md-datepicker {
   &._md-datepicker-has-calendar-icon {
     > label:not(.md-no-float):not(.md-container-ignore) {
       $width-offset: $md-datepicker-triangle-button-width * 2 + $md-datepicker-button-gap;
-      $offset: $md-datepicker-triangle-button-width / 2;
+      $offset: $md-datepicker-triangle-button-width * 0.5;
       @include rtl(right, $offset, auto);
       @include rtl(left, auto, $offset);
       width: calc(100% - #{$width-offset});
@@ -2979,8 +2982,8 @@ md-datepicker {
 ._md-datepicker-has-triangle-icon {
   // Leave room for the down-triangle button to "overflow" it's parent without modifying scrollLeft.
   // This prevents the element from shifting right when opening via the triangle button.
-  @include rtl-prop(padding-right, padding-left, $md-datepicker-triangle-button-width / 2, 0);
-  @include rtl-prop(margin-right, margin-left, -$md-datepicker-triangle-button-width / 2, auto);
+  @include rtl-prop(padding-right, padding-left, $md-datepicker-triangle-button-width * 0.5, 0);
+  @include rtl-prop(margin-right, margin-left, -$md-datepicker-triangle-button-width * 0.5, auto);
 }
 
 // Container for the datepicker input.
@@ -3081,7 +3084,7 @@ md-datepicker {
 .md-datepicker-triangle-button {
   position: absolute;
   @include rtl-prop(right, left, 0, auto);
-  bottom: -$md-date-arrow-size / 2;
+  bottom: -$md-date-arrow-size * 0.5;
 
   // TODO(jelbourn): This position isn't great on all platforms.
   @include rtl(transform, translateX(45%), translateX(-45%));
@@ -3424,7 +3427,7 @@ md-fab-speed-dial {
       transition: $swift-ease-in;
 
       // Make the scale animation a bit faster since we are delaying each item
-      transition-duration: $swift-ease-in-duration / 2.1;
+      transition-duration: math.div($swift-ease-in-duration, 2.1);
     }
   }
 }
@@ -3530,7 +3533,7 @@ md-fab-toolbar {
       transition: $swift-ease-in;
 
       // Cut the action item's animation time in half since we delay it in the JS
-      transition-duration: $swift-ease-in-duration / 2;
+      transition-duration: $swift-ease-in-duration * 0.5;
     }
   }
 
@@ -4015,7 +4018,7 @@ md-input-container {
 
 .md-resize-handle {
   position: absolute;
-  bottom: $input-resize-handle-height / -2;
+  bottom: math.div($input-resize-handle-height, -2);
   left: 0;
   height: $input-resize-handle-height;
   background: transparent;
@@ -4029,7 +4032,7 @@ md-input-container {
   }
 }
 
-$dense-baseline-grid: $baseline-grid / 2 !default;
+$dense-baseline-grid: $baseline-grid * 0.5 !default;
 
 $list-h3-margin: 0 0 0 0 !default;
 $list-h4-margin: 3px 0 1px 0 !default;
@@ -4489,8 +4492,8 @@ $max-dense-menu-height: 2 * $baseline-grid + $max-visible-items * $dense-menu-it
   overflow: auto;
 
   md-menu-divider {
-    margin-top: $baseline-grid / 2;
-    margin-bottom: $baseline-grid / 2;
+    margin-top: $baseline-grid * 0.5;
+    margin-bottom: $baseline-grid * 0.5;
     height: 1px;
     min-height: 1px;
     max-height: 1px;
@@ -4987,19 +4990,19 @@ md-progress-linear {
 }
 @keyframes md-progress-linear-indeterminate-1 {
   0% {
-    left: -378.6 * 100% / 360;
+    left: math.div(-378.6 * 100%, 360);
     animation-timing-function: linear;
   }
   20% {
-    left: -378.6 * 100% / 360;
+    left: math.div(-378.6 * 100%, 360);
     animation-timing-function: cubic-bezier(0.5, 0, 0.701732, 0.495818703);
   }
   69.15% {
-    left: 77.4 * 100% / 360;
+    left: math.div(77.4 * 100%, 360);
     animation-timing-function: cubic-bezier(0.302435, 0.38135197, 0.55, 0.956352125);
   }
   100% {
-    left: 343.6 * 100% / 360;
+    left: math.div(343.6 * 100%, 360);
   }
 }
 @keyframes md-progress-linear-indeterminate-scale-2 {
@@ -5021,19 +5024,19 @@ md-progress-linear {
 }
 @keyframes md-progress-linear-indeterminate-2 {
   0% {
-    left: -197.6 * 100% / 360;
+    left: math.div(-197.6 * 100%, 360);
     animation-timing-function: cubic-bezier(0.15, 0, 0.5150584, 0.409684966);
   }
   25% {
-    left: -62.1 * 100% / 360;
+    left: math.div(-62.1 * 100%, 360);
     animation-timing-function: cubic-bezier(0.3103299, 0.284057684, 0.8, 0.733718979);
   }
   48.35% {
-    left: 106.2 * 100% / 360;
+    left: math.div(106.2 * 100%, 360);
     animation-timing-function: cubic-bezier(0.4, 0.627034903, 0.6, 0.902025796);
   }
   100% {
-    left: 422.6 * 100% / 360;
+    left: math.div(422.6 * 100%, 360);
   }
 }
 
@@ -5560,8 +5563,8 @@ md-select-menu[multiple] {
     @include checkbox-container('[selected]');
 
     .md-container {
-      @include rtl(margin-left, $select-option-padding * (2 / 3), auto);
-      @include rtl(margin-right, auto, $select-option-padding * (2 / 3));
+      @include rtl(margin-left, $select-option-padding * math.div(2, 3), auto);
+      @include rtl(margin-right, auto, $select-option-padding * math.div(2, 3));
     }
   }
 }
@@ -5735,7 +5738,7 @@ $slider-arrow-width: 28px !default;
 
 $slider-sign-height: 28px !default;
 $slider-sign-width: 28px !default;
-$slider-sign-top: ($slider-size / 2) - ($slider-thumb-default-scale * $slider-thumb-height / 2) - ($slider-sign-height) - ($slider-arrow-height) + 10px !default;
+$slider-sign-top: ($slider-size * 0.5) - ($slider-thumb-default-scale * $slider-thumb-height * 0.5) - ($slider-sign-height) - ($slider-arrow-height) + 10px !default;
 
 @keyframes sliderFocusThumb {
   0% {
@@ -5777,8 +5780,8 @@ $slider-sign-top: ($slider-size / 2) - ($slider-thumb-default-scale * $slider-th
 
 @mixin slider-thumb-position($width: $slider-thumb-width, $height: $slider-thumb-height) {
   position: absolute;
-  @include rtl-prop(left, right, (-$width / 2), auto);
-  top: ($slider-size / 2) - ($height / 2);
+  @include rtl-prop(left, right, (-$width * 0.5), auto);
+  top: ($slider-size * 0.5) - ($height * 0.5);
   width: $width;
   height: $height;
   border-radius: max($width, $height);
@@ -5814,7 +5817,7 @@ md-slider {
   .md-track-container {
     width: 100%;
     position: absolute;
-    top: ($slider-size / 2) - ($slider-track-height) / 2;
+    top: ($slider-size * 0.5) - ($slider-track-height) * 0.5;
     height: $slider-track-height;
   }
   .md-track {
@@ -5884,24 +5887,24 @@ md-slider {
     justify-content: center;
 
     position: absolute;
-    left: -($slider-sign-height / 2);
+    left: -($slider-sign-height * 0.5);
     top: $slider-sign-top;
     width: $slider-sign-width;
     height: $slider-sign-height;
     border-radius: max($slider-sign-height, $slider-sign-width);
 
-    transform: scale(0.4) translate3d(0,(-$slider-sign-top + 10) / 0.4,0);
+    transform: scale(0.4) translate3d(0,math.div(-$slider-sign-top + 10, 0.4),0);
     transition: all 0.3s $swift-ease-in-out-timing-function;
 
     /* The arrow pointing down under the sign */
     &:after {
       position: absolute;
       content: '';
-      @include rtl-prop(left, right, -($slider-sign-width / 2 - $slider-arrow-width / 2), auto);
+      @include rtl-prop(left, right, -(math.div($slider-sign-width, 2) - math.div($slider-arrow-width, 2)), auto);
       border-radius: $slider-arrow-height;
       top: 19px;
-      border-left: $slider-arrow-width / 2 solid transparent;
-      border-right: $slider-arrow-width / 2 solid transparent;
+      border-left: $slider-arrow-width * 0.5 solid transparent;
+      border-right: $slider-arrow-width * 0.5 solid transparent;
       border-top-width: $slider-arrow-height;
       border-top-style: solid;
 
@@ -5925,7 +5928,7 @@ md-slider {
     transform: scale(.7);
     opacity: 0;
     // using a custom duration to match the spec example video
-    transition: all ($slider-thumb-focus-duration / 2) $swift-ease-in-out-timing-function;
+    transition: all ($slider-thumb-focus-duration * 0.5) $swift-ease-in-out-timing-function;
   }
   .md-disabled-thumb {
     @include slider-thumb-position(
@@ -6070,7 +6073,7 @@ md-slider {
 
     .md-thumb-container {
       top: auto;
-      margin-bottom: ($slider-size / 2) - ($slider-track-height) / 2;
+      margin-bottom: ($slider-size * 0.5) - ($slider-track-height) * 0.5;
       left: calc(50% - 1px);
       bottom: 0;
 
@@ -6079,7 +6082,7 @@ md-slider {
       }
 
       .md-focus-ring {
-        left: -(($slider-focus-thumb-width / 2) - ($slider-track-height / 2));
+        left: -(math.div($slider-focus-thumb-width, 2) - math.div($slider-track-height, 2));
       }
     }
 
@@ -6089,20 +6092,20 @@ md-slider {
 
     &[md-discrete] {
       .md-sign {
-        $sign-top: -($slider-sign-top / 2) + 1;
+        $sign-top: -($slider-sign-top * 0.5) + 1;
 
         left: -$slider-sign-height - 12;
         top: $sign-top;
 
-        transform: scale(0.4) translate3d((-$slider-sign-top + 10) / 0.4, 0 ,0);
+        transform: scale(0.4) translate3d(math.div(-$slider-sign-top + 10, 0.4), 0 ,0);
 
         /* The arrow pointing left next the sign */
         &:after {
           top: $sign-top;
           left: 19px;
-          border-top: $slider-arrow-width / 2 solid transparent;
+          border-top: $slider-arrow-width * 0.5 solid transparent;
           border-right: 0;
-          border-bottom: $slider-arrow-width / 2 solid transparent;
+          border-bottom: $slider-arrow-width * 0.5 solid transparent;
           border-left-width: $slider-arrow-height;
           border-left-style: solid;
 
@@ -6382,14 +6385,14 @@ md-switch {
   .md-bar {
     left: 1px;
     width: $switch-width - 2px;
-    top: $switch-height / 2 - $switch-bar-height / 2;
+    top: $switch-height * 0.5 - $switch-bar-height * 0.5;
     height: $switch-bar-height;
     border-radius: 8px;
     position: absolute;
   }
 
   .md-thumb-container {
-    top: $switch-height / 2 - $switch-thumb-size / 2;
+    top: $switch-height * 0.5 - $switch-thumb-size * 0.5;
     left: 0;
     width: $switch-width - $switch-thumb-size;
     position: absolute;
