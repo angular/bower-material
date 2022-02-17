@@ -1,9 +1,24 @@
-This repository publishes the AngularJS Material v1.x library and localized installs
-using `npm`. You can find the component source-code for this library in the
-[AngularJS Material repository](https://github.com/angular/material).
+# AngularJS Material
 
-> Please file issues and pull requests against that `angular/material` repository only. Do not file
-issues here on the publishing repository.
+**[Support for legacy AngularJS ended on January 1st, 2022](https://goo.gle/angularjs-end-of-life).
+[See `@angular/core` for the actively supported Angular](https://npmjs.com/@angular/core).**
+
+See the following, related, actively supported Angular packages:
+- [`@angular/material`](https://www.npmjs.com/package/@angular/material)
+- [`@angular/cdk`](https://www.npmjs.com/package/@angular/cdk)
+
+This repository was used to publish the AngularJS Material v1.x library and localized installs
+using `npm`. You can find the component source-code for this library in the
+[AngularJS Material repository](https://github.com/angular/material). This package and related repositories
+have reached End-of-Life.
+
+AngularJS Material is an implementation of Google's
+[Material Design Specification (2014-2017)](https://material.io/archive/guidelines/material-design/)
+for [AngularJS](https://angularjs.org) (v1.x) developers.
+
+For an implementation of the [Material Design Specification (2018+)](https://material.io/design/),
+please see the [Angular Material](https://material.angular.io/) project which is built for
+[Angular](https://angular.io) (v2+) developers.
 
 ## Layouts and SCSS
 
