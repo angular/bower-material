@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.4-master-bfc8ae7
+ * v1.2.5
  */
 md-fab-speed-dial.md-THEME_NAME-theme md-fab-trigger .md-fab.md-button[disabled] {
   background-color: "{{foreground-4}}";
